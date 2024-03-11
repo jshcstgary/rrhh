@@ -1,0 +1,34 @@
+/*******************
+ Breadcrumb and page title
+*******************/
+
+.page-breadcrumb {
+  padding: 15px;
+  background: $white;
+
+  .breadcrumb-container {
+    max-width: $page-wrapper-max-width;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .page-title {
+    margin-bottom: 0px;
+    color: $sidebar-text-dark;
+    font-weight: 600;
+  }
+  .breadcrumb {
+    padding: 0px;
+    margin: 0px;
+    background: transparent;
+    font-size: 16px;
+    .breadcrumb-item + .breadcrumb-item::before {
+      content: "\e649";
+      font-family: themify;
+      color: $gray-300;
+      font-size: 11px;
+    }
+    .breadcrumb-item.active {
+      color: $sidebar-text-dark;
+    }
+  }
+}
