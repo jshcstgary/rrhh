@@ -1,35 +1,26 @@
 <nav class="sidebar-nav">
     <ul id="sidebarnav">
       <li class="sidebar-item">
-        <a class="navbar-brand" href="/">
-          <!-- User profile -->
         <div class="user-profile">
-          <!-- User profile image -->
-          <div class="profile-img">
-              <img src="assets/images/users/user4.jpg" alt="user" />
-          </div>
+          <i class="material-icons text-warning cursor-pointer me-4">notifications</i>
+          <img
+            alt=""
+            src="assets/images/users/user4.jpg"
+            class="user-image"
+          />
+          <dropdown-component
+            [textButton]="userName"
+            [options]="userDropdownOptions"
+            [buttonClasses]="dropdownButtonClasses"
+          ></dropdown-component>
+          <!--<i class="material-icons text-warning">manage_accounts</i>
+          <dropdown-component
+            [textButton]="profile"
+            [options]="profiles"
+            [buttonClasses]="dropdownButtonClasses"
+          ></dropdown-component>-->
         </div>
-        </a>
       </li>
-      <li class="sidebar-item">
-        <a class="navbar-brand" href="/">
-          <!-- User profile -->
-        <div class="user-profile">
-          <!-- User profile text-->
-          <div class="profile-text" >
-              <a ngbDropdownToggle ngbDropdown href="javascript:void(0)" class="u-dropdown">Usuario<strong></strong>
-                  <!-- {{currentUser.userName}} -->
-                <i class="fa fa-angle-down"></i>
-                <div class="dropdown-menu animated flipInY" ngbDropdownMenu>
-                    <a href="#" class="dropdown-item">
-                      <i class="fa fa-power-off"></i> Cerrar Sesión
-                     </a>
-                </div>
-              </a>
-          </div>
-        </div>
-        </a>
-        </li>
       <!-- ============================================================== -->
         <!-- First level menu -->
         <li class="sidebar-item" [ngClass]="[sidebarnavItem.ddclass]" [class.active]="showMenu === sidebarnavItem.title"
@@ -104,12 +95,6 @@
         class="light-logo"
         alt="homepage"
         />
-        <img
-        src="assets/images/logo-light-text.png"
-        class="light-logo"
-        alt="homepage"
-        />
-
       </span>
 
     </a>

@@ -19,6 +19,7 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { HttpClient } from '@angular/common/http';
 import { RegistrarSolicitudComponent } from './solicitudes/registrar-solicitud/registrar-solicitud.component';
 import { SolicitudesModule } from './solicitudes/solicitudes.module';
+import { FormsModule } from '@angular/forms';
 
 
 export function HttpLoaderFactory(http: HttpClient) {
@@ -34,6 +35,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     HttpClientModule,
     NgbModule,
     FeatherModule,
+    FormsModule,
     FeatherModule.pick(allIcons),
     RouterModule.forRoot(Approutes),
     ToastrModule.forRoot(),

@@ -5,13 +5,18 @@ import { HorizontalSidebarService } from './horizontal-sidebar.service';
 import { TranslateModule } from '@ngx-translate/core';
 import { CommonModule } from '@angular/common';
 import { FeatherModule } from 'angular-feather';
+import { IDropdownOptions } from 'src/app/component/dropdown/dropdown.interface';
+import { DropdownComponent } from 'src/app/component/dropdown/dropdown.component';
+import { ComponentsModule } from 'src/app/component/component.module';
+import { VerticalNavigationData } from '../horizontal-header/vertical-navigation.data';
 
 
 @Component({
   selector: 'app-horizontal-sidebar',
   standalone: true,
-  imports: [TranslateModule, CommonModule, FeatherModule, RouterModule],
-  templateUrl: './horizontal-sidebar.component.html'
+  imports: [TranslateModule, CommonModule, FeatherModule, RouterModule,ComponentsModule],
+  templateUrl: './horizontal-sidebar.component.html',
+  styleUrls: ["./horizontal-sidebar.component.scss"],
 })
 export class HorizontalSidebarComponent {
   showMenu = '';
@@ -19,11 +24,24 @@ export class HorizontalSidebarComponent {
   public sidebarnavItems: RouteInfo[] = [];
   path = '';
 
+  //public pagesToSearch: ISelectOptions = [];
+  public userName: string = "Vcastro";
+  public profile: string = "Supervisor";
+  public profiles: IDropdownOptions = [
+    { id: "administracion", name: "Administracion" },
+    { id: "agricola", name: "Agricola" },
+  ];
+
+  public dropdownButtonClasses: string[] =
+    VerticalNavigationData.dropdownButtonClasses;
+  public userDropdownOptions: IDropdownOptions =
+    VerticalNavigationData.userDropdownOptions;
+
   constructor(private menuServise: HorizontalSidebarService, private router: Router) {
     this.menuServise.items.subscribe(menuItems => {
       this.sidebarnavItems = menuItems;
 
-      // Active menu 
+      // Active menu
       this.sidebarnavItems.filter(m => m.submenu.filter(
         (s) => {
           if (s.path === this.router.url) {
