@@ -16,7 +16,7 @@
 
 const baseC = "http://10.35.3.180"; //base de camunda
 const baseW = "http://10.35.3.162";//base de servicios workflow
-const base = "http://10.35.3.175";//base de servicios local
+const base = "http://10.35.3.162";//base de servicios local
 export const environment = {
   port: "4200",
   production: false,
