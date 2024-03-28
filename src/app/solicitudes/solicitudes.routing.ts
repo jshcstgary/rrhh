@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 
 import { ConsultaSolicitudesComponent } from './consulta_solicitudes/consulta-solicitudes.component';
+import { RegistrarSolicitudComponent } from './registrar-solicitud/registrar-solicitud.component';
 
 export const SolicitudesRoutes: Routes = [
   {
@@ -17,7 +18,17 @@ export const SolicitudesRoutes: Routes = [
           ],
         },
       },
-
+      {
+        path: 'registrar-solicitud',
+        component: RegistrarSolicitudComponent,
+        data: {
+          title: 'Completar Solicitud',
+          urls: [
+            { title: 'Solicitudes' },
+            { title: 'Completar Solicitud' },
+          ],
+        },
+      },
 
     ],
   },

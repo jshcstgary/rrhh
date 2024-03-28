@@ -230,7 +230,11 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
           this.submitted = true;
          });
 
-         this.router.navigate(['/solicitudes/registrar-solicitud']);
+         if(this.submitted){
+
+          this.router.navigate(['/solicitudes/registrar-solicitud']);
+         }
+
         //Fin Solicitud
       }
 
