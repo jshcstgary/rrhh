@@ -73,9 +73,9 @@ ol li {
   opacity: 0.3;
 }
 
-// 
+//
 // Font weight
-// 
+//
 
 html body {
   .font-medium {
@@ -90,6 +90,12 @@ html body {
 // Background Colors
 //
 html body {
+  .font-medium {
+    font-weight: $font-weight-medium;
+  }
+  .font-22 {
+    font-size: 22px;
+  }
   .bg-megna {
     background-color: $cyan;
   }
@@ -101,9 +107,9 @@ html body {
   }
 }
 
-// 
+//
 // Round
-// 
+//
 .round {
   line-height: 48px;
   width: 50px;

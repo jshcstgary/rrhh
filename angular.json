@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "saff": {
+    "elite-admin-angular": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -33,7 +33,7 @@
               "bezier-easing",
               "@mattlewis92/dom-autoscroller"
             ],
-            "outputPath": "dist/Portal",
+            "outputPath": "dist/elite-admin-angular",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -96,10 +96,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "saff:build:production"
+              "browserTarget": "elite-admin-angular:build:production"
             },
             "development": {
-              "browserTarget": "saff:build:development"
+              "browserTarget": "elite-admin-angular:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -107,7 +107,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "saff:build"
+            "browserTarget": "elite-admin-angular:build"
           }
         },
         "test": {
@@ -125,7 +125,7 @@
             "styles": [
               "src/styles.scss"
             ],
-            "scripts": []
+            "scripts": ["node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"]
           }
         }
       }

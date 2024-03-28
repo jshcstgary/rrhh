@@ -1,0 +1,7 @@
+.analytics-info ul.list-inline li {
+  vertical-align: middle;
+}
+.analytics-info .list-inline li i,
+.analytics-info .list-inline li span {
+  font-size: 20px;
+}

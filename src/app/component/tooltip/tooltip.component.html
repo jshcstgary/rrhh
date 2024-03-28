@@ -1,0 +1,11 @@
+<div class="tooltip-container"
+  [ngClass]="{
+    top: position === 'top',
+    bottom: position === 'bottom',
+    left: position === 'left',
+    right: position === 'right'
+  }"
+>
+  <span class="tooltiptext" *ngIf="text">{{ text }}</span>
+  <ng-content></ng-content>
+</div>

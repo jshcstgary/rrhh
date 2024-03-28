@@ -1,0 +1,225 @@
+<app-pa></app-pa>
+<!-- ============================================================== -->
+<!-- Sales overview chart -->
+<!-- ============================================================== -->
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title mb-1">Sales in 2021 </h4>
+                <div class="row">
+                    <div class="col-md-4">
+                        <p class="m-t-30">Lorem ipsum dolor sit amet, ectetur adipiscing elit. viverra tellus. ipsumdolorsitda amet, ectetur
+                            adipiscing elit.</p>
+                        <p>
+                            <p class="mt-3">Ectetur adipiscing elit. viverra tellus.ipsum dolor sit amet, dag adg ectet uradipi scingda elitdglj.
+                                vadghiverra tellus.</p>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="mt-4 pt-3 overflow-hidden" style="height:250px;">
+                            <apx-chart [series]="salesinchartOptions.series" [chart]="salesinchartOptions.chart"
+                                [dataLabels]="salesinchartOptions.dataLabels" [grid]="salesinchartOptions.grid"
+                                [plotOptions]="salesinchartOptions.plotOptions" [yaxis]="salesinchartOptions.yaxis"
+                                [legend]="salesinchartOptions.legend" [fill]="salesinchartOptions.fill"
+                                [stroke]="salesinchartOptions.stroke" [tooltip]="salesinchartOptions.tooltip"
+                                [xaxis]="salesinchartOptions.xaxis" 
+                                [markers]="salesinchartOptions.markers" [colors]="salesinchartOptions.colors">
+                            </apx-chart>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6 col-md-12">
+        <ng-scrollbar class="card" style="height: 471px;">
+            <div class="card-body">
+                <h4 class="card-title mb-1">User Activity</h4>
+                <div class="steamline position-relative border-start ms-4" >
+                    <div class="sl-item my-3 py-1 border-bottom">
+                        <div class="sl-left float-start text-center rounded-circle text-white me-3 bg-success">
+                            <img class="rounded-circle" alt="user" src="assets/images/users/user1.jpg"> </div>
+                        <div class="sl-right ps-4">
+                            <div>
+                                <a href="#" class="link font-medium fs-3">Hanna Gover</a>
+                                <span class="sl-date fs-3 ms-2">5 minutes ago</span>
+                            </div>
+                            <p class="fs-3">Contrary to popular belief</p>
+                        </div>
+                    </div>
+                    <div class="sl-item my-3 py-1 border-bottom">
+                        <div class="sl-left float-start text-center rounded-circle text-white me-3 bg-success">
+                            <img class="rounded-circle" alt="user" src="assets/images/users/user2.jpg"> </div>
+                        <div class="sl-right ps-4">
+                            <div>
+                                <a href="#" class="link font-medium fs-3">Gohn Doe</a>
+                                <span class="sl-date fs-3 ms-2">5 minutes ago</span>
+                            </div>
+                            <p class="fs-3">Lorem Ipsum is simply dummy</p>
+                        </div>
+                    </div>
+                    <div class="sl-item my-3 py-1 border-bottom">
+                        <div class="sl-left float-start text-center rounded-circle text-white me-3 bg-success">
+                            <img class="rounded-circle" alt="user" src="assets/images/users/user3.jpg"> </div>
+                        <div class="sl-right ps-4">
+                            <div>
+                                <a href="#" class="link font-medium fs-3">John Deo</a>
+                                <span class="sl-date fs-3 ms-2">5 minutes ago</span>
+                            </div>
+                            <p class="fs-3">The standard chunk of ipsum </p>
+                        </div>
+                    </div>
+                    <div class="sl-item my-3 py-1 border-bottom">
+                        <div class="sl-left float-start text-center rounded-circle text-white me-3 bg-success">
+                            <img class="rounded-circle" alt="user" src="assets/images/users/user4.jpg"> </div>
+                        <div class="sl-right ps-4">
+                            <div>
+                                <a href="#" class="link font-medium fs-3">Steve Jobs</a>
+                                <span class="sl-date fs-3 ms-2">5 minutes ago</span>
+                            </div>
+                            <p class="fs-3">Contrary to popular belief</p>
+                        </div>
+                    </div>
+                    <div class="sl-item my-3 py-1 border-bottom">
+                        <div class="sl-left float-start text-center rounded-circle text-white me-3 bg-success">
+                            <img class="rounded-circle" alt="user" src="assets/images/users/user5.jpg"> </div>
+                        <div class="sl-right ps-4">
+                            <div>
+                                <a href="#" class="link font-medium fs-3">Gohn Doe</a>
+                                <span class="sl-date fs-3 ms-2">5 minutes ago</span>
+                            </div>
+                            <p class="fs-3">The generated lorem ipsum</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </ng-scrollbar>
+    </div>
+    <div class="col-lg-6 col-md-12">
+        <app-feeds></app-feeds>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title mb-1">
+                    <span class="lstick"></span>Order Status</h4>
+                <div class="table-responsive">
+                    <table class="table table-striped text-nowrap align-middle">
+                        <thead>
+                            <tr>
+                                <th>Invoice</th>
+                                <th>User</th>
+                                <th>Order date</th>
+                                <th>Amount</th>
+                                <th class="text-center">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <a href="javascript:void(0)" class="btn-link text-decoration-none"> Order #53431</a>
+                                </td>
+                                <td>Steve N. Horton</td>
+                                <td>
+                                    <span class="text-muted">
+                                        <i class="far fa-clock"></i> Oct 22, 2014</span>
+                                </td>
+                                <td>$45.00</td>
+                                <td class="text-center">
+                                    <span class="badge bg-success">Paid</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <a href="javascript:void(0)" class="btn-link text-decoration-none"> Order #53432</a>
+                                </td>
+                                <td>Charles S Boyle</td>
+                                <td>
+                                    <span class="text-muted">
+                                        <i class="far fa-clock"></i> Oct 24, 2014</span>
+                                </td>
+                                <td>$245.30</td>
+                                <td class="text-center">
+                                    <span class="badge bg-info">Shipped</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <a href="javascript:void(0)" class="btn-link text-decoration-none"> Order #53433</a>
+                                </td>
+                                <td>Lucy Doe</td>
+                                <td>
+                                    <span class="text-muted">
+                                        <i class="far fa-clock"></i> Oct 24, 2014</span>
+                                </td>
+                                <td>$38.00</td>
+                                <td class="text-center">
+                                    <span class="badge bg-info">Shipped</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <a href="javascript:void(0)" class="btn-link text-decoration-none"> Order #53434</a>
+                                </td>
+                                <td>Teresa L. Doe</td>
+                                <td>
+                                    <span class="text-muted">
+                                        <i class="far fa-clock"></i> Oct 15, 2014</span>
+                                </td>
+                                <td>$77.99</td>
+                                <td class="text-center">
+                                    <span class="badge bg-info">Shipped</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <a href="javascript:void(0)" class="btn-link text-decoration-none"> Order #53435</a>
+                                </td>
+                                <td>Teresa L. Doe</td>
+                                <td>
+                                    <span class="text-muted">
+                                        <i class="far fa-clock"></i> Oct 12, 2014</span>
+                                </td>
+                                <td>$18.00</td>
+                                <td class="text-center">
+                                    <span class="badge bg-success">Paid</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <a href="javascript:void(0)" class="btn-link text-decoration-none">Order #53437</a>
+                                </td>
+                                <td>Charles S Boyle</td>
+                                <td>
+                                    <span class="text-muted">
+                                        <i class="far fa-clock"></i> Oct 17, 2014</span>
+                                </td>
+                                <td>$658.00</td>
+                                <td class="text-center">
+                                    <span class="badge bg-danger">Refunded</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <a href="javascript:void(0)" class="btn-link text-decoration-none">Order #536584</a>
+                                </td>
+                                <td>Scott S. Calabrese</td>
+                                <td>
+                                    <span class="text-muted">
+                                        <i class="far fa-clock"></i> Oct 19, 2014</span>
+                                </td>
+                                <td>$45.58</td>
+                                <td class="text-center">
+                                    <span class="badge bg-warning">Unpaid</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

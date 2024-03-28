@@ -1,0 +1,241 @@
+<app-income-counter></app-income-counter>
+
+<!-- ============================================================== -->
+<!-- Subscribe -->
+<!-- ============================================================== -->
+<div class="row" style="margin-top:-30px;">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex">
+
+                    <ul class="list-inline mb-0 m-auto">
+                        <li class="list-inline-item">
+                            <h6 class="text-danger">
+                                <i class="fa fa-circle fs-1 me-2 "></i>Site A</h6>
+                        </li>
+                        <li class="list-inline-item">
+                            <h6 class="text-info">
+                                <i class="fa fa-circle fs-1 me-2"></i>Site B</h6>
+                        </li>
+                        <li class="list-inline-item">
+                            <h6 class="text-primary">
+                                <i class="fa fa-circle fs-1 me-2"></i>Site C</h6>
+                        </li>
+                    </ul>
+                </div>
+                <div class="mt-3 overflow-hidden" style="height:350px;">
+                    <apx-chart [series]="incomecounterchartOptions.series" [chart]="incomecounterchartOptions.chart"
+                        [dataLabels]="incomecounterchartOptions.dataLabels" [grid]="incomecounterchartOptions.grid"
+                        [plotOptions]="incomecounterchartOptions.plotOptions" [yaxis]="incomecounterchartOptions.yaxis"
+                        [legend]="incomecounterchartOptions.legend" [fill]="incomecounterchartOptions.fill"
+                        [stroke]="incomecounterchartOptions.stroke" [tooltip]="incomecounterchartOptions.tooltip"
+                        [xaxis]="incomecounterchartOptions.xaxis" 
+                        [markers]="incomecounterchartOptions.markers" [colors]="incomecounterchartOptions.colors">
+                    </apx-chart>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-6">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">New Clients</h4>
+                        <div class="row align-items-center mt-4 mb-3">
+                            <div class="col-6">
+                                <i class="icon icon-people text-info display-5"></i>
+                            </div>
+                            <div class="col-6 text-end">
+                                <span class="display-5">23</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">New Projects</h4>
+                        <div class="row align-items-center mt-4 mb-3">
+                            <div class="col-6">
+                                <i class="icon icon-folder text-primary display-5"></i>
+                            </div>
+                            <div class="col-6 text-end">
+                                <span class="display-5">169</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Open Projects</h4>
+                        <div class="row align-items-center mt-4 mb-3">
+                            <div class="col-6">
+                                <i class="icon icon-folder-alt text-danger display-5"></i>
+                            </div>
+                            <div class="col-6 text-end">
+                                <span class="display-5">311</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">New Invoices</h4>
+                        <div class="row align-items-center mt-4 mb-3">
+                            <div class="col-6">
+                                <i class="icon icon-wallet text-success display-5"></i>
+                            </div>
+                            <div class="col-6 text-end">
+                                <span class="display-5">117</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="news-slide mb-4">
+            <ngb-carousel class="no-control">
+                <ng-template ngbSlide>
+                    <div class="">
+                        <div class="overlaybg">
+                            <img src="assets/images/background/slide1.jpg" />
+                        </div>
+                        <div class="news-content">
+                            <span class="badge bg-danger rounded-pill">Primary</span>
+                            <h2 class="mt-3">It has survived not only five centuries, but also the leap into
+                                electronic typesetting, remaining
+                                essentially unchanged.</h2>
+                        </div>
+                    </div>
+                </ng-template>
+                <ng-template ngbSlide>
+                    <div class="">
+                        <div class="overlaybg">
+                            <img src="assets/images/background/slide1.jpg" />
+                        </div>
+                        <div class="news-content">
+                            <span class="badge bg-primary rounded-pill">Primary</span>
+                            <h2 class="mt-3">It has survived not only five centuries, but also the leap into
+                                electronic typesetting, remaining
+                                essentially unchanged.</h2>
+                        </div>
+                    </div>
+                </ng-template>
+                <ng-template ngbSlide>
+                    <div class="">
+                        <div class="overlaybg">
+                            <img src="assets/images/background/slide1.jpg" />
+                        </div>
+                        <div class="news-content">
+                            <span class="badge bg-success rounded-pill">Primary</span>
+                            <h2 class="mt-3">It has survived not only five centuries, but also the leap into
+                                electronic typesetting, remaining
+                                essentially unchanged.</h2>
+                        </div>
+                    </div>
+                </ng-template>
+            </ngb-carousel>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <!-- chart component -->
+    <div class="col-lg-8 col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex flex-wrap mb-4">
+                    <div>
+                        <h4 class="card-title">Yearly Sales</h4>
+                    </div>
+                    <div class="ms-auto">
+                        <ul class="list-inline">
+                            <li class="list-inline-item">
+                                <h6 class="text-primary">
+                                    <i class="fa fa-circle fs-1 me-2 "></i>Site A</h6>
+                            </li>
+                            <li class="list-inline-item">
+                                <h6 class="text-info">
+                                    <i class="fa fa-circle fs-1 me-2"></i>Site B</h6>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="overflow-hidden" style="height:350px;">
+                    <apx-chart [series]="yearlysaleschartOptions.series" [chart]="yearlysaleschartOptions.chart"
+                        [dataLabels]="yearlysaleschartOptions.dataLabels"
+                        [plotOptions]="yearlysaleschartOptions.plotOptions" [yaxis]="yearlysaleschartOptions.yaxis"
+                        [legend]="yearlysaleschartOptions.legend" [fill]="yearlysaleschartOptions.fill"
+                        [stroke]="yearlysaleschartOptions.stroke" [tooltip]="yearlysaleschartOptions.tooltip"
+                        [xaxis]="yearlysaleschartOptions.xaxis" 
+                        [markers]="yearlysaleschartOptions.markers" [colors]="yearlysaleschartOptions.colors">
+                    </apx-chart>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- other chart component -->
+    <div class="col-lg-4 col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex">
+                    <div>
+                        <h3 class="card-title">Total Site Visits</h3>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-6 align-self-center">
+                        <h2 class="font-weight-light text-warning">$678</h2>
+                        <h5 class="text-muted mt-3">April 2017</h5>
+                        <b class="text-dark">(150 Sales)</b>
+                    </div>
+                    <div class="col-5 ms-auto pe-3">
+                        <apx-chart [series]="totalsitevisitschartOptions.series" [chart]="totalsitevisitschartOptions.chart" 
+                            [dataLabels]="totalsitevisitschartOptions.dataLabels" [legend]="totalsitevisitschartOptions.legend"
+                            [stroke]="totalsitevisitschartOptions.stroke" [grid]="totalsitevisitschartOptions.grid" 
+                            [colors]="totalsitevisitschartOptions.colors" [labels]="totalsitevisitschartOptions.labels">  
+                        </apx-chart>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex">
+                    <div>
+                        <h3 class="card-title">Sales Difference</h3>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6 align-self-center">
+                        <h2 class="font-weight-light text-info">$447</h2>
+                        <h5 class="text-muted mt-3">April 2017</h5>
+                        <b class="text-dark">(150 sales)</b>
+                    </div>
+                    <div class="col-5 ms-auto pe-3">
+                        <div style="height: 160px; width: 100px">
+                            <apx-chart [series]="salesdifferencechartOptions.series" [chart]="salesdifferencechartOptions.chart"
+                                [dataLabels]="salesdifferencechartOptions.dataLabels" [colors]="salesdifferencechartOptions.colors"
+                                [plotOptions]="salesdifferencechartOptions.plotOptions" [yaxis]="salesdifferencechartOptions.yaxis"
+                                [legend]="salesdifferencechartOptions.legend" [fill]="salesdifferencechartOptions.fill"
+                                [stroke]="salesdifferencechartOptions.stroke" [tooltip]="salesdifferencechartOptions.tooltip"
+                                [xaxis]="salesdifferencechartOptions.xaxis" [grid]="salesdifferencechartOptions.grid"
+                                [yaxis]="salesdifferencechartOptions.yaxis">
+                            </apx-chart>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

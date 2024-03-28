@@ -14,21 +14,28 @@
   .page-title {
     margin-bottom: 0px;
     color: $sidebar-text-dark;
-    font-weight: 600;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    letter-spacing: 1.2px;
   }
   .breadcrumb {
     padding: 0px;
     margin: 0px;
     background: transparent;
-    font-size: 16px;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 300;
+    line-height: normal;
     .breadcrumb-item + .breadcrumb-item::before {
       content: "\e649";
-      font-family: themify;
-      color: $gray-300;
-      font-size: 11px;
+      font-family: themify, sans-serif;
+      color: $primary;
+      font-size: 18px;
     }
     .breadcrumb-item.active {
-      color: $sidebar-text-dark;
+      color: $primary;
     }
   }
 }

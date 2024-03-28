@@ -98,6 +98,7 @@ This is for the horizontal layout
 
       .sidebar-nav {
         #sidebarnav {
+          flex-direction: row-reverse;
           flex-wrap: wrap;
           > .sidebar-item > .has-arrow:after {
             display: block;

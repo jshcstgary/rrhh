@@ -1,3 +1,25 @@
 /* You can add global styles to this file, and also import other style files */
 
 @import url('https://fonts.googleapis.com/css?family=Nunito+Sans:300,400,600,700,800');
+@import "~bootstrap-icons/font/bootstrap-icons.css";
+@import '~material-icons/iconfont/material-icons.css';
+
+@font-face {
+  font-family: "Montserrat";
+  src: url("./assets/fonts/Montserrat-VariableFont_wght.ttf");
+}
+
+body {
+  font-family: Montserrat, sans-serif;
+}
+/* rutas */
+a.link:hover,
+a.link:focus {
+  color: #000000;
+}
+
+/* tooltip */
+.popover-body {
+  background: #f2f3f5;
+  color: #0753af;
+}

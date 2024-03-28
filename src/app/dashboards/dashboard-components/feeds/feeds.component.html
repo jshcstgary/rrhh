@@ -1,0 +1,18 @@
+<div class="card">
+    <div class="card-body">
+        <h4 class="card-title">Feeds</h4>
+        <ng-scrollbar style="height: 400px;">
+            <ul class="feeds list-unstyled">
+                <li *ngFor="let feed of feeds" class="feed-item d-flex py-2 align-items-center">
+                    <a href="javascript:void(0)" class="btn btn-circle rounded-circle d-flex align-items-center justify-content-center {{feed.bg}}">
+                        <i class="{{feed.icon}}"></i>
+                    </a> 
+                    <div class="ms-3 text-truncate">{{feed.msg}} </div>
+                    <div class="justify-content-end text-truncate ms-auto">
+                        <span class="text-muted fs-2">{{feed.time}}</span>
+                    </div>
+                </li>
+            </ul>
+        </ng-scrollbar>
+    </div>
+</div>

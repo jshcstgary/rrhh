@@ -1,0 +1,279 @@
+<div class="table-container" id="app-container-table-component">
+  <table aria-label="" id="app-table-component" [style.width]="tableWidth">
+    <thead>
+      <tr>
+        <th
+          *ngFor="let head of columns; let i = index"
+          [ngStyle]="{ width: head.width }"
+        >
+          <div
+            *ngIf="head.type === undefined; else cabeceraEspecial"
+            class="d-flex justify-content-between cursor-pointer"
+            (click)="onChangeShort(i, head.dataIndex)"
+          >
+            {{ head.title }}
+            <i
+              class="fa"
+              [ngClass]="{
+                'fa-sort-up': head.sortTypeOrder === 'asc',
+                'fa-sort-down': head.sortTypeOrder === 'desc',
+                'fa-sort': true
+              }"
+              *ngIf="head.sortActive"
+            ></i>
+          </div>
+          <ng-template #cabeceraEspecial [ngSwitch]="head.type">
+            <div
+              *ngSwitchCase="'checkbox'"
+              class="d-flex justify-content-center"
+            >
+              <input
+                tabindex="0"
+                type="checkbox"
+                (change)="onCheckHeaderCheckbox()"
+                [indeterminate]="isIndeterminateHeaderInput"
+                [checked]="isChekedHeaderInput"
+                [disabled]="isTableEmpty"
+              />
+            </div>
+            <div *ngSwitchCase="'actions'" class="text-center">
+              {{ head.title }}
+            </div>
+            <div *ngSwitchCase="'color'">{{ head.title }}</div>
+            <div *ngSwitchCase="'bool'">{{ head.title }}</div>
+          </ng-template>
+        </th>
+      </tr>
+    </thead>
+    <tbody *ngIf="!isTableEmpty; else emptytable">
+      <tr *ngFor="let row of data; let indexRow = index">
+        <td *ngFor="let head of columns; let indexCol = index">
+          <!-- Entra en caso la columna no este editando -->
+          <div *ngIf="!row.isEditingRow; else cellInputRows">
+            <!-- Valido si la columna es especial o solo presento la data normal -->
+            <div
+              *ngIf="head.type === undefined; else bodyEspecial"
+              [ngClass]="{ 'text-center': head.align === 'center' }"
+            >
+              {{ showDataInTable(row, head) }}
+            </div>
+            <!-- En caso de ser una columna especial muestro la columna especial -->
+            <ng-template #bodyEspecial [ngSwitch]="head.type">
+              <!-- <div *ngSwitchCase="'time'">
+
+              </div> -->
+              <div *ngSwitchCase="'checkbox'">
+                <input
+                  type="checkbox"
+                  (change)="onCheckCell($event, row.key)"
+                  [checked]="getCheckCell(row.key)"
+                  [disabled]="row.isEditingRow"
+                />
+              </div>
+              <div *ngSwitchCase="'actions'">
+                <div
+                  class="d-flex justify-content-between"
+                  *ngIf="!row.isEditingRow; else iconEditingRow"
+                >
+                  <div *ngFor="let action of head.actions">
+                    <tooltip-component [text]="action.tooltip">
+                      <i
+                        *ngIf="action.icon"
+                        tabindex="0"
+                        class="text-info cursor-pointer action-icon"
+                        [ngClass]="action.icon"
+                        (click)="
+                          clickOnAction(action.id, row.key, action.tooltip)
+                        "
+                        (keyup.enter)="
+                          clickOnAction(action.id, row.key, action.tooltip)
+                        "
+                      ></i>
+                      <i
+                        *ngIf="action.materialIcon"
+                        tabindex="0"
+                        class="material-icons text-info cursor-pointer action-icon"
+                        (click)="
+                          clickOnAction(action.id, row.key, action.tooltip)
+                        "
+                        (keyup.enter)="
+                          clickOnAction(action.id, row.key, action.tooltip)
+                        "
+                      >
+                        {{ action.materialIcon }}
+                      </i>
+                    </tooltip-component>
+                  </div>
+                </div>
+                <ng-template #iconEditingRow>
+                  <i
+                    tabindex="0"
+                    id="iconSaveEditRowTable"
+                    class="fas fa-save text-info cursor-pointer action-icon"
+                    (click)="onSaveRowDataToModified()"
+                    (keyup.enter)="onSaveRowDataToModified()"
+                  ></i>
+                </ng-template>
+              </div>
+              <div *ngSwitchCase="'bool'">
+                <input-component
+                  type="toggle"
+                  [disabled]="true"
+                  [defaultValue]="row[head.dataIndex]"
+                >
+                </input-component>
+              </div>
+
+              <div
+                *ngSwitchCase="'color'"
+                [ngClass]="{
+                  'column-color':
+                    row[head.dataIndex] !== null &&
+                    row[head.dataIndex] !== '' &&
+                    row[head.dataIndex] !== undefined,
+                  'text-center': true
+                }"
+                (click)="utilService.copyTextToClipboard(row[head.dataIndex])"
+              >
+                <div
+                  class="box-color"
+                  [ngStyle]="{ 'background-color': row[head.dataIndex] }"
+                  *ngIf="
+                    row[head.dataIndex] !== null &&
+                      row[head.dataIndex] !== '' &&
+                      row[head.dataIndex] !== undefined;
+                    else templateColor
+                  "
+                ></div>
+                <ng-template #templateColor> Sin Color </ng-template>
+              </div>
+            </ng-template>
+          </div>
+          <!-- En caso se este editando muestro el input -->
+          <ng-template #cellInputRows>
+            <div
+              *ngIf="
+                head.type === undefined ||
+                  head.type === 'color' ||
+                  head.type === 'bool';
+                else editCell
+              "
+            >
+              <input-component
+                [contexto]="this"
+                [defaultValue]="row[head.dataIndex]"
+                [id]="
+                  inputsEditRow[getAttributesToInputCell(head.dataIndex)].id
+                "
+                [type]="
+                  inputsEditRow[getAttributesToInputCell(head.dataIndex)].type
+                "
+                [maxLength]="
+                  inputsEditRow[getAttributesToInputCell(head.dataIndex)]
+                    .maxLength
+                "
+                [required]="
+                  inputsEditRow[getAttributesToInputCell(head.dataIndex)]
+                    .required
+                "
+                [inputMessageError]="
+                  inputsEditRow[getAttributesToInputCell(head.dataIndex)]
+                    .inputMessageError
+                "
+                [disabled]="
+                  inputsEditRow[getAttributesToInputCell(head.dataIndex)]
+                    .disabled
+                "
+                onChangeFunction="onChangeRowDataToModified"
+                [options]="
+                  inputsEditRow[getAttributesToInputCell(head.dataIndex)]
+                    .options
+                "
+                [allowedKeys]="
+                  inputsEditRow[getAttributesToInputCell(head.dataIndex)]
+                    .allowedKeys
+                "
+              />
+            </div>
+            <ng-template #editCell [ngSwitch]="head.type">
+              <div *ngSwitchCase="'checkbox'">
+                <input type="checkbox" [disabled]="true" />
+              </div>
+              <div *ngSwitchCase="'actions'">
+                <div class="d-flex justify-content-between">
+                  <tooltip-component text="Guardar">
+                    <i
+                      tabindex="0"
+                      id="iconSaveEditRowTable"
+                      class="material-icons text-info cursor-pointer action-icon md-24"
+                      (click)="onSaveRowDataToModified()"
+                      (keyup.enter)="onSaveRowDataToModified()"
+                      >save</i
+                    >
+                  </tooltip-component>
+                  <tooltip-component
+                    text="Guardar y Nuevo"
+                    *ngIf="allowCloneButton"
+                  >
+                    <i
+                      tabindex="0"
+                      id="iconSaveEditAndCloneRowTable"
+                      class="material-icons text-info cursor-pointer action-icon md-24"
+                      (click)="onSaveRowDataToModified(true)"
+                      (keyup.enter)="onSaveRowDataToModified(true)"
+                      >save_as</i>
+                  </tooltip-component>
+                  <tooltip-component text="Cancelar">
+                    <i
+                      tabindex="0"
+                      id="iconSaveEditAndCloneRowTable"
+                      class="material-icons text-info cursor-pointer action-icon md-24"
+                      (click)="onCancelRow()"
+                      (keyup.enter)="onCancelRow()"
+                      >cancel</i
+                    >
+                  </tooltip-component>
+                </div>
+              </div>
+            </ng-template>
+          </ng-template>
+        </td>
+      </tr>
+    </tbody>
+    <ng-template #emptytable>
+      <tbody>
+        <tr>
+          <td [colSpan]="columns.length">
+            <div class="empty-table-row">
+              {{ tableService.textEmptyTable }}
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </ng-template>
+  </table>
+</div>
+<div class="d-flex justify-content-between mt-2 px-2">
+  <div class="text-info paginate-page">
+    Vista
+    <select (change)="onChangeRowsPerPage($event)" class="select-rows-per-page">
+      <option
+        *ngFor="let rows of rowsPerPageOptions"
+        [value]="rows"
+        [selected]="rows === rowsPerPageValue"
+        class="text-center"
+      >
+        {{ rows }}
+      </option>
+    </select>
+  </div>
+  <ngb-pagination
+    [(page)]="page"
+    [pageSize]="rowsPerPageValue"
+    [collectionSize]="totalRows"
+    [maxSize]="5"
+    [boundaryLinks]="true"
+    [rotate]="true"
+    (pageChange)="onChangePage($event)"
+  ></ngb-pagination>
+</div>

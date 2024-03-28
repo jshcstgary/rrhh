@@ -17,6 +17,9 @@ import { SpinnerComponent } from './shared/spinner.component';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { HttpClient } from '@angular/common/http';
+import { RegistrarSolicitudComponent } from './solicitudes/registrar-solicitud/registrar-solicitud.component';
+import { SolicitudesModule } from './solicitudes/solicitudes.module';
+
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');

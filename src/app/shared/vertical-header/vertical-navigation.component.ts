@@ -9,6 +9,7 @@ import {
 import { TranslateService } from '@ngx-translate/core';
 import { FeatherModule } from 'angular-feather';
 import { NgScrollbarModule } from 'ngx-scrollbar';
+import { IDropdownOptions } from 'src/app/component/dropdown/dropdown.interface';
 declare var $: any;
 
 @Component({
@@ -22,6 +23,12 @@ export class VerticalNavigationComponent implements AfterViewInit {
 
 
   public showSearch = false;
+  public userName: string = "Esuarez";
+  public profile: string = "Supervisor";
+  public profiles: IDropdownOptions = [
+    { id: "administracion", name: "Administracion" },
+    { id: "agricola", name: "Agricola" },
+  ];
 
   // This is for Notifications
   notifications: any[] = [

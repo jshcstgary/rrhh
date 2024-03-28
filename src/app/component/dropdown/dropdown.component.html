@@ -1,0 +1,20 @@
+<div ngbDropdown class="d-inline-block">
+  <button
+    class="btn d-flex align-items-center"
+    ngbDropdownToggle
+    [ngClass]="buttonClasses"
+  >
+    <i [ngClass]="iconButton" *ngIf="iconButton !== undefined" class="pe-1"></i>
+    {{ textButton }} <i class="material-icons">expand_more</i>
+  </button>
+  <div ngbDropdownMenu>
+    <button
+      *ngFor="let option of options"
+      class="dropdown-item dropdown-item-component text-info"
+      (click)="onDropDownClick(option.id)"
+    >
+      {{ option.name }}
+      <i [ngClass]="option.icon" *ngIf="option.icon !== undefined"></i>
+    </button>
+  </div>
+</div>

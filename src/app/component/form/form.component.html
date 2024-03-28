@@ -1,0 +1,73 @@
+<div class="row">
+  <div
+    *ngFor="let formItem of formItems"
+    class="mb-4 ps-4"
+    [ngClass]="{
+      col: formItem.colWidth === undefined || formItem.colWidth === null,
+      'col-1': formItem.colWidth === '1',
+      'col-2': formItem.colWidth === '2',
+      'col-3': formItem.colWidth === '3',
+      'col-4': formItem.colWidth === '4',
+      'col-5': formItem.colWidth === '5',
+      'col-6': formItem.colWidth === '6',
+      'col-7': formItem.colWidth === '7',
+      'col-8': formItem.colWidth === '8',
+      'col-9': formItem.colWidth === '9',
+      'col-10': formItem.colWidth === '10',
+      'col-11': formItem.colWidth === '11',
+      'col-12': formItem.colWidth === '12',
+    }"
+  >
+    <input-component
+      [id]="formItem.id"
+      [type]="formItem.type"
+      [options]="formItem.options"
+      [label]="formItem.label"
+      [labelPosition]="formItem.labelPosition"
+      [placeholder]="formItem.placeholder"
+      [defaultValue]="formItem.defaultValue"
+      [disabled]="formItem.disabled"
+      [contexto]="this"
+      onChangeFunction="onChangeForm"
+      [maxLength]="formItem.maxLength"
+      [required]="formItem.required"
+      [inputMessageError]="formItem.inputMessageError"
+      [allowedKeys]="formItem.allowedKeys"
+    ></input-component>
+  </div>
+  <div
+  class="col d-flex justify-content-end align-items-center"
+    [ngClass]="{
+      col: searchButtonProps.colWidth === undefined || searchButtonProps.colWidth === null,
+      'col-1': searchButtonProps.colWidth === '1',
+      'col-2': searchButtonProps.colWidth === '2',
+      'col-3': searchButtonProps.colWidth === '3',
+      'col-4': searchButtonProps.colWidth === '4',
+      'col-5': searchButtonProps.colWidth === '5',
+      'col-6': searchButtonProps.colWidth === '6',
+      'col-7': searchButtonProps.colWidth === '7',
+      'col-8': searchButtonProps.colWidth === '8',
+      'col-9': searchButtonProps.colWidth === '9',
+      'col-10': searchButtonProps.colWidth === '10',
+      'col-11': searchButtonProps.colWidth === '11',
+      'col-12': searchButtonProps.colWidth === '12',
+      'offset-1': searchButtonProps.offsetWidth === '1', 
+      'offset-2': searchButtonProps.offsetWidth === '2', 
+      'offset-3': searchButtonProps.offsetWidth === '3', 
+      'offset-4': searchButtonProps.offsetWidth === '4', 
+      'offset-5': searchButtonProps.offsetWidth === '5', 
+      'offset-6': searchButtonProps.offsetWidth === '6', 
+      'offset-7': searchButtonProps.offsetWidth === '7', 
+      'offset-8': searchButtonProps.offsetWidth === '8', 
+      'offset-9': searchButtonProps.offsetWidth === '9', 
+      'offset-10': searchButtonProps.offsetWidth === '10', 
+      'offset-11': searchButtonProps.offsetWidth === '11', 
+      'offset-12': searchButtonProps.offsetWidth === '12'
+    }"
+    *ngIf="containsSearchButton"
+  >
+    <button class="btn btn-info" (click)="onSearchButton()">
+      <i class="fas fa-filter me-2"></i>Buscar
+    </button>
+  </div>
+</div>

@@ -1,5 +1,36 @@
 <nav class="sidebar-nav">
     <ul id="sidebarnav">
+      <li class="sidebar-item">
+        <a class="navbar-brand" href="/">
+          <!-- User profile -->
+        <div class="user-profile">
+          <!-- User profile image -->
+          <div class="profile-img">
+              <img src="assets/images/users/user4.jpg" alt="user" />
+          </div>
+        </div>
+        </a>
+      </li>
+      <li class="sidebar-item">
+        <a class="navbar-brand" href="/">
+          <!-- User profile -->
+        <div class="user-profile">
+          <!-- User profile text-->
+          <div class="profile-text" >
+              <a ngbDropdownToggle ngbDropdown href="javascript:void(0)" class="u-dropdown">Usuario<strong></strong>
+                  <!-- {{currentUser.userName}} -->
+                <i class="fa fa-angle-down"></i>
+                <div class="dropdown-menu animated flipInY" ngbDropdownMenu>
+                    <a href="#" class="dropdown-item">
+                      <i class="fa fa-power-off"></i> Cerrar Sesión
+                     </a>
+                </div>
+              </a>
+          </div>
+        </div>
+        </a>
+        </li>
+      <!-- ============================================================== -->
         <!-- First level menu -->
         <li class="sidebar-item" [ngClass]="[sidebarnavItem.ddclass]" [class.active]="showMenu === sidebarnavItem.title"
             *ngFor="let sidebarnavItem of sidebarnavItems"
@@ -46,5 +77,44 @@
                 </li>
             </ul>
         </li>
-    </ul>
+         <!-- Logo -->
+  <!-- ============================================================== -->
+  <li class="sidebar-item">
+    <a class="navbar-brand" href="/">
+      <!-- Logo text -->
+      <span class="logo-text">
+        <!-- dark Logo text -->
+        <!-- dark Logo text -->
+        <img
+        src="assets/images/logo-text.png"
+        width="220px"
+        height="60px"
+        alt="homepage"
+        class="dark-logo"
+      />
+        <!--<img src="assets/images/logo-text.png" alt="homepage" class="dark-logo" />-->
+        <!-- Light Logo text -->
+        <img
+          src="assets/images/logo-light-text.png"
+          class="light-logo"
+          alt="homepage"
+        />
+        <img
+        src="assets/images/logo-light-text.png"
+        class="light-logo"
+        alt="homepage"
+        />
+        <img
+        src="assets/images/logo-light-text.png"
+        class="light-logo"
+        alt="homepage"
+        />
+
+      </span>
+
+    </a>
+  </li>
+
+
+  </ul>
 </nav>

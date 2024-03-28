@@ -1,0 +1,21 @@
+<div class="card">
+    <div class="card-body">
+        <h4 class="card-title">You have 6 new messages</h4>
+        <div class="mailbox">
+            <ng-scrollbar class="message-center message-body" style="height: 400px;">
+                <!-- Message -->
+                <a href="javascript:void(0)" class="message-item border-bottom d-block text-decoration-none" *ngFor="let mymessage of mymessages">
+                    <span class="user-img position-relative d-inline-block">
+                        <img src="{{mymessage.useravatar}}" alt="user" class="rounded-circle">
+                        <span class="profile-status rounded-circle d-inline-block  {{mymessage.status}} float-end"></span>
+                    </span>
+                    <span class="mail-contnet d-inline-block w-75 ps-3 align-middle">
+                        <h5 class="message-title">{{mymessage.from}}</h5>
+                        <span class="mail-desc fs-2 d-block text-muted text-truncate">{{mymessage.subject}}</span>
+                        <span class="time fs-2 d-block text-muted text-truncate">{{mymessage.time}}</span>
+                    </span>
+                </a>
+            </ng-scrollbar>
+        </div>
+    </div>
+</div>

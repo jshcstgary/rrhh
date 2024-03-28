@@ -1,0 +1,94 @@
+<div class="card">
+  <div class="card-body">
+        <h1>{{this.titulo}}</h1>
+        <br/>
+        <label class="form-label">
+          <b>Tipo Solicitud:</b>&nbsp;{{this.modelBase.tipo_solicitud}}
+        </label>
+        &nbsp;&nbsp;
+        <label class="form-label">
+          <b>Tipo Motivo:</b>&nbsp;{{this.modelBase.tipo_motivo}}
+        </label>
+        &nbsp;&nbsp;
+        <label class="form-label">
+          <b>Date:</b>&nbsp;{{this.date}}
+        </label>
+  </div>
+  <div class="card-body">
+
+    <div [hidden]="submitted">
+
+      <form  (submit)="onSubmit()"
+              #registrarSolicitud ="ngForm"
+              class="ui form">
+        <h3>Informacion General</h3>
+        <div  class="mb-2">
+
+                <div class="field">
+                    <label class="form-label" for="codigo">Codigo</label>
+                    <br/>
+                    <input  type="text"  class="form-control"
+                            id="codigo"  name="codigo"
+                            required
+                            [(ngModel)]="model.codigo" />
+                </div>
+                <br/>
+
+                <div class="field">
+                    <label class="form-label" for="description">Description</label>
+                    <br/>
+                    <input  type="text" class="form-control"
+                            id="description"  name="description"
+                            required
+                            [(ngModel)]="model.description" />
+                </div>
+                  <br/>
+
+                <div class="field">
+                    <label class="form-label" for="importe">Importe</label>
+                    <br/>
+                    <input  type="text" class="form-control"
+                            id="importe"  name="importe"
+                            required
+                            [(ngModel)]="model.importe" />
+                </div>
+                  <br/>
+
+                <div class="field">
+                    <label class="form-label" for="observations">Observations</label>
+                    <br/>
+                    <textarea data-limit-rows="true" cols="60" rows="8" class="form-control"
+                            id="observations" name="observations"
+                            [(ngModel)]="model.observations" >
+                          </textarea>
+                </div>
+                <br/>
+
+                <div class="field">
+                  <button type="submit" class="btn btn-primary"  aria-describedby="Mark as complete" [disabled]="!registrarSolicitud.form.valid">Grabar</button>
+                  &nbsp;&nbsp;
+                  <button type="button" (click)="onCancel()" class="btn btn-secondary" aria-describedby="Task cancelled in the system" >Cancelar</button>
+                </div>
+      </div>
+    </form>
+  </div>
+
+  <div [hidden]="!submitted">
+      <div *ngIf="!this.errorMessage">
+          <p>Request registered satisfactorily. Requirement / New with code <code>{{this.model.codigo}}</code>.
+            <br/>
+            <code>{{this.uniqueTaskId}}</code>
+          </p>
+        </div>
+        <div *ngIf="this.errorMessage">
+          <p>Task failed. Check error message below.
+            <br/>
+            <code>{{this.errorMessage}}</code>
+          </p>
+        </div>
+  </div>
+  <br/>
+  Return to <a href="/">home page</a>.
+</div>
+</div>
+

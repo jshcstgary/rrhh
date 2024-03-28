@@ -1,0 +1,245 @@
+<!-- ============================================================== -->
+<!-- Start Page Content -->
+<!-- ============================================================== -->
+<div class="row">
+    <div class="col-12">
+        <!-- You can find this in the dashboard-component -->
+        <app-project-counter></app-project-counter>
+    </div>
+</div>
+<!-- ============================================================== -->
+<!-- chart and stats -->
+<!-- ============================================================== -->
+<div class="row">
+    <!-- chart component -->
+    <div class="col-lg-8 col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex flex-wrap mb-4">
+                    <div>
+                        <h4 class="card-title">Yearly Sales</h4>
+                    </div>
+                    <div class="ms-auto">
+                        <ul class="list-inline">
+                            <li class="list-inline-item">
+                                <h6 class="text-primary">
+                                    <i class="fa fa-circle fs-1 me-2 "></i>Iphone</h6>
+                            </li>
+                            <li class="list-inline-item">
+                                <h6 class="text-info">
+                                    <i class="fa fa-circle fs-1 me-2"></i>Ipad</h6>
+                            </li>
+                            <li class="list-inline-item">
+                                <h6 class="text-danger">
+                                    <i class="fa fa-circle fs-1 me-2 "></i>Itouch</h6>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="overflow-hidden" style="height:315px;">
+                    <apx-chart [series]="yearlysaleschartOptions.series" [chart]="yearlysaleschartOptions.chart"
+                        [dataLabels]="yearlysaleschartOptions.dataLabels" [grid]="yearlysaleschartOptions.grid"
+                        [plotOptions]="yearlysaleschartOptions.plotOptions" [yaxis]="yearlysaleschartOptions.yaxis"
+                        [legend]="yearlysaleschartOptions.legend" [fill]="yearlysaleschartOptions.fill"
+                        [stroke]="yearlysaleschartOptions.stroke" [tooltip]="yearlysaleschartOptions.tooltip"
+                        [xaxis]="yearlysaleschartOptions.xaxis" 
+                        [markers]="yearlysaleschartOptions.markers" [colors]="yearlysaleschartOptions.colors">
+                    </apx-chart>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- other chart component -->
+    <div class="col-lg-4 col-md-12">
+        <div class="card bg-megna">
+            <div class="card-body">
+                <h3 class="card-title text-white">Sales Analysis</h3>
+                <div class="row">
+                    <div class="col-6 align-self-center">
+                        <h2 class="fw-light text-white">$347</h2>
+                        <h5 class="text-white op-5 mt-3">April 2017</h5>
+                        <b class="text-white">(150 Sales)</b>
+                    </div>
+                    <div class="col-5 ms-auto pe-3">
+                        <div style="height: 135px;">
+                            <apx-chart [series]="salesanalysischartOptions.series" [chart]="salesanalysischartOptions.chart"
+                                [dataLabels]="salesanalysischartOptions.dataLabels" [colors]="salesanalysischartOptions.colors"
+                                [plotOptions]="salesanalysischartOptions.plotOptions" [yaxis]="salesanalysischartOptions.yaxis"
+                                [legend]="salesanalysischartOptions.legend" [fill]="salesanalysischartOptions.fill"
+                                [stroke]="salesanalysischartOptions.stroke" [tooltip]="salesanalysischartOptions.tooltip"
+                                [xaxis]="salesanalysischartOptions.xaxis" [grid]="salesanalysischartOptions.grid"
+                                [yaxis]="salesanalysischartOptions.yaxis">
+                            </apx-chart>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body collapse show bg-danger">
+                <ngb-carousel class="no-control-indicator">
+                    <ng-template ngbSlide>
+                        <div class="">
+                            <h3 class="text-white">My Acting blown
+                                <span class="fw-bold">Your Mind</span>
+                                <br /> and you also laugh
+                                <br />at the moment</h3>
+                            <div class="twi-user mt-3">
+                                <img src="assets/images/users/user1.jpg" alt="user"
+                                    class="rounded-circle img-fluid float-start me-3" width="50">
+                                <h4 class="text-white mb-0">Mark</h4>
+                                <p class="text-white">Actor</p>
+                            </div>
+                        </div>
+                    </ng-template>
+                    <ng-template ngbSlide>
+                        <div class="">
+                            <h3 class="text-white">My Acting blown
+                                <span class="fw-bold">Your Mind</span>
+                                <br /> and you also laugh
+                                <br />at the moment</h3>
+                            <div class="twi-user mt-3">
+                                <img src="assets/images/users/user2.jpg" alt="user"
+                                    class="rounded-circle img-fluid float-start me-3" width="50">
+                                <h4 class="text-white mb-0">Steve</h4>
+                                <p class="text-white">Actor</p>
+                            </div>
+                        </div>
+                    </ng-template>
+                    <ng-template ngbSlide>
+                        <div class="">
+                            <h3 class="text-white">My Acting blown
+                                <span class="fw-bold">Your Mind</span>
+                                <br /> and you also laugh
+                                <br />at the moment</h3>
+                            <div class="twi-user mt-3">
+                                <img src="assets/images/users/user3.jpg" alt="user"
+                                    class="rounded-circle img-fluid float-start me-3" width="50">
+                                <h4 class="text-white mb-0">Bucky</h4>
+                                <p class="text-white">Actor</p>
+                            </div>
+                        </div>
+                    </ng-template>
+                </ngb-carousel>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ============================================================== -->
+<!-- Report and Comments -->
+<!-- ============================================================== -->
+<!-- Row -->
+<div class="row">
+    <div class="col-lg-6">
+        <!-- You can find this in the dashboard-component -->
+        <app-recent-comment></app-recent-comment>
+    </div>
+    <div class="col-lg-6">
+        <!-- You can find this in the dashboard-component -->
+        <app-earning-report></app-earning-report>
+    </div>
+</div>
+<!-- Row -->
+<div class="row">
+    <!-- chart component -->
+    <div class="col-lg-8 col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex flex-wrap mb-4">
+                    <div>
+                        <h4 class="card-title">
+                            Yearly Sales</h4>
+                    </div>
+                    <div class="ms-auto">
+                        <ul class="list-inline">
+                            <li class="list-inline-item">
+                                <h6 class="text-primary">
+                                    <i class="fa fa-circle fs-1 me-2 "></i>Site A</h6>
+                            </li>
+                            <li class="list-inline-item">
+                                <h6 class="text-info">
+                                    <i class="fa fa-circle fs-1 me-2"></i>Site B</h6>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="overflow-hidden" style="height:351px;">
+                    <apx-chart [series]="yearlysaleschartOptions2.series" [chart]="yearlysaleschartOptions2.chart"
+                        [dataLabels]="yearlysaleschartOptions2.dataLabels" [grid]="yearlysaleschartOptions2.grid"
+                        [plotOptions]="yearlysaleschartOptions2.plotOptions" [yaxis]="yearlysaleschartOptions2.yaxis"
+                        [legend]="yearlysaleschartOptions2.legend" [fill]="yearlysaleschartOptions2.fill"
+                        [stroke]="yearlysaleschartOptions2.stroke" [tooltip]="yearlysaleschartOptions2.tooltip"
+                        [xaxis]="yearlysaleschartOptions2.xaxis" 
+                        [markers]="yearlysaleschartOptions2.markers" [colors]="yearlysaleschartOptions2.colors">
+                    </apx-chart>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- other chart component -->
+    <div class="col-lg-4 col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex">
+                    <div>
+                        <h3 class="card-title">Visit Statistics</h3>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6 align-self-center">
+                        <h2 class="fw-light text-info">5489</h2>
+                        <h5 class="text-muted mt-2">April 2017</h5>
+                        <b class="text-dark">(Visits)</b>
+                    </div>
+                    <div class="col-5 ms-auto pe-3">
+                        <div style="height: 165px; width: 100px">
+                            <apx-chart [series]="visitstatisticschartOptions.series" [chart]="visitstatisticschartOptions.chart"
+                                [dataLabels]="visitstatisticschartOptions.dataLabels" [colors]="visitstatisticschartOptions.colors"
+                                [plotOptions]="visitstatisticschartOptions.plotOptions" [yaxis]="visitstatisticschartOptions.yaxis"
+                                [legend]="visitstatisticschartOptions.legend" [fill]="visitstatisticschartOptions.fill"
+                                [stroke]="visitstatisticschartOptions.stroke" [tooltip]="visitstatisticschartOptions.tooltip"
+                                [xaxis]="visitstatisticschartOptions.xaxis" [grid]="visitstatisticschartOptions.grid"
+                                [yaxis]="visitstatisticschartOptions.yaxis">
+                            </apx-chart>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card bg-primary">
+            <div class="card-body">
+                <h3 class="card-title text-white">Sales Analysis</h3>
+                <div class="row">
+                    <div class="col-6 align-self-center">
+                        <h2 class="fw-light text-white">$347</h2>
+                        <h5 class="text-white op-5 mt-3">April 2017</h5>
+                        <b class="text-white">(150 Sales)</b>
+                    </div>
+                    <div class="col-6 ms-auto pe-3">
+                        <apx-chart [series]="salesanalysischartOptions2.series" [chart]="salesanalysischartOptions2.chart" 
+                            [dataLabels]="salesanalysischartOptions2.dataLabels" [legend]="salesanalysischartOptions2.legend"
+                            [stroke]="salesanalysischartOptions2.stroke" [grid]="salesanalysischartOptions2.grid" 
+                            [colors]="salesanalysischartOptions2.colors" [labels]="salesanalysischartOptions2.labels">  
+                        </apx-chart>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ============================================================== -->
+<!-- Activity widgets -->
+<!-- You can find this in the dashboard-component -->
+<!-- ============================================================== -->
+<div class="row">
+    <!-- Column -->
+    <div class="col-lg-4">
+        <app-to-do></app-to-do>
+    </div>
+    <div class="col-lg-4">
+        <app-recent-message></app-recent-message>
+    </div>
+    <div class="col-lg-4">
+        <app-feeds></app-feeds>
+    </div>
+</div>

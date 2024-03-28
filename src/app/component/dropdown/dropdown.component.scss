@@ -1,0 +1,9 @@
+@import "../../../assets/scss/variable";
+.dropdown-item-component:hover {
+  background-color: $blue;
+  color: white !important;
+}
+
+.dropdown-toggle::after {
+  display: none;
+}

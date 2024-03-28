@@ -4,7 +4,7 @@
 @import url("https://fonts.googleapis.com/css?family=Poppins:400,500,300,600,700");
 /*Theme Colors*/
 
-$themecolor: #fb9678;
+$themecolor: rgb(227, 199, 22);
 $themecolor-dark: #028ee1;
 $themecolor-alt: #26c6da;
 $theme-light: #fff;
@@ -16,7 +16,6 @@ $skin3: #a0aec4;
 $skin4: #038ff3;
 $skin5: #272c33;
 $skin6: #fff;
-$skin7: #182844;
 
 /*Topbar Colors*/
 
@@ -33,8 +32,8 @@ $sidebar: $theme-light;
 $sidebar-alt: #edf0f5;
 $sidebar-text: #fff;
 $sidebar-icons: #fff;
-$sidebar-text-dark: #0056B3;
-$sidebar-icons-dark: #D7B615;
+$sidebar-text-dark: #54667a;
+$sidebar-icons-dark: #54667a;
 
 $sidebar-width-full: 220px;
 $sidebar-width-iconbar: 180px;
@@ -116,7 +115,7 @@ $blue: #03a9f3 !default;
 $indigo: #6610f2 !default;
 $purple: #7460ee !default;
 $pink: #e83e8c !default;
-$red: #D7B615 !default;
+$red: rgb(227, 199, 22) !default;
 $orange: #fb8c00 !default;
 $yellow: #fec107 !default;
 $green: #00c292 !default;
@@ -219,9 +218,9 @@ $enable-hover-media-query: false !default;
 $enable-grid-classes: true !default;
 $enable-print-styles: false !default;
 
-// 
+//
 // Dark Theme Colors Settings
-// 
+//
 $theme-dark-bg-layout: #323743;
 $theme-dark-text-color: #b2b9bf !default;
 $theme-dark-border-color: rgba(255, 255, 255, 0.2) !default;
@@ -415,17 +414,17 @@ $btn-box-shadow: 0 1px 0 rgba($white, 0.15) !default;
   }
 }
 
-// 
+//
 // accordian
-// 
+//
 $accordion-padding-y:                     1rem !default;
 $accordion-padding-x:                     1rem !default;
 $accordion-bg:                            transparent !default;
 $accordion-button-active-color: $primary  !default;
 
-// 
+//
 // alert
-// 
+//
 $alert-bg-scale: 0% !default;
 $alert-border-scale: 0% !default;
 $alert-color-scale: 1% !default;
