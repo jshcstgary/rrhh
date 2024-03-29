@@ -32,8 +32,8 @@ $sidebar: $theme-light;
 $sidebar-alt: #edf0f5;
 $sidebar-text: #fff;
 $sidebar-icons: #fff;
-$sidebar-text-dark: #54667a;
-$sidebar-icons-dark: #54667a;
+$sidebar-text-dark: #0056B3; //#54667a
+$sidebar-icons-dark: #0056B3; //#54667a
 
 $sidebar-width-full: 220px;
 $sidebar-width-iconbar: 180px;
@@ -222,7 +222,7 @@ $enable-print-styles: false !default;
 // Dark Theme Colors Settings
 //
 $theme-dark-bg-layout: #323743;
-$theme-dark-text-color: #b2b9bf !default;
+$theme-dark-text-color: #0056B3 !default;//#0056B3  #b2b9bf
 $theme-dark-border-color: rgba(255, 255, 255, 0.2) !default;
 $theme-dark-focus-border-color: rgba(255, 255, 255, 0.4) !default;
 $theme-dark-card-bg: #272b34;

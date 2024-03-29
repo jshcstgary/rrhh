@@ -34,7 +34,6 @@
                 (mouseover)="addExpandClass(sidebarnavItem.title)"
                 [routerLinkActive]="sidebarnavItem.submenu.length != 0 ? '' : 'active'">
                 <i [ngClass]="[sidebarnavItem.icon]"></i>
-                <!-- <i-feather [name]="sidebarnavItem.icon" [ngClass]="[sidebarnavItem.icon]"></i-feather> -->
                 <span class="hide-menu">{{sidebarnavItem.title | translate}}</span>
             </a>
             <!-- Second level menu -->
@@ -68,38 +67,29 @@
                 </li>
             </ul>
         </li>
-         <!-- Logo -->
-  <!-- ============================================================== -->
-  <li class="sidebar-item">
-    <a class="navbar-brand" href="/">
-      <!-- Logo text -->
-      <span class="logo-text">
-        <!-- dark Logo text -->
-        <!-- dark Logo text -->
-        <img
-        src="assets/images/logo-text.png"
-        width="220px"
-        height="60px"
-        alt="homepage"
-        class="dark-logo"
-      />
-        <!--<img src="assets/images/logo-text.png" alt="homepage" class="dark-logo" />-->
-        <!-- Light Logo text -->
-        <img
-          src="assets/images/logo-light-text.png"
-          class="light-logo"
-          alt="homepage"
-        />
-        <img
-        src="assets/images/logo-light-text.png"
-        class="light-logo"
-        alt="homepage"
-        />
-      </span>
+        <li class="sidebar-item">
+          <a class="navbar-brand" href="/">
+            <!-- Logo text -->
+            <span class="logo-text">
+              <!-- dark Logo text -->
+              <img
+              src="assets/images/logo-text.png"
+              width="220px"
+              height="60px"
+              alt="homepage"
+              class="dark-logo"
+            />
+              <!--<img src="assets/images/logo-text.png" alt="homepage" class="dark-logo" />-->
+              <!-- Light Logo text -->
+              <img
+                src="assets/images/logo-light-text.png"
+                class="light-logo"
+                alt="homepage"
+              />
+            </span>
 
-    </a>
-  </li>
-
+          </a>
+        </li>
 
   </ul>
 </nav>

@@ -21,7 +21,7 @@ $sidebarheight: 54px;
         > .sidebar-item {
           > .sidebar-link {
             .hide-menu {
-              max-width: 55px;
+              max-width: 140px;
             }
           }
         }
@@ -151,8 +151,9 @@ This is for the horizontal layout
     .sidebar-nav {
       #sidebarnav {
         display: flex;
-
         width: 100%;
+        align-content: stretch;
+        justify-content: space-between;
         .sidebar-item {
           position: relative;
           width: auto;

@@ -6,9 +6,8 @@ import { TranslateModule } from '@ngx-translate/core';
 import { CommonModule } from '@angular/common';
 import { FeatherModule } from 'angular-feather';
 import { IDropdownOptions } from 'src/app/component/dropdown/dropdown.interface';
-import { DropdownComponent } from 'src/app/component/dropdown/dropdown.component';
 import { ComponentsModule } from 'src/app/component/component.module';
-import { VerticalNavigationData } from '../horizontal-header/vertical-navigation.data';
+import { VerticalNavigationData } from '../horizontal-header/horizontal-navigation.data';
 
 
 @Component({
