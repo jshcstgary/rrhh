@@ -79,8 +79,8 @@ deploy_dev:
     - touch "$HOME/.ssh/known_hosts"
     - chmod 644 "$HOME/.ssh/known_hosts"
     - ssh-keyscan -H "$SERVER_IP" >> "$HOME/.ssh/known_hosts"
-    - echo "$DOCKERHUB_PASSWORD" | sshpass -p "$SERVER_PASSWORD" ssh $SERVER_USER@$SERVER_IP
-      "docker login -u $DOCKERHUB_USERNAME --password-stdin"
+    #- echo "$DOCKERHUB_PASSWORD" | sshpass -p "$SERVER_PASSWORD" ssh $SERVER_USER@$SERVER_IP
+    #  "docker login -u $DOCKERHUB_USERNAME --password-stdin"
     - sshpass -p "$SERVER_PASSWORD" ssh $SERVER_USER@$SERVER_IP "docker pull $DOCKER_TAG"
     - CONTAINER_ID=$(sshpass -p $SERVER_PASSWORD ssh $SERVER_USER@$SERVER_IP "docker
       ps -q -f \"name=$CONTAINER_NAME\"")
