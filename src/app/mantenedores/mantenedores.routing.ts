@@ -7,12 +7,36 @@ import { TipoProcesoComponent } from './tipo_proceso/tipo-proceso.component';
 import { TipoRutaComponent } from './tipo_ruta/tipo-ruta.component';
 import { RutaComponent } from './ruta/ruta.component';
 import { AccionComponent } from './accion/accion.component';
+import { NivelesAprobacionComponent } from './niveles-aprobacion/niveles-aprobacion.component';
+import { CrearNivelesAprobacionComponent } from './crear-niveles-aprobacion/crear-niveles-aprobacion.component';
 
 
 export const MantenedoresRoutes: Routes = [
   {
     path: '',
     children: [
+      {
+        path: 'niveles-aprobacion',
+        component: NivelesAprobacionComponent,
+        data: {
+          title: 'Niveles de Aprobacion',
+          urls: [
+            { title: 'Mantenimiento' },
+            { title: 'Niveles de Aprobacion' },
+          ],
+        },
+      },
+      {
+        path: 'crear-niveles-aprobacion',
+        component: CrearNivelesAprobacionComponent,
+        data: {
+          title: 'Crear Niveles de Aprobacion',
+          urls: [
+            { title: 'Mantenimiento' },
+            { title: 'Crear Niveles de Aprobacion' },
+          ],
+        },
+      },
       {
         path: 'tipo-solicitud',
         component: TipoSolicitudComponent,

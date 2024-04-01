@@ -10,6 +10,15 @@ export const ROUTES: RouteInfo[] = [
     extralink: false,
     submenu: [
       {
+        path: "/mantenedores/niveles-aprobacion",
+        title: "Niveles de Aprobación",
+        icon: "",
+        class: "",
+        ddclass: "",
+        extralink: false,
+        submenu: [],
+        },
+      {
       path: "/mantenedores/tipo-solicitud",
       title: "Tipo de Solicitudes",
       icon: "",

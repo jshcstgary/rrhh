@@ -1,0 +1,257 @@
+<div class="row">
+  <!-- ==================================-->
+  <!-- ======= Basic Nav ===== -->
+  <!-- ==================================-->
+  <div class="col-12">
+    <div class="card">
+      <!-- <div class="p-3">
+        <h4 class="card-title mb-0">Basic Nav</h4>
+      </div>-->
+      <div class="card-body border-top">
+        <ul ngbNav #nav="ngbNav" [(activeId)]="active" class="nav-pills">
+          <!--<li [ngbNavItem]="1">
+            <button ngbNavLink>Resumen</button>
+            <ng-template ngbNavContent>
+              <p>
+
+              </p>
+            </ng-template>
+          </li>-->
+          <li [ngbNavItem]="2">
+            <button ngbNavLink>Consultas</button>
+            <ng-template ngbNavContent>
+              <div class="form-body">
+                <div class="row">
+                  <div class="col-md-4">
+                    <div class="mb-3">
+                      <label class="azul">Tipo de Solicitud</label>
+                      <ng-select
+                        #inputSelectLabor
+                        [(ngModel)]="selected_tipo_labor"
+                        name="id_tipo_labor"
+                        placeholder="Seleccione"
+
+                      >
+                        <ng-option
+                          *ngFor="let car of data_tipo_labor"
+                          [value]="car.id"
+                          >{{ car.id }} - {{ car.name }}</ng-option
+                        >
+                      </ng-select>
+                    </div>
+                  </div>
+                  <!--Tipo-->
+                  <div class="col-md-3">
+                    <div class="mb-3">
+                      <label class="azul">Tipo</label>
+                      <ng-select
+                        #inputSelectProducto
+                        [(ngModel)]="selected_producto"
+                        name="id_producto"
+                        placeholder="Seleccione"
+
+                      >
+                        <ng-option *ngFor="let car of data_productos" [value]="car.id"
+                          >{{ car.id }} - {{ car.name }}</ng-option
+                        >
+                      </ng-select>
+                    </div>
+                  </div>
+                  <!--<div class="col-md-3"></div>-->
+                  <div class="col-md-3">
+                    <div class="mb-3">
+                      <label class="azul">Nivel de Direccion</label>
+                      <ng-select
+                        #inputSelectTrabajador
+                        [(ngModel)]="selected_trabajador"
+                        name="id_trabajador"
+                        placeholder="Seleccione"
+
+                      >
+                        <ng-option
+                          *ngFor="let car of data_estado"
+                          [value]="car.id"
+                          >{{ car.id }} - {{ car.name }}</ng-option
+                        >
+                      </ng-select>
+                    </div>
+                  </div>
+
+                  <div class="col-md-5">
+                    <div class="mb-3">
+                      <div class="text-end">
+                        <button
+                          #buttonSearch
+                          type="submit"
+                          class="btn btn-info me-2"
+
+                        >
+                          <i class="fas fa-filter"></i> Buscar
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!--<ng-template #footerTemplate>
+                <hr class="my-0" />
+                <button class="btn btn-primary btn-sm m-2 float-start">Today</button>
+                <button
+                  class="btn btn-secondary btn-sm m-2 float-end"
+                  (click)="d.close()"
+                >
+                  Close
+                </button>
+              </ng-template>-->
+
+              <form>
+                <div class="row">
+                  <div class="col-md-4">
+                    <div class="input-group mb-3">
+                     <!-- <input
+                        type="text"
+                        class="form-control"
+                        placeholder="Buscar"
+                        aria-label=""
+                        aria-describedby="basic-addon1"
+                      />
+                      <button class="btn mr-0 btn-outline-secondary" type="button">
+                        <i class="ti-search"></i>
+                      </button>-->
+                  </div>
+                  </div>
+                  <div class="col-md-8">
+                    <div class="mb-3">
+                      <div class="text-end">
+                        <button
+                          type="button"
+                          (click)="mostrarModalCrearSolicitudes()"
+                          class="btn btn-info me-2"
+                        >
+                        <i class="fas fa-plus"></i> Agregar
+                        </button>
+                        <button
+                        type="button"
+                        (click)="PageCrear()"
+                        class="btn btn-info me-2"
+                      >
+                        <i class="fas fa-redo"></i> Reasignar
+
+                      </button>
+                        <button type="submit" class="btn btn-outline-info me-2">
+                          <i class="fas fa-file-excel"></i> Exportar
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </form>
+             <table-component
+                *ngIf="hasFiltered"
+                [columns]="columnsTable"
+                [dataTable]="dataTable"
+                [contexto]="this"
+              ></table-component>
+             </ng-template>
+
+          </li>
+
+        </ul>
+
+        <div [ngbNavOutlet]="nav" class="mt-2"></div>
+        <div class="bg-light p-3 rounded"></div>
+        <!--<div class="bg-light p-3 rounded">Active: {{ active }}</div>-->
+      </div>
+    </div>
+  </div>
+</div>
+<!--Modal Crer Solicittud-->
+    <ng-template #myModalSolicitudes let-modal>
+              <div class="row">
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div>
+                            <h2 class="card-body text-start">
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <b style="color: rgb(227, 199, 22);font-size: xx-large; margin: 20px;">Crear Solicitud</b>
+                                    </div>
+
+                                    <div class="col-md-4 text-end">
+                                        <button style="margin: 10px;color: black;" type="button" (click)="modal.dismiss('Cross click')"
+                                            class="mr-10 fz-14 btn btn-outline-secondary btn-icon-end">Cancelar
+                                        </button>
+
+                                        <button type="button" class="mr-10 fz-14 btn btn-info btn-icon-end" (click)="CrearSolicitud()"
+                                              aria-label="Close" aria-label="Close">
+                                            <i class="fas fa-save"></i> Guardar
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="row" style="padding-top: 20px; display: flex; justify-content: start; margin: 10px;">
+                                    <div class="col-md-12" style="width: 75%;">
+                                        <div class="input-group mb-3">
+                                            <label class="input-group-text" for="tiposolicitud"
+                                                style="color: black;font-size: 14px;width: 45%;">Tipo Solicitud</label>
+                                            <select id="tiposolicitud" name="tiposolicitud"  class="form-select" #productoSelect
+                                                style="font-size: 14px;" [(ngModel)]="modelo.tipo_solicitud" required>
+                                                <option value="Requisición de personal">Requisición de personal</option>
+                                                <option value="Contratación de familiares">Contratación de familiares</option>
+                                                <option value="Reingreso de personal">Reingreso de personal</option>
+                                                <option value="Acción de personal">Acción de personal</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row" style="padding-top: 20px; display: flex; justify-content: start; margin: 10px;">
+                                  <div class="col-md-12" style="width: 75%;">
+                                      <div class="input-group mb-3">
+                                          <label class="input-group-text" for="tipomotivo"
+                                              style="color: black;font-size: 14px;width: 45%;">Tipo de Motivo</label>
+                                          <select id="tipomotivo" name="tipomotivo" class="form-select" #productoSelect
+                                              style="font-size: 14px;"  [(ngModel)]="modelo.tipo_motivo" required>
+                                              <option>Nuevo</option>
+                                              <option>Eventual</option>
+                                              <option>Pasante</option>
+                                              <option>Reeemplazo</option>
+                                          </select>
+                                      </div>
+                                  </div>
+                              </div>
+                              <div class="row" style="padding-top: 20px; display: flex; justify-content: start; margin: 10px;">
+                                <div class="col-md-12" style="width: 75%;">
+                                    <div class="input-group mb-3">
+                                        <label class="input-group-text" for="tipocumplimiento"
+                                            style="color: black;font-size: 14px;width: 45%;">Tipo de Acción</label>
+                                        <select id="tipocumplimiento" name="tipocumplimiento" class="form-select" #productoSelect
+                                            style="font-size: 14px;" [(ngModel)]="modelo.tipo_cumplimiento" required>
+                                            <option>Transferencia de Posición</option>
+                                            <option>Asignación Temporal</option>
+                                            <option>Promoción</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row" style="padding-top: 20px; display: flex; justify-content: start; margin: 10px;" [hidden]="!submitted">
+                              <p>Proceso ha sido iniciado.
+                                <br/>
+                                <code>{{this.getCreatedId()}}</code>
+                                <br/>
+
+                              </p>
+                            </div>
+
+                            </h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </ng-template>
+        <!--End Modal Crear Solicitud-->
+
+
+
+
+
+
