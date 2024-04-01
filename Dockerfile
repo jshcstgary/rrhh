@@ -21,7 +21,7 @@ RUN echo "esto es desa"
 FROM nginx:latest
 
 # Copiar la aplicación compilada desde la etapa 1
-COPY --from=builder /app/dist/Portal /usr/share/nginx/html
+COPY --from=builder /app/dist/elite-admin-angular /usr/share/nginx/html
 
 # Copiar la configuración personalizada de Nginx
 COPY ./nginx.conf /etc/nginx/conf.d/default.conf
