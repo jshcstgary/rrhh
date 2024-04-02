@@ -1,1 +1,135 @@
-<p>crear-niveles-aprobacion works!</p>
+<!--Modal Crer Solicittud-->
+
+  <div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div>
+                <h2 class="card-body text-start">
+                    <div class="row">
+                        <!--<div class="col-md-8">
+                            <b style="color: rgb(227, 199, 22);font-size: 20px; margin: 20px;">Mantenimiento de rutas</b>
+                        </div>-->
+                        <div class="col-md-8">
+                          <div class="mb-3">
+                            <a (click)="PageNivelesAprobacion()"> <h3 class="danger"> <i class="bi bi-arrow-left-circle azul"></i> Mantenimiento de rutas</h3></a>
+                          </div>
+                        </div>
+
+                        <div class="col-md-4 text-end">
+                            <!--<button style="margin: 10px;color: black;" type="button" (click)="modal.dismiss('Cross click')"
+                                class="mr-10 fz-14 btn btn-outline-secondary btn-icon-end">Cancelar
+                            </button>-->
+
+                            <button type="button" class="mr-10 fz-14 btn btn-info btn-icon-end"
+                                  aria-label="Close" aria-label="Close">
+                                <i class="fas fa-save"></i> Guardar
+                            </button>
+                        </div>
+                    </div>
+                    <div class="row" style="padding-top: 20px; display: flex; justify-content: start; margin: 10px;">
+                        <div class="col-md-12" style="width: 75%;">
+                            <div class="input-group mb-3">
+                                <label class="input-group-text" for="tiposolicitud"
+                                    style="color: black;font-size: 14px;width: 45%;">Tipo Solicitud</label>
+                                <select id="tiposolicitud" name="tiposolicitud"  class="form-select" #productoSelect
+                                    style="font-size: 14px;"  required>
+                                    <option value="Requisición de personal">Requisición de personal</option>
+                                    <option value="Contratación de familiares">Contratación de familiares</option>
+                                    <option value="Reingreso de personal">Reingreso de personal</option>
+                                    <option value="Acción de personal">Acción de personal</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" style="padding-top: 20px; display: flex; justify-content: start; margin: 10px;">
+                      <div class="col-md-12" style="width: 75%;">
+                          <div class="input-group mb-3">
+                              <label class="input-group-text" for="tipomotivo"
+                                  style="color: black;font-size: 14px;width: 45%;">Tipo de Motivo</label>
+                              <select id="tipomotivo" name="tipomotivo" class="form-select" #productoSelect
+                                  style="font-size: 14px;"   required>
+                                  <option>Nuevo</option>
+                                  <option>Eventual</option>
+                                  <option>Pasante</option>
+                                  <option>Reeemplazo</option>
+                              </select>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="row" style="padding-top: 20px; display: flex; justify-content: start; margin: 10px;">
+                    <div class="col-md-12" style="width: 75%;">
+                        <div class="input-group mb-3">
+                            <label class="input-group-text" for="tipocumplimiento"
+                                style="color: black;font-size: 14px;width: 45%;">Acción</label>
+                            <select id="tipocumplimiento" name="tipocumplimiento" class="form-select" #productoSelect
+                                style="font-size: 14px;"  required>
+                                <option>Crear Posicion (esten o no presupuestadas)</option>
+                                <option></option>
+                                <option></option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="padding-top: 20px; display: flex; justify-content: start; margin: 10px;">
+                  <div class="col-md-12" style="width: 75%;">
+                      <div class="input-group mb-3">
+                          <label class="input-group-text" for="tipocumplimiento"
+                              style="color: black;font-size: 14px;width: 45%;">Niveles de direccion</label>
+                          <select id="tipocumplimiento" name="tipocumplimiento" class="form-select" #productoSelect
+                              style="font-size: 14px;"  required>
+                              <option>Supervición/Coordinación</option>
+                              <option></option>
+                              <option></option>
+                          </select>
+                      </div>
+                  </div>
+              </div>
+              <div class="row" style="padding-top: 20px; display: flex; justify-content: start; margin: 10px;">
+                <div class="col-md-12" style="width: 75%;">
+                    <div class="input-group mb-3">
+                        <label class="input-group-text" for="tipocumplimiento"
+                            style="color: black;font-size: 14px;width: 45%;">Ruta</label>
+                        <select id="tipocumplimiento" name="tipocumplimiento" class="form-select" #productoSelect
+                            style="font-size: 14px;"  required>
+                            <option>Lvl1 Aprobación</option>
+                            <option></option>
+                            <option></option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="row" style="padding-top: 20px; display: flex; justify-content: start; margin: 10px;">
+              <div class="col-md-12" style="width: 75%;">
+                  <div class="input-group mb-3">
+                      <label class="input-group-text" for="tipocumplimiento"
+                          style="color: black;font-size: 14px;width: 45%;">Tipo de Ruta</label>
+                      <select id="tipocumplimiento" name="tipocumplimiento" class="form-select" #productoSelect
+                          style="font-size: 14px;"  required>
+                          <option>Areas Corporativas</option>
+                          <option></option>
+                          <option></option>
+                      </select>
+                  </div>
+              </div>
+          </div>
+          <div class="row" style="padding-top: 20px; display: flex; justify-content: start; margin: 10px;">
+            <div class="col-md-12" style="width: 75%;">
+                <div class="input-group mb-3">
+                    <label class="input-group-text" for="tipocumplimiento"
+                        style="color: black;font-size: 14px;width: 45%;">Nivel de Aprobación</label>
+                    <select id="tipocumplimiento" name="tipocumplimiento" class="form-select" #productoSelect
+                        style="font-size: 14px;"  required>
+                        <option>Jefatura</option>
+                        <option></option>
+                        <option></option>
+                    </select>
+                </div>
+            </div>
+        </div>
+                </h2>
+            </div>
+        </div>
+    </div>
+</div>
+
+

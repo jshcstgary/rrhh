@@ -16,7 +16,7 @@ export interface ITipoaccionTable
   extends ITipoaccion, IRowTableAttributes {}
 
 export type ITipoacciones = ITipoaccion[];
-export type ITipoaccionsTable = ITipoaccionTable[];
+export type ITipoaccionesTable = ITipoaccionTable[];
 
 export interface ITipoaccionResponse {
   totalRegistros: number;

@@ -21,7 +21,7 @@ export type IRutasTable = IRutaTable[];
 
 export interface ITipoRutaResponse {
   totalRegistros: number;
-  tiporutaType: ITipoRutas;
+  tipoRutaType: ITipoRutas;
 }
 
 export interface IRutaResponse {

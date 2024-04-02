@@ -126,7 +126,6 @@ export class TipoMotivoComponent implements OnInit {
       });
     } else {
       rowData.id = 0;
-      rowData.tipoSolicitudId = 0;
       /* Crear */
       this.tipomotivosService.store(rowData).subscribe({
         next: (response) => {

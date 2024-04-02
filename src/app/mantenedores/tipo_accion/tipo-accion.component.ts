@@ -126,7 +126,6 @@ export class TipoAccionComponent implements OnInit {
       });
     } else {
       rowData.id = 0;
-      rowData.tipoSolicitudId = 0;
       /* Crear */
       this.tipoaccionsService.store(rowData).subscribe({
         next: (response) => {

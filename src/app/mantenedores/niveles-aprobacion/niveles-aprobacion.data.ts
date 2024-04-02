@@ -3,24 +3,24 @@ import { IColumnsTable } from "src/app/component/table/table.interface";
 export const ConsultaSolicitudesData: IConsultaSolicitudesData = {
   columns: [
     {
-      title: "No. Solicitud",
+      title: "Tipo de rura",
       dataIndex: "labor",
       align: "center",
       sortActive: true,
     },
     {
-      title: "Tipo de solicitud",
+      title: "Ruta",
       dataIndex: "lote",
       sortActive: true,
     },
     {
-      title: "Nombre de empleado",
+      title: "Nivel de aprobación",
       dataIndex: "procesado",
       sortActive: true,
       colType: "number",
     },
     {
-      title: "Estado",
+      title: "Acción",
       dataIndex: "total_procesado",
       sortActive: true,
       colType: "number",

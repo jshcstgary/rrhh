@@ -52,11 +52,11 @@ export class RutaComponent implements OnInit {
     return this.mantenimientoService.getTipoRuta().subscribe({
       next: (response) => {
         const comboTipoRuta = this.inputService.formatDataToOptionsValueInLabel(
-          response.tiporutaType,
+          response.tipoRutaType,
           "tipoRuta",
           "id"
         );
-        this.dataTipoRuta = response.tiporutaType;
+        this.dataTipoRuta = response.tipoRutaType;
         this.tableInputsEditRow = this.formService.changeValuePropFormById(
           "tipoRutaId",
           this.tableInputsEditRow,
@@ -130,7 +130,6 @@ export class RutaComponent implements OnInit {
       });
     } else {
       rowData.id = 0;
-      rowData.tipoRutaId = 0;
       /* Crear */
       this.RutasService.store(rowData).subscribe({
         next: (response) => {

@@ -126,7 +126,6 @@ export class TipoProcesoComponent implements OnInit {
       });
     } else {
       rowData.id = 0;
-      rowData.tipoSolicitudId = 0;
       /* Crear */
       this.tipoprocesosService.store(rowData).subscribe({
         next: (response) => {

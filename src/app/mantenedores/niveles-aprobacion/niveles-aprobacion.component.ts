@@ -107,11 +107,7 @@ export class NivelesAprobacionComponent {
   ];
 
   data_estado = [
-    { id: 120313, name: 'Aprobado' },
-    { id: 120314, name: 'En espera' },
-    { id: 120315, name: 'Creado' },
-    { id: 120316, name: 'Enviado' },
-    { id: 120317, name: 'Cancelado' },
+    { id: 1, name: 'Todos' },
   ];
 
   editing: any = {};
@@ -190,11 +186,11 @@ export class NivelesAprobacionComponent {
 
   PageCrear()
   {
-    this.router.navigate(['/solicitudes/crear-tipo-solicitud']);
+    this.router.navigate(['/mantenedores/crear-niveles-aprobacion']);
   }
  //Crear Solicitud
   CrearSolicitud(){
-    this.router.navigate(['/mantenedores/crear-niveles-aprobacion']);
+    //this.router.navigate(['/mantenedores/crear-niveles-aprobacion']);
      /*console.log('Nuevo proceso iniciado con datos..');
      Swal.fire({
       text: '¿Desea crear la Solicitud?',
