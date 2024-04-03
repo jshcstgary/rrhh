@@ -12,6 +12,8 @@ export class MantenimientoService {
 
   private apiSolicitudUrl = environment.tipoSolicitudServiceES;
   private apiTipoRutaUrl = environment.tipoRutaServiceES;
+  private apiTipoMotivoUrl = environment.tipoMotivoServiceES;
+  private apiTipoAccionUrl = environment.tipoAccionServiceES;
   constructor(private http: HttpClient) {}
 
   public getTipoSolicitud(): Observable<any[]> {
@@ -19,5 +21,13 @@ export class MantenimientoService {
   }
   public getTipoRuta(): Observable<ITipoRutaResponse> {
     return this.http.get<ITipoRutaResponse>(this.apiTipoRutaUrl);
+  }
+
+  public getTipoMotivo(): Observable<any[]> {
+    return this.http.get<any[]>(this.apiTipoMotivoUrl);
+  }
+
+  public getTipoAccion(): Observable<any[]> {
+    return this.http.get<any[]>(this.apiTipoAccionUrl);
   }
 }

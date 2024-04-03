@@ -259,12 +259,12 @@
                                         <div class="input-group mb-3">
                                             <label class="input-group-text" for="tiposolicitud"
                                                 style="color: black;font-size: 14px;width: 45%;">Tipo Solicitud</label>
-                                            <select id="tiposolicitud" name="tiposolicitud"  class="form-select" #productoSelect
+                                            <select id="tiposolicitud" name="tiposolicitud"  class="form-select"
                                                 style="font-size: 14px;" [(ngModel)]="modelo.tipo_solicitud" required>
-                                                <option value="Requisición de personal">Requisición de personal</option>
-                                                <option value="Contratación de familiares">Contratación de familiares</option>
-                                                <option value="Reingreso de personal">Reingreso de personal</option>
-                                                <option value="Acción de personal">Acción de personal</option>
+                                                <option value="" hidden>Selecccione</option>
+                                                <option *ngFor="let baseDeDatos of dataTipoSolicitudes" [value]="baseDeDatos.id">
+                                                  {{ baseDeDatos.descripcion }}
+                                                </option>
                                             </select>
                                         </div>
                                     </div>
@@ -274,12 +274,12 @@
                                       <div class="input-group mb-3">
                                           <label class="input-group-text" for="tipomotivo"
                                               style="color: black;font-size: 14px;width: 45%;">Tipo de Motivo</label>
-                                          <select id="tipomotivo" name="tipomotivo" class="form-select" #productoSelect
+                                          <select id="tipomotivo" name="tipomotivo" class="form-select"
                                               style="font-size: 14px;"  [(ngModel)]="modelo.tipo_motivo" required>
-                                              <option>Nuevo</option>
-                                              <option>Eventual</option>
-                                              <option>Pasante</option>
-                                              <option>Reeemplazo</option>
+                                              <option value="" hidden>Selecccione</option>
+                                              <option *ngFor="let baseDeDatos of dataTipoMotivo" [value]="baseDeDatos.id">
+                                                {{ baseDeDatos.descripcion }}
+                                              </option>
                                           </select>
                                       </div>
                                   </div>
@@ -289,11 +289,12 @@
                                     <div class="input-group mb-3">
                                         <label class="input-group-text" for="tipocumplimiento"
                                             style="color: black;font-size: 14px;width: 45%;">Tipo de Acción</label>
-                                        <select id="tipocumplimiento" name="tipocumplimiento" class="form-select" #productoSelect
+                                        <select id="tipocumplimiento" name="tipocumplimiento" class="form-select"
                                             style="font-size: 14px;" [(ngModel)]="modelo.tipo_cumplimiento" required>
-                                            <option>Transferencia de Posición</option>
-                                            <option>Asignación Temporal</option>
-                                            <option>Promoción</option>
+                                            <option value="" hidden>Selecccione</option>
+                                            <option *ngFor="let baseDeDatos of dataTipoAccion" [value]="baseDeDatos.id">
+                                              {{ baseDeDatos.descripcion }}
+                                            </option>
                                         </select>
                                     </div>
                                 </div>

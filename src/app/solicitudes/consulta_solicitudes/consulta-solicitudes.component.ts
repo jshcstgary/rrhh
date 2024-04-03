@@ -32,6 +32,9 @@ import { ComponentsModule } from 'src/app/component/component.module';
 import { CamundaRestService } from 'src/app/camunda-rest.service';
 import { DatosProcesoInicio } from 'src/app/eschemas/DatosProcesoInicio';
 import { DatosInstanciaProceso } from 'src/app/eschemas/DatosInstanciaProceso';
+import { MantenimientoService } from 'src/app/services/mantenimiento/mantenimiento.service';
+import { UtilService } from 'src/app/services/util/util.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 declare var require: any;
 const data: any = require('./company.json');
@@ -74,6 +77,9 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
   model: NgbDateStruct;
   disabled = true;
   today = this.calendar.getToday();
+  public dataTipoSolicitudes: any[] = [];
+  public dataTipoMotivo: any[] = [];
+  public dataTipoAccion: any[] = [];
 
   @ViewChild("myModalSolicitudes", { static: false }) myModalSolicitudes: TemplateRef<any>;
 
@@ -127,9 +133,14 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 
   @ViewChild(ConsultaSolicitudesComponent) table: ConsultaSolicitudesComponent | any;
 
-  constructor(private config: NgSelectConfig,private calendar: NgbCalendar, private router: Router, private modalService: NgbModal
+  constructor(private config: NgSelectConfig,
+    private calendar: NgbCalendar,
+    private router: Router,
+    private modalService: NgbModal
     ,private camundaRestService: CamundaRestService
-    ,private route: ActivatedRoute) {
+    ,private route: ActivatedRoute
+    ,private utilService: UtilService
+    ,private mantenimientoService: MantenimientoService) {
 
     this.camundaRestService = camundaRestService;
     this.route = route;
@@ -280,7 +291,59 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
   }
 
   //fin crear Solicitud Integracion con camunda
+ //LLenar combo Tipo Solicitud
+  ObtenerServicioTipoSolicitud(){
 
+    return this.mantenimientoService.getTipoSolicitud().subscribe({
+      next: (response) => {
+        this.dataTipoSolicitudes = response.map((r)=>({
+          id:r.id,
+          descripcion: r.tipoSolicitud,
+        }));//verificar la estructura mmunoz
+
+
+      },
+      error: (error: HttpErrorResponse) => {
+        this.utilService.modalResponse(error.error, "error");
+      },
+    });
+  }
+
+  ObtenerServicioTipoMotivo(){
+
+    return this.mantenimientoService.getTipoMotivo().subscribe({
+      next: (response) => {
+        this.dataTipoMotivo = response.map((r)=>({
+          id:r.id,
+          descripcion: r.tipoMotivo,
+        }));//verificar la estructura mmunoz
+
+
+      },
+      error: (error: HttpErrorResponse) => {
+        this.utilService.modalResponse(error.error, "error");
+      },
+    });
+  }
+
+  ObtenerServicioTipoAccion(){
+
+    return this.mantenimientoService.getTipoAccion().subscribe({
+      next: (response) => {
+        this.dataTipoAccion = response.map((r)=>({
+          id:r.id,
+          descripcion: r.tipoAccion,
+        }));//verificar la estructura mmunoz
+
+
+      },
+      error: (error: HttpErrorResponse) => {
+        this.utilService.modalResponse(error.error, "error");
+      },
+    });
+  }
+
+  //mostrar modal de inicio de instancia de la solicitud
 
   mostrarModalCrearSolicitudes() {
     this.submitted=false;
@@ -410,5 +473,9 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
   }
 
 
-  ngOnInit() { }
+  ngOnInit() {
+    this.ObtenerServicioTipoSolicitud();
+    this.ObtenerServicioTipoMotivo();
+    this.ObtenerServicioTipoAccion();
+  }
 }
