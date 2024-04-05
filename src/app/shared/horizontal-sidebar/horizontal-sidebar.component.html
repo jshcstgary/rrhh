@@ -1,14 +1,5 @@
 <nav class="sidebar-nav">
-  <ul
-    id="sidebarnav"
-    [ngStyle]="{
-      'background-image':
-        'url(../../../assets/images/background/navbar-bg.png)',
-      'background-repeat': 'no-repeat',
-      'background-size': 'contain',
-      'background-position': 'center'
-    }"
-  >
+  <ul id="sidebarnav" [ngStyle]="navbar_bg">
     <li class="sidebar-item">
       <div class="user-profile">
         <i class="material-icons text-warning cursor-pointer me-4"
