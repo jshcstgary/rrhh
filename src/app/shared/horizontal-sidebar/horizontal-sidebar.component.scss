@@ -3,3 +3,11 @@
   height: 36px;
   border-radius: 36px;
 }
+@media (max-width: 1023px) {
+  .sidebar-nav ul {
+    background-image: none !important;
+  }
+}
+.material-icons.text-warning svg {
+  fill: #0056B3 !important;
+}

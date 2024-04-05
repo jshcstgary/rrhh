@@ -1,7 +1,7 @@
 // App
 
-/*============================================================== 
- For all pages 
+/*==============================================================
+ For all pages
  ============================================================== */
 
 #main-wrapper {
@@ -328,6 +328,9 @@ $left-part-width: 260px;
         }
       }
     }
+  }
+  .sidebar-nav [ngStyle]  {  /* Selecciona el elemento con ngStyle */
+    background-image: none !important;
   }
   .left-part {
     left: -$left-part-width;

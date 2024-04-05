@@ -40,7 +40,27 @@ export class HorizontalSidebarComponent {
     { id: "administracion", name: "Administracion" },
     { id: "agricola", name: "Agricola" },
   ];
+  ngOnInit() {
+    this.updateBackground();
+    window.addEventListener("resize", this.updateBackground);
+  }
 
+  ngOnDestroy() {
+    window.removeEventListener("resize", this.updateBackground);
+  }
+
+  updateBackground = () => {
+    const sidebarNavUl = document.querySelector(
+      ".sidebar-nav ul"
+    ) as HTMLElement; // Type assertion
+
+    if (window.innerWidth < 1024) {
+      sidebarNavUl.style.backgroundImage = "none";
+    } else {
+      sidebarNavUl.style.backgroundImage =
+        "url(../../../assets/images/background/navbar-bg.png)";
+    }
+  };
   public dropdownButtonClasses: string[] =
     VerticalNavigationData.dropdownButtonClasses;
   public userDropdownOptions: IDropdownOptions =
