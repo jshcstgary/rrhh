@@ -1,24 +1,19 @@
-import { Routes } from '@angular/router';
+import { Routes } from "@angular/router";
 
-import { ConsultaTareaComponent } from './consulta_tarea/consulta-tarea.component';
+import { ConsultaTareasComponent } from "./consulta_tarea/consulta-tareas.component";
 
 export const TareasRoutes: Routes = [
   {
-    path: '',
+    path: "",
     children: [
       {
-        path: 'consulta-tarea',
-        component: ConsultaTareaComponent,
+        path: "consulta-tarea",
+        component: ConsultaTareasComponent,
         data: {
-          title: 'Tareas',
-          urls: [
-            { title: 'Tareas' },
-            { title: 'Consulta Tarea' },
-          ],
+          title: "Mis tareas",
+          urls: [{ title: "Tareas" }, { title: "Consulta Tarea" }],
         },
       },
-
-
     ],
   },
 ];

@@ -1,0 +1,99 @@
+<div class="row">
+  <!-- ==================================-->
+  <!-- ======= Basic Nav ===== -->
+  <!-- ==================================-->
+  <div class="col-12">
+    <div class="card">
+      <div class="card-body border-top">
+        <div class="form-body">
+          <div class="row">
+            <!--Número de solicitud-->
+            <div class="col-md-3">
+              <div class="mb-3">
+                <label class="azul">Número de solicitud</label>
+                <input-component
+                  [id]="'searchInputFilter'"
+                  [type]="'string'"
+                  [buttonIcon]="'ti-search'"
+                  buttonFunction="filterStringInTable"
+                  onChangeFunction="filterStringInTable"
+                  [contexto]="this"
+                ></input-component>
+              </div>
+            </div>
+            <!--Tareas-->
+            <div class="col-md-3">
+              <div class="mb-3">
+                <label class="azul">Tareas</label>
+                <ng-select
+                  #inputSelectProducto
+                  [(ngModel)]="selected_producto"
+                  name="id_producto"
+                  placeholder="Seleccione"
+                >
+                  <ng-option *ngFor="let car of data_productos" [value]="car.id"
+                    >{{ car.id }} - {{ car.name }}</ng-option
+                  >
+                </ng-select>
+              </div>
+            </div>
+
+            <!-- <div class="col-md-3">
+              <div class="mb-3 text-center">
+                <button #buttonSearch type="submit" class="btn btn-info me-2">
+                  <i class="fas fa-filter"></i> Buscar
+                </button>
+              </div>
+            </div> -->
+            <div
+              class="col-md-3 d-flex align-items-center justify-content-center"
+            >
+              <div class="mb-3">
+                <button
+                  #buttonSearch
+                  type="submit"
+                  class="btn btn-info mt-3 me-5"
+                >
+                  <i class="fas fa-filter"></i> Buscar
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- <form>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="mb-3">
+                <div class="text-end">
+                  <button
+                    type="button"
+                    (click)="PageCrear()"
+                    class="btn btn-info me-2"
+                  >
+                    <i class="fas fa-plus"></i> Agregar
+                  </button>
+
+                  <button type="submit" class="btn btn-outline-info me-2">
+                    <i class="fas fa-file-excel"></i> Exportar
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form> -->
+        <table-component
+          *ngIf="hasFiltered"
+          [columns]="columnsTable"
+          [dataTable]="dataTable"
+          [contexto]="this"
+        ></table-component>
+
+        <!--</ul>-->
+
+        <!--<div [ngbNavOutlet]="nav" class="mt-2"></div>-->
+        <div class="bg-light p-3 rounded"></div>
+        <!--<div class="bg-light p-3 rounded">Active: {{ active }}</div>-->
+      </div>
+    </div>
+  </div>
+</div>
