@@ -4,6 +4,7 @@ export interface IRuta {
   id?: number | string;
   ruta: string;
   tipoRutaId?: number | string;
+  estado: string | boolean;
 
 }
 

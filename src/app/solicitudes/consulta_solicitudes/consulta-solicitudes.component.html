@@ -27,7 +27,7 @@
                       <label class="azul">Empresa</label>
                       <ng-select
                         #inputSelectHacienda
-                        [(ngModel)]="selected_hacienda"
+                        [(ngModel)]="selected_empresa"
                         name="id_hacienda"
                         placeholder="Seleccione"
 
@@ -110,15 +110,15 @@
                       <label class="azul">Tipo de Solicitud</label>
                       <ng-select
                         #inputSelectLabor
-                        [(ngModel)]="selected_tipo_labor"
+                        [(ngModel)]="selected_tipo_solicitud"
                         name="id_tipo_labor"
                         placeholder="Seleccione"
 
                       >
                         <ng-option
-                          *ngFor="let car of data_tipo_labor"
+                          *ngFor="let car of dataTipoSolicitudes"
                           [value]="car.id"
-                          >{{ car.id }} - {{ car.name }}</ng-option
+                          >{{ car.id }} - {{ car.descripcion }}</ng-option
                         >
                       </ng-select>
                     </div>
@@ -129,7 +129,7 @@
                       <label class="azul">Estado</label>
                       <ng-select
                         #inputSelectTrabajador
-                        [(ngModel)]="selected_trabajador"
+                        [(ngModel)]="selected_estado"
                         name="id_trabajador"
                         placeholder="Seleccione"
 
@@ -137,7 +137,7 @@
                         <ng-option
                           *ngFor="let car of data_estado"
                           [value]="car.id"
-                          >{{ car.id }} - {{ car.name }}</ng-option
+                          >{{ car.codigo }} - {{ car.descripcion }}</ng-option
                         >
                       </ng-select>
                     </div>
@@ -203,7 +203,7 @@
                       >
                         <i class="fas fa-redo"></i> Reasignar
 
-                      </button>
+                        </button>
                         <button type="submit" class="btn btn-outline-info me-2">
                           <i class="fas fa-file-excel"></i> Exportar
                         </button>

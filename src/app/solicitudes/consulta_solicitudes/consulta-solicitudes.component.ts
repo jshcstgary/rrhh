@@ -80,6 +80,7 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
   public dataTipoSolicitudes: any[] = [];
   public dataTipoMotivo: any[] = [];
   public dataTipoAccion: any[] = [];
+  public data_estado: any[]=[];
 
   @ViewChild("myModalSolicitudes", { static: false }) myModalSolicitudes: TemplateRef<any>;
 
@@ -94,33 +95,33 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
      // selecting navs
      active3: any;
 
-  selected_hacienda: number;
+  selected_empresa: number;
   selected_producto: number;
-  selected_tipo_labor: number;
-  selected_trabajador: number;
+  selected_tipo_solicitud: number;
+  selected_estado: number;
 
   data_empresas = [
-    { id: 10021, name: 'Reybanpac' },
+    { id: 1, name: 'Reybanpac' },
   ];
 
   data_productos = [
     { id: 1, name: 'Todos' },
   ];
 
-  data_tipo_labor = [
+  data_tipo_solicitud = [
     { id: 1, name: 'Requisición de personal' },
     { id: 2, name: 'Contratación de familiares' },
     { id: 3, name: 'Reingreso de personal' },
     { id: 4, name: 'Acción de personal' },
   ];
 
-  data_estado = [
-    { id: 120313, name: 'Aprobado' },
-    { id: 120314, name: 'En espera' },
-    { id: 120315, name: 'Creado' },
-    { id: 120316, name: 'Enviado' },
-    { id: 120317, name: 'Cancelado' },
-  ];
+  /*data_estado = [
+    { id: 1, name: 'Aprobado' },
+    { id: 2, name: 'En espera' },
+    { id: 3, name: 'Creado' },
+    { id: 4, name: 'Enviado' },
+    { id: 5, name: 'Cancelado' },
+  ];*/
 
   editing: any = {};
   rows: any = new Array;
@@ -187,19 +188,6 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 
   }
 
-  OpnenModal(){
-    const modalDiv= document.getElementById('myModal');
-    if(modalDiv!=null){
-      modalDiv.style.display='block';
-    }
-  }
-
-  CloseModal(){
-    const modalDiv= document.getElementById('myModal');
-    if(modalDiv!=null){
-      modalDiv.style.display='none';
-    }
-  }
 
   PageCrear()
   {
@@ -333,6 +321,24 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
         this.dataTipoAccion = response.map((r)=>({
           id:r.id,
           descripcion: r.tipoAccion,
+        }));//verificar la estructura mmunoz
+
+
+      },
+      error: (error: HttpErrorResponse) => {
+        this.utilService.modalResponse(error.error, "error");
+      },
+    });
+  }
+
+  ObtenerServicioEstado(){
+
+    return this.mantenimientoService.getCatalogo('RBPEST').subscribe({
+      next: (response) => {
+        this.data_estado = response.itemCatalogoTypes.map((r)=>({
+          id:r.id,
+          codigo: r.codigo,
+          descripcion: r.valor,
         }));//verificar la estructura mmunoz
 
 
@@ -477,5 +483,6 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
     this.ObtenerServicioTipoSolicitud();
     this.ObtenerServicioTipoMotivo();
     this.ObtenerServicioTipoAccion();
+    this.ObtenerServicioEstado();
   }
 }

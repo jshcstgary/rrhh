@@ -73,6 +73,7 @@ export class TipoMotivoComponent implements OnInit {
       next: (response) => {
         this.dataTable = response.map((motivoResponse=>({
           ...motivoResponse,
+          estado: motivoResponse.estado === "A",
           tipoSolicitudFormatted:this.formatTipoSolicitudEstaciones(motivoResponse)
         })));
       },

@@ -26,12 +26,28 @@ export const AccionData: IAccionData = {
       sortActive: true,
       colType: "string",
     },
-    PlantillaAData.defaultActions,
+    {
+      title: "Estado",
+      dataIndex: "estado",
+      type: "bool",
+    },
+    //PlantillaAData.defaultActions,
+    {
+      title: "Acciones",
+      type: "actions",
+      width: "100px",
+      actions: [
+        { materialIcon: "edit", id: "editOnTable", tooltip: "Editar" },
+        { materialIcon: "content_copy", id: "cloneOnTable", tooltip: "Duplicar",
+        },
+      ],
+    },
   ],
   defaultEmptyRowTable: {
     id: "0",
     accion: "",
     tipoSolicitudId: null,
+    estado: true,
   },
   tableInputsEditRow: [
     {
@@ -53,6 +69,10 @@ export const AccionData: IAccionData = {
       placeholder: "Seleccione",
       inputMessageError: "Seleccione",
       options: [],
+    },
+    {
+      id: "estado",
+      type: "toggle",
     },
   ],
   colsToFilterByText: ["id", "accion", "tipoSolicitudFormatted",],

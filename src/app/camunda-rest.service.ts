@@ -16,7 +16,7 @@ const httpOptions={
 })
 export class CamundaRestService {
 
-  private engineRestUrl = environment.tipoSolicitudServiceES;
+  private engineRestUrl = environment.camundaUrl;
 
   constructor(private http: HttpClient) {
     console.log('Inicio de servicios en camunda');

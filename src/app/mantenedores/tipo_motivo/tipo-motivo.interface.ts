@@ -4,6 +4,7 @@ export interface ITipomotivo{
   id?: number | string;
   tipoMotivo: string;
   tipoSolicitudId?: number | string;
+  estado: string | boolean;
 
 }
 

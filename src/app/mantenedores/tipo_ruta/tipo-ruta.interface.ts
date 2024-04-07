@@ -3,6 +3,7 @@ import { IRowTableAttributes } from "src/app/component/table/table.interface";
 export interface ITiporuta {
   id?: number | string;
   tipoRuta: string;
+  estado: string | boolean;
 }
 export interface ITiporutaTable
   extends ITiporuta,

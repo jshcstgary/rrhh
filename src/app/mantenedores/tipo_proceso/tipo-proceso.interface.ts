@@ -4,6 +4,7 @@ export interface ITipoproceso {
   id?: number | string;
   tipoProceso: string;
   tipoSolicitudId?: number | string;
+  estado: string | boolean;
 
 }
 

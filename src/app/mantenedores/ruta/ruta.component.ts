@@ -77,6 +77,7 @@ export class RutaComponent implements OnInit {
       next: (response) => {
         this.dataTable = response.map((accionResponse=>({
           ...accionResponse,
+          estado: accionResponse.estado === "A",
           tipoRutaFormatted:this.formatTipoRutaEstaciones(accionResponse)
         })));
       },

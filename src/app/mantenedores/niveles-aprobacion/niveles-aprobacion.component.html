@@ -12,15 +12,15 @@
                       <label class="azul">Tipo de Solicitud</label>
                       <ng-select
                         #inputSelectLabor
-                        [(ngModel)]="selected_tipo_labor"
+                        [(ngModel)]="selected_tipo_solicitud"
                         name="id_tipo_labor"
                         placeholder="Seleccione"
 
                       >
                         <ng-option
-                          *ngFor="let car of data_tipo_labor"
+                          *ngFor="let car of dataTipoSolicitudes"
                           [value]="car.id"
-                          >{{ car.id }} - {{ car.name }}</ng-option
+                          >{{ car.id }} - {{ car.descripcion }}</ng-option
                         >
                       </ng-select>
                     </div>
@@ -31,13 +31,13 @@
                       <label class="azul">Tipo</label>
                       <ng-select
                         #inputSelectProducto
-                        [(ngModel)]="selected_producto"
+                        [(ngModel)]="selected_tipo_motivo"
                         name="id_producto"
                         placeholder="Seleccione"
 
                       >
-                        <ng-option *ngFor="let car of data_productos" [value]="car.id"
-                          >{{ car.id }} - {{ car.name }}</ng-option
+                        <ng-option *ngFor="let car of dataTipoMotivo" [value]="car.id"
+                          >{{ car.id }} - {{ car.descripcion }}</ng-option
                         >
                       </ng-select>
                     </div>
@@ -48,15 +48,15 @@
                       <label class="azul">Nivel de Direccion</label>
                       <ng-select
                         #inputSelectTrabajador
-                        [(ngModel)]="selected_trabajador"
+                        [(ngModel)]="selected_niveldireccion"
                         name="id_trabajador"
                         placeholder="Seleccione"
 
                       >
                         <ng-option
-                          *ngFor="let car of data_estado"
+                          *ngFor="let car of dataNivelDireccion"
                           [value]="car.id"
-                          >{{ car.id }} - {{ car.name }}</ng-option
+                          >{{ car.id }} - {{ car.descripcion }}</ng-option
                         >
                       </ng-select>
                     </div>
