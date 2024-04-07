@@ -26,12 +26,28 @@ export const TiporutaData: IRutaData = {
       sortActive: true,
       colType: "string",
     },
-    PlantillaAData.defaultActions,
+    {
+      title: "Estado",
+      dataIndex: "estado",
+      type: "bool",
+    },
+    //PlantillaAData.defaultActions,
+    {
+      title: "Acciones",
+      type: "actions",
+      width: "100px",
+      actions: [
+        { materialIcon: "edit", id: "editOnTable", tooltip: "Editar" },
+        { materialIcon: "content_copy", id: "cloneOnTable", tooltip: "Duplicar",
+        },
+      ],
+    },
   ],
   defaultEmptyRowTable: {
     id: "0",
     ruta: "",
     tipoRutaId: null,
+    estado: true,
   },
   tableInputsEditRow: [
     {
@@ -44,6 +60,10 @@ export const TiporutaData: IRutaData = {
       maxLength: 30,
       required: true,
       inputMessageError: "Ingrese la descripción",
+    },
+    {
+      id: "estado",
+      type: "toggle",
     },
     {
       id: "tipoRutaId",

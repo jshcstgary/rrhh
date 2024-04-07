@@ -4,6 +4,7 @@ export interface IAccion {
   id?: number | string;
   accion: string;
   tipoSolicitudId?: number | string;
+  estado: string | boolean;
 }
 export interface ITipoSolcitud{
   id?: number | string;

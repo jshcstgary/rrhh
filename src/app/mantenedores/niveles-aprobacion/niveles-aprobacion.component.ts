@@ -30,8 +30,11 @@ import { ConsultaSolicitudesData } from "./niveles-aprobacion.data";
 import { NgSelectComponent } from "@ng-select/ng-select";
 import { ComponentsModule } from 'src/app/component/component.module';
 import { CamundaRestService } from 'src/app/camunda-rest.service';
-import { DatosProcesoInicio } from 'src/app/eschemas/DatosProcesoInicio';
 import { DatosInstanciaProceso } from 'src/app/eschemas/DatosInstanciaProceso';
+import { MantenimientoService } from 'src/app/services/mantenimiento/mantenimiento.service';
+import { HttpErrorResponse } from '@angular/common/http';
+import { UtilService } from 'src/app/services/util/util.service';
+import { DatosNivelesAprobacion } from 'src/app/eschemas/DatosNivelesAprobacion';
 declare var require: any;
 const data: any = require('./company.json');
 @Component({
@@ -65,7 +68,9 @@ export class NivelesAprobacionComponent {
   public hasFiltered: boolean = true;
   public submitted: boolean = false;
   public errorMessage: string;
-  modelo : DatosProcesoInicio = new DatosProcesoInicio();
+  public dataTipoSolicitudes: any[] = [];
+  public dataNivelDireccion: any[] = [];
+  public dataTipoMotivo: any[] = [];
   private instanceCreated : DatosInstanciaProceso;
   consultaSolicitudesSelect!:string;
   isLoading = false;
@@ -87,17 +92,17 @@ export class NivelesAprobacionComponent {
      active3: any;
 
   selected_hacienda: number;
-  selected_producto: number;
-  selected_tipo_labor: number;
-  selected_trabajador: number;
+  selected_tipo_motivo: number;
+  selected_tipo_solicitud: number;
+  selected_niveldireccion: number;
 
   data_empresas = [
     { id: 10021, name: 'Reybanpac' },
   ];
 
-  data_productos = [
+  /*data_productos = [
     { id: 1, name: 'Todos' },
-  ];
+  ];*/
 
   data_tipo_labor = [
     { id: 1, name: 'Requisición de personal' },
@@ -123,7 +128,9 @@ export class NivelesAprobacionComponent {
 
   constructor(private config: NgSelectConfig,private calendar: NgbCalendar, private router: Router, private modalService: NgbModal
     ,private camundaRestService: CamundaRestService
-    ,private route: ActivatedRoute) {
+    ,private route: ActivatedRoute
+    ,private utilService: UtilService
+    ,private mantenimientoService: MantenimientoService) {
 
     this.camundaRestService = camundaRestService;
     this.route = route;
@@ -263,16 +270,7 @@ export class NivelesAprobacionComponent {
 
   }
 
-  generatedVariablesFromFormFields(){
 
-    return {
-             variables: {
-              tipo_solicitud: { value : this.modelo.tipo_solicitud},
-              tipo_motivo: { value : this.modelo.tipo_motivo},
-              tipo_cumplimiento: { value : this.modelo.tipo_cumplimiento}
-             }
-    }
-  }
 
   //fin crear Solicitud Integracion con camunda
 
@@ -404,7 +402,63 @@ export class NivelesAprobacionComponent {
     //this.buttonSearch.nativeElement.focus();
   }
 
+  //LLenar combo Tipo Solicitud
+  ObtenerServicioTipoSolicitud(){
 
-  ngOnInit() { }
+    return this.mantenimientoService.getTipoSolicitud().subscribe({
+      next: (response) => {
+        this.dataTipoSolicitudes = response.map((r)=>({
+          id:r.id,
+          descripcion: r.tipoSolicitud,
+        }));//verificar la estructura mmunoz
+
+
+      },
+      error: (error: HttpErrorResponse) => {
+        this.utilService.modalResponse(error.error, "error");
+      },
+    });
+  }
+
+  ObtenerServicioNivelDireccion(){
+
+    return this.mantenimientoService.getCatalogo('RBPND').subscribe({
+      next: (response) => {
+        this.dataNivelDireccion = response.itemCatalogoTypes.map((r)=>({
+          id:r.id,
+          descripcion: r.valor,
+        }));//verificar la estructura mmunoz
+
+
+      },
+      error: (error: HttpErrorResponse) => {
+        this.utilService.modalResponse(error.error, "error");
+      },
+    });
+  }
+//dataTipoMotivo
+
+ObtenerServicioTipoMotivo(){
+
+  return this.mantenimientoService.getTipoMotivo().subscribe({
+    next: (response) => {
+      this.dataTipoMotivo = response.map((r)=>({
+        id:r.id,
+        descripcion: r.tipoMotivo,
+      }));//verificar la estructura mmunoz
+
+
+    },
+    error: (error: HttpErrorResponse) => {
+      this.utilService.modalResponse(error.error, "error");
+    },
+  });
+}
+
+  ngOnInit() {
+     this.ObtenerServicioTipoSolicitud();
+     this.ObtenerServicioNivelDireccion();
+     this.ObtenerServicioTipoMotivo();
+  }
 }
 

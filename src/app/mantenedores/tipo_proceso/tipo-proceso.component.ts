@@ -73,6 +73,7 @@ export class TipoProcesoComponent implements OnInit {
       next: (response) => {
         this.dataTable = response.map((procesoResponse=>({
           ...procesoResponse,
+          estado: procesoResponse.estado === "A",
           tipoSolicitudFormatted:this.formatTipoSolicitudEstaciones(procesoResponse)
         })));
       },

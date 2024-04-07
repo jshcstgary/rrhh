@@ -41,7 +41,10 @@ export class TipoRutaComponent implements OnInit {
     return this.tiporutaesService.index().subscribe({
       //return this.tipoviviendasService.index().subscribe({
       next: (response) => {
-        this.dataTable = response.tipoRutaType;//verificar la estructura mmunoz
+        this.dataTable = response.tipoRutaType.map((tipoRutaResponse=>({
+          ...tipoRutaResponse,
+          estado: tipoRutaResponse.estado === "A",
+        })));
       },
       error: (error: HttpErrorResponse) => {
         this.utilService.modalResponse(error.error, "error");

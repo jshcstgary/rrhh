@@ -21,7 +21,7 @@
                             </button>-->
 
                             <button type="button" class="mr-10 fz-14 btn btn-info btn-icon-end"
-                                  aria-label="Close" aria-label="Close">
+                                  aria-label="Close" aria-label="Close" (click)="GuardarnivelAprobacion()">
                                 <i class="fas fa-save"></i> Guardar
                             </button>
                         </div>
@@ -31,7 +31,7 @@
                             <div class="input-group mb-3">
                                 <label class="input-group-text" for="tiposolicitud"
                                     style="color: black;font-size: 14px;width: 45%;">Tipo Solicitud</label>
-                                <select [(ngModel)]="selected_tiposolicitud" id="tiposolicitud" name="tiposolicitud"  class="form-select"
+                                <select [(ngModel)]="modelo.idTipoSolicitud" id="tiposolicitud" name="tiposolicitud"  class="form-select"
                                     style="font-size: 14px;"  required>
                                     <option value="" hidden>Selecccione</option>
                                     <option *ngFor="let baseDeDatos of dataTipoSolicitudes" [value]="baseDeDatos.id">
@@ -46,12 +46,12 @@
                           <div class="input-group mb-3">
                               <label class="input-group-text" for="tipomotivo"
                                   style="color: black;font-size: 14px;width: 45%;">Tipo de Motivo</label>
-                              <select id="tipomotivo" name="tipomotivo" class="form-select" #productoSelect
+                              <select [(ngModel)]="modelo.idTipoMotivo" id="tipomotivo" name="tipomotivo" class="form-select" #productoSelect
                                   style="font-size: 14px;"   required>
-                                  <option>Nuevo</option>
-                                  <option>Eventual</option>
-                                  <option>Pasante</option>
-                                  <option>Reeemplazo</option>
+                                  <option value="" hidden>Selecccione</option>
+                                  <option *ngFor="let baseDeDatos of dataTipoMotivo" [value]="baseDeDatos.id">
+                                    {{ baseDeDatos.descripcion }}
+                                  </option>
                               </select>
                           </div>
                       </div>
@@ -59,13 +59,15 @@
                   <div class="row" style="padding-top: 20px; display: flex; justify-content: start; margin: 10px;">
                     <div class="col-md-12" style="width: 75%;">
                         <div class="input-group mb-3">
-                            <label class="input-group-text" for="tipocumplimiento"
+                            <label class="input-group-text" for="accion"
                                 style="color: black;font-size: 14px;width: 45%;">Acción</label>
-                            <select id="tipocumplimiento" name="tipocumplimiento" class="form-select" #productoSelect
+                            <select [(ngModel)]="modelo.idAccion" id="accion" name="accion" class="form-select"
                                 style="font-size: 14px;"  required>
-                                <option>Crear Posicion (esten o no presupuestadas)</option>
-                                <option></option>
-                                <option></option>
+                                <!--<option>Crear Posicion (esten o no presupuestadas)</option>-->
+                                <option value="" hidden>Selecccione</option>
+                                <option *ngFor="let baseDeDatos of dataAccion" [value]="baseDeDatos.id">
+                                  {{ baseDeDatos.descripcion }}
+                                </option>
                             </select>
                         </div>
                     </div>
@@ -73,13 +75,15 @@
                 <div class="row" style="padding-top: 20px; display: flex; justify-content: start; margin: 10px;">
                   <div class="col-md-12" style="width: 75%;">
                       <div class="input-group mb-3">
-                          <label class="input-group-text" for="tipocumplimiento"
+                          <label class="input-group-text" for="niveldireccion"
                               style="color: black;font-size: 14px;width: 45%;">Niveles de direccion</label>
-                          <select id="tipocumplimiento" name="tipocumplimiento" class="form-select" #productoSelect
+                          <select [(ngModel)]="modelo.idNivelDireccion" id="niveldireccion" name="niveldireccion" class="form-select"
                               style="font-size: 14px;"  required>
-                              <option>Supervición/Coordinación</option>
-                              <option></option>
-                              <option></option>
+                              <!--<option>Supervición/Coordinación</option>-->
+                              <option value="" hidden>Selecccione</option>
+                              <option *ngFor="let baseDeDatos of dataNivelDireccion" [value]="baseDeDatos.id">
+                                {{ baseDeDatos.descripcion }}
+                              </option>
                           </select>
                       </div>
                   </div>
@@ -87,13 +91,15 @@
               <div class="row" style="padding-top: 20px; display: flex; justify-content: start; margin: 10px;">
                 <div class="col-md-12" style="width: 75%;">
                     <div class="input-group mb-3">
-                        <label class="input-group-text" for="tipocumplimiento"
+                        <label class="input-group-text" for="ruta"
                             style="color: black;font-size: 14px;width: 45%;">Ruta</label>
-                        <select id="tipocumplimiento" name="tipocumplimiento" class="form-select"
+                        <select [(ngModel)]="modelo.idRuta" id="ruta" name="ruta" class="form-select"
                             style="font-size: 14px;"  required>
-                            <option>Lvl1 Aprobación</option>
-                            <option></option>
-                            <option></option>
+                            <!--<option>Lvl1 Aprobación</option>-->
+                            <option value="" hidden>Selecccione</option>
+                            <option *ngFor="let baseDeDatos of dataRuta" [value]="baseDeDatos.id">
+                              {{ baseDeDatos.descripcion }}
+                            </option>
                         </select>
                     </div>
                 </div>
@@ -101,13 +107,15 @@
             <div class="row" style="padding-top: 20px; display: flex; justify-content: start; margin: 10px;">
               <div class="col-md-12" style="width: 75%;">
                   <div class="input-group mb-3">
-                      <label class="input-group-text" for="tipocumplimiento"
+                      <label class="input-group-text" for="tiporuta"
                           style="color: black;font-size: 14px;width: 45%;">Tipo de Ruta</label>
-                      <select id="tipocumplimiento" name="tipocumplimiento" class="form-select"
+                      <select [(ngModel)]="modelo.idTipoRuta" id="tiporuta" name="tiporuta" class="form-select"
                           style="font-size: 14px;"  required>
-                          <option>Areas Corporativas</option>
-                          <option></option>
-                          <option></option>
+                          <!--<option>Areas Corporativas</option>-->
+                          <option value="" hidden>Selecccione</option>
+                          <option *ngFor="let baseDeDatos of dataTipoRuta" [value]="baseDeDatos.id">
+                            {{ baseDeDatos.descripcion }}
+                          </option>
                       </select>
                   </div>
               </div>
@@ -115,13 +123,15 @@
           <div class="row" style="padding-top: 20px; display: flex; justify-content: start; margin: 10px;">
             <div class="col-md-12" style="width: 75%;">
                 <div class="input-group mb-3">
-                    <label class="input-group-text" for="tipocumplimiento"
+                    <label class="input-group-text" for="nivelaprobacion"
                         style="color: black;font-size: 14px;width: 45%;">Nivel de Aprobación</label>
-                    <select id="tipocumplimiento" name="tipocumplimiento" class="form-select"
+                    <select [(ngModel)]="modelo.idNivelAprobacionRuta" id="nivelaprobacion" name="nivelaprobacion" class="form-select"
                         style="font-size: 14px;"  required>
-                        <option>Jefatura</option>
-                        <option></option>
-                        <option></option>
+                        <!--<option>Jefatura</option>-->
+                        <option value="" hidden>Selecccione</option>
+                        <option *ngFor="let baseDeDatos of dataNivelAprobacion" [value]="baseDeDatos.id">
+                          {{ baseDeDatos.descripcion }}
+                        </option>
                     </select>
                 </div>
             </div>

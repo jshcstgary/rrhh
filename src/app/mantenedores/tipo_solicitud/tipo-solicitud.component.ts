@@ -40,7 +40,11 @@ export class TipoSolicitudComponent implements OnInit{
   private getDataToTable() {
     return this.tiposolicitudesService.index().subscribe({
       next: (response) => {
-        this.dataTable = response;//verificar la estructura mmunoz
+        this.dataTable = response.map((r)=>({
+          id:r.id,
+          descripcion: r.tipoSolicitud,
+          estado: r.estado === "A",
+        }));//verificar la estructura mmunoz
       },
       error: (error: HttpErrorResponse) => {
         this.utilService.modalResponse(error.error, "error");

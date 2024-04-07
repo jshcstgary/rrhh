@@ -3,17 +3,7 @@ import { IRowTableAttributes } from "src/app/component/table/table.interface";
 export interface ITiposolicitud {
   id?: number | string;
   tipoSolicitud?: string;
-  /*codigo?: number | string;
-  descripcion: string;
-  estacion?: string;
-  aplicativoId?: string;
-  fechaActualizacion?: string;
-  fechaCreacion?: string;
-  horaCreacion?: string;
-  horaActualizacion?: string;
-  menuId?: string;
-  usuarioCreacion?: string;
-  usuarioActualizacion?: string;*/
+  estado: string | boolean;
 }
 export interface ITiposolicitudTable
   extends ITiposolicitud,

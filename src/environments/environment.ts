@@ -32,7 +32,7 @@ export const environment = {
    taskType_Revisar   : 'Activity_0wf5xb7',
 
   //Servicios de workflow
-  camundaUrl: `${baseC}:8188`,
+  camundaUrl: `${baseC}:8188/`,
   tipoSolicitudServiceES: `${baseW}:8068/v1/es/tiposolicitud`,
   tipoRutaServiceES:`${baseW}:8069/v1/es/tiporuta`,
   tipoProcesoServiceES: `${baseW}:8070/v1/es/tipoproceso`,
@@ -40,6 +40,10 @@ export const environment = {
   tipoMotivoServiceES: `${baseW}:8072/v1/es/tipomotivo`,//10.35.3.162:8072/v1/es/tipomotivo
   accionServiceES:`${baseW}:8073/v1/es/accion`,
   tipoAccionServiceES:`${baseW}:8074/v1/es/tipoaccion`,//10.35.3.162:8074/v1/es/tipoaccion
+  CatalogoServiceES:`${baseW}:8053/v1/es/item-catalogo/codigo`,//10.35.3.162:8074/v1/es/tipoaccion
+  nivelAprobacionServiceES:`${baseW}:8000/v1/es/nivelesaprobacion`,//http://10.35.3.162:8000/v1/es/nivelesaprobacion
+
+  //http://10.35.3.162:8053/v1/es/item-catalogo/codigo/
 
   /*
   http://10.35.3.162:8068/v1/es/tiposolicitud  ok
@@ -49,6 +53,26 @@ export const environment = {
   http://10.35.3.162:8072/v1/es/tipomotivo
   http://10.35.3.162:8073/v1/es/accion         no
   http://10.35.3.162:8074/v1/es/tipoaccion
+  http://10.35.3.162:8000/v1/es/nivelesaprobacion
+  http://10.35.3.162:8000/swagger/index.html
+
+
+  Buen día, servicio solicitud y detalle solicitud
+  http://10.35.3.162:8001/swagger/index.html
+
+  servicio tarea y variable de proceso histórico de camunda
+  http://10.35.3.162:8002/swagger/index.html
+
+  Api para consultar los catalogos de niveles de Aprobación
+  http://10.35.3.162:8053/v1/es/item-catalogo/codigo/RBPNA
+  Api para consultar los catalogos de Niveles de Dirección
+  http://10.35.3.162:8053/v1/es/item-catalogo/codigo/RBPND
+
+  Api que devuelve empresas
+  http://10.35.3.175:8506/swagger/index.html
+
+  servicio de la vista
+  exempleadojaff --> http://10.35.3.162:8400/swagger/index.html
 
   */
 
