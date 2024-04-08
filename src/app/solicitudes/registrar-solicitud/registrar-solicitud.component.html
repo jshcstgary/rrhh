@@ -1,94 +1,911 @@
 <div class="card">
-  <div class="card-body">
-        <h1>{{this.titulo}}</h1>
-        <br/>
-        <label class="form-label">
-          <b>Tipo Solicitud:</b>&nbsp;{{this.modelBase.tipo_solicitud}}
-        </label>
-        &nbsp;&nbsp;
-        <label class="form-label">
-          <b>Tipo Motivo:</b>&nbsp;{{this.modelBase.tipo_motivo}}
-        </label>
-        &nbsp;&nbsp;
-        <label class="form-label">
-          <b>Date:</b>&nbsp;{{this.date}}
-        </label>
-  </div>
-  <div class="card-body">
-
-    <div [hidden]="submitted">
-
-      <form  (submit)="onSubmit()"
-              #registrarSolicitud ="ngForm"
-              class="ui form">
-        <h3>Informacion General</h3>
-        <div  class="mb-2">
-
-                <div class="field">
-                    <label class="form-label" for="codigo">Codigo</label>
-                    <br/>
-                    <input  type="text"  class="form-control"
-                            id="codigo"  name="codigo"
-                            required
-                            [(ngModel)]="model.codigo" />
-                </div>
-                <br/>
-
-                <div class="field">
-                    <label class="form-label" for="description">Description</label>
-                    <br/>
-                    <input  type="text" class="form-control"
-                            id="description"  name="description"
-                            required
-                            [(ngModel)]="model.description" />
-                </div>
-                  <br/>
-
-                <div class="field">
-                    <label class="form-label" for="importe">Importe</label>
-                    <br/>
-                    <input  type="text" class="form-control"
-                            id="importe"  name="importe"
-                            required
-                            [(ngModel)]="model.importe" />
-                </div>
-                  <br/>
-
-                <div class="field">
-                    <label class="form-label" for="observations">Observations</label>
-                    <br/>
-                    <textarea data-limit-rows="true" cols="60" rows="8" class="form-control"
-                            id="observations" name="observations"
-                            [(ngModel)]="model.observations" >
-                          </textarea>
-                </div>
-                <br/>
-
-                <div class="field">
-                  <button type="submit" class="btn btn-primary"  aria-describedby="Mark as complete" [disabled]="!registrarSolicitud.form.valid">Grabar</button>
-                  &nbsp;&nbsp;
-                  <button type="button" (click)="onCancel()" class="btn btn-secondary" aria-describedby="Task cancelled in the system" >Cancelar</button>
-                </div>
+  <h2 class="card-body text-start">
+    <div class="row">
+      <!--<div class="col-md-8">
+              <b style="color: rgb(227, 199, 22);font-size: 20px; margin: 20px;">Mantenimiento de rutas</b>
+          </div>-->
+      <div class="col-md-8">
+        <div class="mb-3">
+          <a>
+            <h3 class="danger">
+              <i class="bi bi-arrow-left-circle azul"></i> Bandeja de
+              solicitudes
+            </h3></a
+          >
+        </div>
       </div>
-    </form>
-  </div>
 
-  <div [hidden]="!submitted">
-      <div *ngIf="!this.errorMessage">
-          <p>Request registered satisfactorily. Requirement / New with code <code>{{this.model.codigo}}</code>.
-            <br/>
-            <code>{{this.uniqueTaskId}}</code>
-          </p>
+      <div class="col-md-4 text-end">
+        <!--<button style="margin: 10px;color: black;" type="button" (click)="modal.dismiss('Cross click')"
+                  class="mr-10 fz-14 btn btn-outline-secondary btn-icon-end">Cancelar
+              </button>-->
+        <button type="button" class="btn btn-info me-2">
+          <i class="fas fa-redo"></i> Reasignar
+        </button>
+        <button type="button" class="btn btn-info me-2">
+          <i class="fas fa-times"></i> Anular
+        </button>
+        <button
+          type="button"
+          class="mr-10 fz-14 btn btn-info btn-icon-end"
+          aria-label="Close"
+          aria-label="Close"
+        >
+          <i class="fas fa-save"></i> Guardar
+        </button>
+      </div>
+    </div>
+    <div class="row mt-4">
+      <div class="col-md-3">
+        <div class="mb-4">
+          <a> <h3 class="danger">Información general</h3></a>
         </div>
-        <div *ngIf="this.errorMessage">
-          <p>Task failed. Check error message below.
-            <br/>
-            <code>{{this.errorMessage}}</code>
-          </p>
-        </div>
-  </div>
-  <br/>
-  Return to <a href="/">home page</a>.
-</div>
-</div>
+      </div>
+      <div class="col-md-9">
+        <hr />
+      </div>
+    </div>
 
+    <!-- Row 1 -->
+    <div class="row">
+      <div class="col-md-6">
+        <div class="input-group mb-3">
+          <label
+            class="input-group-text"
+            for="tiposolicitud"
+            style="color: black; font-size: 14px; width: 45%"
+            >Tipo de solicitud</label
+          >
+          &nbsp;
+          <span
+            id="tiposolicitud"
+            style="color: black; font-size: 14px; margin: auto auto"
+            class="text-center"
+            >Requisición de personal</span
+          >
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="input-group mb-3">
+          <label
+            class="input-group-text"
+            for="tipomotivo"
+            style="color: black; font-size: 14px; width: 45%"
+            >Tipo de motivo</label
+          >
+          &nbsp;
+          <span
+            id="tipomotivo"
+            style="color: black; font-size: 14px; margin: auto auto"
+            class="text-center"
+            >Reemplazo</span
+          >
+        </div>
+      </div>
+    </div>
+
+    <!-- Row 2 -->
+    <div class="row">
+      <div class="col-md-6">
+        <div class="input-group mb-3">
+          <label
+            class="input-group-text"
+            for="codigoposicion"
+            style="color: black; font-size: 14px; width: 45%"
+            >Código de posición</label
+          >
+          &nbsp;
+          <input type="text" class="form-control" id="codigoposicion" />
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="input-group mb-3">
+          <label
+            class="input-group-text"
+            for="nombreempleado"
+            style="color: black; font-size: 14px; width: 45%"
+            >Nombre de empleado</label
+          >
+          <select
+            id="nombreempleado"
+            name="nombreempleado"
+            class="form-select"
+            style="font-size: 14px"
+            required
+          >
+            <option value="" hidden>Selecccione</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Row 3 -->
+    <div class="row">
+      <div class="col-md-6">
+        <div class="input-group mb-3">
+          <label
+            class="input-group-text"
+            for="subledger"
+            style="color: black; font-size: 14px; width: 45%"
+            >Subledger</label
+          >
+          <select
+            id="subledger"
+            name="subledger"
+            class="form-select"
+            style="font-size: 14px"
+            required
+          >
+            <option value="" hidden>Selecccione</option>
+          </select>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="input-group mb-3">
+          <label
+            class="input-group-text"
+            for="descripcionposicion"
+            style="color: black; font-size: 14px; width: 45%"
+            >Descripción de posición</label
+          >
+          &nbsp;
+          <span
+            id="descripcionposicion"
+            style="color: black; font-size: 14px; margin: auto auto"
+            class="text-center"
+            >--</span
+          >
+        </div>
+      </div>
+    </div>
+
+    <!-- Row 4 -->
+    <div class="row">
+      <div class="col-md-6">
+        <div class="input-group mb-3">
+          <label
+            class="input-group-text"
+            for="compania"
+            style="color: black; font-size: 14px; width: 45%"
+            >Compañía</label
+          >
+          <span
+            id="compania"
+            style="color: black; font-size: 14px; margin: auto auto"
+            class="text-center"
+            >--</span
+          >
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="input-group mb-3">
+          <label
+            class="input-group-text"
+            for="unidadnegocio"
+            style="color: black; font-size: 14px; width: 45%"
+            >Unidad de negocio</label
+          >
+          <span
+            id="unidadnegocio"
+            style="color: black; font-size: 14px; margin: auto auto"
+            class="text-center"
+            >--</span
+          >
+        </div>
+      </div>
+    </div>
+
+    <!-- Row 5 -->
+    <div class="row">
+      <div class="col-md-6">
+        <div class="input-group mb-3">
+          <label
+            class="input-group-text"
+            for="areadepartamento"
+            style="color: black; font-size: 14px; width: 45%"
+            >Área/departamento</label
+          >
+          <span
+            id="areadepartamento"
+            style="color: black; font-size: 14px; margin: auto auto"
+            class="text-center"
+            >--</span
+          >
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="input-group mb-3">
+          <label
+            class="input-group-text"
+            for="tipocargo"
+            style="color: black; font-size: 14px; width: 45%"
+            >Tipo de cargo</label
+          >
+          <span
+            id="tipocargo"
+            style="color: black; font-size: 14px; margin: auto auto"
+            class="text-center"
+            >--</span
+          >
+        </div>
+      </div>
+    </div>
+
+    <!-- Row 6 -->
+    <div class="row">
+      <div class="col-md-6">
+        <div class="input-group mb-3">
+          <label
+            class="input-group-text"
+            for="localidadzona"
+            style="color: black; font-size: 14px; width: 45%"
+            >Localidad zona</label
+          >
+          <span
+            id="localidadzona"
+            style="color: black; font-size: 14px; margin: auto auto"
+            class="text-center"
+            >--</span
+          >
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="input-group mb-3">
+          <label
+            class="input-group-text"
+            for="niveldirección"
+            style="color: black; font-size: 14px; width: 45%"
+            >Nivel de dirección</label
+          >
+          <span
+            id="niveldirección"
+            style="color: black; font-size: 14px; margin: auto auto"
+            class="text-center"
+            >--</span
+          >
+        </div>
+      </div>
+    </div>
+
+    <!-- Row 7 -->
+    <div class="row">
+      <div class="col-md-6">
+        <div class="input-group mb-3">
+          <label
+            class="input-group-text"
+            for="centrocosto"
+            style="color: black; font-size: 14px; width: 45%"
+            >Centro de costo</label
+          >
+          <span
+            id="centrocosto"
+            style="color: black; font-size: 14px; margin: auto auto"
+            class="text-center"
+            >--</span
+          >
+        </div>
+      </div>
+    </div>
+
+    <div class="row mt-4">
+      <div class="col-md-4">
+        <div class="mb-4">
+          <a> <h3 class="danger">Funciones y responsabilidades</h3></a>
+        </div>
+      </div>
+      <div class="col-md-8">
+        <hr />
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
+        <div class="input-group mb-3">
+          <label
+            class="input-group-text"
+            for="reporta"
+            style="color: black; font-size: 14px; width: 45%"
+            >Reporta a</label
+          >
+          &nbsp;
+          <span
+            id="reporta"
+            style="color: black; font-size: 14px; margin: auto auto"
+            class="text-center"
+            >151 | Gerente
+          </span>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="input-group mb-3">
+          <label
+            class="input-group-text"
+            for="supervisaa"
+            style="color: black; font-size: 14px; width: 45%"
+            >Supervisa a</label
+          >
+          &nbsp;
+          <span
+            id="supervisaa"
+            style="color: black; font-size: 14px; margin: auto auto"
+            class="text-center"
+            >#N/A</span
+          >
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
+        <div class="input-group mb-3">
+          <label
+            class="input-group-text"
+            for="tipocontrato"
+            style="color: black; font-size: 14px; width: 45%"
+            >Tipo de contrato</label
+          >
+          &nbsp;
+          <select
+            id="tipocontrato"
+            name="tipocontrato"
+            class="form-select"
+            style="font-size: 14px"
+            required
+          >
+            <option value="" hidden>Selecccione</option>
+          </select>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="input-group mb-3">
+          <label
+            class="input-group-text"
+            for="nivelreporte"
+            style="color: black; font-size: 14px; width: 45%"
+            >Nivel de reporte</label
+          >
+          &nbsp;
+          <span
+            id="nivelreporte"
+            style="color: black; font-size: 14px; margin: auto auto"
+            class="text-center"
+            >#N/A</span
+          >
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
+        <div class="input-group mb-3">
+          <label
+            class="input-group-text"
+            for="sueldo"
+            style="color: black; font-size: 14px; width: 45%"
+            >Sueldo</label
+          >
+          &nbsp;
+          <input type="text" class="form-control" id="sueldo" />
+        </div>
+      </div>
+    </div>
+
+    <div class="row mt-4">
+      <div class="col-md-4">
+        <div class="mb-4">
+          <a> <h3 class="danger fs-4">Tipo de variable</h3></a>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
+        <div class="input-group mb-3">
+          <label
+            class="input-group-text"
+            for="mensual"
+            style="color: black; font-size: 14px; width: 45%"
+            >Mensual</label
+          >
+          &nbsp;
+          <span
+            id="mensual"
+            style="color: black; font-size: 14px; margin: auto auto"
+            class="text-center"
+            >2000
+          </span>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="input-group mb-3">
+          <label
+            class="input-group-text"
+            for="trimestral"
+            style="color: black; font-size: 14px; width: 45%"
+            >Trimestral</label
+          >
+          &nbsp;
+          <span
+            id="trimestral"
+            style="color: black; font-size: 14px; margin: auto auto"
+            class="text-center"
+            >2000</span
+          >
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
+        <div class="input-group mb-3">
+          <label
+            class="input-group-text"
+            for="semestral"
+            style="color: black; font-size: 14px; width: 45%"
+            >Semestral</label
+          >
+          &nbsp;
+          <span
+            id="semestral"
+            style="color: black; font-size: 14px; margin: auto auto"
+            class="text-center"
+            >2000
+          </span>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="input-group mb-3">
+          <label
+            class="input-group-text"
+            for="anual"
+            style="color: black; font-size: 14px; width: 45%"
+            >Anual</label
+          >
+          &nbsp;
+          <span
+            id="anual"
+            style="color: black; font-size: 14px; margin: auto auto"
+            class="text-center"
+            >2000</span
+          >
+        </div>
+      </div>
+    </div>
+
+    <div class="row mt-4">
+      <div class="col-md-4">
+        <div class="mb-4">
+          <a> <h3 class="danger">Aprobadores de la solicitud</h3></a>
+        </div>
+      </div>
+      <div class="col-md-8">
+        <hr />
+      </div>
+    </div>
+
+    <div class="accordion" id="accordionExample">
+      <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button
+            class="accordion-button"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#collapseOne"
+            aria-expanded="true"
+            aria-controls="collapseOne"
+          >
+            1 Lvl de Aprobación
+          </button>
+        </h2>
+        <div
+          id="collapseOne"
+          class="accordion-collapse collapse show"
+          data-bs-parent="#accordionExample"
+        >
+          <div class="row mt-2">
+            <div class="col-md-6">
+              <div class="input-group mb-3">
+                <label
+                  for="tiposolicitud"
+                  style="color: #0056b3; font-size: 14px; margin: auto auto"
+                >
+                  Descripción de la posición
+                </label>
+                &nbsp;
+                <span
+                  id="tiposolicitud"
+                  style="color: black; font-size: 14px; margin: auto auto"
+                  class="text-center"
+                  >20 - Asistencia de Gerencia</span
+                >
+              </div>
+            </div>
+          </div>
+          <div class="row mt-2">
+            <div class="col-md-6">
+              <div class="input-group mb-3">
+                <label
+                  for="tiposolicitud"
+                  style="color: #0056b3; font-size: 14px; margin: auto auto"
+                >
+                  Comentarios
+                </label>
+                &nbsp;
+                <span
+                  id="tiposolicitud"
+                  style="color: black; font-size: 14px; margin: auto auto"
+                  class="text-center"
+                  >No applica</span
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button
+            class="accordion-button collapsed"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#collapseTwo"
+            aria-expanded="false"
+            aria-controls="collapseTwo"
+          >
+            2 Lvl de Aprobador
+          </button>
+        </h2>
+        <div
+          id="collapseTwo"
+          class="accordion-collapse collapse"
+          data-bs-parent="#accordionExample"
+        >
+          <div class="row mt-2">
+            <div class="col-md-6">
+              <div class="input-group mb-3">
+                <label
+                  for="tiposolicitud"
+                  style="color: #0056b3; font-size: 14px; margin: auto auto"
+                >
+                  Descripción de la posición
+                </label>
+                &nbsp;
+                <span
+                  id="tiposolicitud"
+                  style="color: black; font-size: 14px; margin: auto auto"
+                  class="text-center"
+                  >20 - Asistencia de Gerencia</span
+                >
+              </div>
+            </div>
+          </div>
+          <div class="row mt-2">
+            <div class="col-md-6">
+              <div class="input-group mb-3">
+                <label
+                  for="tiposolicitud"
+                  style="color: #0056b3; font-size: 14px; margin: auto auto"
+                >
+                  Comentarios
+                </label>
+                &nbsp;
+                <span
+                  id="tiposolicitud"
+                  style="color: black; font-size: 14px; margin: auto auto"
+                  class="text-center"
+                  >No applica</span
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button
+            class="accordion-button collapsed"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#collapseThree"
+            aria-expanded="false"
+            aria-controls="collapseThree"
+          >
+            3 Lvl de Aprobador
+          </button>
+        </h2>
+        <div
+          id="collapseThree"
+          class="accordion-collapse collapse"
+          data-bs-parent="#accordionExample"
+        >
+          <div class="row mt-2">
+            <div class="col-md-6">
+              <div class="input-group mb-3">
+                <label
+                  for="tiposolicitud"
+                  style="color: #0056b3; font-size: 14px; margin: auto auto"
+                >
+                  Descripción de la posición
+                </label>
+                &nbsp;
+                <span
+                  id="tiposolicitud"
+                  style="color: black; font-size: 14px; margin: auto auto"
+                  class="text-center"
+                  >20 - Asistencia de Gerencia</span
+                >
+              </div>
+            </div>
+          </div>
+          <div class="row mt-2">
+            <div class="col-md-6">
+              <div class="input-group mb-3">
+                <label
+                  for="tiposolicitud"
+                  style="color: #0056b3; font-size: 14px; margin: auto auto"
+                >
+                  Comentarios
+                </label>
+                &nbsp;
+                <span
+                  id="tiposolicitud"
+                  style="color: black; font-size: 14px; margin: auto auto"
+                  class="text-center"
+                  >No applica</span
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button
+            class="accordion-button collapsed"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#collapseFour"
+            aria-expanded="false"
+            aria-controls="collapseFour"
+          >
+            4 Lvl de Aprobador
+          </button>
+        </h2>
+        <div
+          id="collapseFour"
+          class="accordion-collapse collapse"
+          data-bs-parent="#accordionExample"
+        >
+          <div class="row mt-2">
+            <div class="col-md-6">
+              <div class="input-group mb-3">
+                <label
+                  for="tiposolicitud"
+                  style="color: #0056b3; font-size: 14px; margin: auto auto"
+                >
+                  Descripción de la posición
+                </label>
+                &nbsp;
+                <span
+                  id="tiposolicitud"
+                  style="color: black; font-size: 14px; margin: auto auto"
+                  class="text-center"
+                  >20 - Asistencia de Gerencia</span
+                >
+              </div>
+            </div>
+          </div>
+          <div class="row mt-2">
+            <div class="col-md-6">
+              <div class="input-group mb-3">
+                <label
+                  for="tiposolicitud"
+                  style="color: #0056b3; font-size: 14px; margin: auto auto"
+                >
+                  Comentarios
+                </label>
+                &nbsp;
+                <span
+                  id="tiposolicitud"
+                  style="color: black; font-size: 14px; margin: auto auto"
+                  class="text-center"
+                  >No applica</span
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button
+            class="accordion-button collapsed"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#collapseFive"
+            aria-expanded="false"
+            aria-controls="collapseFive"
+          >
+            RRHH Corporativo
+          </button>
+        </h2>
+        <div
+          id="collapseFive"
+          class="accordion-collapse collapse"
+          data-bs-parent="#accordionExample"
+        >
+          <div class="row mt-2">
+            <div class="col-md-6">
+              <div class="input-group mb-3">
+                <label
+                  for="tiposolicitud"
+                  style="color: #0056b3; font-size: 14px; margin: auto auto"
+                >
+                  Descripción de la posición
+                </label>
+                &nbsp;
+                <span
+                  id="tiposolicitud"
+                  style="color: black; font-size: 14px; margin: auto auto"
+                  class="text-center"
+                  >20 - Asistencia de Gerencia</span
+                >
+              </div>
+            </div>
+          </div>
+          <div class="row mt-2">
+            <div class="col-md-6">
+              <div class="input-group mb-3">
+                <label
+                  for="tiposolicitud"
+                  style="color: #0056b3; font-size: 14px; margin: auto auto"
+                >
+                  Comentarios
+                </label>
+                &nbsp;
+                <span
+                  id="tiposolicitud"
+                  style="color: black; font-size: 14px; margin: auto auto"
+                  class="text-center"
+                  >No applica</span
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button
+            class="accordion-button collapsed"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#collapseSix"
+            aria-expanded="false"
+            aria-controls="collapseSix"
+          >
+            Remuneraciones
+          </button>
+        </h2>
+        <div
+          id="collapseSix"
+          class="accordion-collapse collapse"
+          data-bs-parent="#accordionExample"
+        >
+          <div class="row mt-2">
+            <div class="col-md-6">
+              <div class="input-group mb-3">
+                <label
+                  for="tiposolicitud"
+                  style="color: #0056b3; font-size: 14px; margin: auto auto"
+                >
+                  Descripción de la posición
+                </label>
+                &nbsp;
+                <span
+                  id="tiposolicitud"
+                  style="color: black; font-size: 14px; margin: auto auto"
+                  class="text-center"
+                  >20 - Asistencia de Gerencia</span
+                >
+              </div>
+            </div>
+          </div>
+          <div class="row mt-2">
+            <div class="col-md-6">
+              <div class="input-group mb-3">
+                <label
+                  for="tiposolicitud"
+                  style="color: #0056b3; font-size: 14px; margin: auto auto"
+                >
+                  Comentarios
+                </label>
+                &nbsp;
+                <span
+                  id="tiposolicitud"
+                  style="color: black; font-size: 14px; margin: auto auto"
+                  class="text-center"
+                  >No applica</span
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row mt-4">
+      <div class="col-md-4">
+        <div class="mb-4">
+          <a> <h3 class="danger">Atención de los probadores</h3></a>
+        </div>
+      </div>
+      <div class="col-md-8">
+        <hr />
+      </div>
+    </div>
+
+    <div class="row mt-2">
+      <div class="col-md-6">
+        <div class="input-group mb-3">
+          <label
+            for="tiposolicitud"
+            style="color: #0056b3; font-size: 14px; margin: auto auto"
+          >
+            Aprobadores dinámicos
+          </label>
+          &nbsp;
+          <span
+            id="tiposolicitud"
+            style="color: black; font-size: 14px; margin: auto auto"
+            class="text-center"
+            >Lorem ipsum dolor sit amet.</span
+          >
+        </div>
+      </div>
+    </div>
+
+    <div class="row mt-2">
+      <div class="col-md-6">
+        <div class="input-group mb-3">
+          <label
+            for="tiposolicitud"
+            style="color: #0056b3; font-size: 14px; margin: auto auto"
+          >
+            Gerente de RRHH Corporativo
+          </label>
+          &nbsp;
+          <span
+            id="tiposolicitud"
+            style="color: black; font-size: 14px; margin: auto auto"
+            class="text-center"
+            >Lorem ipsum dolor sit amet.</span
+          >
+        </div>
+      </div>
+    </div>
+
+    <div class="row mt-2">
+      <div class="col-md-6">
+        <div class="input-group mb-3">
+          <label
+            for="tiposolicitud"
+            style="color: #0056b3; font-size: 14px; margin: auto auto"
+          >
+            Comité de Remuneraciones
+          </label>
+          &nbsp;
+          <span
+            id="tiposolicitud"
+            style="color: black; font-size: 14px; margin: auto auto"
+            class="text-center"
+            >Lorem ipsum dolor sit amet.</span
+          >
+        </div>
+      </div>
+    </div>
+  </h2>
+</div>
