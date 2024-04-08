@@ -53,6 +53,8 @@ export const environment = {
   http://10.35.3.162:8072/v1/es/tipomotivo
   http://10.35.3.162:8073/v1/es/accion         no
   http://10.35.3.162:8074/v1/es/tipoaccion
+
+  niveles de aprobación
   http://10.35.3.162:8000/v1/es/nivelesaprobacion
   http://10.35.3.162:8000/swagger/index.html
 

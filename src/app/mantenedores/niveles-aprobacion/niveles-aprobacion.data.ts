@@ -4,26 +4,28 @@ export const ConsultaSolicitudesData: IConsultaSolicitudesData = {
   columns: [
     {
       title: "Tipo de rura",
-      dataIndex: "labor",
+      dataIndex: "tipoRuta",
       align: "center",
       sortActive: true,
+      colType: "string",
     },
     {
       title: "Ruta",
-      dataIndex: "lote",
+      dataIndex: "ruta",
       sortActive: true,
+      colType: "string",
     },
     {
       title: "Nivel de aprobación",
-      dataIndex: "procesado",
+      dataIndex: "nivelAprobacionRuta",
       sortActive: true,
-      colType: "number",
+      colType: "string",
     },
     {
       title: "Acción",
-      dataIndex: "total_procesado",
+      dataIndex: "accion",
       sortActive: true,
-      colType: "number",
+      colType: "string",
     },
     {
       title: "Acciones",
