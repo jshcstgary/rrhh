@@ -22,8 +22,8 @@ import { SimpleDatepickerBasic } from 'src/app/component/datepicker/simpledatepi
 import { Custommonth } from 'src/app/component/datepicker/customonth.component';
 import { FeatherModule } from 'angular-feather';
 import {
-  IConsultaSolicitudes,
-  IConsultaSolicitudesTable,
+  IConsultaNivlesAprobaciones,
+  IConsultaNivelesAprobacionesTable,
 } from "./niveles-aprobacion.interface";
 import { IColumnsTable } from "src/app/component/table/table.interface";
 import { ConsultaSolicitudesData } from "./niveles-aprobacion.data";
@@ -35,6 +35,7 @@ import { MantenimientoService } from 'src/app/services/mantenimiento/mantenimien
 import { HttpErrorResponse } from '@angular/common/http';
 import { UtilService } from 'src/app/services/util/util.service';
 import { DatosNivelesAprobacion } from 'src/app/eschemas/DatosNivelesAprobacion';
+import { NivelesAprobacionService } from './niveles-aprobacion.service';
 declare var require: any;
 const data: any = require('./company.json');
 @Component({
@@ -63,7 +64,8 @@ const data: any = require('./company.json');
 })
 export class NivelesAprobacionComponent {
 
-  public dataTable: IConsultaSolicitudesTable = [];
+  //public dataTable: IConsultaNivelesAprobacionesTable = [];
+  public dataTable: any[] = [];
   public columnsTable: IColumnsTable = ConsultaSolicitudesData.columns;
   public hasFiltered: boolean = true;
   public submitted: boolean = false;
@@ -129,6 +131,7 @@ export class NivelesAprobacionComponent {
   constructor(private config: NgSelectConfig,private calendar: NgbCalendar, private router: Router, private modalService: NgbModal
     ,private camundaRestService: CamundaRestService
     ,private route: ActivatedRoute
+    ,private nivelesAprobacionService: NivelesAprobacionService
     ,private utilService: UtilService
     ,private mantenimientoService: MantenimientoService) {
 
@@ -150,6 +153,21 @@ export class NivelesAprobacionComponent {
     }, 1500);
 
 
+  }
+
+  private getDataToTable() {
+    console.log("Data de niveles de aprobacion");
+    return this.nivelesAprobacionService.obtenerNiveleAprobaciones().subscribe({
+      next: (response) => {
+        this.dataTable = response.nivelAprobacionType.map((nivelAprobacionResponse=>({
+          ...nivelAprobacionResponse,
+          estado: nivelAprobacionResponse.estado === "A",
+        })));
+      },
+      error: (error: HttpErrorResponse) => {
+        this.utilService.modalResponse(error.error, "error");
+      },
+    });
   }
 
   ngOnDestroy(): void {
@@ -194,54 +212,6 @@ export class NivelesAprobacionComponent {
   PageCrear()
   {
     this.router.navigate(['/mantenedores/crear-niveles-aprobacion']);
-  }
- //Crear Solicitud
-  CrearSolicitud(){
-    //this.router.navigate(['/mantenedores/crear-niveles-aprobacion']);
-     /*console.log('Nuevo proceso iniciado con datos..');
-     Swal.fire({
-      text: '¿Desea crear la Solicitud?',
-      icon: 'question',
-      showCancelButton: true,
-      confirmButtonColor: 'rgb(227, 199, 22)',
-      cancelButtonColor: '#77797a',
-      confirmButtonText: 'Sí',
-      cancelButtonText: 'No',
-    }).then((result) => {
-      if (result.isConfirmed) {
-        //Inicio de Solicitud
-        this.route.params.subscribe(params =>{
-          //const processDefinitionKey ="process_modelo";
-          const processDefinitionKey ="RequisicionPersonal";
-          //const processDefinitionKey = params['processdefinitionkey'];
-          const variables = this.generatedVariablesFromFormFields();
-          console.log(variables);
-          this.camundaRestService.postProcessInstance(processDefinitionKey,variables)
-          .subscribe(instanceOutput =>{
-
-           this.lookForError(instanceOutput);
-
-           console.log(instanceOutput);
-           this.instanceCreated = new DatosInstanciaProceso(
-             instanceOutput.businessKey,
-             instanceOutput.definitionId,
-             instanceOutput.id,
-             instanceOutput.tenantId
-           );
-          });
-          this.submitted = true;
-         });
-
-         if(this.submitted){
-
-          this.router.navigate(['/solicitudes/registrar-solicitud']);
-         }
-
-        //Fin Solicitud
-      }
-
-    })*/
-
   }
 
   getCreatedId(): string
@@ -459,6 +429,7 @@ ObtenerServicioTipoMotivo(){
      this.ObtenerServicioTipoSolicitud();
      this.ObtenerServicioNivelDireccion();
      this.ObtenerServicioTipoMotivo();
+     this.getDataToTable();
   }
 }
 

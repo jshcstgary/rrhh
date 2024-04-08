@@ -188,7 +188,6 @@ export class CrearNivelesAprobacionComponent implements OnInit{
   GuardarnivelAprobacion(){
 
     this.route.params.subscribe(params =>{
-      //const variables = this.generatedVariablesFromFormFields();
       console.log(this.modelo);
       this.serviceNivelesAprobacion.guardarNivelAprobacion(this.modelo).subscribe(response =>{
         console.log(response);
@@ -196,6 +195,8 @@ export class CrearNivelesAprobacionComponent implements OnInit{
           "Datos ingresados correctamente",
           "success"
          );
+
+         this.router.navigate(['/mantenedores/niveles-aprobacion']);
 
         },
         (error: HttpErrorResponse) =>{
@@ -206,34 +207,6 @@ export class CrearNivelesAprobacionComponent implements OnInit{
   });
 
   }
-
-  /*generatedVariablesFromFormFields(){
-
-    return {
-              {
-              fechaActualizacion: { value : this.modelo.fechaActualizacion},
-              fechaCreacion: { value : this.modelo.fechaCreacion},
-              usuarioCreacion: { value : this.modelo.usuarioCreacion},
-              usuarioActualizacion: { value : this.modelo.usuarioActualizacion},
-              estado: { value : this.modelo.estado},
-              idNivelAprobacion: { value : this.modelo.idNivelAprobacion},
-              idNivelAprobacionRuta: { value : this.modelo.idNivelAprobacionRuta},
-              nivelAprobacionRuta: { value : this.modelo.nivelAprobacionRuta},
-              idTipoSolicitud: { value : this.modelo.idTipoSolicitud},
-              tipoSolicitud: { value : this.modelo.tipoSolicitud},
-              idAccion: { value : this.modelo.idAccion},
-              accion: { value : this.modelo.accion},
-              idNivelDireccion: { value : this.modelo.idNivelDireccion},
-              nivelDireccion: { value : this.modelo.nivelDireccion},
-              idRuta: { value : this.modelo.idRuta},
-              ruta: { value : this.modelo.ruta},
-              idTipoMotivo: { value : this.modelo.idTipoMotivo},
-              tipoMotivo: { value : this.modelo.tipoMotivo},
-              idTipoRuta: { value : this.modelo.idTipoRuta},
-              tipoRuta: { value : this.modelo.tipoRuta}
-             }
-    }
-  }*/
 
 
 }
