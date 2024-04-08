@@ -36,14 +36,14 @@
       padding-left: 0;
     }
   }
-  // 
+  //
   // recent comments
-  // 
+  //
   .comment-footer .action-icons a {
     padding-left: 0;
     padding-right: 7px;
   }
-  
+
   #btnAddContact {
     position: absolute !important;
     left: 15px;
@@ -65,7 +65,7 @@
     margin-right: 0 !important;
     margin-left: 0;
   }
-  
+
 
   .comment-footer .action-icons a {
     padding-right: 7px;
@@ -196,7 +196,7 @@
     border-right: 3px solid $white;
   }
 
-  
+
 
   /* Stickey inner-left-part */
 
@@ -372,14 +372,14 @@
     border-right: 3px solid transparent;
   }
 
-  &#main-wrapper[data-layout=vertical] .left-sidebar[data-sidebarbg=skin6] .sidebar-nav ul .sidebar-item.active > .sidebar-link, 
+  &#main-wrapper[data-layout=vertical] .left-sidebar[data-sidebarbg=skin6] .sidebar-nav ul .sidebar-item.active > .sidebar-link,
   &#main-wrapper[data-layout=horizontal] .left-sidebar[data-sidebarbg=skin6] .sidebar-nav ul .sidebar-item.active > .sidebar-link,
   &#main-wrapper[data-layout=horizontal] .left-sidebar[data-sidebarbg=skin6] .sidebar-nav ul .sidebar-item > .sidebar-link:hover {
     border-left: 0;
     border-right: 3px solid $danger;
   }
 
-  &#main-wrapper[data-layout=vertical] .left-sidebar .sidebar-nav ul .sidebar-item .first-level .sidebar-item.active > .sidebar-link, 
+  &#main-wrapper[data-layout=vertical] .left-sidebar .sidebar-nav ul .sidebar-item .first-level .sidebar-item.active > .sidebar-link,
   &#main-wrapper[data-layout=horizontal] .left-sidebar .sidebar-nav ul .sidebar-item .first-level .sidebar-item.active > .sidebar-link {
     border-left: 0;
     border-right: 3px solid transparent;

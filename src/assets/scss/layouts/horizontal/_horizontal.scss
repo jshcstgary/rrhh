@@ -47,9 +47,10 @@ $sidebarheight: 54px;
       position: fixed;
       width: 100%;
     }
-    .left-sidebar {
-      padding-top: 64px;
-    }
+    // mi topbar 1
+    // .left-sidebar {
+    //   padding-top: 64px;
+    // }
   }
   /****************************
     This is for the fixed sidebar layout
@@ -59,10 +60,11 @@ $sidebarheight: 54px;
       position: fixed;
       width: 100%;
     }
-    .left-sidebar {
-      padding-top: 64px;
-      position: fixed;
-    }
+    // mi topbar 2
+    // .left-sidebar {
+    //   padding-top: 64px;
+    //   position: fixed;
+    // }
     .page-wrapper {
       padding-top: 78px;
     }
@@ -86,7 +88,7 @@ This is for the horizontal layout
       .sidebar-nav,
       .scroll-sidebar,
       .page-wrapper {
-        max-width: $boxed-width;
+        //max-width: $boxed-width;
         margin: 0 auto;
         position: relative;
       }
@@ -126,6 +128,10 @@ This is for the horizontal layout
       width: 200px;
       // border-right: 1px solid rgba(0, 0, 0, 0.1);
     }
+    // hide mobile
+    .hide-on-mobile {
+    display: none;
+  }
     .topbar .sidebartoggler {
       display: none;
     }
@@ -247,18 +253,32 @@ This is for the horizontal layout
 
 @media (min-width: 768px) and (max-width: 1023px) {
   #main-wrapper[data-layout="horizontal"] {
+    .hide-on-mobile2 {
+      display: none;
+    }
     .sidebar-nav > ul > .sidebar-item > .sidebar-link i {
       display: none;
     }
-
+    .hide-on-mobile2 {
+      display: none;
+    }
     .sidebar-nav #sidebarnav > .sidebar-item {
       flex: auto;
     }
+    .hide-on-mobile2 {
+      display: none;
+    }
+  }
+  .hide-on-mobile2 {
+    display: none;
   }
 }
 
 @include media-breakpoint-down(md) {
   #main-wrapper[data-layout="horizontal"] {
+    .hide-on-mobile3 {
+      display: none;
+    }
     /****************************
         This is for the fixed sidebar layout
         ***************************/
@@ -266,7 +286,16 @@ This is for the horizontal layout
       .left-sidebar {
         overflow: auto;
       }
+      .hide-on-mobile3 {
+        display: none;
+      }
     }
+    .hide-on-mobile3 {
+      display: none;
+    }
+  }
+  .hide-on-mobile3 {
+    display: none;
   }
 }
 
@@ -276,6 +305,9 @@ This is for the horizontal layout
     .topbar .top-navbar .navbar-header {
       display: none;
     }
+    .hide-on-mobile4 {
+      display: none;
+    }
   }
 }
 
@@ -283,6 +315,9 @@ This is for the horizontal layout
   #main-wrapper[data-layout="horizontal"] {
     .topbar .top-navbar {
       display: block !important;
+    }
+    .hide-on-mobile5 {
+      display: none;
     }
   }
 }

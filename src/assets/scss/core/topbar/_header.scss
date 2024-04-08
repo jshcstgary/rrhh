@@ -57,6 +57,12 @@
   }
 }
 
+@media (min-width: 992px) { /* Adjust breakpoint as needed */
+  .topbar {
+    display: none;
+  }
+}
+
 .app-search {
   position: relative;
   margin: 0px;
@@ -169,6 +175,8 @@ Topbar Responsive
       width: 100%;
       justify-content: space-between;
     }
+  }.sidebar-nav {
+    background-image: none !important; /* Forcefully remove the background */
   }
 }
 
