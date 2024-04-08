@@ -2,7 +2,7 @@ import { IRowTableAttributes } from "src/app/component/table/table.interface";
 
 export interface ITiposolicitud {
   id?: number | string;
-  tipoSolicitud?: string;
+  tipoSolicitud: string;
   estado: string | boolean;
 }
 export interface ITiposolicitudTable

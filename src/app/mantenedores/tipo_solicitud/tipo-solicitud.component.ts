@@ -41,8 +41,7 @@ export class TipoSolicitudComponent implements OnInit{
     return this.tiposolicitudesService.index().subscribe({
       next: (response) => {
         this.dataTable = response.map((r)=>({
-          id:r.id,
-          descripcion: r.tipoSolicitud,
+          ...r,
           estado: r.estado === "A",
         }));//verificar la estructura mmunoz
       },
