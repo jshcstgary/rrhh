@@ -1,9 +1,12 @@
+import { Solicitud } from "./../solicitud";
+import { SolicitudesService } from "./solicitudes.service";
 import { Component } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { CamundaRestService } from "../../camunda-rest.service";
 import { CompleteTaskComponent } from "../general/complete-task.component";
 import {
   HttpClientModule,
+  HttpErrorResponse,
   HttpEvent,
   HttpHandler,
   HttpRequest,
@@ -12,6 +15,10 @@ import { NgForm } from "@angular/forms";
 import { environment } from "../../../environments/environment";
 import { RegistrarData } from "src/app/eschemas/RegistrarData";
 import { DatosProcesoInicio } from "src/app/eschemas/DatosProcesoInicio";
+import { DatosSolicitud } from "src/app/eschemas/DatosSolicitud";
+import { MantenimientoService } from "src/app/services/mantenimiento/mantenimiento.service";
+import { UtilService } from "src/app/services/util/util.service";
+import Swal from "sweetalert2";
 
 @Component({
   selector: "registrarSolicitud",
@@ -30,11 +37,17 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
     "Observations"
   );
 
+  public solicitud = new Solicitud();
+
   public titulo: string = "Formulario De Registro";
 
   // Base model refers to the input at the beginning of BPMN
   // that is, Start Event
   public modelBase: DatosProcesoInicio;
+
+  public modelSolicitud: DatosSolicitud;
+
+  public dataSolicitudModel: any;
 
   // scenario-1: task id and date are handled via tasklist page.
   public taskId: string = "";
@@ -45,14 +58,26 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
   // In this case, parent flag is set to true. It requires additional handling to derive task id from process instance id.
   public parentIdFlag: string | null = "false"; // set to true if the id is for the process instance, instead of task-id
 
+  public dataTipoSolicitud: any;
+  public dataTipoMotivo: any;
+  public dataTipoAccion: any;
+  public success: false;
+
   constructor(
     route: ActivatedRoute,
     router: Router,
-    camundaRestService: CamundaRestService
+    camundaRestService: CamundaRestService,
+    private mantenimientoService: MantenimientoService,
+    private solicitudes: SolicitudesService,
+    private utilService: UtilService
   ) {
     super(route, router, camundaRestService);
 
     this.modelBase = new DatosProcesoInicio();
+
+    this.route.queryParams.subscribe((params: DatosSolicitud) => {
+      this.modelSolicitud = params;
+    });
 
     this.route.queryParamMap.subscribe((qParams) => {
       if (null !== qParams?.get("date")) {
@@ -67,7 +92,6 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
     });
 
     this.route.params.subscribe((params) => {
-      console.log();
       const variableNames = Object.keys(this.model).join(",");
 
       if ("true" === this.parentIdFlag) {
@@ -97,6 +121,106 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
         variableNames
       );*/
     });
+  }
+
+  ngOnInit() {
+    this.getSolicitudes();
+    this.ObtenerServicioTipoSolicitud();
+    this.ObtenerServicioTipoMotivo();
+    this.ObtenerServicioTipoAccion();
+  }
+
+  ObtenerServicioTipoSolicitud() {
+    return this.mantenimientoService.getTipoSolicitud().subscribe({
+      next: (response) => {
+        this.dataTipoSolicitud = response.filter(
+          (data) => data.id == this.modelSolicitud.tipo_solicitud
+        )[0];
+        this.solicitud.infoGeneral.idTipoSolicitud = this.dataTipoSolicitud.id;
+        this.solicitud.infoGeneral.tipoSolicitud =
+          this.dataTipoSolicitud.tipoSolicitud;
+        this.solicitud.request.idTipoSolicitud = this.dataTipoSolicitud.id;
+        this.solicitud.request.tipoSolicitud =
+          this.dataTipoSolicitud.tipoSolicitud;
+      },
+      error: (error: HttpErrorResponse) => {
+        this.utilService.modalResponse(error.error, "error");
+      },
+    });
+  }
+
+  ObtenerServicioTipoMotivo() {
+    return this.mantenimientoService.getTipoMotivo().subscribe({
+      next: (response) => {
+        this.dataTipoMotivo = response.filter(
+          (data) => data.id == this.modelSolicitud.tipo_motivo
+        )[0];
+
+        this.solicitud.infoGeneral.idTipoMotivo = this.dataTipoMotivo.id;
+        this.solicitud.infoGeneral.tipoMotivo = this.dataTipoMotivo.tipoMotivo;
+        this.solicitud.request.idTipoMotivo = this.dataTipoMotivo.id;
+        // this.solicitud.request.tipoMotivo = this.dataTipoMotivo.tipoMotivo;
+      },
+      error: (error: HttpErrorResponse) => {
+        this.utilService.modalResponse(error.error, "error");
+      },
+    });
+  }
+
+  ObtenerServicioTipoAccion() {
+    return this.mantenimientoService.getTipoAccion().subscribe({
+      next: (response) => {
+        this.dataTipoAccion = response.filter(
+          (data) => data.id == this.modelSolicitud.tipo_accion
+        )[0];
+        this.solicitud.infoGeneral.idTipoAccion = this.dataTipoAccion.id;
+        this.solicitud.infoGeneral.tipoAccion = this.dataTipoAccion.tipoAccion;
+        this.solicitud.request.idTipoAccion = this.dataTipoAccion.id;
+        this.solicitud.request.tipoAccion = this.dataTipoAccion.tipoAccion;
+      },
+      error: (error: HttpErrorResponse) => {
+        this.utilService.modalResponse(error.error, "error");
+      },
+    });
+  }
+
+  // Prueba servicio
+  getSolicitudes() {
+    this.solicitudes.getSolicitudes().subscribe((data) => {});
+  }
+
+  guardarSolicitud() {
+    const id = Date.now().toString().slice(-6);
+
+    let requestSolicitud = {
+      idSolicitud: "RP-" + id,
+      idInstancia: "InstanciaReybanpac",
+      idEmpresa: "01",
+      empresa: "Reybanpac",
+      idUnidadNegocio: "02",
+      unidadNegocio: "Banano",
+      estadoSolicitud: "2",
+      idTipoSolicitud: this.dataTipoSolicitud.id,
+      tipoSolicitud: "string upt",
+      idTipoMotivo: this.dataTipoMotivo.id,
+      tipoMotivo: "TIPO MOTIVO 01",
+      idTipoAccion: 1,
+      tipoAccion: "Aumento",
+      fechaActualizacion: "2024-03-27T20:48:24.177",
+      fechaCreacion: "2024-03-27T20:48:24.177",
+      usuarioCreacion: "lnmora",
+      usuarioActualizacion: "lnmora",
+      estado: "En Espera",
+    };
+
+    this.solicitudes
+      .guardarSolicitud(requestSolicitud)
+      .subscribe((response) => {
+        this.utilService.modalResponse(
+          "Datos ingresados correctamente",
+          "success"
+        );
+      });
   }
 
   override loadExistingVariables(taskId: String, variableNames: String) {
@@ -150,6 +274,128 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
   }
 
   onSubmit() {
+    Swal.fire({
+      text: "¿Desea crear la Solicitud?",
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonColor: "rgb(227, 199, 22)",
+      cancelButtonColor: "#77797a",
+      confirmButtonText: "Sí",
+      cancelButtonText: "No",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.save();
+
+        if (this.submitted) {
+          this.router.navigate(["/solicitudes/consulta-solicitudes"]);
+        }
+
+        //Fin Solicitud
+      }
+    });
+  }
+
+  save() {
+    const id = Date.now().toString().slice(-6);
+    this.solicitudes
+      .guardarSolicitud(this.solicitud.request)
+      .subscribe((response) => {
+        let detalleSolicitud = {
+          idDetalleSolicitud: id,
+          idSolicitud: response.idSolicitud,
+          codigo: "Prueba",
+          valor: "Prueba",
+          estado: "A",
+          fechaRegistro: "2024-03-27T20:57:04.34",
+          compania: "Prueba",
+          unidadNegocio: "Prueba",
+          codigoPosicion: "Prueba",
+          descripcionPosicion: "Prueba",
+          areaDepartamento: "Prueba",
+          localidadZona: "Prueba",
+          nivelDireccion: "Prueba",
+          centroCosto: "Prueba",
+          nombreEmpleado: "Morocho Vargas Gal Estuario",
+          subledger: "Prueba",
+          reportaA: "Prueba",
+          nivelReporteA: "Prueba",
+          supervisaA: "Prueba",
+          tipoContrato: "Prueba",
+          departamento: "Prueba",
+          cargo: "Prueba",
+          jefeSolicitante: "Prueba",
+          responsableRRHH: "Prueba",
+          localidad: "Prueba",
+          fechaIngreso: "2024-03-27T20:57:04.34",
+          unidad: "Prueba",
+          puesto: "Prueba",
+          jefeInmediatoSuperior: "Prueba",
+          jefeReferencia: "Prueba",
+          cargoReferencia: "Prueba",
+          fechaSalida: "2024-03-27T20:57:04.34",
+          puestoJefeInmediato: "Prueba",
+          subledgerEmpleado: "Prueba",
+          grupoDePago: "Prueba",
+          sucursal: "Prueba",
+          movilizacion: "Prueba",
+          alimentacion: "Prueba",
+          jefeAnteriorJefeReferencia: "Prueba",
+          causaSalida: "Prueba",
+          nombreJefeSolicitante: "Prueba",
+          misionCargo: "Prueba",
+          justificacion: "Prueba",
+        };
+        this.solicitudes
+          .guardarDetalleSolicitud(detalleSolicitud)
+          .subscribe((res) => {
+            this.utilService.modalResponse(
+              "Datos ingresados correctamente",
+              "success"
+            );
+            setTimeout(() => {
+              this.router.navigate(["/solicitudes/consulta-solicitudes"]);
+            }, 1600);
+          });
+      });
+    /*const id = Date.now().toString().slice(-6);
+    console.log(id);
+
+    let requestSolicitud = {
+      idSolicitud: "RP-" + id,
+      idInstancia: "InstanciaReybanpac",
+      idEmpresa: "01",
+      empresa: "Reybanpac",
+      idUnidadNegocio: "02",
+      unidadNegocio: "Banano",
+      estadoSolicitud: "2",
+      idTipoSolicitud: this.dataTipoSolicitud.id,
+      tipoSolicitud: "string upt",
+      idTipoMotivo: this.dataTipoMotivo.id,
+      tipoMotivo: "TIPO MOTIVO 01",
+      idTipoAccion: 1,
+      tipoAccion: "Aumento",
+      fechaActualizacion: "2024-03-27T20:48:24.177",
+      fechaCreacion: "2024-03-27T20:48:24.177",
+      usuarioCreacion: "lnmora",
+      usuarioActualizacion: "lnmora",
+      estado: "En Espera",
+    };
+    console.log("SOLICITUD: ", requestSolicitud);
+    console.log("MODEL: ", this.solicitud.request);
+
+    this.solicitudes
+      .guardarSolicitud(requestSolicitud)
+      .subscribe((response) => {
+        console.log("Ejecutando guardarSolicitud(): ", response);
+        this.utilService.modalResponse(
+          "Datos ingresados correctamente",
+          "success"
+        );
+      });*/
+  }
+
+  // tveas comentando método mmunoz
+  /*onSubmit() {
     if (this.uniqueTaskId === null) {
       //handle this as an error
       this.errorMessage =
@@ -164,7 +410,7 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
       .postCompleteTask(this.uniqueTaskId, variables)
       .subscribe();
     this.submitted = true;
-  }
+  }*/
 
   onCancel() {
     console.log("User action cancel");

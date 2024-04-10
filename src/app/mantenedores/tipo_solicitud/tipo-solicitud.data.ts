@@ -5,9 +5,16 @@ import { PlantillaAData } from "src/app/plantilla/plantillaA/plantillaA.data";
 
 export const TiposolicitudData: ITiposolicitudData = {
   columns: [
+    // {
+    //   title: "Código",
+    //   dataIndex: "id",
+    //   align: "center",
+    //   sortActive: true,
+    //   colType: "number",
+    // },
     {
-      title: "Código",
-      dataIndex: "id",
+      title: "Código solicitud",
+      dataIndex: "codigoTipoSolicitud",
       align: "center",
       sortActive: true,
       colType: "number",
@@ -30,20 +37,31 @@ export const TiposolicitudData: ITiposolicitudData = {
       width: "100px",
       actions: [
         { materialIcon: "edit", id: "editOnTable", tooltip: "Editar" },
-        { materialIcon: "content_copy", id: "cloneOnTable", tooltip: "Duplicar",
+        {
+          materialIcon: "content_copy",
+          id: "cloneOnTable",
+          tooltip: "Duplicar",
         },
       ],
     },
   ],
   defaultEmptyRowTable: {
-    id: "0",
+    // id: "0",
+    codigoTipoSolicitud: "",
     tipoSolicitud: "",
     estado: true,
   },
   tableInputsEditRow: [
+    // {
+    //   id: "id",
+    //   type: "visualization",
+    // },
     {
-      id: "id",
-      type: "visualization",
+      id: "codigoTipoSolicitud",
+      type: "string",
+      maxLength: 30,
+      required: true,
+      inputMessageError: "Ingrese la descripción",
     },
     {
       id: "tipoSolicitud",
@@ -57,10 +75,10 @@ export const TiposolicitudData: ITiposolicitudData = {
       type: "toggle",
     },
   ],
-  colsToFilterByText: ["id", "tipoSolicitud"],
+  colsToFilterByText: ["codigoTipoSolicitud", "tipoSolicitud"],
 };
 
-interface ITiposolicitudData{
+interface ITiposolicitudData {
   columns: IColumnsTable;
   defaultEmptyRowTable: ITiposolicitudTable;
   tableInputsEditRow: IInputsComponent;

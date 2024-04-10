@@ -1,0 +1,18 @@
+<table-component
+  [tableName]="mainTableName"
+  [columns]="columnsTable"
+  [dataTable]="dataToTable"
+  [contexto]="this"
+  onSaveRowTable="onSaveRowTable"
+  [tableWidth]="tableWidth"
+  [inputsEditRow]="tableInputsEditRow"
+  [totalRows]="totalRowsInTable"
+  onChangePagination="onChangePaginationTable"
+  onCancelEditRowTable="onCancelEditRowTable"
+  [rowsPerPageValue]="rowsPerPageTable"
+  [page]="pageNumberTable"
+  clickOnActionRow="clickOnActionTable"
+  [allowCloneButton]="allowCloneButtonOnTable"
+  [onRowChange]="onRowChange"
+  onChangeEditRowFunction="onChangeEditRowTableFunction"
+></table-component>

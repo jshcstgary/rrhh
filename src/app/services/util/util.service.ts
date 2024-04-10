@@ -30,18 +30,21 @@ export class UtilService {
     navigator.clipboard.writeText(text);
   }
   /**
-   * Función para mostrar la alerta de error en los response de las APIs
+   * Función para mostrar el spinner de cargando al realizar consumo de las APIs
    *
    * @param message
    * @param type
    */
-  public modalResponse(message: string, type: SweetAlertIcon) {
+  public loadingSpinner(message: string) {
     Swal.fire({
-      icon: type,
       title: message,
       showConfirmButton: false,
-      timer: this.modalTimeToHide,
+      showCancelButton: false,
     });
+    Swal.showLoading();
+    // setTimeout(() => {
+    //   Swal.close();
+    // }, 2000);
   }
   /**
    * Enfoca un elemento HTML específico después de un retraso de 500 milisegundos.
@@ -93,5 +96,14 @@ export class UtilService {
         error: (error: HttpErrorResponse) =>
           this.modalResponse(error.error, "error"),
       });
+  }
+
+  public modalResponse(message: string, type: SweetAlertIcon) {
+    Swal.fire({
+      icon: type,
+      title: message,
+      showConfirmButton: false,
+      timer: this.modalTimeToHide,
+    });
   }
 }

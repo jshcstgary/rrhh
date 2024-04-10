@@ -1,23 +1,22 @@
-import { Component, OnInit } from '@angular/core';
-import { IColumnsTable } from 'src/app/component/table/table.interface';
-import { TiporutaData } from './tipo-ruta.data';
-import { ITiporuta, ITiporutaTable } from './tipo-ruta.interface';
-import Swal from 'sweetalert2';
-import { HttpErrorResponse } from '@angular/common/http';
-import { IInputsComponent } from 'src/app/component/input/input.interface';
-import { reportCodeEnum } from 'src/app/services/util/util.interface';
-import { TableService } from 'src/app/component/table/table.service';
-import { ValidationsService } from 'src/app/services/validations/validations.service';
-import { environment } from 'src/environments/environment';
-import { UtilService } from 'src/app/services/util/util.service';
-import { TipoRutaService } from './tipo-ruta.service';
-import { UtilData } from 'src/app/services/util/util.data';
+import { Component, OnInit } from "@angular/core";
+import { IColumnsTable } from "src/app/component/table/table.interface";
+import { TiporutaData } from "./tipo-ruta.data";
+import { ITiporuta, ITiporutaTable } from "./tipo-ruta.interface";
+import Swal from "sweetalert2";
+import { HttpErrorResponse } from "@angular/common/http";
+import { IInputsComponent } from "src/app/component/input/input.interface";
+import { reportCodeEnum } from "src/app/services/util/util.interface";
+import { TableService } from "src/app/component/table/table.service";
+import { ValidationsService } from "src/app/services/validations/validations.service";
+import { environment } from "src/environments/environment";
+import { UtilService } from "src/app/services/util/util.service";
+import { TipoRutaService } from "./tipo-ruta.service";
+import { UtilData } from "src/app/services/util/util.data";
 
 @Component({
-  templateUrl: './tipo-ruta.component.html'
+  templateUrl: "./tipo-ruta.component.html",
 })
 export class TipoRutaComponent implements OnInit {
-
   public columnsTable: IColumnsTable = TiporutaData.columns;
   public dataTable: any[] = [];
   public tableInputsEditRow: IInputsComponent = TiporutaData.tableInputsEditRow;
@@ -41,10 +40,10 @@ export class TipoRutaComponent implements OnInit {
     return this.tiporutaesService.index().subscribe({
       //return this.tipoviviendasService.index().subscribe({
       next: (response) => {
-        this.dataTable = response.tipoRutaType.map((tipoRutaResponse=>({
+        this.dataTable = response.tipoRutaType.map((tipoRutaResponse) => ({
           ...tipoRutaResponse,
           estado: tipoRutaResponse.estado === "A",
-        })));
+        }));
       },
       error: (error: HttpErrorResponse) => {
         this.utilService.modalResponse(error.error, "error");
@@ -70,6 +69,8 @@ export class TipoRutaComponent implements OnInit {
     rowData: ITiporutaTable,
     finishedClonningRow: boolean
   ) {
+    rowData = { ...rowData, estado: rowData.estado ? "A" : "I" };
+
     if (rowData.key) {
       /* Actualizar */
       this.tiporutaesService.update(rowData).subscribe({
@@ -120,6 +121,7 @@ export class TipoRutaComponent implements OnInit {
     rowData: ITiporuta,
     finishedClonningRow: boolean
   ) {
+    console.log("EJECUTANDO validateToSave()");
     const descripcionNotEmpty =
       this.validationsService.isNotEmptyStringVariable(rowData.tipoRuta);
     if (!descripcionNotEmpty) {
@@ -132,5 +134,4 @@ export class TipoRutaComponent implements OnInit {
       this.onSaveRowTable(rowData, finishedClonningRow);
     }
   }
-
 }

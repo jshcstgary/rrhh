@@ -34,10 +34,11 @@ export interface IConsultaNivelesAprobacionTable
   extends IConsultaNivelesAprobacion,
     IRowTableAttributes {}
 
-export type IConsultaNivlesAprobaciones = IConsultaNivelesAprobacion[];
-export type IConsultaNivelesAprobacionesTable = IConsultaNivelesAprobacionTable[];
+export type IConsultaNivelesAprobaciones = IConsultaNivelesAprobacion[];
+export type IConsultaNivelesAprobacionesTable =
+  IConsultaNivelesAprobacionTable[];
 
 export interface IConsultaNivelesAprobacionResponse {
   totalRegistros: number;
-  nivelAprobacionType: IConsultaNivlesAprobaciones;
+  nivelAprobacionType: IConsultaNivelesAprobaciones;
 }

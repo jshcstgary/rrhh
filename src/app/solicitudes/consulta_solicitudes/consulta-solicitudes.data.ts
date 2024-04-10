@@ -1,42 +1,83 @@
 import { IColumnsTable } from "src/app/component/table/table.interface";
+import { IConsultaSolicitudTable } from "./consulta-solicitudes.interface";
+import { IInputsComponent } from "src/app/component/input/input.interface";
 
 export const ConsultaSolicitudesData: IConsultaSolicitudesData = {
   columns: [
     {
       title: "No. Solicitud",
-      dataIndex: "labor",
+      dataIndex: "idSolicitud",
       align: "center",
       sortActive: true,
-    },
-    {
-      title: "Tipo de solicitud",
-      dataIndex: "lote",
-      sortActive: true,
-    },
-    {
-      title: "Nombre de empleado",
-      dataIndex: "procesado",
-      sortActive: true,
       colType: "number",
+    },
+    {
+      title: "Tipo de Solicitud",
+      dataIndex: "tipoSolicitud",
+      sortActive: true,
+      colType: "string",
+    },
+    {
+      title: "Nombre de Empleado",
+      dataIndex: "nombreEmpleado",
+      sortActive: true,
+      colType: "string",
     },
     {
       title: "Estado",
-      dataIndex: "total_procesado",
-      sortActive: true,
-      colType: "number",
+      dataIndex: "estado",
+      type: "bool",
     },
     {
       title: "Acciones",
       type: "actions",
+      width: "100px",
       actions: [
-        /* { icon: "fas fa-pencil-alt", id: "redirectToEdit" }, */
-        // { icon: "far fa-copy", id: "" },
-        // { icon: "fas fa-exclamation-circle", id: "" },
-        /* { icon: "fas fa-trash-alt", id: "deleteRow" }, */
+        { materialIcon: "edit", id: "editOnTable", tooltip: "Editar" },
+        {
+          materialIcon: "content_copy",
+          id: "cloneOnTable",
+          tooltip: "Duplicar",
+        },
       ],
     },
   ],
+  defaultEmptyRowTable: {
+    idSolicitud: "0",
+    tipoSolicitud: "",
+    nombreEmpleado: "",
+    estado: true,
+  },
+  tableInputsEditRow: [
+    {
+      id: "idSolicitud",
+      type: "visualization",
+    },
+    {
+      id: "tipoSolicitud",
+      type: "string",
+      maxLength: 30,
+      required: true,
+      inputMessageError: "Ingrese el tipo de solicitud",
+    },
+    {
+      id: "nombreEmpleado",
+      type: "string",
+      maxLength: 100,
+      required: true,
+      inputMessageError: "Ingrese el nombre del empleado",
+    },
+    {
+      id: "estado",
+      type: "toggle",
+    },
+  ],
+  colsToFilterByText: ["idSolicitud", "tipoSolicitud", "nombreEmpleado"],
 };
+
 interface IConsultaSolicitudesData {
   columns: IColumnsTable;
+  defaultEmptyRowTable: IConsultaSolicitudTable;
+  tableInputsEditRow: IInputsComponent;
+  colsToFilterByText: string[];
 }
