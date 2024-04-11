@@ -287,8 +287,8 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
   //LLenar combo Tipo Solicitud
   ObtenerServicioTipoSolicitud() {
     return this.mantenimientoService.getTipoSolicitud().subscribe({
-      next: (response) => {
-        this.dataTipoSolicitudes = response.map((r) => ({
+      next: (response: any) => {
+        this.dataTipoSolicitudes = response.tipoSolicitudType.map((r) => ({
           id: r.id,
           descripcion: r.tipoSolicitud,
         })); //verificar la estructura mmunoz
