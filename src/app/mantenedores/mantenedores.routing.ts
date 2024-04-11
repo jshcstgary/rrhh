@@ -1,117 +1,95 @@
-import { Routes } from '@angular/router';
+import { Routes } from "@angular/router";
 
-import { TipoSolicitudComponent } from './tipo_solicitud/tipo-solicitud.component';
-import { TipoMotivoComponent } from './tipo_motivo/tipo-motivo.component';
-import { TipoAccionComponent } from './tipo_accion/tipo-accion.component';
-import { TipoProcesoComponent } from './tipo_proceso/tipo-proceso.component';
-import { TipoRutaComponent } from './tipo_ruta/tipo-ruta.component';
-import { RutaComponent } from './ruta/ruta.component';
-import { AccionComponent } from './accion/accion.component';
-import { NivelesAprobacionComponent } from './niveles-aprobacion/niveles-aprobacion.component';
-import { CrearNivelesAprobacionComponent } from './crear-niveles-aprobacion/crear-niveles-aprobacion.component';
-
+import { TipoSolicitudComponent } from "./tipo_solicitud/tipo-solicitud.component";
+import { TipoMotivoComponent } from "./tipo_motivo/tipo-motivo.component";
+import { TipoAccionComponent } from "./tipo_accion/tipo-accion.component";
+import { TipoProcesoComponent } from "./tipo_proceso/tipo-proceso.component";
+import { TipoRutaComponent } from "./tipo_ruta/tipo-ruta.component";
+import { RutaComponent } from "./ruta/ruta.component";
+import { AccionComponent } from "./accion/accion.component";
+import { NivelesAprobacionComponent } from "./niveles-aprobacion/niveles-aprobacion.component";
+import { CrearNivelesAprobacionComponent } from "./crear-niveles-aprobacion/crear-niveles-aprobacion.component";
 
 export const MantenedoresRoutes: Routes = [
   {
-    path: '',
+    path: "",
     children: [
       {
-        path: 'niveles-aprobacion',
+        path: "niveles-aprobacion",
         component: NivelesAprobacionComponent,
         data: {
-          title: 'Niveles de Aprobacion',
+          title: "Niveles de Aprobación",
           urls: [
-            { title: 'Mantenimiento' },
-            { title: 'Niveles de Aprobacion' },
+            { title: "Mantenimiento" },
+            { title: "Niveles de Aprobación" },
           ],
         },
       },
       {
-        path: 'crear-niveles-aprobacion',
+        path: "crear-niveles-aprobacion",
         component: CrearNivelesAprobacionComponent,
         data: {
-          title: 'Crear Niveles de Aprobacion',
+          title: "Crear Niveles de Aprobación",
           urls: [
-            { title: 'Mantenimiento' },
-            { title: 'Crear Niveles de Aprobacion' },
+            { title: "Mantenimiento" },
+            { title: "Crear Niveles de Aprobación" },
           ],
         },
       },
       {
-        path: 'tipo-solicitud',
+        path: "tipo-solicitud",
         component: TipoSolicitudComponent,
         data: {
-          title: 'Tipo de Solicitudes',
-          urls: [
-            { title: 'Mantenimiento' },
-            { title: 'Tipo de Solicitudes' },
-          ],
+          title: "Tipo de Solicitudes",
+          urls: [{ title: "Mantenimiento" }, { title: "Tipo de Solicitudes" }],
         },
       },
       {
-        path: 'tipo-motivo',
+        path: "tipo-motivo",
         component: TipoMotivoComponent,
         data: {
-          title: 'Tipo motivo',
-          urls: [
-            { title: 'Mantenimiento' },
-            { title: 'Tipo Motivo' },
-          ],
+          title: "Tipo motivo",
+          urls: [{ title: "Mantenimiento" }, { title: "Tipo Motivo" }],
         },
       },
       {
-        path: 'tipo-accion',
+        path: "tipo-accion",
         component: TipoAccionComponent,
         data: {
-          title: 'Tipo accion',
-          urls: [
-            { title: 'Mantenimiento' },
-            { title: 'Tipo Accion' },
-          ],
+          title: "Tipo accion",
+          urls: [{ title: "Mantenimiento" }, { title: "Tipo Acción" }],
         },
       },
       {
-        path: 'tipo-proceso',
+        path: "tipo-proceso",
         component: TipoProcesoComponent,
         data: {
-          title: 'Tipo proceso',
-          urls: [
-            { title: 'Mantenimiento' },
-            { title: 'Tipo Proceso' },
-          ],
+          title: "Tipo proceso",
+          urls: [{ title: "Mantenimiento" }, { title: "Tipo Proceso" }],
         },
       },
       {
-        path: 'tipo-ruta',
+        path: "tipo-ruta",
         component: TipoRutaComponent,
         data: {
-          title: 'Tipo ruta',
-          urls: [
-            { title: 'Mantenimiento' },
-            { title: 'Tipo Ruta' },
-          ],
+          title: "Tipo ruta",
+          urls: [{ title: "Mantenimiento" }, { title: "Tipo Ruta" }],
         },
       },
       {
-        path: 'ruta',
+        path: "ruta",
         component: RutaComponent,
         data: {
-          title: 'Ruta',
-          urls: [
-            { title: 'Mantenimiento' },
-            { title: 'Ruta' },
-          ],
+          title: "Ruta",
+          urls: [{ title: "Mantenimiento" }, { title: "Ruta" }],
         },
       },
       {
-        path: 'accion',
+        path: "accion",
         component: AccionComponent,
         data: {
-          title: 'Accion',
-          urls: [
-            { title: 'Mantenimiento' },
-            { title: 'Accion' },
-          ],
+          title: "Accion",
+          urls: [{ title: "Mantenimiento" }, { title: "Acción" }],
         },
       },
     ],

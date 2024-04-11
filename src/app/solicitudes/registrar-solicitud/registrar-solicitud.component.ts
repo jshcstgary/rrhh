@@ -97,7 +97,7 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
       if ("true" === this.parentIdFlag) {
         // id is parent process instance id. so handle it accordingly
         // we are looking for task id 'Registrar' in a recently started process instance 'id'
-        // Comentado tveas por error CORS
+        // Comentado tveas por error
         /*this.camundaRestService
           .getTask(environment.taskType_Registrar, params["id"])
           .subscribe((result) => {
@@ -115,7 +115,7 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
       }
 
       // ready to do the processing now
-      // Comentado tveas por error CORS
+      // Comentado tveas por error
       /*this.loadExistingVariables(
         this.uniqueTaskId ? this.uniqueTaskId : "",
         variableNames
