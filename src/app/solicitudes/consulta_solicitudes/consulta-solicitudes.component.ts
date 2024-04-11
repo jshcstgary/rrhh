@@ -211,7 +211,7 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
     }).then((result) => {
       if (result.isConfirmed) {
         //Inicio de Solicitud
-        // Comentado tveas por error CORS
+        // Comentado tveas por error
         /*this.route.params.subscribe(params =>{
           //const processDefinitionKey ="process_modelo";
           const processDefinitionKey ="RequisicionPersonal";
@@ -368,7 +368,6 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
     combinedData$.subscribe((data) => {
       // Aquí tienes la data combinada y ordenada
       this.dataTable = data;
-      console.log("Data de niveles de solicitudes: ", data);
     });
 
     /*return this.solicitudes.getSolicitudes().subscribe({

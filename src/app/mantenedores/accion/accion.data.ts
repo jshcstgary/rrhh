@@ -38,7 +38,10 @@ export const AccionData: IAccionData = {
       width: "100px",
       actions: [
         { materialIcon: "edit", id: "editOnTable", tooltip: "Editar" },
-        { materialIcon: "content_copy", id: "cloneOnTable", tooltip: "Duplicar",
+        {
+          materialIcon: "content_copy",
+          id: "cloneOnTable",
+          tooltip: "Duplicar",
         },
       ],
     },
@@ -57,7 +60,7 @@ export const AccionData: IAccionData = {
     {
       id: "accion",
       type: "string",
-      maxLength: 30,
+      // maxLength: 30,
       required: true,
       inputMessageError: "Ingrese la descripción",
     },
@@ -65,7 +68,7 @@ export const AccionData: IAccionData = {
       id: "tipoSolicitudId",
       type: "select",
       required: true,
-      disabled:true,
+      disabled: true,
       placeholder: "Seleccione",
       inputMessageError: "Seleccione",
       options: [],
@@ -75,10 +78,10 @@ export const AccionData: IAccionData = {
       type: "toggle",
     },
   ],
-  colsToFilterByText: ["id", "accion", "tipoSolicitudFormatted",],
+  colsToFilterByText: ["id", "accion", "tipoSolicitudFormatted"],
 };
 
-interface IAccionData{
+interface IAccionData {
   columns: IColumnsTable;
   defaultEmptyRowTable: IAccionTable;
   tableInputsEditRow: IInputsComponent;

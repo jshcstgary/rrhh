@@ -52,7 +52,6 @@ export class RutaComponent implements OnInit {
           "tipoRuta",
           "id"
         );
-        console.log("comboTipoRuta: ", comboTipoRuta);
         this.dataTipoRuta = response.tipoRutaType;
         this.tableInputsEditRow = this.formService.changeValuePropFormById(
           "idTipoRuta",
@@ -60,7 +59,6 @@ export class RutaComponent implements OnInit {
           "options",
           comboTipoRuta
         );
-        console.log("this.tableInputsEditRow: ", this.tableInputsEditRow);
         this.getDataToTable();
       },
       error: (error: HttpErrorResponse) => {
@@ -85,12 +83,9 @@ export class RutaComponent implements OnInit {
     });
   }
   private formatTipoRutaEstaciones(accionResponse: IRuta): string {
-    console.log("this.dataTipoRuta: ", this.dataTipoRuta);
-    console.log("accionResponse: ", accionResponse);
     const tipoRuta = this.dataTipoRuta.find(
       (tipoRuta) => tipoRuta.id == accionResponse.idTipoRuta
     );
-    console.log("tipoRuta: ", tipoRuta);
     if (tipoRuta) {
       return tipoRuta.tipoRuta;
     }

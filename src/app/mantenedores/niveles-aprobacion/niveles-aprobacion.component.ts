@@ -400,7 +400,6 @@ export class NivelesAprobacionComponent {
           id: r.id,
           descripcion: r.valor,
         })); //verificar la estructura mmunoz
-        console.log("this.dataNivelDireccion: ", this.dataNivelDireccion);
       },
 
       error: (error: HttpErrorResponse) => {

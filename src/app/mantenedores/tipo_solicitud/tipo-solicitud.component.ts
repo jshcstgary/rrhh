@@ -44,7 +44,6 @@ export class TipoSolicitudComponent implements OnInit {
   private getDataToTable() {
     return this.tiposolicitudesService.index().subscribe({
       next: (response) => {
-        console.log("RESPONSE: ", response);
         this.dataTable = response.tipoSolicitudType.map((r) => ({
           ...r,
           estado: r.estado === "A",
