@@ -19,6 +19,8 @@ export class MantenimientoService {
   private apiTipoAccionUrl = environment.tipoAccionServiceES;
   private apiAccionUrl = environment.accionServiceES;
   private apiRutaUrl = environment.rutaServiceES;
+  // http://10.35.3.162:8053/v1/es/item-catalogo/codigo/RBPND
+  // http://10.35.3.162:8053/v1/es/item-catalogo/codigo
   private apiCatalogoUrl = environment.CatalogoServiceES;
   constructor(private http: HttpClient) {}
 
@@ -45,8 +47,22 @@ export class MantenimientoService {
     return this.http.get<any[]>(this.apiRutaUrl);
   }
 
+  // http://10.35.3.162:8053/v1/es/item-catalogo/codigo/RBPND
+  // http://10.35.3.162:8053/v1/es/item-catalogo/codigo
   public getCatalogo(codigo: string): Observable<ICatalogoResponse> {
     return this.http.get<ICatalogoResponse>(`${this.apiCatalogoUrl}/${codigo}`);
+  }
+
+  public getCatalogoRBPND(): Observable<ICatalogoResponse> {
+    return this.http.get<ICatalogoResponse>(
+      "http://10.35.3.162:8053/v1/es/item-catalogo/codigo/RBPND"
+    );
+  }
+
+  public getCatalogoRBPNA(): Observable<ICatalogoResponse> {
+    return this.http.get<ICatalogoResponse>(
+      "http://10.35.3.162:8053/v1/es/item-catalogo/codigo/RBPNA"
+    );
   }
 
   public diagnostic(): Observable<any> {
