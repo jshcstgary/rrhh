@@ -393,8 +393,13 @@ export class TableComponent implements OnInit, OnChanges {
    * @param id id de la accion
    * @param key identificador de la fila
    */
-  public clickOnAction(id: string, key: string, tooltip: string) {
-    this.contexto[this.clickOnActionRow](id, key, tooltip);
+  public clickOnAction(
+    id: string,
+    key: string,
+    tooltip: string,
+    id_edit: number = 3
+  ) {
+    this.contexto[this.clickOnActionRow](id, key, tooltip, id_edit);
   }
   /**
    * Muestra los datos en una tabla según la configuración de columna proporcionada.

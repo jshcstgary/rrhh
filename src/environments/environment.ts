@@ -15,33 +15,36 @@
 // import 'zone.js/dist/zone-error';  // Included with Angular CLI.
 
 const baseC = "http://10.35.3.180"; //base de camunda
-const baseW = "http://10.35.3.162";//base de servicios workflow
-const base = "http://10.35.3.162";//base de servicios local
+const baseW = "http://10.35.3.162"; //base de servicios workflow
+const base = "http://10.35.3.162"; //base de servicios local
 export const environment = {
   port: "4200",
   production: false,
   modalConfirmation: false,
 
-   // Angular UI app is associated with below BPMN process key
-   procesName:     'process_modelo',
+  // Angular UI app is associated with below BPMN process key
+  procesName: "process_modelo",
 
-   // Task type 1 - Register - the value maps to the id attribute 'Registrar Solicitud' from bpmn
-   taskType_Registrar : 'Activity_0jafldx',
+  // Task type 1 - Register - the value maps to the id attribute 'Registrar Solicitud' from bpmn
+  taskType_Registrar: "Activity_0jafldx",
 
-   // Task type 2 - Review   - the value maps to the id attribute 'Revisar Solicitud' from bpmn
-   taskType_Revisar   : 'Activity_0wf5xb7',
+  // Task type 2 - Review   - the value maps to the id attribute 'Revisar Solicitud' from bpmn
+  taskType_Revisar: "Activity_0wf5xb7",
 
   //Servicios de workflow
   camundaUrl: `${baseC}:8188/`,
   tipoSolicitudServiceES: `${baseW}:8068/v1/es/tiposolicitud`,
-  tipoRutaServiceES:`${baseW}:8069/v1/es/tiporuta`,
+  tipoRutaServiceES: `${baseW}:8069/v1/es/tiporuta`,
   tipoProcesoServiceES: `${baseW}:8070/v1/es/tipoproceso`,
   rutaServiceES: `${baseW}:8071/v1/es/ruta`, //10.35.3.162:8071/v1/es/ruta
-  tipoMotivoServiceES: `${baseW}:8072/v1/es/tipomotivo`,//10.35.3.162:8072/v1/es/tipomotivo
-  accionServiceES:`${baseW}:8073/v1/es/accion`,
-  tipoAccionServiceES:`${baseW}:8074/v1/es/tipoaccion`,//10.35.3.162:8074/v1/es/tipoaccion
-  CatalogoServiceES:`${baseW}:8053/v1/es/item-catalogo/codigo`,//10.35.3.162:8074/v1/es/tipoaccion
-  nivelAprobacionServiceES:`${baseW}:8000/v1/es/nivelesaprobacion`,//http://10.35.3.162:8000/v1/es/nivelesaprobacion
+  tipoMotivoServiceES: `${baseW}:8072/v1/es/tipomotivo`, //10.35.3.162:8072/v1/es/tipomotivo
+  accionServiceES: `${baseW}:8073/v1/es/accion`,
+  tipoAccionServiceES: `${baseW}:8074/v1/es/tipoaccion`, //10.35.3.162:8074/v1/es/tipoaccion
+  CatalogoServiceES: `${baseW}:8053/v1/es/item-catalogo/codigo`, //10.35.3.162:8074/v1/es/tipoaccion
+  nivelAprobacionServiceES: `${baseW}:8000/v1/es/nivelesaprobacion`, //http://10.35.3.162:8000/v1/es/nivelesaprobacion
+
+  solicitudesServiceES: `${base}:8001/v1/es/solicitud`, // http://10.35.3.162:8001/v1/es/solicitud
+  // http://10.35.3.162:8001/swagger/index.html
 
   //http://10.35.3.162:8053/v1/es/item-catalogo/codigo/
 
@@ -132,4 +135,3 @@ export const environment = {
   jawUS: `${base}:8400/v1/us/jaw`,
   itemProductoEs: `${base}:8096/v1/es/ItemProducto`,
 };
-

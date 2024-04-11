@@ -14,11 +14,9 @@ export class TableService {
   public textEmptyTable: string = TableComponentData.textEmptyTable;
   public rowsCheckedByTable = {};
   public isAnyEditRowDefault: boolean = true;
- 
 
   /* Funcion para inicializar todos los valores vacios o por defecto */
   public initializeAll() {
-    
     this.isAnyEditRowActive = false;
     this.textEmptyTable = TableComponentData.textEmptyTable;
   }
@@ -71,16 +69,19 @@ export class TableService {
     return dataToFilter.filter((row) =>
       propsToFilter.some((prop) => {
         const propValue = row[prop];
-  
+
         if (propValue !== undefined && propValue !== null) {
-          return propValue.toString().toLowerCase().includes(textToFilter.toLowerCase());
+          return propValue
+            .toString()
+            .toLowerCase()
+            .includes(textToFilter.toLowerCase());
         }
-  
+
         return false;
       })
     );
   }
-  
+
   /**
    * Función para darle formato a la data del response para que se coloque en la tabla
    *
@@ -94,7 +95,7 @@ export class TableService {
   ): IRowTableAttributes[] {
     return dataToFormat.map((row) => ({
       ...row,
-      key: row[keyName].toString(),
+      key: row[keyName]?.toString(),
     }));
   }
   /**

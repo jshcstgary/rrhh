@@ -83,10 +83,20 @@
                         class="text-info cursor-pointer action-icon"
                         [ngClass]="action.icon"
                         (click)="
-                          clickOnAction(action.id, row.key, action.tooltip)
+                          clickOnAction(
+                            action.id,
+                            row.key,
+                            action.tooltip,
+                            row.idNivelAprobacion
+                          )
                         "
                         (keyup.enter)="
-                          clickOnAction(action.id, row.key, action.tooltip)
+                          clickOnAction(
+                            action.id,
+                            row.key,
+                            action.tooltip,
+                            row.idNivelAprobacion
+                          )
                         "
                       ></i>
                       <i
@@ -94,10 +104,20 @@
                         tabindex="0"
                         class="material-icons text-info cursor-pointer action-icon"
                         (click)="
-                          clickOnAction(action.id, row.key, action.tooltip)
+                          clickOnAction(
+                            action.id,
+                            row.key,
+                            action.tooltip,
+                            row.idNivelAprobacion
+                          )
                         "
                         (keyup.enter)="
-                          clickOnAction(action.id, row.key, action.tooltip)
+                          clickOnAction(
+                            action.id,
+                            row.key,
+                            action.tooltip,
+                            row.idNivelAprobacion
+                          )
                         "
                       >
                         {{ action.materialIcon }}
@@ -221,7 +241,8 @@
                       class="material-icons text-info cursor-pointer action-icon md-24"
                       (click)="onSaveRowDataToModified(true)"
                       (keyup.enter)="onSaveRowDataToModified(true)"
-                      >save_as</i>
+                      >save_as</i
+                    >
                   </tooltip-component>
                   <tooltip-component text="Cancelar">
                     <i

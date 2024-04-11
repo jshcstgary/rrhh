@@ -1,31 +1,35 @@
-import { Component, OnInit } from '@angular/core';
-import { IColumnsTable } from 'src/app/component/table/table.interface';
-import { TiposolicitudData } from './tipo-solicitud.data';
-import { ITiposolicitud, ITiposolicitudTable } from './tipo-solicitud.interface';
-import Swal from 'sweetalert2';
-import { HttpErrorResponse } from '@angular/common/http';
-import { IInputsComponent } from 'src/app/component/input/input.interface';
-import { reportCodeEnum } from 'src/app/services/util/util.interface';
-import { TableService } from 'src/app/component/table/table.service';
-import { ValidationsService } from 'src/app/services/validations/validations.service';
-import { environment } from 'src/environments/environment';
-import { UtilService } from 'src/app/services/util/util.service';
-import { TipoSolicitudService } from './tipo-solicitud.service';
-import { UtilData } from 'src/app/services/util/util.data';
+import { Component, OnInit } from "@angular/core";
+import { IColumnsTable } from "src/app/component/table/table.interface";
+import { TiposolicitudData } from "./tipo-solicitud.data";
+import {
+  ITiposolicitud,
+  ITiposolicitudTable,
+} from "./tipo-solicitud.interface";
+import Swal from "sweetalert2";
+import { HttpErrorResponse } from "@angular/common/http";
+import { IInputsComponent } from "src/app/component/input/input.interface";
+import { reportCodeEnum } from "src/app/services/util/util.interface";
+import { TableService } from "src/app/component/table/table.service";
+import { ValidationsService } from "src/app/services/validations/validations.service";
+import { environment } from "src/environments/environment";
+import { UtilService } from "src/app/services/util/util.service";
+import { TipoSolicitudService } from "./tipo-solicitud.service";
+import { UtilData } from "src/app/services/util/util.data";
 
 @Component({
-  templateUrl: './tipo-solicitud.component.html',
+  templateUrl: "./tipo-solicitud.component.html",
 })
-export class TipoSolicitudComponent implements OnInit{
-
+export class TipoSolicitudComponent implements OnInit {
   public columnsTable: IColumnsTable = TiposolicitudData.columns;
   public dataTable: any[] = [];
-  public tableInputsEditRow: IInputsComponent = TiposolicitudData.tableInputsEditRow;
+  public tableInputsEditRow: IInputsComponent =
+    TiposolicitudData.tableInputsEditRow;
   public colsToFilterByText: string[] = TiposolicitudData.colsToFilterByText;
   public IdRowToClone: string = null;
   public defaultEmptyRowTable: ITiposolicitudTable =
     TiposolicitudData.defaultEmptyRowTable;
-  public codigoReporte: reportCodeEnum = reportCodeEnum.MANTENIMIENTO_TIPO_SOLICITUD;
+  public codigoReporte: reportCodeEnum =
+    reportCodeEnum.MANTENIMIENTO_TIPO_SOLICITUD;
   constructor(
     private tiposolicitudesService: TipoSolicitudService,
     private tableService: TableService,
@@ -40,10 +44,11 @@ export class TipoSolicitudComponent implements OnInit{
   private getDataToTable() {
     return this.tiposolicitudesService.index().subscribe({
       next: (response) => {
-        this.dataTable = response.map((r)=>({
+        console.log("RESPONSE: ", response);
+        this.dataTable = response.tipoSolicitudType.map((r) => ({
           ...r,
           estado: r.estado === "A",
-        }));//verificar la estructura mmunoz
+        })); //verificar la estructura mmunoz
       },
       error: (error: HttpErrorResponse) => {
         this.utilService.modalResponse(error.error, "error");
@@ -69,6 +74,9 @@ export class TipoSolicitudComponent implements OnInit{
     rowData: ITiposolicitudTable,
     finishedClonningRow: boolean
   ) {
+    console.log("SI GUARDO O EDITO (ANTES): ", rowData);
+    rowData = { ...rowData, estado: rowData.estado ? "A" : "I" };
+    console.log("SI GUARDO O EDITO (DESPUÉS): ", rowData);
     if (rowData.key) {
       /* Actualizar */
       this.tiposolicitudesService.update(rowData).subscribe({
@@ -80,7 +88,7 @@ export class TipoSolicitudComponent implements OnInit{
           );
           this.getDataToTable().add(() => {
             if (finishedClonningRow) {
-              this.IdRowToClone = response.id.toString();
+              this.IdRowToClone = response.codigoTipoSolicitud.toString();
             }
           });
         },
@@ -88,7 +96,7 @@ export class TipoSolicitudComponent implements OnInit{
           this.utilService.modalResponse(error.error, "error"),
       });
     } else {
-      rowData.id = 0;
+      // rowData.codigoTipoSolicitud = "";
       /* Crear */
       this.tiposolicitudesService.store(rowData).subscribe({
         next: (response) => {
@@ -99,7 +107,7 @@ export class TipoSolicitudComponent implements OnInit{
           );
           this.getDataToTable().add(() => {
             if (finishedClonningRow) {
-              this.IdRowToClone = response.id.toString();
+              this.IdRowToClone = response.codigoTipoSolicitud.toString();
             }
           });
         },
@@ -131,5 +139,4 @@ export class TipoSolicitudComponent implements OnInit{
       this.onSaveRowTable(rowData, finishedClonningRow);
     }
   }
-
 }

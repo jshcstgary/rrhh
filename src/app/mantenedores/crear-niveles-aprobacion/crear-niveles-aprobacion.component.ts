@@ -1,24 +1,23 @@
-import { CommonModule, NgFor } from '@angular/common';
-import { HttpErrorResponse } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
-import { NgModel,FormsModule  } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
-import { NgSelectConfig, NgSelectModule } from '@ng-select/ng-select';
-import { MantenimientoService } from 'src/app/services/mantenimiento/mantenimiento.service';
-import { UtilService } from 'src/app/services/util/util.service';
-import { CrearNivelesAprobacionService } from './crear-niveles-aprobacion.service';
-import Swal from 'sweetalert2';
-import { DatosNivelesAprobacion } from 'src/app/eschemas/DatosNivelesAprobacion';
+import { CommonModule, NgFor } from "@angular/common";
+import { HttpErrorResponse } from "@angular/common/http";
+import { Component, OnInit } from "@angular/core";
+import { NgModel, FormsModule } from "@angular/forms";
+import { ActivatedRoute, Router } from "@angular/router";
+import { NgSelectConfig, NgSelectModule } from "@ng-select/ng-select";
+import { MantenimientoService } from "src/app/services/mantenimiento/mantenimiento.service";
+import { UtilService } from "src/app/services/util/util.service";
+import { CrearNivelesAprobacionService } from "./crear-niveles-aprobacion.service";
+import Swal from "sweetalert2";
+import { DatosNivelesAprobacion } from "src/app/eschemas/DatosNivelesAprobacion";
 
 @Component({
   standalone: true,
-  selector: 'app-crear-niveles-aprobacion',
-  templateUrl: './crear-niveles-aprobacion.component.html',
-  styleUrls: ['./crear-niveles-aprobacion.component.scss'],
-  imports: [ NgFor,FormsModule, CommonModule,]
+  selector: "app-crear-niveles-aprobacion",
+  templateUrl: "./crear-niveles-aprobacion.component.html",
+  styleUrls: ["./crear-niveles-aprobacion.component.scss"],
+  imports: [NgFor, FormsModule, CommonModule],
 })
-export class CrearNivelesAprobacionComponent implements OnInit{
-
+export class CrearNivelesAprobacionComponent implements OnInit {
   public dataTipoSolicitudes: any[] = [];
   public dataTipoMotivo: any[] = [];
   public dataAccion: any[] = [];
@@ -26,7 +25,7 @@ export class CrearNivelesAprobacionComponent implements OnInit{
   public dataTipoRuta: any[] = [];
   public dataNivelDireccion: any[] = [];
   public dataNivelAprobacion: any[] = [];
-  modelo : DatosNivelesAprobacion = new DatosNivelesAprobacion();
+  modelo: DatosNivelesAprobacion = new DatosNivelesAprobacion();
   selected_tiposolicitud: number | string;
   selected_tipomotivo: number | string;
   selected_accion: number | string;
@@ -34,28 +33,43 @@ export class CrearNivelesAprobacionComponent implements OnInit{
   selected_tiporuta: number | string;
   selected_niveldir: number | string;
   selected_nivelaprob: number | string;
+  public id_edit: undefined | number;
+  constructor(
+    private config: NgSelectConfig,
+    private router: Router,
+    private route: ActivatedRoute,
+    private mantenimientoService: MantenimientoService,
+    private utilService: UtilService,
+    private serviceNivelesAprobacion: CrearNivelesAprobacionService
+  ) {
+    this.config.notFoundText = "Custom not found";
+    this.config.appendTo = "body";
+    this.config.bindValue = "value";
 
-  constructor(private config: NgSelectConfig,
-              private router: Router,
-              private route: ActivatedRoute,
-              private mantenimientoService: MantenimientoService,
-              private utilService: UtilService,
-              private serviceNivelesAprobacion: CrearNivelesAprobacionService) {
-
-
-    this.config.notFoundText = 'Custom not found';
-    this.config.appendTo = 'body';
-    this.config.bindValue = 'value';
-
-
+    this.route.queryParams.subscribe((params) => {
+      this.id_edit = params["id_edit"];
+      console.log("ID editar: ", this.id_edit);
+      // Utiliza el id_edit obtenido
+    });
   }
 
-  PageNivelesAprobacion()
-  {
-    this.router.navigate(['/mantenedores/niveles-aprobacion']);
+  PageNivelesAprobacion() {
+    this.router.navigate(["/mantenedores/niveles-aprobacion"]);
+  }
+
+  getNivelById() {
+    this.serviceNivelesAprobacion
+      .getNivelById(this.id_edit)
+      .subscribe((data) => {
+        this.modelo = { ...data, estado: data.estado === "A" };
+        console.log("The model: ", this.modelo);
+      });
   }
 
   ngOnInit() {
+    if (this.id_edit !== undefined) {
+      this.getNivelById();
+    }
     this.ObtenerServicioTipoSolicitud();
     this.ObtenerServicioTipoMotivo();
     this.ObtenerServicioAccion();
@@ -65,16 +79,13 @@ export class CrearNivelesAprobacionComponent implements OnInit{
     this.ObtenerServicioNivelAprobacion();
   }
 
-  ObtenerServicioTipoSolicitud(){
-
+  ObtenerServicioTipoSolicitud() {
     return this.mantenimientoService.getTipoSolicitud().subscribe({
-      next: (response) => {
-        this.dataTipoSolicitudes = response.map((r)=>({
-          id:r.id,
+      next: (response: any) => {
+        this.dataTipoSolicitudes = response.tipoSolicitudType.map((r) => ({
+          id: r.id,
           descripcion: r.tipoSolicitud,
-        }));//verificar la estructura mmunoz
-
-
+        })); //verificar la estructura mmunoz
       },
       error: (error: HttpErrorResponse) => {
         this.utilService.modalResponse(error.error, "error");
@@ -82,16 +93,13 @@ export class CrearNivelesAprobacionComponent implements OnInit{
     });
   }
 
-  ObtenerServicioTipoMotivo(){
-
+  ObtenerServicioTipoMotivo() {
     return this.mantenimientoService.getTipoMotivo().subscribe({
       next: (response) => {
-        this.dataTipoMotivo = response.map((r)=>({
-          id:r.id,
+        this.dataTipoMotivo = response.map((r) => ({
+          id: r.id,
           descripcion: r.tipoMotivo,
-        }));//verificar la estructura mmunoz
-
-
+        })); //verificar la estructura mmunoz
       },
       error: (error: HttpErrorResponse) => {
         this.utilService.modalResponse(error.error, "error");
@@ -99,16 +107,13 @@ export class CrearNivelesAprobacionComponent implements OnInit{
     });
   }
 
-  ObtenerServicioAccion(){
-
+  ObtenerServicioAccion() {
     return this.mantenimientoService.getAccion().subscribe({
       next: (response) => {
-        this.dataAccion = response.map((r)=>({
-          id:r.id,
+        this.dataAccion = response.map((r) => ({
+          id: r.id,
           descripcion: r.accion,
-        }));//verificar la estructura mmunoz
-
-
+        })); //verificar la estructura mmunoz
       },
       error: (error: HttpErrorResponse) => {
         this.utilService.modalResponse(error.error, "error");
@@ -116,16 +121,13 @@ export class CrearNivelesAprobacionComponent implements OnInit{
     });
   }
 
-  ObtenerServicioRuta(){
-
+  ObtenerServicioRuta() {
     return this.mantenimientoService.getRuta().subscribe({
       next: (response) => {
-        this.dataRuta = response.map((r)=>({
-          id:r.id,
+        this.dataRuta = response.map((r) => ({
+          id: r.id,
           descripcion: r.ruta,
-        }));//verificar la estructura mmunoz
-
-
+        })); //verificar la estructura mmunoz
       },
       error: (error: HttpErrorResponse) => {
         this.utilService.modalResponse(error.error, "error");
@@ -133,16 +135,13 @@ export class CrearNivelesAprobacionComponent implements OnInit{
     });
   }
 
-  ObtenerServicioTipoRuta(){
-
+  ObtenerServicioTipoRuta() {
     return this.mantenimientoService.getTipoRuta().subscribe({
       next: (response) => {
-        this.dataTipoRuta = response.tipoRutaType.map((r)=>({
-          id:r.id,
+        this.dataTipoRuta = response.tipoRutaType.map((r) => ({
+          id: r.id,
           descripcion: r.tipoRuta,
-        }));//verificar la estructura mmunoz
-
-
+        })); //verificar la estructura mmunoz
       },
       error: (error: HttpErrorResponse) => {
         this.utilService.modalResponse(error.error, "error");
@@ -150,16 +149,17 @@ export class CrearNivelesAprobacionComponent implements OnInit{
     });
   }
 
-  ObtenerServicioNivelDireccion(){
-
-    return this.mantenimientoService.getCatalogo('RBPND').subscribe({
+  ObtenerServicioNivelDireccion() {
+    this.mantenimientoService.diagnostic().subscribe((res) => {
+      console.log("Diagnóstico: ", res);
+    });
+    console.log("Executing ObtenerServicioNivelDireccion() method");
+    return this.mantenimientoService.getCatalogo("RBPND").subscribe({
       next: (response) => {
-        this.dataNivelDireccion = response.itemCatalogoTypes.map((r)=>({
-          id:r.codigo,
+        this.dataNivelDireccion = response.itemCatalogoTypes.map((r) => ({
+          id: r.codigo,
           descripcion: r.valor,
-        }));//verificar la estructura mmunoz
-
-
+        })); //verificar la estructura mmunoz
       },
       error: (error: HttpErrorResponse) => {
         this.utilService.modalResponse(error.error, "error");
@@ -167,16 +167,14 @@ export class CrearNivelesAprobacionComponent implements OnInit{
     });
   }
 
-  ObtenerServicioNivelAprobacion(){
-
-    return this.mantenimientoService.getCatalogo('RBPNA').subscribe({
+  ObtenerServicioNivelAprobacion() {
+    console.log("Executing ObtenerServicioNivelAprobacion() method");
+    return this.mantenimientoService.getCatalogo("RBPNA").subscribe({
       next: (response) => {
-        this.dataNivelAprobacion = response.itemCatalogoTypes.map((r)=>({
-          id:r.codigo,
+        this.dataNivelAprobacion = response.itemCatalogoTypes.map((r) => ({
+          id: r.codigo,
           descripcion: r.valor,
-        }));//verificar la estructura mmunoz
-
-
+        })); //verificar la estructura mmunoz
       },
       error: (error: HttpErrorResponse) => {
         this.utilService.modalResponse(error.error, "error");
@@ -184,29 +182,55 @@ export class CrearNivelesAprobacionComponent implements OnInit{
     });
   }
 
+  procesarNivelAprobacion() {
+    if (this.id_edit === undefined) {
+      console.log("Guardar nivel de solicitud: ", this.id_edit);
+      this.route.params.subscribe((params) => {
+        console.log({ ...this.modelo, estado: this.modelo.estado ? "A" : "I" });
+        this.serviceNivelesAprobacion
+          .guardarNivelAprobacion({
+            ...this.modelo,
+            estado: this.modelo.estado ? "A" : "I",
+          })
+          .subscribe(
+            (response) => {
+              console.log(response);
+              this.utilService.modalResponse(
+                "Datos ingresados correctamente",
+                "success"
+              );
 
-  GuardarnivelAprobacion(){
-
-    this.route.params.subscribe(params =>{
-      console.log(this.modelo);
-      this.serviceNivelesAprobacion.guardarNivelAprobacion(this.modelo).subscribe(response =>{
-        console.log(response);
-        this.utilService.modalResponse(
-          "Datos ingresados correctamente",
-          "success"
-         );
-
-         this.router.navigate(['/mantenedores/niveles-aprobacion']);
-
+              setTimeout(() => {
+                this.router.navigate(["/mantenedores/niveles-aprobacion"]);
+              }, 1600);
+            },
+            (error: HttpErrorResponse) => {
+              this.utilService.modalResponse(error.error, "error");
+            }
+          );
+      });
+      return;
+    }
+    this.serviceNivelesAprobacion
+      .actualizarNivelAprobacion({
+        ...this.modelo,
+        estado: this.modelo.estado ? "A" : "I",
+      })
+      .subscribe(
+        (response) => {
+          console.log(response);
+          this.utilService.modalResponse(
+            "Datos actualizados correctamente",
+            "success"
+          );
+          setTimeout(() => {
+            this.router.navigate(["/mantenedores/niveles-aprobacion"]);
+          }, 1600);
         },
-        (error: HttpErrorResponse) =>{
+        (error: HttpErrorResponse) => {
           this.utilService.modalResponse(error.error, "error");
         }
-    );
-
-  });
-
+      );
+    console.log("Editar nivel de solicitud");
   }
-
-
 }

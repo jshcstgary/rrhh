@@ -1,9 +1,9 @@
 import { IColumnsTable } from "src/app/component/table/table.interface";
 
-export const ConsultaSolicitudesData: IConsultaSolicitudesData = {
+export const ConsultaSolicitudesData: IConsultaNivelesAprobacionData = {
   columns: [
     {
-      title: "Tipo de rura",
+      title: "Tipo de ruta",
       dataIndex: "tipoRuta",
       align: "center",
       sortActive: true,
@@ -28,17 +28,25 @@ export const ConsultaSolicitudesData: IConsultaSolicitudesData = {
       colType: "string",
     },
     {
+      title: "Estado",
+      dataIndex: "estado",
+      type: "bool",
+    },
+    {
       title: "Acciones",
       type: "actions",
+      width: "100px",
       actions: [
-        /* { icon: "fas fa-pencil-alt", id: "redirectToEdit" }, */
-        // { icon: "far fa-copy", id: "" },
-        // { icon: "fas fa-exclamation-circle", id: "" },
-        /* { icon: "fas fa-trash-alt", id: "deleteRow" }, */
+        { materialIcon: "edit", id: "editOnTable", tooltip: "Editar" },
+        {
+          materialIcon: "content_copy",
+          id: "cloneOnTable",
+          tooltip: "Duplicar",
+        },
       ],
     },
   ],
 };
-interface IConsultaSolicitudesData {
+interface IConsultaNivelesAprobacionData {
   columns: IColumnsTable;
 }

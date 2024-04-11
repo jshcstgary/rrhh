@@ -5,102 +5,101 @@
   <div class="col-12">
     <div class="card">
       <div class="card-body border-top">
-              <div class="form-body">
-                <div class="row">
-                  <div class="col-md-3">
-                    <div class="mb-3">
-                      <label class="azul">Tipo de Solicitud</label>
-                      <ng-select
-                        #inputSelectLabor
-                        [(ngModel)]="selected_tipo_solicitud"
-                        name="id_tipo_labor"
-                        placeholder="Seleccione"
+        <div class="form-body">
+          <div class="row">
+            <div class="col-md-3">
+              <div class="mb-3">
+                <label class="azul">Tipo de Solicitud</label>
+                <ng-select
+                  #inputSelectLabor
+                  [(ngModel)]="selected_tipo_solicitud"
+                  name="id_tipo_labor"
+                  placeholder="Seleccione"
+                >
+                  <ng-option
+                    *ngFor="let car of dataTipoSolicitudes"
+                    [value]="car.id"
+                    >{{ car.id }} - {{ car.descripcion }}</ng-option
+                  >
+                </ng-select>
+              </div>
+            </div>
+            <!--Tipo-->
+            <div class="col-md-3">
+              <div class="mb-3">
+                <label class="azul">Tipo Motivo</label>
+                <ng-select
+                  #inputSelectProducto
+                  [(ngModel)]="selected_tipo_motivo"
+                  name="id_producto"
+                  placeholder="Seleccione"
+                >
+                  <ng-option *ngFor="let car of dataTipoMotivo" [value]="car.id"
+                    >{{ car.id }} - {{ car.descripcion }}</ng-option
+                  >
+                </ng-select>
+              </div>
+            </div>
+            <!--Nivel de direccion-->
+            <div class="col-md-3">
+              <div class="mb-3">
+                <label class="azul">Nivel de Direccion</label>
+                <ng-select
+                  #inputSelectTrabajador
+                  [(ngModel)]="selected_niveldireccion"
+                  name="id_trabajador"
+                  placeholder="Seleccione"
+                >
+                  <ng-option
+                    *ngFor="let car of dataNivelDireccion"
+                    [value]="car.id"
+                    >{{ car.id }} - {{ car.descripcion }}</ng-option
+                  >
+                </ng-select>
+              </div>
+            </div>
 
-                      >
-                        <ng-option
-                          *ngFor="let car of dataTipoSolicitudes"
-                          [value]="car.id"
-                          >{{ car.id }} - {{ car.descripcion }}</ng-option
-                        >
-                      </ng-select>
-                    </div>
-                  </div>
-                  <!--Tipo-->
-                  <div class="col-md-3">
-                    <div class="mb-3">
-                      <label class="azul">Tipo Motivo</label>
-                      <ng-select
-                        #inputSelectProducto
-                        [(ngModel)]="selected_tipo_motivo"
-                        name="id_producto"
-                        placeholder="Seleccione"
+            <div class="col-md-3">
+              <div class="mb-3 text-end">
+                <button
+                  type="button"
+                  (click)="filterDataTable()"
+                  class="btn btn-info me-2"
+                >
+                  <i class="fas fa-filter"></i> Buscar
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <form>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="mb-3">
+                <div class="text-end">
+                  <button
+                    type="button"
+                    (click)="PageCrear()"
+                    class="btn btn-info me-2"
+                  >
+                    <i class="fas fa-plus"></i> Agregar
+                  </button>
 
-                      >
-                        <ng-option *ngFor="let car of dataTipoMotivo" [value]="car.id"
-                          >{{ car.id }} - {{ car.descripcion }}</ng-option
-                        >
-                      </ng-select>
-                    </div>
-                  </div>
-                  <!--Nivel de direccion-->
-                  <div class="col-md-3">
-                    <div class="mb-3">
-                      <label class="azul">Nivel de Direccion</label>
-                      <ng-select
-                        #inputSelectTrabajador
-                        [(ngModel)]="selected_niveldireccion"
-                        name="id_trabajador"
-                        placeholder="Seleccione"
-
-                      >
-                        <ng-option
-                          *ngFor="let car of dataNivelDireccion"
-                          [value]="car.id"
-                          >{{ car.id }} - {{ car.descripcion }}</ng-option
-                        >
-                      </ng-select>
-                    </div>
-                  </div>
-
-                  <div class="col-md-3">
-                    <div class="mb-3 text-end">
-                        <button
-                          #buttonSearch
-                          type="submit"
-                          class="btn btn-info me-2">
-                          <i class="fas fa-filter"></i> Buscar
-                        </button>
-                    </div>
-                  </div>
+                  <button type="submit" class="btn btn-outline-info me-2">
+                    <i class="fas fa-file-excel"></i> Exportar
+                  </button>
                 </div>
               </div>
-              <form>
-                <div class="row">
-                  <div class="col-md-12">
-                    <div class="mb-3">
-                      <div class="text-end">
-                        <button
-                          type="button"
-                          (click)="PageCrear()"
-                          class="btn btn-info me-2"
-                        >
-                        <i class="fas fa-plus"></i> Agregar
-                        </button>
-
-                        <button type="submit" class="btn btn-outline-info me-2">
-                          <i class="fas fa-file-excel"></i> Exportar
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </form>
-             <table-component
-                *ngIf="hasFiltered"
-                [columns]="columnsTable"
-                [dataTable]="dataTable"
-                [contexto]="this"
-              ></table-component>
+            </div>
+          </div>
+        </form>
+        <table-component
+          *ngIf="hasFiltered"
+          [columns]="columnsTable"
+          [dataTable]="dataTable"
+          [contexto]="this"
+          clickOnActionRow="onRowActionClicked"
+        ></table-component>
 
         <!--</ul>-->
 
@@ -111,10 +110,3 @@
     </div>
   </div>
 </div>
-
-
-
-
-
-
-

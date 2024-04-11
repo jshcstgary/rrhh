@@ -1,4 +1,5 @@
 import { NgIf, CommonModule, NgFor } from "@angular/common";
+import { forkJoin, map } from "rxjs";
 import {
   Component,
   ViewChild,
@@ -43,6 +44,9 @@ import { DatosInstanciaProceso } from "src/app/eschemas/DatosInstanciaProceso";
 import { MantenimientoService } from "src/app/services/mantenimiento/mantenimiento.service";
 import { UtilService } from "src/app/services/util/util.service";
 import { HttpErrorResponse } from "@angular/common/http";
+import { DatosSolicitud } from "src/app/eschemas/DatosSolicitud";
+import { SolicitudesService } from "../registrar-solicitud/solicitudes.service";
+import { TableComponentData } from "src/app/component/table/table.data";
 
 declare var require: any;
 const data: any = require("./company.json");
@@ -88,6 +92,7 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
   public dataTipoMotivo: any[] = [];
   public dataTipoAccion: any[] = [];
   public data_estado: any[] = [];
+  public rowsPerPageTable: number = TableComponentData.defaultRowPerPage;
 
   @ViewChild("myModalSolicitudes", { static: false })
   myModalSolicitudes: TemplateRef<any>;
@@ -145,6 +150,7 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
     private modalService: NgbModal,
     private camundaRestService: CamundaRestService,
     private route: ActivatedRoute,
+    private solicitudes: SolicitudesService,
     private utilService: UtilService,
     private mantenimientoService: MantenimientoService
   ) {
@@ -227,7 +233,13 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
           });
           this.submitted = true;
          });*/
-        this.router.navigate(["/solicitudes/registrar-solicitud"]);
+        this.router.navigate(["/solicitudes/registrar-solicitud"], {
+          queryParams: new DatosSolicitud(
+            this.modelo.tipo_solicitud,
+            this.modelo.tipo_motivo,
+            this.modelo.tipo_cumplimiento
+          ),
+        });
         if (this.submitted) {
           this.router.navigate(["/solicitudes/registrar-solicitud"]);
         }
@@ -331,6 +343,46 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
   }
 
   //mostrar modal de inicio de instancia de la solicitud
+
+  private getDataToTable() {
+    const combinedData$ = forkJoin(
+      this.solicitudes.getSolicitudes(),
+      this.solicitudes.getDetalleSolicitud()
+    ).pipe(
+      map(([solicitudes, detallesSolicitud]) => {
+        // Combinar las solicitudes y los detalles de la solicitud
+        const data = solicitudes.solicitudType.map((solicitud) => {
+          const detalles = detallesSolicitud.detalleSolicitudType.find(
+            (detalle) => detalle.idSolicitud === solicitud.idSolicitud
+          );
+          return { ...solicitud, ...detalles };
+        });
+
+        // Ordenar la data por fechaCreacion de forma descendente
+        return data.sort((a, b) => {
+          return b.idDetalleSolicitud - a.idDetalleSolicitud;
+        });
+      })
+    );
+
+    combinedData$.subscribe((data) => {
+      // Aquí tienes la data combinada y ordenada
+      this.dataTable = data;
+      console.log("Data de niveles de solicitudes: ", data);
+    });
+
+    /*return this.solicitudes.getSolicitudes().subscribe({
+      next: (response) => {
+        this.dataTable = response.nivelAprobacionType.map((nivelAprobacionResponse=>({
+          ...nivelAprobacionResponse,
+          estado: nivelAprobacionResponse.estado === "A",
+        })));
+      },
+      error: (error: HttpErrorResponse) => {
+        this.utilService.modalResponse(error.error, "error");
+      },
+    });*/
+  }
 
   mostrarModalCrearSolicitudes() {
     this.submitted = false;
@@ -452,6 +504,7 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
   }
 
   ngOnInit() {
+    this.getDataToTable();
     this.ObtenerServicioTipoSolicitud();
     this.ObtenerServicioTipoMotivo();
     this.ObtenerServicioTipoAccion();
