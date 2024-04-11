@@ -12,7 +12,7 @@
                 <label class="azul">Tipo de Solicitud</label>
                 <ng-select
                   #inputSelectLabor
-                  [(ngModel)]="selected_tipo_solicitud"
+                  [(ngModel)]="dataFilterNivelesAprobacion.tipoSolicitud"
                   name="id_tipo_labor"
                   placeholder="Seleccione"
                 >
@@ -22,6 +22,7 @@
                     >{{ car.id }} - {{ car.descripcion }}</ng-option
                   >
                 </ng-select>
+                {{ selected_tipo_solicitud }}
               </div>
             </div>
             <!--Tipo-->
@@ -30,7 +31,7 @@
                 <label class="azul">Tipo Motivo</label>
                 <ng-select
                   #inputSelectProducto
-                  [(ngModel)]="selected_tipo_motivo"
+                  [(ngModel)]="dataFilterNivelesAprobacion.tipoMotivo"
                   name="id_producto"
                   placeholder="Seleccione"
                 >
@@ -38,6 +39,7 @@
                     >{{ car.id }} - {{ car.descripcion }}</ng-option
                   >
                 </ng-select>
+                {{ selected_tipo_motivo }}
               </div>
             </div>
             <!--Nivel de direccion-->
@@ -46,16 +48,17 @@
                 <label class="azul">Nivel de Direccion</label>
                 <ng-select
                   #inputSelectTrabajador
-                  [(ngModel)]="selected_niveldireccion"
+                  [(ngModel)]="dataFilterNivelesAprobacion.nivelDireccion"
                   name="id_trabajador"
                   placeholder="Seleccione"
                 >
                   <ng-option
                     *ngFor="let car of dataNivelDireccion"
-                    [value]="car.id"
+                    [value]="car.codigo"
                     >{{ car.id }} - {{ car.descripcion }}</ng-option
                   >
                 </ng-select>
+                {{ selected_niveldireccion }}
               </div>
             </div>
 

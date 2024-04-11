@@ -58,10 +58,14 @@ export class CrearNivelesAprobacionComponent implements OnInit {
   }
 
   getNivelById() {
+    this.utilService.openLoadingSpinner(
+      "Cargando información, espere por favor..."
+    );
     this.serviceNivelesAprobacion
       .getNivelById(this.id_edit)
       .subscribe((data) => {
         this.modelo = { ...data, estado: data.estado === "A" };
+
         console.log("The model: ", this.modelo);
       });
   }
@@ -154,12 +158,14 @@ export class CrearNivelesAprobacionComponent implements OnInit {
       console.log("Diagnóstico: ", res);
     });
     console.log("Executing ObtenerServicioNivelDireccion() method");
-    return this.mantenimientoService.getCatalogo("RBPND").subscribe({
+    // return this.mantenimientoService.getCatalogo("RBPND").subscribe({
+    return this.mantenimientoService.getCatalogoRBPND().subscribe({
       next: (response) => {
         this.dataNivelDireccion = response.itemCatalogoTypes.map((r) => ({
           id: r.codigo,
           descripcion: r.valor,
         })); //verificar la estructura mmunoz
+        this.utilService.closeLoadingSpinner();
       },
       error: (error: HttpErrorResponse) => {
         this.utilService.modalResponse(error.error, "error");
@@ -169,7 +175,8 @@ export class CrearNivelesAprobacionComponent implements OnInit {
 
   ObtenerServicioNivelAprobacion() {
     console.log("Executing ObtenerServicioNivelAprobacion() method");
-    return this.mantenimientoService.getCatalogo("RBPNA").subscribe({
+    // return this.mantenimientoService.getCatalogo("RBPNA").subscribe({
+    return this.mantenimientoService.getCatalogoRBPNA().subscribe({
       next: (response) => {
         this.dataNivelAprobacion = response.itemCatalogoTypes.map((r) => ({
           id: r.codigo,
@@ -183,6 +190,9 @@ export class CrearNivelesAprobacionComponent implements OnInit {
   }
 
   procesarNivelAprobacion() {
+    this.utilService.openLoadingSpinner(
+      "Guardando información, espere por favor..."
+    );
     if (this.id_edit === undefined) {
       console.log("Guardar nivel de solicitud: ", this.id_edit);
       this.route.params.subscribe((params) => {
@@ -194,6 +204,7 @@ export class CrearNivelesAprobacionComponent implements OnInit {
           })
           .subscribe(
             (response) => {
+              this.utilService.closeLoadingSpinner();
               console.log(response);
               this.utilService.modalResponse(
                 "Datos ingresados correctamente",
@@ -219,6 +230,7 @@ export class CrearNivelesAprobacionComponent implements OnInit {
       .subscribe(
         (response) => {
           console.log(response);
+          this.utilService.closeLoadingSpinner();
           this.utilService.modalResponse(
             "Datos actualizados correctamente",
             "success"
