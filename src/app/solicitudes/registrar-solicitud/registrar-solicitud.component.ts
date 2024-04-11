@@ -132,8 +132,8 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
 
   ObtenerServicioTipoSolicitud() {
     return this.mantenimientoService.getTipoSolicitud().subscribe({
-      next: (response) => {
-        this.dataTipoSolicitud = response.filter(
+      next: (response: any) => {
+        this.dataTipoSolicitud = response.tipoSolicitudType.filter(
           (data) => data.id == this.modelSolicitud.tipo_solicitud
         )[0];
         this.solicitud.infoGeneral.idTipoSolicitud = this.dataTipoSolicitud.id;
