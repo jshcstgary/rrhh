@@ -1,3 +1,4 @@
+import { DataFilterNivelesAprobacion } from "./../../eschemas/DataFilterNivelesAprobacion";
 import { NgIf, CommonModule, NgFor } from "@angular/common";
 import {
   Component,
@@ -77,6 +78,7 @@ export class NivelesAprobacionComponent {
   public dataTipoSolicitudes: any[] = [];
   public dataNivelDireccion: any[] = [];
   public dataTipoMotivo: any[] = [];
+  public dataFilterNivelesAprobacion = new DataFilterNivelesAprobacion();
   private instanceCreated: DatosInstanciaProceso;
   consultaSolicitudesSelect!: string;
   isLoading = false;
@@ -159,13 +161,15 @@ export class NivelesAprobacionComponent {
 
   onRowActionClicked(id: string, key: string, tooltip: string, id_edit) {
     // Lógica cuando se da click en una acción de la fila
-    console.log("Clicked action222:", id, key, tooltip, id_edit);
     this.router.navigate(["/mantenedores/crear-niveles-aprobacion"], {
       queryParams: { id_edit },
     });
   }
 
   private getDataToTable() {
+    this.utilService.openLoadingSpinner(
+      "Cargando información. Espere por favor..."
+    );
     return this.nivelesAprobacionService.obtenerNiveleAprobaciones().subscribe({
       next: (response) => {
         this.dataTable = response.nivelAprobacionType.map(
@@ -174,7 +178,8 @@ export class NivelesAprobacionComponent {
             estado: nivelAprobacionResponse.estado === "A",
           })
         );
-        console.log("Data de niveles de aprobacion: ", this.dataTable);
+        this.utilService.closeLoadingSpinner();
+        // console.log("Data de niveles de aprobacion: ", this.dataTable);
       },
       error: (error: HttpErrorResponse) => {
         this.utilService.modalResponse(error.error, "error");
@@ -391,10 +396,13 @@ export class NivelesAprobacionComponent {
     return this.mantenimientoService.getCatalogo("RBPND").subscribe({
       next: (response) => {
         this.dataNivelDireccion = response.itemCatalogoTypes.map((r) => ({
+          ...r,
           id: r.id,
           descripcion: r.valor,
         })); //verificar la estructura mmunoz
+        console.log("this.dataNivelDireccion: ", this.dataNivelDireccion);
       },
+
       error: (error: HttpErrorResponse) => {
         this.utilService.modalResponse(error.error, "error");
       },
@@ -417,27 +425,48 @@ export class NivelesAprobacionComponent {
   }
 
   filterDataTable() {
-    this.nivelesAprobacionService
-      .filterNivelesAprobaciones(1, 1, "TA")
-      .subscribe({
-        next: (response) => {
-          console.log("filerDataTable: ", response);
-          this.dataTable = response.nivelAprobacionType.map(
-            (nivelAprobacionResponse) => ({
-              ...nivelAprobacionResponse,
-              estado: nivelAprobacionResponse.estado === "A",
-            })
-          );
-          console.log("Data de niveles de aprobacion: ", this.dataTable);
-        },
-        error: (error: HttpErrorResponse) => {
-          this.utilService.modalResponse(error.error, "error");
-        },
-      });
+    if (this.dataFilterNivelesAprobacion.verifyFilterFields()) {
+      this.utilService.modalResponse(
+        "Por favor complete los campos del filtro",
+        "info"
+      );
+    } else {
+      this.utilService.openLoadingSpinner(
+        "Cargando información, espero por favor..."
+      );
+      console.log("FILTER DATA: ", this.dataFilterNivelesAprobacion);
+      this.nivelesAprobacionService
+        .filterNivelesAprobaciones(
+          this.dataFilterNivelesAprobacion.tipoSolicitud,
+          this.dataFilterNivelesAprobacion.tipoMotivo,
+          this.dataFilterNivelesAprobacion.nivelDireccion
+        )
+        .subscribe({
+          next: (response) => {
+            console.log("filerDataTable: ", response);
+            this.dataTable = response.nivelAprobacionType.map(
+              (nivelAprobacionResponse) => ({
+                ...nivelAprobacionResponse,
+                estado: nivelAprobacionResponse.estado === "A",
+              })
+            );
+            this.utilService.closeLoadingSpinner();
+            console.log("Data de niveles de aprobacion: ", this.dataTable);
+          },
+          error: (error: HttpErrorResponse) => {
+            console.log("error: ", error);
+            this.dataTable = [];
+            this.utilService.modalResponse(
+              "No existen registros para esta búsqueda",
+              "error"
+            );
+          },
+        });
+    }
   }
 
   ngOnInit() {
-    this.filterDataTable();
+    // this.filterDataTable();
     this.ObtenerServicioTipoSolicitud();
     this.ObtenerServicioNivelDireccion();
     this.ObtenerServicioTipoMotivo();

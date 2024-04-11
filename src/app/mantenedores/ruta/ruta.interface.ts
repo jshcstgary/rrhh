@@ -3,18 +3,16 @@ import { IRowTableAttributes } from "src/app/component/table/table.interface";
 export interface IRuta {
   id?: number | string;
   ruta: string;
-  tipoRutaId?: number | string;
+  idTipoRuta?: number | string;
   estado: string | boolean;
-
 }
 
-export interface ITipoRuta{
+export interface ITipoRuta {
   id?: number | string;
-  tipoRuta:string;
+  tipoRuta: string;
 }
 
-export interface IRutaTable
-  extends IRuta, IRowTableAttributes {}
+export interface IRutaTable extends IRuta, IRowTableAttributes {}
 
 export type ITipoRutas = ITipoRuta[];
 export type IRutas = IRuta[];

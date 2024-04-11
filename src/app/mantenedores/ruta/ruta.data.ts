@@ -20,7 +20,7 @@ export const TiporutaData: IRutaData = {
     },
     {
       title: "Tipo ruta",
-      dataIndex: "tipoRutaId",
+      dataIndex: "idTipoRuta",
       width: "200px",
       dataIndexesToJoin: ["tipoRutaFormatted"],
       sortActive: true,
@@ -38,7 +38,10 @@ export const TiporutaData: IRutaData = {
       width: "100px",
       actions: [
         { materialIcon: "edit", id: "editOnTable", tooltip: "Editar" },
-        { materialIcon: "content_copy", id: "cloneOnTable", tooltip: "Duplicar",
+        {
+          materialIcon: "content_copy",
+          id: "cloneOnTable",
+          tooltip: "Duplicar",
         },
       ],
     },
@@ -46,7 +49,7 @@ export const TiporutaData: IRutaData = {
   defaultEmptyRowTable: {
     id: "0",
     ruta: "",
-    tipoRutaId: null,
+    idTipoRuta: null,
     estado: true,
   },
   tableInputsEditRow: [
@@ -66,21 +69,19 @@ export const TiporutaData: IRutaData = {
       type: "toggle",
     },
     {
-      id: "tipoRutaId",
+      id: "idTipoRuta",
       type: "select",
       required: true,
-      disabled:true,
+      disabled: true,
       placeholder: "Seleccione",
       inputMessageError: "Seleccione",
       options: [],
     },
   ],
-  colsToFilterByText: ["id",
-                      "ruta",
-                      "tipoRutaFormatted",],
+  colsToFilterByText: ["id", "ruta", "tipoRutaFormatted"],
 };
 
-interface IRutaData{
+interface IRutaData {
   columns: IColumnsTable;
   defaultEmptyRowTable: IRutaTable;
   tableInputsEditRow: IInputsComponent;
