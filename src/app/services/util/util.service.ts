@@ -35,7 +35,7 @@ export class UtilService {
    * @param message
    * @param type
    */
-  public loadingSpinner(message: string) {
+  public openLoadingSpinner(message: string) {
     Swal.fire({
       title: message,
       showConfirmButton: false,
@@ -46,6 +46,17 @@ export class UtilService {
     //   Swal.close();
     // }, 2000);
   }
+
+  /**
+   * Función para cerrar el spinner de cargando al realizar consumo de las APIs
+   *
+   * @param message
+   * @param type
+   */
+  public closeLoadingSpinner() {
+    Swal.close();
+  }
+
   /**
    * Enfoca un elemento HTML específico después de un retraso de 500 milisegundos.
    * @param elementId El ID del elemento HTML que se va a enfocar.
