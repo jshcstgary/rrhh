@@ -158,8 +158,8 @@ export class CrearNivelesAprobacionComponent implements OnInit {
       console.log("Diagnóstico: ", res);
     });
     console.log("Executing ObtenerServicioNivelDireccion() method");
-    // return this.mantenimientoService.getCatalogo("RBPND").subscribe({
-    return this.mantenimientoService.getCatalogoRBPND().subscribe({
+    return this.mantenimientoService.getCatalogo("RBPND").subscribe({
+      // return this.mantenimientoService.getCatalogoRBPND().subscribe({
       next: (response) => {
         this.dataNivelDireccion = response.itemCatalogoTypes.map((r) => ({
           id: r.codigo,
@@ -175,8 +175,8 @@ export class CrearNivelesAprobacionComponent implements OnInit {
 
   ObtenerServicioNivelAprobacion() {
     console.log("Executing ObtenerServicioNivelAprobacion() method");
-    // return this.mantenimientoService.getCatalogo("RBPNA").subscribe({
-    return this.mantenimientoService.getCatalogoRBPNA().subscribe({
+    return this.mantenimientoService.getCatalogo("RBPNA").subscribe({
+      // return this.mantenimientoService.getCatalogoRBPNA().subscribe({
       next: (response) => {
         this.dataNivelAprobacion = response.itemCatalogoTypes.map((r) => ({
           id: r.codigo,
