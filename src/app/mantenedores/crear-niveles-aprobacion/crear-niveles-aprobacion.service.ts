@@ -9,7 +9,7 @@ import { environment } from "src/environments/environment";
 export class CrearNivelesAprobacionService {
   private apiUrlNivelAprobacion = environment.nivelAprobacionServiceES;
   private nivelAprobacionRefreshServiceES =
-    environment.nivelAprobacionServiceES;
+    environment.nivelAprobacionRefreshServiceES;
   constructor(private http: HttpClient) {}
 
   public guardarNivelAprobacion(request: any): Observable<any> {
