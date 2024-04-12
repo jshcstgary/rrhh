@@ -8,6 +8,8 @@ import { environment } from "src/environments/environment";
 })
 export class CrearNivelesAprobacionService {
   private apiUrlNivelAprobacion = environment.nivelAprobacionServiceES;
+  private nivelAprobacionRefreshServiceES =
+    environment.nivelAprobacionServiceES;
   constructor(private http: HttpClient) {}
 
   public guardarNivelAprobacion(request: any): Observable<any> {
@@ -20,5 +22,9 @@ export class CrearNivelesAprobacionService {
 
   public getNivelById(id: number): Observable<any> {
     return this.http.get<any>(`${this.apiUrlNivelAprobacion}/${id}`);
+  }
+
+  refrescarNivelesAprobaciones(): Observable<any> {
+    return this.http.get<any>(`${this.nivelAprobacionRefreshServiceES}`);
   }
 }

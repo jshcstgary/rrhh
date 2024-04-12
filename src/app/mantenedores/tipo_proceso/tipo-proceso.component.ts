@@ -114,6 +114,7 @@ export class TipoProcesoComponent implements OnInit {
     rowData: ITipoprocesoTable,
     finishedClonningRow: boolean
   ) {
+    rowData = { ...rowData, estado: rowData.estado ? "A" : "I" };
     if (rowData.key) {
       /* Actualizar */
       this.tipoprocesosService.update(rowData).subscribe({

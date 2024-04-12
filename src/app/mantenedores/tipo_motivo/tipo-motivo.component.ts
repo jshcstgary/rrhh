@@ -118,6 +118,7 @@ export class TipoMotivoComponent implements OnInit {
     rowData: ITipomotivoTable,
     finishedClonningRow: boolean
   ) {
+    rowData = { ...rowData, estado: rowData.estado ? "A" : "I" };
     if (rowData.key) {
       /* Actualizar */
       this.tipomotivosService.update(rowData).subscribe({

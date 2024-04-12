@@ -25,6 +25,7 @@ import {
   NgbDatepickerModule,
   NgbDateStruct,
   NgbModal,
+  NgbPaginationModule,
 } from "@ng-bootstrap/ng-bootstrap";
 
 import { SimpleDatepickerBasic } from "src/app/component/datepicker/simpledatepicker.component";
@@ -42,8 +43,56 @@ import { HttpErrorResponse } from "@angular/common/http";
 import { UtilService } from "src/app/services/util/util.service";
 import { DatosNivelesAprobacion } from "src/app/eschemas/DatosNivelesAprobacion";
 import { NivelesAprobacionService } from "./niveles-aprobacion.service";
+import { TableService } from "src/app/component/table/table.service";
+import { IInputsComponent } from "src/app/component/input/input.interface";
+import { TableComponentData } from "src/app/component/table/table.data";
 declare var require: any;
 const data: any = require("./company.json");
+interface Column {
+  title: string;
+  dataIndex: string;
+  width?: string;
+  type?: "checkbox" | "actions" | "";
+  actions?: {
+    id: string;
+    label: string;
+    icon?: string;
+    buttonClass?: string;
+    tooltip?: string;
+  }[];
+}
+
+interface RowData {
+  // Define the properties of your row data
+  [key: string]: any;
+  isEditingRow?: boolean;
+}
+const COUNTRIES: any[] = [
+  {
+    name: "Russia",
+    flag: "f/f3/Flag_of_Russia.svg",
+    area: 17075200,
+    population: 146989754,
+  },
+  {
+    name: "Canada",
+    flag: "c/cf/Flag_of_Canada.svg",
+    area: 9976140,
+    population: 36624199,
+  },
+  {
+    name: "United States",
+    flag: "a/a4/Flag_of_the_United_States.svg",
+    area: 9629091,
+    population: 324459463,
+  },
+  {
+    name: "China",
+    flag: "f/fa/Flag_of_the_People%27s_Republic_of_China.svg",
+    area: 9596960,
+    population: 1409517397,
+  },
+];
 @Component({
   selector: "app-niveles-aprobacion",
   standalone: true,
@@ -66,6 +115,7 @@ const data: any = require("./company.json");
     NgFor,
     CommonModule,
     ComponentsModule,
+    NgbPaginationModule,
   ],
 })
 export class NivelesAprobacionComponent {
@@ -104,7 +154,7 @@ export class NivelesAprobacionComponent {
   selected_niveldireccion: number;
 
   data_empresas = [{ id: 10021, name: "Reybanpac" }];
-
+  public inputsEditRow: IInputsComponent;
   /*data_productos = [
     { id: 1, name: 'Todos' },
   ];*/
@@ -125,11 +175,29 @@ export class NivelesAprobacionComponent {
   loadingIndicator = true;
   reorderable = true;
 
-  columns = [{ prop: "name" }, { name: "Gender" }, { name: "Company" }];
-
+  // columns = [{ prop: "name" }, { name: "Gender" }, { name: "Company" }];
   @ViewChild(NivelesAprobacionComponent) table:
     | NivelesAprobacionComponent
     | any;
+
+  // columns: IColumnsTable = ConsultaSolicitudesData.columns;
+  data: RowData[];
+  isTableEmpty = false;
+  countries = COUNTRIES;
+
+  /*
+    NUEVO
+  */
+  public tableWidth: string = "100%";
+  public columns: IColumnsTable = ConsultaSolicitudesData.columns;
+  public allowCloneButton: boolean = false;
+  public contexto: any;
+  public onCancelEditRowTable: string;
+  public page: number = 1;
+  public rowsPerPageValue: number = TableComponentData.defaultRowPerPage;
+  public totalRows: number = 0;
+  public onChangePagination: string;
+  public rowsPerPageOptions: number[] = TableComponentData.rowsPerPage;
 
   constructor(
     private config: NgSelectConfig,
@@ -140,7 +208,8 @@ export class NivelesAprobacionComponent {
     private route: ActivatedRoute,
     private nivelesAprobacionService: NivelesAprobacionService,
     private utilService: UtilService,
-    private mantenimientoService: MantenimientoService
+    private mantenimientoService: MantenimientoService,
+    public tableService: TableService
   ) {
     this.camundaRestService = camundaRestService;
     this.route = route;
@@ -165,6 +234,56 @@ export class NivelesAprobacionComponent {
       queryParams: { id_edit },
     });
   }
+
+  public getAttributesToInputCell(dataIndex: string): number {
+    return this.inputsEditRow.findIndex((x) => x.id === dataIndex);
+  }
+
+  public onSaveRowDataToModified(finishedClonningRow: boolean = false) {
+    this.inputsEditRow
+      .filter((x) => x.required)
+      .map((x) => x.id)
+      .forEach((x) => {
+        const element = document.getElementById(x);
+        if (element) {
+          element.focus();
+          element.blur();
+        }
+      });
+    /*this.contexto[this.onSaveRowTable](
+      this.rowDataModified,
+      finishedClonningRow
+    );*/
+  }
+
+  public onCancelRow() {
+    this.tableService.changeStateIsAnyEditRowActive(false);
+    this.contexto[this.onCancelEditRowTable]();
+  }
+
+  public onChangePage(page: number) {
+    this.contexto[this.onChangePagination](page, this.rowsPerPageValue);
+  }
+
+  public onChangeRowsPerPage(e: Event) {
+    const selectValue = parseInt((e.target as HTMLSelectElement).value);
+    this.rowsPerPageValue = selectValue;
+    this.contexto[this.onChangePagination](1, selectValue);
+    this.page = 1;
+  }
+
+  /*public onCheckHeaderCheckbox() {
+    if (this.isChekedHeaderInput) {
+      this.rowsChecked = [];
+    } else {
+      this.rowsChecked = this.data.map((x) => x.key);
+    }
+    this.tableService.onCheckTable(this.tableName, this.rowsChecked);
+    if (this.onCheck !== undefined) {
+      this.contexto[this.onCheck](this.rowsChecked);
+    }
+    this.validateHeaderInputState();
+  }*/
 
   private getDataToTable() {
     this.utilService.openLoadingSpinner(
