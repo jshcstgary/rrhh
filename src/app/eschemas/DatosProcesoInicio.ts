@@ -1,9 +1,7 @@
-export class DatosProcesoInicio{
-
+export class DatosProcesoInicio {
   constructor(
-    public tipo_solicitud : string='',
-    public tipo_motivo : string='',
-    public tipo_cumplimiento : string=''
-
-  ){ }
+    public tipo_solicitud?: any,
+    public tipo_motivo?: any,
+    public tipo_cumplimiento?: any
+  ) {}
 }

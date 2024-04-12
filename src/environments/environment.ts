@@ -40,10 +40,13 @@ export const environment = {
   tipoMotivoServiceES: `${baseW}:8072/v1/es/tipomotivo`, //10.35.3.162:8072/v1/es/tipomotivo
   accionServiceES: `${baseW}:8073/v1/es/accion`,
   tipoAccionServiceES: `${baseW}:8074/v1/es/tipoaccion`, //10.35.3.162:8074/v1/es/tipoaccion
-  CatalogoServiceES: `${baseW}:8053/v1/es/item-catalogo/codigo`, //10.35.3.162:8074/v1/es/tipoaccion
-  nivelAprobacionServiceES: `${baseW}:8000/v1/es/nivelesaprobacion`, //http://10.35.3.162:8000/v1/es/nivelesaprobacion
+  // http://10.35.3.162:8053/v1/es/item-catalogo/codigo/RBPND
+  CatalogoServiceES: `${baseW}:8065/v1/es/item-catalogo/codigo`, //10.35.3.162:8074/v1/es/tipoaccion
+  nivelAprobacionServiceES: `${baseW}:8067/v1/es/nivelesaprobacion`, //http://10.35.3.162:8000/v1/es/nivelesaprobacion
 
-  solicitudesServiceES: `${base}:8001/v1/es/solicitud`, // http://10.35.3.162:8001/v1/es/solicitud
+  nivelAprobacionRefreshServiceES: `${baseW}:8075/v1/es/refresh_nivelesAprobacion`,
+
+  solicitudesServiceES: `${base}:8066/v1/es/solicitud`, // http://10.35.3.162:8001/v1/es/solicitud
   // http://10.35.3.162:8001/swagger/index.html
 
   //http://10.35.3.162:8053/v1/es/item-catalogo/codigo/

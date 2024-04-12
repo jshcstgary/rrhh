@@ -204,16 +204,31 @@ export class CrearNivelesAprobacionComponent implements OnInit {
           })
           .subscribe(
             (response) => {
-              this.utilService.closeLoadingSpinner();
-              console.log(response);
-              this.utilService.modalResponse(
-                "Datos ingresados correctamente",
-                "success"
-              );
+              // Inicio
 
-              setTimeout(() => {
-                this.router.navigate(["/mantenedores/niveles-aprobacion"]);
-              }, 1600);
+              this.serviceNivelesAprobacion
+                .refrescarNivelesAprobaciones()
+                .subscribe(
+                  (response) => {
+                    this.utilService.closeLoadingSpinner();
+                    console.log("RESPONSE REFRESH GUARDAR: ", response);
+                    this.utilService.modalResponse(
+                      "Datos ingresados correctamente",
+                      "success"
+                    );
+
+                    setTimeout(() => {
+                      this.router.navigate([
+                        "/mantenedores/niveles-aprobacion",
+                      ]);
+                    }, 1600);
+                  },
+                  (error: HttpErrorResponse) => {
+                    this.utilService.modalResponse(error.error, "error");
+                  }
+                );
+
+              // Fin
             },
             (error: HttpErrorResponse) => {
               this.utilService.modalResponse(error.error, "error");
@@ -229,15 +244,25 @@ export class CrearNivelesAprobacionComponent implements OnInit {
       })
       .subscribe(
         (response) => {
-          console.log(response);
-          this.utilService.closeLoadingSpinner();
-          this.utilService.modalResponse(
-            "Datos actualizados correctamente",
-            "success"
-          );
-          setTimeout(() => {
-            this.router.navigate(["/mantenedores/niveles-aprobacion"]);
-          }, 1600);
+          this.serviceNivelesAprobacion
+            .refrescarNivelesAprobaciones()
+            .subscribe(
+              (response) => {
+                this.utilService.closeLoadingSpinner();
+                console.log("RESPONSE REFRESH ACTUALIZAR: ", response);
+                this.utilService.modalResponse(
+                  "Datos actualizados correctamente",
+                  "success"
+                );
+
+                setTimeout(() => {
+                  this.router.navigate(["/mantenedores/niveles-aprobacion"]);
+                }, 1600);
+              },
+              (error: HttpErrorResponse) => {
+                this.utilService.modalResponse(error.error, "error");
+              }
+            );
         },
         (error: HttpErrorResponse) => {
           this.utilService.modalResponse(error.error, "error");

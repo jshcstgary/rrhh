@@ -9,6 +9,7 @@ import { IConsultaNivelesAprobacionResponse } from "./niveles-aprobacion.interfa
 })
 export class NivelesAprobacionService {
   private apiUrlNivelAprobacion = environment.nivelAprobacionServiceES;
+
   constructor(private http: HttpClient) {}
 
   public obtenerNiveleAprobaciones(): Observable<IConsultaNivelesAprobacionResponse> {

@@ -118,6 +118,7 @@ export class TipoAccionComponent implements OnInit {
     rowData: ITipoaccionTable,
     finishedClonningRow: boolean
   ) {
+    rowData = { ...rowData, estado: rowData.estado ? "A" : "I" };
     if (rowData.key) {
       /* Actualizar */
       this.tipoaccionsService.update(rowData).subscribe({
