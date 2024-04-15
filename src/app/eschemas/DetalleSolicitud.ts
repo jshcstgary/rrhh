@@ -65,7 +65,7 @@ export class DetalleSolicitud {
     public descripcionPosicion: string | null = "Prueba",
     public areaDepartamento: string | null = "Prueba",
     public localidadZona: string | null = "Prueba",
-    public nivelDireccion: string | null = "Prueba",
+    public nivelDireccion: string | null = "OP",
     public centroCosto: string | null = "Prueba",
     public nombreEmpleado: string | null = "Morocho Vargas Gal Estuario",
     public subledger: string | null = "Prueba",

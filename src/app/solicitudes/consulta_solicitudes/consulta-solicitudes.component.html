@@ -139,7 +139,7 @@
                       >
                         <ng-option
                           *ngFor="let data of data_estado"
-                          [value]="data.id"
+                          [value]="data.codigo"
                           >{{ data.codigo }} - {{ data.descripcion }}</ng-option
                         >
                       </ng-select>
@@ -151,7 +151,7 @@
                       <div class="text-end">
                         <button
                           #buttonSearch
-                          (click)="filter()"
+                          (click)="filterDataTable()"
                           type="submit"
                           class="btn btn-info me-2"
                         >
@@ -165,7 +165,7 @@
               <ng-template #footerTemplateFechaDesde>
                 <hr class="my-0" />
                 <button class="btn btn-primary btn-sm m-2 float-start">
-                  Today
+                  clear
                 </button>
                 <button
                   class="btn btn-secondary btn-sm m-2 float-end"
@@ -178,7 +178,7 @@
               <ng-template #footerTemplateFechaHasta>
                 <hr class="my-0" />
                 <button class="btn btn-primary btn-sm m-2 float-start">
-                  Today
+                  clear
                 </button>
                 <button
                   class="btn btn-secondary btn-sm m-2 float-end"
@@ -234,6 +234,7 @@
                 [columns]="columnsTable"
                 [dataTable]="dataTable"
                 [contexto]="this"
+                clickOnActionRow="onRowActionClicked"
                 onChangePagination="onChangePaginationTable"
                 [rowsPerPageValue]="rowsPerPageTable"
               ></table-component>

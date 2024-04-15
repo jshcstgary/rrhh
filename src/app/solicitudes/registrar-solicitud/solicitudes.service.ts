@@ -18,6 +18,14 @@ export class SolicitudesService {
     return this.http.get<any>(this.apiUrlSolicitudes);
   }
 
+  public getSolicitudById(idSolicitud: any): Observable<any> {
+    return this.http.get<any>(`${this.apiUrlSolicitudes}/${idSolicitud}`);
+  }
+
+  public getDetalleSolicitudById(idSolicitud: any): Observable<any> {
+    return this.http.get<any>(`${this.apiUrlSolicitudes}/${idSolicitud}`);
+  }
+
   public getDetalleSolicitud(): Observable<any> {
     return this.http.get<any>(this.apiUrlSolicitudes + "/detalle-solicitud");
   }

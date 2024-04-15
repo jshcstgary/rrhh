@@ -10,7 +10,7 @@ export class ConsultaSolicitudesService {
   private apiUrlSolicitudes = environment.solicitudesServiceES;
   constructor(private http: HttpClient) {}
 
-  public getDetalleSolicitud(
+  public filterSolicitudes(
     idEmpresa: string,
     idUnidadNegocio: string,
     idTipoSolicitud: string,

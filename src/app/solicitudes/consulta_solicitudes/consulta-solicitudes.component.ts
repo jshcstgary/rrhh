@@ -49,6 +49,7 @@ import { SolicitudesService } from "../registrar-solicitud/solicitudes.service";
 import { TableComponentData } from "src/app/component/table/table.data";
 import { Solicitud } from "../../eschemas/Solicitud";
 import { DataFilterSolicitudes } from "src/app/eschemas/DataFilterSolicitudes";
+import { ConsultaSolicitudesService } from "./consulta-solicitudes.service";
 
 declare var require: any;
 const data: any = require("./company.json");
@@ -113,9 +114,9 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
   selected_tipo_solicitud: number;
   selected_estado: number;
   public dataFilterSolicitudes = new DataFilterSolicitudes();
-  data_empresas = [{ idEmpresa: 1, name: "Reybanpac" }];
+  data_empresas = [{ idEmpresa: "01", name: "Reybanpac" }];
 
-  data_productos = [{ idUnidadNegocio: 1, name: "Todos" }];
+  data_productos = [{ idUnidadNegocio: "01", name: "Todos" }];
 
   data_tipo_solicitud = [
     { id: 1, name: "Requisición de personal" },
@@ -155,6 +156,7 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
     private camundaRestService: CamundaRestService,
     private route: ActivatedRoute,
     private solicitudes: SolicitudesService,
+    public consulSolicitudesService: ConsultaSolicitudesService,
     private utilService: UtilService,
     private mantenimientoService: MantenimientoService
   ) {
@@ -375,17 +377,57 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
     });
   }
 
-  filter() {
-    console.log("Data filter (After): ", this.dataFilterSolicitudes);
-    this.dataFilterSolicitudes.fechaDesde = this.formatFechaISO(
-      this.dataFilterSolicitudes,
-      "fechaDesde"
+  filterDataTable() {
+    console.log("Data filter: ", this.dataFilterSolicitudes);
+    switch (this.dataFilterSolicitudes.verifyFilterFields()) {
+      case "case1":
+        console.log("CASE 1");
+        this.getDataToTable();
+        break;
+      case "case2":
+        console.log("CASE 2");
+        this.getDataToTable();
+        break;
+      case "case3":
+        console.log("CASE 3");
+        this.getDataToTable();
+        break;
+      case "case4":
+        console.log("CASE 4");
+        this.utilService.modalResponse(
+          "Por favor complete los campos del filtro",
+          "info"
+        );
+        break;
+      case "case5":
+        console.log("CASE 4");
+        let data = { ...this.dataFilterSolicitudes };
+        data.fechaDesde = this.formatFecha(
+          this.dataFilterSolicitudes,
+          "fechaDesde"
+        );
+        data.fechaHasta = this.formatFecha(
+          this.dataFilterSolicitudes,
+          "fechaHasta"
+        );
+        this.getDataToTableFilter(data);
+        break;
+    }
+  }
+
+  clearFechaDesde(fechaProp: string) {
+    // data[]
+  }
+
+  formatFecha(data: any, fechaProp: string) {
+    console.log("DATE QUE RECIBE: ", data);
+    return (
+      data[fechaProp].year +
+      "-" +
+      data[fechaProp].month +
+      "-" +
+      data[fechaProp].day
     );
-    this.dataFilterSolicitudes.fechaHasta = this.formatFechaISO(
-      this.dataFilterSolicitudes,
-      "fechaHasta"
-    );
-    console.log("Data filter (Before): ", this.dataFilterSolicitudes);
   }
 
   formatFechaISO(date: any, fechaProp: string) {
@@ -395,6 +437,68 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
       date[fechaProp].month - 1,
       date[fechaProp].day
     ).toISOString();
+  }
+
+  getDataToTableFilter(data: any) {
+    this.utilService.openLoadingSpinner(
+      "Cargando información, espere por favor..."
+    );
+    const combinedData$ = forkJoin(
+      this.consulSolicitudesService.filterSolicitudes(
+        data.idEmpresa,
+        data.idUnidadNegocio,
+        data.idTipoSolicitud,
+        data.estado,
+        data.fechaDesde,
+        data.fechaHasta
+      ),
+      this.solicitudes.getDetalleSolicitud()
+    ).pipe(
+      map(([solicitudes, detallesSolicitud]) => {
+        // Combinar las solicitudes y los detalles de la solicitud
+        const data = solicitudes.solicitudType.map((solicitud) => {
+          const detalles = detallesSolicitud.detalleSolicitudType.find(
+            (detalle) => detalle.idSolicitud === solicitud.idSolicitud
+          );
+          return { ...solicitud, ...detalles };
+        });
+
+        // Ordenar la data por fechaCreacion de forma descendente
+        return data.sort((a, b) => {
+          return b.idDetalleSolicitud - a.idDetalleSolicitud;
+        });
+      })
+    );
+
+    combinedData$.subscribe({
+      next: (response) => {
+        this.dataTable = response;
+        console.log("filerDataTable: ", response);
+
+        this.utilService.closeLoadingSpinner();
+        console.log("Data de solicitudes de aprobacion: ", this.dataTable);
+      },
+      error: (error: HttpErrorResponse) => {
+        console.log("error: ", error);
+        this.dataTable = [];
+        this.utilService.modalResponse(
+          "No existen registros para esta búsqueda",
+          "error"
+        );
+      },
+    });
+
+    /*return this.solicitudes.getSolicitudes().subscribe({
+      next: (response) => {
+        this.dataTable = response.nivelAprobacionType.map((nivelAprobacionResponse=>({
+          ...nivelAprobacionResponse,
+          estado: nivelAprobacionResponse.estado === "A",
+        })));
+      },
+      error: (error: HttpErrorResponse) => {
+        this.utilService.modalResponse(error.error, "error");
+      },
+    });*/
   }
 
   ObtenerServicioEstado() {
@@ -416,6 +520,9 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
   //mostrar modal de inicio de instancia de la solicitud
 
   private getDataToTable() {
+    this.utilService.openLoadingSpinner(
+      "Cargando información, espere por favor..."
+    );
     const combinedData$ = forkJoin(
       this.solicitudes.getSolicitudes(),
       this.solicitudes.getDetalleSolicitud()
@@ -437,6 +544,7 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
     );
 
     combinedData$.subscribe((data) => {
+      this.utilService.closeLoadingSpinner();
       // Aquí tienes la data combinada y ordenada
       this.dataTable = data;
     });
@@ -452,6 +560,14 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
         this.utilService.modalResponse(error.error, "error");
       },
     });*/
+  }
+
+  onRowActionClicked(id: string, key: string, tooltip: string, id_edit) {
+    // Lógica cuando se da click en una acción de la fila
+    console.log("EDTTTT: ", id_edit);
+    this.router.navigate(["/solicitudes/registrar-solicitud"], {
+      queryParams: { id_edit },
+    });
   }
 
   mostrarModalCrearSolicitudes() {

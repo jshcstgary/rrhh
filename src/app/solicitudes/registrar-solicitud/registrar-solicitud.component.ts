@@ -66,6 +66,7 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
   public dataTipoAccion: any;
   public success: false;
   public params: any;
+  public id_edit: undefined | string;
   constructor(
     route: ActivatedRoute,
     router: Router,
@@ -78,6 +79,19 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
 
     this.modelBase = new DatosProcesoInicio();
 
+    this.route.queryParams.subscribe((params: any) => {
+      if (params["id_edit"] !== undefined) {
+        this.id_edit = params["id_edit"];
+      } else {
+        this.solicitud = this.solicitudes.modelSolicitud;
+        this.detalleSolicitud = this.solicitudes.modelDetalleSolicitud;
+        this.detalleSolicitud.idSolicitud = this.solicitud.idSolicitud;
+      }
+
+      console.log("ID editar: ", this.id_edit);
+      // Utiliza el id_edit obtenido
+    });
+
     this.route.queryParams.subscribe((params: Solicitud) => {
       console.log("ESTOS SON LOS PARAMS: ", params);
       console.log(
@@ -85,10 +99,6 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
         this.solicitudes.modelSolicitud
       );
       // this.solicitud = params;
-
-      this.solicitud = this.solicitudes.modelSolicitud;
-      this.detalleSolicitud = this.solicitudes.modelDetalleSolicitud;
-      this.detalleSolicitud.idSolicitud = this.solicitud.idSolicitud;
 
       /*this.solicitud.infoGeneral.idTipoSolicitud = this.dataTipoSolicitud.id;
       this.solicitud.infoGeneral.tipoSolicitud =
@@ -152,10 +162,70 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
   }
 
   ngOnInit() {
+    this.getSolicitudById();
+    this.getDetalleSolicitudById();
     this.getSolicitudes();
     this.ObtenerServicioTipoSolicitud();
     this.ObtenerServicioTipoMotivo();
     this.ObtenerServicioTipoAccion();
+  }
+
+  pageSolicitudes() {
+    this.router.navigate(["/solicitudes/consulta-solicitudes"]);
+  }
+
+  getSolicitudById() {
+    return this.solicitudes.getSolicitudById(this.id_edit).subscribe({
+      next: (response: any) => {
+        console.log("Response getSolicitudById(): ", response);
+        this.solicitud = response;
+        console.log("this.solicitud: ", this.solicitud);
+        // this.dataTipoSolicitud = response.tipoSolicitudType.filter(
+        //   (data) => data.id == this.solicitud.idTipoSolicitud
+        // )[0];
+        // console.log("this.dataTipoSolicitud: ", this.dataTipoSolicitud);
+        // this.solicitud.idTipoSolicitud = this.dataTipoSolicitud.id;
+        // this.solicitud.tipoSolicitud = this.dataTipoSolicitud.tipoSolicitud;
+      },
+      error: (error: HttpErrorResponse) => {
+        this.utilService.modalResponse(error.error, "error");
+      },
+    });
+  }
+
+  getDetalleSolicitudById() {
+    return this.solicitudes.getDetalleSolicitudById(this.id_edit).subscribe({
+      next: (response: any) => {
+        console.log("Response getDetalleSolicitudById(): ", response);
+        this.detalleSolicitud.estado = response.estado;
+        this.detalleSolicitud.estado = response.estadoSolicitud;
+        this.detalleSolicitud.idSolicitud = response.idSolicitud;
+        this.detalleSolicitud.unidadNegocio = response.unidadNegocio;
+        // this.detalleSolicitud.estado = response.estado;
+        // this.detalleSolicitud.estado = response.estado;
+        // this.detalleSolicitud.estado = response.estado;
+        // this.detalleSolicitud.estado = response.estado;
+        // this.detalleSolicitud.estado = response.estado;
+        // this.detalleSolicitud.estado = response.estado;
+        // this.detalleSolicitud.estado = response.estado;
+        // this.detalleSolicitud.estado = response.estado;
+        // this.detalleSolicitud.estado = response.estado;
+        // this.detalleSolicitud.estado = response.estado;
+        // this.detalleSolicitud.estado = response.estado;
+        // this.detalleSolicitud.estado = response.estado;
+
+        console.log("this.detalleSolicitud: ", this.detalleSolicitud);
+        // this.dataTipoSolicitud = response.tipoSolicitudType.filter(
+        //   (data) => data.id == this.solicitud.idTipoSolicitud
+        // )[0];
+        // console.log("this.dataTipoSolicitud: ", this.dataTipoSolicitud);
+        // this.solicitud.idTipoSolicitud = this.dataTipoSolicitud.id;
+        // this.solicitud.tipoSolicitud = this.dataTipoSolicitud.tipoSolicitud;
+      },
+      error: (error: HttpErrorResponse) => {
+        this.utilService.modalResponse(error.error, "error");
+      },
+    });
   }
 
   ObtenerServicioTipoSolicitud() {

@@ -87,7 +87,9 @@
                             action.id,
                             row.key,
                             action.tooltip,
-                            row.idNivelAprobacion
+                            row.idNivelAprobacion === undefined
+                              ? row.idSolicitud
+                              : row.idNivelAprobacion
                           )
                         "
                         (keyup.enter)="
@@ -95,7 +97,9 @@
                             action.id,
                             row.key,
                             action.tooltip,
-                            row.idNivelAprobacion
+                            row.idNivelAprobacion === undefined
+                              ? row.idSolicitud
+                              : row.idNivelAprobacion
                           )
                         "
                       ></i>
@@ -108,7 +112,9 @@
                             action.id,
                             row.key,
                             action.tooltip,
-                            row.idNivelAprobacion
+                            row.idNivelAprobacion === undefined
+                              ? row.idSolicitud
+                              : row.idNivelAprobacion
                           )
                         "
                         (keyup.enter)="
@@ -116,7 +122,9 @@
                             action.id,
                             row.key,
                             action.tooltip,
-                            row.idNivelAprobacion
+                            row.idNivelAprobacion === undefined
+                              ? row.idSolicitud
+                              : row.idNivelAprobacion
                           )
                         "
                       >
