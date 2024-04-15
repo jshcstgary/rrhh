@@ -38,6 +38,9 @@ export class TipoSolicitudComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.utilService.openLoadingSpinner(
+      "Cargando información, espere por favor..."
+    );
     this.getDataToTable();
   }
 
@@ -48,6 +51,7 @@ export class TipoSolicitudComponent implements OnInit {
           ...r,
           estado: r.estado === "A",
         })); //verificar la estructura mmunoz
+        this.utilService.closeLoadingSpinner();
       },
       error: (error: HttpErrorResponse) => {
         this.utilService.modalResponse(error.error, "error");
@@ -73,9 +77,10 @@ export class TipoSolicitudComponent implements OnInit {
     rowData: ITiposolicitudTable,
     finishedClonningRow: boolean
   ) {
-    console.log("SI GUARDO O EDITO (ANTES): ", rowData);
+    // this.utilService.openLoadingSpinner(
+    //   "Guardando información, espere por favor..."
+    // );
     rowData = { ...rowData, estado: rowData.estado ? "A" : "I" };
-    console.log("SI GUARDO O EDITO (DESPUÉS): ", rowData);
     if (rowData.key) {
       /* Actualizar */
       this.tiposolicitudesService.update(rowData).subscribe({

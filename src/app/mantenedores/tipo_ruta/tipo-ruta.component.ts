@@ -33,6 +33,9 @@ export class TipoRutaComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.utilService.openLoadingSpinner(
+      "Cargando información, espere por favor..."
+    );
     this.getDataToTable();
   }
 
@@ -44,6 +47,7 @@ export class TipoRutaComponent implements OnInit {
           ...tipoRutaResponse,
           estado: tipoRutaResponse.estado === "A",
         }));
+        this.utilService.closeLoadingSpinner();
       },
       error: (error: HttpErrorResponse) => {
         this.utilService.modalResponse(error.error, "error");

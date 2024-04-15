@@ -584,26 +584,46 @@
       </div>
 
       <div class="accordion" id="accordionExample">
-        <div class="accordion-item">
+        <!-- Repeat this (start) -->
+        <div
+          *ngFor="let nivel of dataNivelesAprobacion; let i = index"
+          class="accordion-item"
+        >
           <h2 class="accordion-header">
             <button
               class="accordion-button"
               type="button"
               data-bs-toggle="collapse"
-              data-bs-target="#collapseOne"
+              [attr.data-bs-target]="'#collapse' + i"
               aria-expanded="true"
-              aria-controls="collapseOne"
+              [attr.aria-controls]="'collapse' + i"
+              style="display: block"
             >
-              1 Lvl de Aprobación
+              <div
+                class="row"
+                style="align-items: center; justify-content: space-around"
+              >
+                <div class="col">{{ nivel.ruta }}</div>
+                <div class="col">
+                  {{
+                    nivel.usuarioCreacion !== ""
+                      ? nivel.usuarioCreacion
+                      : "user"
+                  }}
+                </div>
+                <div class="col">{{ nivel.nivelAprobacionRuta }}</div>
+              </div>
             </button>
           </h2>
+
           <div
-            id="collapseOne"
-            class="accordion-collapse collapse show"
+            [id]="'collapse' + i"
+            class="accordion-collapse collapse"
+            [ngClass]="{ show: i === 0 }"
             data-bs-parent="#accordionExample"
           >
             <div class="row mt-2">
-              <div class="col-md-6">
+              <div class="col">
                 <div class="input-group mb-3">
                   <label
                     for="lvl1descripcion"
@@ -617,13 +637,13 @@
                     name=""
                     style="color: black; font-size: 14px; margin: auto auto"
                     class="text-center"
-                    >20 - Asistencia de Gerencia</span
+                    >{{ nivel.accion }}</span
                   >
                 </div>
               </div>
             </div>
-            <div class="row mt-2">
-              <div class="col-md-6">
+            <!-- <div class="row mt-2">
+              <div class="col">
                 <div class="input-group mb-3">
                   <label
                     for="lvl1comentarios"
@@ -641,312 +661,10 @@
                   >
                 </div>
               </div>
-            </div>
+            </div> -->
           </div>
         </div>
-        <div class="accordion-item">
-          <h2 class="accordion-header">
-            <button
-              class="accordion-button collapsed"
-              type="button"
-              data-bs-toggle="collapse"
-              data-bs-target="#collapseTwo"
-              aria-expanded="false"
-              aria-controls="collapseTwo"
-            >
-              2 Lvl de Aprobador
-            </button>
-          </h2>
-          <div
-            id="collapseTwo"
-            class="accordion-collapse collapse"
-            data-bs-parent="#accordionExample"
-          >
-            <div class="row mt-2">
-              <div class="col-md-6">
-                <div class="input-group mb-3">
-                  <label
-                    for="lvl2descripcion"
-                    style="color: #0056b3; font-size: 14px; margin: auto auto"
-                  >
-                    Descripción de la posición
-                  </label>
-                  &nbsp;
-                  <span
-                    id="lvl2descripcion"
-                    name=""
-                    style="color: black; font-size: 14px; margin: auto auto"
-                    class="text-center"
-                    >20 - Asistencia de Gerencia</span
-                  >
-                </div>
-              </div>
-            </div>
-            <div class="row mt-2">
-              <div class="col-md-6">
-                <div class="input-group mb-3">
-                  <label
-                    for="lvl2comentarios"
-                    style="color: #0056b3; font-size: 14px; margin: auto auto"
-                  >
-                    Comentarios
-                  </label>
-                  &nbsp;
-                  <span
-                    id="lvl2comentarios"
-                    name=""
-                    style="color: black; font-size: 14px; margin: auto auto"
-                    class="text-center"
-                    >No applica</span
-                  >
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="accordion-item">
-          <h2 class="accordion-header">
-            <button
-              class="accordion-button collapsed"
-              type="button"
-              data-bs-toggle="collapse"
-              data-bs-target="#collapseThree"
-              aria-expanded="false"
-              aria-controls="collapseThree"
-            >
-              3 Lvl de Aprobador
-            </button>
-          </h2>
-          <div
-            id="collapseThree"
-            class="accordion-collapse collapse"
-            data-bs-parent="#accordionExample"
-          >
-            <div class="row mt-2">
-              <div class="col-md-6">
-                <div class="input-group mb-3">
-                  <label
-                    for="lvl3descripcion"
-                    style="color: #0056b3; font-size: 14px; margin: auto auto"
-                  >
-                    Descripción de la posición
-                  </label>
-                  &nbsp;
-                  <span
-                    id="lvl3descripcion"
-                    name=""
-                    style="color: black; font-size: 14px; margin: auto auto"
-                    class="text-center"
-                    >20 - Asistencia de Gerencia</span
-                  >
-                </div>
-              </div>
-            </div>
-            <div class="row mt-2">
-              <div class="col-md-6">
-                <div class="input-group mb-3">
-                  <label
-                    for="lvl3comentarios"
-                    style="color: #0056b3; font-size: 14px; margin: auto auto"
-                  >
-                    Comentarios
-                  </label>
-                  &nbsp;
-                  <span
-                    id="lvl3comentarios"
-                    name=""
-                    style="color: black; font-size: 14px; margin: auto auto"
-                    class="text-center"
-                    >No applica</span
-                  >
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="accordion-item">
-          <h2 class="accordion-header">
-            <button
-              class="accordion-button collapsed"
-              type="button"
-              data-bs-toggle="collapse"
-              data-bs-target="#collapseFour"
-              aria-expanded="false"
-              aria-controls="collapseFour"
-            >
-              4 Lvl de Aprobador
-            </button>
-          </h2>
-          <div
-            id="collapseFour"
-            class="accordion-collapse collapse"
-            data-bs-parent="#accordionExample"
-          >
-            <div class="row mt-2">
-              <div class="col-md-6">
-                <div class="input-group mb-3">
-                  <label
-                    for="lvl4descripcion"
-                    style="color: #0056b3; font-size: 14px; margin: auto auto"
-                  >
-                    Descripción de la posición
-                  </label>
-                  &nbsp;
-                  <span
-                    id="lvl4descripcion"
-                    name=""
-                    style="color: black; font-size: 14px; margin: auto auto"
-                    class="text-center"
-                    >20 - Asistencia de Gerencia</span
-                  >
-                </div>
-              </div>
-            </div>
-            <div class="row mt-2">
-              <div class="col-md-6">
-                <div class="input-group mb-3">
-                  <label
-                    for="lvl4comentarios"
-                    style="color: #0056b3; font-size: 14px; margin: auto auto"
-                  >
-                    Comentarios
-                  </label>
-                  &nbsp;
-                  <span
-                    id="lvl4comentarios"
-                    name=""
-                    style="color: black; font-size: 14px; margin: auto auto"
-                    class="text-center"
-                    >No applica</span
-                  >
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="accordion-item">
-          <h2 class="accordion-header">
-            <button
-              class="accordion-button collapsed"
-              type="button"
-              data-bs-toggle="collapse"
-              data-bs-target="#collapseFive"
-              aria-expanded="false"
-              aria-controls="collapseFive"
-            >
-              RRHH Corporativo
-            </button>
-          </h2>
-          <div
-            id="collapseFive"
-            class="accordion-collapse collapse"
-            data-bs-parent="#accordionExample"
-          >
-            <div class="row mt-2">
-              <div class="col-md-6">
-                <div class="input-group mb-3">
-                  <label
-                    for="lvl5descripcion"
-                    style="color: #0056b3; font-size: 14px; margin: auto auto"
-                  >
-                    Descripción de la posición
-                  </label>
-                  &nbsp;
-                  <span
-                    id="lvl5descripcion"
-                    name=""
-                    style="color: black; font-size: 14px; margin: auto auto"
-                    class="text-center"
-                    >20 - Asistencia de Gerencia</span
-                  >
-                </div>
-              </div>
-            </div>
-            <div class="row mt-2">
-              <div class="col-md-6">
-                <div class="input-group mb-3">
-                  <label
-                    for="lvl5comentarios"
-                    style="color: #0056b3; font-size: 14px; margin: auto auto"
-                  >
-                    Comentarios
-                  </label>
-                  &nbsp;
-                  <span
-                    id="lvl5comentarios"
-                    name=""
-                    style="color: black; font-size: 14px; margin: auto auto"
-                    class="text-center"
-                    >No applica</span
-                  >
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="accordion-item">
-          <h2 class="accordion-header">
-            <button
-              class="accordion-button collapsed"
-              type="button"
-              data-bs-toggle="collapse"
-              data-bs-target="#collapseSix"
-              aria-expanded="false"
-              aria-controls="collapseSix"
-            >
-              Remuneraciones
-            </button>
-          </h2>
-          <div
-            id="collapseSix"
-            class="accordion-collapse collapse"
-            data-bs-parent="#accordionExample"
-          >
-            <div class="row mt-2">
-              <div class="col-md-6">
-                <div class="input-group mb-3">
-                  <label
-                    for="lvl6descripcion"
-                    style="color: #0056b3; font-size: 14px; margin: auto auto"
-                  >
-                    Descripción de la posición
-                  </label>
-                  &nbsp;
-                  <span
-                    id="lvl6descripcion"
-                    name=""
-                    style="color: black; font-size: 14px; margin: auto auto"
-                    class="text-center"
-                    >20 - Asistencia de Gerencia</span
-                  >
-                </div>
-              </div>
-            </div>
-            <div class="row mt-2">
-              <div class="col-md-6">
-                <div class="input-group mb-3">
-                  <label
-                    for="lvl6comentarios"
-                    style="color: #0056b3; font-size: 14px; margin: auto auto"
-                  >
-                    Comentarios
-                  </label>
-                  &nbsp;
-                  <span
-                    id="lvl6comentarios"
-                    name=""
-                    style="color: black; font-size: 14px; margin: auto auto"
-                    class="text-center"
-                    >No applica</span
-                  >
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <!-- Repeat this (end) -->
       </div>
 
       <div class="row mt-4">
@@ -961,7 +679,7 @@
       </div>
 
       <div class="row mt-2">
-        <div class="col-md-6">
+        <div class="col">
           <div class="input-group mb-3">
             <label
               for="aprobadoresdinamicos"
@@ -982,7 +700,7 @@
       </div>
 
       <div class="row mt-2">
-        <div class="col-md-6">
+        <div class="col">
           <div class="input-group mb-3">
             <label
               for="gerenterrhhcorporativo"
@@ -1003,7 +721,7 @@
       </div>
 
       <div class="row mt-2">
-        <div class="col-md-6">
+        <div class="col">
           <div class="input-group mb-3">
             <label
               for="comitederemuneraciones"

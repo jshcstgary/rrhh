@@ -56,7 +56,7 @@ export const MantenedoresRoutes: Routes = [
         path: "tipo-accion",
         component: TipoAccionComponent,
         data: {
-          title: "Tipo accion",
+          title: "Tipo acción",
           urls: [{ title: "Mantenimiento" }, { title: "Tipo Acción" }],
         },
       },
@@ -96,7 +96,7 @@ export const MantenedoresRoutes: Routes = [
         path: "accion",
         component: AccionComponent,
         data: {
-          title: "Accion",
+          title: "Acción",
           urls: [{ title: "Mantenimiento" }, { title: "Acción" }],
         },
       },

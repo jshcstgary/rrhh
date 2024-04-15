@@ -64,9 +64,12 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
   public dataTipoSolicitud: any;
   public dataTipoMotivo: any;
   public dataTipoAccion: any;
+  public dataNivelesAprobacion: any;
   public success: false;
   public params: any;
   public id_edit: undefined | string;
+  public dataNivelDireccion: any[] = [];
+
   constructor(
     route: ActivatedRoute,
     router: Router,
@@ -93,13 +96,7 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
     });
 
     this.route.queryParams.subscribe((params: Solicitud) => {
-      console.log("ESTOS SON LOS PARAMS: ", params);
-      console.log(
-        "ESTOS SON LOS PARMAS COMPARTIDOS: ",
-        this.solicitudes.modelSolicitud
-      );
       // this.solicitud = params;
-
       /*this.solicitud.infoGeneral.idTipoSolicitud = this.dataTipoSolicitud.id;
       this.solicitud.infoGeneral.tipoSolicitud =
         this.dataTipoSolicitud.tipoSolicitud;
@@ -161,31 +158,61 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
     });
   }
 
-  ngOnInit() {
+  async ngOnInit() {
+    this.utilService.openLoadingSpinner(
+      "Cargando información, espere por favor..."
+    );
+
+    try {
+      await this.ObtenerServicioTipoSolicitud();
+      await this.ObtenerServicioTipoMotivo();
+      await this.ObtenerServicioTipoAccion();
+      await this.ObtenerServicioNivelDireccion();
+      await this.getNivelesAprobacion();
+      await this.getSolicitudes();
+      await this.getDetalleSolicitudById();
+      await this.getSolicitudById();
+      this.utilService.closeLoadingSpinner();
+    } catch (error) {
+      // Manejar errores aquí de manera centralizada
+      this.utilService.modalResponse(error.error, "error");
+    }
+
+    this.getNivelesAprobacion();
     this.getSolicitudById();
     this.getDetalleSolicitudById();
     this.getSolicitudes();
     this.ObtenerServicioTipoSolicitud();
     this.ObtenerServicioTipoMotivo();
     this.ObtenerServicioTipoAccion();
+    this.ObtenerServicioNivelDireccion();
   }
 
   pageSolicitudes() {
     this.router.navigate(["/solicitudes/consulta-solicitudes"]);
   }
 
+  ObtenerServicioNivelDireccion() {
+    return this.mantenimientoService.getCatalogo("RBPND").subscribe({
+      // return this.mantenimientoService.getCatalogoRBPND().subscribe({
+      next: (response) => {
+        this.dataNivelDireccion = response.itemCatalogoTypes; //verificar la estructura mmunoz
+        this.detalleSolicitud.nivelDireccion =
+          response.itemCatalogoTypes.filter(
+            (data) => data.codigo == this.detalleSolicitud.nivelDireccion
+          )[0]?.valor;
+        this.utilService.closeLoadingSpinner();
+      },
+      error: (error: HttpErrorResponse) => {
+        this.utilService.modalResponse(error.error, "error");
+      },
+    });
+  }
+
   getSolicitudById() {
     return this.solicitudes.getSolicitudById(this.id_edit).subscribe({
       next: (response: any) => {
-        console.log("Response getSolicitudById(): ", response);
         this.solicitud = response;
-        console.log("this.solicitud: ", this.solicitud);
-        // this.dataTipoSolicitud = response.tipoSolicitudType.filter(
-        //   (data) => data.id == this.solicitud.idTipoSolicitud
-        // )[0];
-        // console.log("this.dataTipoSolicitud: ", this.dataTipoSolicitud);
-        // this.solicitud.idTipoSolicitud = this.dataTipoSolicitud.id;
-        // this.solicitud.tipoSolicitud = this.dataTipoSolicitud.tipoSolicitud;
       },
       error: (error: HttpErrorResponse) => {
         this.utilService.modalResponse(error.error, "error");
@@ -196,31 +223,12 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
   getDetalleSolicitudById() {
     return this.solicitudes.getDetalleSolicitudById(this.id_edit).subscribe({
       next: (response: any) => {
-        console.log("Response getDetalleSolicitudById(): ", response);
         this.detalleSolicitud.estado = response.estado;
         this.detalleSolicitud.estado = response.estadoSolicitud;
         this.detalleSolicitud.idSolicitud = response.idSolicitud;
         this.detalleSolicitud.unidadNegocio = response.unidadNegocio;
-        // this.detalleSolicitud.estado = response.estado;
-        // this.detalleSolicitud.estado = response.estado;
-        // this.detalleSolicitud.estado = response.estado;
-        // this.detalleSolicitud.estado = response.estado;
-        // this.detalleSolicitud.estado = response.estado;
-        // this.detalleSolicitud.estado = response.estado;
-        // this.detalleSolicitud.estado = response.estado;
-        // this.detalleSolicitud.estado = response.estado;
-        // this.detalleSolicitud.estado = response.estado;
-        // this.detalleSolicitud.estado = response.estado;
-        // this.detalleSolicitud.estado = response.estado;
-        // this.detalleSolicitud.estado = response.estado;
 
         console.log("this.detalleSolicitud: ", this.detalleSolicitud);
-        // this.dataTipoSolicitud = response.tipoSolicitudType.filter(
-        //   (data) => data.id == this.solicitud.idTipoSolicitud
-        // )[0];
-        // console.log("this.dataTipoSolicitud: ", this.dataTipoSolicitud);
-        // this.solicitud.idTipoSolicitud = this.dataTipoSolicitud.id;
-        // this.solicitud.tipoSolicitud = this.dataTipoSolicitud.tipoSolicitud;
       },
       error: (error: HttpErrorResponse) => {
         this.utilService.modalResponse(error.error, "error");
@@ -231,21 +239,12 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
   ObtenerServicioTipoSolicitud() {
     return this.mantenimientoService.getTipoSolicitud().subscribe({
       next: (response: any) => {
-        console.log(
-          "AQUII ObtenerServicioTipoSolicitud: ",
-          response.tipoSolicitudType
-        );
-        console.log(
-          "AQUII this.solicitud.infoGeneral.idTipoSolicitud: ",
-          this.solicitud.idTipoSolicitud
-        );
-        console.log("ES UNDEFINED?: ", this.solicitud);
         this.dataTipoSolicitud = response.tipoSolicitudType.filter(
           (data) => data.id == this.solicitud.idTipoSolicitud
         )[0];
-        console.log("this.dataTipoSolicitud: ", this.dataTipoSolicitud);
-        this.solicitud.idTipoSolicitud = this.dataTipoSolicitud.id;
-        this.solicitud.tipoSolicitud = this.dataTipoSolicitud.tipoSolicitud;
+        console.log("ERROR1: ", this.dataTipoSolicitud);
+        this.solicitud.idTipoSolicitud = this.dataTipoSolicitud?.id;
+        this.solicitud.tipoSolicitud = this.dataTipoSolicitud?.tipoSolicitud;
       },
       error: (error: HttpErrorResponse) => {
         this.utilService.modalResponse(error.error, "error");
@@ -256,13 +255,12 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
   ObtenerServicioTipoMotivo() {
     return this.mantenimientoService.getTipoMotivo().subscribe({
       next: (response) => {
-        console.log("AQUII ObtenerServicioTipoMotivo: ", response);
         this.dataTipoMotivo = response.filter(
           (data) => data.id == this.solicitud.idTipoMotivo
         )[0];
 
-        this.solicitud.idTipoMotivo = this.dataTipoMotivo.id;
-        this.solicitud.tipoMotivo = this.dataTipoMotivo.tipoMotivo;
+        this.solicitud.idTipoMotivo = this.dataTipoMotivo?.id;
+        this.solicitud.tipoMotivo = this.dataTipoMotivo?.tipoMotivo;
         // this.solicitud.request.tipoMotivo = this.dataTipoMotivo.tipoMotivo;
       },
       error: (error: HttpErrorResponse) => {
@@ -274,12 +272,11 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
   ObtenerServicioTipoAccion() {
     return this.mantenimientoService.getTipoAccion().subscribe({
       next: (response) => {
-        console.log("AQUII ObtenerServicioTipoAccion: ", response);
         this.dataTipoAccion = response.filter(
           (data) => data.id == this.solicitud.idTipoAccion
         )[0];
-        this.solicitud.idTipoAccion = this.dataTipoAccion.id;
-        this.solicitud.tipoAccion = this.dataTipoAccion.tipoAccion;
+        this.solicitud.idTipoAccion = this.dataTipoAccion?.id;
+        this.solicitud.tipoAccion = this.dataTipoAccion?.tipoAccion;
       },
       error: (error: HttpErrorResponse) => {
         this.utilService.modalResponse(error.error, "error");
@@ -580,6 +577,58 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
     // this.router.navigate(["tasklist/Registrar"], { queryParams: {} });
     this.router.navigate(["solicitudes/consulta-solicitudes"], {
       queryParams: {},
+    });
+  }
+
+  compareNivelesAprobacion(a, b) {
+    const orderMap = {
+      "1er Nivel de Aprobación": 1,
+      "2do Nivel de Aprobación": 2,
+      "3er Nivel de Aprobación": 3,
+      "4to Nivel de Aprobación": 4,
+      "5to Nivel de Aprobación": 5,
+    };
+
+    // Ordenar segun 'orderMap' si existe
+    if (orderMap[a.ruta] && orderMap[b.ruta]) {
+      return orderMap[a.ruta] - orderMap[b.ruta];
+    } else {
+      // Elementos sin el patron especificado al final
+      return a.ruta > b.ruta ? 1 : -1;
+    }
+  }
+
+  getNivelesAprobacion() {
+    this.solicitudes
+      // .getNivelesAprobacion(
+      //   this.solicitud.idTipoSolicitud,
+      //   this.solicitud.idTipoMotivo,
+      //   this.detalleSolicitud.nivelDireccion
+      // )
+      .getNivelesAprobacion(1, 1, "TA")
+      .subscribe({
+        next: (response) => {
+          this.dataNivelesAprobacion = response.nivelAprobacionType.sort(
+            this.compareNivelesAprobacion
+          );
+        },
+        error: (error: HttpErrorResponse) => {
+          this.utilService.modalResponse(error.error, "error");
+        },
+      });
+
+    return this.mantenimientoService.getTipoSolicitud().subscribe({
+      next: (response: any) => {
+        this.dataTipoSolicitud = response.tipoSolicitudType.filter(
+          (data) => data.id == this.solicitud.idTipoSolicitud
+        )[0];
+
+        this.solicitud.idTipoSolicitud = this.dataTipoSolicitud?.id;
+        this.solicitud.tipoSolicitud = this.dataTipoSolicitud?.tipoSolicitud;
+      },
+      error: (error: HttpErrorResponse) => {
+        this.utilService.modalResponse(error.error, "error");
+      },
     });
   }
 

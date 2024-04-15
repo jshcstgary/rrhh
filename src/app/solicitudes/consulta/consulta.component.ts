@@ -304,7 +304,7 @@ export class ConsultaComponent implements OnInit {
 
   getDataToTableFilter() {
     /*this.utilService.openLoadingSpinner(
-      "Cargando información, espero por favor..."
+      "Cargando información, espere por favor..."
     );
     console.log("FILTER DATA: ", this.dataFilterNivelesAprobacion);
     this.nivelesAprobacionService
