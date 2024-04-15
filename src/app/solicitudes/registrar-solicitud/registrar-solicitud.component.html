@@ -62,7 +62,16 @@
           <div class="input-group mb-3">
             <label
               class="input-group-text"
-              for="tipoSolicitud"
+              for="tipoSolic
+
+
+
+
+
+
+
+
+              itud"
               style="color: black; font-size: 14px; width: 45%"
               >Tipo de solicitud</label
             >
@@ -73,7 +82,7 @@
               name="idTipoSolicitud"
               style="color: black; font-size: 14px; margin: auto auto"
               class="text-center"
-              >{{ solicitud.infoGeneral.tipoSolicitud }}</span
+              >{{ solicitud.tipoSolicitud }}</span
             >
             <!-- {{ mivar.textContent }} -->
           </div>
@@ -92,7 +101,7 @@
               name="tipomotivo"
               style="color: black; font-size: 14px; margin: auto auto"
               class="text-center"
-              >{{ solicitud.infoGeneral.tipoMotivo }}</span
+              >{{ solicitud.tipoMotivo }}</span
             >
           </div>
         </div>
@@ -104,7 +113,16 @@
           <div class="input-group mb-3">
             <label
               class="input-group-text"
-              for="codigoposicion"
+              for="codigoposi
+
+
+
+
+
+
+
+
+              cion"
               style="color: black; font-size: 14px; width: 45%"
               >Código de posición</label
             >
@@ -112,7 +130,7 @@
             <input
               type="text"
               name="codigoposicion"
-              [(ngModel)]="solicitud.infoGeneral.codigoPosicion"
+              [(ngModel)]="detalleSolicitud.codigoPosicion"
               class="form-control"
               id="codigoposicion"
             />
@@ -133,8 +151,8 @@
               style="font-size: 14px"
               required
             >
-              <option [value]="solicitud.infoGeneral.nombreEmpleado">
-                {{ solicitud.infoGeneral.nombreEmpleado }}
+              <option [value]="detalleSolicitud.nombreEmpleado">
+                {{ detalleSolicitud.nombreEmpleado }}
               </option>
               <option>Felipe Andrade</option>
               <option>Ramiro Andrade</option>
@@ -157,12 +175,12 @@
               id="subledger"
               name="subledger"
               class="form-select"
-              [(ngModel)]="solicitud.infoGeneral.subledger"
+              [(ngModel)]="detalleSolicitud.subledger"
               style="font-size: 14px"
               required
             >
-              <option [value]="solicitud.infoGeneral.subledger">
-                {{ solicitud.infoGeneral.subledger }}
+              <option [value]="detalleSolicitud.subledger">
+                {{ detalleSolicitud.subledger }}
               </option>
               <option>6007580</option>
               <option>6007581</option>
@@ -183,7 +201,7 @@
               name="descripcionposicion"
               style="color: black; font-size: 14px; margin: auto auto"
               class="text-center"
-              >{{ solicitud.infoGeneral.descripcionPosicion }}</span
+              >{{ detalleSolicitud.descripcionPosicion }}</span
             >
           </div>
         </div>
@@ -204,7 +222,7 @@
               name=""
               style="color: black; font-size: 14px; margin: auto auto"
               class="text-center"
-              >{{ solicitud.infoGeneral.empresa }}</span
+              >{{ solicitud.empresa }}</span
             >
           </div>
         </div>
@@ -212,7 +230,16 @@
           <div class="input-group mb-3">
             <label
               class="input-group-text"
-              for="unidadnegocio"
+              for="unidadneg
+
+
+
+
+
+
+
+
+              ocio"
               style="color: black; font-size: 14px; width: 45%"
               >Unidad de negocio</label
             >
@@ -221,7 +248,7 @@
               name=""
               style="color: black; font-size: 14px; margin: auto auto"
               class="text-center"
-              >{{ solicitud.infoGeneral.unidadNegocio }}</span
+              >{{ detalleSolicitud.unidadNegocio }}</span
             >
           </div>
         </div>
@@ -242,7 +269,7 @@
               name=""
               style="color: black; font-size: 14px; margin: auto auto"
               class="text-center"
-              >{{ solicitud.infoGeneral.areaDepartamento }}</span
+              >{{ detalleSolicitud.areaDepartamento }}</span
             >
           </div>
         </div>
@@ -250,16 +277,25 @@
           <div class="input-group mb-3">
             <label
               class="input-group-text"
-              for="tipocargo"
+              for="tipocargo
+
+
+
+
+
+
+
+
+              "
               style="color: black; font-size: 14px; width: 45%"
               >Tipo de cargo</label
             >
             <span
-              id="tipocargo"
+              id="cargo"
               name=""
               style="color: black; font-size: 14px; margin: auto auto"
               class="text-center"
-              >{{ solicitud.infoGeneral.tipoCargo }}</span
+              >{{ detalleSolicitud.cargo }}</span
             >
           </div>
         </div>
@@ -280,7 +316,7 @@
               name=""
               style="color: black; font-size: 14px; margin: auto auto"
               class="text-center"
-              >{{ solicitud.infoGeneral.localidadZona }}</span
+              >{{ detalleSolicitud.localidadZona }}</span
             >
           </div>
         </div>
@@ -288,7 +324,16 @@
           <div class="input-group mb-3">
             <label
               class="input-group-text"
-              for="niveldirección"
+              for="niveldire
+
+
+
+
+
+
+
+
+              cción"
               style="color: black; font-size: 14px; width: 45%"
               >Nivel de dirección</label
             >
@@ -297,7 +342,7 @@
               name=""
               style="color: black; font-size: 14px; margin: auto auto"
               class="text-center"
-              >{{ solicitud.infoGeneral.nivelDireccion }}</span
+              >{{ detalleSolicitud.nivelDireccion }}</span
             >
           </div>
         </div>
@@ -318,7 +363,7 @@
               name=""
               style="color: black; font-size: 14px; margin: auto auto"
               class="text-center"
-              >{{ solicitud.infoGeneral.centroCosto }}</span
+              >{{ detalleSolicitud.centroCosto }}</span
             >
           </div>
         </div>
@@ -350,7 +395,7 @@
               name=""
               style="color: black; font-size: 14px; margin: auto auto"
               class="text-center"
-              >{{ solicitud.funcionesResponsabilidades.reportaA }}
+              >{{ detalleSolicitud.reportaA }}
             </span>
           </div>
         </div>
@@ -368,7 +413,7 @@
               name=""
               style="color: black; font-size: 14px; margin: auto auto"
               class="text-center"
-              >{{ solicitud.funcionesResponsabilidades.supervisaA }}</span
+              >{{ detalleSolicitud.supervisaA }}</span
             >
           </div>
         </div>
@@ -388,14 +433,12 @@
               id="tipocontrato"
               name="tipocontrato"
               class="form-select"
-              [(ngModel)]="solicitud.funcionesResponsabilidades.tipoContrato"
+              [(ngModel)]="detalleSolicitud.tipoContrato"
               style="font-size: 14px"
               required
             >
-              <option
-                [value]="solicitud.funcionesResponsabilidades.tipoContrato"
-              >
-                {{ solicitud.funcionesResponsabilidades.tipoContrato }}
+              <option [value]="detalleSolicitud.tipoContrato">
+                {{ detalleSolicitud.tipoContrato }}
               </option>
               <option>Temporal</option>
               <option>Mixto</option>
@@ -416,7 +459,7 @@
               name=""
               style="color: black; font-size: 14px; margin: auto auto"
               class="text-center"
-              >{{ solicitud.funcionesResponsabilidades.nivelReporte }}</span
+              >{{ detalleSolicitud.nivelReporteA }}</span
             >
           </div>
         </div>
@@ -433,7 +476,7 @@
             >
             &nbsp;
             <input
-              [(ngModel)]="solicitud.funcionesResponsabilidades.sueldo"
+              [(ngModel)]="detalleSolicitud.sueldo"
               type="text"
               name="sueldo"
               class="form-control"
@@ -466,7 +509,7 @@
               name=""
               style="color: black; font-size: 14px; margin: auto auto"
               class="text-center"
-              >{{ solicitud.tipoVariables.mensual }}
+              >{{ detalleSolicitud.mensual }}
             </span>
           </div>
         </div>
@@ -484,7 +527,7 @@
               name=""
               style="color: black; font-size: 14px; margin: auto auto"
               class="text-center"
-              >{{ solicitud.tipoVariables.trimestral }}</span
+              >{{ detalleSolicitud.trimestral }}</span
             >
           </div>
         </div>
@@ -505,7 +548,7 @@
               name=""
               style="color: black; font-size: 14px; margin: auto auto"
               class="text-center"
-              >{{ solicitud.tipoVariables.semestral }}
+              >{{ detalleSolicitud.semestral }}
             </span>
           </div>
         </div>
@@ -523,7 +566,7 @@
               name=""
               style="color: black; font-size: 14px; margin: auto auto"
               class="text-center"
-              >{{ solicitud.tipoVariables.anual }}</span
+              >{{ detalleSolicitud.anual }}</span
             >
           </div>
         </div>
@@ -932,7 +975,7 @@
               name=""
               style="color: black; font-size: 14px; margin: auto auto"
               class="text-center"
-              >{{ solicitud.atencionProbadores.aprobadoresDinamicos }}</span
+              >{{ detalleSolicitud.aprobadoresDinamicos }}</span
             >
           </div>
         </div>
@@ -953,7 +996,7 @@
               name=""
               style="color: black; font-size: 14px; margin: auto auto"
               class="text-center"
-              >{{ solicitud.atencionProbadores.gerenteRRHHCorporativo }}</span
+              >{{ detalleSolicitud.gerenteRRHHCorporativo }}</span
             >
           </div>
         </div>
@@ -974,7 +1017,7 @@
               name=""
               style="color: black; font-size: 14px; margin: auto auto"
               class="text-center"
-              >{{ solicitud.atencionProbadores.comiteRemuneraciones }}</span
+              >{{ detalleSolicitud.comiteRemuneraciones }}</span
             >
           </div>
         </div>

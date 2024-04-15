@@ -25,14 +25,14 @@
                       <label class="azul">Empresa</label>
                       <ng-select
                         #inputSelectHacienda
-                        [(ngModel)]="dataFilterSolicitudes.idEmpresa"
-                        name="idEmpresa"
+                        [(ngModel)]="selected_empresa"
+                        name="id_hacienda"
                         placeholder="Seleccione"
                       >
                         <ng-option
-                          *ngFor="let data of data_empresas"
-                          [value]="data.idEmpresa"
-                          >{{ data.idEmpresa }} - {{ data.name }}</ng-option
+                          *ngFor="let car of data_empresas"
+                          [value]="car.id"
+                          >{{ car.id }} - {{ car.name }}</ng-option
                         >
                       </ng-select>
                     </div>
@@ -42,15 +42,14 @@
                       <label class="azul">Unidad de Negocio</label>
                       <ng-select
                         #inputSelectProducto
-                        [(ngModel)]="dataFilterSolicitudes.idUnidadNegocio"
-                        name="idUnidadNegocio"
+                        [(ngModel)]="selected_producto"
+                        name="id_producto"
                         placeholder="Seleccione"
                       >
                         <ng-option
-                          *ngFor="let data of data_productos"
-                          [value]="data.idUnidadNegocio"
-                          >{{ data.idUnidadNegocio }} -
-                          {{ data.name }}</ng-option
+                          *ngFor="let car of data_productos"
+                          [value]="car.id"
+                          >{{ car.id }} - {{ car.name }}</ng-option
                         >
                       </ng-select>
                     </div>
@@ -60,18 +59,18 @@
                       <label class="azul">Fecha Desde</label>
                       <div class="input-group">
                         <input
-                          #inputDateFechaDesde
+                          #inputDateFecha
                           class="form-control"
                           placeholder="yyyy-mm-dd"
-                          name="fechaDesde"
-                          [(ngModel)]="dataFilterSolicitudes.fechaDesde"
+                          name="dp"
+                          [(ngModel)]="model"
                           ngbDatepicker
-                          [footerTemplate]="footerTemplateFechaDesde"
-                          #fechaDesde="ngbDatepicker"
+                          [footerTemplate]="footerTemplate"
+                          #d="ngbDatepicker"
                         />
                         <button
                           class="btn btn-outline-secondary bi bi-calendar3"
-                          (click)="fechaDesde.toggle()"
+                          (click)="d.toggle()"
                           type="button"
                         >
                           <i-feather
@@ -87,18 +86,18 @@
                       <label class="azul">Fecha Hasta</label>
                       <div class="input-group">
                         <input
-                          #inputDateFechaHasta
+                          #inputDateFecha
                           class="form-control"
                           placeholder="yyyy-mm-dd"
-                          name="fechaHasta"
-                          [(ngModel)]="dataFilterSolicitudes.fechaHasta"
+                          name="dp"
+                          [(ngModel)]="model"
                           ngbDatepicker
-                          [footerTemplate]="footerTemplateFechaHasta"
-                          #fechaHasta="ngbDatepicker"
+                          [footerTemplate]="footerTemplate"
+                          #d="ngbDatepicker"
                         />
                         <button
                           class="btn btn-outline-secondary bi bi-calendar3"
-                          (click)="fechaHasta.toggle()"
+                          (click)="d.toggle()"
                           type="button"
                         >
                           <i-feather
@@ -115,14 +114,14 @@
                       <label class="azul">Tipo de Solicitud</label>
                       <ng-select
                         #inputSelectLabor
-                        [(ngModel)]="dataFilterSolicitudes.idTipoSolicitud"
-                        name="idTipoSolicitud"
+                        [(ngModel)]="selected_tipo_solicitud"
+                        name="id_tipo_labor"
                         placeholder="Seleccione"
                       >
                         <ng-option
-                          *ngFor="let data of dataTipoSolicitudes"
-                          [value]="data.id"
-                          >{{ data.id }} - {{ data.descripcion }}</ng-option
+                          *ngFor="let car of dataTipoSolicitudes"
+                          [value]="car.id"
+                          >{{ car.id }} - {{ car.descripcion }}</ng-option
                         >
                       </ng-select>
                     </div>
@@ -133,14 +132,14 @@
                       <label class="azul">Estado</label>
                       <ng-select
                         #inputSelectTrabajador
-                        [(ngModel)]="dataFilterSolicitudes.estado"
+                        [(ngModel)]="selected_estado"
                         name="id_trabajador"
                         placeholder="Seleccione"
                       >
                         <ng-option
-                          *ngFor="let data of data_estado"
-                          [value]="data.id"
-                          >{{ data.codigo }} - {{ data.descripcion }}</ng-option
+                          *ngFor="let car of data_estado"
+                          [value]="car.id"
+                          >{{ car.codigo }} - {{ car.descripcion }}</ng-option
                         >
                       </ng-select>
                     </div>
@@ -151,7 +150,6 @@
                       <div class="text-end">
                         <button
                           #buttonSearch
-                          (click)="filter()"
                           type="submit"
                           class="btn btn-info me-2"
                         >
@@ -162,27 +160,14 @@
                   </div>
                 </div>
               </div>
-              <ng-template #footerTemplateFechaDesde>
+              <ng-template #footerTemplate>
                 <hr class="my-0" />
                 <button class="btn btn-primary btn-sm m-2 float-start">
                   Today
                 </button>
                 <button
                   class="btn btn-secondary btn-sm m-2 float-end"
-                  (click)="fechaDesde.close()"
-                >
-                  Close
-                </button>
-              </ng-template>
-
-              <ng-template #footerTemplateFechaHasta>
-                <hr class="my-0" />
-                <button class="btn btn-primary btn-sm m-2 float-start">
-                  Today
-                </button>
-                <button
-                  class="btn btn-secondary btn-sm m-2 float-end"
-                  (click)="fechaHasta.close()"
+                  (click)="d.close()"
                 >
                   Close
                 </button>
@@ -229,14 +214,37 @@
                   </div>
                 </div>
               </form>
-              <table-component
+              <plantilla-c-component
+                [dataFilterNivelesAprobacion]="dataFilterNivelesAprobacion"
+                [dataTipoMotivo]="dataTipoMotivo"
+                [dataTipoSolicitudes]="dataTipoSolicitudes"
+                [dataNivelDireccion]="dataNivelDireccion"
+                [dataTipoAccion]="dataTipoAccion"
+                [selected_empresa]="selected_empresa"
+                [selected_producto]="selected_producto"
+                [selected_tipo_solicitud]="selected_tipo_solicitud"
+                [selected_estado]="selected_estado"
+                [data_empresas]="data_empresas"
+                [data_productos]="data_productos"
+                [data_estado]="data_estado"
+                [model]="model"
                 *ngIf="hasFiltered"
-                [columns]="columnsTable"
-                [dataTable]="dataTable"
+                [columnsTable]="columnsTable"
+                [originalDataTable]="dataTable"
+                [placeholderHeaderInputText]="'Buscar niveles de aprobacion...'"
                 [contexto]="this"
-                onChangePagination="onChangePaginationTable"
-                [rowsPerPageValue]="rowsPerPageTable"
-              ></table-component>
+                keyNameTable="id"
+                clickOnActionRow="onRowActionClicked"
+                clickOnFilter="filterDataTable"
+                clickOnMostrarModalCrearSolicitudes="mostrarModalCrearSolicitudes"
+                clickOnToggleDisabled="toggleDisabled"
+                clickOnPageCrear="pageCrear"
+                [IdRowToClone]="IdRowToClone"
+                colIdToDisable="id"
+                titleReport="NIVELES DE APROBACION"
+                [codigoReport]="codigoReporte"
+              >
+              </plantilla-c-component>
             </ng-template>
           </li>
         </ul>
@@ -421,3 +429,34 @@
   </div>
 </ng-template>
 <!--End Modal Crear Solicitud-->
+
+<!-- <plantilla-c-component
+  [dataFilterNivelesAprobacion]="dataFilterNivelesAprobacion"
+  [dataTipoMotivo]="dataTipoMotivo"
+  [dataTipoSolicitudes]="dataTipoSolicitudes"
+  [dataNivelDireccion]="dataNivelDireccion"
+  [selected_empresa]="selected_empresa"
+  [selected_producto]="selected_producto"
+  [selected_tipo_solicitud]="selected_tipo_solicitud"
+  [selected_estado]="selected_estado"
+  [data_empresas]="data_empresas"
+  [data_productos]="data_productos"
+  [data_estado]="data_estado"
+  [model]="model"
+  *ngIf="hasFiltered"
+  [columnsTable]="columnsTable"
+  [originalDataTable]="dataTable"
+  [placeholderHeaderInputText]="'Buscar niveles de aprobacion...'"
+  [contexto]="this"
+  keyNameTable="id"
+  clickOnActionRow="onRowActionClicked"
+  clickOnFilter="filterDataTable"
+  clickOnMostrarModalCrearSolicitudes="mostrarModalCrearSolicitudes"
+  clickOnToggleDisabled="toggleDisabled"
+  clickOnPageCrear="pageCrear"
+  [IdRowToClone]="IdRowToClone"
+  colIdToDisable="id"
+  titleReport="NIVELES DE APROBACION"
+  [codigoReport]="codigoReporte"
+>
+</plantilla-c-component> -->

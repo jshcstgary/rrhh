@@ -1,21 +1,21 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { NivelesAprobacionComponent } from './niveles-aprobacion.component';
+import { NivelesAprobacionComponent } from "./niveles-aprobacion.component";
 
-describe('NivelesAprobacionComponent', () => {
+describe("NivelesComponent", () => {
   let component: NivelesAprobacionComponent;
   let fixture: ComponentFixture<NivelesAprobacionComponent>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [NivelesAprobacionComponent]
+      declarations: [NivelesAprobacionComponent],
     });
     fixture = TestBed.createComponent(NivelesAprobacionComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
   });
 });

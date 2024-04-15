@@ -6,6 +6,7 @@ import {
   OnChanges,
   OnInit,
   SimpleChanges,
+  ViewChild,
 } from "@angular/core";
 import { IDropdownOptions } from "src/app/component/dropdown/dropdown.interface";
 import {
@@ -29,14 +30,15 @@ import {
 import { UtilService } from "src/app/services/util/util.service";
 import { environment } from "src/environments/environment";
 import Swal from "sweetalert2";
-import { PlantillaBData } from "./plantillaB.data";
+import { PlantillaCData } from "./plantillaC.data";
 import { DataFilterNivelesAprobacion } from "src/app/eschemas/DataFilterNivelesAprobacion";
+import { NgbNav } from "@ng-bootstrap/ng-bootstrap";
 @Component({
-  selector: "plantilla-b-component",
-  templateUrl: "./plantillaB.component.html",
-  styleUrls: ["./plantillaB.component.scss"],
+  selector: "plantilla-c-component",
+  templateUrl: "./plantillaC.component.html",
+  styleUrls: ["./plantillaC.component.scss"],
 })
-export class PlantillaBComponent implements AfterViewInit, OnInit, OnChanges {
+export class PlantillaCComponent implements AfterViewInit, OnInit, OnChanges {
   @Input({ required: false }) public colIdToDisable: string | string[] = "";
   @Input({ required: false }) public keyNameTable: string = "";
   @Input({ required: false }) public dataFilterNivelesAprobacion =
@@ -45,10 +47,18 @@ export class PlantillaBComponent implements AfterViewInit, OnInit, OnChanges {
   @Input({ required: false }) public dataTipoMotivo: any[] = [];
   @Input({ required: false }) public dataTipoSolicitudes: any[] = [];
   @Input({ required: false }) public dataNivelDireccion: any[] = [];
+  @Input({ required: false }) public dataTipoAccion: any[] = [];
+  @Input({ required: false }) public active = 1;
+  @Input({ required: false }) public disabled = true;
 
-  selected_tipo_motivo: number;
-  selected_tipo_solicitud: number;
-  selected_niveldireccion: number;
+  @Input({ required: false }) selected_empresa: number;
+  @Input({ required: false }) selected_producto: number;
+  @Input({ required: false }) selected_tipo_solicitud: number;
+  @Input({ required: false }) selected_estado: number;
+  @Input({ required: false }) data_empresas;
+  @Input({ required: false }) data_productos;
+  @Input({ required: false }) data_estado;
+  @Input({ required: false }) model;
 
   @Input({ required: true }) public columnsTable: IColumnsTable = [];
   @Input({ required: true }) public originalDataTable: any[] = [];
@@ -58,6 +68,12 @@ export class PlantillaBComponent implements AfterViewInit, OnInit, OnChanges {
   @Input() public clickOnActionRow: string = "onRowActionClicked";
   @Input() public clickOnFilter: string = "filterDataTable";
   @Input() public clickOnPageCrear: string = "pageCrear";
+
+  @Input() public clickOnMostrarModalCrearSolicitudes: string =
+    "mostrarModalCrearSolicitudes";
+
+  @Input() public clickOnToggleDisabled: string = "toggleDisabled";
+
   @Input() public onRowChange: string;
   @Input() public tableWidth: string = "100%";
   @Input() public tableInputsEditRow: IInputsComponent;
@@ -85,10 +101,12 @@ export class PlantillaBComponent implements AfterViewInit, OnInit, OnChanges {
   public dataToTable: any[] = [];
   public totalRowsInTable: number = 0;
   public dropdownOptionsExport: IDropdownOptions =
-    PlantillaBData.dropdownOptionsExport;
+    PlantillaCData.dropdownOptionsExport;
 
   private textToFilter: string = "";
   private colIndexSorted: number;
+
+  @ViewChild(NgbNav, { static: true }) nav: NgbNav;
 
   constructor(
     private tableService: TableService,
@@ -121,7 +139,7 @@ export class PlantillaBComponent implements AfterViewInit, OnInit, OnChanges {
       (row) => row.type !== "checkbox"
     );
     this.columnsTable = tableCleaned;
-    this.columnsTable.unshift(PlantillaBData.initialColumns);
+    this.columnsTable.unshift(PlantillaCData.initialColumns);
   }
   /**
    * Función para validar si mi formulario mostrara el boton de buscar o no
@@ -379,6 +397,18 @@ export class PlantillaBComponent implements AfterViewInit, OnInit, OnChanges {
     this.contexto[this.clickOnFilter]();
   }
 
+  public mostrarModalCrearSolicitudes() {
+    console.log("MODAL");
+    this.IdRowToClone = null;
+    this.contexto[this.clickOnMostrarModalCrearSolicitudes]();
+  }
+
+  public toggleDisabled() {
+    console.log("TOGGLE");
+    this.IdRowToClone = null;
+    this.contexto[this.clickOnToggleDisabled]();
+  }
+
   public pageCrear() {
     console.log("CREAR");
     // this.IdRowToClone = null;
@@ -416,7 +446,7 @@ export class PlantillaBComponent implements AfterViewInit, OnInit, OnChanges {
       case "delete":
         if (
           !environment.modalConfirmation ||
-          (await Swal.fire(PlantillaBData.swalDeleteOptions)).isConfirmed
+          (await Swal.fire(PlantillaCData.swalDeleteOptions)).isConfirmed
         ) {
           this.contexto[this.onDeleteFunction](key);
         }

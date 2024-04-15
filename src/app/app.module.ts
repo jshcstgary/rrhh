@@ -1,29 +1,28 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { CommonModule } from '@angular/common';
-import { NgModule } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
-import { RouterModule } from '@angular/router';
+import { BrowserModule } from "@angular/platform-browser";
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+import { CommonModule } from "@angular/common";
+import { NgModule } from "@angular/core";
+import { HttpClientModule } from "@angular/common/http";
+import { RouterModule } from "@angular/router";
 
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { FeatherModule } from 'angular-feather';
-import { allIcons } from 'angular-feather/icons';
-import { ToastrModule } from 'ngx-toastr';
+import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
+import { FeatherModule } from "angular-feather";
+import { allIcons } from "angular-feather/icons";
+import { ToastrModule } from "ngx-toastr";
 
-import { Approutes } from './app-routing.module';
-import { AppComponent } from './app.component';
-import { SpinnerComponent } from './shared/spinner.component';
+import { Approutes } from "./app-routing.module";
+import { AppComponent } from "./app.component";
+import { SpinnerComponent } from "./shared/spinner.component";
 
-import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
-import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-import { HttpClient } from '@angular/common/http';
-import { RegistrarSolicitudComponent } from './solicitudes/registrar-solicitud/registrar-solicitud.component';
-import { SolicitudesModule } from './solicitudes/solicitudes.module';
-import { FormsModule } from '@angular/forms';
-
+import { TranslateLoader, TranslateModule } from "@ngx-translate/core";
+import { TranslateHttpLoader } from "@ngx-translate/http-loader";
+import { HttpClient } from "@angular/common/http";
+import { RegistrarSolicitudComponent } from "./solicitudes/registrar-solicitud/registrar-solicitud.component";
+import { SolicitudesModule } from "./solicitudes/solicitudes.module";
+import { FormsModule } from "@angular/forms";
 
 export function HttpLoaderFactory(http: HttpClient) {
-  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
+  return new TranslateHttpLoader(http, "./assets/i18n/", ".json");
 }
 
 @NgModule({

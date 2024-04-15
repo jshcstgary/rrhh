@@ -76,6 +76,14 @@ export const MantenedoresRoutes: Routes = [
           urls: [{ title: "Mantenimiento" }, { title: "Tipo Ruta" }],
         },
       },
+      // {
+      //   path: "niveles",
+      //   component: NivelesComponent,
+      //   data: {
+      //     title: "Niveles",
+      //     urls: [{ title: "Mantenimiento" }, { title: "Niveles" }],
+      //   },
+      // },
       {
         path: "ruta",
         component: RutaComponent,
