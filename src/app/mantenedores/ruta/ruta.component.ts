@@ -40,6 +40,9 @@ export class RutaComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.utilService.openLoadingSpinner(
+      "Cargando información, espere por favor..."
+    );
     this.getDataToCombo();
     // this.getDataToTable();
   }
@@ -77,6 +80,7 @@ export class RutaComponent implements OnInit {
           estado: accionResponse.estado === "A",
           tipoRutaFormatted: this.formatTipoRutaEstaciones(accionResponse),
         }));
+        this.utilService.closeLoadingSpinner();
       },
       error: (error: HttpErrorResponse) =>
         this.utilService.modalResponse(error.error, "error"),

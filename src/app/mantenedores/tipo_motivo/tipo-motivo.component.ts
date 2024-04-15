@@ -46,6 +46,9 @@ export class TipoMotivoComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.utilService.openLoadingSpinner(
+      "Cargando información, espere por favor..."
+    );
     this.getDataToCombo();
     // this.getDataToTable();
   }
@@ -85,6 +88,7 @@ export class TipoMotivoComponent implements OnInit {
           tipoSolicitudFormatted:
             this.formatTipoSolicitudEstaciones(motivoResponse),
         }));
+        this.utilService.closeLoadingSpinner();
       },
       error: (error: HttpErrorResponse) =>
         this.utilService.modalResponse(error.error, "error"),

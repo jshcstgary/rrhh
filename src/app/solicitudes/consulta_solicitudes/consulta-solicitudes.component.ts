@@ -215,10 +215,6 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
       confirmButtonText: "Sí",
       cancelButtonText: "No",
     }).then((result) => {
-      console.log("this.dataTipoSolicitudes: ", this.dataTipoSolicitudes);
-      console.log("this.dataTipoMotivo: ", this.dataTipoMotivo);
-      console.log("this.dataTipoAccion: ", this.dataTipoAccion);
-
       this.solicitud.tipoSolicitud = this.dataTipoSolicitudes.filter(
         (data) => data.id == this.solicitud.idTipoSolicitud
       )[0].descripcion;
@@ -230,8 +226,6 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
       this.solicitud.tipoAccion = this.dataTipoAccion.filter(
         (data) => data.id == this.solicitud.idTipoAccion
       )[0].descripcion;
-
-      console.log("MODELO ACTUALIZADO: ", this.solicitud);
 
       if (result.isConfirmed) {
         // Inicio de Solicitud
@@ -263,18 +257,7 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
                   this.solicitud.fechaActualizacion =
                     response.fechaActualizacion;
                   this.solicitud.fechaCreacion = response.fechaCreacion;
-                  console.log(
-                    "THIS IS THE MODEL FORM SERVICE 1: ",
-                    this.solicitud
-                  );
-                  console.log(
-                    "THIS IS THE MODEL FORM SERVICE 2: ",
-                    this.solicitudes.modelSolicitud
-                  );
-                  console.log(
-                    "THIS IS THE RESPONSE OF SAVE SOLICITUD: ",
-                    response
-                  );
+
                   setTimeout(() => {
                     this.router.navigate(["/solicitudes/registrar-solicitud"], {
                       queryParams: { ...this.solicitud },
@@ -381,26 +364,21 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
     console.log("Data filter: ", this.dataFilterSolicitudes);
     switch (this.dataFilterSolicitudes.verifyFilterFields()) {
       case "case1":
-        console.log("CASE 1");
         this.getDataToTable();
         break;
       case "case2":
-        console.log("CASE 2");
         this.getDataToTable();
         break;
       case "case3":
-        console.log("CASE 3");
         this.getDataToTable();
         break;
       case "case4":
-        console.log("CASE 4");
         this.utilService.modalResponse(
           "Por favor complete los campos del filtro",
           "info"
         );
         break;
       case "case5":
-        console.log("CASE 4");
         let data = { ...this.dataFilterSolicitudes };
         data.fechaDesde = this.formatFecha(
           this.dataFilterSolicitudes,
@@ -420,7 +398,6 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
   }
 
   formatFecha(data: any, fechaProp: string) {
-    console.log("DATE QUE RECIBE: ", data);
     return (
       data[fechaProp].year +
       "-" +
@@ -431,7 +408,6 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
   }
 
   formatFechaISO(date: any, fechaProp: string) {
-    console.log("DATE QUE RECIBE: ", date);
     return new Date(
       date[fechaProp].year,
       date[fechaProp].month - 1,
@@ -473,10 +449,8 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
     combinedData$.subscribe({
       next: (response) => {
         this.dataTable = response;
-        console.log("filerDataTable: ", response);
 
         this.utilService.closeLoadingSpinner();
-        console.log("Data de solicitudes de aprobacion: ", this.dataTable);
       },
       error: (error: HttpErrorResponse) => {
         console.log("error: ", error);
@@ -509,7 +483,6 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
           codigo: r.codigo,
           descripcion: r.valor,
         })); //verificar la estructura mmunoz
-        console.log("DATA DE ESTADO: ", this.data_estado);
       },
       error: (error: HttpErrorResponse) => {
         this.utilService.modalResponse(error.error, "error");
@@ -564,7 +537,7 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 
   onRowActionClicked(id: string, key: string, tooltip: string, id_edit) {
     // Lógica cuando se da click en una acción de la fila
-    console.log("EDTTTT: ", id_edit);
+
     this.router.navigate(["/solicitudes/registrar-solicitud"], {
       queryParams: { id_edit },
     });

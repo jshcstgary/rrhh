@@ -10,6 +10,7 @@ import { environment } from "src/environments/environment";
 })
 export class SolicitudesService {
   private apiUrlSolicitudes = environment.solicitudesServiceES;
+  private apiUrlNivelAprobacion = environment.nivelAprobacionServiceES;
   public modelSolicitud = new Solicitud();
   public modelDetalleSolicitud = new DetalleSolicitud();
   constructor(private http: HttpClient) {}
@@ -38,6 +39,16 @@ export class SolicitudesService {
     return this.http.post<any>(
       this.apiUrlSolicitudes + "/detalle-solicitud",
       request
+    );
+  }
+
+  public getNivelesAprobacion(
+    idTipoSolicitud: any,
+    idTipoMotivo: any,
+    idNivelDireccion: any
+  ): Observable<any> {
+    return this.http.get<any>(
+      `${this.apiUrlNivelAprobacion}/${idTipoSolicitud}/${idTipoMotivo}/${idNivelDireccion}`
     );
   }
 }
