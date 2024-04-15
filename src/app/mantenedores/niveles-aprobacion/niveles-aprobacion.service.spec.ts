@@ -1,8 +1,8 @@
-import { TestBed } from '@angular/core/testing';
+import { TestBed } from "@angular/core/testing";
 
-import { NivelesAprobacionService } from './niveles-aprobacion.service';
+import { NivelesAprobacionService } from "./niveles-aprobacion.service";
 
-describe('NivelesAprobacionService', () => {
+describe("TipoRutaService", () => {
   let service: NivelesAprobacionService;
 
   beforeEach(() => {
@@ -10,7 +10,7 @@ describe('NivelesAprobacionService', () => {
     service = TestBed.inject(NivelesAprobacionService);
   });
 
-  it('should be created', () => {
+  it("should be created", () => {
     expect(service).toBeTruthy();
   });
 });

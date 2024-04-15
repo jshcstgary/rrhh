@@ -1,35 +1,37 @@
-import { Routes } from '@angular/router';
+import { Routes } from "@angular/router";
 
-import { ConsultaSolicitudesComponent } from './consulta_solicitudes/consulta-solicitudes.component';
-import { RegistrarSolicitudComponent } from './registrar-solicitud/registrar-solicitud.component';
+import { ConsultaSolicitudesComponent } from "./consulta_solicitudes/consulta-solicitudes.component";
+import { RegistrarSolicitudComponent } from "./registrar-solicitud/registrar-solicitud.component";
+import { ConsultaComponent } from "./consulta/consulta.component";
 
 export const SolicitudesRoutes: Routes = [
   {
-    path: '',
+    path: "",
     children: [
       {
-        path: 'consulta-solicitudes',
+        path: "consulta-solicitudes",
         component: ConsultaSolicitudesComponent,
         data: {
-          title: 'Solicitudes',
-          urls: [
-            { title: 'Solicitudes' },
-            { title: 'Consulta Solicitudes' },
-          ],
+          title: "Solicitudes",
+          urls: [{ title: "Solicitudes" }, { title: "Consulta Solicitudes" }],
         },
       },
       {
-        path: 'registrar-solicitud',
-        component: RegistrarSolicitudComponent,
+        path: "consulta",
+        component: ConsultaComponent,
         data: {
-          title: 'Completar Solicitud',
-          urls: [
-            { title: 'Solicitudes' },
-            { title: 'Completar Solicitud' },
-          ],
+          title: "Consulta",
+          urls: [{ title: "Consulta" }, { title: "Consulta" }],
         },
       },
-
+      {
+        path: "registrar-solicitud",
+        component: RegistrarSolicitudComponent,
+        data: {
+          title: "Completar Solicitud",
+          urls: [{ title: "Solicitudes" }, { title: "Completar Solicitud" }],
+        },
+      },
     ],
   },
 ];

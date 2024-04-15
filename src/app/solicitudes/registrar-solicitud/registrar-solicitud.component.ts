@@ -1,4 +1,3 @@
-import { Solicitud } from "./../solicitud";
 import { SolicitudesService } from "./solicitudes.service";
 import { Component } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
@@ -19,6 +18,8 @@ import { DatosSolicitud } from "src/app/eschemas/DatosSolicitud";
 import { MantenimientoService } from "src/app/services/mantenimiento/mantenimiento.service";
 import { UtilService } from "src/app/services/util/util.service";
 import Swal from "sweetalert2";
+import { Solicitud } from "src/app/eschemas/Solicitud";
+import { DetalleSolicitud } from "src/app/eschemas/DetalleSolicitud";
 
 @Component({
   selector: "registrarSolicitud",
@@ -38,6 +39,8 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
   );
 
   public solicitud = new Solicitud();
+
+  public detalleSolicitud = new DetalleSolicitud();
 
   public titulo: string = "Formulario De Registro";
 
@@ -62,7 +65,7 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
   public dataTipoMotivo: any;
   public dataTipoAccion: any;
   public success: false;
-
+  public params: any;
   constructor(
     route: ActivatedRoute,
     router: Router,
@@ -75,8 +78,33 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
 
     this.modelBase = new DatosProcesoInicio();
 
-    this.route.queryParams.subscribe((params: DatosSolicitud) => {
-      this.modelSolicitud = params;
+    this.route.queryParams.subscribe((params: Solicitud) => {
+      console.log("ESTOS SON LOS PARAMS: ", params);
+      console.log(
+        "ESTOS SON LOS PARMAS COMPARTIDOS: ",
+        this.solicitudes.modelSolicitud
+      );
+      // this.solicitud = params;
+
+      this.solicitud = this.solicitudes.modelSolicitud;
+      this.detalleSolicitud = this.solicitudes.modelDetalleSolicitud;
+      this.detalleSolicitud.idSolicitud = this.solicitud.idSolicitud;
+
+      /*this.solicitud.infoGeneral.idTipoSolicitud = this.dataTipoSolicitud.id;
+      this.solicitud.infoGeneral.tipoSolicitud =
+        this.dataTipoSolicitud.tipoSolicitud;
+      this.solicitud.request.idTipoSolicitud = this.dataTipoSolicitud.id;
+      this.solicitud.request.tipoSolicitud =
+        this.dataTipoSolicitud.tipoSolicitud;
+
+      this.solicitud.infoGeneral.idTipoMotivo = this.dataTipoMotivo.id;
+      this.solicitud.infoGeneral.tipoMotivo = this.dataTipoMotivo.tipoMotivo;
+      this.solicitud.request.idTipoMotivo = this.dataTipoMotivo.id;
+
+      this.solicitud.infoGeneral.idTipoAccion = this.dataTipoAccion.id;
+      this.solicitud.infoGeneral.tipoAccion = this.dataTipoAccion.tipoAccion;
+      this.solicitud.request.idTipoAccion = this.dataTipoAccion.id;
+      this.solicitud.request.tipoAccion = this.dataTipoAccion.tipoAccion;*/
     });
 
     this.route.queryParamMap.subscribe((qParams) => {
@@ -133,15 +161,21 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
   ObtenerServicioTipoSolicitud() {
     return this.mantenimientoService.getTipoSolicitud().subscribe({
       next: (response: any) => {
+        console.log(
+          "AQUII ObtenerServicioTipoSolicitud: ",
+          response.tipoSolicitudType
+        );
+        console.log(
+          "AQUII this.solicitud.infoGeneral.idTipoSolicitud: ",
+          this.solicitud.idTipoSolicitud
+        );
+        console.log("ES UNDEFINED?: ", this.solicitud);
         this.dataTipoSolicitud = response.tipoSolicitudType.filter(
-          (data) => data.id == this.modelSolicitud.tipo_solicitud
+          (data) => data.id == this.solicitud.idTipoSolicitud
         )[0];
-        this.solicitud.infoGeneral.idTipoSolicitud = this.dataTipoSolicitud.id;
-        this.solicitud.infoGeneral.tipoSolicitud =
-          this.dataTipoSolicitud.tipoSolicitud;
-        this.solicitud.request.idTipoSolicitud = this.dataTipoSolicitud.id;
-        this.solicitud.request.tipoSolicitud =
-          this.dataTipoSolicitud.tipoSolicitud;
+        console.log("this.dataTipoSolicitud: ", this.dataTipoSolicitud);
+        this.solicitud.idTipoSolicitud = this.dataTipoSolicitud.id;
+        this.solicitud.tipoSolicitud = this.dataTipoSolicitud.tipoSolicitud;
       },
       error: (error: HttpErrorResponse) => {
         this.utilService.modalResponse(error.error, "error");
@@ -152,13 +186,13 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
   ObtenerServicioTipoMotivo() {
     return this.mantenimientoService.getTipoMotivo().subscribe({
       next: (response) => {
+        console.log("AQUII ObtenerServicioTipoMotivo: ", response);
         this.dataTipoMotivo = response.filter(
-          (data) => data.id == this.modelSolicitud.tipo_motivo
+          (data) => data.id == this.solicitud.idTipoMotivo
         )[0];
 
-        this.solicitud.infoGeneral.idTipoMotivo = this.dataTipoMotivo.id;
-        this.solicitud.infoGeneral.tipoMotivo = this.dataTipoMotivo.tipoMotivo;
-        this.solicitud.request.idTipoMotivo = this.dataTipoMotivo.id;
+        this.solicitud.idTipoMotivo = this.dataTipoMotivo.id;
+        this.solicitud.tipoMotivo = this.dataTipoMotivo.tipoMotivo;
         // this.solicitud.request.tipoMotivo = this.dataTipoMotivo.tipoMotivo;
       },
       error: (error: HttpErrorResponse) => {
@@ -170,13 +204,12 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
   ObtenerServicioTipoAccion() {
     return this.mantenimientoService.getTipoAccion().subscribe({
       next: (response) => {
+        console.log("AQUII ObtenerServicioTipoAccion: ", response);
         this.dataTipoAccion = response.filter(
-          (data) => data.id == this.modelSolicitud.tipo_accion
+          (data) => data.id == this.solicitud.idTipoAccion
         )[0];
-        this.solicitud.infoGeneral.idTipoAccion = this.dataTipoAccion.id;
-        this.solicitud.infoGeneral.tipoAccion = this.dataTipoAccion.tipoAccion;
-        this.solicitud.request.idTipoAccion = this.dataTipoAccion.id;
-        this.solicitud.request.tipoAccion = this.dataTipoAccion.tipoAccion;
+        this.solicitud.idTipoAccion = this.dataTipoAccion.id;
+        this.solicitud.tipoAccion = this.dataTipoAccion.tipoAccion;
       },
       error: (error: HttpErrorResponse) => {
         this.utilService.modalResponse(error.error, "error");
@@ -297,7 +330,7 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
 
   save() {
     const id = Date.now().toString().slice(-6);
-    this.solicitudes
+    /*this.solicitudes
       .guardarSolicitud(this.solicitud.request)
       .subscribe((response) => {
         let detalleSolicitud = {
@@ -356,7 +389,66 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
               this.router.navigate(["/solicitudes/consulta-solicitudes"]);
             }, 1600);
           });
+      });*/
+
+    let detalleSolicitud = {
+      idDetalleSolicitud: id,
+      idSolicitud: this.solicitud.idSolicitud,
+      codigo: "Prueba",
+      valor: "Prueba",
+      estado: "A",
+      fechaRegistro: "2024-03-27T20:57:04.34",
+      compania: "Prueba",
+      unidadNegocio: "Prueba",
+      codigoPosicion: "Prueba",
+      descripcionPosicion: "Prueba",
+      areaDepartamento: "Prueba",
+      localidadZona: "Prueba",
+      nivelDireccion: "Prueba",
+      centroCosto: "Prueba",
+      nombreEmpleado: "Morocho Vargas Gal Estuario",
+      subledger: "Prueba",
+      reportaA: "Prueba",
+      nivelReporteA: "Prueba",
+      supervisaA: "Prueba",
+      tipoContrato: "Prueba",
+      departamento: "Prueba",
+      cargo: "Prueba",
+      jefeSolicitante: "Prueba",
+      responsableRRHH: "Prueba",
+      localidad: "Prueba",
+      fechaIngreso: "2024-03-27T20:57:04.34",
+      unidad: "Prueba",
+      puesto: "Prueba",
+      jefeInmediatoSuperior: "Prueba",
+      jefeReferencia: "Prueba",
+      cargoReferencia: "Prueba",
+      fechaSalida: "2024-03-27T20:57:04.34",
+      puestoJefeInmediato: "Prueba",
+      subledgerEmpleado: "Prueba",
+      grupoDePago: "Prueba",
+      sucursal: "Prueba",
+      movilizacion: "Prueba",
+      alimentacion: "Prueba",
+      jefeAnteriorJefeReferencia: "Prueba",
+      causaSalida: "Prueba",
+      nombreJefeSolicitante: "Prueba",
+      misionCargo: "Prueba",
+      justificacion: "Prueba",
+    };
+
+    this.solicitudes
+      .guardarDetalleSolicitud(this.solicitudes.modelDetalleSolicitud)
+      .subscribe((res) => {
+        this.utilService.modalResponse(
+          "Datos ingresados correctamente",
+          "success"
+        );
+        setTimeout(() => {
+          this.router.navigate(["/solicitudes/consulta-solicitudes"]);
+        }, 1600);
       });
+
     /*const id = Date.now().toString().slice(-6);
     console.log(id);
 

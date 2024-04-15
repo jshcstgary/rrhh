@@ -154,9 +154,6 @@ export class CrearNivelesAprobacionComponent implements OnInit {
   }
 
   ObtenerServicioNivelDireccion() {
-    this.mantenimientoService.diagnostic().subscribe((res) => {
-      console.log("Diagnóstico: ", res);
-    });
     console.log("Executing ObtenerServicioNivelDireccion() method");
     return this.mantenimientoService.getCatalogo("RBPND").subscribe({
       // return this.mantenimientoService.getCatalogoRBPND().subscribe({

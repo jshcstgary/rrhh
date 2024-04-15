@@ -1,115 +1,20 @@
-<div class="row">
-  <!-- ==================================-->
-  <!-- ======= Basic Nav ===== -->
-  <!-- ==================================-->
-  <div class="col-12">
-    <div class="card">
-      <div class="card-body border-top">
-        <div class="form-body">
-          <div class="row">
-            <div class="col-md-3">
-              <div class="mb-3">
-                <label class="azul">Tipo de Solicitud</label>
-                <ng-select
-                  #inputSelectLabor
-                  [(ngModel)]="dataFilterNivelesAprobacion.tipoSolicitud"
-                  name="id_tipo_labor"
-                  placeholder="Seleccione"
-                >
-                  <ng-option
-                    *ngFor="let car of dataTipoSolicitudes"
-                    [value]="car.id"
-                    >{{ car.id }} - {{ car.descripcion }}</ng-option
-                  >
-                </ng-select>
-                {{ selected_tipo_solicitud }}
-              </div>
-            </div>
-            <!--Tipo-->
-            <div class="col-md-3">
-              <div class="mb-3">
-                <label class="azul">Tipo Motivo</label>
-                <ng-select
-                  #inputSelectProducto
-                  [(ngModel)]="dataFilterNivelesAprobacion.tipoMotivo"
-                  name="id_producto"
-                  placeholder="Seleccione"
-                >
-                  <ng-option *ngFor="let car of dataTipoMotivo" [value]="car.id"
-                    >{{ car.id }} - {{ car.descripcion }}</ng-option
-                  >
-                </ng-select>
-                {{ selected_tipo_motivo }}
-              </div>
-            </div>
-            <!--Nivel de direccion-->
-            <div class="col-md-3">
-              <div class="mb-3">
-                <label class="azul">Nivel de Direccion</label>
-                <ng-select
-                  #inputSelectTrabajador
-                  [(ngModel)]="dataFilterNivelesAprobacion.nivelDireccion"
-                  name="id_trabajador"
-                  placeholder="Seleccione"
-                >
-                  <ng-option
-                    *ngFor="let car of dataNivelDireccion"
-                    [value]="car.codigo"
-                    >{{ car.id }} - {{ car.descripcion }}</ng-option
-                  >
-                </ng-select>
-                {{ selected_niveldireccion }}
-              </div>
-            </div>
-
-            <div class="col-md-3">
-              <div class="mb-3 text-end">
-                <button
-                  type="button"
-                  (click)="filterDataTable()"
-                  class="btn btn-info me-2"
-                >
-                  <i class="fas fa-filter"></i> Buscar
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-        <form>
-          <div class="row">
-            <div class="col-md-12">
-              <div class="mb-3">
-                <div class="text-end">
-                  <button
-                    type="button"
-                    (click)="PageCrear()"
-                    class="btn btn-info me-2"
-                  >
-                    <i class="fas fa-plus"></i> Agregar
-                  </button>
-
-                  <button type="submit" class="btn btn-outline-info me-2">
-                    <i class="fas fa-file-excel"></i> Exportar
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </form>
-        <table-component
-          *ngIf="hasFiltered"
-          [columns]="columnsTable"
-          [dataTable]="dataTable"
-          [contexto]="this"
-          clickOnActionRow="onRowActionClicked"
-        ></table-component>
-
-        <!--</ul>-->
-
-        <!--<div [ngbNavOutlet]="nav" class="mt-2"></div>-->
-        <div class="bg-light p-3 rounded"></div>
-        <!--<div class="bg-light p-3 rounded">Active: {{ active }}</div>-->
-      </div>
-    </div>
-  </div>
-</div>
+<plantilla-b-component
+  [dataFilterNivelesAprobacion]="dataFilterNivelesAprobacion"
+  [dataTipoMotivo]="dataTipoMotivo"
+  [dataTipoSolicitudes]="dataTipoSolicitudes"
+  [dataNivelDireccion]="dataNivelDireccion"
+  *ngIf="hasFiltered"
+  [columnsTable]="columnsTable"
+  [originalDataTable]="dataTable"
+  [placeholderHeaderInputText]="'Buscar niveles de aprobacion...'"
+  [contexto]="this"
+  keyNameTable="id"
+  clickOnActionRow="onRowActionClicked"
+  clickOnFilter="filterDataTable"
+  clickOnPageCrear="pageCrear"
+  [IdRowToClone]="IdRowToClone"
+  colIdToDisable="id"
+  titleReport="NIVELES DE APROBACION"
+  [codigoReport]="codigoReporte"
+>
+</plantilla-b-component>

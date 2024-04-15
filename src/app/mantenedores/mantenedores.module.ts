@@ -15,9 +15,10 @@ import { AccionComponent } from "./accion/accion.component";
 import { TipoMotivoComponent } from "./tipo_motivo/tipo-motivo.component";
 import { TipoAccionComponent } from "./tipo_accion/tipo-accion.component";
 import { RutaComponent } from "./ruta/ruta.component";
-import { NivelesAprobacionComponent } from "./niveles-aprobacion/niveles-aprobacion.component";
+
 import { CrearNivelesAprobacionComponent } from "./crear-niveles-aprobacion/crear-niveles-aprobacion.component";
 import { SpinnerComponent } from "../shared/spinner.component";
+import { NivelesAprobacionComponent } from "./niveles-aprobacion/niveles-aprobacion.component";
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { SpinnerComponent } from "../shared/spinner.component";
     TipoMotivoComponent,
     TipoAccionComponent,
     RutaComponent,
+    NivelesAprobacionComponent,
     // SpinnerComponent,
     // NivelesAprobacionComponent,
     //CrearNivelesAprobacionComponent

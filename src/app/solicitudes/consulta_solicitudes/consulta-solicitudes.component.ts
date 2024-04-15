@@ -47,6 +47,8 @@ import { HttpErrorResponse } from "@angular/common/http";
 import { DatosSolicitud } from "src/app/eschemas/DatosSolicitud";
 import { SolicitudesService } from "../registrar-solicitud/solicitudes.service";
 import { TableComponentData } from "src/app/component/table/table.data";
+import { Solicitud } from "../../eschemas/Solicitud";
+import { DataFilterSolicitudes } from "src/app/eschemas/DataFilterSolicitudes";
 
 declare var require: any;
 const data: any = require("./company.json");
@@ -110,10 +112,10 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
   selected_producto: number;
   selected_tipo_solicitud: number;
   selected_estado: number;
+  public dataFilterSolicitudes = new DataFilterSolicitudes();
+  data_empresas = [{ idEmpresa: 1, name: "Reybanpac" }];
 
-  data_empresas = [{ id: 1, name: "Reybanpac" }];
-
-  data_productos = [{ id: 1, name: "Todos" }];
+  data_productos = [{ idUnidadNegocio: 1, name: "Todos" }];
 
   data_tipo_solicitud = [
     { id: 1, name: "Requisición de personal" },
@@ -143,6 +145,8 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
     | ConsultaSolicitudesComponent
     | any;
 
+  public solicitud = new Solicitud();
+
   constructor(
     private config: NgSelectConfig,
     private calendar: NgbCalendar,
@@ -163,7 +167,7 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
     this.config.notFoundText = "Custom not found";
     this.config.appendTo = "body";
     this.config.bindValue = "value";
-
+    this.solicitud = this.solicitudes.modelSolicitud;
     this.rows = data;
     this.temp = [...data];
     setTimeout(() => {
@@ -209,39 +213,83 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
       confirmButtonText: "Sí",
       cancelButtonText: "No",
     }).then((result) => {
+      console.log("this.dataTipoSolicitudes: ", this.dataTipoSolicitudes);
+      console.log("this.dataTipoMotivo: ", this.dataTipoMotivo);
+      console.log("this.dataTipoAccion: ", this.dataTipoAccion);
+
+      this.solicitud.tipoSolicitud = this.dataTipoSolicitudes.filter(
+        (data) => data.id == this.solicitud.idTipoSolicitud
+      )[0].descripcion;
+
+      this.solicitud.tipoMotivo = this.dataTipoMotivo.filter(
+        (data) => data.id == this.solicitud.idTipoMotivo
+      )[0].descripcion;
+
+      this.solicitud.tipoAccion = this.dataTipoAccion.filter(
+        (data) => data.id == this.solicitud.idTipoAccion
+      )[0].descripcion;
+
+      console.log("MODELO ACTUALIZADO: ", this.solicitud);
+
       if (result.isConfirmed) {
-        //Inicio de Solicitud
+        // Inicio de Solicitud
         // Comentado tveas por error
-        /*this.route.params.subscribe(params =>{
+        this.route.params.subscribe((params) => {
           //const processDefinitionKey ="process_modelo";
-          const processDefinitionKey ="RequisicionPersonal";
+          const processDefinitionKey = "RequisicionPersonal";
           //const processDefinitionKey = params['processdefinitionkey'];
           const variables = this.generatedVariablesFromFormFields();
           console.log(variables);
-          this.camundaRestService.postProcessInstance(processDefinitionKey,variables)
-          .subscribe(instanceOutput =>{
+          this.camundaRestService
+            .postProcessInstance(processDefinitionKey, variables)
+            .subscribe((instanceOutput) => {
+              this.lookForError(instanceOutput);
 
-           this.lookForError(instanceOutput);
+              console.log("Instance (instanceOutput): ", instanceOutput);
+              this.instanceCreated = new DatosInstanciaProceso(
+                instanceOutput.businessKey,
+                instanceOutput.definitionId,
+                instanceOutput.id,
+                instanceOutput.tenantId
+              );
+              this.solicitud.idInstancia = instanceOutput.id;
 
-           console.log(instanceOutput);
-           this.instanceCreated = new DatosInstanciaProceso(
-             instanceOutput.businessKey,
-             instanceOutput.definitionId,
-             instanceOutput.id,
-             instanceOutput.tenantId
-           );
-          });
-          this.submitted = true;
-         });*/
-        this.router.navigate(["/solicitudes/registrar-solicitud"], {
-          queryParams: new DatosSolicitud(
-            this.modelo.tipo_solicitud,
-            this.modelo.tipo_motivo,
-            this.modelo.tipo_cumplimiento
-          ),
+              this.solicitudes
+                .guardarSolicitud(this.solicitud)
+                .subscribe((response) => {
+                  this.solicitud.idSolicitud = response.idSolicitud;
+                  this.solicitud.fechaActualizacion =
+                    response.fechaActualizacion;
+                  this.solicitud.fechaCreacion = response.fechaCreacion;
+                  console.log(
+                    "THIS IS THE MODEL FORM SERVICE 1: ",
+                    this.solicitud
+                  );
+                  console.log(
+                    "THIS IS THE MODEL FORM SERVICE 2: ",
+                    this.solicitudes.modelSolicitud
+                  );
+                  console.log(
+                    "THIS IS THE RESPONSE OF SAVE SOLICITUD: ",
+                    response
+                  );
+                  setTimeout(() => {
+                    this.router.navigate(["/solicitudes/registrar-solicitud"], {
+                      queryParams: { ...this.solicitud },
+                    });
+                  }, 1600);
+                  this.utilService.modalResponse(
+                    "Datos ingresados correctamente",
+                    "success"
+                  );
+                });
+            });
         });
+
         if (this.submitted) {
-          this.router.navigate(["/solicitudes/registrar-solicitud"]);
+          console.log("INGRESA EN this.submitted");
+
+          // this.router.navigate(["/solicitudes/registrar-solicitud"]);
         }
 
         //Fin Solicitud
@@ -276,9 +324,9 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
   generatedVariablesFromFormFields() {
     return {
       variables: {
-        tipo_solicitud: { value: this.modelo.tipo_solicitud },
-        tipo_motivo: { value: this.modelo.tipo_motivo },
-        tipo_cumplimiento: { value: this.modelo.tipo_cumplimiento },
+        tipo_solicitud: { value: this.solicitud.idTipoSolicitud },
+        tipo_motivo: { value: this.solicitud.idTipoMotivo },
+        tipo_cumplimiento: { value: this.solicitud.idTipoAccion },
       },
     };
   }
@@ -327,6 +375,28 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
     });
   }
 
+  filter() {
+    console.log("Data filter (After): ", this.dataFilterSolicitudes);
+    this.dataFilterSolicitudes.fechaDesde = this.formatFechaISO(
+      this.dataFilterSolicitudes,
+      "fechaDesde"
+    );
+    this.dataFilterSolicitudes.fechaHasta = this.formatFechaISO(
+      this.dataFilterSolicitudes,
+      "fechaHasta"
+    );
+    console.log("Data filter (Before): ", this.dataFilterSolicitudes);
+  }
+
+  formatFechaISO(date: any, fechaProp: string) {
+    console.log("DATE QUE RECIBE: ", date);
+    return new Date(
+      date[fechaProp].year,
+      date[fechaProp].month - 1,
+      date[fechaProp].day
+    ).toISOString();
+  }
+
   ObtenerServicioEstado() {
     return this.mantenimientoService.getCatalogo("RBPEST").subscribe({
       next: (response) => {
@@ -335,6 +405,7 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
           codigo: r.codigo,
           descripcion: r.valor,
         })); //verificar la estructura mmunoz
+        console.log("DATA DE ESTADO: ", this.data_estado);
       },
       error: (error: HttpErrorResponse) => {
         this.utilService.modalResponse(error.error, "error");
@@ -438,12 +509,14 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
   }
 
   onNavChange(changeEvent: NgbNavChangeEvent) {
+    console.log("onNavChange");
     if (changeEvent.nextId === 3) {
       changeEvent.preventDefault();
     }
   }
 
   toggleDisabled() {
+    console.log("MY TOGGLE FUN");
     this.disabled = !this.disabled;
     if (this.disabled) {
       this.active = 1;
