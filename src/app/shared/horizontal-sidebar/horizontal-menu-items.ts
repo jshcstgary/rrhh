@@ -38,7 +38,7 @@ export const ROUTES: RouteInfo[] = [
       },
       {
         path: "/mantenedores/tipo-accion",
-        title: "Tipo accion",
+        title: "Tipo acción",
         icon: "",
         class: "",
         ddclass: "",
@@ -74,7 +74,7 @@ export const ROUTES: RouteInfo[] = [
       },
       {
         path: "/mantenedores/accion",
-        title: "Accion",
+        title: "Acción",
         icon: "",
         class: "",
         ddclass: "",
