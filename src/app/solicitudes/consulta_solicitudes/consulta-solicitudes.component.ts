@@ -84,6 +84,7 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
   public hasFiltered: boolean = true;
   public submitted: boolean = false;
   public errorMessage: string;
+  public typeSolicitudSelected: any;
   modelo: DatosProcesoInicio = new DatosProcesoInicio();
   private instanceCreated: DatosInstanciaProceso;
   consultaSolicitudesSelect!: string;
@@ -198,6 +199,19 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
     this.editing[rowIndex + "-" + cell] = false;
     this.rows[rowIndex][cell] = event.target.value;
     this.rows = [...this.rows];
+  }
+
+  ngDoCheck(): void {
+    console.log("EJECUTANDO NGONCHANGES");
+    this.typeSolicitudSelected = this.dataTipoSolicitudes.filter(
+      (data) => data.descripcion == "Acción de Personal"
+    )[0]?.id;
+
+    /*id: r.id,
+          descripcion: r.tipoSolicitud*/
+
+    //Called before any other lifecycle hook. Use it to inject dependencies, but avoid any serious work here.
+    //Add '${implements OnChanges}' to the class.
   }
 
   PageCrear() {
