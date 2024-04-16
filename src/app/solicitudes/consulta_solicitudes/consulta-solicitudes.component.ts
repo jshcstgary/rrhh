@@ -257,23 +257,22 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
                   this.solicitud.fechaActualizacion =
                     response.fechaActualizacion;
                   this.solicitud.fechaCreacion = response.fechaCreacion;
-
+                  this.submitted = true;
                   setTimeout(() => {
                     this.router.navigate(["/solicitudes/registrar-solicitud"], {
                       queryParams: { ...this.solicitud },
                     });
                   }, 1600);
-                  this.utilService.modalResponse(
-                    "Datos ingresados correctamente",
-                    "success"
-                  );
                 });
             });
         });
 
         if (this.submitted) {
           console.log("INGRESA EN this.submitted");
-
+          this.utilService.modalResponse(
+            "Datos ingresados correctamente",
+            "success"
+          );
           // this.router.navigate(["/solicitudes/registrar-solicitud"]);
         }
 

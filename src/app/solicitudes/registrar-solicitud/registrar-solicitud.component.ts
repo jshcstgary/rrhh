@@ -170,22 +170,24 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
       await this.ObtenerServicioNivelDireccion();
       await this.getNivelesAprobacion();
       await this.getSolicitudes();
-      await this.getDetalleSolicitudById();
-      await this.getSolicitudById();
+      if (this.id_edit !== undefined) {
+        await this.getDetalleSolicitudById();
+        await this.getSolicitudById();
+      }
       this.utilService.closeLoadingSpinner();
     } catch (error) {
       // Manejar errores aquí de manera centralizada
       this.utilService.modalResponse(error.error, "error");
     }
 
-    this.getNivelesAprobacion();
-    this.getSolicitudById();
-    this.getDetalleSolicitudById();
-    this.getSolicitudes();
-    this.ObtenerServicioTipoSolicitud();
-    this.ObtenerServicioTipoMotivo();
-    this.ObtenerServicioTipoAccion();
-    this.ObtenerServicioNivelDireccion();
+    // this.getNivelesAprobacion();
+    // this.getSolicitudById();
+    // this.getDetalleSolicitudById();
+    // this.getSolicitudes();
+    // this.ObtenerServicioTipoSolicitud();
+    // this.ObtenerServicioTipoMotivo();
+    // this.ObtenerServicioTipoAccion();
+    // this.ObtenerServicioNivelDireccion();
   }
 
   pageSolicitudes() {
@@ -197,10 +199,19 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
       // return this.mantenimientoService.getCatalogoRBPND().subscribe({
       next: (response) => {
         this.dataNivelDireccion = response.itemCatalogoTypes; //verificar la estructura mmunoz
+        console.log("Nivel dirección (response): ", response);
+        console.log("this.detalleSolicitud: ", this.detalleSolicitud);
+
         this.detalleSolicitud.nivelDireccion =
           response.itemCatalogoTypes.filter(
             (data) => data.codigo == this.detalleSolicitud.nivelDireccion
           )[0]?.valor;
+        console.log(
+          "Impresión del filtro: ",
+          response.itemCatalogoTypes.filter(
+            (data) => data.codigo == this.detalleSolicitud.nivelDireccion
+          )[0]?.valor
+        );
         this.utilService.closeLoadingSpinner();
       },
       error: (error: HttpErrorResponse) => {
@@ -212,6 +223,7 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
   getSolicitudById() {
     return this.solicitudes.getSolicitudById(this.id_edit).subscribe({
       next: (response: any) => {
+        console.log("Solicitud por id: ", response);
         this.solicitud = response;
       },
       error: (error: HttpErrorResponse) => {
@@ -221,14 +233,15 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
   }
 
   getDetalleSolicitudById() {
+    console.log("VALOR DEL ID EDIT: ", this.id_edit);
     return this.solicitudes.getDetalleSolicitudById(this.id_edit).subscribe({
       next: (response: any) => {
+        console.log("Detalle solicitud por id: ", response);
+
         this.detalleSolicitud.estado = response.estado;
         this.detalleSolicitud.estado = response.estadoSolicitud;
         this.detalleSolicitud.idSolicitud = response.idSolicitud;
         this.detalleSolicitud.unidadNegocio = response.unidadNegocio;
-
-        console.log("this.detalleSolicitud: ", this.detalleSolicitud);
       },
       error: (error: HttpErrorResponse) => {
         this.utilService.modalResponse(error.error, "error");
@@ -242,7 +255,6 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
         this.dataTipoSolicitud = response.tipoSolicitudType.filter(
           (data) => data.id == this.solicitud.idTipoSolicitud
         )[0];
-        console.log("ERROR1: ", this.dataTipoSolicitud);
         this.solicitud.idTipoSolicitud = this.dataTipoSolicitud?.id;
         this.solicitud.tipoSolicitud = this.dataTipoSolicitud?.tipoSolicitud;
       },
@@ -396,114 +408,6 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
   }
 
   save() {
-    const id = Date.now().toString().slice(-6);
-    /*this.solicitudes
-      .guardarSolicitud(this.solicitud.request)
-      .subscribe((response) => {
-        let detalleSolicitud = {
-          idDetalleSolicitud: id,
-          idSolicitud: response.idSolicitud,
-          codigo: "Prueba",
-          valor: "Prueba",
-          estado: "A",
-          fechaRegistro: "2024-03-27T20:57:04.34",
-          compania: "Prueba",
-          unidadNegocio: "Prueba",
-          codigoPosicion: "Prueba",
-          descripcionPosicion: "Prueba",
-          areaDepartamento: "Prueba",
-          localidadZona: "Prueba",
-          nivelDireccion: "Prueba",
-          centroCosto: "Prueba",
-          nombreEmpleado: "Morocho Vargas Gal Estuario",
-          subledger: "Prueba",
-          reportaA: "Prueba",
-          nivelReporteA: "Prueba",
-          supervisaA: "Prueba",
-          tipoContrato: "Prueba",
-          departamento: "Prueba",
-          cargo: "Prueba",
-          jefeSolicitante: "Prueba",
-          responsableRRHH: "Prueba",
-          localidad: "Prueba",
-          fechaIngreso: "2024-03-27T20:57:04.34",
-          unidad: "Prueba",
-          puesto: "Prueba",
-          jefeInmediatoSuperior: "Prueba",
-          jefeReferencia: "Prueba",
-          cargoReferencia: "Prueba",
-          fechaSalida: "2024-03-27T20:57:04.34",
-          puestoJefeInmediato: "Prueba",
-          subledgerEmpleado: "Prueba",
-          grupoDePago: "Prueba",
-          sucursal: "Prueba",
-          movilizacion: "Prueba",
-          alimentacion: "Prueba",
-          jefeAnteriorJefeReferencia: "Prueba",
-          causaSalida: "Prueba",
-          nombreJefeSolicitante: "Prueba",
-          misionCargo: "Prueba",
-          justificacion: "Prueba",
-        };
-        this.solicitudes
-          .guardarDetalleSolicitud(detalleSolicitud)
-          .subscribe((res) => {
-            this.utilService.modalResponse(
-              "Datos ingresados correctamente",
-              "success"
-            );
-            setTimeout(() => {
-              this.router.navigate(["/solicitudes/consulta-solicitudes"]);
-            }, 1600);
-          });
-      });*/
-
-    let detalleSolicitud = {
-      idDetalleSolicitud: id,
-      idSolicitud: this.solicitud.idSolicitud,
-      codigo: "Prueba",
-      valor: "Prueba",
-      estado: "A",
-      fechaRegistro: "2024-03-27T20:57:04.34",
-      compania: "Prueba",
-      unidadNegocio: "Prueba",
-      codigoPosicion: "Prueba",
-      descripcionPosicion: "Prueba",
-      areaDepartamento: "Prueba",
-      localidadZona: "Prueba",
-      nivelDireccion: "Prueba",
-      centroCosto: "Prueba",
-      nombreEmpleado: "Morocho Vargas Gal Estuario",
-      subledger: "Prueba",
-      reportaA: "Prueba",
-      nivelReporteA: "Prueba",
-      supervisaA: "Prueba",
-      tipoContrato: "Prueba",
-      departamento: "Prueba",
-      cargo: "Prueba",
-      jefeSolicitante: "Prueba",
-      responsableRRHH: "Prueba",
-      localidad: "Prueba",
-      fechaIngreso: "2024-03-27T20:57:04.34",
-      unidad: "Prueba",
-      puesto: "Prueba",
-      jefeInmediatoSuperior: "Prueba",
-      jefeReferencia: "Prueba",
-      cargoReferencia: "Prueba",
-      fechaSalida: "2024-03-27T20:57:04.34",
-      puestoJefeInmediato: "Prueba",
-      subledgerEmpleado: "Prueba",
-      grupoDePago: "Prueba",
-      sucursal: "Prueba",
-      movilizacion: "Prueba",
-      alimentacion: "Prueba",
-      jefeAnteriorJefeReferencia: "Prueba",
-      causaSalida: "Prueba",
-      nombreJefeSolicitante: "Prueba",
-      misionCargo: "Prueba",
-      justificacion: "Prueba",
-    };
-
     this.solicitudes
       .guardarDetalleSolicitud(this.solicitudes.modelDetalleSolicitud)
       .subscribe((res) => {
@@ -515,42 +419,6 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
           this.router.navigate(["/solicitudes/consulta-solicitudes"]);
         }, 1600);
       });
-
-    /*const id = Date.now().toString().slice(-6);
-    console.log(id);
-
-    let requestSolicitud = {
-      idSolicitud: "RP-" + id,
-      idInstancia: "InstanciaReybanpac",
-      idEmpresa: "01",
-      empresa: "Reybanpac",
-      idUnidadNegocio: "02",
-      unidadNegocio: "Banano",
-      estadoSolicitud: "2",
-      idTipoSolicitud: this.dataTipoSolicitud.id,
-      tipoSolicitud: "string upt",
-      idTipoMotivo: this.dataTipoMotivo.id,
-      tipoMotivo: "TIPO MOTIVO 01",
-      idTipoAccion: 1,
-      tipoAccion: "Aumento",
-      fechaActualizacion: "2024-03-27T20:48:24.177",
-      fechaCreacion: "2024-03-27T20:48:24.177",
-      usuarioCreacion: "lnmora",
-      usuarioActualizacion: "lnmora",
-      estado: "En Espera",
-    };
-    console.log("SOLICITUD: ", requestSolicitud);
-    console.log("MODEL: ", this.solicitud.request);
-
-    this.solicitudes
-      .guardarSolicitud(requestSolicitud)
-      .subscribe((response) => {
-        console.log("Ejecutando guardarSolicitud(): ", response);
-        this.utilService.modalResponse(
-          "Datos ingresados correctamente",
-          "success"
-        );
-      });*/
   }
 
   // tveas comentando método mmunoz
