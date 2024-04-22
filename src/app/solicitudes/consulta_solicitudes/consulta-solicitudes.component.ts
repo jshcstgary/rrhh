@@ -231,15 +231,15 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
     }).then((result) => {
       this.solicitud.tipoSolicitud = this.dataTipoSolicitudes.filter(
         (data) => data.id == this.solicitud.idTipoSolicitud
-      )[0].descripcion;
+      )[0]?.descripcion;
 
       this.solicitud.tipoMotivo = this.dataTipoMotivo.filter(
         (data) => data.id == this.solicitud.idTipoMotivo
-      )[0].descripcion;
+      )[0]?.descripcion;
 
       this.solicitud.tipoAccion = this.dataTipoAccion.filter(
         (data) => data.id == this.solicitud.idTipoAccion
-      )[0].descripcion;
+      )[0]?.descripcion;
 
       if (result.isConfirmed) {
         // Inicio de Solicitud
