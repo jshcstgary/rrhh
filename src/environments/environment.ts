@@ -15,8 +15,10 @@
 // import 'zone.js/dist/zone-error';  // Included with Angular CLI.
 
 const baseC = "http://10.35.3.180"; //base de camunda
-const baseW = "http://10.35.3.162"; //base de servicios workflow
+// const baseW = "http://10.35.3.162"; //base de servicios workflow
+const baseW = "http://181.188.224.250:18043"; //base de servicios workflow
 const base = "http://10.35.3.162"; //base de servicios local
+
 export const environment = {
   port: "4200",
   production: false,
@@ -32,21 +34,24 @@ export const environment = {
   taskType_Revisar: "Activity_0wf5xb7",
 
   //Servicios de workflow
-  camundaUrl: `${baseC}:8188/`,
-  tipoSolicitudServiceES: `${baseW}:8068/v1/es/tiposolicitud`,
-  tipoRutaServiceES: `${baseW}:8069/v1/es/tiporuta`,
-  tipoProcesoServiceES: `${baseW}:8070/v1/es/tipoproceso`,
-  rutaServiceES: `${baseW}:8071/v1/es/ruta`, //10.35.3.162:8071/v1/es/ruta
-  tipoMotivoServiceES: `${baseW}:8072/v1/es/tipomotivo`, //10.35.3.162:8072/v1/es/tipomotivo
-  accionServiceES: `${baseW}:8073/v1/es/accion`,
-  tipoAccionServiceES: `${baseW}:8074/v1/es/tipoaccion`, //10.35.3.162:8074/v1/es/tipoaccion
+  // camundaUrl: `${baseC}:8188/`,
+  camundaUrl: `http://localhost:8080/`,
+  tipoSolicitudServiceES: `${baseW}/v1/es/tiposolicitud`,
+  tipoRutaServiceES: `${baseW}/v1/es/tiporuta`,
+  tipoProcesoServiceES: `${baseW}/v1/es/tipoproceso`,
+  rutaServiceES: `${baseW}/v1/es/ruta`, //10.35.3.162:8071/v1/es/ruta
+  tipoMotivoServiceES: `${baseW}/v1/es/tipomotivo`, //10.35.3.162:8072/v1/es/tipomotivo
+  accionServiceES: `${baseW}/v1/es/accion`,
+  tipoAccionServiceES: `${baseW}/v1/es/tipoaccion`, //10.35.3.162:8074/v1/es/tipoaccion
   // http://10.35.3.162:8053/v1/es/item-catalogo/codigo/RBPND
-  CatalogoServiceES: `${baseW}:8065/v1/es/item-catalogo/codigo`, //10.35.3.162:8074/v1/es/tipoaccion
-  nivelAprobacionServiceES: `${baseW}:8067/v1/es/nivelesaprobacion`, //http://10.35.3.162:8000/v1/es/nivelesaprobacion
+  CatalogoServiceES: `${baseW}/v1/es/item-catalogo/codigo`, //10.35.3.162:8074/v1/es/tipoaccion
+  nivelAprobacionServiceES: `${baseW}/v1/es/nivelesaprobacion`, //http://10.35.3.162:8000/v1/es/nivelesaprobacion
 
-  nivelAprobacionRefreshServiceES: `${baseW}:8075/v1/es/refresh_nivelesAprobacion`,
+  empleadoServiceEs: `${base}:8078`,
 
-  solicitudesServiceES: `${base}:8066/v1/es/solicitud`, // http://10.35.3.162:8001/v1/es/solicitud
+  nivelAprobacionRefreshServiceES: `${baseW}/v1/es/refresh_nivelesAprobacion`,
+
+  solicitudesServiceES: `${baseW}/v1/es/solicitud`, // http://10.35.3.162:8001/v1/es/solicitud
   // http://10.35.3.162:8001/swagger/index.html
 
   //http://10.35.3.162:8053/v1/es/item-catalogo/codigo/
