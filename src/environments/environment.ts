@@ -35,7 +35,6 @@ export const environment = {
 
   //Servicios de workflow
   camundaUrl: `${baseC}:8188/`,
-  // camundaUrl: `http://localhost:8080/`,
   tipoSolicitudServiceES: `${baseW}/v1/es/tiposolicitud`,
   tipoRutaServiceES: `${baseW}/v1/es/tiporuta`,
   tipoProcesoServiceES: `${baseW}/v1/es/tipoproceso`,
