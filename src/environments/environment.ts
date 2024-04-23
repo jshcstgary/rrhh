@@ -34,8 +34,7 @@ export const environment = {
   taskType_Revisar: "Activity_0wf5xb7",
 
   //Servicios de workflow
-  // camundaUrl: `${baseC}:8188/`,
-  camundaUrl: `http://localhost:8080/`,
+  camundaUrl: `${baseC}:8188/`,
   tipoSolicitudServiceES: `${baseW}/v1/es/tiposolicitud`,
   tipoRutaServiceES: `${baseW}/v1/es/tiporuta`,
   tipoProcesoServiceES: `${baseW}/v1/es/tipoproceso`,
