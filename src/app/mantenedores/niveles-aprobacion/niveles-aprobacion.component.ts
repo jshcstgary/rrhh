@@ -150,21 +150,24 @@ export class NivelesAprobacionComponent implements OnInit {
   }
 
   ObtenerServicioNivelDireccion() {
-    return this.mantenimientoService.getCatalogo("RBPND").subscribe({
-      next: (response) => {
-        this.dataNivelDireccion = response.itemCatalogoTypes.map((r) => ({
-          ...r,
-          id: r.id,
-          descripcion: r.valor,
-        })); //verificar la estructura mmunoz
-      },
+    console.log("Executing ObtenerServicioNivelDireccion() method");
 
+    return this.mantenimientoService.getNiveles().subscribe({
+      next: (response) => {
+        console.log("Response = ", response);
+        this.dataNivelDireccion = [
+          ...new Set(
+            response.evType.map((item) => {
+              return item.nivelDir;
+            })
+          ),
+        ];
+      },
       error: (error: HttpErrorResponse) => {
         this.utilService.modalResponse(error.error, "error");
       },
     });
   }
-  //dataTipoMotivo
 
   ObtenerServicioTipoMotivo() {
     return this.mantenimientoService.getTipoMotivo().subscribe({

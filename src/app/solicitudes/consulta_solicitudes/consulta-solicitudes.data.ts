@@ -27,13 +27,14 @@ export const ConsultaSolicitudesData: IConsultaSolicitudesData = {
       title: "Estado",
       dataIndex: "estado",
       type: "bool",
+      // colType: "string",
     },
     {
       title: "Acciones",
       type: "actions",
       width: "100px",
       actions: [
-        { materialIcon: "info", id: "editOnTable", tooltip: "Detalle" },
+        { materialIcon: "edit", id: "editOnTable", tooltip: "Editar" },
         {
           materialIcon: "content_copy",
           id: "cloneOnTable",

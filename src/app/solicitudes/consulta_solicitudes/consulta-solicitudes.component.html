@@ -25,14 +25,14 @@
                       <label class="azul">Empresa</label>
                       <ng-select
                         #inputSelectHacienda
-                        [(ngModel)]="dataFilterSolicitudes.idEmpresa"
-                        name="idEmpresa"
+                        [(ngModel)]="dataFilterSolicitudes.empresa"
+                        name="empresa"
                         placeholder="Seleccione"
                       >
                         <ng-option
-                          *ngFor="let data of data_empresas"
-                          [value]="data.idEmpresa"
-                          >{{ data.idEmpresa }} - {{ data.name }}</ng-option
+                          *ngFor="let data of dataEmpresa"
+                          [value]="data"
+                          >{{ data }}</ng-option
                         >
                       </ng-select>
                     </div>
@@ -42,15 +42,14 @@
                       <label class="azul">Unidad de Negocio</label>
                       <ng-select
                         #inputSelectProducto
-                        [(ngModel)]="dataFilterSolicitudes.idUnidadNegocio"
-                        name="idUnidadNegocio"
+                        [(ngModel)]="dataFilterSolicitudes.unidadNegocio"
+                        name="unidadNegocio"
                         placeholder="Seleccione"
                       >
                         <ng-option
-                          *ngFor="let data of data_productos"
-                          [value]="data.idUnidadNegocio"
-                          >{{ data.idUnidadNegocio }} -
-                          {{ data.name }}</ng-option
+                          *ngFor="let data of dataUnidadesNegocio"
+                          [value]="data"
+                          >{{ data }}</ng-option
                         >
                       </ng-select>
                     </div>
@@ -229,15 +228,37 @@
                   </div>
                 </div>
               </form>
-              <table-component
+              <plantilla-c-component
+                [dataFilterNivelesAprobacion]="dataFilterNivelesAprobacion"
+                [dataTipoMotivo]="dataTipoMotivo"
+                [dataTipoSolicitudes]="dataTipoSolicitudes"
+                [dataNivelDireccion]="dataNivelDireccion"
+                [dataTipoAccion]="dataTipoAccion"
+                [selected_empresa]="selected_empresa"
+                [selected_producto]="selected_producto"
+                [selected_tipo_solicitud]="selected_tipo_solicitud"
+                [selected_estado]="selected_estado"
+                [data_empresas]="data_empresas"
+                [data_productos]="dataUnidadesNegocio"
+                [data_estado]="data_estado"
+                [model]="model"
                 *ngIf="hasFiltered"
-                [columns]="columnsTable"
-                [dataTable]="dataTable"
+                [columnsTable]="columnsTable"
+                [originalDataTable]="dataTable"
+                [placeholderHeaderInputText]="'Buscar niveles de aprobacion...'"
                 [contexto]="this"
+                keyNameTable="id"
                 clickOnActionRow="onRowActionClicked"
-                onChangePagination="onChangePaginationTable"
-                [rowsPerPageValue]="rowsPerPageTable"
-              ></table-component>
+                clickOnFilter="filterDataTable"
+                clickOnMostrarModalCrearSolicitudes="mostrarModalCrearSolicitudes"
+                clickOnToggleDisabled="toggleDisabled"
+                clickOnPageCrear="pageCrear"
+                [IdRowToClone]="IdRowToClone"
+                colIdToDisable="id"
+                titleReport="NIVELES DE APROBACION"
+                [codigoReport]="codigoReporte"
+              >
+              </plantilla-c-component>
             </ng-template>
           </li>
         </ul>
@@ -281,7 +302,7 @@
                 <button
                   type="button"
                   class="mr-10 fz-14 btn btn-info btn-icon-end"
-                  (click)="CrearSolicitud()"
+                  (click)="CrearInstanciaSolicitud()"
                   aria-label="Close"
                   aria-label="Close"
                 >
@@ -312,6 +333,9 @@
                     class="form-select"
                     style="font-size: 14px"
                     [(ngModel)]="solicitud.idTipoSolicitud"
+                    (ngModelChange)="
+                      onChangeTipoSolicitud(solicitud.idTipoSolicitud)
+                    "
                     required
                   >
                     <option value="" hidden>Selecccione</option>
@@ -348,6 +372,7 @@
                     class="form-select"
                     style="font-size: 14px"
                     [(ngModel)]="solicitud.idTipoMotivo"
+                    (ngModelChange)="onChangeTipoMotivo(solicitud.idTipoMotivo)"
                     required
                   >
                     <option value="" hidden>Selecccione</option>
@@ -385,6 +410,7 @@
                     class="form-select"
                     style="font-size: 14px"
                     [(ngModel)]="solicitud.idTipoAccion"
+                    (ngModelChange)="onChangeTipoMotivo(solicitud.idTipoAccion)"
                     required
                   >
                     <option value="" hidden>Selecccione</option>

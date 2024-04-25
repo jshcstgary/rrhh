@@ -65,15 +65,12 @@ export class CrearNivelesAprobacionComponent implements OnInit {
       .getNivelById(this.id_edit)
       .subscribe((data) => {
         this.modelo = { ...data, estado: data.estado === "A" };
-
+        this.utilService.closeLoadingSpinner();
         console.log("The model: ", this.modelo);
       });
   }
 
   ngOnInit() {
-    if (this.id_edit !== undefined) {
-      this.getNivelById();
-    }
     this.ObtenerServicioTipoSolicitud();
     this.ObtenerServicioTipoMotivo();
     this.ObtenerServicioAccion();
@@ -81,6 +78,9 @@ export class CrearNivelesAprobacionComponent implements OnInit {
     this.ObtenerServicioTipoRuta();
     this.ObtenerServicioNivelDireccion();
     this.ObtenerServicioNivelAprobacion();
+    if (this.id_edit !== undefined) {
+      this.getNivelById();
+    }
   }
 
   ObtenerServicioTipoSolicitud() {
@@ -155,6 +155,47 @@ export class CrearNivelesAprobacionComponent implements OnInit {
 
   ObtenerServicioNivelDireccion() {
     console.log("Executing ObtenerServicioNivelDireccion() method");
+
+    return this.mantenimientoService.getNiveles().subscribe({
+      next: (response) => {
+        console.log("Response = ", response);
+        this.dataNivelDireccion = [
+          ...new Set(
+            response.evType.map((item) => {
+              return item.nivelDir;
+            })
+          ),
+        ];
+      },
+      error: (error: HttpErrorResponse) => {
+        this.utilService.modalResponse(error.error, "error");
+      },
+    });
+  }
+
+  ObtenerServicioNivelAprobacion() {
+    console.log("Executing ObtenerServicioNivelAprobacion() method");
+
+    return this.mantenimientoService.getNiveles().subscribe({
+      next: (response) => {
+        console.log("Response = ", response);
+        this.dataNivelAprobacion = [
+          ...new Set(
+            response.evType.map((item) => {
+              return item.nivelDir;
+            })
+          ),
+        ];
+      },
+      error: (error: HttpErrorResponse) => {
+        this.utilService.modalResponse(error.error, "error");
+      },
+    });
+  }
+
+  // Cambio en el consumo del API comentado tveas
+  /*ObtenerServicioNivelDireccion() {
+    console.log("Executing ObtenerServicioNivelDireccion() method");
     return this.mantenimientoService.getCatalogo("RBPND").subscribe({
       // return this.mantenimientoService.getCatalogoRBPND().subscribe({
       next: (response) => {
@@ -168,9 +209,10 @@ export class CrearNivelesAprobacionComponent implements OnInit {
         this.utilService.modalResponse(error.error, "error");
       },
     });
-  }
+  }*/
 
-  ObtenerServicioNivelAprobacion() {
+  // Cambio en el consumo del API comentado tveas
+  /*ObtenerServicioNivelAprobacion() {
     console.log("Executing ObtenerServicioNivelAprobacion() method");
     return this.mantenimientoService.getCatalogo("RBPNA").subscribe({
       // return this.mantenimientoService.getCatalogoRBPNA().subscribe({
@@ -184,7 +226,7 @@ export class CrearNivelesAprobacionComponent implements OnInit {
         this.utilService.modalResponse(error.error, "error");
       },
     });
-  }
+  }*/
 
   procesarNivelAprobacion() {
     this.utilService.openLoadingSpinner(

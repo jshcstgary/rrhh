@@ -1,5 +1,4 @@
 import { NgIf, CommonModule, NgFor } from "@angular/common";
-import { forkJoin, map } from "rxjs";
 import {
   Component,
   ViewChild,
@@ -8,12 +7,15 @@ import {
   AfterViewInit,
   ElementRef,
   TemplateRef,
+  SimpleChanges,
 } from "@angular/core";
+
 import { FormsModule } from "@angular/forms";
 import { NgxDatatableModule } from "@swimlane/ngx-datatable";
 import { NgSelectConfig, NgSelectModule } from "@ng-select/ng-select";
-import { ActivatedRoute, Router } from "@angular/router";
-import Swal from "sweetalert2";
+import { forkJoin, map } from "rxjs";
+import { IColumnsTable } from "src/app/component/table/table.interface";
+import { ConsultaSolicitudesData } from "./consulta-solicitudes.data";
 import {
   NgbNavModule,
   NgbNavChangeEvent,
@@ -26,7 +28,23 @@ import {
   NgbDateStruct,
   NgbModal,
 } from "@ng-bootstrap/ng-bootstrap";
-
+import {
+  IConsultaSolicitud,
+  IConsultaSolicitudTable,
+} from "./consulta-solicitudes.interface";
+import Swal from "sweetalert2";
+import { HttpErrorResponse } from "@angular/common/http";
+import { IInputsComponent } from "src/app/component/input/input.interface";
+import { reportCodeEnum } from "src/app/services/util/util.interface";
+import { TableService } from "src/app/component/table/table.service";
+import { ValidationsService } from "src/app/services/validations/validations.service";
+import { environment } from "src/environments/environment";
+import { UtilService } from "src/app/services/util/util.service";
+import { UtilData } from "src/app/services/util/util.data";
+import { DataFilterNivelesAprobacion } from "src/app/eschemas/DataFilterNivelesAprobacion";
+import { MantenimientoService } from "src/app/services/mantenimiento/mantenimiento.service";
+import { ActivatedRoute, Router } from "@angular/router";
+import { SolicitudesService } from "../registrar-solicitud/solicitudes.service";
 import { SimpleDatepickerBasic } from "src/app/component/datepicker/simpledatepicker.component";
 import { Custommonth } from "src/app/component/datepicker/customonth.component";
 import { FeatherModule } from "angular-feather";
@@ -34,57 +52,155 @@ import {
   IConsultaSolicitudes,
   IConsultaSolicitudesTable,
 } from "./consulta-solicitudes.interface";
-import { IColumnsTable } from "src/app/component/table/table.interface";
-import { ConsultaSolicitudesData } from "./consulta-solicitudes.data";
+import { Solicitud } from "src/app/eschemas/Solicitud";
+import { CamundaRestService } from "src/app/camunda-rest.service";
+import { DatosInstanciaProceso } from "src/app/eschemas/DatosInstanciaProceso";
+
 import { NgSelectComponent } from "@ng-select/ng-select";
 import { ComponentsModule } from "src/app/component/component.module";
-import { CamundaRestService } from "src/app/camunda-rest.service";
 import { DatosProcesoInicio } from "src/app/eschemas/DatosProcesoInicio";
-import { DatosInstanciaProceso } from "src/app/eschemas/DatosInstanciaProceso";
-import { MantenimientoService } from "src/app/services/mantenimiento/mantenimiento.service";
-import { UtilService } from "src/app/services/util/util.service";
-import { HttpErrorResponse } from "@angular/common/http";
 import { DatosSolicitud } from "src/app/eschemas/DatosSolicitud";
-import { SolicitudesService } from "../registrar-solicitud/solicitudes.service";
 import { TableComponentData } from "src/app/component/table/table.data";
-import { Solicitud } from "../../eschemas/Solicitud";
 import { DataFilterSolicitudes } from "src/app/eschemas/DataFilterSolicitudes";
 import { ConsultaSolicitudesService } from "./consulta-solicitudes.service";
-
 declare var require: any;
 const data: any = require("./company.json");
-
 @Component({
   selector: "app-data-table",
-  standalone: true,
   templateUrl: "./consulta-solicitudes.component.html",
-  styleUrls: ["./consulta-solicitudes.css"],
-  imports: [
-    NgbNavModule,
-    NgbDropdownModule,
-    NgFor,
-    NgIf,
-    NgbAlertModule,
-    NgbDatepickerModule,
-    SimpleDatepickerBasic,
-    Custommonth,
-    FeatherModule,
-    NgSelectModule,
-    NgxDatatableModule,
-    NgIf,
-    FormsModule,
-    NgFor,
-    CommonModule,
-    ComponentsModule,
-  ],
+  styleUrls: ["./consulta-solicitudes.component.scss"],
 })
 export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
-  public dataTable: IConsultaSolicitudesTable = [];
+  // public dataTable: IConsultaSolicitudesTable = [];
+
+  public dataTable: IConsultaSolicitudesTable = [
+    {
+      idSolicitud: 1,
+      tipoSolicitud: "Tipo 1",
+      nombreEmpleado: "Empleado 1",
+      estado: true,
+    },
+    {
+      idSolicitud: 2,
+      tipoSolicitud: "Tipo 2",
+      nombreEmpleado: "Empleado 2",
+      estado: false,
+    },
+    {
+      idSolicitud: 3,
+      tipoSolicitud: "Tipo 3",
+      nombreEmpleado: "Empleado 3",
+      estado: true,
+    },
+    {
+      idSolicitud: 4,
+      tipoSolicitud: "Tipo 4",
+      nombreEmpleado: "Empleado 4",
+      estado: false,
+    },
+    {
+      idSolicitud: 5,
+      tipoSolicitud: "Tipo 5",
+      nombreEmpleado: "Empleado 5",
+      estado: true,
+    },
+    {
+      idSolicitud: 6,
+      tipoSolicitud: "Tipo 6",
+      nombreEmpleado: "Empleado 6",
+      estado: false,
+    },
+    {
+      idSolicitud: 7,
+      tipoSolicitud: "Tipo 7",
+      nombreEmpleado: "Empleado 7",
+      estado: true,
+    },
+    {
+      idSolicitud: 8,
+      tipoSolicitud: "Tipo 8",
+      nombreEmpleado: "Empleado 8",
+      estado: false,
+    },
+    {
+      idSolicitud: 9,
+      tipoSolicitud: "Tipo 9",
+      nombreEmpleado: "Empleado 9",
+      estado: true,
+    },
+    {
+      idSolicitud: 10,
+      tipoSolicitud: "Tipo 10",
+      nombreEmpleado: "Empleado 10",
+      estado: false,
+    },
+    {
+      idSolicitud: 11,
+      tipoSolicitud: "Tipo 11",
+      nombreEmpleado: "Empleado 11",
+      estado: true,
+    },
+    {
+      idSolicitud: 12,
+      tipoSolicitud: "Tipo 12",
+      nombreEmpleado: "Empleado 12",
+      estado: false,
+    },
+    {
+      idSolicitud: 13,
+      tipoSolicitud: "Tipo 13",
+      nombreEmpleado: "Empleado 13",
+      estado: true,
+    },
+    {
+      idSolicitud: 14,
+      tipoSolicitud: "Tipo 14",
+      nombreEmpleado: "Empleado 14",
+      estado: false,
+    },
+    {
+      idSolicitud: 15,
+      tipoSolicitud: "Tipo 15",
+      nombreEmpleado: "Empleado 15",
+      estado: true,
+    },
+    {
+      idSolicitud: 16,
+      tipoSolicitud: "Tipo 16",
+      nombreEmpleado: "Empleado 16",
+      estado: false,
+    },
+    {
+      idSolicitud: 17,
+      tipoSolicitud: "Tipo 17",
+      nombreEmpleado: "Empleado 17",
+      estado: true,
+    },
+    {
+      idSolicitud: 18,
+      tipoSolicitud: "Tipo 18",
+      nombreEmpleado: "Empleado 18",
+      estado: false,
+    },
+    {
+      idSolicitud: 19,
+      tipoSolicitud: "Tipo 19",
+      nombreEmpleado: "Empleado 19",
+      estado: true,
+    },
+    {
+      idSolicitud: 20,
+      tipoSolicitud: "Tipo 20",
+      nombreEmpleado: "Empleado 20",
+      estado: false,
+    },
+  ];
   public columnsTable: IColumnsTable = ConsultaSolicitudesData.columns;
   public hasFiltered: boolean = true;
   public submitted: boolean = false;
   public errorMessage: string;
   public typeSolicitudSelected: any;
+
   modelo: DatosProcesoInicio = new DatosProcesoInicio();
   private instanceCreated: DatosInstanciaProceso;
   consultaSolicitudesSelect!: string;
@@ -92,6 +208,7 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
   model: NgbDateStruct;
   disabled = true;
   today = this.calendar.getToday();
+
   public dataTipoSolicitudes: any[] = [];
   public dataTipoMotivo: any[] = [];
   public dataTipoAccion: any[] = [];
@@ -110,21 +227,13 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
   // selecting navs
   active3: any;
 
-  selected_empresa: number;
-  selected_producto: number;
-  selected_tipo_solicitud: number;
-  selected_estado: number;
-  public dataFilterSolicitudes = new DataFilterSolicitudes();
-  data_empresas = [{ idEmpresa: "01", name: "Reybanpac" }];
-
-  data_productos = [{ idUnidadNegocio: "01", name: "Todos" }];
-
-  data_tipo_solicitud = [
-    { id: 1, name: "Requisición de personal" },
-    { id: 2, name: "Contratación de familiares" },
-    { id: 3, name: "Reingreso de personal" },
-    { id: 4, name: "Acción de personal" },
-  ];
+  // public tableInputsEditRow: IInputsComponent = ConsultaSolicitudesData.tableInputsEditRow;
+  // public colsToFilterByText: string[] = ConsultaSolicitudesData.colsToFilterByText;
+  public IdRowToClone: string = null;
+  // public defaultEmptyRowTable: ITiporutaTable = ConsultaSolicitudesData.defaultEmptyRowTable;
+  public codigoReporte: reportCodeEnum = reportCodeEnum.MANTENIMIENTO_TIPO_RUTA;
+  public dataFilterNivelesAprobacion = new DataFilterNivelesAprobacion();
+  public dataNivelDireccion: any[] = [];
 
   /*data_estado = [
     { id: 1, name: 'Aprobado' },
@@ -149,18 +258,44 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 
   public solicitud = new Solicitud();
 
+  selected_empresa: number;
+  selected_producto: number;
+  selected_tipo_solicitud: number;
+  selected_estado: number;
+  public dataFilterSolicitudes = new DataFilterSolicitudes();
+  data_empresas = [{ idEmpresa: "01", name: "Reybanpac" }];
+
+  dataUnidadesNegocio: string[] = [];
+  dataEmpresa: string[] = [];
+
+  data_tipo_solicitud = [
+    { id: 1, name: "Requisición de personal" },
+    { id: 2, name: "Contratación de familiares" },
+    { id: 3, name: "Reingreso de personal" },
+    { id: 4, name: "Acción de personal" },
+  ];
+
   constructor(
     private config: NgSelectConfig,
-    private calendar: NgbCalendar,
-    private router: Router,
-    private modalService: NgbModal,
-    private camundaRestService: CamundaRestService,
+    public consultaSolicitudesService: ConsultaSolicitudesService,
+
+    private tableService: TableService,
     private route: ActivatedRoute,
+    private validationsService: ValidationsService,
     private solicitudes: SolicitudesService,
-    public consulSolicitudesService: ConsultaSolicitudesService,
     private utilService: UtilService,
-    private mantenimientoService: MantenimientoService
+    private mantenimientoService: MantenimientoService,
+    private router: Router,
+    private calendar: NgbCalendar,
+    private camundaRestService: CamundaRestService,
+    private modalService: NgbModal
   ) {
+    this.model = calendar.getToday();
+
+    /*this.solicitud.idTipoSolicitud = 1;
+    this.solicitud.idTipoMotivo = 1;
+    this.solicitud.idTipoAccion = 1;*/
+
     this.camundaRestService = camundaRestService;
     this.route = route;
     this.router = router;
@@ -202,7 +337,7 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
   }
 
   ngDoCheck(): void {
-    console.log("EJECUTANDO NGONCHANGES");
+    // console.log("EJECUTANDO NGONCHANGES");
     this.typeSolicitudSelected = this.dataTipoSolicitudes.filter(
       (data) => data.descripcion == "Acción de Personal"
     )[0]?.id;
@@ -214,11 +349,25 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
     //Add '${implements OnChanges}' to the class.
   }
 
+  ngOnInit() {
+    // this.solicitud.idTipoSolicitud = 1;
+    // this.solicitud.idTipoMotivo = 1;
+    // this.solicitud.idTipoAccion = 1;
+    // console.log("MI MODELO INCIAL", this.solicitud);
+    this.getDataToTable();
+    this.ObtenerServicioTipoSolicitud();
+    this.ObtenerServicioTipoMotivo();
+    this.ObtenerServicioTipoAccion();
+    this.ObtenerServicioEstado();
+    this.obtenerEmpresaYUnidadNegocio();
+  }
+
   PageCrear() {
     this.router.navigate(["/solicitudes/crear-tipo-solicitud"]);
   }
+
   //Crear Solicitud
-  CrearSolicitud() {
+  CrearInstanciaSolicitud() {
     console.log("Nuevo proceso iniciado con datos..");
     Swal.fire({
       text: "¿Desea crear la Solicitud?",
@@ -229,24 +378,31 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
       confirmButtonText: "Sí",
       cancelButtonText: "No",
     }).then((result) => {
+      console.log("DATA dataTipoSolicitudes: ", this.dataTipoSolicitudes);
+      console.log("DATA tipoMotivo: ", this.dataTipoMotivo);
+      console.log("DATA tipoAccion: ", this.dataTipoAccion);
       this.solicitud.tipoSolicitud = this.dataTipoSolicitudes.filter(
         (data) => data.id == this.solicitud.idTipoSolicitud
-      )[0]?.descripcion;
+      )[0].descripcion;
 
       this.solicitud.tipoMotivo = this.dataTipoMotivo.filter(
         (data) => data.id == this.solicitud.idTipoMotivo
-      )[0]?.descripcion;
+      )[0].descripcion;
 
       this.solicitud.tipoAccion = this.dataTipoAccion.filter(
         (data) => data.id == this.solicitud.idTipoAccion
       )[0]?.descripcion;
 
       if (result.isConfirmed) {
+        this.utilService.openLoadingSpinner(
+          "Creando solicitud, espere por favor."
+        );
         // Inicio de Solicitud
         // Comentado tveas por error
         this.route.params.subscribe((params) => {
           //const processDefinitionKey ="process_modelo";
           const processDefinitionKey = "RequisicionPersonal";
+          // const processDefinitionKey = "process_modelo";
           //const processDefinitionKey = params['processdefinitionkey'];
           const variables = this.generatedVariablesFromFormFields();
           console.log(variables);
@@ -254,7 +410,7 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
             .postProcessInstance(processDefinitionKey, variables)
             .subscribe((instanceOutput) => {
               this.lookForError(instanceOutput);
-
+              this.utilService.closeLoadingSpinner();
               console.log("Instance (instanceOutput): ", instanceOutput);
               this.instanceCreated = new DatosInstanciaProceso(
                 instanceOutput.businessKey,
@@ -267,26 +423,57 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
               this.solicitudes
                 .guardarSolicitud(this.solicitud)
                 .subscribe((response) => {
+                  console.log("MI MODELO AL ENVIAR ES ESTO: ", this.solicitud);
+                  console.log("SOLICITUD: ", response);
                   this.solicitud.idSolicitud = response.idSolicitud;
                   this.solicitud.fechaActualizacion =
                     response.fechaActualizacion;
                   this.solicitud.fechaCreacion = response.fechaCreacion;
                   this.submitted = true;
+                  console.log("IDDDDD INSTANCIA: ", this.solicitud.idInstancia);
                   setTimeout(() => {
-                    this.router.navigate(["/solicitudes/registrar-solicitud"], {
-                      queryParams: { ...this.solicitud },
-                    });
-                  }, 1600);
+                    this.router.navigate(
+                      [
+                        "/solicitudes/registrar-solicitud",
+                        this.solicitud.idInstancia,
+                      ],
+                      {
+                        queryParams: { ...this.solicitud },
+                      }
+                    );
+                  }, 1800);
                 });
+
+              /*this.solicitudes
+                .guardarSolicitud(this.solicitud)
+                .subscribe((response) => {
+                  console.log("MI MODELO AL ENVIAR ES ESTO: ", this.solicitud);
+                  this.solicitud.idSolicitud = response.idSolicitud;
+                  this.solicitud.fechaActualizacion =
+                    response.fechaActualizacion;
+                  this.solicitud.fechaCreacion = response.fechaCreacion;
+                  this.submitted = true;
+                  console.log("IDDDDD INSTANCIA: ", this.solicitud.idInstancia);
+                  setTimeout(() => {
+                    this.router.navigate(
+                      [
+                        "/solicitudes/registrar-solicitud",
+                        this.solicitud.idInstancia,
+                      ],
+                      {
+                        queryParams: { ...this.solicitud },
+                      }
+                    );
+                  }, 1600);
+                });*/
             });
         });
 
         if (this.submitted) {
-          console.log("INGRESA EN this.submitted");
-          this.utilService.modalResponse(
+          /*this.utilService.modalResponse(
             "Datos ingresados correctamente",
             "success"
-          );
+          );*/
           // this.router.navigate(["/solicitudes/registrar-solicitud"]);
         }
 
@@ -307,29 +494,105 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
     return "No se ha creado Id de Proceao";
   }
 
-  lookForError(result: any): void {
-    if (result.error !== undefined && result.error !== null) {
-      this.errorMessage = result.message
-        ? result.name + " " + result.message
-        : result.error.message;
-      console.log("routin to app error page", this.errorMessage);
-      this.router.navigate(["error"], {
-        queryParams: { message: this.errorMessage },
-      });
-    }
+  obtenerEmpresaYUnidadNegocio() {
+    console.log("Executing ObtenerServicioNivelDireccion() method");
+
+    return this.mantenimientoService.getNiveles().subscribe({
+      next: (response) => {
+        console.log("Response = ", response);
+        this.dataUnidadesNegocio = [
+          ...new Set(
+            response.evType.map((item) => {
+              return item.unidadNegocio;
+            })
+          ),
+        ];
+        this.dataEmpresa = [
+          ...new Set(
+            response.evType.map((item) => {
+              return item.compania;
+            })
+          ),
+        ];
+      },
+      error: (error: HttpErrorResponse) => {
+        this.utilService.modalResponse(error.error, "error");
+      },
+    });
   }
 
   generatedVariablesFromFormFields() {
-    return {
-      variables: {
-        tipo_solicitud: { value: this.solicitud.idTipoSolicitud },
-        tipo_motivo: { value: this.solicitud.idTipoMotivo },
-        tipo_cumplimiento: { value: this.solicitud.idTipoAccion },
-      },
-    };
+    let variables: any = {};
+
+    if (this.solicitud.idTipoSolicitud == this.typeSolicitudSelected) {
+      variables.tipoAccion = { value: this.solicitud.tipoAccion };
+    } else {
+      variables.tipoSolicitud = { value: this.solicitud.tipoSolicitud };
+      variables.tipoMotivo = { value: this.solicitud.tipoMotivo };
+    }
+
+    return { variables };
   }
 
-  //fin crear Solicitud Integracion con camunda
+  // tipoSolicitud
+  onChangeTipo(id: number, type: string, data: any[]) {
+    /*public dataTipoSolicitudes: any[] = [
+        { id: 1, descripcion: "Requisición de Personal" },
+        { id: 2, descripcion: "Contratación de Familiares" },
+        { id: 3, descripcion: "Reingreso de personal" },
+        { id: 4, descripcion: "Acción de Personal" },
+      ];*/
+    let descripcion = data.filter((item) => item.id == id)[0]?.descripcion;
+    switch (type) {
+      case "tipoSolicitud":
+        this.solicitud.tipoSolicitud = descripcion;
+        break;
+      case "tipoMotivo":
+        this.solicitud.tipoMotivo = descripcion;
+        break;
+      case "tipoAccion":
+        this.solicitud.tipoAccion = descripcion;
+        break;
+    }
+  }
+
+  onChangeTipoSolicitud(idTipoSolicitud: number) {
+    /*public dataTipoSolicitudes: any[] = [
+        { id: 1, descripcion: "Requisición de Personal" },
+        { id: 2, descripcion: "Contratación de Familiares" },
+        { id: 3, descripcion: "Reingreso de personal" },
+        { id: 4, descripcion: "Acción de Personal" },
+      ];*/
+
+    this.solicitud.tipoSolicitud = this.dataTipoSolicitudes.filter(
+      (data) => data.id == idTipoSolicitud
+    )[0]?.descripcion;
+  }
+
+  onChangeTipoMotivo(idTipoMotivo: number) {
+    /*public dataTipoSolicitudes: any[] = [
+        { id: 1, descripcion: "Requisición de Personal" },
+        { id: 2, descripcion: "Contratación de Familiares" },
+        { id: 3, descripcion: "Reingreso de personal" },
+        { id: 4, descripcion: "Acción de Personal" },
+      ];*/
+    this.solicitud.tipoMotivo = this.dataTipoMotivo.filter(
+      (data) => data.id == idTipoMotivo
+    )[0]?.descripcion;
+  }
+
+  onChangeTipoAccion(idTipoAccion: number) {
+    /*public dataTipoSolicitudes: any[] = [
+        { id: 1, descripcion: "Requisición de Personal" },
+        { id: 2, descripcion: "Contratación de Familiares" },
+        { id: 3, descripcion: "Reingreso de personal" },
+        { id: 4, descripcion: "Acción de Personal" },
+      ];*/
+    this.solicitud.tipoAccion = this.dataTipoAccion.filter(
+      (data) => data.id == idTipoAccion
+    )[0]?.descripcion;
+  }
+
   //LLenar combo Tipo Solicitud
   ObtenerServicioTipoSolicitud() {
     return this.mantenimientoService.getTipoSolicitud().subscribe({
@@ -345,36 +608,33 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
     });
   }
 
-  ObtenerServicioTipoMotivo() {
-    return this.mantenimientoService.getTipoMotivo().subscribe({
-      next: (response) => {
-        this.dataTipoMotivo = response.map((r) => ({
-          id: r.id,
-          descripcion: r.tipoMotivo,
-        })); //verificar la estructura mmunoz
-      },
-      error: (error: HttpErrorResponse) => {
-        this.utilService.modalResponse(error.error, "error");
+  mostrarModalCrearSolicitudes() {
+    this.submitted = false;
+    this.modalService.open(this.myModalSolicitudes, {
+      centered: true,
+      size: <any>"lg",
+
+      scrollable: true,
+      beforeDismiss: () => {
+        return true;
       },
     });
+    this.isLoading = false;
   }
 
-  ObtenerServicioTipoAccion() {
-    return this.mantenimientoService.getTipoAccion().subscribe({
-      next: (response) => {
-        this.dataTipoAccion = response.map((r) => ({
-          id: r.id,
-          descripcion: r.tipoAccion,
-        })); //verificar la estructura mmunoz
-      },
-      error: (error: HttpErrorResponse) => {
-        this.utilService.modalResponse(error.error, "error");
-      },
-    });
+  lookForError(result: any): void {
+    if (result.error !== undefined && result.error !== null) {
+      this.errorMessage = result.message
+        ? result.name + " " + result.message
+        : result.error.message;
+      console.log("routin to app error page", this.errorMessage);
+      this.router.navigate(["error"], {
+        queryParams: { message: this.errorMessage },
+      });
+    }
   }
 
   filterDataTable() {
-    console.log("Data filter: ", this.dataFilterSolicitudes);
     switch (this.dataFilterSolicitudes.verifyFilterFields()) {
       case "case1":
         this.getDataToTable();
@@ -428,14 +688,66 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
     ).toISOString();
   }
 
+  // keep content
+  active4 = 1;
+
+  // dynamic tabs
+  tabs = [1, 2, 3, 4, 5];
+  counter = this.tabs.length + 1;
+  active5: any;
+
+  close(event: MouseEvent, toRemove: number) {
+    this.tabs = this.tabs.filter((id) => id !== toRemove);
+    event.preventDefault();
+    event.stopImmediatePropagation();
+  }
+
+  add(event: MouseEvent) {
+    this.tabs.push(this.counter++);
+    event.preventDefault();
+  }
+
+  //metodos de prueba
+
+  /* Hacer foco sobrehacienda cuando se renderiza la pantalla */
+  @ViewChild("inputSelectHacienda") inputSelectHacienda!: NgSelectComponent;
+  ngAfterViewInit() {
+    //this.inputSelectHacienda.focus();
+  }
+  /* Funcion para hacer focus al select de producto */
+  @ViewChild("inputSelectProducto") inputSelectProducto!: NgSelectComponent;
+  public onChangeHacienda() {
+    //this.inputSelectProducto.focus();
+  }
+  /* Funcion para hacer focus al input de fecha */
+  @ViewChild("inputDateFecha") inputDateFecha!: ElementRef;
+  public onChangeProducto() {
+    //this.inputDateFecha.nativeElement.focus();
+  }
+  /* Funcion para hacer focus al select de Labor */
+  @ViewChild("inputSelectLabor") inputSelectLabor!: NgSelectComponent;
+  public onChangeFecha() {
+    //this.inputSelectLabor.focus();
+  }
+  /* Funcion para hacer focus al select de trabajador */
+  @ViewChild("inputSelectTrabajador") inputSelectTrabajador!: NgSelectComponent;
+  public onChangeTipoLabor() {
+    //this.inputSelectTrabajador.focus();
+  }
+  /* Funcion para hacer focus al input de fecha */
+  @ViewChild("buttonSearch") buttonSearch!: ElementRef;
+  public onChangeTrabajador() {
+    //this.buttonSearch.nativeElement.focus();
+  }
+
   getDataToTableFilter(data: any) {
     this.utilService.openLoadingSpinner(
       "Cargando información, espere por favor..."
     );
     const combinedData$ = forkJoin(
-      this.consulSolicitudesService.filterSolicitudes(
-        data.idEmpresa,
-        data.idUnidadNegocio,
+      this.consultaSolicitudesService.filterSolicitudes(
+        data.empresa,
+        data.unidadNegocio,
         data.idTipoSolicitud,
         data.estado,
         data.fechaDesde,
@@ -503,8 +815,6 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
     });
   }
 
-  //mostrar modal de inicio de instancia de la solicitud
-
   private getDataToTable() {
     this.utilService.openLoadingSpinner(
       "Cargando información, espere por favor..."
@@ -556,7 +866,7 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
     });
   }
 
-  mostrarModalCrearSolicitudes() {
+  mostrarModalCrearInstanciaSolicitud() {
     this.submitted = false;
     this.modalService.open(this.myModalSolicitudes, {
       centered: true,
@@ -568,6 +878,51 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
       },
     });
     this.isLoading = false;
+  }
+
+  ObtenerServicioTipoAccion() {
+    return this.mantenimientoService.getTipoAccion().subscribe({
+      next: (response) => {
+        this.dataTipoAccion = response.map((r) => ({
+          id: r.id,
+          descripcion: r.tipoAccion,
+        })); //verificar la estructura mmunoz
+      },
+      error: (error: HttpErrorResponse) => {
+        this.utilService.modalResponse(error.error, "error");
+      },
+    });
+  }
+
+  ObtenerServicioNivelDireccion() {
+    return this.mantenimientoService.getCatalogo("RBPND").subscribe({
+      next: (response) => {
+        this.dataNivelDireccion = response.itemCatalogoTypes.map((r) => ({
+          ...r,
+          id: r.id,
+          descripcion: r.valor,
+        })); //verificar la estructura mmunoz
+      },
+
+      error: (error: HttpErrorResponse) => {
+        this.utilService.modalResponse(error.error, "error");
+      },
+    });
+  }
+  //dataTipoMotivo
+
+  ObtenerServicioTipoMotivo() {
+    return this.mantenimientoService.getTipoMotivo().subscribe({
+      next: (response) => {
+        this.dataTipoMotivo = response.map((r) => ({
+          id: r.id,
+          descripcion: r.tipoMotivo,
+        })); //verificar la estructura mmunoz
+      },
+      error: (error: HttpErrorResponse) => {
+        this.utilService.modalResponse(error.error, "error");
+      },
+    });
   }
 
   Eliminar() {
@@ -625,63 +980,7 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
     }
   }
 
-  // keep content
-  active4 = 1;
-
-  // dynamic tabs
-  tabs = [1, 2, 3, 4, 5];
-  counter = this.tabs.length + 1;
-  active5: any;
-
-  close(event: MouseEvent, toRemove: number) {
-    this.tabs = this.tabs.filter((id) => id !== toRemove);
-    event.preventDefault();
-    event.stopImmediatePropagation();
-  }
-
-  add(event: MouseEvent) {
-    this.tabs.push(this.counter++);
-    event.preventDefault();
-  }
-
-  //metodos de prueba
-
-  /* Hacer foco sobrehacienda cuando se renderiza la pantalla */
-  @ViewChild("inputSelectHacienda") inputSelectHacienda!: NgSelectComponent;
-  ngAfterViewInit() {
-    //this.inputSelectHacienda.focus();
-  }
-  /* Funcion para hacer focus al select de producto */
-  @ViewChild("inputSelectProducto") inputSelectProducto!: NgSelectComponent;
-  public onChangeHacienda() {
-    //this.inputSelectProducto.focus();
-  }
-  /* Funcion para hacer focus al input de fecha */
-  @ViewChild("inputDateFecha") inputDateFecha!: ElementRef;
-  public onChangeProducto() {
-    //this.inputDateFecha.nativeElement.focus();
-  }
-  /* Funcion para hacer focus al select de Labor */
-  @ViewChild("inputSelectLabor") inputSelectLabor!: NgSelectComponent;
-  public onChangeFecha() {
-    //this.inputSelectLabor.focus();
-  }
-  /* Funcion para hacer focus al select de trabajador */
-  @ViewChild("inputSelectTrabajador") inputSelectTrabajador!: NgSelectComponent;
-  public onChangeTipoLabor() {
-    //this.inputSelectTrabajador.focus();
-  }
-  /* Funcion para hacer focus al input de fecha */
-  @ViewChild("buttonSearch") buttonSearch!: ElementRef;
-  public onChangeTrabajador() {
-    //this.buttonSearch.nativeElement.focus();
-  }
-
-  ngOnInit() {
-    this.getDataToTable();
-    this.ObtenerServicioTipoSolicitud();
-    this.ObtenerServicioTipoMotivo();
-    this.ObtenerServicioTipoAccion();
-    this.ObtenerServicioEstado();
+  pageCrear() {
+    this.router.navigate(["/mantenedores/crear-niveles-aprobacion"]);
   }
 }

@@ -28,18 +28,14 @@ export const ConsultaTareasData: IConsultaTareasData = {
     {
       title: "Acciones",
       type: "actions",
-      align: "center",
+      width: "100px",
       actions: [
+        { materialIcon: "edit", id: "editOnTable", tooltip: "Editar" },
         {
-          icon: "fas fa-pencil-alt",
-          // materialIcon?: string;
-          // tooltip?: string;
-          id: "editOnTable",
+          materialIcon: "content_copy",
+          id: "cloneOnTable",
+          tooltip: "Duplicar",
         },
-
-        // { icon: "far fa-copy", id: "" },
-        // { icon: "fas fa-exclamation-circle", id: "" },
-        /* { icon: "fas fa-trash-alt", id: "deleteRow" }, */
       ],
     },
   ],

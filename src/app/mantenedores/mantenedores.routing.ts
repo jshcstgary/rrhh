@@ -9,6 +9,7 @@ import { RutaComponent } from "./ruta/ruta.component";
 import { AccionComponent } from "./accion/accion.component";
 import { NivelesAprobacionComponent } from "./niveles-aprobacion/niveles-aprobacion.component";
 import { CrearNivelesAprobacionComponent } from "./crear-niveles-aprobacion/crear-niveles-aprobacion.component";
+import { EstadosComponent } from "./estados/estados.component";
 
 export const MantenedoresRoutes: Routes = [
   {
@@ -98,6 +99,14 @@ export const MantenedoresRoutes: Routes = [
         data: {
           title: "Acción",
           urls: [{ title: "Mantenimiento" }, { title: "Acción" }],
+        },
+      },
+      {
+        path: "estados-solicitud",
+        component: EstadosComponent,
+        data: {
+          title: "Estados Solicitud",
+          urls: [{ title: "Mantenimiento" }, { title: "Estados Solicitud" }],
         },
       },
     ],

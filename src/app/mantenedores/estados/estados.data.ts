@@ -1,34 +1,29 @@
 import { IColumnsTable } from "src/app/component/table/table.interface";
-import { IConsultaSolicitudTable } from "./niveles-aprobacion.interface";
 import { IInputsComponent } from "src/app/component/input/input.interface";
+import { PlantillaAData } from "src/app/plantilla/plantillaA/plantillaA.data";
+import { IEstadoTable } from "./estados.interface";
 
-export const ConsultaSolicitudesData: IConsultaSolicitudesData = {
+export const EstadoData: IEstadoData = {
   columns: [
     {
-      title: "No. Solicitud",
-      dataIndex: "idSolicitud",
+      title: "Código",
+      dataIndex: "codigo",
       align: "center",
       sortActive: true,
       colType: "number",
     },
     {
-      title: "Tipo de Solicitud",
-      dataIndex: "tipoSolicitud",
-      sortActive: true,
-      colType: "string",
-    },
-    {
-      title: "Nombre de Empleado",
-      dataIndex: "nombreEmpleado",
+      title: "Descripción",
+      dataIndex: "descripcion",
       sortActive: true,
       colType: "string",
     },
     {
       title: "Estado",
       dataIndex: "estado",
-      sortActive: true,
-      colType: "string",
+      type: "bool",
     },
+    //PlantillaAData.defaultActions,
     {
       title: "Acciones",
       type: "actions",
@@ -44,41 +39,34 @@ export const ConsultaSolicitudesData: IConsultaSolicitudesData = {
     },
   ],
   defaultEmptyRowTable: {
-    idSolicitud: "0",
-    tipoSolicitud: "",
-    nombreEmpleado: "",
+    codigo: "0",
+    descripcion: "",
     estado: true,
   },
   tableInputsEditRow: [
     {
-      id: "idSolicitud",
+      id: "codigo",
       type: "visualization",
     },
     {
-      id: "tipoSolicitud",
+      id: "descripcion",
       type: "string",
       maxLength: 30,
       required: true,
-      inputMessageError: "Ingrese el tipo de solicitud",
-    },
-    {
-      id: "nombreEmpleado",
-      type: "string",
-      maxLength: 100,
-      required: true,
-      inputMessageError: "Ingrese el nombre del empleado",
+      inputMessageError: "Ingrese la descripción",
     },
     {
       id: "estado",
       type: "toggle",
     },
   ],
-  colsToFilterByText: ["idSolicitud", "tipoSolicitud", "nombreEmpleado"],
+  colsToFilterByText: ["codigo", "descripcion"],
 };
 
-interface IConsultaSolicitudesData {
+interface IEstadoData {
   columns: IColumnsTable;
-  defaultEmptyRowTable: IConsultaSolicitudTable;
+  defaultEmptyRowTable: IEstadoTable;
+
   tableInputsEditRow: IInputsComponent;
   colsToFilterByText: string[];
 }

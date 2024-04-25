@@ -20,6 +20,7 @@ import { HttpClient } from "@angular/common/http";
 import { RegistrarSolicitudComponent } from "./solicitudes/registrar-solicitud/registrar-solicitud.component";
 import { SolicitudesModule } from "./solicitudes/solicitudes.module";
 import { FormsModule } from "@angular/forms";
+import { NgScrollbarModule } from "ngx-scrollbar";
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, "./assets/i18n/", ".json");
@@ -33,6 +34,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     BrowserAnimationsModule,
     HttpClientModule,
     NgbModule,
+    NgScrollbarModule,
     FeatherModule,
     FormsModule,
     FeatherModule.pick(allIcons),

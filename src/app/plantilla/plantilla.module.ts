@@ -16,6 +16,7 @@ import { FormsModule } from "@angular/forms";
 import { FeatherModule } from "angular-feather";
 import { NgxDatatableModule } from "@swimlane/ngx-datatable";
 import { SimpleDatepickerBasic } from "../component/datepicker/simpledatepicker.component";
+import { PlantillaDComponent } from "./plantillaD/plantillaD.component";
 
 /*
 
@@ -39,8 +40,18 @@ import { SimpleDatepickerBasic } from "../component/datepicker/simpledatepicker.
 */
 
 @NgModule({
-  declarations: [PlantillaAComponent, PlantillaBComponent, PlantillaCComponent],
-  exports: [PlantillaAComponent, PlantillaBComponent, PlantillaCComponent],
+  declarations: [
+    PlantillaAComponent,
+    PlantillaBComponent,
+    PlantillaCComponent,
+    PlantillaDComponent,
+  ],
+  exports: [
+    PlantillaAComponent,
+    PlantillaBComponent,
+    PlantillaCComponent,
+    PlantillaDComponent,
+  ],
   imports: [
     ComponentsModule,
     NgbModule,

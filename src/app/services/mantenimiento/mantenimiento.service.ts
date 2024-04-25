@@ -8,6 +8,7 @@ import {
 } from "src/app/mantenedores/tipo_solicitud/tipo-solicitud.interface";
 import { ITipoRutaResponse } from "src/app/mantenedores/ruta/ruta.interface";
 import { ICatalogoResponse } from "./catalogo.interface";
+import { INiveles } from "./niveles.interface";
 
 @Injectable({
   providedIn: "root",
@@ -19,6 +20,7 @@ export class MantenimientoService {
   private apiTipoAccionUrl = environment.tipoAccionServiceES;
   private apiAccionUrl = environment.accionServiceES;
   private apiRutaUrl = environment.rutaServiceES;
+  private apiEmpleadoEvolutionUrl = environment.empleadoServiceEs;
   // http://10.35.3.162:8053/v1/es/item-catalogo/codigo/RBPND
   // http://10.35.3.162:8053/v1/es/item-catalogo/codigo
   private apiCatalogoUrl = environment.CatalogoServiceES;
@@ -62,6 +64,12 @@ export class MantenimientoService {
   public getCatalogoRBPNA(): Observable<ICatalogoResponse> {
     return this.http.get<ICatalogoResponse>(
       "http://10.35.3.162:8053/v1/es/item-catalogo/codigo/RBPNA"
+    );
+  }
+
+  public getNiveles(): Observable<INiveles> {
+    return this.http.get<INiveles>(
+      `${this.apiEmpleadoEvolutionUrl}/niveldireccion`
     );
   }
 

@@ -185,10 +185,10 @@
                   <!--<option>Supervición/Coordinación</option>-->
                   <option value="" hidden>Selecccione</option>
                   <option
-                    *ngFor="let baseDeDatos of dataNivelDireccion"
-                    [value]="baseDeDatos.id"
+                    *ngFor="let item of dataNivelDireccion"
+                    [value]="item"
                   >
-                    {{ baseDeDatos.descripcion }}
+                    {{ item }}
                   </option>
                 </select>
               </div>
@@ -296,10 +296,10 @@
                   <!--<option>Jefatura</option>-->
                   <option value="" hidden>Selecccione</option>
                   <option
-                    *ngFor="let baseDeDatos of dataNivelAprobacion"
-                    [value]="baseDeDatos.id"
+                    *ngFor="let item of dataNivelAprobacion"
+                    [value]="item"
                   >
-                    {{ baseDeDatos.descripcion }}
+                    {{ item }}
                   </option>
                 </select>
               </div>

@@ -2,18 +2,20 @@ import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { environment } from "src/environments/environment";
-import { IConsultaSolicitudResponse } from "./niveles-aprobacion.interface";
+import { IConsultaNivelesAprobacionResponse } from "./consulta-tareas.interface";
 
 @Injectable({
   providedIn: "root",
 })
-export class NivelesAprobacionService {
+export class ConsultaTareasService {
   private apiUrlNivelAprobacion = environment.nivelAprobacionServiceES;
+
+  private apiUrlTareas = environment.tareasServiceES;
 
   constructor(private http: HttpClient) {}
 
-  public obtenerNiveleAprobaciones(): Observable<IConsultaSolicitudResponse> {
-    return this.http.get<IConsultaSolicitudResponse>(
+  public obtenerNiveleAprobaciones(): Observable<IConsultaNivelesAprobacionResponse> {
+    return this.http.get<IConsultaNivelesAprobacionResponse>(
       `${this.apiUrlNivelAprobacion}`
     );
   }
@@ -23,9 +25,13 @@ export class NivelesAprobacionService {
     idTipoSolicitud: any,
     idTipoMotivo: any,
     idNivelDireccion: any
-  ): Observable<IConsultaSolicitudResponse> {
-    return this.http.get<IConsultaSolicitudResponse>(
+  ): Observable<IConsultaNivelesAprobacionResponse> {
+    return this.http.get<IConsultaNivelesAprobacionResponse>(
       `${this.apiUrlNivelAprobacion}/${idTipoSolicitud}/${idTipoMotivo}/${idNivelDireccion}`
     );
+  }
+
+  public getTareas(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrlTareas}`);
   }
 }
