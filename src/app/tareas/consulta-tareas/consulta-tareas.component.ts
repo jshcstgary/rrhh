@@ -128,7 +128,23 @@ export class ConsultaTareasComponent implements OnInit {
     );
     return this.consultaTareasService.getTareas().subscribe({
       next: (response) => {
-        this.dataTable = response.solicitudes;
+        this.dataTable = response.solicitudes.map(
+          /*{
+            "idSolicitud": "RP-11",
+            "rootProcInstId": "8152d497-f9b5-11ee-a25d-005056906706",
+            "startTime": "2024-04-13T18:47:24.918",
+            "name": "Registrar solicitud",
+            "tipoSolicitud": "requisicionPersonal"
+          }*/
+
+          (item) => ({
+            idSolicitud: item.idSolicitud,
+            startTime: item.startTime,
+            name: item.name,
+            tipoSolicitud: item.tipoSolicitud,
+          })
+        );
+        console.log("this.dataTable: ", this.dataTable);
         console.log("RESPONSE: ", response);
         /*this.dataTable = response.nivelAprobacionType.map(
           (nivelAprobacionResponse) => ({

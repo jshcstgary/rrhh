@@ -1,11 +1,10 @@
 import { IRowTableAttributes } from "src/app/component/table/table.interface";
 
 export interface IConsultaTarea {
-  id: string;
-  numero_solicitud: string;
-  tarea: string;
-  solicitud: string;
-  fecha_creacion: string;
+  idSolicitud: string;
+  name: string;
+  tipoSolicitud: string;
+  startTime: string;
 }
 export interface IConsultaTareaTable
   extends IConsultaTarea,
