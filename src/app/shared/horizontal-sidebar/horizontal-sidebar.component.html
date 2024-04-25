@@ -2,9 +2,220 @@
   <ul id="sidebarnav" [ngStyle]="navbar_bg">
     <li class="sidebar-item">
       <div class="user-profile">
-        <i class="material-icons text-warning cursor-pointer me-4"
+        <!-- <i class="material-icons text-warning cursor-pointer me-4"
           >notifications</i
+        > -->
+        <!-- <div class="dropdown">
+          <button
+            class="btn btn-secondary dropdown-toggle"
+            type="button"
+            id="dropdownMenuButton"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+          >
+            Notificaciones
+          </button>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <a class="dropdown-item" href="#">Notificación 1</a>
+            <a class="dropdown-item" href="#">Notificación 2</a>
+            <a class="dropdown-item" href="#">Notificación 3</a>
+          </div>
+        </div> -->
+        <button
+          mat-icon-button
+          style="
+            background-color: transparent !important;
+            box-shadow: none !important;
+            outline: none !important;
+            border: none !important;
+          "
+          [matMenuTriggerFor]="menu"
+          aria-label="Example icon-button with a menu"
         >
+          <mat-icon style="color: #fec107">notifications</mat-icon>
+        </button>
+        <mat-menu
+          #menu="matMenu"
+          style="
+            padding: 0 !important;
+            --mat-menu-panel-padding: 0px !important;
+          "
+        >
+          <ul
+            class="list-style-none"
+            style="max-height: 400px; overflow-y: auto; padding: 0 !important"
+          >
+            <li class="pd-4">
+              <div class="drop-title bg-golden text-light-blue p-3">
+                <p class="mb-0 mt-1 text-light-blue fs-2"><b>6 sin leer</b></p>
+                <span class="fw-light fw-bold"> Notificaciones </span>
+              </div>
+            </li>
+            <li>
+              <a
+                href="javascript:void(0)"
+                class="message-item border-bottom d-block text-decoration-none ms-2"
+                *ngFor="let notification of notifications"
+              >
+                <span>
+                  <i class="material-icons text-info cursor-pointer mt-3"
+                    >info</i
+                  >
+                </span>
+
+                <span
+                  class="mail-contnet d-inline-block w-75 ps-2 align-middle"
+                >
+                  <h5 class="message-title">{{ notification.title }}</h5>
+                  <span
+                    class="mail-desc fs-2 d-block text-muted text-truncate"
+                    >{{ notification.subject }}</span
+                  >
+                  <span class="time fs-2 d-block text-muted text-truncate">{{
+                    notification.time
+                  }}</span>
+                </span>
+              </a>
+            </li>
+            <li class="mt-1">
+              <a class="link text-center" href="javascript:void(0);">
+                <strong>Ver notificaciones</strong>
+                <i class="fa fa-angle-right ms-2"></i>
+              </a>
+            </li>
+          </ul>
+        </mat-menu>
+
+        <!-- <i class="material-icons text-warning cursor-pointer me-4"
+          >notifications</i
+        > -->
+        <!-- <ul class="navbar-nav float-end">
+          <li class="nav-item dropdown" ngbDropdown placement="bottom-end">
+            <a
+              ngbDropdownToggle
+              class="nav-link dropdown-toggle waves-effect waves-dark"
+              href="javascript:void(0)"
+              data-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
+            >
+              <i class="icon icon-note"></i>
+              <div class="notify">
+                <span class="heartbit"></span> <span class="point"></span>
+              </div>
+            </a>
+            <div
+              class="dropdown-menu dropdown-menu-end mailbox dropdown-menu-animate-up"
+              ngbDropdownMenu
+            >
+              <ul class="list-style-none">
+                <li>
+                  <div class="drop-title bg-primary text-white">
+                    <h4 class="mb-0 mt-1 text-white">
+                      {{ notifications.length }} New
+                    </h4>
+                    <span class="fw-light">Notifications</span>
+                  </div>
+                </li>
+                <li>
+                  <ng-scrollbar class="message-center notifications">
+                    <a
+                      href="javascript:void(0)"
+                      class="message-item border-bottom d-block text-decoration-none"
+                      *ngFor="let notification of notifications"
+                    >
+                      <span
+                        class="btn btn-circle rounded-circle {{
+                          notification.btn
+                        }}"
+                      >
+                        <i class="{{ notification.icon }}"></i>
+                      </span>
+                      <span
+                        class="mail-contnet d-inline-block w-75 ps-2 align-middle"
+                      >
+                        <h5 class="message-title">{{ notification.title }}</h5>
+                        <span
+                          class="mail-desc fs-2 d-block text-muted text-truncate"
+                          >{{ notification.subject }}</span
+                        >
+                        <span
+                          class="time fs-2 d-block text-muted text-truncate"
+                          >{{ notification.time }}</span
+                        >
+                      </span>
+                    </a>
+                  </ng-scrollbar>
+                </li>
+              </ul>
+            </div>
+          </li>
+        </ul> -->
+
+        <!-- <button (click)="showNotifications = !showNotifications">🔔</button>
+        <div *ngIf="showNotifications" class="notification-menu">
+          <div *ngFor="let notification of notifications">
+            {{ notification.title }}
+          </div>
+        </div> -->
+
+        <!-- <li class="nav-item dropdown" ngbDropdown placement="bottom-end">
+          aaaa
+
+          <i class="material-icons text-warning cursor-pointer me-4"
+            >notifications</i
+          >
+
+          <div>
+            <ul class="list-style-none">
+              <li>
+                <div class="drop-title bg-primary text-white">
+                  <h4 class="mb-0 mt-1 text-white">4 New</h4>
+                  <span class="fw-light">Notifications</span>
+                </div>
+              </li>
+              <li>
+                <ng-scrollbar class="message-center notifications">
+                  <ng-container *ngFor="let notification of notifications">
+                    <a
+                      href="javascript:void(0)"
+                      class="message-item border-bottom d-block text-decoration-none"
+                    >
+                      <span
+                        class="btn btn-circle rounded-circle {{
+                          notification.btn
+                        }}"
+                      >
+                        <i class="{{ notification.icon }}"></i>
+                      </span>
+                      <span
+                        class="mail-contnet d-inline-block w-75 ps-2 align-middle"
+                      >
+                        <h5 class="message-title">{{ notification.title }}</h5>
+                        <span
+                          class="mail-desc fs-2 d-block text-muted text-truncate"
+                          >{{ notification.subject }}</span
+                        >
+                        <span
+                          class="time fs-2 d-block text-muted text-truncate"
+                          >{{ notification.time }}</span
+                        >
+                      </span>
+                    </a>
+                  </ng-container>
+                </ng-scrollbar>
+              </li>
+              <li>
+                <a class="link text-center mb-1" href="javascript:void(0);">
+                  <strong>Check all notifications</strong>
+                  <i class="fa fa-angle-right ms-2"></i>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </li> -->
+
         <img alt="" src="assets/images/users/user4.jpg" class="user-image" />
         <dropdown-component
           [textButton]="userName"

@@ -1,6 +1,5 @@
 import { Routes } from "@angular/router";
-
-import { ConsultaTareasComponent } from "./consulta_tarea/consulta-tareas.component";
+import { ConsultaTareasComponent } from "./consulta-tareas/consulta-tareas.component";
 
 export const TareasRoutes: Routes = [
   {

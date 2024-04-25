@@ -1,4 +1,4 @@
-import { IRowTableAttributes } from "./../../component/table/table.interface";
+import { IRowTableAttributes } from "src/app/component/table/table.interface";
 
 export interface IConsultaTarea {
   id: string;
@@ -13,3 +13,8 @@ export interface IConsultaTareaTable
 
 export type IConsultaTareas = IConsultaTarea[];
 export type IConsultaTareasTable = IConsultaTareaTable[];
+
+export interface IConsultaNivelesAprobacionResponse {
+  totalRegistros: number;
+  nivelAprobacionType: IConsultaTareas;
+}

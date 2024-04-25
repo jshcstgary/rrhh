@@ -19,6 +19,7 @@ import { RutaComponent } from "./ruta/ruta.component";
 import { CrearNivelesAprobacionComponent } from "./crear-niveles-aprobacion/crear-niveles-aprobacion.component";
 import { SpinnerComponent } from "../shared/spinner.component";
 import { NivelesAprobacionComponent } from "./niveles-aprobacion/niveles-aprobacion.component";
+import { EstadosComponent } from './estados/estados.component';
 
 @NgModule({
   declarations: [
@@ -30,6 +31,7 @@ import { NivelesAprobacionComponent } from "./niveles-aprobacion/niveles-aprobac
     TipoAccionComponent,
     RutaComponent,
     NivelesAprobacionComponent,
+    EstadosComponent,
     // SpinnerComponent,
     // NivelesAprobacionComponent,
     //CrearNivelesAprobacionComponent

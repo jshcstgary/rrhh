@@ -1,7 +1,9 @@
 export class DataFilterSolicitudes {
   constructor(
-    public idEmpresa?: string,
-    public idUnidadNegocio?: string,
+    // public idEmpresa?: string,
+    // public idUnidadNegocio?: string,
+    public empresa?: string,
+    public unidadNegocio?: string,
     public idTipoSolicitud?: string,
     public estado?: string,
     public fechaDesde?: any,
@@ -18,31 +20,31 @@ export class DataFilterSolicitudes {
 
   verifyFilterFields() {
     const allUndefined =
-      this.isUndefined(this.idEmpresa) &&
-      this.isUndefined(this.idUnidadNegocio) &&
+      this.isUndefined(this.empresa) &&
+      this.isUndefined(this.unidadNegocio) &&
       this.isUndefined(this.idTipoSolicitud) &&
       this.isUndefined(this.estado) &&
       this.isUndefined(this.fechaDesde) &&
       this.isUndefined(this.fechaHasta);
     const allNull =
-      this.idEmpresa === null &&
-      this.idUnidadNegocio === null &&
+      this.empresa === null &&
+      this.unidadNegocio === null &&
       this.idTipoSolicitud === null &&
       this.estado === null &&
       this.fechaDesde === null &&
       this.fechaHasta === null;
 
     const allUndefinedOrNull =
-      this.isUndefinedOrNull(this.idEmpresa) &&
-      this.isUndefinedOrNull(this.idUnidadNegocio) &&
+      this.isUndefinedOrNull(this.empresa) &&
+      this.isUndefinedOrNull(this.unidadNegocio) &&
       this.isUndefinedOrNull(this.idTipoSolicitud) &&
       this.isUndefinedOrNull(this.estado) &&
       this.isUndefinedOrNull(this.fechaDesde) &&
       this.isUndefinedOrNull(this.fechaHasta);
 
     const atLeastOneUndefinedOrNull =
-      this.isUndefinedOrNull(this.idEmpresa) ||
-      this.isUndefinedOrNull(this.idUnidadNegocio) ||
+      this.isUndefinedOrNull(this.empresa) ||
+      this.isUndefinedOrNull(this.unidadNegocio) ||
       this.isUndefinedOrNull(this.idTipoSolicitud) ||
       this.isUndefinedOrNull(this.estado) ||
       this.isUndefinedOrNull(this.fechaDesde) ||

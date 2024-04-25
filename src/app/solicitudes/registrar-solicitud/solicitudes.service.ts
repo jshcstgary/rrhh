@@ -4,6 +4,7 @@ import { Observable } from "rxjs";
 import { DetalleSolicitud } from "src/app/eschemas/DetalleSolicitud";
 import { Solicitud } from "src/app/eschemas/Solicitud";
 import { environment } from "src/environments/environment";
+import { IEmpleados } from "../../services/mantenimiento/empleado.interface";
 
 @Injectable({
   providedIn: "root",
@@ -11,6 +12,8 @@ import { environment } from "src/environments/environment";
 export class SolicitudesService {
   private apiUrlSolicitudes = environment.solicitudesServiceES;
   private apiUrlNivelAprobacion = environment.nivelAprobacionServiceES;
+  private apiEmpleadoEvolutionUrl = environment.empleadoServiceEs;
+
   public modelSolicitud = new Solicitud();
   public modelDetalleSolicitud = new DetalleSolicitud();
   constructor(private http: HttpClient) {}
@@ -35,6 +38,10 @@ export class SolicitudesService {
     return this.http.post<any>(this.apiUrlSolicitudes, request);
   }
 
+  public actualizarSolicitud(request: any): Observable<any> {
+    return this.http.put<any>(this.apiUrlSolicitudes, request);
+  }
+
   public guardarDetalleSolicitud(request: any): Observable<any> {
     return this.http.post<any>(
       this.apiUrlSolicitudes + "/detalle-solicitud",
@@ -50,5 +57,9 @@ export class SolicitudesService {
     return this.http.get<any>(
       `${this.apiUrlNivelAprobacion}/${idTipoSolicitud}/${idTipoMotivo}/${idNivelDireccion}`
     );
+  }
+
+  public getDataEmpleadosEvolution(): Observable<IEmpleados> {
+    return this.http.get<IEmpleados>(this.apiEmpleadoEvolutionUrl);
   }
 }

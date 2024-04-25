@@ -81,6 +81,15 @@ export const ROUTES: RouteInfo[] = [
         extralink: false,
         submenu: [],
       },
+      {
+        path: "/mantenedores/estados-solicitud",
+        title: "Estados Solicitud",
+        icon: "",
+        class: "",
+        ddclass: "",
+        extralink: false,
+        submenu: [],
+      },
     ],
   },
   {

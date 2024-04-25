@@ -55,9 +55,9 @@
           name="id_trabajador"
           placeholder="Seleccione"
         >
-          <ng-option *ngFor="let car of dataNivelDireccion" [value]="car.codigo"
-            >{{ car.id }} - {{ car.descripcion }}</ng-option
-          >
+          <ng-option *ngFor="let data of dataNivelDireccion" [value]="data">{{
+            data
+          }}</ng-option>
         </ng-select>
         {{ selected_niveldireccion }}
       </div>
