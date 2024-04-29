@@ -37,7 +37,7 @@ export class CrearNivelesAprobacionComponent implements OnInit {
 
   public desactivarTipoMotivoYAccion = false;
 
-  public restrictionsIds: any[] = ["3", "5", "6"];
+  public restrictionsIds: any[] = ["3", "5", "6", 3, 5, 6];
 
   public tipoSolicitudSeleccionada: any;
 
@@ -79,7 +79,13 @@ export class CrearNivelesAprobacionComponent implements OnInit {
     this.serviceNivelesAprobacion
       .getNivelById(this.id_edit)
       .subscribe((data) => {
+        console.log("GETBYID");
         this.modelo = { ...data, estado: data.estado === "A" };
+        this.desactivarTipoMotivoYAccion = this.restrictionsIds.includes(
+          this.modelo.idTipoSolicitud
+        );
+        this.onChangeTipoSolicitud(this.modelo.idTipoSolicitud);
+        this.onChangeTipoRuta(this.modelo.idTipoRuta);
         this.utilService.closeLoadingSpinner();
         console.log("The model: ", this.modelo);
       });
