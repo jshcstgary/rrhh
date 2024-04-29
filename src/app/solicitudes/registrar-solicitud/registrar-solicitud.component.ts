@@ -1059,15 +1059,9 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
                 // /solicitudes/consulta-solicitudes
 
                 setTimeout(() => {
-                  this.router.navigate(
-                    [
-                      "/solicitudes/consulta-solicitudes",
-                      this.solicitud.idInstancia,
-                    ],
-                    {
-                      queryParams: { idInstancia },
-                    }
-                  );
+                  this.router.navigate(["/solicitudes/consulta-solicitudes"], {
+                    queryParams: { idInstancia },
+                  });
                 }, 1800);
 
                 // tveas comentada la redirección
