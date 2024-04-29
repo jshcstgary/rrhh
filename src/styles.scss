@@ -26,3 +26,10 @@ a.link:focus {
 
 //estilos de usuario y la imagen
 
+.dropdown-item.active {
+  background-color: #C69D08; /* Cambia el color de fondo a dorado */
+}
+
+.dropdown-menu {
+  width: 280px; /* Ajusta el ancho según tus necesidades */
+}

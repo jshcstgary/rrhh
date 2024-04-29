@@ -359,7 +359,7 @@
             </button>
           </div> -->
 
-          <div class="input-group mb-3">
+          <!-- <div class="input-group mb-3">
             <label
               class="input-group-text"
               for="subledger"
@@ -379,10 +379,10 @@
                 {{ subledger }}
               </option>
             </select>
-          </div>
+          </div> -->
 
           <!-- Search dinámico tveas (Subledger) -->
-          <!-- <div class="input-group mb-3">
+          <div class="input-group mb-3">
             <label
               class="input-group-text"
               for="subledger"
@@ -406,11 +406,11 @@
             <button class="btn btn-light" type="button" disabled>
               <i class="ti-search"></i>
             </button>
-          </div> -->
+          </div>
         </div>
 
         <div class="col-md-6">
-          <div class="input-group mb-3">
+          <!-- <div class="input-group mb-3">
             <label
               class="input-group-text"
               for="nombreempleado"
@@ -434,10 +434,10 @@
                 {{ empleado }}
               </option>
             </select>
-          </div>
+          </div> -->
 
           <!-- Search dinámico tveas (Subledger) -->
-          <!-- <div class="input-group mb-3">
+          <div class="input-group mb-3">
             <label
               class="input-group-text"
               for="nombreempleado"
@@ -461,7 +461,7 @@
             <button class="btn btn-light" type="button" disabled>
               <i class="ti-search"></i>
             </button>
-          </div> -->
+          </div>
 
           <!-- <div class="input-group mb-3">
             <label
@@ -640,7 +640,7 @@
             >
             <input
               type="text"
-              name="sueldo"
+              name="misioncargo"
               [(ngModel)]="model.misionCargo"
               class="form-control"
               id="misioncargo"
@@ -807,7 +807,7 @@
             >
             &nbsp;
             <input
-              [(ngModel)]="model.mensual"
+              [(ngModel)]="model.sueldoVariableMensual"
               type="text"
               name="mensual"
               class="form-control"
@@ -825,7 +825,7 @@
             >
             &nbsp;
             <input
-              [(ngModel)]="model.trimestral"
+              [(ngModel)]="model.sueldoVariableTrimestral"
               type="text"
               name="trimestral"
               class="form-control"
@@ -846,7 +846,7 @@
             >
             &nbsp;
             <input
-              [(ngModel)]="model.semestral"
+              [(ngModel)]="model.sueldoVariableSemestral"
               type="text"
               name="semestral"
               class="form-control"
@@ -864,7 +864,7 @@
             >
             &nbsp;
             <input
-              [(ngModel)]="model.anual"
+              [(ngModel)]="model.sueldoVariableAnual"
               type="text"
               name="anual"
               class="form-control"
@@ -888,7 +888,10 @@
       <div class="accordion" id="accordionExample">
         <!-- Repeat this (start) -->
         <div
-          *ngFor="let nivel of dataNivelesAprobacion; let i = index"
+          *ngFor="
+            let nivel of dataNivelesDeAprobacion[keySelected];
+            let i = index
+          "
           class="accordion-item"
         >
           <h2 class="accordion-header">
@@ -908,8 +911,10 @@
                 <div class="col">{{ nivel.ruta }}</div>
                 <div class="col">
                   {{
-                    nivel.usuarioCreacion !== ""
-                      ? nivel.usuarioCreacion
+                    nivel.usuario !== "" &&
+                    nivel.usuario !== undefined &&
+                    nivel.usuario != null
+                      ? nivel.usuario
                       : "user"
                   }}
                 </div>
@@ -939,7 +944,13 @@
                     name=""
                     style="color: black; font-size: 14px; margin: auto auto"
                     class="text-center"
-                    >{{ nivel.accion }}</span
+                    >{{
+                      nivel.descripcionPosicion !== "" &&
+                      nivel.descripcionPosicion !== undefined &&
+                      nivel.descripcionPosicion != null
+                        ? nivel.descripcionPosicion
+                        : "No aplica"
+                    }}</span
                   >
                 </div>
               </div>

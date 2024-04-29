@@ -50,7 +50,7 @@ export class CamundaRestService {
       processInstanceId +
       `&taskDefinitionKey=` +
       type;
-
+    console.log("SE USA ESTE ENDPOINT: ", endpoint);
     return this.http.get<any>(endpoint, httpOptions).pipe(
       tap((form) => this.log(`fetched tasks of type`)),
       catchError(this.handleError("getTask", []))
@@ -81,6 +81,7 @@ export class CamundaRestService {
     const endpoint = `${this.engineRestUrl}task/${taskId}/complete`;
     console.log(taskId);
     console.log(variables);
+    console.log("EL endpoint: ", endpoint);
     return this.http.post<any>(endpoint, variables, httpOptions).pipe(
       tap((tasks) => this.log(`posted complete task`)),
       catchError(this.handleError("postCompleteTask", []))

@@ -63,6 +63,7 @@ import { DatosSolicitud } from "src/app/eschemas/DatosSolicitud";
 import { TableComponentData } from "src/app/component/table/table.data";
 import { DataFilterSolicitudes } from "src/app/eschemas/DataFilterSolicitudes";
 import { ConsultaSolicitudesService } from "./consulta-solicitudes.service";
+import { DetalleSolicitud } from "src/app/eschemas/DetalleSolicitud";
 declare var require: any;
 const data: any = require("./company.json");
 @Component({
@@ -200,6 +201,15 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
   public submitted: boolean = false;
   public errorMessage: string;
   public typeSolicitudSelected: any;
+  public tipoSolicitudSeleccionada: any;
+
+  // public dataTiposMotivosPorTipoSolicitud : any[] = [];
+
+  public dataTiposMotivosPorTipoSolicitud: { [idSolicitud: number]: any[] } =
+    {};
+
+  public dataTiposAccionesPorTipoSolicitud: { [idSolicitud: number]: any[] } =
+    {};
 
   modelo: DatosProcesoInicio = new DatosProcesoInicio();
   private instanceCreated: DatosInstanciaProceso;
@@ -257,6 +267,7 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
     | any;
 
   public solicitud = new Solicitud();
+  public detalleSolicitud = new DetalleSolicitud();
 
   selected_empresa: number;
   selected_producto: number;
@@ -381,17 +392,53 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
       console.log("DATA dataTipoSolicitudes: ", this.dataTipoSolicitudes);
       console.log("DATA tipoMotivo: ", this.dataTipoMotivo);
       console.log("DATA tipoAccion: ", this.dataTipoAccion);
+
+      /*
+      public dataTiposMotivosPorTipoSolicitud: { [idSolicitud: number]: any[] } =
+      {};
+
+      public dataTiposAccionesPorTipoSolicitud: { [idSolicitud: number]: any[] } =
+      {};
+      */
+
+      console.log(
+        "dataTiposMotivosPorTipoSolicitud: ",
+        this.dataTiposMotivosPorTipoSolicitud
+      );
+      console.log("this.solicitud.idTipoMotivo: ", this.solicitud.idTipoMotivo);
+      console.log(
+        "dataTiposAccionesPorTipoSolicitud: ",
+        this.dataTiposAccionesPorTipoSolicitud
+      );
+      console.log("this.solicitud.idTipoAccion: ", this.solicitud.idTipoAccion);
+
       this.solicitud.tipoSolicitud = this.dataTipoSolicitudes.filter(
         (data) => data.id == this.solicitud.idTipoSolicitud
-      )[0].descripcion;
+      )[0]?.descripcion;
+      console.log(
+        "SE COMPARA CON ESTE ID DE SOLICITUD = " +
+          this.solicitud.idTipoSolicitud +
+          " y con esta descripción de SOLICITUD" +
+          this.solicitud.tipoSolicitud
+      );
+      this.solicitud.tipoMotivo = this.dataTiposMotivosPorTipoSolicitud[
+        this.solicitud.idTipoSolicitud
+      ].filter((data) => data.id == this.solicitud.idTipoMotivo)[0]?.tipoMotivo;
 
+      this.solicitud.tipoAccion = this.dataTiposAccionesPorTipoSolicitud[
+        this.solicitud.idTipoSolicitud
+      ].filter((data) => data.id == this.solicitud.idTipoAccion)[0]?.tipoAccion;
+
+      // Comentado tveas cambio
+      /*
       this.solicitud.tipoMotivo = this.dataTipoMotivo.filter(
         (data) => data.id == this.solicitud.idTipoMotivo
-      )[0].descripcion;
+      )[0]?.descripcion;
 
       this.solicitud.tipoAccion = this.dataTipoAccion.filter(
         (data) => data.id == this.solicitud.idTipoAccion
       )[0]?.descripcion;
+      */
 
       if (result.isConfirmed) {
         this.utilService.openLoadingSpinner(
@@ -405,13 +452,13 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
           // const processDefinitionKey = "process_modelo";
           //const processDefinitionKey = params['processdefinitionkey'];
           const variables = this.generatedVariablesFromFormFields();
-          console.log(variables);
+          console.log("THIS VARIABLES: ", variables);
           this.camundaRestService
             .postProcessInstance(processDefinitionKey, variables)
             .subscribe((instanceOutput) => {
               this.lookForError(instanceOutput);
               this.utilService.closeLoadingSpinner();
-              console.log("Instance (instanceOutput): ", instanceOutput);
+              console.log("Response instanceOutput = ", instanceOutput);
               this.instanceCreated = new DatosInstanciaProceso(
                 instanceOutput.businessKey,
                 instanceOutput.definitionId,
@@ -419,29 +466,44 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
                 instanceOutput.tenantId
               );
               this.solicitud.idInstancia = instanceOutput.id;
+              this.solicitud.estado = "Creado"; //tveas TODO improve [Activo]
+              this.solicitud.estadoSolicitud = "3"; // tveas TODO improve [Creado]
 
               this.solicitudes
                 .guardarSolicitud(this.solicitud)
-                .subscribe((response) => {
-                  console.log("MI MODELO AL ENVIAR ES ESTO: ", this.solicitud);
-                  console.log("SOLICITUD: ", response);
-                  this.solicitud.idSolicitud = response.idSolicitud;
+                .subscribe((responseSolicitud) => {
+                  console.log("Response solicitud = ", responseSolicitud);
+                  console.log("Solicitud model = ", this.solicitud);
+                  this.solicitud.idSolicitud = responseSolicitud.idSolicitud;
                   this.solicitud.fechaActualizacion =
-                    response.fechaActualizacion;
-                  this.solicitud.fechaCreacion = response.fechaCreacion;
+                    responseSolicitud.fechaActualizacion;
+                  this.solicitud.fechaCreacion =
+                    responseSolicitud.fechaCreacion;
                   this.submitted = true;
-                  console.log("IDDDDD INSTANCIA: ", this.solicitud.idInstancia);
-                  setTimeout(() => {
-                    this.router.navigate(
-                      [
-                        "/solicitudes/registrar-solicitud",
-                        this.solicitud.idInstancia,
-                      ],
-                      {
-                        queryParams: { ...this.solicitud },
-                      }
-                    );
-                  }, 1800);
+                  // console.log("IDDDDD INSTANCIA: ", this.solicitud.idInstancia);
+                  this.detalleSolicitud.idSolicitud =
+                    responseSolicitud.idSolicitud;
+                  this.detalleSolicitud.estado = "A";
+                  console.log(
+                    "Esto le mando como json a detalle solicitud: ",
+                    this.detalleSolicitud
+                  );
+                  this.solicitudes
+                    .guardarDetalleSolicitud(this.detalleSolicitud)
+                    .subscribe((responseDetalle) => {
+                      console.log("Response detalle = ", responseDetalle);
+                      setTimeout(() => {
+                        this.router.navigate(
+                          [
+                            "/solicitudes/registrar-solicitud",
+                            this.solicitud.idInstancia,
+                          ],
+                          {
+                            queryParams: { ...this.solicitud },
+                          }
+                        );
+                      }, 1800);
+                    });
                 });
 
               /*this.solicitudes
@@ -523,11 +585,14 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 
   generatedVariablesFromFormFields() {
     let variables: any = {};
-
+    console.log("INGRESA AQUÍIIIIIIIIIIIIIIIII");
+    console.log("this.solicitud.tipoAccion: ", this.solicitud.tipoAccion);
+    console.log("this.solicitud.tipoMotivo: ", this.solicitud.tipoMotivo);
+    console.log("this.solicitud.tipoSolicitud: ", this.solicitud.tipoSolicitud);
+    variables.tipoSolicitud = { value: this.solicitud.tipoSolicitud };
     if (this.solicitud.idTipoSolicitud == this.typeSolicitudSelected) {
       variables.tipoAccion = { value: this.solicitud.tipoAccion };
     } else {
-      variables.tipoSolicitud = { value: this.solicitud.tipoSolicitud };
       variables.tipoMotivo = { value: this.solicitud.tipoMotivo };
     }
 
@@ -563,6 +628,32 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
         { id: 3, descripcion: "Reingreso de personal" },
         { id: 4, descripcion: "Acción de Personal" },
       ];*/
+    this.tipoSolicitudSeleccionada = idTipoSolicitud;
+    if (!this.dataTiposMotivosPorTipoSolicitud[idTipoSolicitud]) {
+      this.mantenimientoService
+        .getTiposMotivosPorTipoSolicitud(idTipoSolicitud)
+        .subscribe({
+          next: (response) => {
+            this.dataTiposMotivosPorTipoSolicitud[idTipoSolicitud] = response;
+          },
+          error: (error: HttpErrorResponse) => {
+            this.utilService.modalResponse(error.error, "error");
+          },
+        });
+    }
+
+    if (!this.dataTiposAccionesPorTipoSolicitud[idTipoSolicitud]) {
+      this.mantenimientoService
+        .getTiposAccionesPorTipoSolicitud(idTipoSolicitud)
+        .subscribe({
+          next: (response) => {
+            this.dataTiposAccionesPorTipoSolicitud[idTipoSolicitud] = response;
+          },
+          error: (error: HttpErrorResponse) => {
+            this.utilService.modalResponse(error.error, "error");
+          },
+        });
+    }
 
     this.solicitud.tipoSolicitud = this.dataTipoSolicitudes.filter(
       (data) => data.id == idTipoSolicitud
@@ -825,6 +916,8 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
     ).pipe(
       map(([solicitudes, detallesSolicitud]) => {
         // Combinar las solicitudes y los detalles de la solicitud
+        console.log("GET SOLICITUDES Y DETALLES: ", solicitudes);
+        console.log("GET SOLICITUDES Y DETALLES: ", detallesSolicitud);
         const data = solicitudes.solicitudType.map((solicitud) => {
           const detalles = detallesSolicitud.detalleSolicitudType.find(
             (detalle) => detalle.idSolicitud === solicitud.idSolicitud
@@ -841,8 +934,12 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 
     combinedData$.subscribe((data) => {
       this.utilService.closeLoadingSpinner();
+      // console.log("ESTA ES LA DATA: ", data);
+      this.dataTable = data.map((item) => ({
+        ...item,
+        estado: item.estado === "A",
+      }));
       // Aquí tienes la data combinada y ordenada
-      this.dataTable = data;
     });
 
     /*return this.solicitudes.getSolicitudes().subscribe({

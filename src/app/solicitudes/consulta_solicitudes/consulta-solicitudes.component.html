@@ -377,10 +377,14 @@
                   >
                     <option value="" hidden>Selecccione</option>
                     <option
-                      *ngFor="let baseDeDatos of dataTipoMotivo"
+                      *ngFor="
+                        let baseDeDatos of dataTiposMotivosPorTipoSolicitud[
+                          tipoSolicitudSeleccionada
+                        ]
+                      "
                       [value]="baseDeDatos.id"
                     >
-                      {{ baseDeDatos.descripcion }}
+                      {{ baseDeDatos.tipoMotivo }}
                     </option>
                   </select>
                 </div>
@@ -415,10 +419,14 @@
                   >
                     <option value="" hidden>Selecccione</option>
                     <option
-                      *ngFor="let baseDeDatos of dataTipoAccion"
+                      *ngFor="
+                        let baseDeDatos of dataTiposAccionesPorTipoSolicitud[
+                          tipoSolicitudSeleccionada
+                        ]
+                      "
                       [value]="baseDeDatos.id"
                     >
-                      {{ baseDeDatos.descripcion }}
+                      {{ baseDeDatos.tipoAccion }}
                     </option>
                   </select>
                 </div>

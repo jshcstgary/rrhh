@@ -29,7 +29,11 @@ export const environment = {
   taskType_Registrar: "Activity_1pkw55i",
 
   // Task type 2 - Review   - the value maps to the id attribute 'Revisar Solicitud' from bpmn
-  taskType_Revisar: "Activity_0wf5xb7",
+  // taskType_Revisar: "Activity_0wf5xb7",
+
+  taskType_Revisar: "Activity_1p9wq10",
+
+  taskType_Notificar: "Activity_1bql112",
 
   //Servicios de workflow
   camundaUrl: `${baseC}:8188/`,

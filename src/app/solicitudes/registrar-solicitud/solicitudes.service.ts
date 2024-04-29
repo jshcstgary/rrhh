@@ -42,6 +42,13 @@ export class SolicitudesService {
     return this.http.put<any>(this.apiUrlSolicitudes, request);
   }
 
+  public actualizarDetalleSolicitud(request: any): Observable<any> {
+    return this.http.put<any>(
+      this.apiUrlSolicitudes + "/detalle-solicitud",
+      request
+    );
+  }
+
   public guardarDetalleSolicitud(request: any): Observable<any> {
     return this.http.post<any>(
       this.apiUrlSolicitudes + "/detalle-solicitud",
@@ -61,5 +68,13 @@ export class SolicitudesService {
 
   public getDataEmpleadosEvolution(): Observable<IEmpleados> {
     return this.http.get<IEmpleados>(this.apiEmpleadoEvolutionUrl);
+  }
+
+  public getDataNivelesAprobacionPorCodigoPosicion(
+    codigoPosicion: any
+  ): Observable<any> {
+    return this.http.get<any>(
+      `${this.apiEmpleadoEvolutionUrl}/nivelaprobacion/${codigoPosicion}`
+    );
   }
 }
