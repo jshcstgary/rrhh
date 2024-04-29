@@ -29,12 +29,41 @@ export class MantenimientoService {
   public getTipoSolicitud(): Observable<any[]> {
     return this.http.get<any[]>(this.apiSolicitudUrl);
   }
+
   public getTipoRuta(): Observable<ITipoRutaResponse> {
     return this.http.get<ITipoRutaResponse>(this.apiTipoRutaUrl);
   }
 
   public getTipoMotivo(): Observable<any[]> {
     return this.http.get<any[]>(this.apiTipoMotivoUrl);
+  }
+
+  public getTiposMotivosPorTipoSolicitud(
+    idTipoSolicitud: number | any
+  ): Observable<any[]> {
+    return this.http.get<any[]>(
+      `${this.apiTipoMotivoUrl}/tiposolicitud/${idTipoSolicitud}`
+    );
+  }
+
+  public getTiposAccionesPorTipoSolicitud(
+    idTipoSolicitud: number | any
+  ): Observable<any[]> {
+    return this.http.get<any[]>(
+      `${this.apiTipoAccionUrl}/tiposolicitud/${idTipoSolicitud}`
+    );
+  }
+
+  public getAccionesPorTipoSolicitud(
+    idTipoSolicitud: number | any
+  ): Observable<any[]> {
+    return this.http.get<any[]>(
+      `${this.apiAccionUrl}/tiposolicitud/${idTipoSolicitud}`
+    );
+  }
+
+  public getRutasPorTipoRuta(idTipoRuta: number | any): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiRutaUrl}/tiporuta/${idTipoRuta}`);
   }
 
   public getTipoAccion(): Observable<any[]> {

@@ -34,6 +34,21 @@ export class CrearNivelesAprobacionComponent implements OnInit {
   selected_niveldir: number | string;
   selected_nivelaprob: number | string;
   public id_edit: undefined | number;
+
+  public desactivarTipoMotivoYAccion = false;
+
+  public restrictionsIds: any[] = ["3", "5", "6"];
+
+  public tipoSolicitudSeleccionada: any;
+
+  public tipoRutaSeleccionada: any;
+
+  public dataTiposMotivosPorTipoSolicitud: { [idSolicitud: number]: any[] } =
+    {};
+  public dataAccionesPorTipoSolicitud: { [idSolicitud: number]: any[] } = {};
+
+  public dataRutasPorTipoRuta: { [idSolicitud: number]: any[] } = {};
+
   constructor(
     private config: NgSelectConfig,
     private router: Router,
@@ -80,6 +95,80 @@ export class CrearNivelesAprobacionComponent implements OnInit {
     this.ObtenerServicioNivelAprobacion();
     if (this.id_edit !== undefined) {
       this.getNivelById();
+    }
+  }
+
+  onChangeTipoRuta(idTipoRuta: number) {
+    /*public dataTipoSolicitudes: any[] = [
+        { id: 1, descripcion: "Requisición de Personal" },
+        { id: 2, descripcion: "Contratación de Familiares" },
+        { id: 3, descripcion: "Reingreso de personal" },
+        { id: 4, descripcion: "Acción de Personal" },
+      ];*/
+    this.tipoRutaSeleccionada = idTipoRuta;
+    if (!this.dataRutasPorTipoRuta[idTipoRuta]) {
+      this.mantenimientoService.getRutasPorTipoRuta(idTipoRuta).subscribe({
+        next: (response) => {
+          this.dataRutasPorTipoRuta[idTipoRuta] = response;
+        },
+        error: (error: HttpErrorResponse) => {
+          this.utilService.modalResponse(error.error, "error");
+        },
+      });
+    }
+  }
+
+  onChangeTipoSolicitud(idTipoSolicitud: number) {
+    /*public dataTipoSolicitudes: any[] = [
+        { id: 1, descripcion: "Requisición de Personal" },
+        { id: 2, descripcion: "Contratación de Familiares" },
+        { id: 3, descripcion: "Reingreso de personal" },
+        { id: 4, descripcion: "Acción de Personal" },
+      ];*/
+    this.tipoSolicitudSeleccionada = idTipoSolicitud;
+    this.desactivarTipoMotivoYAccion = this.restrictionsIds.includes(
+      this.tipoSolicitudSeleccionada
+    );
+    if (this.desactivarTipoMotivoYAccion) {
+      this.modelo.tipoMotivo = "";
+      this.modelo.idTipoMotivo = 0;
+      this.modelo.accion = "";
+      this.modelo.idAccion = 0;
+    }
+    console.log(
+      "this.tipoSolicitudSeleccionada = " +
+        this.tipoSolicitudSeleccionada +
+        ", restrictionsIds = ",
+      this.restrictionsIds
+    );
+    console.log(
+      "¿Está en restrictionsIds?",
+      this.restrictionsIds.includes(this.tipoSolicitudSeleccionada)
+    );
+    if (!this.dataAccionesPorTipoSolicitud[idTipoSolicitud]) {
+      this.mantenimientoService
+        .getAccionesPorTipoSolicitud(idTipoSolicitud)
+        .subscribe({
+          next: (response) => {
+            this.dataAccionesPorTipoSolicitud[idTipoSolicitud] = response;
+          },
+          error: (error: HttpErrorResponse) => {
+            this.utilService.modalResponse(error.error, "error");
+          },
+        });
+    }
+
+    if (!this.dataTiposMotivosPorTipoSolicitud[idTipoSolicitud]) {
+      this.mantenimientoService
+        .getTiposMotivosPorTipoSolicitud(idTipoSolicitud)
+        .subscribe({
+          next: (response) => {
+            this.dataTiposMotivosPorTipoSolicitud[idTipoSolicitud] = response;
+          },
+          error: (error: HttpErrorResponse) => {
+            this.utilService.modalResponse(error.error, "error");
+          },
+        });
     }
   }
 
@@ -232,10 +321,17 @@ export class CrearNivelesAprobacionComponent implements OnInit {
     this.utilService.openLoadingSpinner(
       "Guardando información, espere por favor..."
     );
+    console.log("DATA A PROCESAR: ", {
+      ...this.modelo,
+      estado: this.modelo.estado ? "A" : "I",
+    });
     if (this.id_edit === undefined) {
       console.log("Guardar nivel de solicitud: ", this.id_edit);
+      console.log(
+        "dataAccionesPorTipoSolicitud[tipoSolicitudSeleccionada]: ",
+        this.dataAccionesPorTipoSolicitud[this.tipoSolicitudSeleccionada]
+      );
       this.route.params.subscribe((params) => {
-        console.log({ ...this.modelo, estado: this.modelo.estado ? "A" : "I" });
         this.serviceNivelesAprobacion
           .guardarNivelAprobacion({
             ...this.modelo,
@@ -244,7 +340,7 @@ export class CrearNivelesAprobacionComponent implements OnInit {
           .subscribe(
             (response) => {
               // Inicio
-
+              console.log("Response al guardar: ", response);
               this.serviceNivelesAprobacion
                 .refrescarNivelesAprobaciones()
                 .subscribe(

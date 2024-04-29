@@ -39,7 +39,10 @@ textarea {
   border: 1px solid #e2dfdf;
   box-sizing: border-box;
 }
-#codigoposicion + .dropdown-menu .dropdown-item:hover,
-#codigoposicion + .dropdown-menu .dropdown-item.active {
-  background-color: yellow; /* Cambia este color al que desees */
+.ngb-typeahead-window .dropdown-item.active {
+  background-color: gold; /* Cambia el color de fondo a dorado */
+}
+
+.dropdown-menu {
+  width: 300px; /* Ajusta el ancho según tus necesidades */
 }

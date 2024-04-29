@@ -368,6 +368,7 @@ export class CompletarSolicitudComponent extends CompleteTaskComponent {
         this.camundaRestService
           .getTask(environment.taskType_Revisar, params["id"])
           .subscribe((result) => {
+            console.log("GET TASK EN COMPLETAR: ", result);
             this.lookForError(result); // if error, then control gets redirected to err page
 
             // if result is success - bingo, we got the task id
@@ -430,6 +431,7 @@ export class CompletarSolicitudComponent extends CompleteTaskComponent {
     if (datosEmpleado) {
       console.log("Ingresa en el if: ", datosEmpleado);
       this.model = Object.assign({}, datosEmpleado);
+      console.log("ESTE MODELO SE ASIGNA: ", this.model);
     } else {
       // this.model.reset();
       // let temporalSearch = this.model.codigoPosicion;

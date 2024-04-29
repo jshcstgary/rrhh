@@ -66,13 +66,16 @@
                 >
                 <select
                   [(ngModel)]="modelo.idTipoSolicitud"
+                  (ngModelChange)="
+                    onChangeTipoSolicitud(modelo.idTipoSolicitud)
+                  "
                   id="tiposolicitud"
                   name="tiposolicitud"
                   class="form-select"
                   style="font-size: 14px"
                   required
                 >
-                  <option value="" hidden>Selecccione</option>
+                  <!-- <option value="" hidden>Selecccione</option> -->
                   <option
                     *ngFor="let baseDeDatos of dataTipoSolicitudes"
                     [value]="baseDeDatos.id"
@@ -108,14 +111,21 @@
                   #productoSelect
                   style="font-size: 14px"
                   required
+                  [disabled]="desactivarTipoMotivoYAccion"
                 >
-                  <option value="" hidden>Selecccione</option>
+                  <!-- <ng-container *ngIf="!desactivarTipoMotivoYAccion"> -->
+                  <!-- <option hidden>Selecccione</option> -->
                   <option
-                    *ngFor="let baseDeDatos of dataTipoMotivo"
+                    *ngFor="
+                      let baseDeDatos of dataTiposMotivosPorTipoSolicitud[
+                        tipoSolicitudSeleccionada
+                      ]
+                    "
                     [value]="baseDeDatos.id"
                   >
-                    {{ baseDeDatos.descripcion }}
+                    {{ baseDeDatos.tipoMotivo }}
                   </option>
+                  <!-- </ng-container> -->
                 </select>
               </div>
             </div>
@@ -144,14 +154,19 @@
                   class="form-select"
                   style="font-size: 14px"
                   required
+                  [disabled]="desactivarTipoMotivoYAccion"
                 >
                   <!--<option>Crear Posicion (esten o no presupuestadas)</option>-->
-                  <option value="" hidden>Selecccione</option>
+                  <!-- <option value="" hidden>Selecccione</option> -->
                   <option
-                    *ngFor="let baseDeDatos of dataAccion"
+                    *ngFor="
+                      let baseDeDatos of dataAccionesPorTipoSolicitud[
+                        tipoSolicitudSeleccionada
+                      ]
+                    "
                     [value]="baseDeDatos.id"
                   >
-                    {{ baseDeDatos.descripcion }}
+                    {{ baseDeDatos.accion }}
                   </option>
                 </select>
               </div>
@@ -183,7 +198,7 @@
                   required
                 >
                   <!--<option>Supervición/Coordinación</option>-->
-                  <option value="" hidden>Selecccione</option>
+                  <!-- <option value="" hidden>Selecccione</option> -->
                   <option
                     *ngFor="let item of dataNivelDireccion"
                     [value]="item"
@@ -194,6 +209,46 @@
               </div>
             </div>
           </div>
+
+          <div
+            class="row"
+            style="
+              padding-top: 20px;
+              display: flex;
+              justify-content: start;
+              margin: 10px;
+            "
+          >
+            <div class="col-md-12" style="width: 75%">
+              <div class="input-group mb-3">
+                <label
+                  class="input-group-text"
+                  for="tiporuta"
+                  style="color: black; font-size: 14px; width: 45%"
+                  >Tipo de Ruta</label
+                >
+                <select
+                  [(ngModel)]="modelo.idTipoRuta"
+                  (ngModelChange)="onChangeTipoRuta(modelo.idTipoRuta)"
+                  id="tiporuta"
+                  name="tiporuta"
+                  class="form-select"
+                  style="font-size: 14px"
+                  required
+                >
+                  <!--<option>Areas Corporativas</option>-->
+                  <!-- <option value="" hidden>Selecccione</option> -->
+                  <option
+                    *ngFor="let baseDeDatos of dataTipoRuta"
+                    [value]="baseDeDatos.id"
+                  >
+                    {{ baseDeDatos.descripcion }}
+                  </option>
+                </select>
+              </div>
+            </div>
+          </div>
+
           <div
             class="row"
             style="
@@ -220,54 +275,22 @@
                   required
                 >
                   <!--<option>Lvl1 Aprobación</option>-->
-                  <option value="" hidden>Selecccione</option>
+                  <!-- <option value="" hidden>Selecccione</option> -->
                   <option
-                    *ngFor="let baseDeDatos of dataRuta"
+                    *ngFor="
+                      let baseDeDatos of dataRutasPorTipoRuta[
+                        tipoRutaSeleccionada
+                      ]
+                    "
                     [value]="baseDeDatos.id"
                   >
-                    {{ baseDeDatos.descripcion }}
+                    {{ baseDeDatos.ruta }}
                   </option>
                 </select>
               </div>
             </div>
           </div>
-          <div
-            class="row"
-            style="
-              padding-top: 20px;
-              display: flex;
-              justify-content: start;
-              margin: 10px;
-            "
-          >
-            <div class="col-md-12" style="width: 75%">
-              <div class="input-group mb-3">
-                <label
-                  class="input-group-text"
-                  for="tiporuta"
-                  style="color: black; font-size: 14px; width: 45%"
-                  >Tipo de Ruta</label
-                >
-                <select
-                  [(ngModel)]="modelo.idTipoRuta"
-                  id="tiporuta"
-                  name="tiporuta"
-                  class="form-select"
-                  style="font-size: 14px"
-                  required
-                >
-                  <!--<option>Areas Corporativas</option>-->
-                  <option value="" hidden>Selecccione</option>
-                  <option
-                    *ngFor="let baseDeDatos of dataTipoRuta"
-                    [value]="baseDeDatos.id"
-                  >
-                    {{ baseDeDatos.descripcion }}
-                  </option>
-                </select>
-              </div>
-            </div>
-          </div>
+
           <div
             class="row"
             style="
@@ -294,7 +317,7 @@
                   required
                 >
                   <!--<option>Jefatura</option>-->
-                  <option value="" hidden>Selecccione</option>
+                  <!-- <option value="" hidden>Selecccione</option> -->
                   <option
                     *ngFor="let item of dataNivelAprobacion"
                     [value]="item"

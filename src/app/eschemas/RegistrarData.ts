@@ -85,9 +85,14 @@ export class RegistrarData {
     public descripContrato: string = "",
     public status: string = "",
 
-    /* Agrego estos campos que no están en la data */
-    // Este campo no sé de donde viene, no viene en el request de solicitud ni en el de detalle solicitud
-    public sueldo: number | null = 0,
+    public sueldo: string = "",
+    public sueldoVariableMensual: string = "",
+    public sueldoVariableTrimestral: string = "",
+    public sueldoVariableSemestral: string = "",
+    public sueldoVariableAnual: string = ""
+  ) /* Agrego estos campos que no están en la data */
+  // Este campo no sé de donde viene, no viene en el request de solicitud ni en el de detalle solicitud
+  /*public sueldo: number | null = 0,
 
     // Este campo no sé de donde viene, no viene en el request de solicitud ni en el de detalle solicitud
     public mensual: number | null = 0,
@@ -99,8 +104,8 @@ export class RegistrarData {
     public semestral: number | null = 0,
 
     // Este campo no sé de donde viene, no viene en el request de solicitud ni en el de detalle solicitud
-    public anual: number | null = 0
-  ) {}
+    public anual: number | null = 0*/
+  {}
 
   reset() {
     this.codigo = "";
@@ -127,10 +132,10 @@ export class RegistrarData {
     this.tipoContrato = "";
     this.descripContrato = "";
     this.status = "";
-    this.sueldo = 0;
-    this.mensual = 0;
-    this.trimestral = 0;
-    this.semestral = 0;
-    this.anual = 0;
+    // this.sueldo = 0;
+    // this.mensual = 0;
+    // this.trimestral = 0;
+    // this.semestral = 0;
+    // this.anual = 0;
   }
 }

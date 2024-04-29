@@ -13,6 +13,12 @@ export const EstadoData: IEstadoData = {
       colType: "number",
     },
     {
+      title: "Valor",
+      dataIndex: "valor",
+      sortActive: true,
+      colType: "string",
+    },
+    {
       title: "Descripción",
       dataIndex: "descripcion",
       sortActive: true,
@@ -40,13 +46,28 @@ export const EstadoData: IEstadoData = {
   ],
   defaultEmptyRowTable: {
     codigo: "0",
+    valor: "",
     descripcion: "",
     estado: true,
   },
   tableInputsEditRow: [
     {
-      id: "codigo",
+      id: "id",
       type: "visualization",
+    },
+    {
+      id: "codigo",
+      type: "string",
+      maxLength: 30,
+      required: true,
+      inputMessageError: "Ingrese el código del estado",
+    },
+    {
+      id: "valor",
+      type: "string",
+      maxLength: 30,
+      required: true,
+      inputMessageError: "Ingrese el código del estado",
     },
     {
       id: "descripcion",
@@ -60,7 +81,7 @@ export const EstadoData: IEstadoData = {
       type: "toggle",
     },
   ],
-  colsToFilterByText: ["codigo", "descripcion"],
+  colsToFilterByText: ["id", "codigo", "valor", "descripcion"],
 };
 
 interface IEstadoData {

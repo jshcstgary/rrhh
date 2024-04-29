@@ -7,7 +7,7 @@ export class Solicitud {
     // public usuarioActualizacion?: string | null,
     public usuarioActualizacion: string | null = "", // Dato quemado (cambiar)
     // public estado?: string | null,
-    public estado: string | null = "Pendiente", // Dato quemado (cambiar)
+    public estado: string | null = "", // Dato quemado (cambiar)
     public idSolicitud?: string | null,
     public idInstancia?: string | null,
     // public idEmpresa?: string | null,
