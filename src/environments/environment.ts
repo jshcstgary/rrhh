@@ -57,6 +57,8 @@ export const environment = {
 
   tareasServiceES: `${base}:8080/v1/es/solicitudcamunda`,
 
+  aprobadoresFijosServiceES: `${base}:8082/v1/es/aprobadores_fijos`,
+
   // http://10.35.3.162:8001/swagger/index.html
 
   //http://10.35.3.162:8053/v1/es/item-catalogo/codigo/

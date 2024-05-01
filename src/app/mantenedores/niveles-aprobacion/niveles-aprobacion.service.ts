@@ -1,4 +1,4 @@
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { environment } from "src/environments/environment";
@@ -12,14 +12,51 @@ export class NivelesAprobacionService {
 
   constructor(private http: HttpClient) {}
 
+  private httpOptions = {
+    headers: new HttpHeaders({
+      "Content-Type": "application/json",
+    }),
+  };
+
   public obtenerNiveleAprobaciones(): Observable<IConsultaNivelesAprobacionResponse> {
     return this.http.get<IConsultaNivelesAprobacionResponse>(
       `${this.apiUrlNivelAprobacion}`
     );
   }
 
-  // /vl/es/n lesa probacion/{ IdTi poS01i citud}/ {Id TipoMot ivo}/ {IdNive1Di recc ion}
+  // Con headers
   public filterNivelesAprobaciones(
+    idTipoSolicitud: any,
+    idTipoMotivo: any,
+    idNivelDireccion: any
+  ): Observable<IConsultaNivelesAprobacionResponse> {
+    const headers = new HttpHeaders({
+      idNivelDireccion: idNivelDireccion,
+    });
+    return this.http.get<IConsultaNivelesAprobacionResponse>(
+      `${this.apiUrlNivelAprobacion}/${idTipoSolicitud}/${idTipoMotivo}/${idNivelDireccion}`,
+      { headers: headers }
+    );
+  }
+
+  /*
+
+    public filterNivelesAprobaciones(
+  idTipoSolicitud: any,
+  idTipoMotivo: any,
+  idNivelDireccion: any
+): Observable<IConsultaNivelesAprobacionResponse> {
+  const headers = new HttpHeaders().set('IdNivelDireccion', idNivelDireccion);
+  return this.http.get<IConsultaNivelesAprobacionResponse>(
+    `${this.apiUrlNivelAprobacion}/${idTipoSolicitud}/${idTipoMotivo}`,
+    { headers: headers }
+  );
+}
+
+  */
+
+  // Sin headers
+  /*public filterNivelesAprobaciones(
     idTipoSolicitud: any,
     idTipoMotivo: any,
     idNivelDireccion: any
@@ -27,5 +64,5 @@ export class NivelesAprobacionService {
     return this.http.get<IConsultaNivelesAprobacionResponse>(
       `${this.apiUrlNivelAprobacion}/${idTipoSolicitud}/${idTipoMotivo}/${idNivelDireccion}`
     );
-  }
+  }*/
 }

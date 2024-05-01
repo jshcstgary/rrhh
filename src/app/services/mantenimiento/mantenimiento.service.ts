@@ -9,6 +9,7 @@ import {
 import { ITipoRutaResponse } from "src/app/mantenedores/ruta/ruta.interface";
 import { ICatalogoResponse } from "./catalogo.interface";
 import { INiveles } from "./niveles.interface";
+import { IEmpleados } from "./empleado.interface";
 
 @Injectable({
   providedIn: "root",
@@ -100,6 +101,10 @@ export class MantenimientoService {
     return this.http.get<INiveles>(
       `${this.apiEmpleadoEvolutionUrl}/niveldireccion`
     );
+  }
+
+  public getDataEmpleadosEvolution(): Observable<IEmpleados> {
+    return this.http.get<IEmpleados>(this.apiEmpleadoEvolutionUrl);
   }
 
   public diagnostic(): Observable<any> {

@@ -551,7 +551,7 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
   }
 
   getDataEmpleadosEvolution() {
-    return this.solicitudes.getDataEmpleadosEvolution().subscribe({
+    return this.mantenimientoService.getDataEmpleadosEvolution().subscribe({
       next: (response) => {
         this.dataEmpleadoEvolution = response.evType;
 
@@ -957,6 +957,8 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
                 // );
               });*/
 
+            this.detalleSolicitud.idSolicitud = this.solicitud.idSolicitud;
+
             this.detalleSolicitud.areaDepartamento = this.model.departamento;
 
             this.detalleSolicitud.cargo = this.model.nombreCargo;
@@ -1253,24 +1255,25 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
     variables.reportaA = { value: this.model.reportaA };
     variables.localidad = { value: this.model.localidad };
     variables.nivelDir = { value: this.model.nivelDir };
-    variables.descrNivelDir = { value: this.model.descrNivelDir };
+    // variables.descrNivelDir = { value: this.model.descrNivelDir };
     variables.nivelRepa = { value: this.model.nivelRepa };
     variables.sucursal = { value: this.model.sucursal };
     variables.unidadNegocio = { value: this.model.unidadNegocio };
     variables.tipoContrato = { value: this.model.tipoContrato };
     variables.descripContrato = { value: this.model.descripContrato };
     variables.status = { value: this.model.status };
-    variables.sueldo = { value: "2000" };
-    variables.mensual = { value: "2000" };
-    variables.trimestral = { value: "2000" };
-    variables.semestral = { value: "2000" };
-    variables.anual = { value: "2000" };
+    variables.sueldo = { value: this.model.sueldo }; //sueldoVariableMensual
+    variables.sueldoMensual = { value: this.model.sueldoVariableMensual };
+    variables.sueldoTrimestral = { value: this.model.sueldoVariableTrimestral };
+    variables.sueldoSemestral = { value: this.model.sueldoVariableSemestral };
+    variables.sueldoAnual = { value: this.model.sueldoVariableAnual };
     variables.anularSolicitud = { value: "No" };
     variables.codigoPosicion = { value: this.model.codigoPosicion };
-    variables.misionCargo = { value: "Mision" };
-    variables.justificacion = { value: "Aprobado Nuevo Yes" };
+    variables.misionCargo = { value: this.model.misionCargo };
+    variables.justificacion = { value: this.model.justificacion };
     variables.ruta = { value: "Ruta" };
-    variables.nivelDireccion = { value: "nivelDireccion" };
+    variables.nivelDireccion = { value: this.model.nivelDir };
+    variables.comentariosAtencion = { value: "SEND STATIC" };
 
     // tipo_solicitud_descripcion
     // tipo_motivo_descripcion
