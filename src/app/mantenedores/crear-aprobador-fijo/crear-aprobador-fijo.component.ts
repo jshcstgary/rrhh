@@ -665,7 +665,7 @@ export class CrearAprobadorFijoComponent implements OnInit {
       ...this.modelo,
       estado: this.modelo.estado ? "A" : "I",
     });*/
-    console.log("Guardar nivel de solicitud: ", this.id_edit);
+    console.log("Guardar guardarAprobadorFijo(): ", this.id_edit);
     console.log(
       "dataAccionesPorTipoSolicitud[tipoSolicitudSeleccionada]: ",
       this.dataAccionesPorTipoSolicitud[this.tipoSolicitudSeleccionada]

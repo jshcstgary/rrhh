@@ -33,8 +33,9 @@ export class NivelesAprobacionService {
     const headers = new HttpHeaders({
       idNivelDireccion: idNivelDireccion,
     });
+    console.log("Headers: ", headers);
     return this.http.get<IConsultaNivelesAprobacionResponse>(
-      `${this.apiUrlNivelAprobacion}/${idTipoSolicitud}/${idTipoMotivo}/${idNivelDireccion}`,
+      `${this.apiUrlNivelAprobacion}/aprobacionesporfiltro/${idTipoSolicitud}/${idTipoMotivo}`,
       { headers: headers }
     );
   }

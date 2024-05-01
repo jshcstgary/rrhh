@@ -14,8 +14,8 @@ export class EditarAprobadorFijoService {
 
   constructor(private http: HttpClient) {}
 
-  public actualizarAprobadorFijo(request: any): Observable<any> {
-    return this.http.put<any>(this.apiUrlAprobadoresFijos, request);
+  public actualizarAprobadorFijo(request: any, id: any): Observable<any> {
+    return this.http.put<any>(`${this.apiUrlAprobadoresFijos}/${id}`, request);
   }
 
   public obtenerAprobadorFijoById(id: any): Observable<any> {
