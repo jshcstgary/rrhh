@@ -84,6 +84,7 @@ export class NivelesAprobacionComponent implements OnInit {
       "Cargando información, espere por favor..."
     );
     console.log("FILTER DATA: ", this.dataFilterNivelesAprobacion);
+
     this.nivelesAprobacionService
       .filterNivelesAprobaciones(
         this.dataFilterNivelesAprobacion.tipoSolicitud,

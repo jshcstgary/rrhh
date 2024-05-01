@@ -429,12 +429,43 @@ export class EditarAprobadorFijoComponent implements OnInit {
   }
 
   getAprobadorFijoById() {
-    // return this.editarAprobadorFijoService.obtenerAprobadorFijoById();
+    return this.editarAprobadorFijoService
+      .obtenerAprobadorFijoById(this.id_edit)
+      .subscribe({
+        next: (response) => {
+          let fechaActual = new Date();
+          let fechaEnFormatoISO = fechaActual.toISOString();
+          // this.modelo.ID_APROBACION = ;
+          this.modelo.iD_APROBADOR = this.id_edit;
+          this.modelo.niveL_DIRECCION = response.niveL_DIRECCION;
+          this.modelo.codigO_POSICION = response.codigO_POSICION;
+          // let fechaActual = new Date();
+          this.modelo.subleger = response.subleger;
+          this.modelo.nombre = response.nombre;
+          this.modelo.codigO_POSICION_REPORTA_A =
+            response.codigO_POSICION_REPORTA_A;
+          this.modelo.reportA_A = response.reportA_A;
+          this.modelo.estado = response.estado;
+          this.modelo.fechA_CREACION = response.fechA_CREACION;
+          this.modelo.fechA_MODIFICACION = response.fechA_MODIFICACION;
+          this.modelo.usuariO_CREACION = response.usuariO_CREACION;
+          this.modelo.usuariO_MODIFICACION = response.usuariO_MODIFICACION;
+          this.modelo.descripcioN_POSICION = response.descripcioN_POSICION;
+          this.modelo.supervisA_A = response.supervisA_A;
+          this.modelo.niveL_REPORTE = response.niveL_REPORTE;
+
+          console.log("Mi Response: ", response);
+          console.log("Mi Modelo: ", this.modelo);
+        },
+        error: (error: HttpErrorResponse) => {
+          this.utilService.modalResponse(error.error, "error");
+        },
+      });
   }
 
   ngOnInit() {
     this.getDataEmpleadosEvolution();
-
+    this.getAprobadorFijoById();
     /*this.ObtenerServicioTipoSolicitud();
     this.ObtenerServicioTipoMotivo();
     this.ObtenerServicioAccion();
@@ -680,11 +711,44 @@ export class EditarAprobadorFijoComponent implements OnInit {
       this.dataAccionesPorTipoSolicitud[this.tipoSolicitudSeleccionada]
     );
     this.route.params.subscribe((params) => {
+      let fechaActual = new Date();
+      let fechaEnFormatoISO = fechaActual.toISOString();
+      /*let fechaActual = new Date();
+      let fechaEnFormatoISO = fechaActual.toISOString();
+      // this.modelo.ID_APROBACION = ;
+      this.modelo.iD_APROBADOR = this.id_edit;
+      this.modelo.niveL_DIRECCION = response.niveL_DIRECCION;
+      this.modelo.codigO_POSICION = response.codigO_POSICION;
+      // let fechaActual = new Date();
+      this.modelo.subleger = response.subleger;
+      this.modelo.nombre = response.nombre;
+      this.modelo.codigO_POSICION_REPORTA_A =
+        response.codigO_POSICION_REPORTA_A;
+      this.modelo.reportA_A = response.reportA_A;
+      this.modelo.estado = response.estado;
+      this.modelo.fechA_CREACION = this.modelo.fechA_CREACION;
+      this.modelo.fechA_MODIFICACION = this.modelo.fechA_MODIFICACION;
+      this.modelo.usuariO_CREACION = this.modelo.usuariO_CREACION;
+      this.modelo.usuariO_MODIFICACION = this.modelo.usuariO_MODIFICACION;
+      this.modelo.descripcioN_POSICION = response.descripcioN_POSICION;
+      this.modelo.supervisA_A = response.supervisA_A;
+      this.modelo.niveL_REPORTE = response.niveL_REPORTE;*/
+      console.log("Esta es la data para actualizar el aprobador: ", {
+        ...this.modelo,
+        fechA_MODIFICACION: fechaEnFormatoISO,
+        usuariO_MODIFICACION: fechaEnFormatoISO,
+        estado: this.modelo.estado ? "A" : "I",
+      });
       this.editarAprobadorFijoService
-        .actualizarAprobadorFijo({
-          ...this.modelo,
-          estado: this.modelo.estado ? "A" : "I",
-        })
+        .actualizarAprobadorFijo(
+          {
+            ...this.modelo,
+            fechA_MODIFICACION: fechaEnFormatoISO,
+            usuariO_MODIFICACION: fechaEnFormatoISO,
+            estado: this.modelo.estado ? "A" : "I",
+          },
+          this.modelo.iD_APROBADOR
+        )
         .subscribe(
           (response) => {
             // Inicio

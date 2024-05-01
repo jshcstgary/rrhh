@@ -469,7 +469,7 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
           // const processDefinitionKey = "process_modelo";
           //const processDefinitionKey = params['processdefinitionkey'];
           const variables = this.generatedVariablesFromFormFields();
-          console.log("THIS VARIABLES: ", variables);
+          console.log("THIS VARIABLES22222: ", variables);
           this.camundaRestService
             .postProcessInstance(processDefinitionKey, variables)
             .subscribe((instanceOutput) => {
