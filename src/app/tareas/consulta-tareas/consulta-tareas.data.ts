@@ -4,24 +4,24 @@ export const ConsultaTareasData: IConsultaTareasData = {
   columns: [
     {
       title: "Número de solicitud",
-      dataIndex: "numero_solicitud",
+      dataIndex: "idSolicitud",
       align: "center",
       sortActive: true,
     },
     {
       title: "Tarea",
-      dataIndex: "tarea",
+      dataIndex: "name",
       sortActive: true,
     },
     {
       title: "Solicitud",
-      dataIndex: "solicitud",
+      dataIndex: "tipoSolicitud",
       sortActive: true,
       colType: "number",
     },
     {
       title: "Fecha de creación",
-      dataIndex: "fecha_creacion",
+      dataIndex: "startTime",
       sortActive: true,
       colType: "number",
     },
