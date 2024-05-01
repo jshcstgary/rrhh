@@ -375,7 +375,7 @@ export class EditarAprobadorFijoComponent implements OnInit {
       this.modelo.nombre = datosEmpleado.nombreCompleto;
       this.modelo.codigO_POSICION_REPORTA_A = "N/A";
       this.modelo.reportA_A = datosEmpleado.reportaA;
-      this.modelo.estado = true;
+      this.modelo.estado = datosEmpleado.estado;
       this.modelo.fechA_CREACION = this.modelo.fechA_CREACION;
       this.modelo.fechA_MODIFICACION = fechaEnFormatoISO;
       this.modelo.usuariO_CREACION = this.modelo.usuariO_CREACION;
@@ -445,7 +445,7 @@ export class EditarAprobadorFijoComponent implements OnInit {
           this.modelo.codigO_POSICION_REPORTA_A =
             response.codigO_POSICION_REPORTA_A;
           this.modelo.reportA_A = response.reportA_A;
-          this.modelo.estado = response.estado;
+          this.modelo.estado = response.estado === "A";
           this.modelo.fechA_CREACION = response.fechA_CREACION;
           this.modelo.fechA_MODIFICACION = response.fechA_MODIFICACION;
           this.modelo.usuariO_CREACION = response.usuariO_CREACION;
