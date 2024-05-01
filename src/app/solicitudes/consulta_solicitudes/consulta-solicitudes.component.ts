@@ -514,6 +514,7 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
                           [
                             "/solicitudes/registrar-solicitud",
                             this.solicitud.idInstancia,
+                            this.solicitud.idSolicitud,
                           ],
                           {
                             queryParams: { ...this.solicitud },

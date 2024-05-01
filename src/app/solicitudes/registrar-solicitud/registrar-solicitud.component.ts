@@ -1,6 +1,6 @@
 import { SolicitudesService } from "./solicitudes.service";
 import { Component } from "@angular/core";
-import { ActivatedRoute, Router } from "@angular/router";
+import { ActivatedRoute, ParamMap, Router } from "@angular/router";
 import { CamundaRestService } from "../../camunda-rest.service";
 import { CompleteTaskComponent } from "../general/complete-task.component";
 import {
@@ -21,7 +21,12 @@ import Swal from "sweetalert2";
 import { Solicitud } from "src/app/eschemas/Solicitud";
 import { DetalleSolicitud } from "src/app/eschemas/DetalleSolicitud";
 import { Subject, Observable, OperatorFunction } from "rxjs";
-import { debounceTime, distinctUntilChanged, map } from "rxjs/operators";
+import {
+  debounceTime,
+  distinctUntilChanged,
+  map,
+  switchMap,
+} from "rxjs/operators";
 
 @Component({
   selector: "registrarSolicitud",
@@ -148,6 +153,14 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
   public dataNivelesAprobacionPorCodigoPosicion: { [key: string]: any[] } = {};
 
   public dataNivelesAprobacion: any;
+
+  public mostrarTipoJustificacionYMision = false;
+
+  public restrictionsIds: any[] = ["1", "2", 1, 2];
+
+  public restrictionsSubledgerIds: any[] = ["4", 4];
+
+  public mostrarSubledger = false;
 
   public dataEmpleadoEvolution: any[] = [
     {
@@ -285,6 +298,9 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
   public success: false;
   public params: any;
   public id_edit: undefined | string;
+
+  private id_solicitud_by_params: any;
+
   public dataNivelDireccion: any[] = [];
   public suggestions: string[] = [];
 
@@ -331,6 +347,11 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
     });
 
     this.modelBase = new DatosProcesoInicio();
+
+    this.route.paramMap.subscribe((params) => {
+      this.id_solicitud_by_params = params.get("idSolicitud");
+      console.log("this.idDeInstancia: ", this.idDeInstancia);
+    });
   }
 
   searchCodigoPosicion: OperatorFunction<string, readonly string[]> = (
@@ -467,8 +488,8 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
             this.taskId = params["id"]; /* Esta es la instancia */
             console.log("this.uniqueTaskId: ", this.uniqueTaskId);
             console.log("this.taskId: ", this.taskId);
-            this.getDetalleSolicitudById(this.misParams.idSolicitud);
-            this.getSolicitudById(this.misParams.idSolicitud);
+            this.getDetalleSolicitudById(this.id_solicitud_by_params);
+            this.getSolicitudById(this.id_solicitud_by_params);
             this.date = result[0].created;
             this.loadExistingVariables(
               this.uniqueTaskId ? this.uniqueTaskId : "",
@@ -679,7 +700,7 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
     this.utilService.openLoadingSpinner(
       "Cargando información, espere por favor..."
     );
-
+    console.log("this.id_solicitud_by_params: ", this.id_solicitud_by_params);
     try {
       await this.ObtenerServicioTipoSolicitud();
       await this.ObtenerServicioTipoMotivo();
@@ -736,6 +757,16 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
       next: (response: any) => {
         console.log("Solicitud por id: ", response);
         this.solicitud = response;
+
+        // tveas, si incluye el id, debo mostrarlos (true)
+        this.mostrarTipoJustificacionYMision = this.restrictionsIds.includes(
+          this.solicitud.idTipoMotivo
+        );
+
+        this.mostrarSubledger = this.restrictionsSubledgerIds.includes(
+          this.solicitud.idTipoMotivo
+        );
+
         console.log("DATA SOLICITUD BY ID: ", this.solicitud);
       },
       error: (error: HttpErrorResponse) => {
