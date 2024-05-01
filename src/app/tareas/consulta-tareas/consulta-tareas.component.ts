@@ -144,8 +144,8 @@ export class ConsultaTareasComponent implements OnInit {
             tipoSolicitud: item.tipoSolicitud,
           })
         );
-        console.log("this.dataTable: ", this.dataTable);
-        console.log("RESPONSE: ", response);
+        console.log("this.dataTable TAREAS: ", this.dataTable);
+        console.log("RESPONSE TAREAS: ", response);
         /*this.dataTable = response.nivelAprobacionType.map(
           (nivelAprobacionResponse) => ({
             ...nivelAprobacionResponse,
