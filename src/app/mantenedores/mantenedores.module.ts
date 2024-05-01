@@ -19,7 +19,11 @@ import { RutaComponent } from "./ruta/ruta.component";
 import { CrearNivelesAprobacionComponent } from "./crear-niveles-aprobacion/crear-niveles-aprobacion.component";
 import { SpinnerComponent } from "../shared/spinner.component";
 import { NivelesAprobacionComponent } from "./niveles-aprobacion/niveles-aprobacion.component";
-import { EstadosComponent } from './estados/estados.component';
+import { EstadosComponent } from "./estados/estados.component";
+import { AprobadoresFijosComponent } from "./aprobadores-fijos/aprobadores-fijos.component";
+import { CrearAprobadorFijoComponent } from "./crear-aprobador-fijo/crear-aprobador-fijo.component";
+import { EditarAprobadorFijoComponent } from "./editar-aprobador-fijo/editar-aprobador-fijo.component";
+import { NgbTypeaheadModule } from "@ng-bootstrap/ng-bootstrap";
 
 @NgModule({
   declarations: [
@@ -32,6 +36,9 @@ import { EstadosComponent } from './estados/estados.component';
     RutaComponent,
     NivelesAprobacionComponent,
     EstadosComponent,
+    AprobadoresFijosComponent,
+    CrearAprobadorFijoComponent,
+    EditarAprobadorFijoComponent,
     // SpinnerComponent,
     // NivelesAprobacionComponent,
     //CrearNivelesAprobacionComponent
@@ -42,6 +49,7 @@ import { EstadosComponent } from './estados/estados.component';
     ComponentsModule,
     NgSelectModule,
     FormsModule,
+    NgbTypeaheadModule,
     NgIf,
     NgFor,
     CommonModule,

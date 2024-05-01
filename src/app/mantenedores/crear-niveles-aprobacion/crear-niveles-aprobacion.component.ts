@@ -87,7 +87,7 @@ export class CrearNivelesAprobacionComponent implements OnInit {
         this.onChangeTipoSolicitud(this.modelo.idTipoSolicitud);
         this.onChangeTipoRuta(this.modelo.idTipoRuta);
         this.utilService.closeLoadingSpinner();
-        console.log("The model: ", this.modelo);
+        console.log(`The model by id ${this.id_edit} : `, this.modelo);
       });
   }
 
@@ -207,8 +207,10 @@ export class CrearNivelesAprobacionComponent implements OnInit {
   }
 
   ObtenerServicioAccion() {
+    console.log("Executing ObtenerServicioAccion outside");
     return this.mantenimientoService.getAccion().subscribe({
       next: (response) => {
+        console.log("Executing ObtenerServicioAccion inside: ", response);
         this.dataAccion = response.map((r) => ({
           id: r.id,
           descripcion: r.accion,
@@ -221,8 +223,10 @@ export class CrearNivelesAprobacionComponent implements OnInit {
   }
 
   ObtenerServicioRuta() {
+    console.log("Executing ObtenerServicioAccion outside");
     return this.mantenimientoService.getRuta().subscribe({
       next: (response) => {
+        console.log("Executing ObtenerServicioAccion inside: ", response);
         this.dataRuta = response.map((r) => ({
           id: r.id,
           descripcion: r.ruta,

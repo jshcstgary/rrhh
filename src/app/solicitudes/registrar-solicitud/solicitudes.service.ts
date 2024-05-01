@@ -27,7 +27,9 @@ export class SolicitudesService {
   }
 
   public getDetalleSolicitudById(idSolicitud: any): Observable<any> {
-    return this.http.get<any>(`${this.apiUrlSolicitudes}/${idSolicitud}`);
+    return this.http.get<any>(
+      `${this.apiUrlSolicitudes}/detalle-solicitud/${idSolicitud}`
+    );
   }
 
   public getDetalleSolicitud(): Observable<any> {
@@ -64,10 +66,6 @@ export class SolicitudesService {
     return this.http.get<any>(
       `${this.apiUrlNivelAprobacion}/${idTipoSolicitud}/${idTipoMotivo}/${idNivelDireccion}`
     );
-  }
-
-  public getDataEmpleadosEvolution(): Observable<IEmpleados> {
-    return this.http.get<IEmpleados>(this.apiEmpleadoEvolutionUrl);
   }
 
   public getDataNivelesAprobacionPorCodigoPosicion(

@@ -1,0 +1,21 @@
+<plantilla-e-component
+  [dataFilterNivelesAprobacion]="dataFilterNivelesAprobacion"
+  [dataTipoMotivo]="dataTipoMotivo"
+  [dataTipoSolicitudes]="dataTipoSolicitudes"
+  [dataNivelDireccion]="dataNivelDireccion"
+  *ngIf="hasFiltered"
+  [columnsTable]="columnsTable"
+  [originalDataTable]="dataTable"
+  [placeholderHeaderInputText]="'Buscar aprobadores fijos...'"
+  [contexto]="this"
+  keyNameTable="id"
+  [colsToFilterByText]="colsToFilterByText"
+  clickOnActionRow="onRowActionClicked"
+  clickOnFilter="filterDataTable"
+  clickOnPageCrear="pageCrear"
+  [IdRowToClone]="IdRowToClone"
+  colIdToDisable="id"
+  titleReport="APROBADOR FIJO"
+  [codigoReport]="codigoReporte"
+>
+</plantilla-e-component>

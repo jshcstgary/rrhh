@@ -211,6 +211,23 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
   public dataTiposAccionesPorTipoSolicitud: { [idSolicitud: number]: any[] } =
     {};
 
+  /*
+    Cuando es Acción Personal, Reingreso Personal y Contratación de Familiares
+    se oculta el Tipo de Motivo, mostrar sólo Tipo de Acción
+  */
+  public idsOcultarTipoMotivo: any[] = ["3", "5", "6", 3, 5, 6];
+
+  // No mostrar = false
+  public desactivarTipoMotivo = false;
+
+  /*
+    Cuando es Requisión de personal se oculta Tipo de Acción, muestra sólo Tipo de Motivo
+  */
+  public idsOcultarTipoAccion: any[] = ["1", 1];
+
+  // No mostrar = false
+  public desactivarTipoAccion = false;
+
   modelo: DatosProcesoInicio = new DatosProcesoInicio();
   private instanceCreated: DatosInstanciaProceso;
   consultaSolicitudesSelect!: string;
@@ -369,7 +386,7 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
     this.ObtenerServicioTipoSolicitud();
     this.ObtenerServicioTipoMotivo();
     this.ObtenerServicioTipoAccion();
-    this.ObtenerServicioEstado();
+
     this.obtenerEmpresaYUnidadNegocio();
   }
 
@@ -629,6 +646,16 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
         { id: 4, descripcion: "Acción de Personal" },
       ];*/
     this.tipoSolicitudSeleccionada = idTipoSolicitud;
+    this.desactivarTipoMotivo =
+      !this.idsOcultarTipoMotivo.includes(idTipoSolicitud);
+
+    console.log("this.desactivarTipoMotivo: ", this.desactivarTipoMotivo);
+    console.log("this.idsOcultarTipoMotivo: ", this.idsOcultarTipoMotivo);
+    console.log("idTipoSolicitud: ", idTipoSolicitud);
+
+    this.desactivarTipoAccion =
+      !this.idsOcultarTipoAccion.includes(idTipoSolicitud);
+
     if (!this.dataTiposMotivosPorTipoSolicitud[idTipoSolicitud]) {
       this.mantenimientoService
         .getTiposMotivosPorTipoSolicitud(idTipoSolicitud)
@@ -899,6 +926,7 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
           codigo: r.codigo,
           descripcion: r.valor,
         })); //verificar la estructura mmunoz
+        console.log("ESTADOSSSS: ", this.data_estado);
       },
       error: (error: HttpErrorResponse) => {
         this.utilService.modalResponse(error.error, "error");
@@ -907,6 +935,7 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
   }
 
   private getDataToTable() {
+    this.ObtenerServicioEstado();
     this.utilService.openLoadingSpinner(
       "Cargando información, espere por favor..."
     );
@@ -934,11 +963,22 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 
     combinedData$.subscribe((data) => {
       this.utilService.closeLoadingSpinner();
-      // console.log("ESTA ES LA DATA: ", data);
-      this.dataTable = data.map((item) => ({
-        ...item,
-        estado: item.estado === "A",
-      }));
+      // this.data_estado.find(itemEstado => itemEstado.codigo == itemSolicitud.estadoSolicitud)
+      console.log("ESTA ES LA DATA: ", data);
+      console.log("MI DATA ESTADO AL ITERAR: ", this.data_estado);
+      this.dataTable = data.map((itemSolicitud) => {
+        let descripcionEstado = this.data_estado.find(
+          (itemEstado) => itemEstado.codigo == itemSolicitud.estadoSolicitud
+        );
+        console.log("DESCRIPCION ESTADO: ", descripcionEstado);
+        return {
+          ...itemSolicitud,
+          estado:
+            descripcionEstado !== undefined
+              ? descripcionEstado.descripcion
+              : "N/A",
+        };
+      });
       // Aquí tienes la data combinada y ordenada
     });
 
@@ -957,10 +997,7 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 
   onRowActionClicked(id: string, key: string, tooltip: string, id_edit) {
     // Lógica cuando se da click en una acción de la fila
-
-    this.router.navigate(["/solicitudes/registrar-solicitud"], {
-      queryParams: { id_edit },
-    });
+    this.router.navigate(["/solicitudes/detalle-solicitud", id_edit]);
   }
 
   mostrarModalCrearInstanciaSolicitud() {

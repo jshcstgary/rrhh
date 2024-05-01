@@ -10,6 +10,9 @@ import { AccionComponent } from "./accion/accion.component";
 import { NivelesAprobacionComponent } from "./niveles-aprobacion/niveles-aprobacion.component";
 import { CrearNivelesAprobacionComponent } from "./crear-niveles-aprobacion/crear-niveles-aprobacion.component";
 import { EstadosComponent } from "./estados/estados.component";
+import { AprobadoresFijosComponent } from "./aprobadores-fijos/aprobadores-fijos.component";
+import { CrearAprobadorFijoComponent } from "./crear-aprobador-fijo/crear-aprobador-fijo.component";
+import { EditarAprobadorFijoComponent } from "./editar-aprobador-fijo/editar-aprobador-fijo.component";
 
 export const MantenedoresRoutes: Routes = [
   {
@@ -107,6 +110,33 @@ export const MantenedoresRoutes: Routes = [
         data: {
           title: "Estados Solicitud",
           urls: [{ title: "Mantenimiento" }, { title: "Estados Solicitud" }],
+        },
+      },
+      {
+        path: "aprobadores-fijos",
+        component: AprobadoresFijosComponent,
+        data: {
+          title: "Aprobadores Fijos",
+          urls: [{ title: "Mantenimiento" }, { title: "Aprobadores Fijos" }],
+        },
+      },
+      {
+        path: "crear-aprobador-fijo",
+        component: CrearAprobadorFijoComponent,
+        data: {
+          title: "Crear Aprobador Fijo",
+          urls: [{ title: "Mantenimiento" }, { title: "Crear Aprobador Fijo" }],
+        },
+      },
+      {
+        path: "editar-aprobador-fijo/:id",
+        component: EditarAprobadorFijoComponent,
+        data: {
+          title: "Editar Aprobador Fijo",
+          urls: [
+            { title: "Mantenimiento" },
+            { title: "Editar Aprobador Fijo" },
+          ],
         },
       },
     ],

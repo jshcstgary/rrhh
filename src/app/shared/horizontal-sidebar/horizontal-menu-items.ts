@@ -90,6 +90,15 @@ export const ROUTES: RouteInfo[] = [
         extralink: false,
         submenu: [],
       },
+      {
+        path: "/mantenedores/aprobadores-fijos",
+        title: "Aprobadores Fijos",
+        icon: "",
+        class: "",
+        ddclass: "",
+        extralink: false,
+        submenu: [],
+      },
     ],
   },
   {
