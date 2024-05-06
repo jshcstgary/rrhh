@@ -149,6 +149,8 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
 
   public dataNivelesDeAprobacion: { [key: string]: any[] } = {};
 
+  public dataAprobacionesPorPosicion: { [key: string]: any[] } = {};
+
   // getDataNivelesAprobacionPorCodigoPosicion
   public dataNivelesAprobacionPorCodigoPosicion: { [key: string]: any[] } = {};
 
@@ -527,6 +529,28 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
     this.suggestions = [];
   }
 
+  obtenerAprobacionesPorPosicion() {
+    return this.solicitudes
+      .obtenerAprobacionesPorPosicion(
+        this.solicitud.idTipoSolicitud,
+        this.solicitud.idTipoMotivo,
+        this.model.codigoPosicion,
+        this.model.nivelDir
+      )
+      .subscribe({
+        next: (response) => {
+          this.dataAprobacionesPorPosicion[this.keySelected] =
+            response.nivelAprobacionPosicionType;
+        },
+        error: (error: HttpErrorResponse) => {
+          this.utilService.modalResponse(
+            "No existe aprobadores de solicitud para los datos ingresados",
+            "error"
+          );
+        },
+      });
+  }
+
   onSelectItem(campo: string, event) {
     let valor = event.item;
     const datosEmpleado = this.dataEmpleadoEvolution.find((empleado) => {
@@ -542,16 +566,28 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
     console.log("Valor de datosEmpleado: ", datosEmpleado);
     if (datosEmpleado) {
       console.log("Ingresa en el if: ", datosEmpleado);
-      this.model = Object.assign({}, datosEmpleado);
+      this.model = Object.assign(
+        {},
+        {
+          ...datosEmpleado,
+          sueldo: datosEmpleado.sueldo,
+          sueldoMensual: datosEmpleado.sueldoVariableMensual,
+          sueldoTrimestral: datosEmpleado.sueldoVariableTrimestral,
+          sueldoSemestral: datosEmpleado.sueldoVariableSemestral,
+          sueldoAnual: datosEmpleado.sueldoVariableAnual,
+        }
+      );
       console.log("ESTE MODELO SE ASIGNA: ", this.model);
       this.keySelected =
         this.solicitud.idTipoSolicitud +
         "_" +
         this.solicitud.idTipoMotivo +
         "_" +
+        this.model.codigoPosicion +
+        "_" +
         this.model.nivelDir;
-      if (!this.dataNivelesDeAprobacion[this.keySelected]) {
-        this.getNivelesAprobacion();
+      if (!this.dataAprobacionesPorPosicion[this.keySelected]) {
+        this.obtenerAprobacionesPorPosicion();
       }
     } else {
       // this.model.reset();
@@ -869,9 +905,10 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
       console.log("routing to app error page ", result.error.message);
       // error while loading task. handle it by redirecting to error page
       this.errorMessage = result.error.message;
-      this.router.navigate(["error"], {
-        queryParams: { message: result.error.message },
-      });
+      // this.router.navigate(["error"], {
+      //   queryParams: { message: result.error.message },
+      // });
+      this.utilService.modalResponse(this.errorMessage, "error");
     }
   }
 
@@ -953,6 +990,7 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
 
         this.solicitud.unidadNegocio = this.model.unidadNegocio;
         this.solicitud.idUnidadNegocio = this.model.unidadNegocio;
+        this.solicitud.estadoSolicitud = "2";
         console.log("this.solicitud: ", this.solicitud);
         this.solicitudes
           .actualizarSolicitud(this.solicitud)
@@ -1026,13 +1064,12 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
 
             this.detalleSolicitud.sueldo = this.model.sueldo;
             this.detalleSolicitud.sueldoVariableMensual =
-              this.model.sueldoVariableMensual;
+              this.model.sueldoMensual;
             this.detalleSolicitud.sueldoVariableTrimestral =
-              this.model.sueldoVariableTrimestral;
+              this.model.sueldoTrimestral;
             this.detalleSolicitud.sueldoVariableSemestral =
-              this.model.sueldoVariableSemestral;
-            this.detalleSolicitud.sueldoVariableAnual =
-              this.model.sueldoVariableAnual;
+              this.model.sueldoSemestral;
+            this.detalleSolicitud.sueldoVariableAnual = this.model.sueldoAnual;
             this.detalleSolicitud.tipoContrato = this.model.tipoContrato;
             this.detalleSolicitud.unidad = this.model.unidadNegocio;
             this.detalleSolicitud.unidadNegocio = this.model.unidadNegocio;
@@ -1057,134 +1094,49 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
                   this.uniqueTaskId
                 );
 
+                console.log("AQUI HAY UN IDDEINSTANCIA?: ", this.idDeInstancia);
+
                 this.camundaRestService
                   .getTask(environment.taskType_Notificar, this.idDeInstancia)
-                  .subscribe((result) => {
-                    console.log("INGRESA AQUÍ: ", result);
-                    console.log(
-                      "environment.taskType_Notificar: ",
-                      environment.taskType_Notificar
-                    );
+                  .subscribe({
+                    next: (responseConsultaNotificar) => {
+                      // if result is success - bingo, we got the task id
+                      this.uniqueTaskId =
+                        responseConsultaNotificar[0]?.id; /* Es como la tarea que se crea en esa instancia */
+                      this.taskId =
+                        this.idDeInstancia; /* Esta es la instancia */
+                      console.log("this.uniqueTaskId: ", this.uniqueTaskId);
+                      console.log("this.taskId: ", this.taskId);
 
-                    // if result is success - bingo, we got the task id
-                    this.uniqueTaskId =
-                      result[0].id; /* Es como la tarea que se crea en esa instancia */
-                    this.taskId = this.idDeInstancia; /* Esta es la instancia */
-                    console.log("this.uniqueTaskId: ", this.uniqueTaskId);
-                    console.log("this.taskId: ", this.taskId);
-
-                    // tveas da error Notificar
-                    /*this.camundaRestService
-                      .postCompleteTask(this.uniqueTaskId, variables)
-                      .subscribe((res) => {
-                        console.log("SE EJECUTA EL POSSSSSS: ", res);
-                      });*/
-
-                    // this.getDetalleSolicitudById(this.misParams.idSolicitud);
-                    // this.getSolicitudById(this.misParams.idSolicitud);
-                    // this.date = result[0].created;
-                    // this.loadExistingVariables(
-                    //   this.uniqueTaskId ? this.uniqueTaskId : "",
-                    //   variableNames
-                    // );
+                      this.camundaRestService
+                        .postCompleteTask(this.uniqueTaskId, variables)
+                        .subscribe({
+                          next: (responseCompleyatNotificar) => {
+                            console.log("Complete task notificar");
+                            this.utilService.modalResponse(
+                              `Solicitud registrada correctamente [${this.idDeInstancia}]. Será redirigido en un momento...`,
+                              "success"
+                            );
+                            setTimeout(() => {
+                              this.router.navigate([
+                                "/solicitudes/consulta-solicitudes",
+                              ]);
+                            }, 1800);
+                          },
+                          error: (error: HttpErrorResponse) => {
+                            this.utilService.modalResponse(
+                              error.error,
+                              "error"
+                            );
+                          },
+                        });
+                    },
+                    error: (error: HttpErrorResponse) => {
+                      this.utilService.modalResponse(error.error, "error");
+                    },
                   });
-
-                // /solicitudes/consulta-solicitudes
-
-                setTimeout(() => {
-                  this.router.navigate(["/solicitudes/consulta-solicitudes"], {
-                    queryParams: { idInstancia },
-                  });
-                }, 1800);
-
-                // tveas comentada la redirección
-                /*setTimeout(() => {
-                  this.router.navigate(
-                    [
-                      "/solicitudes/completar-solicitud",
-                      this.solicitud.idInstancia,
-                    ],
-                    {
-                      queryParams: { idInstancia },
-                    }
-                  );
-                }, 1800);*/
               });
-
-            let dataSend = {
-              idSolicitud: responseSolicitud.idSolicitud,
-              codigo: "string",
-              valor: "string",
-              estado: "string",
-              fechaRegistro: "2024-04-25T20:23:37.819Z",
-              compania: "string",
-              unidadNegocio: "string",
-              codigoPosicion: "string",
-              descripcionPosicion: "string",
-              areaDepartamento: "string",
-              localidadZona: "string",
-              nivelDireccion: "string",
-              centroCosto: "string",
-              nombreEmpleado: "string",
-              subledger: "string",
-              reportaA: "string",
-              nivelReporteA: "string",
-              supervisaA: "string",
-              tipoContrato: "string",
-              departamento: "string",
-              cargo: "string",
-              jefeSolicitante: "string",
-              responsableRRHH: "string",
-              localidad: "string",
-              fechaIngreso: "2024-04-25T20:23:37.819Z",
-              unidad: "string",
-              puesto: "string",
-              jefeInmediatoSuperior: "string",
-              jefeReferencia: "string",
-              cargoReferencia: "string",
-              fechaSalida: "2024-04-25T20:23:37.819Z",
-              puestoJefeInmediato: "string",
-              subledgerEmpleado: "string",
-              grupoDePago: "string",
-              sucursal: "string",
-              movilizacion: "string",
-              alimentacion: "string",
-              jefeAnteriorJefeReferencia: "string",
-              causaSalida: "string",
-              nombreJefeSolicitante: "string",
-              misionCargo: "string",
-              justificacion: "string",
-            };
           });
-
-        /*this.solicitudes
-          .guardarSolicitud(this.solicitud)
-          .subscribe((response) => {
-            console.log("MI MODELO AL ENVIAR ES ESTO: ", this.solicitud);
-            this.solicitud.idSolicitud = response.idSolicitud;
-            this.solicitud.fechaActualizacion = response.fechaActualizacion;
-            this.solicitud.fechaCreacion = response.fechaCreacion;
-            this.submitted = true;
-            console.log("IDDDDD INSTANCIA: ", this.solicitud.idInstancia);
-            let idInstancia = this.solicitud.idInstancia;
-
-            this.utilService.modalResponse(
-              `Solicitud registrada correctamente [${idInstancia}]. Será redirigido en un momento...`,
-              "success"
-            );
-
-            setTimeout(() => {
-              this.router.navigate(
-                [
-                  "/solicitudes/completar-solicitud",
-                  this.solicitud.idInstancia,
-                ],
-                {
-                  queryParams: { idInstancia },
-                }
-              );
-            }, 1800);
-          });*/
       });
     this.submitted = true;
   }
@@ -1294,10 +1246,10 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
     variables.descripContrato = { value: this.model.descripContrato };
     variables.status = { value: this.model.status };
     variables.sueldo = { value: this.model.sueldo }; //sueldoVariableMensual
-    variables.sueldoMensual = { value: this.model.sueldoVariableMensual };
-    variables.sueldoTrimestral = { value: this.model.sueldoVariableTrimestral };
-    variables.sueldoSemestral = { value: this.model.sueldoVariableSemestral };
-    variables.sueldoAnual = { value: this.model.sueldoVariableAnual };
+    variables.sueldoMensual = { value: this.model.sueldoMensual };
+    variables.sueldoTrimestral = { value: this.model.sueldoTrimestral };
+    variables.sueldoSemestral = { value: this.model.sueldoSemestral };
+    variables.sueldoAnual = { value: this.model.sueldoAnual };
     variables.anularSolicitud = { value: "No" };
     variables.codigoPosicion = { value: this.model.codigoPosicion };
     variables.misionCargo = { value: this.model.misionCargo };
@@ -1344,9 +1296,7 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
           "success"
         );
         setTimeout(() => {
-          this.router.navigate(["/solicitudes/completar-solicitudes"], {
-            // queryParams: { ...this.solicitud },
-          });
+          this.router.navigate(["/solicitudes/completar-solicitudes"]);
         }, 1600);
       });
   }
@@ -1355,9 +1305,7 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
     console.log("User action cancel");
     // mmunoz
     // this.router.navigate(["tasklist/Registrar"], { queryParams: {} });
-    this.router.navigate(["solicitudes/consulta-solicitudes"], {
-      queryParams: {},
-    });
+    this.router.navigate(["tareas/consulta-tarea"]);
   }
 
   compareNivelesAprobacion(a, b) {

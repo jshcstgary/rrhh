@@ -39,6 +39,7 @@ export class TableComponent implements OnInit, OnChanges {
   @Input() public onChangePagination: string;
   @Input() public onCheck: string;
   @Input() public clickOnActionRow: string;
+  @Input({ required: false }) public isTarea: boolean = false;
   @Input() public rowsPerPageValue: number =
     TableComponentData.defaultRowPerPage;
   @Input() public page: number = 1;
@@ -403,6 +404,18 @@ export class TableComponent implements OnInit, OnChanges {
    * @returns Una cadena que representa los datos formateados según la configuración de columna.
    */
   public showDataInTable(row: any, head: IColumnTable): string {
+    //
+    if (this.isTarea) {
+      let tareaRow = { ...row, idSolicitud: row["idSolicitud"].split(",")[0] };
+      //
+      return head.dataIndexesToJoin
+        ? head.dataIndexesToJoin
+            .map((prop) => {
+              return tareaRow[prop];
+            })
+            .join(" - ")
+        : tareaRow[head.dataIndex];
+    }
     return head.dataIndexesToJoin
       ? head.dataIndexesToJoin.map((prop) => row[prop]).join(" - ")
       : row[head.dataIndex];

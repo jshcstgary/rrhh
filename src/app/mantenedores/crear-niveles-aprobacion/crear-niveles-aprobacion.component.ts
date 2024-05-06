@@ -63,7 +63,6 @@ export class CrearNivelesAprobacionComponent implements OnInit {
 
     this.route.queryParams.subscribe((params) => {
       this.id_edit = params["id_edit"];
-      console.log("ID editar: ", this.id_edit);
       // Utiliza el id_edit obtenido
     });
   }
@@ -79,7 +78,6 @@ export class CrearNivelesAprobacionComponent implements OnInit {
     this.serviceNivelesAprobacion
       .getNivelById(this.id_edit)
       .subscribe((data) => {
-        console.log("GETBYID");
         this.modelo = { ...data, estado: data.estado === "A" };
         this.desactivarTipoMotivoYAccion = this.restrictionsIds.includes(
           this.modelo.idTipoSolicitud
@@ -87,7 +85,6 @@ export class CrearNivelesAprobacionComponent implements OnInit {
         this.onChangeTipoSolicitud(this.modelo.idTipoSolicitud);
         this.onChangeTipoRuta(this.modelo.idTipoRuta);
         this.utilService.closeLoadingSpinner();
-        console.log(`The model by id ${this.id_edit} : `, this.modelo);
       });
   }
 
@@ -141,16 +138,7 @@ export class CrearNivelesAprobacionComponent implements OnInit {
       this.modelo.accion = "";
       this.modelo.idAccion = 0;
     }
-    console.log(
-      "this.tipoSolicitudSeleccionada = " +
-        this.tipoSolicitudSeleccionada +
-        ", restrictionsIds = ",
-      this.restrictionsIds
-    );
-    console.log(
-      "¿Está en restrictionsIds?",
-      this.restrictionsIds.includes(this.tipoSolicitudSeleccionada)
-    );
+
     if (!this.dataAccionesPorTipoSolicitud[idTipoSolicitud]) {
       this.mantenimientoService
         .getAccionesPorTipoSolicitud(idTipoSolicitud)
@@ -207,10 +195,8 @@ export class CrearNivelesAprobacionComponent implements OnInit {
   }
 
   ObtenerServicioAccion() {
-    console.log("Executing ObtenerServicioAccion outside");
     return this.mantenimientoService.getAccion().subscribe({
       next: (response) => {
-        console.log("Executing ObtenerServicioAccion inside: ", response);
         this.dataAccion = response.map((r) => ({
           id: r.id,
           descripcion: r.accion,
@@ -223,10 +209,8 @@ export class CrearNivelesAprobacionComponent implements OnInit {
   }
 
   ObtenerServicioRuta() {
-    console.log("Executing ObtenerServicioAccion outside");
     return this.mantenimientoService.getRuta().subscribe({
       next: (response) => {
-        console.log("Executing ObtenerServicioAccion inside: ", response);
         this.dataRuta = response.map((r) => ({
           id: r.id,
           descripcion: r.ruta,
@@ -253,11 +237,8 @@ export class CrearNivelesAprobacionComponent implements OnInit {
   }
 
   ObtenerServicioNivelDireccion() {
-    console.log("Executing ObtenerServicioNivelDireccion() method");
-
     return this.mantenimientoService.getNiveles().subscribe({
       next: (response) => {
-        console.log("Response = ", response);
         this.dataNivelDireccion = [
           ...new Set(
             response.evType.map((item) => {
@@ -273,11 +254,8 @@ export class CrearNivelesAprobacionComponent implements OnInit {
   }
 
   ObtenerServicioNivelAprobacion() {
-    console.log("Executing ObtenerServicioNivelAprobacion() method");
-
     return this.mantenimientoService.getNiveles().subscribe({
       next: (response) => {
-        console.log("Response = ", response);
         this.dataNivelAprobacion = [
           ...new Set(
             response.evType.map((item) => {
@@ -331,16 +309,8 @@ export class CrearNivelesAprobacionComponent implements OnInit {
     this.utilService.openLoadingSpinner(
       "Guardando información, espere por favor..."
     );
-    console.log("DATA A PROCESAR: ", {
-      ...this.modelo,
-      estado: this.modelo.estado ? "A" : "I",
-    });
+
     if (this.id_edit === undefined) {
-      console.log("Guardar nivel de solicitud: ", this.id_edit);
-      console.log(
-        "dataAccionesPorTipoSolicitud[tipoSolicitudSeleccionada]: ",
-        this.dataAccionesPorTipoSolicitud[this.tipoSolicitudSeleccionada]
-      );
       this.route.params.subscribe((params) => {
         this.serviceNivelesAprobacion
           .guardarNivelAprobacion({
@@ -350,13 +320,11 @@ export class CrearNivelesAprobacionComponent implements OnInit {
           .subscribe(
             (response) => {
               // Inicio
-              console.log("Response al guardar: ", response);
               this.serviceNivelesAprobacion
                 .refrescarNivelesAprobaciones()
                 .subscribe(
                   (response) => {
                     this.utilService.closeLoadingSpinner();
-                    console.log("RESPONSE REFRESH GUARDAR: ", response);
                     this.utilService.modalResponse(
                       "Datos ingresados correctamente",
                       "success"

@@ -1,0 +1,48 @@
+.autocomplete-items {
+  border: 1px solid #d4d4d4;
+  border-bottom: none;
+  border-top: none;
+  z-index: 99;
+  /*position the autocomplete items to be the same width as the container:*/
+  top: 100%;
+  left: 0;
+  right: 0;
+}
+
+.suggestion-item {
+  padding: 10px;
+  cursor: pointer;
+  background-color: #fff;
+  border-bottom: 1px solid #d4d4d4;
+}
+
+.suggestion-item:hover {
+  /*when hovering an item:*/
+  background-color: #e9e9e9;
+}
+
+.form-control { width: 300px; }
+
+.header-accordion {background-color: white !important}
+.accordion-item {
+  border: none !important;
+}
+
+.accordion-button, .accordion-button.collapsed {
+  border: none !important;
+  box-shadow: none !important;
+}
+textarea {
+  width: 40%;
+  // height: 200px;
+  padding: 10px;
+  border: 1px solid #e2dfdf;
+  box-sizing: border-box;
+}
+.ngb-typeahead-window .dropdown-item.active {
+  background-color: gold; /* Cambia el color de fondo a dorado */
+}
+
+.dropdown-menu {
+  width: 300px; /* Ajusta el ancho según tus necesidades */
+}

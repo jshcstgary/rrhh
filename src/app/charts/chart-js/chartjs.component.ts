@@ -1,14 +1,14 @@
-import { Component, AfterViewInit, ViewChild } from '@angular/core';
+import { Component, AfterViewInit, ViewChild } from "@angular/core";
 import {
   NgChartsModule,
   NgChartsConfiguration,
   BaseChartDirective,
-} from 'ng2-charts';
-import DataLabelsPlugin from 'chartjs-plugin-datalabels';
-import { ChartConfiguration, ChartData, ChartEvent, ChartType } from 'chart.js';
+} from "ng2-charts";
+import DataLabelsPlugin from "chartjs-plugin-datalabels";
+import { ChartConfiguration, ChartData, ChartEvent, ChartType } from "chart.js";
 
 @Component({
-  templateUrl: './chartjs.component.html',
+  templateUrl: "./chartjs.component.html",
   imports: [NgChartsModule],
   standalone: true,
   providers: [
@@ -19,7 +19,7 @@ export class ChartjsComponent implements AfterViewInit {
   // bar chart
   @ViewChild(BaseChartDirective) chart: BaseChartDirective | undefined;
 
-  public barChartOptions: ChartConfiguration['options'] = {
+  public barChartOptions: ChartConfiguration["options"] = {
     responsive: true,
     // We use these empty structures as placeholders for dynamic theming.
     scales: {
@@ -33,19 +33,19 @@ export class ChartjsComponent implements AfterViewInit {
         display: true,
       },
       datalabels: {
-        anchor: 'end',
-        align: 'end',
+        anchor: "end",
+        align: "end",
       },
     },
   };
-  public barChartType: ChartType = 'bar';
+  public barChartType: ChartType = "bar";
   public barChartPlugins = [DataLabelsPlugin];
 
-  public barChartData: ChartData<'bar'> = {
-    labels: ['2006', '2007', '2008', '2009', '2010', '2011', '2012'],
+  public barChartData: ChartData<"bar"> = {
+    labels: ["2006", "2007", "2008", "2009", "2010", "2011", "2012"],
     datasets: [
-      { data: [65, 59, 80, 81, 56, 55, 40], label: 'Series A' },
-      { data: [28, 48, 40, 19, 86, 27, 90], label: 'Series B' },
+      { data: [65, 59, 80, 81, 56, 55, 40], label: "Series A" },
+      { data: [28, 48, 40, 19, 86, 27, 90], label: "Series B" },
     ],
   };
 
@@ -56,9 +56,7 @@ export class ChartjsComponent implements AfterViewInit {
   }: {
     event?: ChartEvent;
     active?: {}[];
-  }): void {
-    console.log(event, active);
-  }
+  }): void {}
 
   public chartHovered({
     event,
@@ -66,9 +64,7 @@ export class ChartjsComponent implements AfterViewInit {
   }: {
     event?: ChartEvent;
     active?: {}[];
-  }): void {
-    console.log(event, active);
-  }
+  }): void {}
 
   public randomize(): void {
     // Only Change 3 values
@@ -87,11 +83,11 @@ export class ChartjsComponent implements AfterViewInit {
 
   // Doughnut chart
   public doughnutChartLabels: string[] = [
-    'Download Sales',
-    'In-Store Sales',
-    'Mail-Order Sales',
+    "Download Sales",
+    "In-Store Sales",
+    "Mail-Order Sales",
   ];
-  public doughnutChartData: ChartData<'doughnut'> = {
+  public doughnutChartData: ChartData<"doughnut"> = {
     labels: this.doughnutChartLabels,
     datasets: [
       { data: [350, 450, 100] },
@@ -99,7 +95,7 @@ export class ChartjsComponent implements AfterViewInit {
       { data: [250, 130, 70] },
     ],
   };
-  public doughnutChartType: ChartType = 'doughnut';
+  public doughnutChartType: ChartType = "doughnut";
 
   // events
   public chartClicked2({
@@ -108,9 +104,7 @@ export class ChartjsComponent implements AfterViewInit {
   }: {
     event: ChartEvent;
     active: {}[];
-  }): void {
-    console.log(event, active);
-  }
+  }): void {}
 
   public chartHovered2({
     event,
@@ -118,32 +112,30 @@ export class ChartjsComponent implements AfterViewInit {
   }: {
     event: ChartEvent;
     active: {}[];
-  }): void {
-    console.log(event, active);
-  }
+  }): void {}
 
   // Radar
-  public radarChartOptions: ChartConfiguration['options'] = {
+  public radarChartOptions: ChartConfiguration["options"] = {
     responsive: true,
   };
   public radarChartLabels: string[] = [
-    'Eating',
-    'Drinking',
-    'Sleeping',
-    'Designing',
-    'Coding',
-    'Cycling',
-    'Running',
+    "Eating",
+    "Drinking",
+    "Sleeping",
+    "Designing",
+    "Coding",
+    "Cycling",
+    "Running",
   ];
 
-  public radarChartData: ChartData<'radar'> = {
+  public radarChartData: ChartData<"radar"> = {
     labels: this.radarChartLabels,
     datasets: [
-      { data: [65, 59, 90, 81, 56, 55, 40], label: 'Series A' },
-      { data: [28, 48, 40, 19, 96, 27, 100], label: 'Series B' },
+      { data: [65, 59, 90, 81, 56, 55, 40], label: "Series A" },
+      { data: [28, 48, 40, 19, 96, 27, 100], label: "Series B" },
     ],
   };
-  public radarChartType: ChartType = 'radar';
+  public radarChartType: ChartType = "radar";
 
   // events
   public chartClicked3({
@@ -152,9 +144,7 @@ export class ChartjsComponent implements AfterViewInit {
   }: {
     event: ChartEvent;
     active: {}[];
-  }): void {
-    console.log(event, active);
-  }
+  }): void {}
 
   public chartHovered3({
     event,
@@ -162,17 +152,15 @@ export class ChartjsComponent implements AfterViewInit {
   }: {
     event: ChartEvent;
     active: {}[];
-  }): void {
-    console.log(event, active);
-  }
+  }): void {}
 
   // Pie
-  public pieChartOptions: ChartConfiguration['options'] = {
+  public pieChartOptions: ChartConfiguration["options"] = {
     responsive: true,
     plugins: {
       legend: {
         display: true,
-        position: 'top',
+        position: "top",
       },
       datalabels: {
         formatter: (value: any, ctx: any) => {
@@ -183,15 +171,15 @@ export class ChartjsComponent implements AfterViewInit {
       },
     },
   };
-  public pieChartData: ChartData<'pie', number[], string | string[]> = {
-    labels: [['Download', 'Sales'], ['In', 'Store', 'Sales'], 'Mail Sales'],
+  public pieChartData: ChartData<"pie", number[], string | string[]> = {
+    labels: [["Download", "Sales"], ["In", "Store", "Sales"], "Mail Sales"],
     datasets: [
       {
         data: [300, 500, 100],
       },
     ],
   };
-  public pieChartType: ChartType = 'pie';
+  public pieChartType: ChartType = "pie";
   public pieChartPlugins = [DataLabelsPlugin];
 
   // events
@@ -201,9 +189,7 @@ export class ChartjsComponent implements AfterViewInit {
   }: {
     event: ChartEvent;
     active: {}[];
-  }): void {
-    console.log(event, active);
-  }
+  }): void {}
 
   public chartHovered4({
     event,
@@ -211,62 +197,60 @@ export class ChartjsComponent implements AfterViewInit {
   }: {
     event: ChartEvent;
     active: {}[];
-  }): void {
-    console.log(event, active);
-  }
+  }): void {}
 
   changeLabels(): void {
     const words = [
-      'hen',
-      'variable',
-      'embryo',
-      'instal',
-      'pleasant',
-      'physical',
-      'bomber',
-      'army',
-      'add',
-      'film',
-      'conductor',
-      'comfortable',
-      'flourish',
-      'establish',
-      'circumstance',
-      'chimney',
-      'crack',
-      'hall',
-      'energy',
-      'treat',
-      'window',
-      'shareholder',
-      'division',
-      'disk',
-      'temptation',
-      'chord',
-      'left',
-      'hospital',
-      'beef',
-      'patrol',
-      'satisfied',
-      'academy',
-      'acceptance',
-      'ivory',
-      'aquarium',
-      'building',
-      'store',
-      'replace',
-      'language',
-      'redeem',
-      'honest',
-      'intention',
-      'silk',
-      'opera',
-      'sleep',
-      'innocent',
-      'ignore',
-      'suite',
-      'applaud',
-      'funny',
+      "hen",
+      "variable",
+      "embryo",
+      "instal",
+      "pleasant",
+      "physical",
+      "bomber",
+      "army",
+      "add",
+      "film",
+      "conductor",
+      "comfortable",
+      "flourish",
+      "establish",
+      "circumstance",
+      "chimney",
+      "crack",
+      "hall",
+      "energy",
+      "treat",
+      "window",
+      "shareholder",
+      "division",
+      "disk",
+      "temptation",
+      "chord",
+      "left",
+      "hospital",
+      "beef",
+      "patrol",
+      "satisfied",
+      "academy",
+      "acceptance",
+      "ivory",
+      "aquarium",
+      "building",
+      "store",
+      "replace",
+      "language",
+      "redeem",
+      "honest",
+      "intention",
+      "silk",
+      "opera",
+      "sleep",
+      "innocent",
+      "ignore",
+      "suite",
+      "applaud",
+      "funny",
     ];
     const randomWord = () => words[Math.trunc(Math.random() * words.length)];
     this.pieChartData.labels = new Array(3).map((_) => randomWord());
@@ -276,7 +260,7 @@ export class ChartjsComponent implements AfterViewInit {
 
   addSlice(): void {
     if (this.pieChartData.labels) {
-      this.pieChartData.labels.push(['Line 1', 'Line 2', 'Line 3']);
+      this.pieChartData.labels.push(["Line 1", "Line 2", "Line 3"]);
     }
 
     this.pieChartData.datasets[0].data.push(400);
@@ -297,9 +281,9 @@ export class ChartjsComponent implements AfterViewInit {
   changeLegendPosition(): void {
     if (this.pieChartOptions?.plugins?.legend) {
       this.pieChartOptions.plugins.legend.position =
-        this.pieChartOptions.plugins.legend.position === 'left'
-          ? 'top'
-          : 'left';
+        this.pieChartOptions.plugins.legend.position === "left"
+          ? "top"
+          : "left";
     }
 
     this.chart?.render();
@@ -316,24 +300,24 @@ export class ChartjsComponent implements AfterViewInit {
 
   // PolarArea
   public polarAreaChartLabels: string[] = [
-    'Download Sales',
-    'In-Store Sales',
-    'Mail Sales',
-    'Telesales',
-    'Corporate Sales',
+    "Download Sales",
+    "In-Store Sales",
+    "Mail Sales",
+    "Telesales",
+    "Corporate Sales",
   ];
-  public polarAreaChartData: ChartData<'polarArea'> = {
+  public polarAreaChartData: ChartData<"polarArea"> = {
     labels: this.polarAreaChartLabels,
     datasets: [
       {
         data: [300, 500, 100, 40, 120],
-        label: 'Series 1',
+        label: "Series 1",
       },
     ],
   };
   public polarAreaLegend = true;
 
-  public polarAreaChartType: ChartType = 'polarArea';
+  public polarAreaChartType: ChartType = "polarArea";
 
   // events
   public chartClicked5({
@@ -342,9 +326,7 @@ export class ChartjsComponent implements AfterViewInit {
   }: {
     event: ChartEvent;
     active: {}[];
-  }): void {
-    console.log(event, active);
-  }
+  }): void {}
 
   public chartHovered5({
     event,
@@ -352,25 +334,23 @@ export class ChartjsComponent implements AfterViewInit {
   }: {
     event: ChartEvent;
     active: {}[];
-  }): void {
-    console.log(event, active);
-  }
+  }): void {}
 
   // scatter
-  public scatterChartOptions: ChartConfiguration['options'] = {
+  public scatterChartOptions: ChartConfiguration["options"] = {
     responsive: true,
   };
   public scatterChartLabels: string[] = [
-    'Eating',
-    'Drinking',
-    'Sleeping',
-    'Designing',
-    'Coding',
-    'Cycling',
-    'Running',
+    "Eating",
+    "Drinking",
+    "Sleeping",
+    "Designing",
+    "Coding",
+    "Cycling",
+    "Running",
   ];
 
-  public scatterChartData: ChartData<'scatter'> = {
+  public scatterChartData: ChartData<"scatter"> = {
     labels: this.scatterChartLabels,
     datasets: [
       {
@@ -381,12 +361,12 @@ export class ChartjsComponent implements AfterViewInit {
           { x: 4, y: 4 },
           { x: 5, y: -3 },
         ],
-        label: 'Series A',
+        label: "Series A",
         pointRadius: 10,
       },
     ],
   };
-  public scatterChartType: ChartType = 'scatter';
+  public scatterChartType: ChartType = "scatter";
 
   // events
   public chartClicked6({
@@ -395,9 +375,7 @@ export class ChartjsComponent implements AfterViewInit {
   }: {
     event: ChartEvent;
     active: {}[];
-  }): void {
-    console.log(event, active);
-  }
+  }): void {}
 
   public chartHovered6({
     event,
@@ -405,9 +383,7 @@ export class ChartjsComponent implements AfterViewInit {
   }: {
     event: ChartEvent;
     active: {}[];
-  }): void {
-    console.log(event, active);
-  }
+  }): void {}
 
   constructor() {}
 

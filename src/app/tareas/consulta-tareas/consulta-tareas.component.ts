@@ -34,10 +34,16 @@ export class ConsultaTareasComponent implements OnInit {
   });
   //
 
+  public isTarea = true;
+
   public dataTable: any[] = [];
 
   // public tableInputsEditRow: IInputsComponent = ConsultaSolicitudesData.tableInputsEditRow;
-  // public colsToFilterByText: string[] = ConsultaSolicitudesData.colsToFilterByText;
+  public colsToFilterByTextIdSolicitud: string[] =
+    ConsultaTareasData.colsToFilterByTextIdSolicitud;
+  public colsToFilterByTextName: string[] =
+    ConsultaTareasData.colsToFilterByTextName;
+  public isFilterByIdSolicitud: boolean = true;
   public IdRowToClone: string = null;
   // public defaultEmptyRowTable: ITiporutaTable = ConsultaSolicitudesData.defaultEmptyRowTable;
   public codigoReporte: reportCodeEnum = reportCodeEnum.MANTENIMIENTO_TIPO_RUTA;
@@ -63,12 +69,6 @@ export class ConsultaTareasComponent implements OnInit {
   }
 
   filterDataTable() {
-    console.log("EXECUTING filterDataTable()");
-    console.log(
-      "verifyFilterFields: ",
-      this.dataFilterNivelesAprobacion.verifyFilterFields()
-    );
-
     switch (this.dataFilterNivelesAprobacion.verifyFilterFields()) {
       case "case1":
         this.getDataToTable();
@@ -92,7 +92,6 @@ export class ConsultaTareasComponent implements OnInit {
     this.utilService.openLoadingSpinner(
       "Cargando información, espere por favor..."
     );
-    console.log("FILTER DATA: ", this.dataFilterNivelesAprobacion);
     this.consultaTareasService
       .filterNivelesAprobaciones(
         this.dataFilterNivelesAprobacion.tipoSolicitud,
@@ -101,7 +100,6 @@ export class ConsultaTareasComponent implements OnInit {
       )
       .subscribe({
         next: (response) => {
-          console.log("filerDataTable: ", response);
           this.dataTable = response.nivelAprobacionType.map(
             (nivelAprobacionResponse) => ({
               ...nivelAprobacionResponse,
@@ -109,10 +107,8 @@ export class ConsultaTareasComponent implements OnInit {
             })
           );
           this.utilService.closeLoadingSpinner();
-          console.log("Data de niveles de aprobacion: ", this.dataTable);
         },
         error: (error: HttpErrorResponse) => {
-          console.log("error: ", error);
           this.dataTable = [];
           this.utilService.modalResponse(
             "No existen registros para esta búsqueda",
@@ -138,14 +134,13 @@ export class ConsultaTareasComponent implements OnInit {
           }*/
 
           (item) => ({
-            idSolicitud: item.idSolicitud,
+            idSolicitud: item.idSolicitud + "," + item.rootProcInstId,
             startTime: item.startTime,
             name: item.name,
             tipoSolicitud: item.tipoSolicitud,
           })
         );
-        console.log("this.dataTable TAREAS: ", this.dataTable);
-        console.log("RESPONSE TAREAS: ", response);
+
         /*this.dataTable = response.nivelAprobacionType.map(
           (nivelAprobacionResponse) => ({
             ...nivelAprobacionResponse,
@@ -177,11 +172,8 @@ export class ConsultaTareasComponent implements OnInit {
   }
 
   ObtenerServicioNivelDireccion() {
-    console.log("Executing ObtenerServicioNivelDireccion() method");
-
     return this.mantenimientoService.getNiveles().subscribe({
       next: (response) => {
-        console.log("Response = ", response);
         this.dataNivelDireccion = [
           ...new Set(
             response.evType.map((item) => {
@@ -216,9 +208,30 @@ export class ConsultaTareasComponent implements OnInit {
 
   onRowActionClicked(id: string, key: string, tooltip: string, id_edit) {
     // Lógica cuando se da click en una acción de la fila
-    console.log("EDTTTT: ", id_edit);
-    this.router.navigate(["/mantenedores/crear-niveles-aprobacion"], {
-      queryParams: { id_edit },
-    });
+    if (this.isTarea) {
+      let ids = id_edit.split(",");
+      this.router.navigate([
+        "/solicitudes/registrar-solicitud",
+        ids[1],
+        ids[0],
+      ]);
+    }
   }
+
+  // onRowTareaActionClicked(
+  //   id: string,
+  //   key: string,
+  //   tooltip: string,
+  //   idInstancia,
+  //   idSolicitud
+  // ) {
+  //   // Lógica cuando se da click en una acción de la fila
+  //   console.log("- EDTTTT idInstancia: ", idInstancia);
+  //   console.log("- EDTTTT idSolicitud: ", idSolicitud);
+  //   this.router.navigate([
+  //     "/solicitudes/registrar-solicitud",
+  //     idInstancia,
+  //     idSolicitud,
+  //   ]);
+  // }
 }

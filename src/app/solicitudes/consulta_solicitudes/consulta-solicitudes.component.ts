@@ -365,7 +365,6 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
   }
 
   ngDoCheck(): void {
-    // console.log("EJECUTANDO NGONCHANGES");
     this.typeSolicitudSelected = this.dataTipoSolicitudes.filter(
       (data) => data.descripcion == "Acción de Personal"
     )[0]?.id;
@@ -381,7 +380,6 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
     // this.solicitud.idTipoSolicitud = 1;
     // this.solicitud.idTipoMotivo = 1;
     // this.solicitud.idTipoAccion = 1;
-    // console.log("MI MODELO INCIAL", this.solicitud);
     this.getDataToTable();
     this.ObtenerServicioTipoSolicitud();
     this.ObtenerServicioTipoMotivo();
@@ -396,7 +394,6 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 
   //Crear Solicitud
   CrearInstanciaSolicitud() {
-    console.log("Nuevo proceso iniciado con datos..");
     Swal.fire({
       text: "¿Desea crear la Solicitud?",
       icon: "question",
@@ -406,10 +403,6 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
       confirmButtonText: "Sí",
       cancelButtonText: "No",
     }).then((result) => {
-      console.log("DATA dataTipoSolicitudes: ", this.dataTipoSolicitudes);
-      console.log("DATA tipoMotivo: ", this.dataTipoMotivo);
-      console.log("DATA tipoAccion: ", this.dataTipoAccion);
-
       /*
       public dataTiposMotivosPorTipoSolicitud: { [idSolicitud: number]: any[] } =
       {};
@@ -418,26 +411,10 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
       {};
       */
 
-      console.log(
-        "dataTiposMotivosPorTipoSolicitud: ",
-        this.dataTiposMotivosPorTipoSolicitud
-      );
-      console.log("this.solicitud.idTipoMotivo: ", this.solicitud.idTipoMotivo);
-      console.log(
-        "dataTiposAccionesPorTipoSolicitud: ",
-        this.dataTiposAccionesPorTipoSolicitud
-      );
-      console.log("this.solicitud.idTipoAccion: ", this.solicitud.idTipoAccion);
-
       this.solicitud.tipoSolicitud = this.dataTipoSolicitudes.filter(
         (data) => data.id == this.solicitud.idTipoSolicitud
       )[0]?.descripcion;
-      console.log(
-        "SE COMPARA CON ESTE ID DE SOLICITUD = " +
-          this.solicitud.idTipoSolicitud +
-          " y con esta descripción de SOLICITUD" +
-          this.solicitud.tipoSolicitud
-      );
+
       this.solicitud.tipoMotivo = this.dataTiposMotivosPorTipoSolicitud[
         this.solicitud.idTipoSolicitud
       ].filter((data) => data.id == this.solicitud.idTipoMotivo)[0]?.tipoMotivo;
@@ -469,13 +446,11 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
           // const processDefinitionKey = "process_modelo";
           //const processDefinitionKey = params['processdefinitionkey'];
           const variables = this.generatedVariablesFromFormFields();
-          console.log("THIS VARIABLES22222: ", variables);
           this.camundaRestService
             .postProcessInstance(processDefinitionKey, variables)
             .subscribe((instanceOutput) => {
               this.lookForError(instanceOutput);
               this.utilService.closeLoadingSpinner();
-              console.log("Response instanceOutput = ", instanceOutput);
               this.instanceCreated = new DatosInstanciaProceso(
                 instanceOutput.businessKey,
                 instanceOutput.definitionId,
@@ -489,8 +464,6 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
               this.solicitudes
                 .guardarSolicitud(this.solicitud)
                 .subscribe((responseSolicitud) => {
-                  console.log("Response solicitud = ", responseSolicitud);
-                  console.log("Solicitud model = ", this.solicitud);
                   this.solicitud.idSolicitud = responseSolicitud.idSolicitud;
                   this.solicitud.fechaActualizacion =
                     responseSolicitud.fechaActualizacion;
@@ -501,25 +474,16 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
                   this.detalleSolicitud.idSolicitud =
                     responseSolicitud.idSolicitud;
                   this.detalleSolicitud.estado = "A";
-                  console.log(
-                    "Esto le mando como json a detalle solicitud: ",
-                    this.detalleSolicitud
-                  );
+
                   this.solicitudes
                     .guardarDetalleSolicitud(this.detalleSolicitud)
                     .subscribe((responseDetalle) => {
-                      console.log("Response detalle = ", responseDetalle);
                       setTimeout(() => {
-                        this.router.navigate(
-                          [
-                            "/solicitudes/registrar-solicitud",
-                            this.solicitud.idInstancia,
-                            this.solicitud.idSolicitud,
-                          ],
-                          {
-                            queryParams: { ...this.solicitud },
-                          }
-                        );
+                        this.router.navigate([
+                          "/solicitudes/registrar-solicitud",
+                          this.solicitud.idInstancia,
+                          this.solicitud.idSolicitud,
+                        ]);
                       }, 1800);
                     });
                 });
@@ -575,11 +539,8 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
   }
 
   obtenerEmpresaYUnidadNegocio() {
-    console.log("Executing ObtenerServicioNivelDireccion() method");
-
     return this.mantenimientoService.getNiveles().subscribe({
       next: (response) => {
-        console.log("Response = ", response);
         this.dataUnidadesNegocio = [
           ...new Set(
             response.evType.map((item) => {
@@ -603,10 +564,7 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 
   generatedVariablesFromFormFields() {
     let variables: any = {};
-    console.log("INGRESA AQUÍIIIIIIIIIIIIIIIII");
-    console.log("this.solicitud.tipoAccion: ", this.solicitud.tipoAccion);
-    console.log("this.solicitud.tipoMotivo: ", this.solicitud.tipoMotivo);
-    console.log("this.solicitud.tipoSolicitud: ", this.solicitud.tipoSolicitud);
+
     variables.tipoSolicitud = { value: this.solicitud.tipoSolicitud };
     if (this.solicitud.idTipoSolicitud == this.typeSolicitudSelected) {
       variables.tipoAccion = { value: this.solicitud.tipoAccion };
@@ -649,10 +607,6 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
     this.tipoSolicitudSeleccionada = idTipoSolicitud;
     this.desactivarTipoMotivo =
       !this.idsOcultarTipoMotivo.includes(idTipoSolicitud);
-
-    console.log("this.desactivarTipoMotivo: ", this.desactivarTipoMotivo);
-    console.log("this.idsOcultarTipoMotivo: ", this.idsOcultarTipoMotivo);
-    console.log("idTipoSolicitud: ", idTipoSolicitud);
 
     this.desactivarTipoAccion =
       !this.idsOcultarTipoAccion.includes(idTipoSolicitud);
@@ -747,9 +701,10 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
         ? result.name + " " + result.message
         : result.error.message;
       console.log("routin to app error page", this.errorMessage);
-      this.router.navigate(["error"], {
-        queryParams: { message: this.errorMessage },
-      });
+      this.utilService.modalResponse(this.errorMessage, "error");
+      // this.router.navigate(["error"], {
+      //   queryParams: { message: this.errorMessage },
+      // });
     }
   }
 
@@ -897,7 +852,6 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
         this.utilService.closeLoadingSpinner();
       },
       error: (error: HttpErrorResponse) => {
-        console.log("error: ", error);
         this.dataTable = [];
         this.utilService.modalResponse(
           "No existen registros para esta búsqueda",
@@ -927,7 +881,6 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
           codigo: r.codigo,
           descripcion: r.valor,
         })); //verificar la estructura mmunoz
-        console.log("ESTADOSSSS: ", this.data_estado);
       },
       error: (error: HttpErrorResponse) => {
         this.utilService.modalResponse(error.error, "error");
@@ -946,8 +899,7 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
     ).pipe(
       map(([solicitudes, detallesSolicitud]) => {
         // Combinar las solicitudes y los detalles de la solicitud
-        console.log("GET SOLICITUDES Y DETALLES: ", solicitudes);
-        console.log("GET SOLICITUDES Y DETALLES: ", detallesSolicitud);
+
         const data = solicitudes.solicitudType.map((solicitud) => {
           const detalles = detallesSolicitud.detalleSolicitudType.find(
             (detalle) => detalle.idSolicitud === solicitud.idSolicitud
@@ -965,13 +917,12 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
     combinedData$.subscribe((data) => {
       this.utilService.closeLoadingSpinner();
       // this.data_estado.find(itemEstado => itemEstado.codigo == itemSolicitud.estadoSolicitud)
-      console.log("ESTA ES LA DATA: ", data);
-      console.log("MI DATA ESTADO AL ITERAR: ", this.data_estado);
+      // console.log("ESTA ES LA DATA: ", data);
+      // console.log("MI DATA ESTADO AL ITERAR: ", this.data_estado);
       this.dataTable = data.map((itemSolicitud) => {
         let descripcionEstado = this.data_estado.find(
           (itemEstado) => itemEstado.codigo == itemSolicitud.estadoSolicitud
         );
-        console.log("DESCRIPCION ESTADO: ", descripcionEstado);
         return {
           ...itemSolicitud,
           estado:
@@ -1108,7 +1059,6 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
   }
 
   toggleDisabled() {
-    console.log("MY TOGGLE FUN");
     this.disabled = !this.disabled;
     if (this.disabled) {
       this.active = 1;

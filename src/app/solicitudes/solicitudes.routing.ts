@@ -26,7 +26,7 @@ export const SolicitudesRoutes: Routes = [
         },
       },
       {
-        path: "completar-solicitud/:id",
+        path: "completar-solicitud/:id/:idSolicitud",
         component: CompletarSolicitudComponent,
         data: {
           title: "Completar Solicitud",
