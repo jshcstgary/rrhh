@@ -7,9 +7,9 @@ import {
   Output,
   QueryList,
   ViewChildren,
-} from '@angular/core';
-import { TableService } from './ngtable.service';
-import Validation from '../../form/form-validation/validation';
+} from "@angular/core";
+import { TableService } from "./ngtable.service";
+import Validation from "../../form/form-validation/validation";
 import {
   FormBuilder,
   FormsModule,
@@ -20,31 +20,31 @@ import {
   Validators,
   FormControl,
   AbstractControl,
-} from '@angular/forms';
+} from "@angular/forms";
 import {
   ModalDismissReasons,
   NgbModal,
   NgbModule,
   NgbPaginationModule,
   NgbTypeaheadModule,
-} from '@ng-bootstrap/ng-bootstrap';
-import { Table } from './ngtable';
+} from "@ng-bootstrap/ng-bootstrap";
+import { Table } from "./ngtable";
 import {
   AsyncPipe,
   CommonModule,
   DecimalPipe,
   NgFor,
   NgIf,
-} from '@angular/common';
-import { FeatherModule } from 'angular-feather';
+} from "@angular/common";
+import { FeatherModule } from "angular-feather";
 
-export type SortColumn = keyof Table | '';
+export type SortColumn = keyof Table | "";
 
-export type SortDirection = 'asc' | 'desc' | '';
+export type SortDirection = "asc" | "desc" | "";
 const rotate: { [key: string]: SortDirection } = {
-  asc: 'desc',
-  desc: '',
-  '': 'asc',
+  asc: "desc",
+  desc: "",
+  "": "asc",
 };
 export const compare = (v1: number, v2: number) =>
   v1 < v2 ? -1 : v1 > v2 ? 1 : 0;
@@ -55,28 +55,27 @@ export interface SortEvent {
 }
 
 @Directive({
-	selector: 'th[sortable]',
-	standalone: true,
-	host: {
-		'[class.asc]': 'direction === "asc"',
-		'[class.desc]': 'direction === "desc"',
-		'(click)': 'rotate()',
-	},
+  selector: "th[sortable]",
+  standalone: true,
+  host: {
+    "[class.asc]": 'direction === "asc"',
+    "[class.desc]": 'direction === "desc"',
+    "(click)": "rotate()",
+  },
 })
-
 export class NgbdSortableHeader {
-  @Input() sortable: SortColumn = '';
-  @Input() direction: SortDirection = '';
+  @Input() sortable: SortColumn = "";
+  @Input() direction: SortDirection = "";
   @Output() sort = new EventEmitter<SortEvent>();
 
   rotate() {
-		this.direction = rotate[this.direction];
-		this.sort.emit({ column: this.sortable, direction: this.direction });
-	}
+    this.direction = rotate[this.direction];
+    this.sort.emit({ column: this.sortable, direction: this.direction });
+  }
 }
 
 @Component({
-  selector: 'app-ngtable',
+  selector: "app-ngtable",
   standalone: true,
   imports: [
     NgFor,
@@ -90,19 +89,19 @@ export class NgbdSortableHeader {
     CommonModule,
     FeatherModule,
     NgbModule,
-    NgbdSortableHeader
+    NgbdSortableHeader,
   ],
-  templateUrl: './ngtable.component.html',
-  styleUrls: ['./ngtable.component.scss'],
+  templateUrl: "./ngtable.component.html",
+  styleUrls: ["./ngtable.component.scss"],
 })
 export class TableComponent implements OnInit {
   // 2
   form: FormGroup = new FormGroup({
-    fullname: new FormControl(''),
-    username: new FormControl(''),
-    email: new FormControl(''),
-    password: new FormControl(''),
-    confirmPassword: new FormControl(''),
+    fullname: new FormControl(""),
+    username: new FormControl(""),
+    email: new FormControl(""),
+    password: new FormControl(""),
+    confirmPassword: new FormControl(""),
     acceptTerms: new FormControl(false),
   });
   submitted = false;
@@ -114,7 +113,7 @@ export class TableComponent implements OnInit {
   page = 1;
   pageSize = 2;
   editClient: UntypedFormGroup = Object.create(null);
-  editAddLabel: string = 'Edit';
+  editAddLabel: string = "Edit";
   clientDetail: Table | null = null;
   totalLengthOfCollection: number = 0;
 
@@ -135,36 +134,36 @@ export class TableComponent implements OnInit {
 
   ngOnInit() {
     this.editClient = this.fb.group({
-      fullName: ['', Validators.required],
-      UserName: ['', Validators.required],
-      email: ['', [Validators.email, Validators.required]],
+      fullName: ["", Validators.required],
+      UserName: ["", Validators.required],
+      email: ["", [Validators.email, Validators.required]],
     });
 
     this.form = this.formBuilder.group(
       {
-        fullname: ['', Validators.required],
+        fullname: ["", Validators.required],
         username: [
-          '',
+          "",
           [
             Validators.required,
             Validators.minLength(6),
             Validators.maxLength(20),
           ],
         ],
-        email: ['', [Validators.required, Validators.email]],
+        email: ["", [Validators.required, Validators.email]],
         password: [
-          '',
+          "",
           [
             Validators.required,
             Validators.minLength(6),
             Validators.maxLength(40),
           ],
         ],
-        confirmPassword: ['', Validators.required],
+        confirmPassword: ["", Validators.required],
         acceptTerms: [false, Validators.requiredTrue],
       },
       {
-        validators: [Validation.match('password', 'confirmPassword')],
+        validators: [Validation.match("password", "confirmPassword")],
       }
     );
   }
@@ -173,12 +172,12 @@ export class TableComponent implements OnInit {
     // resetting other headers
     this.headers.forEach((header) => {
       if (header.sortable !== column) {
-        header.direction = '';
+        header.direction = "";
       }
     });
 
     // sorting countries
-    if (direction === '' || column === '') {
+    if (direction === "" || column === "") {
       this.sortClientList = this.tableService.getTable();
       this.cfilterClient = this.tableService.getTable();
     } else {
@@ -187,7 +186,7 @@ export class TableComponent implements OnInit {
   // // //}
 
   //Searching..........
-  _searchTerm: string = '';
+  _searchTerm: string = "";
   get searchTerm(): string {
     return this._searchTerm;
   }
@@ -211,7 +210,7 @@ export class TableComponent implements OnInit {
   cpage = 1;
   cpageSize = 4;
 
-  _csearchTerm: string = '';
+  _csearchTerm: string = "";
   get csearchTerm(): string {
     return this._csearchTerm;
   }
@@ -252,11 +251,11 @@ export class TableComponent implements OnInit {
   }
 
   ValidationMessage = {
-    fullName: { required: 'full Name is required.' },
-    UserName: { required: 'User Name is required.' },
+    fullName: { required: "full Name is required." },
+    UserName: { required: "User Name is required." },
     email: {
-      required: 'Email is required.',
-      Email: 'Not a email',
+      required: "Email is required.",
+      Email: "Not a email",
     },
   };
 
@@ -265,16 +264,16 @@ export class TableComponent implements OnInit {
   openModal(targetModal: NgbModal, client: any) {
     this.modalService.open(targetModal, {
       centered: true,
-      backdrop: 'static',
+      backdrop: "static",
     });
 
     if (client == null) {
-      this.editAddLabel = 'Add';
+      this.editAddLabel = "Add";
     }
 
     if (client != null) {
       this.clientDetail = client;
-      this.editAddLabel = 'Edit';
+      this.editAddLabel = "Edit";
       this.editClient.patchValue({
         fullName: client.Name,
         UserName: client.UserName,
@@ -310,14 +309,12 @@ export class TableComponent implements OnInit {
       return;
     }
 
-    console.log(JSON.stringify(this.form.value, null, 2));
-
     if (this.clientDetail != null) {
       const index = this.tableService.getTable().indexOf(this.clientDetail);
 
-      this.clientDetail.Name = this.editClient?.get('fullName')?.value;
-      this.clientDetail.UserName = this.editClient?.get('UserName')?.value;
-      this.clientDetail.Email = this.editClient?.get('email')?.value;
+      this.clientDetail.Name = this.editClient?.get("fullName")?.value;
+      this.clientDetail.UserName = this.editClient?.get("UserName")?.value;
+      this.clientDetail.Email = this.editClient?.get("email")?.value;
 
       this.tableService.getTable()[index] = this.clientDetail;
     } else {
@@ -331,10 +328,10 @@ export class TableComponent implements OnInit {
           })
         ) + 1;
 
-      this.clientDetail.Name = this.editClient?.get('fullName')?.value;
-      this.clientDetail.UserName = this.editClient?.get('UserName')?.value;
-      this.clientDetail.Email = this.editClient?.get('email')?.value;
-      this.clientDetail.imagePath = 'assets/image/user3.jpg';
+      this.clientDetail.Name = this.editClient?.get("fullName")?.value;
+      this.clientDetail.UserName = this.editClient?.get("UserName")?.value;
+      this.clientDetail.Email = this.editClient?.get("email")?.value;
+      this.clientDetail.imagePath = "assets/image/user3.jpg";
 
       this.tableService.getTable().push(this.clientDetail);
     }

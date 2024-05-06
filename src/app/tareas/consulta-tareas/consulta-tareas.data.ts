@@ -30,16 +30,20 @@ export const ConsultaTareasData: IConsultaTareasData = {
       type: "actions",
       width: "100px",
       actions: [
-        { materialIcon: "edit", id: "editOnTable", tooltip: "Editar" },
-        {
-          materialIcon: "content_copy",
-          id: "cloneOnTable",
-          tooltip: "Duplicar",
-        },
+        { materialIcon: "info", id: "editOnTable", tooltip: "Acciones" },
+        // {
+        //   materialIcon: "content_copy",
+        //   id: "cloneOnTable",
+        //   tooltip: "Duplicar",
+        // },
       ],
     },
   ],
+  colsToFilterByTextIdSolicitud: ["idSolicitud", "name"],
+  colsToFilterByTextName: ["name"],
 };
 interface IConsultaTareasData {
   columns: IColumnsTable;
+  colsToFilterByTextIdSolicitud: string[];
+  colsToFilterByTextName: string[];
 }

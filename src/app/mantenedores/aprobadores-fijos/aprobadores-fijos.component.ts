@@ -399,12 +399,6 @@ export class AprobadoresFijosComponent implements OnInit {
   }
 
   filterDataTable() {
-    console.log("EXECUTING filterDataTable()");
-    console.log(
-      "verifyFilterFields: ",
-      this.dataFilterNivelesAprobacion.verifyFilterFields()
-    );
-
     switch (this.dataFilterNivelesAprobacion.verifyFilterFields()) {
       case "case1":
         this.getDataToTable();
@@ -428,7 +422,6 @@ export class AprobadoresFijosComponent implements OnInit {
     this.utilService.openLoadingSpinner(
       "Cargando información, espere por favor..."
     );
-    console.log("FILTER DATA: ", this.dataFilterNivelesAprobacion);
     this.aprobadoresFijosService
       .filterNivelesAprobaciones(
         this.dataFilterNivelesAprobacion.tipoSolicitud,
@@ -437,7 +430,6 @@ export class AprobadoresFijosComponent implements OnInit {
       )
       .subscribe({
         next: (response) => {
-          console.log("filerDataTable: ", response);
           this.dataTable = response.aprobadoresFijos.map(
             (nivelAprobacionResponse) => ({
               ...nivelAprobacionResponse,
@@ -445,10 +437,8 @@ export class AprobadoresFijosComponent implements OnInit {
             })
           );
           this.utilService.closeLoadingSpinner();
-          console.log("Data de niveles de aprobacion: ", this.dataTable);
         },
         error: (error: HttpErrorResponse) => {
-          console.log("error: ", error);
           this.dataTable = [];
           this.utilService.modalResponse(
             "No existen registros para esta búsqueda",
@@ -471,7 +461,6 @@ export class AprobadoresFijosComponent implements OnInit {
           })
         );
         this.utilService.closeLoadingSpinner();
-        // console.log("Data de niveles de aprobacion: ", this.dataTable);
       },
       error: (error: HttpErrorResponse) => {
         this.utilService.modalResponse(error.error, "error");
@@ -495,11 +484,8 @@ export class AprobadoresFijosComponent implements OnInit {
   }
 
   ObtenerServicioNivelDireccion() {
-    console.log("Executing ObtenerServicioNivelDireccion() method");
-
     return this.mantenimientoService.getNiveles().subscribe({
       next: (response) => {
-        console.log("Response = ", response);
         this.dataNivelDireccion = [
           ...new Set(
             response.evType.map((item) => {
@@ -534,7 +520,6 @@ export class AprobadoresFijosComponent implements OnInit {
 
   onRowActionClicked(id: string, key: string, tooltip: string, id_edit) {
     // Lógica cuando se da click en una acción de la fila
-    console.log("EDTTTT: ", id_edit);
     this.router.navigate(["/mantenedores/editar-aprobador-fijo", id_edit]);
   }
 }

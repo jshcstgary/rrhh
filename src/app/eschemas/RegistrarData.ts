@@ -86,12 +86,11 @@ export class RegistrarData {
     public status: string = "",
 
     public sueldo: string = "",
-    public sueldoVariableMensual: string = "",
-    public sueldoVariableTrimestral: string = "",
-    public sueldoVariableSemestral: string = "",
-    public sueldoVariableAnual: string = ""
-  ) /* Agrego estos campos que no están en la data */
-  // Este campo no sé de donde viene, no viene en el request de solicitud ni en el de detalle solicitud
+    public sueldoMensual: string = "",
+    public sueldoTrimestral: string = "",
+    public sueldoSemestral: string = "",
+    public sueldoAnual: string = "" /* Agrego estos campos que no están en la data */
+  ) // Este campo no sé de donde viene, no viene en el request de solicitud ni en el de detalle solicitud
   /*public sueldo: number | null = 0,
 
     // Este campo no sé de donde viene, no viene en el request de solicitud ni en el de detalle solicitud

@@ -368,19 +368,16 @@ export class PlantillaEComponent implements AfterViewInit, OnInit, OnChanges {
     tooltip: string,
     id_edit
   ) {
-    console.log("EDTTTT: ", id_edit);
     this.IdRowToClone = null;
     this.contexto[this.clickOnActionRow](id, key, tooltip, id_edit);
   }
 
   public filterDataTable() {
-    console.log("FILTER");
     this.IdRowToClone = null;
     this.contexto[this.clickOnFilter]();
   }
 
   public pageCrear() {
-    console.log("CREAR");
     // this.IdRowToClone = null;
     this.contexto[this.clickOnPageCrear]();
   }

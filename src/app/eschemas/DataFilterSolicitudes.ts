@@ -60,7 +60,6 @@ export class DataFilterSolicitudes {
       // return "Toda mi data sin filtrar";
       return "case3";
     } else if (atLeastOneUndefinedOrNull) {
-      console.log("CASE (atLeastOneUndefinedOrNull)");
       return "case4";
       // return "Mostrar un error";
     } else {

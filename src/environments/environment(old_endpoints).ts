@@ -26,18 +26,13 @@ export const environment = {
   procesName: "process_modelo",
 
   // Task type 1 - Register - the value maps to the id attribute 'Registrar Solicitud' from bpmn
-  taskType_Registrar: "Activity_1pkw55i",
+  taskType_Registrar: "Activity_0jafldx",
 
   // Task type 2 - Review   - the value maps to the id attribute 'Revisar Solicitud' from bpmn
-  // taskType_Revisar: "Activity_0wf5xb7",
-
-  taskType_Revisar: "Activity_1p9wq10",
-
-  taskType_Notificar: "Activity_1bql112",
+  taskType_Revisar: "Activity_0wf5xb7",
 
   //Servicios de workflow
   camundaUrl: `${baseC}:8188/`,
-  // camundaUrl: `localhost:8080/`,
   tipoSolicitudServiceES: `${baseW}:8068/v1/es/tiposolicitud`,
   tipoRutaServiceES: `${baseW}:8069/v1/es/tiporuta`,
   tipoProcesoServiceES: `${baseW}:8070/v1/es/tipoproceso`,
@@ -54,13 +49,6 @@ export const environment = {
   nivelAprobacionRefreshServiceES: `${baseW}:8075/v1/es/refresh_nivelesAprobacion`,
 
   solicitudesServiceES: `${base}:8066/v1/es/solicitud`, // http://10.35.3.162:8001/v1/es/solicitud
-
-  tareasServiceES: `${base}:8080/v1/es/solicitudcamunda`,
-
-  aprobadoresFijosServiceES: `${base}:8082/v1/es/aprobadores_fijos`,
-
-  historicaCamundaServiceEs: `${base}:8077/v1/es/historicacamunda`,
-
   // http://10.35.3.162:8001/swagger/index.html
 
   //http://10.35.3.162:8053/v1/es/item-catalogo/codigo/

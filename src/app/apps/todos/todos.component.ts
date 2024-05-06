@@ -1,22 +1,22 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit } from "@angular/core";
 import {
   UntypedFormGroup,
   UntypedFormBuilder,
   FormsModule,
   ReactiveFormsModule,
-} from '@angular/forms';
-import { ToDo } from './todo';
-import { TodoService } from './todo.service';
-import { tsvFormat } from 'd3';
-import { FeatherModule } from 'angular-feather';
-import { CommonModule } from '@angular/common';
+} from "@angular/forms";
+import { ToDo } from "./todo";
+import { TodoService } from "./todo.service";
+import { tsvFormat } from "d3";
+import { FeatherModule } from "angular-feather";
+import { CommonModule } from "@angular/common";
 
 @Component({
-  selector: 'app-todos',
+  selector: "app-todos",
   standalone: true,
   imports: [FeatherModule, FormsModule, ReactiveFormsModule, CommonModule],
-  templateUrl: './todos.component.html',
-  styleUrls: ['./todos.component.scss'],
+  templateUrl: "./todos.component.html",
+  styleUrls: ["./todos.component.scss"],
 })
 export class TodosComponent implements OnInit {
   public showSidebar = false;
@@ -24,9 +24,9 @@ export class TodosComponent implements OnInit {
   todoId = 6;
   copyTodos: ToDo[];
   /* search: 'all'; */
-  selectedCategory = 'all';
+  selectedCategory = "all";
   searchText: string | null = null;
-  editSave = 'Edit';
+  editSave = "Edit";
 
   todos: ToDo[] = this.todoService.getTodos();
 
@@ -45,13 +45,13 @@ export class TodosComponent implements OnInit {
   }
 
   addTodo(value: string) {
-    if (this.inputFg?.get('mess')?.value.trim().length === 0) {
+    if (this.inputFg?.get("mess")?.value.trim().length === 0) {
       return;
     }
 
     this.todos.push({
       id: this.todoId,
-      message: this.inputFg?.get('mess')?.value,
+      message: this.inputFg?.get("mess")?.value,
       completionStatus: false,
       edit: false,
       date: new Date(),
@@ -60,7 +60,7 @@ export class TodosComponent implements OnInit {
 
     this.todoId++;
     this.inputFg.patchValue({
-      mess: '',
+      mess: "",
     });
   }
 
@@ -72,21 +72,21 @@ export class TodosComponent implements OnInit {
   }
 
   selectionlblClick(val: string) {
-    if (val === 'all') {
+    if (val === "all") {
       this.copyTodos = this.todos;
-      this.selectedCategory = 'all';
-    } else if (val === 'uncomplete') {
+      this.selectedCategory = "all";
+    } else if (val === "uncomplete") {
       this.copyTodos = this.todos.filter((todo) => !todo.completionStatus);
-      this.selectedCategory = 'uncomplete';
-    } else if (val === 'complete') {
+      this.selectedCategory = "uncomplete";
+    } else if (val === "complete") {
       this.copyTodos = this.todos.filter((x) => x.completionStatus);
-      this.selectedCategory = 'complete';
+      this.selectedCategory = "complete";
     }
   }
 
   editTodo(i: number, str: string) {
     if (this.copyTodos) {
-      if (str === 'edit') {
+      if (str === "edit") {
         // tslint:disable-next-line: no-non-null-assertion
         this.copyTodos.find((x) => x.id === i)!.edit = true;
       } else {
@@ -97,7 +97,6 @@ export class TodosComponent implements OnInit {
   }
 
   deleteTodo(id: number) {
-    console.log(id);
     this.todos.splice(id, 1);
   }
 

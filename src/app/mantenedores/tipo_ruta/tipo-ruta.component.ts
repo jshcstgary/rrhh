@@ -125,7 +125,6 @@ export class TipoRutaComponent implements OnInit {
     rowData: ITiporuta,
     finishedClonningRow: boolean
   ) {
-    console.log("EJECUTANDO validateToSave()");
     const descripcionNotEmpty =
       this.validationsService.isNotEmptyStringVariable(rowData.tipoRuta);
     if (!descripcionNotEmpty) {

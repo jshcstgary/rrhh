@@ -17,9 +17,7 @@ const httpOptions = {
 export class CamundaRestService {
   private engineRestUrl = environment.camundaUrl + "engine-rest/";
 
-  constructor(private http: HttpClient) {
-    console.log("Inicio de servicios en camunda");
-  }
+  constructor(private http: HttpClient) {}
 
   //metodos de registro y tareas
   getTasks(): Observable<Task[]> {
@@ -50,7 +48,7 @@ export class CamundaRestService {
       processInstanceId +
       `&taskDefinitionKey=` +
       type;
-    console.log("SE USA ESTE ENDPOINT: ", endpoint);
+
     return this.http.get<any>(endpoint, httpOptions).pipe(
       tap((form) => this.log(`fetched tasks of type`)),
       catchError(this.handleError("getTask", []))
@@ -79,9 +77,7 @@ export class CamundaRestService {
 
   postCompleteTask(taskId: String, variables: Object): Observable<any> {
     const endpoint = `${this.engineRestUrl}task/${taskId}/complete`;
-    console.log(taskId);
-    console.log(variables);
-    console.log("EL endpoint: ", endpoint);
+
     return this.http.post<any>(endpoint, variables, httpOptions).pipe(
       tap((tasks) => this.log(`posted complete task`)),
       catchError(this.handleError("postCompleteTask", []))
@@ -112,9 +108,7 @@ export class CamundaRestService {
     return this.engineRestUrl;
   }
 
-  private log(message: string) {
-    console.log(message);
-  }
+  private log(message: string) {}
 
   //Definir los procesos que estan activos
   getProcessDefinitions(): Observable<DefinicionProceso[]> {

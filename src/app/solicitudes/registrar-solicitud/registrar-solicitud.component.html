@@ -1,10 +1,7 @@
-<form (ngSubmit)="onSubmit()" #SolicitudForm="ngForm">
+<form (ngSubmit)="onSubmit()" #SolicitudForm="ngForm" #solicitudForm="ngForm">
   <div class="card">
     <h2 class="card-body text-start">
       <div class="row">
-        <!--<div class="col-md-8">
-              <b style="color: rgb(227, 199, 22);font-size: 20px; margin: 20px;">Mantenimiento de rutas</b>
-          </div>-->
         <div class="col-md-8">
           <div class="mb-3">
             <a (click)="pageSolicitudes()">
@@ -15,118 +12,25 @@
             >
           </div>
         </div>
-
         <div class="col-md-4 text-end">
-          <!--<button style="margin: 10px;color: black;" type="button" (click)="modal.dismiss('Cross click')"
-                  class="mr-10 fz-14 btn btn-outline-secondary btn-icon-end">Cancelar
-              </button>-->
           <button
             type="button"
             type="submit"
-            class="btn btn-info me-2"
+            class="btn btn-info me-2 mt-1"
             aria-label="Close"
+            [disabled]="!solicitudForm.form.valid"
           >
             <i class="fas fa-redo"></i> Guardar
           </button>
-          <button type="button" (click)="onCancel()" class="btn btn-info me-2">
-            <i class="fas fa-times"></i> Cancelar
-          </button>
-          <!-- <button
-            (click)="guardarSolicitud()"
+          <button
             type="button"
-            class="mr-10 fz-14 btn btn-info btn-icon-end"
-            aria-label="Close"
-            aria-label="Close"
+            (click)="onCancel()"
+            class="btn btn-info me-2 mt-1"
           >
-            <i class="fas fa-save"></i> Guardar
-          </button> -->
-          <!-- <button
-            type="submit"
-            class="mr-10 fz-14 btn btn-info btn-icon-end"
-            aria-label="Close"
-            aria-label="Close"
-          >
-            <i class="fas fa-save"></i> Guardar
-          </button> -->
+            <i class="fas fa-times"></i> Registrar luego
+          </button>
         </div>
       </div>
-
-      <!-- Inicia acordión principal  -->
-      <!-- <div ngbAccordion>
-        <div ngbAccordionItem [collapsed]="false">
-          <h2
-            ngbAccordionHeader
-            class="bg-white"
-            style="background-color: white !important"
-          >
-            <button ngbAccordionButton style="content: none">
-              Información general
-            </button>
-          </h2>
-          <div ngbAccordionCollapse>
-            <div ngbAccordionBody>
-              <ng-template>
-                Anim pariatur cliche reprehenderit, enim eiusmod high life
-                accusamus terry richardson ad squid. 3 wolf moon officia aute,
-                non cupidatat skateboard dolor brunch. Food truck quinoa
-                nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua
-                put a bird on it squid single-origin coffee nulla assumenda
-                shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore
-                wes anderson cred nesciunt sapiente ea proident. Ad vegan
-                excepteur butcher vice lomo. Leggings occaecat craft beer
-                farm-to-table, raw denim aesthetic synth nesciunt you probably
-                haven't heard of them accusamus labore sustainable VHS.
-              </ng-template>
-            </div>
-          </div>
-        </div>
-        <div ngbAccordionItem>
-          <h2 ngbAccordionHeader>
-            <button ngbAccordionButton>
-              <span>&#9733; <b>Fancy</b> title &#9733;</span>
-            </button>
-          </h2>
-          <div ngbAccordionCollapse>
-            <div ngbAccordionBody>
-              <ng-template>
-                Anim pariatur cliche reprehenderit, enim eiusmod high life
-                accusamus terry richardson ad squid. 3 wolf moon officia aute,
-                non cupidatat skateboard dolor brunch. Food truck quinoa
-                nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua
-                put a bird on it squid single-origin coffee nulla assumenda
-                shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore
-                wes anderson cred nesciunt sapiente ea proident. Ad vegan
-                excepteur butcher vice lomo. Leggings occaecat craft beer
-                farm-to-table, raw denim aesthetic synth nesciunt you probably
-                haven't heard of them accusamus labore sustainable VHS.
-              </ng-template>
-            </div>
-          </div>
-        </div>
-        <div ngbAccordionItem [disabled]="true">
-          <h2 ngbAccordionHeader>
-            <button ngbAccordionButton>Disabled</button>
-          </h2>
-          <div ngbAccordionCollapse>
-            <div ngbAccordionBody>
-              <ng-template>
-                Anim pariatur cliche reprehenderit, enim eiusmod high life
-                accusamus terry richardson ad squid. 3 wolf moon officia aute,
-                non cupidatat skateboard dolor brunch. Food truck quinoa
-                nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua
-                put a bird on it squid single-origin coffee nulla assumenda
-                shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore
-                wes anderson cred nesciunt sapiente ea proident. Ad vegan
-                excepteur butcher vice lomo. Leggings occaecat craft beer
-                farm-to-table, raw denim aesthetic synth nesciunt you probably
-                haven't heard of them accusamus labore sustainable VHS.
-              </ng-template>
-            </div>
-          </div>
-        </div>
-      </div> -->
-      <!-- Finaliza acordión principal  -->
-
       <div class="row mt-4">
         <div class="col-md-3">
           <div class="mb-4">
@@ -137,8 +41,6 @@
           <hr />
         </div>
       </div>
-
-      <!-- Row 1 -->
       <div class="row">
         <div class="col-md-6">
           <div class="input-group mb-3">
@@ -155,9 +57,8 @@
               name="idTipoSolicitud"
               style="color: black; font-size: 14px; margin: auto auto"
               class="text-center"
-              >{{ tipo_solicitud_descripcion }}</span
+              >{{ solicitud.tipoSolicitud }}</span
             >
-            <!-- {{ mivar.textContent }} -->
           </div>
         </div>
         <div class="col-md-6">
@@ -174,93 +75,12 @@
               name="tipomotivo"
               style="color: black; font-size: 14px; margin: auto auto"
               class="text-center"
-              >{{ tipo_motivo_descripcion }}</span
+              >{{ solicitud.tipoMotivo }}</span
             >
           </div>
         </div>
       </div>
-
-      <!-- Row 2 -->
-      <!-- <div class="row">
-        <div class="col-md-6">
-          <div class="input-group mb-3">
-            <label
-              class="input-group-text"
-              for="codigoposicion"
-              style="color: black; font-size: 14px; width: 45%"
-              >Código de posición</label
-            >
-            &nbsp;
-            <input
-              type="text"
-              name="codigoposicion"
-              [(ngModel)]="model.codigoPosicion"
-              (input)="onInputChange('codigoPosicion', $event.target)"
-              class="form-control"
-              id="codigoposicion"
-              aria-describedby="inputGroupPrepend"
-              required
-            />
-            <div *ngIf="suggestions.length > 0" class="autocomplete-items">
-              <div *ngFor="let suggestion of suggestions" (click)="selectSuggestion(suggestion)">
-                {{ suggestion }}
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div class="input-group mb-3">
-            <label
-              class="input-group-text"
-              for="nombreempleado"
-              style="color: black; font-size: 14px; width: 45%"
-              >Nombre de empleado</label
-            >
-            <select
-              id="nombreempleado"
-              name="nombreempleado"
-              class="form-select"
-              [(ngModel)]="model.nombreCompleto"
-              (ngModelChange)="filtrarDatos('nombreCompleto', $event)"
-              style="font-size: 14px"
-              required
-            >
-              <option selected>MOROCHO VARGAS CAL ESTUARIO</option>
-              <option>MOROCHO VARGAS CAL ESTUARIO</option>
-              <option>Ramiro Andrade</option>
-            </select>
-          </div>
-        </div>
-      </div> -->
-
-      <!-- Row 2 -->
       <div class="row">
-        <!-- <div class="col-md-6">
-          <div class="input-group">
-            <label
-              class="input-group-text"
-              for="codigoposicion"
-              style="color: black; font-size: 14px; width: 45%"
-            >
-              Código de posición
-            </label>
-            &nbsp;
-            <input
-              type="text"
-              name="codigoposicion"
-              [(ngModel)]="model.codigoPosicion"
-              style="color: black; font-size: 14px; width: 30%"
-              (input)="onInputChange('codigoPosicion', $event)"
-              class="form-control"
-              id="codigoposicion"
-              aria-describedby="inputGroupPrepend"
-              required
-            />
-            <button class="btn btn-light" type="button" disabled>
-              <i class="ti-search"></i>
-            </button>
-          </div>
-        </div> -->
         <div class="col-md-6">
           <div class="input-group">
             <label
@@ -282,6 +102,7 @@
               id="codigoposicion"
               aria-describedby="inputGroupPrepend"
               required
+              #codigoposicion="ngModel"
             />
             <button class="btn btn-light" type="button" disabled>
               <i class="ti-search"></i>
@@ -307,81 +128,8 @@
           </div>
         </div>
       </div>
-
-      <!-- Row 3 -->
       <div class="row" *ngIf="mostrarSubledger">
-        <!-- <div class="row"> -->
         <div class="col-md-6">
-          <!-- <div class="input-group mb-3">
-            <label
-              class="input-group-text"
-              for="subledger"
-              style="color: black; font-size: 14px; width: 45%"
-              >Subledger</label
-            >
-            <select
-              id="subledger"
-              name="subledger"
-              class="form-select"
-              [(ngModel)]="model.subledger"
-              (ngModelChange)="filtrarDatos('subledger', $event)"
-              style="font-size: 14px"
-              required
-            >
-              <option *ngFor="let subledger of subledgers" [value]="subledger">
-                {{ subledger }}
-              </option>
-            </select>
-          </div> -->
-
-          <!-- <div class="input-group mb-3">
-            <label
-              class="input-group-text"
-              for="subledger"
-              style="color: black; font-size: 14px; width: 45%"
-            >
-              Subledger
-            </label>
-            &nbsp;
-            <input
-              type="text"
-              name="subledger"
-              [(ngModel)]="model.subledger"
-              style="color: black; font-size: 14px; width: 30%"
-              (input)="onInputChange('subledger', $event)"
-              class="form-control"
-              id="subledger"
-              aria-describedby="inputGroupPrepend"
-              required
-            />
-            <button class="btn btn-light" type="button" disabled>
-              <i class="ti-search"></i>
-            </button>
-          </div> -->
-
-          <!-- <div class="input-group mb-3">
-            <label
-              class="input-group-text"
-              for="subledger"
-              style="color: black; font-size: 14px; width: 45%"
-              >Subledger</label
-            >
-            <select
-              id="subledger"
-              name="subledger"
-              class="form-select"
-              [(ngModel)]="model.subledger"
-              (ngModelChange)="filtrarDatos('subledger', $event)"
-              style="font-size: 14px"
-              required
-            >
-              <option *ngFor="let subledger of subledgers" [value]="subledger">
-                {{ subledger }}
-              </option>
-            </select>
-          </div> -->
-
-          <!-- Search dinámico tveas (Subledger) -->
           <div class="input-group mb-3">
             <label
               class="input-group-text"
@@ -402,6 +150,7 @@
               id="subledger"
               aria-describedby="inputGroupPrepend"
               required
+              #subledger="ngModel"
             />
             <button class="btn btn-light" type="button" disabled>
               <i class="ti-search"></i>
@@ -410,33 +159,6 @@
         </div>
 
         <div class="col-md-6">
-          <!-- <div class="input-group mb-3">
-            <label
-              class="input-group-text"
-              for="nombreempleado"
-              style="color: black; font-size: 14px; width: 45%"
-              >Empleado</label
-            >
-            &nbsp;
-            <select
-              id="nombreempleado"
-              name="nombreempleado"
-              class="form-select"
-              [(ngModel)]="model.nombreCompleto"
-              (ngModelChange)="filtrarDatos('nombreCompleto', $event)"
-              style="font-size: 14px"
-              required
-            >
-              <option
-                *ngFor="let empleado of nombresEmpleados"
-                [value]="empleado"
-              >
-                {{ empleado }}
-              </option>
-            </select>
-          </div> -->
-
-          <!-- Search dinámico tveas (Subledger) -->
           <div class="input-group mb-3">
             <label
               class="input-group-text"
@@ -456,42 +178,16 @@
               class="form-control"
               id="nombreempleado"
               aria-describedby="inputGroupPrepend"
+              #nombreCompleto="ngModel"
               required
             />
             <button class="btn btn-light" type="button" disabled>
               <i class="ti-search"></i>
             </button>
           </div>
-
-          <!-- <div class="input-group mb-3">
-            <label
-              class="input-group-text"
-              for="nombreempleado"
-              style="color: black; font-size: 14px; width: 45%"
-              >Empleado</label
-            >
-            &nbsp;
-            <select
-              id="nombreempleado"
-              name="nombreempleado"
-              class="form-select"
-              [(ngModel)]="model.nombreCompleto"
-              (ngModelChange)="filtrarDatos('nombreCompleto', $event)"
-              style="font-size: 14px"
-              required
-            >
-              <option
-                *ngFor="let empleado of nombresEmpleados"
-                [value]="empleado"
-              >
-                {{ empleado }}
-              </option>
-            </select>
-          </div> -->
         </div>
       </div>
 
-      <!-- Row 4 -->
       <div class="row">
         <div class="col-md-6">
           <div class="input-group mb-3">
@@ -529,7 +225,6 @@
         </div>
       </div>
 
-      <!-- Row 5 -->
       <div class="row">
         <div class="col-md-6">
           <div class="input-group mb-3">
@@ -567,7 +262,6 @@
         </div>
       </div>
 
-      <!-- Row 6 -->
       <div class="row">
         <div class="col-md-6">
           <div class="input-group mb-3">
@@ -605,7 +299,6 @@
         </div>
       </div>
 
-      <!-- Row 7 -->
       <div class="row">
         <div class="col-md-6">
           <div class="input-group mb-3">
@@ -638,6 +331,8 @@
               [(ngModel)]="model.misionCargo"
               class="form-control"
               id="misioncargo"
+              #misioncargo="ngModel"
+              required
             />
           </div>
         </div>
@@ -657,6 +352,8 @@
               name="justificacion"
               [(ngModel)]="model.justificacion"
               style="color: black; font-size: 14px"
+              required
+              #justificacion="ngModel"
             ></textarea>
           </div>
         </div>
@@ -795,7 +492,7 @@
             >
             &nbsp;
             <input
-              [(ngModel)]="model.sueldoVariableMensual"
+              [(ngModel)]="model.sueldoMensual"
               type="text"
               name="mensual"
               class="form-control"
@@ -813,7 +510,7 @@
             >
             &nbsp;
             <input
-              [(ngModel)]="model.sueldoVariableTrimestral"
+              [(ngModel)]="model.sueldoTrimestral"
               type="text"
               name="trimestral"
               class="form-control"
@@ -834,7 +531,7 @@
             >
             &nbsp;
             <input
-              [(ngModel)]="model.sueldoVariableSemestral"
+              [(ngModel)]="model.sueldoSemestral"
               type="text"
               name="semestral"
               class="form-control"
@@ -852,7 +549,7 @@
             >
             &nbsp;
             <input
-              [(ngModel)]="model.sueldoVariableAnual"
+              [(ngModel)]="model.sueldoAnual"
               type="text"
               name="anual"
               class="form-control"
@@ -874,10 +571,9 @@
       </div>
 
       <div class="accordion" id="accordionExample">
-        <!-- Repeat this (start) -->
         <div
           *ngFor="
-            let nivel of dataNivelesDeAprobacion[keySelected];
+            let nivelItem of dataAprobacionesPorPosicion[keySelected];
             let i = index
           "
           class="accordion-item"
@@ -896,17 +592,19 @@
                 class="row"
                 style="align-items: center; justify-content: space-around"
               >
-                <div class="col">{{ nivel.ruta }}</div>
+                <div class="col">{{ nivelItem.nivelAprobacionType.ruta }}</div>
                 <div class="col">
                   {{
-                    nivel.usuario !== "" &&
-                    nivel.usuario !== undefined &&
-                    nivel.usuario != null
-                      ? nivel.usuario
-                      : "user"
+                    nivelItem.aprobador.usuario !== "" &&
+                    nivelItem.aprobador.usuario !== undefined &&
+                    nivelItem.aprobador.usuario != null
+                      ? nivelItem.aprobador.usuario
+                      : "No aplica"
                   }}
                 </div>
-                <div class="col">{{ nivel.nivelAprobacionRuta }}</div>
+                <div class="col">
+                  {{ nivelItem.nivelAprobacionType.nivelAprobacionRuta }}
+                </div>
               </div>
             </button>
           </h2>
@@ -933,39 +631,18 @@
                     style="color: black; font-size: 14px; margin: auto auto"
                     class="text-center"
                     >{{
-                      nivel.descripcionPosicion !== "" &&
-                      nivel.descripcionPosicion !== undefined &&
-                      nivel.descripcionPosicion != null
-                        ? nivel.descripcionPosicion
+                      nivelItem.aprobador.descripcionPosicion !== "" &&
+                      nivelItem.aprobador.descripcionPosicion !== undefined &&
+                      nivelItem.aprobador.descripcionPosicion != null
+                        ? nivelItem.aprobador.descripcionPosicion
                         : "No aplica"
                     }}</span
                   >
                 </div>
               </div>
             </div>
-            <!-- <div class="row mt-2">
-              <div class="col">
-                <div class="input-group mb-3">
-                  <label
-                    for="lvl1comentarios"
-                    style="color: #0056b3; font-size: 14px; margin: auto auto"
-                  >
-                    Comentarios
-                  </label>
-                  &nbsp;
-                  <span
-                    id="lvl1comentarios"
-                    name=""
-                    style="color: black; font-size: 14px; margin: auto auto"
-                    class="text-center"
-                    >No applica</span
-                  >
-                </div>
-              </div>
-            </div> -->
           </div>
         </div>
-        <!-- Repeat this (end) -->
       </div>
 
       <div class="row mt-4">
@@ -1042,6 +719,5 @@
         </div>
       </div>
     </h2>
-    <!-- <app-spinner></app-spinner> -->
   </div>
 </form>

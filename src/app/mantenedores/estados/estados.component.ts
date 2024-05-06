@@ -57,7 +57,6 @@ export class EstadosComponent {
     this.utilService.closeLoadingSpinner();
     return this.estadosService.index().subscribe({
       next: (response) => {
-        console.log("Data response RBPEST = ", response);
         // this.dataTable = response.itemCatalogoTypes.map((r) => ({
         //   // id: r.id,
         //   codigo: r.codigo,
@@ -121,7 +120,7 @@ export class EstadosComponent {
 }
 
     */
-    console.log("AT onSaveRowTable (before): ", rowData);
+
     rowData = {
       ...rowData,
       catalogoId: "RBPEST",
@@ -146,7 +145,6 @@ export class EstadosComponent {
     rowData.estado = rowData.estado;
     rowData.isEditingRow = rowData.isEditingRow;*/
 
-    console.log("AT onSaveRowTable (After): ", rowData);
     if (rowData.key) {
       /* Actualizar */
       this.estadosService.update(rowData).subscribe({
@@ -163,7 +161,6 @@ export class EstadosComponent {
           });
         },
         error: (error: HttpErrorResponse) => {
-          console.log("Error: ", error);
           this.utilService.modalResponse(error.error, "error");
         },
       });
@@ -199,7 +196,6 @@ export class EstadosComponent {
     rowData: IEstados,
     finishedClonningRow: boolean
   ) {
-    console.log("EJECUTANDO validateToSave()");
     const descripcionNotEmpty =
       this.validationsService.isNotEmptyStringVariable(rowData.descripcion);
     if (!descripcionNotEmpty) {

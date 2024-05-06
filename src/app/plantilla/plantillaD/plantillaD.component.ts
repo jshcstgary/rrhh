@@ -56,6 +56,9 @@ export class PlantillaDComponent implements AfterViewInit, OnInit, OnChanges {
   @Input({ required: true }) public contexto: any;
   @Input() public onSaveRowData: string = "validateToSave";
   @Input() public clickOnActionRow: string = "onRowActionClicked";
+
+  @Input({ required: false }) public isTarea: boolean = false;
+
   @Input() public clickOnFilter: string = "filterDataTable";
   @Input() public clickOnPageCrear: string = "pageCrear";
   @Input() public onRowChange: string;
@@ -65,7 +68,9 @@ export class PlantillaDComponent implements AfterViewInit, OnInit, OnChanges {
   @Input() public filterFormInputs: IFormItems = [];
   @Input() public filterFormSearchButtonProps: ISearchButtonForm = null;
   @Input() public onChangeHeaderFilterForm: string;
-  @Input() public colsToFilterByText: string[] = [];
+  @Input() public colsToFilterByTextIdSolicitud: string[] = [];
+  @Input() public colsToFilterByTextName: string[] = [];
+  @Input() public isFilterByIdSolicitud: boolean = true;
   @Input() public onActionTableFunction: string = "clickOnActionTable";
   @Input() public onDeleteFunction: string = "onDelete";
   @Input({ required: false }) public IdRowToClone: string = null;
@@ -248,11 +253,20 @@ export class PlantillaDComponent implements AfterViewInit, OnInit, OnChanges {
     });
     /* Filtro */
     if (textToFilter.length > 0) {
-      data = this.tableService.filterDataByProps(
-        data,
-        this.colsToFilterByText,
-        textToFilter
-      );
+      if (this.isFilterByIdSolicitud) {
+        data = this.tableService.filterDataByProps(
+          data,
+          this.colsToFilterByTextIdSolicitud,
+          textToFilter
+        );
+      }
+      if (!this.isFilterByIdSolicitud) {
+        data = this.tableService.filterDataByProps(
+          data,
+          this.colsToFilterByTextName,
+          textToFilter
+        );
+      }
     }
     /* Ordeno */
     const rowIndexToSort = this.colIndexSorted;
@@ -368,19 +382,16 @@ export class PlantillaDComponent implements AfterViewInit, OnInit, OnChanges {
     tooltip: string,
     id_edit
   ) {
-    console.log("EDTTTT: ", id_edit);
     this.IdRowToClone = null;
     this.contexto[this.clickOnActionRow](id, key, tooltip, id_edit);
   }
 
   public filterDataTable() {
-    console.log("FILTER");
     this.IdRowToClone = null;
     this.contexto[this.clickOnFilter]();
   }
 
   public pageCrear() {
-    console.log("CREAR");
     // this.IdRowToClone = null;
     this.contexto[this.clickOnPageCrear]();
   }

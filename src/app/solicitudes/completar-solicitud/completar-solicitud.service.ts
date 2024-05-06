@@ -1,19 +1,16 @@
-import {
-  IAprobacionesPosicion,
-  ITareasResponse,
-} from "./registrar-solicitudes.interface";
-import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { DetalleSolicitud } from "src/app/eschemas/DetalleSolicitud";
 import { Solicitud } from "src/app/eschemas/Solicitud";
 import { environment } from "src/environments/environment";
 import { IEmpleados } from "../../services/mantenimiento/empleado.interface";
+import { ITareasResponse } from "../registrar-solicitud/registrar-solicitudes.interface";
 
 @Injectable({
   providedIn: "root",
 })
-export class SolicitudesService {
+export class CompletarSolicitudService {
   private apiUrlSolicitudes = environment.solicitudesServiceES;
   private apiUrlNivelAprobacion = environment.nivelAprobacionServiceES;
   private apiEmpleadoEvolutionUrl = environment.empleadoServiceEs;
@@ -28,7 +25,6 @@ export class SolicitudesService {
   }
 
   public getSolicitudById(idSolicitud: any): Observable<any> {
-    console.log("getSolicitudById call with: ", idSolicitud);
     return this.http.get<any>(`${this.apiUrlSolicitudes}/${idSolicitud}`);
   }
 
@@ -74,44 +70,11 @@ export class SolicitudesService {
     );
   }
 
-  /*
-
-
-  const headers = new HttpHeaders({
-      idNivelDireccion: idNivelDireccion,
-    });
-    console.log("Headers: ", headers);
-    return this.http.get<IConsultaNivelesAprobacionResponse>(
-      `${this.apiUrlNivelAprobacion}/aprobacionesporfiltro/${idTipoSolicitud}/${idTipoMotivo}`,
-      { headers: headers }
-    );
-
-
-  */
-
-  public obtenerAprobacionesPorPosicion(
-    idTipoSolicitud: any,
-    idTipoMotivo: any,
-    codigoPosicion: any,
-    idNivelDireccion: any
-  ): Observable<IAprobacionesPosicion> {
-    const headers = new HttpHeaders({
-      idNivelDireccion: idNivelDireccion,
-    });
-    console.log(
-      "Se llama con esto: " +
-        "idTipoSolicitud: " +
-        idTipoSolicitud +
-        ", idTipoMotivo: " +
-        idTipoMotivo +
-        ", codigoPosicion: " +
-        codigoPosicion +
-        ", idNivelDireccion: " +
-        idNivelDireccion
-    );
-    return this.http.get<IAprobacionesPosicion>(
-      `${this.apiUrlNivelAprobacion}/aprobacionesporposicion/${idTipoSolicitud}/${idTipoMotivo}/${codigoPosicion}`,
-      { headers: headers }
+  public obtenerUltimaTareaACompletarPorInstanciaRaiz(
+    idDeInstanciaRaiz: string
+  ): Observable<ITareasResponse> {
+    return this.http.get<ITareasResponse>(
+      `${this.apiHistoricaCamundaUrl}/tarea/${idDeInstanciaRaiz}P`
     );
   }
 

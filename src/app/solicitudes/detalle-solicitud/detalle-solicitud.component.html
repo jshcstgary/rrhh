@@ -307,7 +307,7 @@
       </div>
 
       <!-- Row 3 -->
-      <div class="row" *ngIf="tipo_motivo_descripcion === 'Reemplazo'">
+      <div class="row" *ngIf="mostrarSubledger">
         <!-- <div class="row"> -->
         <div class="col-md-6">
           <!-- <div class="input-group mb-3">
@@ -624,13 +624,7 @@
             >
           </div>
         </div>
-        <div
-          class="col-md-6"
-          *ngIf="
-            tipo_motivo_descripcion === 'Nuevo' ||
-            tipo_motivo_descripcion === 'Eventual'
-          "
-        >
+        <div class="col-md-6" *ngIf="mostrarTipoJustificacionYMision">
           <div class="input-group mb-3">
             <label
               class="input-group-text"
@@ -644,17 +638,12 @@
               [(ngModel)]="detalleSolicitud.misionCargo"
               class="form-control"
               id="misioncargo"
+              disabled
             />
           </div>
         </div>
       </div>
-      <div
-        class="row"
-        *ngIf="
-          tipo_motivo_descripcion === 'Nuevo' ||
-          tipo_motivo_descripcion === 'Eventual'
-        "
-      >
+      <div class="row" *ngIf="mostrarTipoJustificacionYMision">
         <div class="col">
           <div class="input-group mb-3 contenedor">
             <label
@@ -669,6 +658,7 @@
               name="justificacion"
               [(ngModel)]="detalleSolicitud.justificacion"
               style="color: black; font-size: 14px"
+              disabled
             ></textarea>
           </div>
         </div>

@@ -262,11 +262,9 @@ export class EditarAprobadorFijoComponent implements OnInit {
     this.config.bindValue = "value";
     this.route.paramMap.subscribe((params) => {
       this.id_edit = params.get("id");
-      console.log("ESTE ES EL ID: ", this.id_edit);
     });
     this.route.queryParams.subscribe((params) => {
       // this.id_edit = params["id_edit"];
-      console.log("ID editar: ", this.id_edit);
       // Utiliza el id_edit obtenido
     });
   }
@@ -323,19 +321,9 @@ export class EditarAprobadorFijoComponent implements OnInit {
   onSelectItem(campo: string, event) {
     let valor = event.item;
     const datosEmpleado = this.dataEmpleadoEvolution.find((empleado) => {
-      console.log("Empleado iterando: ", empleado);
-      console.log(
-        "empleado[campo]: " + empleado[campo] + ", valor: ",
-        valor + ", campo: ",
-        campo
-      );
-      console.log("\n");
       return empleado[campo] === valor;
     });
-    console.log("Valor de datosEmpleado: ", datosEmpleado);
     if (datosEmpleado) {
-      console.log("Ingresa en el if: ", datosEmpleado);
-
       /*
 
       codigo: "CODIGO_2",
@@ -453,9 +441,6 @@ export class EditarAprobadorFijoComponent implements OnInit {
           this.modelo.descripcioN_POSICION = response.descripcioN_POSICION;
           this.modelo.supervisA_A = response.supervisA_A;
           this.modelo.niveL_REPORTE = response.niveL_REPORTE;
-
-          console.log("Mi Response: ", response);
-          console.log("Mi Modelo: ", this.modelo);
         },
         error: (error: HttpErrorResponse) => {
           this.utilService.modalResponse(error.error, "error");
@@ -515,16 +500,7 @@ export class EditarAprobadorFijoComponent implements OnInit {
       this.modelo.accion = "";
       this.modelo.idAccion = 0;*/
     }
-    console.log(
-      "this.tipoSolicitudSeleccionada = " +
-        this.tipoSolicitudSeleccionada +
-        ", restrictionsIds = ",
-      this.restrictionsIds
-    );
-    console.log(
-      "¿Está en restrictionsIds?",
-      this.restrictionsIds.includes(this.tipoSolicitudSeleccionada)
-    );
+
     if (!this.dataAccionesPorTipoSolicitud[idTipoSolicitud]) {
       this.mantenimientoService
         .getAccionesPorTipoSolicitud(idTipoSolicitud)
@@ -623,11 +599,8 @@ export class EditarAprobadorFijoComponent implements OnInit {
   }
 
   ObtenerServicioNivelDireccion() {
-    console.log("Executing ObtenerServicioNivelDireccion() method");
-
     return this.mantenimientoService.getNiveles().subscribe({
       next: (response) => {
-        console.log("Response = ", response);
         this.dataNivelDireccion = [
           ...new Set(
             response.evType.map((item) => {
@@ -643,11 +616,8 @@ export class EditarAprobadorFijoComponent implements OnInit {
   }
 
   ObtenerServicioNivelAprobacion() {
-    console.log("Executing ObtenerServicioNivelAprobacion() method");
-
     return this.mantenimientoService.getNiveles().subscribe({
       next: (response) => {
-        console.log("Response = ", response);
         this.dataNivelAprobacion = [
           ...new Set(
             response.evType.map((item) => {
@@ -705,11 +675,7 @@ export class EditarAprobadorFijoComponent implements OnInit {
       ...this.modelo,
       estado: this.modelo.estado ? "A" : "I",
     });*/
-    console.log("Actualizar nivel de solicitud: ", this.id_edit);
-    console.log(
-      "dataAccionesPorTipoSolicitud[tipoSolicitudSeleccionada]: ",
-      this.dataAccionesPorTipoSolicitud[this.tipoSolicitudSeleccionada]
-    );
+
     this.route.params.subscribe((params) => {
       let fechaActual = new Date();
       let fechaEnFormatoISO = fechaActual.toISOString();
@@ -733,12 +699,7 @@ export class EditarAprobadorFijoComponent implements OnInit {
       this.modelo.descripcioN_POSICION = response.descripcioN_POSICION;
       this.modelo.supervisA_A = response.supervisA_A;
       this.modelo.niveL_REPORTE = response.niveL_REPORTE;*/
-      console.log("Esta es la data para actualizar el aprobador: ", {
-        ...this.modelo,
-        fechA_MODIFICACION: fechaEnFormatoISO,
-        usuariO_MODIFICACION: fechaEnFormatoISO,
-        estado: this.modelo.estado ? "A" : "I",
-      });
+
       this.editarAprobadorFijoService
         .actualizarAprobadorFijo(
           {
@@ -753,7 +714,6 @@ export class EditarAprobadorFijoComponent implements OnInit {
           (response) => {
             // Inicio
             this.utilService.closeLoadingSpinner();
-            console.log("Response al actualizar: ", response);
             this.utilService.modalResponse(
               "Datos actualizados correctamente",
               "success"
@@ -770,7 +730,5 @@ export class EditarAprobadorFijoComponent implements OnInit {
         );
     });
     return;
-
-    console.log("Editar nivel de solicitud");
   }
 }

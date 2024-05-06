@@ -84,7 +84,15 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 
   public keySelected: any;
 
-  public detalleSolicitud: DetalleSolicitud;
+  public mostrarTipoJustificacionYMision = false;
+
+  public restrictionsIds: any[] = ["1", "2", 1, 2];
+
+  public restrictionsSubledgerIds: any[] = ["4", 4];
+
+  public mostrarSubledger = false;
+
+  public detalleSolicitud: DetalleSolicitud = new DetalleSolicitud();
 
   public solicitud = new Solicitud();
 
@@ -411,7 +419,6 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 
     this.route.queryParams.subscribe((params: Solicitud) => {
       //this.solicitud = params;
-      console.log("Mis params: ", params);
       this.misParams = params;
 
       /*this.solicitud.infoGeneral.idTipoSolicitud = this.dataTipoSolicitud.id;
@@ -457,22 +464,13 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
         this.camundaRestService
           .getTask(environment.taskType_Registrar, params["id"])
           .subscribe((result) => {
-            console.log("INGRESA AQUÍ (registrar): ", result);
-            console.log(
-              "environment.taskType_Registrar: ",
-              environment.taskType_Registrar
-            );
-            console.log("params['id']: ", params["id"]);
             this.lookForError(result); // if error, then control gets redirected to err page
 
             // if result is success - bingo, we got the task id
             this.uniqueTaskId =
               result[0].id; /* Es como la tarea que se crea en esa instancia */
             this.taskId = params["id"]; /* Esta es la instancia */
-            console.log("this.uniqueTaskId: ", this.uniqueTaskId);
-            console.log("this.taskId: ", this.taskId);
-            this.getDetalleSolicitudById(this.misParams.idSolicitud);
-            this.getSolicitudById(this.misParams.idSolicitud);
+
             this.date = result[0].created;
             this.loadExistingVariables(
               this.uniqueTaskId ? this.uniqueTaskId : "",
@@ -495,14 +493,11 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 
   onInputChange(campo: string, val: any) {
     let valor = (val.target as HTMLInputElement).value;
-    console.log(
-      "INGRESA en onInputChange campo = " + campo + " valor = " + valor
-    );
+
     this.searchSubject.next({ campo, valor });
     this.suggestions = this.dataEmpleadoEvolution
       .filter((empleado) => empleado[campo].startsWith(valor))
       .map((empleado) => empleado[campo]);
-    console.log("this.suggestions = ", this.suggestions);
   }
 
   selectSuggestion(suggestion: string) {
@@ -513,20 +508,10 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
   onSelectItem(campo: string, event) {
     let valor = event.item;
     const datosEmpleado = this.dataEmpleadoEvolution.find((empleado) => {
-      console.log("Empleado iterando: ", empleado);
-      console.log(
-        "empleado[campo]: " + empleado[campo] + ", valor: ",
-        valor + ", campo: ",
-        campo
-      );
-      console.log("\n");
       return empleado[campo] === valor;
     });
-    console.log("Valor de datosEmpleado: ", datosEmpleado);
     if (datosEmpleado) {
-      console.log("Ingresa en el if: ", datosEmpleado);
       this.model = Object.assign({}, datosEmpleado);
-      console.log("ESTE MODELO SE ASIGNA: ", this.model);
       this.keySelected =
         this.solicitud.idTipoSolicitud +
         "_" +
@@ -589,18 +574,9 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 
   filtrarDatos(campo: string, valor: string) {
     const datosEmpleado = this.dataEmpleadoEvolution.find((empleado) => {
-      console.log("Empleado iterando: ", empleado);
-      console.log(
-        "empleado[campo]: " + empleado[campo] + ", valor: ",
-        valor + ", campo: ",
-        campo
-      );
-      console.log("\n");
       return empleado[campo] === valor;
     });
-    console.log("Valor de datosEmpleado: ", datosEmpleado);
     if (datosEmpleado) {
-      console.log("Ingresa en el if: ", datosEmpleado);
       this.model = Object.assign({}, datosEmpleado);
     } else {
       // this.model.reset();
@@ -639,14 +615,8 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
     [x: string]: { value: any };
   }) {
     Object.keys(variables).forEach((variableName) => {
-      console.log("dataTipoAccion = ", this.dataTipoAccion);
-      console.log("dataTipoSolicitud = ", this.dataTipoSolicitud);
-      console.log("dataTipoMotivo = ", this.dataTipoMotivo);
-      console.log("variables: ", variables);
       switch (variableName) {
         case "tipoAccion":
-          console.log("set tipo_accion = ", variables[variableName].value);
-          console.log("this.dataTipoAccion?.filter = ", this.dataTipoAccion);
           this.tipo_accion_descripcion = this.dataTipoAccion?.filter(
             (data) => data.tipoAccion == variables[variableName].value
           )[0]?.tipoAccion;
@@ -654,11 +624,6 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
           break;
 
         case "tipoSolicitud":
-          console.log("set tipo_solicitud = ", variables[variableName].value);
-          console.log(
-            "this.dataTipoSolicitud?.filter = ",
-            this.dataTipoSolicitud
-          );
           this.tipo_solicitud_descripcion =
             this.dataTipoSolicitud.tipoSolicitudType?.filter(
               (data) => data.tipoSolicitud == variables[variableName].value
@@ -667,8 +632,6 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
           break;
 
         case "tipoMotivo":
-          console.log("set tipo_motivo = ", variables[variableName].value);
-          console.log("this.dataTipoMotivo?.filter = ", this.dataTipoMotivo);
           this.tipo_motivo_descripcion = this.dataTipoMotivo?.filter(
             (data) => data.tipoMotivo == variables[variableName].value
           )[0]?.tipoMotivo;
@@ -691,7 +654,6 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
       await this.ObtenerServicioNivelDireccion();
       await this.getSolicitudes();
 
-      await this.getDetalleSolicitudById(this.id_edit);
       await this.getSolicitudById(this.id_edit);
       await this.getDataEmpleadosEvolution();
       // await this.loadDataCamunda();
@@ -736,10 +698,9 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
   getSolicitudById(id: any) {
     return this.solicitudes.getSolicitudById(id).subscribe({
       next: (response: any) => {
-        console.log("Solicitud por id: ", response);
         this.solicitud = response;
-        console.log("DATA SOLICITUD BY ID: ", this.solicitud);
         this.loadingComplete++;
+        this.getDetalleSolicitudById(this.id_edit);
       },
       error: (error: HttpErrorResponse) => {
         this.utilService.modalResponse(error.error, "error");
@@ -756,11 +717,25 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
         // this.detalleSolicitud.idSolicitud = response.idSolicitud;
         // this.detalleSolicitud.unidadNegocio = response.unidadNegocio;
         this.loadingComplete++;
-        console.log("DATA DETALLE SOLICITUD BY ID: ", this.detalleSolicitud);
-        console.log(
-          "SU RESPONSE response.detalleSolicitudType: ",
-          response.detalleSolicitudType
+
+        // tveas, si incluye el id, debo mostrarlos (true)
+        this.mostrarTipoJustificacionYMision = this.restrictionsIds.includes(
+          this.solicitud.idTipoMotivo
         );
+
+        this.mostrarSubledger = this.restrictionsSubledgerIds.includes(
+          this.solicitud.idTipoMotivo
+        );
+
+        this.keySelected =
+          this.solicitud.idTipoSolicitud +
+          "_" +
+          this.solicitud.idTipoMotivo +
+          "_" +
+          this.model.nivelDir;
+        if (!this.dataNivelesDeAprobacion[this.keySelected]) {
+          this.getNivelesAprobacion();
+        }
       },
       error: (error: HttpErrorResponse) => {
         this.utilService.modalResponse(error.error, "error");
@@ -915,14 +890,6 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
       .subscribe((res) => {
         this.submitted = true;
         let idInstancia = this.solicitudDataInicial.idInstancia;
-        console.log("this.uniqueTaskId: ", this.uniqueTaskId);
-        console.log("variables ENVIADASSSS: ", variables);
-        console.log("respostCompleteTask: ", res);
-
-        console.log(
-          "this.solicitudDataInicial.idInstancia: ",
-          this.solicitudDataInicial.idInstancia
-        );
 
         let extra = {
           idEmpresa: this.model.compania,
@@ -937,12 +904,9 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 
         this.solicitud.unidadNegocio = this.model.unidadNegocio;
         this.solicitud.idUnidadNegocio = this.model.unidadNegocio;
-        console.log("this.solicitud: ", this.solicitud);
         this.solicitudes
           .actualizarSolicitud(this.solicitud)
           .subscribe((responseSolicitud) => {
-            console.log("responseSolicitud: ", responseSolicitud);
-
             // Inicio
 
             // Fin
@@ -1008,52 +972,32 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 
             this.detalleSolicitud.sueldo = this.model.sueldo;
             this.detalleSolicitud.sueldoVariableMensual =
-              this.model.sueldoVariableMensual;
+              this.model.sueldoMensual;
             this.detalleSolicitud.sueldoVariableTrimestral =
-              this.model.sueldoVariableTrimestral;
+              this.model.sueldoTrimestral;
             this.detalleSolicitud.sueldoVariableSemestral =
-              this.model.sueldoVariableSemestral;
-            this.detalleSolicitud.sueldoVariableAnual =
-              this.model.sueldoVariableAnual;
+              this.model.sueldoSemestral;
+            this.detalleSolicitud.sueldoVariableAnual = this.model.sueldoAnual;
             this.detalleSolicitud.tipoContrato = this.model.tipoContrato;
             this.detalleSolicitud.unidad = this.model.unidadNegocio;
             this.detalleSolicitud.unidadNegocio = this.model.unidadNegocio;
-            console.log(
-              "ESTO LE MANDO AL ACTUALIZAR this.detalleSolicitud: ",
-              this.detalleSolicitud
-            );
 
             this.solicitudes
               .actualizarDetalleSolicitud(this.detalleSolicitud)
               .subscribe((responseDetalle) => {
-                console.log("responseDetalle: ", responseDetalle);
-
                 this.utilService.closeLoadingSpinner();
                 this.utilService.modalResponse(
                   "Datos ingresados correctamente",
                   "success"
                 );
 
-                console.log(
-                  "CON ESTO COMPLETO (this.uniqueTaskId): ",
-                  this.uniqueTaskId
-                );
-
                 this.camundaRestService
                   .getTask(environment.taskType_Notificar, this.idDeInstancia)
                   .subscribe((result) => {
-                    console.log("INGRESA AQUÍ: ", result);
-                    console.log(
-                      "environment.taskType_Notificar: ",
-                      environment.taskType_Notificar
-                    );
-
                     // if result is success - bingo, we got the task id
                     this.uniqueTaskId =
                       result[0].id; /* Es como la tarea que se crea en esa instancia */
                     this.taskId = this.idDeInstancia; /* Esta es la instancia */
-                    console.log("this.uniqueTaskId: ", this.uniqueTaskId);
-                    console.log("this.taskId: ", this.taskId);
 
                     // tveas da error Notificar
                     /*this.camundaRestService
@@ -1176,7 +1120,6 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
       .postCompleteTask(taskId, variables)
       .subscribe((res) => {
         // Aquí puedes manejar la respuesta del segundo servicio
-        console.log("Segundo servicio completado:", res);
 
         // Verifica si el nombre sigue siendo "Notificar revisión solicitud"
         if (res.name === "Notificar revisión solicitud") {
@@ -1184,7 +1127,6 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
           this.completeAndCheckTask(taskId, variables);
         } else {
           // El nombre ya no es "Notificar revisión solicitud", haz algo diferente
-          console.log("Nombre diferente:", res.name);
         }
       });
   }
@@ -1276,10 +1218,10 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
     variables.descripContrato = { value: this.model.descripContrato };
     variables.status = { value: this.model.status };
     variables.sueldo = { value: this.model.sueldo }; //sueldoVariableMensual
-    variables.sueldoMensual = { value: this.model.sueldoVariableMensual };
-    variables.sueldoTrimestral = { value: this.model.sueldoVariableTrimestral };
-    variables.sueldoSemestral = { value: this.model.sueldoVariableSemestral };
-    variables.sueldoAnual = { value: this.model.sueldoVariableAnual };
+    variables.sueldoMensual = { value: this.model.sueldoMensual };
+    variables.sueldoTrimestral = { value: this.model.sueldoTrimestral };
+    variables.sueldoSemestral = { value: this.model.sueldoSemestral };
+    variables.sueldoAnual = { value: this.model.sueldoAnual };
     variables.anularSolicitud = { value: "No" };
     variables.codigoPosicion = { value: this.model.codigoPosicion };
     variables.misionCargo = { value: this.model.misionCargo };
@@ -1334,7 +1276,6 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
   }
 
   onCancel() {
-    console.log("User action cancel");
     // mmunoz
     // this.router.navigate(["tasklist/Registrar"], { queryParams: {} });
     this.router.navigate(["solicitudes/consulta-solicitudes"], {
@@ -1365,7 +1306,7 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
       .getNivelesAprobacion(
         this.solicitud.idTipoSolicitud,
         this.solicitud.idTipoMotivo,
-        this.model.nivelDir
+        this.detalleSolicitud.nivelDireccion
       )
       // .getNivelesAprobacion(1, 1, "TA")
       .subscribe({
@@ -1391,7 +1332,9 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
   }
   getDataNivelesAprobacionPorCodigoPosicion() {
     this.solicitudes
-      .getDataNivelesAprobacionPorCodigoPosicion(this.model.codigoPosicion)
+      .getDataNivelesAprobacionPorCodigoPosicion(
+        this.detalleSolicitud.codigoPosicion
+      )
       .subscribe({
         next: (response) => {
           this.dataNivelesAprobacionPorCodigoPosicion[
@@ -1414,16 +1357,6 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
                     eachData.nivelDireccion ==
                     eachDataNivelPorCodigo.nivelDireccion
                   ) {
-                    console.log(
-                      "OCURRE UNA COINCIDENCIA (eachData): ",
-                      eachData
-                    );
-                    console.log(
-                      "OCURRE UNA COINCIDENCIA (eachDataNivelPorCodigo): ",
-                      eachDataNivelPorCodigo
-                    );
-                    console.log("\n");
-
                     eachData["usuario"] = eachDataNivelPorCodigo.usuario;
                     eachData["descripcionPosicion"] =
                       eachDataNivelPorCodigo.descripcionPosicion;
@@ -1433,10 +1366,6 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
               }
             }
           }
-          console.log(
-            "**dataNivelesDeAprobacion**: ",
-            this.dataNivelesDeAprobacion
-          );
         },
         error: (error: HttpErrorResponse) => {
           this.utilService.modalResponse(
