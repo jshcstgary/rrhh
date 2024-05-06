@@ -47,8 +47,8 @@ export class HorizontalSidebarComponent {
   navbar_bg = {
     "background-image": "url(../../../assets/images/background/navbar-bg.png)",
     "background-repeat": "no-repeat",
-    "background-size": "contain",
-    "background-position": "center",
+    "background-size": "cover",
+    "background-position": "center"
   };
   //public pagesToSearch: ISelectOptions = [];
   public userName: string = "Vcastro";
