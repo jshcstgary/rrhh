@@ -65,7 +65,7 @@ export class RegistrarData {
     public nombreCargo: string = "",
     public nomCCosto: string = "",
     public misionCargo: string = "", // Para Requisión - Nuevo/Eventual
-    public justificacion: string = "", // Para Requisión - Nuevo/Eventual
+    public justificacionCargo: string = "", // Para Requisión - Nuevo/Eventual
     public codigoPosicion: string = "",
     public descrPosicion: string = "",
     public codigoPuesto: string = "",

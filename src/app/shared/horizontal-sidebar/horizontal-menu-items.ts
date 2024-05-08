@@ -3,6 +3,48 @@ import { RouteInfo } from "./horizontal-sidebar.metadata";
 export const ROUTES: RouteInfo[] = [
   {
     path: "",
+    title: "Solicitudes",
+    icon: "me-2 mdi mdi-clipboard-text",
+    class: "has-arrow",
+    ddclass: "",
+    extralink: false,
+    submenu: [
+      {
+        path: "/solicitudes/consulta-solicitudes",
+        title: "Solicitudes",
+        icon: "",
+        class: "",
+        ddclass: "",
+        extralink: false,
+        submenu: [],
+      },
+    ],
+  },
+
+  {
+    path: "",
+    title: "Tareas",
+    icon: "me-2 mdi mdi-file-check",
+    class: "has-arrow",
+    ddclass: "",
+    extralink: false,
+    submenu: [
+      {
+        path: "/tareas/consulta-tarea",
+        title: "Mis tareas",
+        icon: "",
+        class: "",
+        ddclass: "",
+        extralink: false,
+        submenu: [],
+      },
+    ],
+  },
+
+
+
+  {
+    path: "",
     title: "Mantenimiento",
     icon: "me-2 mdi mdi-dns",
     class: "has-arrow",
@@ -101,43 +143,5 @@ export const ROUTES: RouteInfo[] = [
       },
     ],
   },
-  {
-    path: "",
-    title: "Tareas",
-    icon: "me-2 mdi mdi-file-check",
-    class: "has-arrow",
-    ddclass: "",
-    extralink: false,
-    submenu: [
-      {
-        path: "/tareas/consulta-tarea",
-        title: "Mis tareas",
-        icon: "",
-        class: "",
-        ddclass: "",
-        extralink: false,
-        submenu: [],
-      },
-    ],
-  },
 
-  {
-    path: "",
-    title: "Solicitudes",
-    icon: "me-2 mdi mdi-clipboard-text",
-    class: "has-arrow",
-    ddclass: "",
-    extralink: false,
-    submenu: [
-      {
-        path: "/solicitudes/consulta-solicitudes",
-        title: "Solicitudes",
-        icon: "",
-        class: "",
-        ddclass: "",
-        extralink: false,
-        submenu: [],
-      },
-    ],
-  },
 ];

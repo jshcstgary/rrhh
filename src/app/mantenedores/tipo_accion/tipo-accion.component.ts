@@ -46,9 +46,9 @@ export class TipoAccionComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.utilService.openLoadingSpinner(
+   /* this.utilService.openLoadingSpinner(
       "Cargando información, espere por favor..."
-    );
+    );*/
     this.getDataToCombo();
     // this.getDataToTable();
   }
@@ -88,7 +88,7 @@ export class TipoAccionComponent implements OnInit {
           tipoSolicitudFormatted:
             this.formatTipoSolicitudEstaciones(accionResponse),
         }));
-        this.utilService.closeLoadingSpinner();
+        //this.utilService.closeLoadingSpinner();
       },
       error: (error: HttpErrorResponse) =>
         this.utilService.modalResponse(error.error, "error"),

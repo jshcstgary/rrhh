@@ -4,6 +4,7 @@ import { Observable } from "rxjs";
 import {
   ITiposolicitud,
   ITiposolicitudResponse,
+  ITiposolicitudTable,
   ITiposolicitudes,
 } from "./tipo-solicitud.interface";
 import { environment } from "src/environments/environment";
@@ -22,7 +23,7 @@ export class TipoSolicitudService {
   public delete(codigo: string): Observable<string> {
     return this.http.delete<string>(`${this.apiUrl}/${codigo}`);
   }
-  public store(request: ITiposolicitud): Observable<ITiposolicitud> {
+  public store(request: ITiposolicitudTable): Observable<ITiposolicitud> {
     return this.http.post<ITiposolicitud>(this.apiUrl, request);
   }
   public update(request: ITiposolicitud): Observable<ITiposolicitud> {

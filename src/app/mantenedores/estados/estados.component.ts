@@ -47,14 +47,14 @@ export class EstadosComponent {
   ) {}
 
   ngOnInit() {
-    this.utilService.openLoadingSpinner(
+    /*this.utilService.openLoadingSpinner(
       "Cargando información, espere por favor..."
-    );
+    );*/
     this.getDataToTable();
   }
 
   private getDataToTable() {
-    this.utilService.closeLoadingSpinner();
+    //this.utilService.closeLoadingSpinner();
     return this.estadosService.index().subscribe({
       next: (response) => {
         // this.dataTable = response.itemCatalogoTypes.map((r) => ({
@@ -69,7 +69,7 @@ export class EstadosComponent {
           estado: r.estado === "A",
         }));
 
-        this.utilService.closeLoadingSpinner();
+        //this.utilService.closeLoadingSpinner();
       },
       error: (error: HttpErrorResponse) => {
         this.utilService.modalResponse(error.error, "error");

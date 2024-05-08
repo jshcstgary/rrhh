@@ -19,6 +19,7 @@
     font-weight: 700;
     line-height: normal;
     letter-spacing: 1.2px;
+    margin-left: 5%;
   }
   .breadcrumb {
     padding: 0px;
@@ -28,6 +29,7 @@
     font-style: normal;
     font-weight: 300;
     line-height: normal;
+    margin-right: 5%;
     .breadcrumb-item + .breadcrumb-item::before {
       content: "\e649";
       font-family: themify, sans-serif;

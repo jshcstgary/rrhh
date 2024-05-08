@@ -17,7 +17,7 @@ export const TiposolicitudData: ITiposolicitudData = {
       dataIndex: "codigoTipoSolicitud",
       align: "center",
       sortActive: true,
-      colType: "number",
+      colType: "string",
     },
     {
       title: "Descripción",

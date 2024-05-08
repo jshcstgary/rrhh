@@ -17,6 +17,8 @@
 const baseC = "http://10.35.3.180"; //base de camunda
 const baseW = "http://10.35.3.162"; //base de servicios workflow
 const base = "http://10.35.3.162"; //base de servicios local
+const baseG ="http://181.188.224.250:18043";
+
 export const environment = {
   port: "4200",
   production: false,
@@ -38,28 +40,46 @@ export const environment = {
   //Servicios de workflow
   camundaUrl: `${baseC}:8188/`,
   // camundaUrl: `localhost:8080/`,
-  tipoSolicitudServiceES: `${baseW}:8068/v1/es/tiposolicitud`,
-  tipoRutaServiceES: `${baseW}:8069/v1/es/tiporuta`,
-  tipoProcesoServiceES: `${baseW}:8070/v1/es/tipoproceso`,
-  rutaServiceES: `${baseW}:8071/v1/es/ruta`, //10.35.3.162:8071/v1/es/ruta
-  tipoMotivoServiceES: `${baseW}:8072/v1/es/tipomotivo`, //10.35.3.162:8072/v1/es/tipomotivo
-  accionServiceES: `${baseW}:8073/v1/es/accion`,
-  tipoAccionServiceES: `${baseW}:8074/v1/es/tipoaccion`, //10.35.3.162:8074/v1/es/tipoaccion
+  //tipoSolicitudServiceES: `${baseW}:8068/v1/es/tiposolicitud`,
+  tipoSolicitudServiceES: `${baseG}/v1/es/tiposolicitud`,
+  //tipoRutaServiceES: `${baseW}:8069/v1/es/tiporuta`,
+  tipoRutaServiceES: `${baseG}/v1/es/tiporuta`,
+  //tipoProcesoServiceES: `${baseW}:8070/v1/es/tipoproceso`,
+  tipoProcesoServiceES: `${baseG}/v1/es/tipoproceso`,
+  //rutaServiceES: `${baseW}:8071/v1/es/ruta`, //10.35.3.162:8071/v1/es/ruta
+  rutaServiceES: `${baseG}/v1/es/ruta`, //10.35.3.162:8071/v1/es/ruta
+  //tipoMotivoServiceES: `${baseW}:8072/v1/es/tipomotivo`, //10.35.3.162:8072/v1/es/tipomotivo
+  tipoMotivoServiceES: `${baseG}/v1/es/tipomotivo`,
+  //accionServiceES: `${baseW}:8073/v1/es/accion`,
+  accionServiceES: `${baseG}/v1/es/accion`,
+  //tipoAccionServiceES: `${baseW}:8074/v1/es/tipoaccion`, //10.35.3.162:8074/v1/es/tipoaccion
+  tipoAccionServiceES: `${baseG}/v1/es/tipoaccion`,
   // http://10.35.3.162:8053/v1/es/item-catalogo/codigo/RBPND
-  CatalogoServiceES: `${baseW}:8065/v1/es/item-catalogo/codigo`, //10.35.3.162:8074/v1/es/tipoaccion
-  nivelAprobacionServiceES: `${baseW}:8067/v1/es/nivelesaprobacion`, //http://10.35.3.162:8000/v1/es/nivelesaprobacion
+  //CatalogoServiceES: `${baseW}:8065/v1/es/item-catalogo/codigo`, //10.35.3.162:8074/v1/es/tipoaccion
+  CatalogoServiceES: `${baseG}/v1/es/item-catalogo/codigo`,
+  //nivelAprobacionServiceES: `${baseW}:8067/v1/es/nivelesaprobacion`, //http://10.35.3.162:8000/v1/es/nivelesaprobacion
+  nivelAprobacionServiceES: `${baseG}/v1/es/nivelesaprobacion`,
 
   empleadoServiceEs: `${base}:8078/v1/us/empleadoev`,
 
-  nivelAprobacionRefreshServiceES: `${baseW}:8075/v1/es/refresh_nivelesAprobacion`,
+  //nivelAprobacionRefreshServiceES: `${baseW}:8075/v1/es/refresh_nivelesAprobacion`,
 
-  solicitudesServiceES: `${base}:8066/v1/es/solicitud`, // http://10.35.3.162:8001/v1/es/solicitud
+  nivelAprobacionRefreshServiceES: `${baseG}/v1/es/refresh_nivelesAprobacion`,
 
-  tareasServiceES: `${base}:8080/v1/es/solicitudcamunda`,
+  //solicitudesServiceES: `${base}:8066/v1/es/solicitud`, // http://10.35.3.162:8001/v1/es/solicitud
 
-  aprobadoresFijosServiceES: `${base}:8082/v1/es/aprobadores_fijos`,
+  solicitudesServiceES: `${baseG}/v1/es/solicitud`,
 
-  historicaCamundaServiceEs: `${base}:8077/v1/es/historicacamunda`,
+ // tareasServiceES: `${base}:8080/v1/es/solicitudcamunda`,
+
+ tareasServiceES: `${baseG}/v1/es/solicitudcamunda`,
+
+  //aprobadoresFijosServiceES: `${base}:8082/v1/es/aprobadores_fijos`,
+  aprobadoresFijosServiceES: `${baseG}/v1/es/aprobadores_fijos`,
+
+  //historicaCamundaServiceEs: `${base}:8077/v1/es/historicacamunda`,
+
+  historicaCamundaServiceEs: `${baseG}/v1/es/historicacamunda`,
 
   // http://10.35.3.162:8001/swagger/index.html
 

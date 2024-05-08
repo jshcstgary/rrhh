@@ -38,9 +38,9 @@ export class TipoSolicitudComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.utilService.openLoadingSpinner(
+    /*this.utilService.openLoadingSpinner(
       "Cargando información, espere por favor..."
-    );
+    );*/
     this.getDataToTable();
   }
 
@@ -51,7 +51,7 @@ export class TipoSolicitudComponent implements OnInit {
           ...r,
           estado: r.estado === "A",
         })); //verificar la estructura mmunoz
-        this.utilService.closeLoadingSpinner();
+        //this.utilService.closeLoadingSpinner();
       },
       error: (error: HttpErrorResponse) => {
         this.utilService.modalResponse(error.error, "error");
@@ -80,11 +80,14 @@ export class TipoSolicitudComponent implements OnInit {
     // this.utilService.openLoadingSpinner(
     //   "Guardando información, espere por favor..."
     // );
-    rowData = { ...rowData, estado: rowData.estado ? "A" : "I" };
+    //rowData = { ...rowData, estado: rowData.estado ? "A" : "I" };
+    rowData.estado =
+      rowData.estado === "A" || rowData.estado === true ? "A" : "I";
     if (rowData.key) {
       /* Actualizar */
       this.tiposolicitudesService.update(rowData).subscribe({
         next: (response) => {
+          // Inicio
           this.tableService.changeStateIsAnyEditRowActive(false);
           this.utilService.modalResponse(
             "Campos actualizados correctamente",
@@ -104,6 +107,7 @@ export class TipoSolicitudComponent implements OnInit {
       /* Crear */
       this.tiposolicitudesService.store(rowData).subscribe({
         next: (response) => {
+          // Inicio
           this.tableService.changeStateIsAnyEditRowActive(false);
           this.utilService.modalResponse(
             "Datos ingresados correctamente",
@@ -133,7 +137,15 @@ export class TipoSolicitudComponent implements OnInit {
   ) {
     const descripcionNotEmpty =
       this.validationsService.isNotEmptyStringVariable(rowData.tipoSolicitud);
-    if (!descripcionNotEmpty) {
+      if (descripcionNotEmpty) {
+        if (
+          !environment.modalConfirmation ||
+          (await Swal.fire(UtilData.messageToSave)).isConfirmed
+        ) {
+          this.onSaveRowTable(rowData, finishedClonningRow);
+        }
+      }
+   /* if (!descripcionNotEmpty) {
       return;
     }
     if (
@@ -141,6 +153,6 @@ export class TipoSolicitudComponent implements OnInit {
       (await Swal.fire(UtilData.messageToSave)).isConfirmed
     ) {
       this.onSaveRowTable(rowData, finishedClonningRow);
-    }
+    }*/
   }
 }

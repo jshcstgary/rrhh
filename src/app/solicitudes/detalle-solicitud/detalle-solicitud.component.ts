@@ -947,7 +947,7 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
               this.model.descrPosicion;
             this.detalleSolicitud.fechaIngreso = this.model.fechaIngresogrupo;
 
-            this.detalleSolicitud.justificacion = this.model.justificacion;
+            this.detalleSolicitud.justificacion = this.model.justificacionCargo;
             this.detalleSolicitud.localidad = this.model.localidad;
             this.detalleSolicitud.localidadZona = this.model.localidad;
 
@@ -968,7 +968,7 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
             this.detalleSolicitud.sucursal = this.model.sucursal;
 
             this.detalleSolicitud.misionCargo = this.model.misionCargo;
-            this.detalleSolicitud.justificacion = this.model.justificacion;
+            this.detalleSolicitud.justificacion = this.model.justificacionCargo;
 
             this.detalleSolicitud.sueldo = this.model.sueldo;
             this.detalleSolicitud.sueldoVariableMensual =
@@ -1225,8 +1225,8 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
     variables.anularSolicitud = { value: "No" };
     variables.codigoPosicion = { value: this.model.codigoPosicion };
     variables.misionCargo = { value: this.model.misionCargo };
-    variables.justificacion = { value: this.model.justificacion };
-    variables.ruta = { value: "Ruta" };
+    variables.justificacionCargo = { value: this.model.justificacionCargo };
+    variables.ruta = { value: null };
     variables.nivelDireccion = { value: this.model.nivelDir };
     variables.comentariosAtencion = { value: "SEND STATIC" };
 
@@ -1246,7 +1246,7 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
       ) {
         variables.codigoPosicion = { value: this.model.codigoPosicion };
         variables.misionCargo = { value: this.model.misionCargo };
-        variables.justificacion = { value: this.model.justificacion };
+        variables.justificacionCargo = { value: this.model.justificacionCargo };
       } else if (this.tipo_motivo_descripcion === "Pasante") {
         variables.codigoPosicion = { value: this.model.misionCargo };
       } else if (this.tipo_motivo_descripcion === "Reemplazo") {

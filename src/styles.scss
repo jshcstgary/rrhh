@@ -33,3 +33,9 @@ a.link:focus {
 .dropdown-menu {
   width: 280px; /* Ajusta el ancho según tus necesidades */
 }
+
+
+.sidebar-nav ul .sidebar-item.active > .sidebar-link{
+  color: #0056B3 !important;
+}
+
