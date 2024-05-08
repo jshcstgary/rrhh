@@ -20,7 +20,7 @@ export class UtilService {
 
   constructor(private http: HttpClient) {}
 
-  private modalTimeToHide: number = 1500;
+  private modalTimeToHide: number = 3000;
   /**
    * Función para copiar el texto al clipboard
    *

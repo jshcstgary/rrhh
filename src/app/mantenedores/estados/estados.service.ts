@@ -14,7 +14,8 @@ export class EstadosService {
 
   public index(): Observable<any> {
     return this.http.get<any>(
-      `http://10.35.3.162:8065/v1/es/item-catalogo/codigo/RBPEST`
+      //`http://10.35.3.162:8065/v1/es/item-catalogo/codigo/RBPEST`
+      `${this.apiCatalogoUrl}/item-catalogo/codigo/RBPEST`
     );
   }
 
@@ -24,14 +25,16 @@ export class EstadosService {
 
   public store(request: IEstados): Observable<IEstados> {
     return this.http.post<IEstados>(
-      `http://10.35.3.162:8065/v1/es/item-catalogo`,
+      //`http://10.35.3.162:8065/v1/es/item-catalogo`,
+      `${this.apiCatalogoUrl}/item-catalogo`,
       request
     );
   }
 
   public update(request: IEstados): Observable<IEstados> {
     return this.http.put<IEstados>(
-      `http://10.35.3.162:8065/v1/es/item-catalogo`,
+      //`http://10.35.3.162:8065/v1/es/item-catalogo`,
+      `${this.apiCatalogoUrl}/item-catalogo`,
       request
     );
   }

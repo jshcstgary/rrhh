@@ -13,10 +13,10 @@ import {
   providedIn: "root",
 })
 export class CatalogoService {
-  private apiUrl = environment.catalogoServiceES;
+  private apiUrl = environment.CatalogoServiceES;
 
   constructor(private http: HttpClient) {}
-  
+
   public indexItemCatalogo(
     catalogoType: CatalogoType
   ): Observable<IResponseItemCatalogo> {
