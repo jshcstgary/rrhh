@@ -904,17 +904,17 @@
                 class="row"
                 style="align-items: center; justify-content: space-around"
               >
-                <div class="col">{{ nivel.ruta }}</div>
+                <div class="col">{{ nivel.nivelAprobacionType.ruta }}</div>
                 <div class="col">
                   {{
-                    nivel.usuario !== "" &&
-                    nivel.usuario !== undefined &&
-                    nivel.usuario != null
-                      ? nivel.usuario
-                      : "user"
+                    nivel.aprobador.usuario !== "" &&
+                    nivel.aprobador.usuario !== undefined &&
+                    nivel.aprobador.usuario != null
+                      ? nivel.aprobador.usuario
+                      : "No aplica"
                   }}
                 </div>
-                <div class="col">{{ nivel.nivelAprobacionRuta }}</div>
+                <div class="col">{{ nivel.nivelAprobacionType.nivelAprobacionRuta }}</div>
               </div>
             </button>
           </h2>

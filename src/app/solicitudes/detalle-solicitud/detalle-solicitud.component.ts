@@ -1303,12 +1303,29 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 
   getNivelesAprobacion() {
     this.solicitudes
-      .getNivelesAprobacion(
+    .obtenerAprobacionesPorPosicion(
+      this.solicitud.idTipoSolicitud,
+      this.solicitud.idTipoMotivo,
+      this.detalleSolicitud.codigoPosicion,
+      this.detalleSolicitud.nivelDireccion
+    )
+    .subscribe({
+      next: (response) => {
+        this.dataNivelesDeAprobacion[this.keySelected] =
+          response.nivelAprobacionPosicionType;
+      },
+      error: (error: HttpErrorResponse) => {
+        this.utilService.modalResponse(
+          "No existen niveles de aprobación para este empleado",
+          "error"
+        );
+      },
+    });
+      /*.getNivelesAprobacion(
         this.solicitud.idTipoSolicitud,
         this.solicitud.idTipoMotivo,
         this.detalleSolicitud.nivelDireccion
       )
-      // .getNivelesAprobacion(1, 1, "TA")
       .subscribe({
         next: (response) => {
           this.dataNivelesDeAprobacion[this.keySelected] =
@@ -1328,7 +1345,7 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
             "error"
           );
         },
-      });
+      });*/
   }
   getDataNivelesAprobacionPorCodigoPosicion() {
     this.solicitudes
