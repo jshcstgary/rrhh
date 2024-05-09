@@ -22,6 +22,7 @@ import { NgxDatatableModule } from "@swimlane/ngx-datatable";
 import { CompletarSolicitudComponent } from "./completar-solicitud/completar-solicitud.component";
 import { DetalleSolicitudComponent } from "./detalle-solicitud/detalle-solicitud.component";
 import { ConsultaSolicitudesComponent } from "./consulta_solicitudes/consulta-solicitudes.component";
+import { RevisarSolicitudComponent } from './revisar-solicitud/revisar-solicitud.component';
 
 @NgModule({
   declarations: [
@@ -29,6 +30,7 @@ import { ConsultaSolicitudesComponent } from "./consulta_solicitudes/consulta-so
     ConsultaSolicitudesComponent,
     CompletarSolicitudComponent,
     DetalleSolicitudComponent,
+    RevisarSolicitudComponent,
   ],
   imports: [
     RouterModule.forChild(SolicitudesRoutes),

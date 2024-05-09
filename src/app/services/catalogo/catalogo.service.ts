@@ -21,7 +21,7 @@ export class CatalogoService {
     catalogoType: CatalogoType
   ): Observable<IResponseItemCatalogo> {
     return this.http.get<IResponseItemCatalogo>(
-      `${this.apiUrl}/item-catalogo/codigo/${catalogoType}`
+      `${this.apiUrl}/codigo/${catalogoType}`
     );
   }
   public indexPaginated(
@@ -30,23 +30,23 @@ export class CatalogoService {
     catalogoType: CatalogoType
   ): Observable<IResponseItemCatalogo> {
     return this.http.get<IResponseItemCatalogo>(
-      `${this.apiUrl}/item-catalogo/${numberPage}/${pageSize}/${catalogoType}`
+      `${this.apiUrl}/${numberPage}/${pageSize}/${catalogoType}`
     );
   }
   public deleteItemCatalogo(codigo: string): Observable<string> {
-    return this.http.delete<string>(`${this.apiUrl}/item-catalogo/${codigo}`);
+    return this.http.delete<string>(`${this.apiUrl}/${codigo}`);
   }
   public storeItemCatalogo(
     request: IItemCatalogoTable
   ): Observable<IItemCatalogo> {
     return this.http.post<IItemCatalogo>(
-      `${this.apiUrl}/item-catalogo`,
+      `${this.apiUrl}`,
       request
     );
   }
   public updateItemcatalogo(request: IItemCatalogo): Observable<IItemCatalogo> {
     return this.http.put<IItemCatalogo>(
-      `${this.apiUrl}/item-catalogo`,
+      `${this.apiUrl}`,
       request
     );
   }

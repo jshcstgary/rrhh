@@ -82,18 +82,20 @@ export class MantenimientoService {
   // http://10.35.3.162:8053/v1/es/item-catalogo/codigo/RBPND
   // http://10.35.3.162:8053/v1/es/item-catalogo/codigo
   public getCatalogo(codigo: string): Observable<ICatalogoResponse> {
-    return this.http.get<ICatalogoResponse>(`${this.apiCatalogoUrl}/${codigo}`);
+    return this.http.get<ICatalogoResponse>(`${this.apiCatalogoUrl}/codigo/${codigo}`);
   }
 
   public getCatalogoRBPND(): Observable<ICatalogoResponse> {
     return this.http.get<ICatalogoResponse>(
-      "http://10.35.3.162:8053/v1/es/item-catalogo/codigo/RBPND"
+      //"http://10.35.3.162:8053/v1/es/item-catalogo/codigo/RBPND"
+      `${this.apiCatalogoUrl}/codigo/RBPND`
     );
   }
 
   public getCatalogoRBPNA(): Observable<ICatalogoResponse> {
     return this.http.get<ICatalogoResponse>(
-      "http://10.35.3.162:8053/v1/es/item-catalogo/codigo/RBPNA"
+      //"http://10.35.3.162:8053/v1/es/item-catalogo/codigo/RBPNA"
+      `${this.apiCatalogoUrl}/codigo/RBPNA`
     );
   }
 
@@ -109,7 +111,8 @@ export class MantenimientoService {
 
   public diagnostic(): Observable<any> {
     return this.http.get<any>(
-      "http://10.35.3.162:8053/v1/es/item-catalogo/codigo/RBPND"
+      //"http://10.35.3.162:8053/v1/es/item-catalogo/codigo/RBPND"
+      `${this.apiCatalogoUrl}/codigo/RBPND`
     );
   }
 }

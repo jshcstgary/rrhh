@@ -2,7 +2,7 @@ import {
   IAprobacionesPosicion,
   ITareasResponse,
 } from "./registrar-solicitudes.interface";
-import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { HttpClient, HttpHeaders, HttpParams, HttpParamsOptions } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { DetalleSolicitud } from "src/app/eschemas/DetalleSolicitud";
@@ -89,6 +89,22 @@ export class SolicitudesService {
 
   */
 
+    /*
+        const queConsulta: string = 'Tecnico/Asistencia';
+        const headers = new HttpHeaders().set('IdNivelDireccion', queConsulta);
+
+        const myObject: any = { this: 'thisThing', that: 'thatThing', other: 'otherThing', filter: 'A' };
+        const httpParams: HttpParamsOptions = { fromObject: myObject } as HttpParamsOptions;
+
+        const options = { params: new HttpParams(httpParams), headers: headers };
+
+        this.httpClient.get<any>('https://server:port/api/endpoint', options)
+          .subscribe((data: any) => {
+              this.localvar = data;
+        });
+
+    */
+
   public obtenerAprobacionesPorPosicion(
     idTipoSolicitud: any,
     idTipoMotivo: any,
@@ -98,6 +114,9 @@ export class SolicitudesService {
     const headers = new HttpHeaders({
       idNivelDireccion: idNivelDireccion,
     });
+
+    const myObject: any = { filter: 'A' };
+    const httpParams: HttpParamsOptions = { fromObject: myObject } as HttpParamsOptions;
     console.log(
       "Se llama con esto: " +
         "idTipoSolicitud: " +
@@ -111,7 +130,7 @@ export class SolicitudesService {
     );
     return this.http.get<IAprobacionesPosicion>(
       `${this.apiUrlNivelAprobacion}/aprobacionesporposicion/${idTipoSolicitud}/${idTipoMotivo}/${codigoPosicion}`,
-      { headers: headers }
+      { params: new HttpParams(httpParams), headers: headers }
     );
   }
 
