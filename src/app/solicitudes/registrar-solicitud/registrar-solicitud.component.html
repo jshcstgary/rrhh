@@ -20,7 +20,13 @@
             aria-label="Close"
             [disabled]="!solicitudForm.form.valid"
           >
-            <i class="fas fa-redo"></i> Guardar
+            <i class="fas fa-save"></i> Guardar
+          </button>
+          <button
+            type="button"
+            class="btn btn-info me-2 mt-1"
+          >
+            <i class="fas fa-check-circle"></i> Completar Tarea
           </button>
           <button
             type="button"
@@ -718,6 +724,75 @@
           </div>
         </div>
       </div>
+
+
+      <div class="row mt-4">
+        <div class="col-md-4">
+          <div class="mb-4">
+            <a> <h3 class="danger">Anulación de Solicitud</h3></a>
+          </div>
+        </div>
+        <div class="col-md-8">
+          <hr />
+        </div>
+      </div>
+
+      <div class="row mt-4">
+        <div class="col-md-4">
+          <div class="mb-4">
+            <a> <h3 class="danger fs-4"></h3></a>
+          </div>
+        </div>
+      </div>
+
+      <div class="row" >
+        <div class="col">
+          <div class="input-group mb-3 contenedor">
+            <label
+              class="input-group-text"
+              for="anular"
+              style="color: black; font-size: 14px; width: 22%"
+              >¿Anular Solicitud?</label
+            >
+            &nbsp;
+             <!-- aqui  van los check box-->
+             <div class="form-check mb-2">
+              <input type="radio" id="customRadio1" name="customRadio" class="form-check-input">
+              <label class="form-check-label" for="customRadio1">Si</label>
+          </div>
+          <div class="form-check mb-2">
+              <input type="radio" id="customRadio2" name="customRadio" class="form-check-input" checked>
+              <label class="form-check-label" for="customRadio2">No</label>
+          </div>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="row" *ngIf="mostrarTipoJustificacionYMision">
+        <div class="col">
+          <div class="input-group mb-3 contenedor">
+            <label
+              class="input-group-text"
+              for="justificacion"
+              style="color: black; font-size: 14px; width: 22%"
+              >Comentarios Anulación de Solicitud</label
+            >
+            &nbsp;
+            <textarea
+              id="justificacion"
+              name="justificacion"
+              [(ngModel)]="model.justificacionCargo"
+              style="color: black; font-size: 14px"
+              required
+              #justificacion="ngModel"
+            ></textarea>
+          </div>
+        </div>
+      </div>
+
+
+
     </h2>
   </div>
 </form>

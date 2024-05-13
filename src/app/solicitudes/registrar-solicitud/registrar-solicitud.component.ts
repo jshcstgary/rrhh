@@ -952,25 +952,25 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
   }
 
   save() {
-    if (this.uniqueTaskId === null) {
+   /* if (this.uniqueTaskId === null) {
       //handle this as an error
       this.errorMessage =
         "Unique Task id is empty. Cannot initiate task complete.";
       return;
-    }
+    }*/ //cometado completar tarea
     this.utilService.openLoadingSpinner(
       "Guardando información, espere por favor..."
     );
-    const variables = this.generateVariablesFromFormFields();
+    //const variables = this.generateVariablesFromFormFields(); //comentado completar tarea
     // basis of completeing the task using the unique id
-    this.camundaRestService
+    /*this.camundaRestService
       .postCompleteTask(this.uniqueTaskId, variables)
-      .subscribe((res) => {
+      .subscribe((res) => {*/ //comentado completar tarea
         this.submitted = true;
         let idInstancia = this.solicitudDataInicial.idInstancia;
-        console.log("this.uniqueTaskId: ", this.uniqueTaskId);
+        /*console.log("this.uniqueTaskId: ", this.uniqueTaskId);
         console.log("variables ENVIADASSSS: ", variables);
-        console.log("respostCompleteTask: ", res);
+        console.log("respostCompleteTask: ", res);*/ //comentado completar tarea
 
         console.log(
           "this.solicitudDataInicial.idInstancia: ",
@@ -1109,7 +1109,7 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
                       console.log("this.taskId: ", this.taskId);
 
                       this.camundaRestService
-                        .postCompleteTask(this.uniqueTaskId, variables)
+                       /* .postCompleteTask(this.uniqueTaskId, variables)
                         .subscribe({
                           next: (responseCompleyatNotificar) => {
                             console.log("Complete task notificar");
@@ -1129,7 +1129,7 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
                               "error"
                             );
                           },
-                        });
+                        });*/ //comentado completar tarea
                     },
                     error: (error: HttpErrorResponse) => {
                       this.utilService.modalResponse(error.error, "error");
@@ -1137,7 +1137,7 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
                   });
               });
           });
-      });
+      //});
     this.submitted = true;
   }
 
