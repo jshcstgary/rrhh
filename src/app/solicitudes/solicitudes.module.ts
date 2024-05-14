@@ -23,6 +23,7 @@ import { CompletarSolicitudComponent } from "./completar-solicitud/completar-sol
 import { DetalleSolicitudComponent } from "./detalle-solicitud/detalle-solicitud.component";
 import { ConsultaSolicitudesComponent } from "./consulta_solicitudes/consulta-solicitudes.component";
 import { RevisarSolicitudComponent } from './revisar-solicitud/revisar-solicitud.component';
+import { NgxChartsModule } from "@swimlane/ngx-charts";
 
 @NgModule({
   declarations: [
@@ -47,7 +48,7 @@ import { RevisarSolicitudComponent } from './revisar-solicitud/revisar-solicitud
     NgbAccordionModule,
     JsonPipe,
     FormsModule,
-
+    NgxChartsModule,
     CommonModule,
     NgSelectModule,
   ],

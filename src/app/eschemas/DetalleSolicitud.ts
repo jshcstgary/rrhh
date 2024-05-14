@@ -175,6 +175,7 @@ export class DetalleSolicitud {
     public sueldoVariableTrimestral: string = "",
     public sueldoVariableSemestral: string = "",
     public sueldoVariableAnual: string = "",
+    public correo: string = "",
 
     public aprobadoresDinamicos:
       | string

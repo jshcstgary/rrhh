@@ -1,1 +1,777 @@
-<p>revisar-solicitud works!</p>
+<form  #SolicitudForm="ngForm" #solicitudForm="ngForm">
+  <div class="card">
+    <h2 class="card-body text-start">
+      <div class="row">
+        <div class="col-md-8">
+          <div class="mb-3">
+            <a >
+              <h3 class="danger">
+                <i class="bi bi-arrow-left-circle azul"></i> Bandeja de
+                solicitudes
+              </h3></a
+            >
+          </div>
+        </div>
+        <div class="col-md-4 text-end">
+          <button
+            type="button"
+            type="submit"
+            class="btn btn-info me-2 mt-1"
+            aria-label="Close"
+            [disabled]="!solicitudForm.form.valid"
+          >
+            <i class="fas fa-save"></i> Guardar
+          </button>
+
+        </div>
+      </div>
+      <div class="row mt-4">
+        <div class="col-md-3">
+          <div class="mb-4">
+            <a> <h3 class="danger">Información general</h3></a>
+          </div>
+        </div>
+        <div class="col-md-9">
+          <hr />
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="input-group mb-3">
+            <label
+              class="input-group-text"
+              for="tipoSolicitud"
+              style="color: black; font-size: 14px; width: 45%"
+              >Tipo de solicitud</label
+            >
+            &nbsp;
+            <span
+              #mivar
+              id="tipoSolicitud"
+              name="idTipoSolicitud"
+              style="color: black; font-size: 14px; margin: auto auto"
+              class="text-center"
+              ></span
+            >
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="input-group mb-3">
+            <label
+              class="input-group-text"
+              for="tipomotivo"
+              style="color: black; font-size: 14px; width: 45%"
+              >Tipo de motivo</label
+            >
+            &nbsp;
+            <span
+              id="tipomotivo"
+              name="tipomotivo"
+              style="color: black; font-size: 14px; margin: auto auto"
+              class="text-center"
+              ></span
+            >
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="input-group">
+            <label
+              class="input-group-text"
+              for="codigoposicion"
+              style="color: black; font-size: 14px; width: 45%"
+            >
+              Código de posición
+            </label>
+            &nbsp;
+            <input
+              type="text"
+              name="codigoposicion"
+              style="color: black; font-size: 14px; width: 30%"
+              class="form-control"
+              id="codigoposicion"
+              aria-describedby="inputGroupPrepend"
+              required
+            />
+            <button class="btn btn-light" type="button" disabled>
+              <i class="ti-search"></i>
+            </button>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="input-group mb-3">
+            <label
+              class="input-group-text"
+              for="descripcionposicion"
+              style="color: black; font-size: 14px; width: 45%"
+              >Descripción de posición</label
+            >
+            &nbsp;
+            <span
+              id="descripcionposicion"
+              name="descripcionposicion"
+              style="color: black; font-size: 14px; margin: auto auto"
+              class="text-center"
+              ></span
+            >
+          </div>
+        </div>
+      </div>
+      <div class="row" >
+        <div class="col-md-6">
+          <div class="input-group mb-3">
+            <label
+              class="input-group-text"
+              for="subledger"
+              style="color: black; font-size: 14px; width: 45%"
+            >
+              Subledger
+            </label>
+            &nbsp;
+            <input
+              type="text"
+              name="subledger"
+
+              style="color: black; font-size: 14px; width: 30%"
+
+
+              class="form-control"
+              id="subledger"
+              aria-describedby="inputGroupPrepend"
+              required
+
+            />
+            <button class="btn btn-light" type="button" disabled>
+              <i class="ti-search"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="input-group mb-3">
+            <label
+              class="input-group-text"
+              for="nombreempleado"
+              style="color: black; font-size: 14px; width: 45%"
+            >
+              Empleado
+            </label>
+            &nbsp;
+            <input
+              type="text"
+              name="nombreempleado"
+
+              style="color: black; font-size: 14px; width: 30%"
+
+
+              class="form-control"
+              id="nombreempleado"
+              aria-describedby="inputGroupPrepend"
+
+              required
+            />
+            <button class="btn btn-light" type="button" disabled>
+              <i class="ti-search"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6">
+          <div class="input-group mb-3">
+            <label
+              class="input-group-text"
+              for="compania"
+              style="color: black; font-size: 14px; width: 45%"
+              >Compañía</label
+            >
+            <span
+              id="compania"
+              name=""
+              style="color: black; font-size: 14px; margin: auto auto"
+              class="text-center"
+              ></span
+            >
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="input-group mb-3">
+            <label
+              class="input-group-text"
+              for="unidadnegocio"
+              style="color: black; font-size: 14px; width: 45%"
+              >Unidad de negocio</label
+            >
+            <span
+              id="unidadnegocio"
+              name=""
+              style="color: black; font-size: 14px; margin: auto auto"
+              class="text-center"
+              ></span
+            >
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6">
+          <div class="input-group mb-3">
+            <label
+              class="input-group-text"
+              for="departamento"
+              style="color: black; font-size: 14px; width: 45%"
+              >Área/departamento</label
+            >
+            <span
+              id="departamento"
+              name=""
+              style="color: black; font-size: 14px; margin: auto auto"
+              class="text-center"
+              ></span
+            >
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="input-group mb-3">
+            <label
+              class="input-group-text"
+              for="tipocargo"
+              style="color: black; font-size: 14px; width: 45%"
+              >Tipo de cargo</label
+            >
+            <span
+              id="cargo"
+              name=""
+              style="color: black; font-size: 14px; margin: auto auto"
+              class="text-center"
+              ></span
+            >
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6">
+          <div class="input-group mb-3">
+            <label
+              class="input-group-text"
+              for="localidadzona"
+              style="color: black; font-size: 14px; width: 45%"
+              >Localidad zona</label
+            >
+            <span
+              id="localidadzona"
+              name=""
+              style="color: black; font-size: 14px; margin: auto auto"
+              class="text-center"
+              ></span
+            >
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="input-group mb-3">
+            <label
+              class="input-group-text"
+              for="niveldirección"
+              style="color: black; font-size: 14px; width: 45%"
+              >Nivel de dirección</label
+            >
+            <span
+              id="niveldirección"
+              name=""
+              style="color: black; font-size: 14px; margin: auto auto"
+              class="text-center"
+              ></span
+            >
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6">
+          <div class="input-group mb-3">
+            <label
+              class="input-group-text"
+              for="centrocosto"
+              style="color: black; font-size: 14px; width: 45%"
+              >Centro de costo</label
+            >
+            <span
+              id="centrocosto"
+              name=""
+              style="color: black; font-size: 14px; margin: auto auto"
+              class="text-center"
+              ></span
+            >
+          </div>
+        </div>
+        <div class="col-md-6" >
+          <div class="input-group mb-3">
+            <label
+              class="input-group-text"
+              for="misioncargo"
+              style="color: black; font-size: 14px; width: 45%"
+              >Misión del cargo</label
+            >
+            <input
+              type="text"
+              name="misioncargo"
+
+              class="form-control"
+              id="misioncargo"
+
+              required
+            />
+          </div>
+        </div>
+      </div>
+      <div class="row" >
+        <div class="col">
+          <div class="input-group mb-3 contenedor">
+            <label
+              class="input-group-text"
+              for="justificacion"
+              style="color: black; font-size: 14px; width: 22%"
+              >Justificación</label
+            >
+            &nbsp;
+            <textarea
+              id="justificacion"
+              name="justificacion"
+
+              style="color: black; font-size: 14px"
+              required
+
+            ></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="row mt-4">
+        <div class="col-md-4">
+          <div class="mb-4">
+            <a> <h3 class="danger">Funciones y responsabilidades</h3></a>
+          </div>
+        </div>
+        <div class="col-md-8">
+          <hr />
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6">
+          <div class="input-group mb-3">
+            <label
+              class="input-group-text"
+              for="reporta"
+              style="color: black; font-size: 14px; width: 45%"
+              >Reporta a</label
+            >
+            &nbsp;
+            <span
+              id="reporta"
+              name=""
+              style="color: black; font-size: 14px; margin: auto auto"
+              class="text-center"
+              >
+            </span>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="input-group mb-3">
+            <label
+              class="input-group-text"
+              for="supervisaa"
+              style="color: black; font-size: 14px; width: 45%"
+              >Supervisa a</label
+            >
+            &nbsp;
+            <span
+              id="supervisaa"
+              name=""
+              style="color: black; font-size: 14px; margin: auto auto"
+              class="text-center"
+              ></span
+            >
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6">
+          <div class="input-group mb-3">
+            <label
+              class="input-group-text"
+              for="tipocontrato"
+              style="color: black; font-size: 14px; width: 45%"
+              >Tipo de contrato</label
+            >
+            &nbsp;
+            <select
+              id="tipocontrato"
+              name="tipocontrato"
+              class="form-select"
+
+              style="font-size: 14px"
+              required
+            >
+              <option selected>Eventual</option>
+              <option>Temporal</option>
+              <option>Mixto</option>
+            </select>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="input-group mb-3">
+            <label
+              class="input-group-text"
+              for="nivelRepa"
+              style="color: black; font-size: 14px; width: 45%"
+              >Nivel de reporte</label
+            >
+            &nbsp;
+            <span
+              id="nivelRepa"
+              name=""
+              style="color: black; font-size: 14px; margin: auto auto"
+              class="text-center"
+              ></span
+            >
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6">
+          <div class="input-group mb-3">
+            <label
+              class="input-group-text"
+              for="sueldo"
+              style="color: black; font-size: 14px; width: 45%"
+              >Sueldo</label
+            >
+            &nbsp;
+            <input
+
+              type="text"
+              name="sueldo"
+              class="form-control"
+              id="sueldo"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div class="row mt-4">
+        <div class="col-md-4">
+          <div class="mb-4">
+            <a> <h3 class="danger fs-4">Tipo de variable</h3></a>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6">
+          <div class="input-group mb-3">
+            <label
+              class="input-group-text"
+              for="mensual"
+              style="color: black; font-size: 14px; width: 45%"
+              >Mensual</label
+            >
+            &nbsp;
+            <input
+
+              type="text"
+              name="mensual"
+              class="form-control"
+              id="mensual"
+            />
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="input-group mb-3">
+            <label
+              class="input-group-text"
+              for="trimestral"
+              style="color: black; font-size: 14px; width: 45%"
+              >Trimestral</label
+            >
+            &nbsp;
+            <input
+
+              type="text"
+              name="trimestral"
+              class="form-control"
+              id="trimestral"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6">
+          <div class="input-group mb-3">
+            <label
+              class="input-group-text"
+              for="semestral"
+              style="color: black; font-size: 14px; width: 45%"
+              >Semestral</label
+            >
+            &nbsp;
+            <input
+
+              type="text"
+              name="semestral"
+              class="form-control"
+              id="semestral"
+            />
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="input-group mb-3">
+            <label
+              class="input-group-text"
+              for="anual"
+              style="color: black; font-size: 14px; width: 45%"
+              >Anual</label
+            >
+            &nbsp;
+            <input
+
+              type="text"
+              name="anual"
+              class="form-control"
+              id="anual"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div class="row mt-4">
+        <div class="col-md-4">
+          <div class="mb-4">
+            <a> <h3 class="danger">Aprobadores de la solicitud</h3></a>
+          </div>
+        </div>
+        <div class="col-md-8">
+          <hr />
+        </div>
+      </div>
+
+      <div class="accordion" id="accordionExample">
+        <div
+
+          class="accordion-item"
+        >
+          <h2 class="accordion-header">
+            <button
+              class="accordion-button"
+              type="button"
+              data-bs-toggle="collapse"
+              [attr.data-bs-target]="'#collapse'"
+              aria-expanded="true"
+              [attr.aria-controls]="'collapse'"
+              style="display: block"
+            >
+              <div
+                class="row"
+                style="align-items: center; justify-content: space-around"
+              >
+                <div class="col"></div>
+                <div class="col">
+
+                </div>
+                <div class="col">
+
+                </div>
+              </div>
+            </button>
+          </h2>
+
+          <div
+            [id]="'collapse' "
+            class="accordion-collapse collapse"
+
+            data-bs-parent="#accordionExample"
+          >
+            <div class="row mt-2">
+              <div class="col">
+                <div class="input-group mb-3">
+                  <label
+                    for="lvl1descripcion"
+                    style="color: #0056b3; font-size: 14px; margin: auto auto"
+                  >
+                    Descripción de la posición
+                  </label>
+                  &nbsp;
+                  <span
+                    id="lvl1descripcion"
+                    name=""
+                    style="color: black; font-size: 14px; margin: auto auto"
+                    class="text-center"
+                    >
+                    </span
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row mt-4">
+        <div class="col-md-4">
+          <div class="mb-4">
+            <a> <h3 class="danger">Atención de los probadores</h3></a>
+          </div>
+        </div>
+        <div class="col-md-8">
+          <hr />
+        </div>
+      </div>
+
+      <div class="row mt-2">
+        <div class="col">
+          <div class="input-group mb-3">
+            <label
+              for="aprobadoresdinamicos"
+              style="color: #0056b3; font-size: 14px; margin: auto auto"
+            >
+              Aprobadores dinámicos
+            </label>
+            &nbsp;
+            <span
+              id="aprobadoresdinamicos"
+              name=""
+              style="color: black; font-size: 14px; margin: auto auto"
+              class="text-center"
+              ></span
+            >
+          </div>
+        </div>
+      </div>
+
+      <div class="row mt-2">
+        <div class="col">
+          <div class="input-group mb-3">
+            <label
+              for="gerenterrhhcorporativo"
+              style="color: #0056b3; font-size: 14px; margin: auto auto"
+            >
+              Gerente de RRHH Corporativo
+            </label>
+            &nbsp;
+            <span
+              id="gerenterrhhcorporativo"
+              name=""
+              style="color: black; font-size: 14px; margin: auto auto"
+              class="text-center"
+              ></span
+            >
+          </div>
+        </div>
+      </div>
+
+      <div class="row mt-2">
+        <div class="col">
+          <div class="input-group mb-3">
+            <label
+              for="comitederemuneraciones"
+              style="color: #0056b3; font-size: 14px; margin: auto auto"
+            >
+              Comité de Remuneraciones
+            </label>
+            &nbsp;
+            <span
+              id="comitederemuneraciones"
+              name=""
+              style="color: black; font-size: 14px; margin: auto auto"
+              class="text-center"
+              ></span
+            >
+          </div>
+        </div>
+      </div>
+
+
+      <div class="row mt-4">
+        <div class="col-md-4">
+          <div class="mb-4">
+            <a> <h3 class="danger">Anulación de Solicitud</h3></a>
+          </div>
+        </div>
+        <div class="col-md-8">
+          <hr />
+        </div>
+      </div>
+
+      <!--<div class="row mt-4">
+        <div class="col-md-4">
+          <div class="mb-4">
+            <a> <h3 class="danger fs-4"></h3>¿Anular Solicitud?</a>
+          </div>
+        </div>
+      </div>-->
+
+      <div class="row" >
+        <div class="col">
+          <div class="input-group mb-3 contenedor">
+          <label
+              class="input-group-text"
+              for="anular"
+              style="color: black; font-size: 14px; width: 22%"
+              >¿Anular Solicitud?</label>
+            &nbsp;
+             <!-- aqui  van los check box-->
+          <div class="form-check mb-2">
+              <input type="radio" id="customRadio1" name="customRadio" class="form-check-input" >
+              <label class="form-check-label" for="customRadio1"> Si </label>
+          </div>
+
+          <div class="form-check mb-2">
+              <input type="radio" id="customRadio2" name="customRadio" class="form-check-input" >
+              <label class="form-check-label" for="customRadio2"> No </label>
+          </div>
+          </div>
+        </div>
+      </div>
+
+    <!--<div class="row mt-4">
+        <div class="col-md-4">
+          <div class="mb-4">
+            <a> <h3 class="danger fs-4"></h3>Comentarios Anulación de Solicitud</a>
+          </div>
+        </div>
+      </div>-->
+
+
+      <div class="row">
+        <div class="col">
+          <div class="input-group mb-3 contenedor">
+          <label
+              class="input-group-text"
+              for="anulacion"
+              style="color: black; font-size: 14px; width: 22%"
+              >Comentarios Anulación de Solicitud
+          </label>
+          &nbsp;
+            <textarea
+              id="anulacion"
+              name="anulacion"
+
+              style="color: black; font-size: 14px"
+              required
+
+            ></textarea>
+          </div>
+        </div>
+      </div>
+
+
+
+    </h2>
+  </div>
+</form>
+

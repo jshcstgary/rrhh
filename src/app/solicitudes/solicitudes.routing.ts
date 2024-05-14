@@ -4,6 +4,7 @@ import { RegistrarSolicitudComponent } from "./registrar-solicitud/registrar-sol
 import { CompletarSolicitudComponent } from "./completar-solicitud/completar-solicitud.component";
 import { ConsultaSolicitudesComponent } from "./consulta_solicitudes/consulta-solicitudes.component";
 import { DetalleSolicitudComponent } from "./detalle-solicitud/detalle-solicitud.component";
+import { RevisarSolicitudComponent } from "./revisar-solicitud/revisar-solicitud.component";
 
 export const SolicitudesRoutes: Routes = [
   {
@@ -39,6 +40,14 @@ export const SolicitudesRoutes: Routes = [
         data: {
           title: "Detalle Solicitud",
           urls: [{ title: "Solicitudes" }, { title: "Detalle Solicitud" }],
+        },
+      },
+      {
+        path: "revisar-solicitud/:id/:idSolicitud",
+        component: RevisarSolicitudComponent,
+        data: {
+          title: "Revisar Solicitud",
+          urls: [{ title: "Solicitudes" }, { title: "Revisar Solicitud" }],
         },
       },
     ],

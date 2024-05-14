@@ -84,6 +84,7 @@ export class RegistrarData {
     public tipoContrato: string = "",
     public descripContrato: string = "",
     public status: string = "",
+    public correo: string = "",
 
     public sueldo: string = "",
     public sueldoMensual: string = "",
@@ -131,6 +132,7 @@ export class RegistrarData {
     this.tipoContrato = "";
     this.descripContrato = "";
     this.status = "";
+    this.correo = "";
     // this.sueldo = 0;
     // this.mensual = 0;
     // this.trimestral = 0;

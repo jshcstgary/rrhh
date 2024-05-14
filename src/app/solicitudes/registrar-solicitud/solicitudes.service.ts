@@ -9,6 +9,7 @@ import { DetalleSolicitud } from "src/app/eschemas/DetalleSolicitud";
 import { Solicitud } from "src/app/eschemas/Solicitud";
 import { environment } from "src/environments/environment";
 import { IEmpleados } from "../../services/mantenimiento/empleado.interface";
+import { DetalleAprobaciones } from "src/app/eschemas/DetalleAprobaciones";
 
 @Injectable({
   providedIn: "root",
@@ -18,9 +19,11 @@ export class SolicitudesService {
   private apiUrlNivelAprobacion = environment.nivelAprobacionServiceES;
   private apiEmpleadoEvolutionUrl = environment.empleadoServiceEs;
   private apiHistoricaCamundaUrl = environment.historicaCamundaServiceEs;
+  private apiDetalleAprobaciones = environment.detalleAprobacionesServiceES;
 
   public modelSolicitud = new Solicitud();
   public modelDetalleSolicitud = new DetalleSolicitud();
+  public modelDetalleAprobaciones = new DetalleAprobaciones();
   constructor(private http: HttpClient) {}
 
   public getSolicitudes(): Observable<any> {
@@ -73,6 +76,15 @@ export class SolicitudesService {
       `${this.apiUrlNivelAprobacion}/${idTipoSolicitud}/${idTipoMotivo}/${idNivelDireccion}`
     );
   }
+
+
+  public guardarDetallesAprobacionesSolicitud(request: any): Observable<any> {
+    return this.http.post<any>(
+      this.apiDetalleAprobaciones + "/post_arreglo",
+      request
+    );
+  }
+
 
   /*
 

@@ -64,6 +64,8 @@ import { TableComponentData } from "src/app/component/table/table.data";
 import { DataFilterSolicitudes } from "src/app/eschemas/DataFilterSolicitudes";
 import { ConsultaSolicitudesService } from "./consulta-solicitudes.service";
 import { DetalleSolicitud } from "src/app/eschemas/DetalleSolicitud";
+import { single } from "src/app/charts/ngx-charts/chartData";
+//import { single} from './chartData';
 declare var require: any;
 const data: any = require("./company.json");
 @Component({
@@ -303,6 +305,14 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
     { id: 4, name: "Acción de personal" },
   ];
 
+  colorScheme6: any = {
+    domain: ['#2962ff', '#3699ff', '#ee9d01', '#dee2e6']
+  };
+
+  single: any[];
+
+  gradient6: boolean = true;
+
   constructor(
     private config: NgSelectConfig,
     public consultaSolicitudesService: ConsultaSolicitudesService,
@@ -317,9 +327,10 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
     private calendar: NgbCalendar,
     private camundaRestService: CamundaRestService,
     private modalService: NgbModal
+
   ) {
     this.model = calendar.getToday();
-
+    Object.assign(this, { single });
     /*this.solicitud.idTipoSolicitud = 1;
     this.solicitud.idTipoMotivo = 1;
     this.solicitud.idTipoAccion = 1;*/
@@ -478,13 +489,13 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
                   this.solicitudes
                     .guardarDetalleSolicitud(this.detalleSolicitud)
                     .subscribe((responseDetalle) => {
-                      setTimeout(() => {
+                     setTimeout(() => {
                         this.router.navigate([
                           "/solicitudes/registrar-solicitud",
                           this.solicitud.idInstancia,
                           this.solicitud.idSolicitud,
                         ]);
-                      }, 1800);
+                      }, 1800);//comentado mmunoz
                     });
                 });
 
@@ -535,7 +546,7 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
       return this.instanceCreated.id;
     }
 
-    return "No se ha creado Id de Proceao";
+    return "No se ha creado Id de Proceso";
   }
 
   obtenerEmpresaYUnidadNegocio() {
@@ -1067,5 +1078,19 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 
   pageCrear() {
     this.router.navigate(["/mantenedores/crear-niveles-aprobacion"]);
+  }
+
+
+  // 6
+  onSelect6(data: any): void {
+    console.log('Item clicked', JSON.parse(JSON.stringify(data)));
+  }
+
+  onActivate6(data: any): void {
+    console.log('Activate', JSON.parse(JSON.stringify(data)));
+  }
+
+  onDeactivate6(data: any): void {
+    console.log('Deactivate', JSON.parse(JSON.stringify(data)));
   }
 }

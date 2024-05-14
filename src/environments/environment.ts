@@ -1,4 +1,4 @@
-const baseC = "http://10.35.3.180:8188/"; //base de camunda Local
+const baseC = "http://10.35.3.180:8188"; //base de camunda Local
 const base = "http://10.35.3.162"; //base de servicios local
 const baseG ="http://181.188.224.250:18043"; //base de servicios api gateway
 
@@ -67,6 +67,12 @@ export const environment = {
   //historicaCamundaServiceEs: `${base}:8077/v1/es/historicacamunda`,
 
   historicaCamundaServiceEs: `${baseG}/v1/es/historicacamunda`,
+
+
+  //detalleAprobacionesServiceES: `${base}:8083/v1/es/detalles_aprobaciones_solicitudes`,
+
+
+  detalleAprobacionesServiceES: `${baseG}/v1/es/detalles_aprobaciones_solicitudes`,
 
 
   /*
