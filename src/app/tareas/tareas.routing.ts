@@ -6,7 +6,7 @@ export const TareasRoutes: Routes = [
     path: "",
     children: [
       {
-        path: "consulta-tarea",
+        path: "consulta-tareas",
         component: ConsultaTareasComponent,
         data: {
           title: "Mis tareas",

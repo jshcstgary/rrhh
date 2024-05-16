@@ -24,6 +24,7 @@
           </button>
           <button
             type="button"
+            (click)="onCompletar()"
             class="btn btn-info me-2 mt-1"
           >
             <i class="fas fa-check-circle"></i> Completar Tarea
@@ -737,14 +738,6 @@
         </div>
       </div>
 
-      <!--<div class="row mt-4">
-        <div class="col-md-4">
-          <div class="mb-4">
-            <a> <h3 class="danger fs-4"></h3>¿Anular Solicitud?</a>
-          </div>
-        </div>
-      </div>-->
-
       <div class="row" >
         <div class="col">
           <div class="input-group mb-3 contenedor">
@@ -755,27 +748,20 @@
               >¿Anular Solicitud?</label>
             &nbsp;
              <!-- aqui  van los check box-->
-          <div class="form-check mb-2">
-              <input type="radio" id="customRadio1" name="customRadio" class="form-check-input" >
-              <label class="form-check-label" for="customRadio1">Si</label>
+
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
+            <label class="form-check-label" for="inlineRadio1">Si</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2" checked>
+            <label class="form-check-label" for="inlineRadio2">No</label>
           </div>
 
-          <div class="form-check mb-2">
-              <input type="radio" id="customRadio2" name="customRadio" class="form-check-input" >
-              <label class="form-check-label" for="customRadio2">No</label>
-          </div>
+
           </div>
         </div>
       </div>
-
-    <!--<div class="row mt-4">
-        <div class="col-md-4">
-          <div class="mb-4">
-            <a> <h3 class="danger fs-4"></h3>Comentarios Anulación de Solicitud</a>
-          </div>
-        </div>
-      </div>-->
-
 
       <div class="row">
         <div class="col">
@@ -790,10 +776,10 @@
             <textarea
               id="anulacion"
               name="anulacion"
-              [(ngModel)]="model.justificacionCargo"
+
               style="color: black; font-size: 14px"
-              required
-              #justificacion="ngModel"
+
+
             ></textarea>
           </div>
         </div>

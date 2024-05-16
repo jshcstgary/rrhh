@@ -53,7 +53,7 @@ export const environment = {
 
   nivelAprobacionRefreshServiceES: `${baseG}/v1/es/refresh_nivelesAprobacion`,
 
-  //solicitudesServiceES: `${base}:8066/v1/es/solicitud`, // http://10.35.3.162:8001/v1/es/solicitud
+  //solicitudesServiceES: `${base}:8066/v1/es/solicitud`, // http://10.35.3.162:8066/v1/es/solicitud
 
   solicitudesServiceES: `${baseG}/v1/es/solicitud`,
 

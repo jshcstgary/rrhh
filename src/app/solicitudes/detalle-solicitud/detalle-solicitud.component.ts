@@ -658,6 +658,7 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
       await this.getDataEmpleadosEvolution();
       // await this.loadDataCamunda();
       // await this.getNivelesAprobacion();
+      //this.utilService.closeLoadingSpinner();
     } catch (error) {
       // Manejar errores aquí de manera centralizada
       this.utilService.modalResponse(error.error, "error");

@@ -30,7 +30,7 @@ export const ROUTES: RouteInfo[] = [
     extralink: false,
     submenu: [
       {
-        path: "/tareas/consulta-tarea",
+        path: "/tareas/consulta-tareas",
         title: "Mis tareas",
         icon: "",
         class: "",

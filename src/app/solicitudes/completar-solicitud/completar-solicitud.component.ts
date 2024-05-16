@@ -1239,7 +1239,7 @@ export class CompletarSolicitudComponent extends CompleteTaskComponent {
     console.log("User action cancel");
     // mmunoz
     // this.router.navigate(["tasklist/Registrar"], { queryParams: {} });
-    this.router.navigate(["tareas/consulta-tarea"]);
+    this.router.navigate(["tareas/consulta-tareas"]);
   }
 
   compareNivelesAprobacion(a, b) {

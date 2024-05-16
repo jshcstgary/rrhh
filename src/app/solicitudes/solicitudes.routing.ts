@@ -38,8 +38,8 @@ export const SolicitudesRoutes: Routes = [
         path: "detalle-solicitud/:id",
         component: DetalleSolicitudComponent,
         data: {
-          title: "Detalle Solicitud",
-          urls: [{ title: "Solicitudes" }, { title: "Detalle Solicitud" }],
+          title: "Solicitud",
+          urls: [{ title: "Solicitudes" }, { title: "Solicitud" }],
         },
       },
       {
