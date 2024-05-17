@@ -73,6 +73,7 @@ export class RegistrarData {
     public fechaIngresogrupo: string = "",
     public grupoPago: string = "",
     public reportaA: string = "",
+    public supervisaA: string = "",
     public localidad: string = "",
     public nivelDir: string = "",
     public descrNivelDir: string = "",
@@ -85,6 +86,7 @@ export class RegistrarData {
     public descripContrato: string = "",
     public status: string = "",
     public correo: string = "",
+    public fechaIngreso: Date | string = new Date(),
 
     public sueldo: string = "",
     public sueldoMensual: string = "",

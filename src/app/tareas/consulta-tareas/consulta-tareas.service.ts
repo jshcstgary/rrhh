@@ -34,4 +34,12 @@ export class ConsultaTareasService {
   public getTareas(): Observable<any> {
     return this.http.get<any>(`${this.apiUrlTareas}`);
   }
+
+  public getTareaIdParam(
+    idParam: string
+  ): Observable<any> {
+    return this.http.get<any>(
+      `${this.apiUrlTareas}/${idParam}`
+    );
+  }
 }

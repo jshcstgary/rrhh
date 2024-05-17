@@ -5,6 +5,8 @@ export class CompleteTaskComponent {
   model : any
   submitted : boolean = false
   uniqueTaskId : string | null
+  taskType_Activity : string | null;
+  nameTask : string | null;
   errorMessage : string | null
   route: ActivatedRoute
   router: Router
