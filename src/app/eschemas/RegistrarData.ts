@@ -87,7 +87,7 @@ export class RegistrarData {
     public status: string = "",
     public correo: string = "",
     public fechaIngreso: Date | string = new Date(),
-
+    public comentariosAnulacion: string = "",
     public sueldo: string = "",
     public sueldoMensual: string = "",
     public sueldoTrimestral: string = "",

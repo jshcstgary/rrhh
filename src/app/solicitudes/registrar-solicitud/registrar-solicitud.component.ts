@@ -1142,46 +1142,32 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
     this.utilService.openLoadingSpinner(
       "Guardando información, espere por favor..."
     );
-    const variables = this.generateVariablesFromFormFields();
 
-     this.consultarNextTask(this.detalleSolicitud.idSolicitud);
+    let variables = this.generateVariablesFromFormFields();
 
     this.camundaRestService
       .postCompleteTask(this.uniqueTaskId, variables)
       .subscribe((res) => {
         this.submitted = true;
         let idInstancia = this.solicitudDataInicial.idInstancia;
-        console.log("this.uniqueTaskId: ", this.uniqueTaskId);
-        console.log("variables ENVIADASSSS: ", variables);
-        console.log("respostCompleteTask: ", res);
-
-        console.log(
-          "this.solicitudDataInicial.idInstancia: ",
-          this.solicitudDataInicial.idInstancia
-        );
-
         this.utilService.closeLoadingSpinner();
 
-        console.log(
-          "CON ESTO COMPLETO (this.uniqueTaskId): ",
-          this.uniqueTaskId
-        );
+        this.consultaTareasService.getTareaIdParam(this.detalleSolicitud.idSolicitud)
+        .subscribe((tarea)=>{
+          console.log("Task: ", tarea);
 
-        this.consultarNextTask(this.detalleSolicitud.idSolicitud);
+          this.uniqueTaskId=tarea.solicitudes[0].taskId;
+          this.taskType_Activity = tarea.solicitudes[0].tasK_DEF_KEY;
+          this.nameTask = tarea.solicitudes[0].name;
+          this.id_solicitud_by_params = tarea.solicitudes[0].idSolicitud;
 
-                /*this.camundaRestService
-                  .getTask(environment.taskType_Notificar, this.idDeInstancia)
-                  .subscribe({
-                    next: (responseConsultaNotificar) => {*/
-                      // if result is success - bingo, we got the task id
-                      //this.uniqueTaskId =
-                        //responseConsultaNotificar[0]?.id; /* Es como la tarea que se crea en esa instancia */
-                      this.taskId =
-                        this.idDeInstancia; /* Esta es la instancia */
-                      console.log("this.uniqueTaskId: ", this.uniqueTaskId);
-                      console.log("this.taskId: ", this.taskId);
+         // if(this.nameTask!=="Registrar solicitud"){
+           // this.RegistrarsolicitudCompletada = false;
+          //}
 
                     if(this.nameTask === "Notificar revisión solicitud"){
+
+                      variables = this.generateVariablesFromFormFields();
 
                       this.camundaRestService
                         .postCompleteTask(this.uniqueTaskId, variables)
@@ -1226,6 +1212,8 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
                         // El nombre ya no es "Notificar revisión solicitud", haz algo diferente
                           console.log("Nombre diferente:", this.nameTask);
                       }
+
+                    });
                     //},
 
                   //});
@@ -1262,6 +1250,7 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
       this.uniqueTaskId=tarea.solicitudes[0].taskId;
       this.taskType_Activity = tarea.solicitudes[0].tasK_DEF_KEY;
       this.nameTask = tarea.solicitudes[0].name;
+      this.id_solicitud_by_params = tarea.solicitudes[0].idSolicitud;
 
       if(this.nameTask!=="Registrar solicitud"){
         this.RegistrarsolicitudCompletada = false;
@@ -1334,13 +1323,54 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
     */
     let variables: any = {};
 
-    variables.codigo = { value: this.model.codigo };
-    variables.idEmpresa = { value: this.model.idEmpresa };
-    variables.compania = { value: this.model.compania };
-    variables.departamento = { value: this.model.departamento };
+    //variables.codigo = { value: this.model.codigo };
+    //variables.idEmpresa = { value: this.model.idEmpresa };
+    if (this.tipo_solicitud_descripcion === "requisicionPersonal") {
+      if(this.nameTask=="Registrar solicitud"){
+        variables.codigoPosicion = { value: this.model.codigoPosicion };
+        variables.misionCargo = { value: this.model.misionCargo };
+        variables.justificacionCargo = { value: this.model.justificacionCargo };
+        variables.empresa = { value: this.model.compania };
+        variables.unidadNegocio = { value: this.model.unidadNegocio };
+        variables.descripcionPosicion = { value: this.model.descrPosicion };
+        variables.areaDepartamento = {value: this.model.departamento };
+        variables.localidadZona = {value: this.model.localidad};
+        variables.centroCosto = {value: this.model.nomCCosto};
+        variables.reportaa = {value: this.model.reportaA};
+        variables.nivelReporteA = {value: this.model.nivelRepa};
+        variables.supervisa = {value: this.model.supervisaA};
+        variables.tipoContrato = {value: this.model.tipoContrato};
+        variables.sueldo = { value: this.model.sueldo }; //sueldoVariableMensual
+        variables.sueldoMensual = { value: this.model.sueldoMensual };
+        variables.sueldoTrimestral = { value: this.model.sueldoTrimestral };
+        variables.sueldoSemestral = { value: this.model.sueldoSemestral };
+        variables.sueldoAnual = { value: this.model.sueldoAnual };
+        variables.anularSolicitud = { value: "No" };
+        variables.comentariosAnulacion = {value: this.model.comentariosAnulacion};
+        variables.nivelDireccion = { value: this.model.nivelDir };
+        variables.tipoRuta = {value: "Areas Corporativas"};
+        variables.ruta = { value: null };
+        variables.resultadoRutaAprobacion = {value: "Gerencia Media"};
+
+      }
+
+      if(this.nameTask=="Notificar revisión solicitud"){
+
+      variables.correo = { value : this.model.correo };
+      variables.mensaje = { value : "Se te asigno la solicitud " + this.id_solicitud_by_params};
+      variables.usuario = { value : "Pablo Perez" };
+
+      }
+
+    }
+
+
+
+
+    /*variables.departamento = { value: this.model.departamento };
     variables.nombreCargo = { value: this.model.nombreCargo };
     variables.nomCCosto = { value: this.model.nomCCosto };
-    variables.descrPosicion = { value: this.model.descrPosicion };
+
     variables.codigoPuesto = { value: this.model.codigoPuesto };
     variables.descrPuesto = { value: this.model.descrPuesto };
     variables.fechaIngresogrupo = { value: this.model.fechaIngresogrupo };
@@ -1348,26 +1378,16 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
     variables.reportaA = { value: this.model.reportaA };
     variables.localidad = { value: this.model.localidad };
     variables.nivelDir = { value: this.model.nivelDir };
-    // variables.descrNivelDir = { value: this.model.descrNivelDir };
     variables.nivelRepa = { value: this.model.nivelRepa };
     variables.sucursal = { value: this.model.sucursal };
-    variables.unidadNegocio = { value: this.model.unidadNegocio };
+
     variables.tipoContrato = { value: this.model.tipoContrato };
     variables.descripContrato = { value: this.model.descripContrato };
     variables.status = { value: this.model.status };
-    variables.sueldo = { value: this.model.sueldo }; //sueldoVariableMensual
-    variables.sueldoMensual = { value: this.model.sueldoMensual };
-    variables.sueldoTrimestral = { value: this.model.sueldoTrimestral };
-    variables.sueldoSemestral = { value: this.model.sueldoSemestral };
-    variables.sueldoAnual = { value: this.model.sueldoAnual };
-    variables.anularSolicitud = { value: "No" };
-    variables.codigoPosicion = { value: this.model.codigoPosicion };
-    variables.misionCargo = { value: this.model.misionCargo };
-    variables.justificacionCargo = { value: this.model.justificacionCargo };
-    variables.ruta = { value: null };
+
     variables.nivelDireccion = { value: this.model.nivelDir };
     variables.comentariosAtencion = { value: "SEND STATIC" };
-    variables.correo = {value: this.model.correo}
+    variables.correo = {value: this.model.correo}*/
 
     // tipo_solicitud_descripcion
     // tipo_motivo_descripcion
@@ -1378,7 +1398,7 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
     variables.misionCargo = this.model.misionCargo;
     variables.justificacion = this.model.justificacion;*/
 
-    if (this.tipo_solicitud_descripcion === "requisicionPersonal") {
+    /*if (this.tipo_solicitud_descripcion === "requisicionPersonal") {
       if (
         this.tipo_motivo_descripcion === "Nuevo" ||
         this.tipo_motivo_descripcion === "Eventual"
@@ -1393,7 +1413,7 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
         variables.nombreCompleto = { value: this.model.nombreCompleto };
         variables.codigoPosicion = { value: this.model.codigoPosicion };
       }
-    }
+    }*/
 
     return { variables };
   }
