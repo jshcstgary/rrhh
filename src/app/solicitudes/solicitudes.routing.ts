@@ -46,8 +46,8 @@ export const SolicitudesRoutes: Routes = [
         path: "revisar-solicitud/:id/:idSolicitud",
         component: RevisarSolicitudComponent,
         data: {
-          title: "Revisar Solicitud",
-          urls: [{ title: "Solicitudes" }, { title: "Revisar Solicitud" }],
+          title: "Revisón de Solicitud",
+          urls: [{ title: "Solicitudes" }, { title: "Revisón de Solicitud" }],
         },
       },
     ],

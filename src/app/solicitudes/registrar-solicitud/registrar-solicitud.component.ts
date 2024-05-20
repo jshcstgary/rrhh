@@ -433,7 +433,7 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
         this.solicitudDataInicial = this.solicitudes.modelSolicitud;
         this.detalleSolicitud = this.solicitudes.modelDetalleSolicitud;
         this.detalleSolicitud.idSolicitud =
-          this.solicitudDataInicial.idSolicitud;
+        this.solicitudDataInicial.idSolicitud;
       }
 
       // console.log("ID editar: ", this.id_edit);
@@ -764,6 +764,9 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
       //} // comentado munoz
       await this.getDataEmpleadosEvolution();
       await this.loadDataCamunda(); //comentado para prueba mmunoz
+      //console.log("impreme arreglo de aprobadores: ");
+      //await this.recorrerArreglo();
+
       // await this.getNivelesAprobacion();
       this.utilService.closeLoadingSpinner();
     } catch (error) {
@@ -889,8 +892,27 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
           this.getNivelesAprobacion();
         }
 
-        this.consultarNextTask(id);
+        //console.log("aprobacion: ",aprobacion);
+       /* console.log(`Elemento en la posición Miguel1 ${this.keySelected}:`, this.dataAprobacionesPorPosicion[this.keySelected][0].nivelAprobacionType.idNivelAprobacion);
 
+        for (const key in this.dataAprobacionesPorPosicion[this.keySelected]) {
+          if (this.dataAprobacionesPorPosicion.hasOwnProperty(key)) {
+            console.log(`Clave: ${key}`);
+            const aprobacionesObj = this.dataAprobacionesPorPosicion[this.keySelected][key];
+            for (const index in aprobacionesObj) {
+              if (aprobacionesObj.hasOwnProperty(index)) {
+                const aprobacion = aprobacionesObj[index];
+                console.log(`Entro en elementos de aprobacion..`);
+                console.log(`Elemento ${index}:`, aprobacion);
+                // Aquí puedes acceder a las propiedades de cada objeto
+                console.log(aprobacion.nivelAprobacionType.idNivelAprobacion);
+                console.log(aprobacion.aprobador.usuario);
+              }
+            }
+          }
+        }*/
+
+        this.consultarNextTask(id);
 
       },
       error: (error: HttpErrorResponse) => {
@@ -1140,7 +1162,7 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
       return;
     }
     this.utilService.openLoadingSpinner(
-      "Guardando información, espere por favor..."
+      "Completando Tarea, espere por favor..."
     );
 
     let variables = this.generateVariablesFromFormFields();
@@ -1148,12 +1170,12 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
     this.camundaRestService
       .postCompleteTask(this.uniqueTaskId, variables)
       .subscribe((res) => {
-        this.submitted = true;
-        let idInstancia = this.solicitudDataInicial.idInstancia;
-        this.utilService.closeLoadingSpinner();
 
+
+        this.submitted = true;
         this.consultaTareasService.getTareaIdParam(this.detalleSolicitud.idSolicitud)
-        .subscribe((tarea)=>{
+        .subscribe({
+          next: (tarea) => {
           console.log("Task: ", tarea);
 
           this.uniqueTaskId=tarea.solicitudes[0].taskId;
@@ -1161,10 +1183,7 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
           this.nameTask = tarea.solicitudes[0].name;
           this.id_solicitud_by_params = tarea.solicitudes[0].idSolicitud;
 
-         // if(this.nameTask!=="Registrar solicitud"){
-           // this.RegistrarsolicitudCompletada = false;
-          //}
-
+                    // Verifica si el nombre sigue siendo "Notificar revisión solicitud"
                     if(this.nameTask === "Notificar revisión solicitud"){
 
                       variables = this.generateVariablesFromFormFields();
@@ -1192,10 +1211,6 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
                           },
                         });
 
-                        //error: (error: HttpErrorResponse) => {
-                          //this.utilService.modalResponse(error.error, "error");
-                        //}
-
                       }else{
 
                         this.utilService.modalResponse(
@@ -1213,15 +1228,43 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
                           console.log("Nombre diferente:", this.nameTask);
                       }
 
-                    });
-                    //},
+                      this.utilService.closeLoadingSpinner();
 
-                  //});
-              //});
-          //});
+                    },
+                    error: (error: HttpErrorResponse) => {
+                      this.utilService.modalResponse(error.error, "error");
+                    },
+
+        });
       });
+
     this.submitted = true;
   }
+  recorrerArreglo() {
+
+    this.keySelected =
+          this.solicitud.idTipoSolicitud +
+          "_" +
+          this.solicitud.idTipoMotivo +
+          "_" +
+          this.model.nivelDir;
+
+    console.log(`Elemento en la posición Miguel1 ${this.keySelected}:`, this.dataAprobacionesPorPosicion);
+
+    for (const key in this.dataAprobacionesPorPosicion) {
+      if (this.dataAprobacionesPorPosicion.hasOwnProperty(key)) {
+        console.log(`Clave: ${key}`);
+        const aprobacionesArray = this.dataAprobacionesPorPosicion[key];
+        for (const aprobacion of aprobacionesArray) {
+          console.log(aprobacion);
+          // Aquí puedes acceder a las propiedades de cada objeto
+          console.log(aprobacion.nivelAprobacionType.idNivelAprobacion);
+          console.log(aprobacion.aprobador.usuario);
+        }
+      }
+    }
+
+}
 
   completeAndCheckTask(taskId: string, variables: any) {
     this.camundaRestService
@@ -1641,6 +1684,8 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
                     break;
                   }
                 }
+
+                console.log(`Elemento en la posición`, eachData);
               }
             }
           }

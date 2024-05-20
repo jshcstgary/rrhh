@@ -21,6 +21,9 @@ import { RegistrarSolicitudComponent } from "./solicitudes/registrar-solicitud/r
 import { SolicitudesModule } from "./solicitudes/solicitudes.module";
 import { FormsModule } from "@angular/forms";
 import { NgScrollbarModule } from "ngx-scrollbar";
+import { MatButtonModule } from '@angular/material/button';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { RevisarSolicitudComponent } from "./solicitudes/revisar-solicitud/revisar-solicitud.component";
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, "./assets/i18n/", ".json");
@@ -37,6 +40,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     NgScrollbarModule,
     FeatherModule,
     FormsModule,
+    MatButtonModule,
+    MatButtonToggleModule,
     FeatherModule.pick(allIcons),
     RouterModule.forRoot(Approutes),
     ToastrModule.forRoot(),
@@ -48,7 +53,14 @@ export function HttpLoaderFactory(http: HttpClient) {
         deps: [HttpClient],
       },
     }),
+
+    BrowserModule,
+    BrowserAnimationsModule, // Importa BrowserAnimationsModule
+    MatButtonModule,
+    MatButtonToggleModule,
+
   ],
+  providers: [],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

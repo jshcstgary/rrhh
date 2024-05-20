@@ -24,6 +24,15 @@ import { DetalleSolicitudComponent } from "./detalle-solicitud/detalle-solicitud
 import { ConsultaSolicitudesComponent } from "./consulta_solicitudes/consulta-solicitudes.component";
 import { RevisarSolicitudComponent } from './revisar-solicitud/revisar-solicitud.component';
 import { NgxChartsModule } from "@swimlane/ngx-charts";
+import { MatButtonModule } from '@angular/material/button';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule ,DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
+
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -51,6 +60,18 @@ import { NgxChartsModule } from "@swimlane/ngx-charts";
     NgxChartsModule,
     CommonModule,
     NgSelectModule,
+    MatButtonModule,
+    MatButtonToggleModule,
+    MatInputModule,
+    MatFormFieldModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    ReactiveFormsModule
+
+  ],
+  exports: [
+    RevisarSolicitudComponent
+    // Otros componentes que deseas exportar
   ],
   providers: [TableService],
 })

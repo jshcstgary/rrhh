@@ -1,10 +1,10 @@
-<form  #SolicitudForm="ngForm" #solicitudForm="ngForm">
+<form (ngSubmit)="onSubmit()" #SolicitudForm="ngForm" #solicitudForm="ngForm">
   <div class="card">
     <h2 class="card-body text-start">
       <div class="row">
         <div class="col-md-8">
           <div class="mb-3">
-            <a >
+            <a (click)="pageSolicitudes()">
               <h3 class="danger">
                 <i class="bi bi-arrow-left-circle azul"></i> Bandeja de
                 solicitudes
@@ -13,7 +13,7 @@
           </div>
         </div>
         <div class="col-md-4 text-end">
-          <button
+          <button *ngIf="RegistrarsolicitudCompletada"
             type="button"
             type="submit"
             class="btn btn-info me-2 mt-1"
@@ -22,7 +22,20 @@
           >
             <i class="fas fa-save"></i> Guardar
           </button>
-
+          <button
+            type="button"
+            (click)="onCompletar()"
+            class="btn btn-info me-2 mt-1"
+          >
+            <i class="fas fa-check-circle"></i> Completar Tarea
+          </button>
+          <!--<button *ngIf="RegistrarsolicitudCompletada"
+            type="button"
+            (click)="onCancel()"
+            class="btn btn-info me-2 mt-1"
+          >
+            <i class="fas fa-times"></i> Registrar luego
+          </button>-->
         </div>
       </div>
       <div class="row mt-4">
@@ -39,9 +52,8 @@
         <div class="col-md-6">
           <div class="input-group mb-3">
             <label
-              class="input-group-text"
+              class="input-group-text label-estilo"
               for="tipoSolicitud"
-              style="color: black; font-size: 14px; width: 45%"
               >Tipo de solicitud</label
             >
             &nbsp;
@@ -51,16 +63,15 @@
               name="idTipoSolicitud"
               style="color: black; font-size: 14px; margin: auto auto"
               class="text-center"
-              ></span
+              >{{ solicitud.tipoSolicitud }}</span
             >
           </div>
         </div>
         <div class="col-md-6">
           <div class="input-group mb-3">
             <label
-              class="input-group-text"
+              class="input-group-text label-estilo"
               for="tipomotivo"
-              style="color: black; font-size: 14px; width: 45%"
               >Tipo de motivo</label
             >
             &nbsp;
@@ -69,7 +80,7 @@
               name="tipomotivo"
               style="color: black; font-size: 14px; margin: auto auto"
               class="text-center"
-              ></span
+              >{{ solicitud.tipoMotivo }}</span
             >
           </div>
         </div>
@@ -78,9 +89,8 @@
         <div class="col-md-6">
           <div class="input-group">
             <label
-              class="input-group-text"
+              class="input-group-text label-estilo"
               for="codigoposicion"
-              style="color: black; font-size: 14px; width: 45%"
             >
               Código de posición
             </label>
@@ -88,11 +98,15 @@
             <input
               type="text"
               name="codigoposicion"
+              [(ngModel)]="model.codigoPosicion"
               style="color: black; font-size: 14px; width: 30%"
+              [ngbTypeahead]="searchCodigoPosicion"
+              (selectItem)="onSelectItem('codigoPosicion', $event)"
               class="form-control"
               id="codigoposicion"
               aria-describedby="inputGroupPrepend"
               required
+              #codigoposicion="ngModel"
             />
             <button class="btn btn-light" type="button" disabled>
               <i class="ti-search"></i>
@@ -102,9 +116,8 @@
         <div class="col-md-6">
           <div class="input-group mb-3">
             <label
-              class="input-group-text"
+              class="input-group-text label-estilo"
               for="descripcionposicion"
-              style="color: black; font-size: 14px; width: 45%"
               >Descripción de posición</label
             >
             &nbsp;
@@ -113,18 +126,17 @@
               name="descripcionposicion"
               style="color: black; font-size: 14px; margin: auto auto"
               class="text-center"
-              ></span
+              >{{ model.descrPosicion }}</span
             >
           </div>
         </div>
       </div>
-      <div class="row" >
+      <div class="row" *ngIf="mostrarSubledger">
         <div class="col-md-6">
           <div class="input-group mb-3">
             <label
-              class="input-group-text"
+              class="input-group-text label-estilo"
               for="subledger"
-              style="color: black; font-size: 14px; width: 45%"
             >
               Subledger
             </label>
@@ -132,15 +144,15 @@
             <input
               type="text"
               name="subledger"
-
+              [(ngModel)]="model.subledger"
               style="color: black; font-size: 14px; width: 30%"
-
-
+              [ngbTypeahead]="searchSubledger"
+              (selectItem)="onSelectItem('subledger', $event)"
               class="form-control"
               id="subledger"
               aria-describedby="inputGroupPrepend"
               required
-
+              #subledger="ngModel"
             />
             <button class="btn btn-light" type="button" disabled>
               <i class="ti-search"></i>
@@ -151,9 +163,8 @@
         <div class="col-md-6">
           <div class="input-group mb-3">
             <label
-              class="input-group-text"
+              class="input-group-text label-estilo"
               for="nombreempleado"
-              style="color: black; font-size: 14px; width: 45%"
             >
               Empleado
             </label>
@@ -161,14 +172,14 @@
             <input
               type="text"
               name="nombreempleado"
-
+              [(ngModel)]="model.nombreCompleto"
               style="color: black; font-size: 14px; width: 30%"
-
-
+              [ngbTypeahead]="searchNombreCompleto"
+              (selectItem)="onSelectItem('nombreCompleto', $event)"
               class="form-control"
               id="nombreempleado"
               aria-describedby="inputGroupPrepend"
-
+              #nombreCompleto="ngModel"
               required
             />
             <button class="btn btn-light" type="button" disabled>
@@ -182,9 +193,8 @@
         <div class="col-md-6">
           <div class="input-group mb-3">
             <label
-              class="input-group-text"
+              class="input-group-text label-estilo"
               for="compania"
-              style="color: black; font-size: 14px; width: 45%"
               >Compañía</label
             >
             <span
@@ -192,16 +202,15 @@
               name=""
               style="color: black; font-size: 14px; margin: auto auto"
               class="text-center"
-              ></span
+              >{{ model.compania }}</span
             >
           </div>
         </div>
         <div class="col-md-6">
           <div class="input-group mb-3">
             <label
-              class="input-group-text"
+              class="input-group-text label-estilo"
               for="unidadnegocio"
-              style="color: black; font-size: 14px; width: 45%"
               >Unidad de negocio</label
             >
             <span
@@ -209,7 +218,7 @@
               name=""
               style="color: black; font-size: 14px; margin: auto auto"
               class="text-center"
-              ></span
+              >{{ model.unidadNegocio }}</span
             >
           </div>
         </div>
@@ -219,9 +228,8 @@
         <div class="col-md-6">
           <div class="input-group mb-3">
             <label
-              class="input-group-text"
+              class="input-group-text label-estilo"
               for="departamento"
-              style="color: black; font-size: 14px; width: 45%"
               >Área/departamento</label
             >
             <span
@@ -229,16 +237,15 @@
               name=""
               style="color: black; font-size: 14px; margin: auto auto"
               class="text-center"
-              ></span
+              >{{ model.departamento }}</span
             >
           </div>
         </div>
         <div class="col-md-6">
           <div class="input-group mb-3">
             <label
-              class="input-group-text"
+              class="input-group-text label-estilo"
               for="tipocargo"
-              style="color: black; font-size: 14px; width: 45%"
               >Tipo de cargo</label
             >
             <span
@@ -246,7 +253,7 @@
               name=""
               style="color: black; font-size: 14px; margin: auto auto"
               class="text-center"
-              ></span
+              >{{ model.nombreCargo }}</span
             >
           </div>
         </div>
@@ -256,9 +263,8 @@
         <div class="col-md-6">
           <div class="input-group mb-3">
             <label
-              class="input-group-text"
+              class="input-group-text label-estilo"
               for="localidadzona"
-              style="color: black; font-size: 14px; width: 45%"
               >Localidad zona</label
             >
             <span
@@ -266,16 +272,15 @@
               name=""
               style="color: black; font-size: 14px; margin: auto auto"
               class="text-center"
-              ></span
+              >{{ model.localidad }}</span
             >
           </div>
         </div>
         <div class="col-md-6">
           <div class="input-group mb-3">
             <label
-              class="input-group-text"
+              class="input-group-text label-estilo"
               for="niveldirección"
-              style="color: black; font-size: 14px; width: 45%"
               >Nivel de dirección</label
             >
             <span
@@ -283,7 +288,7 @@
               name=""
               style="color: black; font-size: 14px; margin: auto auto"
               class="text-center"
-              ></span
+              >{{ model.nivelDir }}</span
             >
           </div>
         </div>
@@ -293,9 +298,8 @@
         <div class="col-md-6">
           <div class="input-group mb-3">
             <label
-              class="input-group-text"
+              class="input-group-text label-estilo"
               for="centrocosto"
-              style="color: black; font-size: 14px; width: 45%"
               >Centro de costo</label
             >
             <span
@@ -303,47 +307,45 @@
               name=""
               style="color: black; font-size: 14px; margin: auto auto"
               class="text-center"
-              ></span
+              >{{ model.nomCCosto }}</span
             >
           </div>
         </div>
-        <div class="col-md-6" >
+        <div class="col-md-6" *ngIf="mostrarTipoJustificacionYMision">
           <div class="input-group mb-3">
             <label
-              class="input-group-text"
+              class="input-group-text label-estilo"
               for="misioncargo"
-              style="color: black; font-size: 14px; width: 45%"
               >Misión del cargo</label
             >
             <input
               type="text"
               name="misioncargo"
-
+              [(ngModel)]="model.misionCargo"
               class="form-control"
               id="misioncargo"
-
+              #misioncargo="ngModel"
               required
             />
           </div>
         </div>
       </div>
-      <div class="row" >
+      <div class="row" *ngIf="mostrarTipoJustificacionYMision">
         <div class="col">
           <div class="input-group mb-3 contenedor">
             <label
-              class="input-group-text"
+              class="input-group-text label-estilo2"
               for="justificacion"
-              style="color: black; font-size: 14px; width: 22%"
               >Justificación</label
             >
             &nbsp;
             <textarea
               id="justificacion"
               name="justificacion"
-
+              [(ngModel)]="model.justificacionCargo"
               style="color: black; font-size: 14px"
               required
-
+              #justificacion="ngModel"
             ></textarea>
           </div>
         </div>
@@ -363,9 +365,8 @@
         <div class="col-md-6">
           <div class="input-group mb-3">
             <label
-              class="input-group-text"
+              class="input-group-text label-estilo"
               for="reporta"
-              style="color: black; font-size: 14px; width: 45%"
               >Reporta a</label
             >
             &nbsp;
@@ -374,16 +375,15 @@
               name=""
               style="color: black; font-size: 14px; margin: auto auto"
               class="text-center"
-              >
+              >{{ model.reportaA }}
             </span>
           </div>
         </div>
         <div class="col-md-6">
           <div class="input-group mb-3">
             <label
-              class="input-group-text"
+              class="input-group-text label-estilo"
               for="supervisaa"
-              style="color: black; font-size: 14px; width: 45%"
               >Supervisa a</label
             >
             &nbsp;
@@ -392,7 +392,7 @@
               name=""
               style="color: black; font-size: 14px; margin: auto auto"
               class="text-center"
-              ></span
+              >{{ model.supervisaA }}</span
             >
           </div>
         </div>
@@ -402,9 +402,8 @@
         <div class="col-md-6">
           <div class="input-group mb-3">
             <label
-              class="input-group-text"
+              class="input-group-text label-estilo"
               for="tipocontrato"
-              style="color: black; font-size: 14px; width: 45%"
               >Tipo de contrato</label
             >
             &nbsp;
@@ -412,7 +411,7 @@
               id="tipocontrato"
               name="tipocontrato"
               class="form-select"
-
+              [(ngModel)]="model.tipoContrato"
               style="font-size: 14px"
               required
             >
@@ -425,9 +424,8 @@
         <div class="col-md-6">
           <div class="input-group mb-3">
             <label
-              class="input-group-text"
+              class="input-group-text label-estilo"
               for="nivelRepa"
-              style="color: black; font-size: 14px; width: 45%"
               >Nivel de reporte</label
             >
             &nbsp;
@@ -436,7 +434,7 @@
               name=""
               style="color: black; font-size: 14px; margin: auto auto"
               class="text-center"
-              ></span
+              >{{ model.nivelRepa }}</span
             >
           </div>
         </div>
@@ -446,14 +444,13 @@
         <div class="col-md-6">
           <div class="input-group mb-3">
             <label
-              class="input-group-text"
+              class="input-group-text label-estilo"
               for="sueldo"
-              style="color: black; font-size: 14px; width: 45%"
               >Sueldo</label
             >
             &nbsp;
             <input
-
+              [(ngModel)]="model.sueldo"
               type="text"
               name="sueldo"
               class="form-control"
@@ -475,14 +472,13 @@
         <div class="col-md-6">
           <div class="input-group mb-3">
             <label
-              class="input-group-text"
+              class="input-group-text label-estilo"
               for="mensual"
-              style="color: black; font-size: 14px; width: 45%"
               >Mensual</label
             >
             &nbsp;
             <input
-
+              [(ngModel)]="model.sueldoMensual"
               type="text"
               name="mensual"
               class="form-control"
@@ -493,14 +489,13 @@
         <div class="col-md-6">
           <div class="input-group mb-3">
             <label
-              class="input-group-text"
+              class="input-group-text label-estilo"
               for="trimestral"
-              style="color: black; font-size: 14px; width: 45%"
               >Trimestral</label
             >
             &nbsp;
             <input
-
+              [(ngModel)]="model.sueldoTrimestral"
               type="text"
               name="trimestral"
               class="form-control"
@@ -514,14 +509,13 @@
         <div class="col-md-6">
           <div class="input-group mb-3">
             <label
-              class="input-group-text"
+              class="input-group-text label-estilo"
               for="semestral"
-              style="color: black; font-size: 14px; width: 45%"
               >Semestral</label
             >
             &nbsp;
             <input
-
+              [(ngModel)]="model.sueldoSemestral"
               type="text"
               name="semestral"
               class="form-control"
@@ -532,14 +526,13 @@
         <div class="col-md-6">
           <div class="input-group mb-3">
             <label
-              class="input-group-text"
+              class="input-group-text label-estilo"
               for="anual"
-              style="color: black; font-size: 14px; width: 45%"
               >Anual</label
             >
             &nbsp;
             <input
-
+              [(ngModel)]="model.sueldoAnual"
               type="text"
               name="anual"
               class="form-control"
@@ -562,7 +555,10 @@
 
       <div class="accordion" id="accordionExample">
         <div
-
+          *ngFor="
+            let nivelItem of dataAprobacionesPorPosicion[keySelected];
+            let i = index
+          "
           class="accordion-item"
         >
           <h2 class="accordion-header">
@@ -570,30 +566,36 @@
               class="accordion-button"
               type="button"
               data-bs-toggle="collapse"
-              [attr.data-bs-target]="'#collapse'"
+              [attr.data-bs-target]="'#collapse' + i"
               aria-expanded="true"
-              [attr.aria-controls]="'collapse'"
+              [attr.aria-controls]="'collapse' + i"
               style="display: block"
             >
               <div
                 class="row"
                 style="align-items: center; justify-content: space-around"
               >
-                <div class="col"></div>
+                <div class="col">{{ nivelItem.nivelAprobacionType.ruta }}</div>
                 <div class="col">
-
+                  {{
+                    nivelItem.aprobador.usuario !== "" &&
+                    nivelItem.aprobador.usuario !== undefined &&
+                    nivelItem.aprobador.usuario != null
+                      ? nivelItem.aprobador.usuario
+                      : "No aplica"
+                  }}
                 </div>
                 <div class="col">
-
+                  {{ nivelItem.nivelAprobacionType.nivelAprobacionRuta }}
                 </div>
               </div>
             </button>
           </h2>
 
           <div
-            [id]="'collapse' "
+            [id]="'collapse' + i"
             class="accordion-collapse collapse"
-
+            [ngClass]="{ show: i === 0 }"
             data-bs-parent="#accordionExample"
           >
             <div class="row mt-2">
@@ -611,8 +613,13 @@
                     name=""
                     style="color: black; font-size: 14px; margin: auto auto"
                     class="text-center"
-                    >
-                    </span
+                    >{{
+                      nivelItem.aprobador.descripcionPosicion !== "" &&
+                      nivelItem.aprobador.descripcionPosicion !== undefined &&
+                      nivelItem.aprobador.descripcionPosicion != null
+                        ? nivelItem.aprobador.descripcionPosicion
+                        : "No aplica"
+                    }}</span
                   >
                 </div>
               </div>
@@ -621,157 +628,83 @@
         </div>
       </div>
 
-      <div class="row mt-4">
-        <div class="col-md-4">
-          <div class="mb-4">
-            <a> <h3 class="danger">Atención de los probadores</h3></a>
-          </div>
-        </div>
-        <div class="col-md-8">
-          <hr />
-        </div>
+
+  <div class="row mt-4">
+    <div class="col-md-4">
+      <div class="mb-4">
+        <a> <h3 class="danger">Atención de Solicitud</h3></a>
       </div>
+    </div>
+    <div class="col-md-8">
+      <hr />
+    </div>
+  </div>
 
-      <div class="row mt-2">
-        <div class="col">
-          <div class="input-group mb-3">
-            <label
-              for="aprobadoresdinamicos"
-              style="color: #0056b3; font-size: 14px; margin: auto auto"
-            >
-              Aprobadores dinámicos
-            </label>
-            &nbsp;
-            <span
-              id="aprobadoresdinamicos"
-              name=""
-              style="color: black; font-size: 14px; margin: auto auto"
-              class="text-center"
-              ></span
-            >
-          </div>
-        </div>
+
+  <div class="row">
+    <div class="col">
+      <div class="input-group mb-3 contenedor">
+        <label
+        class="input-group-text label-estilo2"
+        for="desicion"
+        >Procesar Solicitud
+    </label>
+      <div class="btn-group" role="group" aria-label="Basic example" id="desicion">
+        <button type="button" class="btn btn-primary" (click)="process('aprobar')" value="aprobar">Aprobar</button>
+        <button type="button" class="btn btn-primary" (click)="process('devolver')" value="devolver">Devolver</button>
+        <button type="button" class="btn btn-primary" (click)="process('cancelar')" value="cancelar">Cancelar</button>
+        <button type="button" class="btn btn-primary" (click)="process('esperar')" value="esperar">En espera</button>
       </div>
-
-      <div class="row mt-2">
-        <div class="col">
-          <div class="input-group mb-3">
-            <label
-              for="gerenterrhhcorporativo"
-              style="color: #0056b3; font-size: 14px; margin: auto auto"
-            >
-              Gerente de RRHH Corporativo
-            </label>
-            &nbsp;
-            <span
-              id="gerenterrhhcorporativo"
-              name=""
-              style="color: black; font-size: 14px; margin: auto auto"
-              class="text-center"
-              ></span
-            >
-          </div>
-        </div>
-      </div>
-
-      <div class="row mt-2">
-        <div class="col">
-          <div class="input-group mb-3">
-            <label
-              for="comitederemuneraciones"
-              style="color: #0056b3; font-size: 14px; margin: auto auto"
-            >
-              Comité de Remuneraciones
-            </label>
-            &nbsp;
-            <span
-              id="comitederemuneraciones"
-              name=""
-              style="color: black; font-size: 14px; margin: auto auto"
-              class="text-center"
-              ></span
-            >
-          </div>
-        </div>
-      </div>
-
-
-      <div class="row mt-4">
-        <div class="col-md-4">
-          <div class="mb-4">
-            <a> <h3 class="danger">Anulación de Solicitud</h3></a>
-          </div>
-        </div>
-        <div class="col-md-8">
-          <hr />
-        </div>
-      </div>
-
-      <!--<div class="row mt-4">
-        <div class="col-md-4">
-          <div class="mb-4">
-            <a> <h3 class="danger fs-4"></h3>¿Anular Solicitud?</a>
-          </div>
-        </div>
-      </div>-->
-
-      <div class="row" >
-        <div class="col">
-          <div class="input-group mb-3 contenedor">
-          <label
-              class="input-group-text"
-              for="anular"
-              style="color: black; font-size: 14px; width: 22%"
-              >¿Anular Solicitud?</label>
-            &nbsp;
-             <!-- aqui  van los check box-->
-          <div class="form-check mb-2">
-              <input type="radio" id="customRadio1" name="customRadio" class="form-check-input" >
-              <label class="form-check-label" for="customRadio1"> Si </label>
-          </div>
-
-          <div class="form-check mb-2">
-              <input type="radio" id="customRadio2" name="customRadio" class="form-check-input" >
-              <label class="form-check-label" for="customRadio2"> No </label>
-          </div>
-          </div>
-        </div>
-      </div>
-
-    <!--<div class="row mt-4">
-        <div class="col-md-4">
-          <div class="mb-4">
-            <a> <h3 class="danger fs-4"></h3>Comentarios Anulación de Solicitud</a>
-          </div>
-        </div>
-      </div>-->
+    </div>
+    </div>
+  </div>
 
 
       <div class="row">
         <div class="col">
           <div class="input-group mb-3 contenedor">
           <label
-              class="input-group-text"
-              for="anulacion"
-              style="color: black; font-size: 14px; width: 22%"
-              >Comentarios Anulación de Solicitud
+              class="input-group-text label-estilo2"
+              for="observacion"
+              >{{observaciontexto}}
           </label>
           &nbsp;
             <textarea
-              id="anulacion"
-              name="anulacion"
-
+            [(ngModel)]="textareaContent"
+              id="observacion"
+              name="observacion"
+              #observacion="ngModel"
+              [required]="isRequired"
               style="color: black; font-size: 14px"
-              required
-
+              [placeholder]="campoObligatorio"
             ></textarea>
           </div>
         </div>
       </div>
 
+      <div class="row" *ngIf="isFechaMaximaVisible">
+        <div class="col">
+          <div class="input-group mb-3 contenedor">
 
+              <label
+                  class="input-group-text label-estilo2"
+                  for="aprobar"
+                  >Fecha máxima de espera
+              </label>
+
+              <div class="datepicker-container">
+                <mat-form-field appearance="outline">
+                  <mat-label>Fecha</mat-label>
+                  <input matInput [matDatepicker]="picker">
+                  <mat-datepicker-toggle matSuffix [for]="picker" [(ngModel)]="selectedDate.getDate">
+                  </mat-datepicker-toggle>
+                  <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+        </div>
 
     </h2>
   </div>
 </form>
-

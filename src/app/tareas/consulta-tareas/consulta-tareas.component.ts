@@ -210,11 +210,63 @@ export class ConsultaTareasComponent implements OnInit {
     // Lógica cuando se da click en una acción de la fila
     if (this.isTarea) {
       let ids = id_edit.split(",");
-      this.router.navigate([
-        "/solicitudes/registrar-solicitud",
-        ids[1],
-        ids[0],
-      ]);
+
+    this.consultaTareasService.getTareaIdParam(ids[0])
+    .subscribe((tarea)=>{
+      console.log("Task: ", tarea);
+
+      switch (tarea.solicitudes[0].name) {
+        case 'Registrar solicitud':
+
+              this.router.navigate([
+                "/solicitudes/registrar-solicitud",
+                ids[1],
+                ids[0],
+              ]);
+
+          break;
+
+          case 'Notificar revisión solicitud':
+
+              this.router.navigate([
+                "/solicitudes/registrar-solicitud",
+                ids[1],
+                ids[0],
+              ]);
+
+          break;
+
+        case 'Revisar solicitud':
+
+              this.router.navigate([
+                "/solicitudes/revisar-solicitud",
+                ids[1],
+                ids[0],
+              ]);
+
+          break;
+
+        default:
+      }
+
+      /*if(tarea.solicitudes[0].name!=="Registrar solicitud"){
+
+        this.router.navigate([
+          "/solicitudes/registrar-solicitud",
+          ids[1],
+          ids[0],
+        ]);
+      }else{
+
+        this.router.navigate([
+          "/solicitudes/revisar-solicitud",
+          ids[1],
+          ids[0],
+        ]);
+      }*/
+    });
+
+
     }
   }
 
