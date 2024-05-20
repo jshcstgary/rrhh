@@ -854,13 +854,13 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
           this.getNivelesAprobacion();
         }
 
-        //console.log("aprobacion: ",aprobacion);
-        console.log(`Elemento en la posición Miguel1 ${this.keySelected}:`, this.dataAprobacionesPorPosicion[this.keySelected][0].nivelAprobacionType.idNivelAprobacion);
+        console.log("Inicio recorrer Aprobaciones por posicion: ");
+        console.log(`Elemento en la posición Miguel1 ${this.keySelected}:`, this.dataAprobacionesPorPosicion);
 
-        for (const key in this.dataAprobacionesPorPosicion[this.keySelected]) {
+        for (const key in this.dataAprobacionesPorPosicion) {
           if (this.dataAprobacionesPorPosicion.hasOwnProperty(key)) {
             console.log(`Clave: ${key}`);
-            const aprobacionesObj = this.dataAprobacionesPorPosicion[this.keySelected][key];
+            const aprobacionesObj = this.dataAprobacionesPorPosicion[key];
             for (const index in aprobacionesObj) {
               if (aprobacionesObj.hasOwnProperty(index)) {
                 const aprobacion = aprobacionesObj[index];
