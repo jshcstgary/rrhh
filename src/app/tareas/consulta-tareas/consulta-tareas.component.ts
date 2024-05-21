@@ -215,8 +215,11 @@ export class ConsultaTareasComponent implements OnInit {
     .subscribe((tarea)=>{
       console.log("Task: ", tarea);
 
-      switch (tarea.solicitudes[0].name) {
-        case 'Registrar solicitud':
+      let taeraopcion = tarea.solicitudes[0].tasK_DEF_KEY;
+      let registrar = environment.taskType_RRHH;
+
+      switch (tarea.solicitudes[0].tasK_DEF_KEY) {
+        case environment.taskType_Registrar :
 
               this.router.navigate([
                 "/solicitudes/registrar-solicitud",
@@ -226,17 +229,7 @@ export class ConsultaTareasComponent implements OnInit {
 
           break;
 
-          case 'Notificar revisión solicitud':
-
-              this.router.navigate([
-                "/solicitudes/registrar-solicitud",
-                ids[1],
-                ids[0],
-              ]);
-
-          break;
-
-        case 'Revisar solicitud':
+        case environment.taskType_Revisar :
 
               this.router.navigate([
                 "/solicitudes/revisar-solicitud",
@@ -245,45 +238,53 @@ export class ConsultaTareasComponent implements OnInit {
               ]);
 
           break;
+          case environment.taskType_RRHH :
+
+                this.router.navigate([
+                "/solicitudes/revisar-solicitud",
+                ids[1],
+                ids[0],
+                ]);
+
+          break;
+
+          case environment.taskType_CREM :
+
+                this.router.navigate([
+                "/solicitudes/revisar-solicitud",
+                ids[1],
+                ids[0],
+                ]);
+
+           break;
+
+
+          case environment.taskType_RegistrarCandidato:
+
+          this.router.navigate([
+            "/solicitudes/registrar-candidato",
+            ids[1],
+            ids[0],
+          ]);
+
+          break;
+
+        case environment.taskType_CompletarRequisicion :
+
+              this.router.navigate([
+                "/solicitudes/registrar-solicitud",
+                ids[1],
+                ids[0],
+              ]);
+
+          break;
 
         default:
       }
-
-      /*if(tarea.solicitudes[0].name!=="Registrar solicitud"){
-
-        this.router.navigate([
-          "/solicitudes/registrar-solicitud",
-          ids[1],
-          ids[0],
-        ]);
-      }else{
-
-        this.router.navigate([
-          "/solicitudes/revisar-solicitud",
-          ids[1],
-          ids[0],
-        ]);
-      }*/
     });
 
 
     }
   }
 
-  // onRowTareaActionClicked(
-  //   id: string,
-  //   key: string,
-  //   tooltip: string,
-  //   idInstancia,
-  //   idSolicitud
-  // ) {
-  //   // Lógica cuando se da click en una acción de la fila
-  //   console.log("- EDTTTT idInstancia: ", idInstancia);
-  //   console.log("- EDTTTT idSolicitud: ", idSolicitud);
-  //   this.router.navigate([
-  //     "/solicitudes/registrar-solicitud",
-  //     idInstancia,
-  //     idSolicitud,
-  //   ]);
-  // }
 }

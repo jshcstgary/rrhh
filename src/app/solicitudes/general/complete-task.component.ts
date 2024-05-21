@@ -42,6 +42,6 @@ export class CompleteTaskComponent {
       // variables.variables[field] = {  value: this.model[field] };
     });
 
-    return variables;
+    return {variables};
   }
 }

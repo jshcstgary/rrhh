@@ -6,8 +6,7 @@
           <div class="mb-3">
             <a (click)="pageSolicitudes()">
               <h3 class="danger">
-                <i class="bi bi-arrow-left-circle azul"></i> Bandeja de
-                solicitudes
+                <i class="bi bi-arrow-left-circle azul"></i> {{ solicitud.idSolicitud }}
               </h3></a
             >
           </div>
@@ -725,12 +724,24 @@
             &nbsp;
              <!-- aqui  van los check box-->
 
+             <!--<div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="Si" [(ngModel)]="selectedOption" (change)="onSelectionChange()">
+              <label class="form-check-label" for="inlineRadio1">Si</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="No" [(ngModel)]="selectedOption" (change)="onSelectionChange()">
+              <label class="form-check-label" for="inlineRadio2">No</label>
+            </div>-->
+
+
+
+
           <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
+            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="Si">
             <label class="form-check-label" for="inlineRadio1">Si</label>
           </div>
           <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2" checked>
+            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="No" checked>
             <label class="form-check-label" for="inlineRadio2">No</label>
           </div>
 

@@ -29,74 +29,24 @@ import {
 } from "rxjs/operators";
 import { ConsultaTareasService } from "src/app/tareas/consulta-tareas/consulta-tareas.service";
 import { SolicitudesService } from "../registrar-solicitud/solicitudes.service";
-import { toDate } from "date-fns/esm";
 
 @Component({
-  selector: 'revisarSolicitud',
-  templateUrl: './revisar-solicitud.component.html',
-  styleUrls: ['./revisar-solicitud.component.scss'],
+  selector: 'app-registrar-candidato',
+  templateUrl: './registrar-candidato.component.html',
+  styleUrls: ['./registrar-candidato.component.scss'],
+
   providers: [CamundaRestService, HttpClientModule],
   exportAs: "registrarSolicitud",
 })
-export class RevisarSolicitudComponent extends CompleteTaskComponent {
+export class RegistrarCandidatoComponent extends CompleteTaskComponent {
   NgForm = NgForm;
 
-  textareaContent: string = '';
-  isRequired: boolean = false;
-  isFechaMaximaVisible: boolean = false;
-  campoObligatorio: string = '';
-  observaciontexto: string = 'Observación';
-  selectedDate: Date = new Date();
-  //buttonValue: string = '';
-
-  buttonValue: string | null = null;
-
-  process(action: string) {
-
-    this.buttonValue=action;
-
-    console.log(`Acción seleccionada: ${action}`);
-    // Aquí puedes añadir la lógica para manejar cada acción
-
-    switch (action) {
-      case 'devolver':
-        this.isRequired = true;
-        this.campoObligatorio = 'Campo Obligatorio...';
-        this.observaciontexto = 'Observación*';
-        this.isFechaMaximaVisible = false;
-        this.textareaContent = '';
-        break;
-
-      case 'cancelar':
-        this.isRequired = true;
-        this.campoObligatorio = 'Campo Obligatorio...';
-        this.isFechaMaximaVisible = false;
-        this.textareaContent = '';
-        this.observaciontexto = 'Observación*';
-        break;
-
-      case 'aprobar':
-        this.campoObligatorio = 'Ingrese Comentario de aprobación...';
-        this.isFechaMaximaVisible = false;
-        this.textareaContent = '';
-        this.observaciontexto = 'Observación';
-        break;
-
-      case 'esperar':
-        this.campoObligatorio = 'Ingrese Comentario en espera...';
-        this.isFechaMaximaVisible = true;
-        this.textareaContent = '';
-        this.observaciontexto = 'Observación';
-        break;
-
-      default:
-    }
-
-  }
-
-  isSelected(action: string): boolean {
-    return this.buttonValue === action;
-  }
+  /* override model: RegistrarData = new RegistrarData(
+    "123",
+    "Description",
+    0,
+    "Observations"
+  ); */
 
   override model: RegistrarData = new RegistrarData(
     "",
@@ -166,6 +116,28 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
   // This is a more likely scenario.
   // In this case, parent flag is set to true. It requires additional handling to derive task id from process instance id.
   public parentIdFlag: string | null = "false"; // set to true if the id is for the process instance, instead of task-id
+
+  /*
+  public dataTipoSolicitud: any = [
+    { id: 1, descripcion: "Requisición de Personal" },
+    { id: 2, descripcion: "Contratación de Familiares" },
+    { id: 3, descripcion: "Reingreso de personal" },
+    { id: 4, descripcion: "Acción de Personal" },
+  ];
+  public dataTipoMotivo: any = [
+    { id: 1, descripcion: "Nuevo" },
+    { id: 2, descripcion: "Eventual" },
+    { id: 3, descripcion: "Pasante" },
+    { id: 4, descripcion: "Reemplazo" },
+  ];
+
+  // public dataTipoAccion: any;
+
+  public dataTipoAccion: any = [
+    { id: 1, descripcion: "Motivo1" },
+    { id: 2, descripcion: "Motivo2" },
+  ];
+  */
 
   public misParams: Solicitud;
 
@@ -343,11 +315,32 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
 
   public loadingComplete = 0;
 
+  /*
+  nombresEmpleados: string[] = [
+    ...new Set(
+      this.dataEmpleadoEvolution.map((empleado) => empleado.nombreCompleto)
+    ),
+  ];
+
+  subledgers: string[] = [
+    ...new Set(
+      this.dataEmpleadoEvolution.map((empleado) => empleado.subledger)
+    ),
+  ];
+
+  codigosPosicion: string[] = [
+    ...new Set(
+      this.dataEmpleadoEvolution.map((empleado) => empleado.codigoPosicion)
+    ),
+  ];
+  */
+
   nombresEmpleados: string[] = [];
 
   subledgers: string[] = [];
 
   codigosPosicion: string[] = [];
+  jsonResult: string;
 
   constructor(
     route: ActivatedRoute,
@@ -442,7 +435,7 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
         this.solicitudDataInicial = this.solicitudes.modelSolicitud;
         this.detalleSolicitud = this.solicitudes.modelDetalleSolicitud;
         this.detalleSolicitud.idSolicitud =
-          this.solicitudDataInicial.idSolicitud;
+        this.solicitudDataInicial.idSolicitud;
       }
 
       // console.log("ID editar: ", this.id_edit);
@@ -454,6 +447,22 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
       console.log("Mis params: ", params);
       this.misParams = params;
 
+
+      /*this.solicitud.infoGeneral.idTipoSolicitud = this.dataTipoSolicitud.id;
+      this.solicitud.infoGeneral.tipoSolicitud =
+        this.dataTipoSolicitud.tipoSolicitud;
+      this.solicitud.request.idTipoSolicitud = this.dataTipoSolicitud.id;
+      this.solicitud.request.tipoSolicitud =
+        this.dataTipoSolicitud.tipoSolicitud;
+
+      this.solicitud.infoGeneral.idTipoMotivo = this.dataTipoMotivo.id;
+      this.solicitud.infoGeneral.tipoMotivo = this.dataTipoMotivo.tipoMotivo;
+      this.solicitud.request.idTipoMotivo = this.dataTipoMotivo.id;
+
+      this.solicitud.infoGeneral.idTipoAccion = this.dataTipoAccion.id;
+      this.solicitud.infoGeneral.tipoAccion = this.dataTipoAccion.tipoAccion;
+      this.solicitud.request.idTipoAccion = this.dataTipoAccion.id;
+      this.solicitud.request.tipoAccion = this.dataTipoAccion.tipoAccion;*/
     });
 
     this.route.queryParamMap.subscribe((qParams) => {
@@ -480,12 +489,12 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
         // we are looking for task id 'Registrar' in a recently started process instance 'id'
         this.idDeInstancia = params["id"];
         this.camundaRestService
-          .getTask(environment.taskType_Revisar, params["id"])
+          .getTask(environment.taskType_Registrar, params["id"])
           .subscribe((result) => {
             console.log("INGRESA AQUÍ (registrar): ", result);
             console.log(
-              "environment.taskType_Revisar: ",
-              environment.taskType_Revisar
+              "environment.taskType_Registrar: ",
+              environment.taskType_Registrar
             );
             console.log("params['id']: ", params["id"]);
             this.lookForError(result); // if error, then control gets redirected to err page
@@ -798,10 +807,27 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
         console.log("Solicitud por id: ", response);
         this.solicitud = response;
 
+        //data de solicitudes
+
+       /* this.model.codigo=this.solicitud.idSolicitud ;
+        this.model.idEmpresa = this.solicitud.idEmpresa ;
+        this.model.compania=this.solicitud.empresa ;
+        this.model.unidadNegocio=this.solicitud.unidadNegocio;*/
+
+
         this.loadingComplete++;
         this.getDetalleSolicitudById(this.id_edit);
 
+        // tveas, si incluye el id, debo mostrarlos (true)
+        /*this.mostrarTipoJustificacionYMision = this.restrictionsIds.includes(
+          this.solicitud.idTipoMotivo
+        );
 
+        this.mostrarSubledger = this.restrictionsSubledgerIds.includes(
+          this.solicitud.idTipoMotivo
+        );*/ // comentado mmunoz
+
+        //console.log("DATA SOLICITUD BY ID: ", this.solicitud);
       },
       error: (error: HttpErrorResponse) => {
         this.utilService.modalResponse(error.error, "error");
@@ -842,7 +868,11 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
 
 
       }
-
+       /* this.detalleSolicitud.estado = response.estado;
+        this.detalleSolicitud.estado = response.estadoSolicitud;
+        this.detalleSolicitud.idSolicitud = response.idSolicitud;
+        this.detalleSolicitud.unidadNegocio = response.unidadNegocio;*/ //comentado mmunoz
+        //console.log("DATA DETALLE SOLICITUD BY ID: ", this.detalleSolicitud);
         this.loadingComplete++;
 
         // tveas, si incluye el id, debo mostrarlos (true)
@@ -864,13 +894,13 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
           this.getNivelesAprobacion();
         }
 
-        console.log("Inicio recorrer Aprobaciones por posicion: ");
-        console.log(`Elemento en la posición Miguel1 ${this.keySelected}:`, this.dataAprobacionesPorPosicion);
+        //console.log("aprobacion: ",aprobacion);
+       /* console.log(`Elemento en la posición Miguel1 ${this.keySelected}:`, this.dataAprobacionesPorPosicion[this.keySelected][0].nivelAprobacionType.idNivelAprobacion);
 
-        for (const key in this.dataAprobacionesPorPosicion) {
+        for (const key in this.dataAprobacionesPorPosicion[this.keySelected]) {
           if (this.dataAprobacionesPorPosicion.hasOwnProperty(key)) {
             console.log(`Clave: ${key}`);
-            const aprobacionesObj = this.dataAprobacionesPorPosicion[key];
+            const aprobacionesObj = this.dataAprobacionesPorPosicion[this.keySelected][key];
             for (const index in aprobacionesObj) {
               if (aprobacionesObj.hasOwnProperty(index)) {
                 const aprobacion = aprobacionesObj[index];
@@ -882,7 +912,7 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
               }
             }
           }
-        }
+        }*/
 
         this.consultarNextTask(id);
 
@@ -1133,56 +1163,131 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
         "Unique Task id is empty. Cannot initiate task complete.";
       return;
     }
-    /*this.utilService.openLoadingSpinner(
-      "Guardando información, espere por favor..."
+  /*  this.utilService.openLoadingSpinner(
+      "Completando Tarea, espere por favor..."
     );*/
 
     let variables = this.generateVariablesFromFormFields();
 
     this.camundaRestService
-    .postCompleteTask(this.uniqueTaskId, variables)
-    .subscribe({
-      next: (res) => {
-        console.log("Complete task notificar");
-        //actualizo la solicitud a enviada
-        /*this.solicitud.empresa = this.model.idEmpresa;
-        this.solicitud.idEmpresa = this.model.idEmpresa;
+      .postCompleteTask(this.uniqueTaskId, variables)
+      .subscribe({
+        next: (res) => {
+          console.log("Complete task notificar");
+          //actualizo la solicitud a enviada
+          this.solicitud.empresa = this.model.idEmpresa;
+          this.solicitud.idEmpresa = this.model.idEmpresa;
 
-        this.solicitud.unidadNegocio = this.model.unidadNegocio;
-        this.solicitud.idUnidadNegocio = this.model.unidadNegocio;
-        this.solicitud.estadoSolicitud = "4";
-        console.log("this.solicitud: ", this.solicitud);
-        this.solicitudes
-        .actualizarSolicitud(this.solicitud)
-        .subscribe((responseSolicitud) => {
-        console.log("responseSolicitud: ", responseSolicitud);
-
-
-
-        });*/
-        //fin actualizo la solicitud a enviada
-        this.utilService.modalResponse(
-          `Solicitud registrada correctamente [${this.idDeInstancia}]. Será redirigido en un momento...`,
-          "success"
-        );
-        setTimeout(() => {
-          this.router.navigate([
-            "/tareas/consulta-tareas",
-          ]);
-        }, 1800);
-      },
-      error: (error: HttpErrorResponse) => {
-        this.utilService.modalResponse(
-          error.error,
-          "error"
-        );
-      },
+          this.solicitud.unidadNegocio = this.model.unidadNegocio;
+          this.solicitud.idUnidadNegocio = this.model.unidadNegocio;
+          this.solicitud.estadoSolicitud = "4";
+          console.log("this.solicitud: ", this.solicitud);
+          this.solicitudes
+          .actualizarSolicitud(this.solicitud)
+          .subscribe((responseSolicitud) => {
+          console.log("responseSolicitud: ", responseSolicitud);
 
 
-    });
 
+          });
+          //fin actualizo la solicitud a enviada
+          this.utilService.modalResponse(
+            `Solicitud registrada correctamente [${this.idDeInstancia}]. Será redirigido en un momento...`,
+            "success"
+          );
+          setTimeout(() => {
+            this.router.navigate([
+              "/tareas/consulta-tareas",
+            ]);
+          }, 1800);
+        },
+        error: (error: HttpErrorResponse) => {
+          this.utilService.modalResponse(
+            error.error,
+            "error"
+          );
+        },
+
+
+      });
+
+    //return;
+
+   /* this.camundaRestService
+      .postCompleteTask(this.uniqueTaskId, variables)
+      .subscribe((res) => {
+        console.log("Completar: ", res);
+
+        this.submitted = true;
+        this.consultaTareasService.getTareaIdParam(this.detalleSolicitud.idSolicitud)
+        .subscribe({
+          next: (tarea) => {
+          console.log("Task: ", tarea);
+
+          this.uniqueTaskId=tarea.solicitudes[0].taskId;
+          this.taskType_Activity = tarea.solicitudes[0].tasK_DEF_KEY;
+          this.nameTask = tarea.solicitudes[0].name;
+          this.id_solicitud_by_params = tarea.solicitudes[0].idSolicitud;
+
+                    // Verifica si el nombre sigue siendo "Notificar revisión solicitud"
+                    if(this.nameTask === "Notificar revisión solicitud"){
+
+                      variables = this.generateVariablesFromFormFields();
+
+                      this.camundaRestService
+                        .postCompleteTask(this.uniqueTaskId, variables)
+                        .subscribe({
+                          next: (responseCompleyatNotificar) => {
+                            console.log("Complete task notificar");
+                            this.utilService.modalResponse(
+                              `Solicitud registrada correctamente [${this.idDeInstancia}]. Será redirigido en un momento...`,
+                              "success"
+                            );
+                            setTimeout(() => {
+                              this.router.navigate([
+                                "/tareas/consulta-tareas",
+                              ]);
+                            }, 1800);
+                          },
+                          error: (error: HttpErrorResponse) => {
+                            this.utilService.modalResponse(
+                              error.error,
+                              "error"
+                            );
+                          },
+                        });
+
+                      }else{
+
+                        this.utilService.modalResponse(
+                          `La Solicitud esta completada revise la nueva tarea. Será redirigido en un momento...`,
+                          "success"
+                        );
+
+                        setTimeout(() => {
+                          this.router.navigate([
+                            "/tareas/consulta-tareas",
+                          ]);
+                        }, 1800);
+
+                        // El nombre ya no es "Notificar revisión solicitud", haz algo diferente
+                          console.log("Nombre diferente:", this.nameTask);
+                      }
+
+                      this.utilService.closeLoadingSpinner();
+
+                    },
+                    error: (error: HttpErrorResponse) => {
+                      this.utilService.modalResponse(error.error, "error");
+                    },
+
+        });
+      });*/
+    //this.utilService.closeLoadingSpinner();
     this.submitted = true;
   }
+
+
   recorrerArreglo() {
 
     this.keySelected =
@@ -1238,78 +1343,306 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
       this.nameTask = tarea.solicitudes[0].name;
       this.id_solicitud_by_params = tarea.solicitudes[0].idSolicitud;
 
-      if(this.nameTask!=="Registrar solicitud"){
+      if(this.taskType_Activity!==environment.taskType_Registrar){
         this.RegistrarsolicitudCompletada = false;
       }
     });
   }
 
   override generateVariablesFromFormFields() {
+    /*const variables = {
+      variables: {
+        codigo: { value: "" },
+        description: { value: "" },
+        importe: { value: 0 },
+        observations: { value: new String() },
+      },
+    };
 
-   let variables: any = {};
+    variables.variables["codigo"].value = "AAAA";
+    variables.variables["description"].value = "BBBB";
+    variables.variables["importe"].value = 5000;
+    variables.variables["observations"].value = "DDDD";*/
+
+    /*
+
+    {
+    "usuarioCreacion": "lnmora",
+    "usuarioActualizacion": "lnmora",
+    "estado": "Aprobado",
+    "idInstancia": "c376953d-fcb6-11ee-ae9a-b05adab33404",
+    "idEmpresa": "01",
+    "empresa": "Reybanpac",
+    "idUnidadNegocio": "01",
+    "unidadNegocio": "Lacteos",
+    "estadoSolicitud": "1",
+    "idTipoSolicitud": 1,
+    "idTipoMotivo": 1,
+    "idTipoAccion": 1
+}
+
+    */
+
+    /*const variables = {
+      variables: {
+        ...this.solicitud,
+      },
+    };*/
+
+    // variables.variables["codigo"].value = "AAAA";
+    // variables.variables["description"].value = "BBBB";
+    // variables.variables["importe"].value = 5000;
+    // variables.variables["observations"].value = "DDDD";
+
+    /*
+
+    {
+    "usuarioCreacion": "lnmora",
+    "usuarioActualizacion": "lnmora",
+    "estado": "Aprobado",
+    "idInstancia": "c376953d-fcb6-11ee-ae9a-b05adab33404",
+    "idEmpresa": "01",
+    "empresa": "Reybanpac",
+    "idUnidadNegocio": "01",
+    "unidadNegocio": "Lacteos",
+    "estadoSolicitud": "1",
+    "idTipoSolicitud": 1,
+    "idTipoMotivo": 1,
+    "idTipoAccion": 1
+}
+
+    */
+
+/*const data = {
+  variables: {
+    codigoPosicion: { value: 1040 },
+    misionCargo: { value: "Ingresa Mision del Cargo" },
+    justificacionCargo: { value: "Ingresa Justificacion del Cargo" },
+    empresa: { value: "REYLACTEOS C.L." },
+    unidadNegocio: { value: "LACTEOS" },
+    descripcionPosicion: { value: "20-Asistente de Gerencia" },
+    areaDepartamento: { value: "Mandos Medios / Jefatura" },
+    localidadZona: { value: "Mirador ILA" },
+    centroCosto: { value: "23 Santo Domingo" },
+    reportaa: { value: "79 Gerencia de Procesos" },
+    nivelReportaa: { value: "Gerencia Media" },
+    supervisa: { value: "Supervisa" },
+    tipoContrato: { value: "Eventual con Remuneración Mixta" },
+    sueldo: { value: 200 },
+    sueldoMensual: { value: 150 },
+    sueldoTrimestral: { value: 170 },
+    sueldoSemestral: { value: 500 },
+    sueldoAnual: { value: 25500 },
+    anularSolicitud: { value: "No" },
+    comentariosAnulacion: { value: "" },
+    nivelDireccion: { value: "Operativo" },
+    tipoRuta: {
+      value: ["Unidades", "Aprobadores Fijos"],
+      type: "String",
+      valueInfo: {
+        objectTypeName: "java.util.ArrayList",
+        serializationDataFormat: "application/json"
+      }
+    },
+    ruta: {
+      value: ["1erNivelAprobacion", "2doNivelAprobacion"],
+      type: "String",
+      valueInfo: {
+        objectTypeName: "java.util.ArrayList",
+        serializationDataFormat: "application/json"
+      }
+    },
+    resultadoRutaAprobacion: {
+      value: ["Gerencia Media", "Gerencia de Unidad o Corporativa"],
+      type: "Object",
+      valueInfo: {
+        objectTypeName: "java.util.ArrayList",
+        serializationDataFormat: "application/json"
+      }
+    }
+  },
+  withVariablesInReturn: true
+};
+
+this.jsonResult = JSON.stringify(data, null, 2);*/
+
+
+
+
+    let variables: any = {};
+   /* const variable ={
+
+      variables: {
+        codigoPosicion : { value: this.model.codigoPosicion },
+        misionCargo : { value: this.model.misionCargo },
+        justificacionCargo : { value: this.model.justificacionCargo },
+        empresa : { value: this.model.compania },
+        unidadNegocio : { value: this.model.unidadNegocio },
+        descripcionPosicion : { value: this.model.descrPosicion },
+        areaDepartamento : {value: this.model.departamento },
+        localidadZona : {value: this.model.localidad},
+        centroCosto : {value: this.model.nomCCosto},
+        reportaa : {value: this.model.reportaA},
+        nivelReportea : {value: this.model.nivelRepa},
+        supervisa : {value: this.model.supervisaA},
+        tipoContrato : {value: this.model.tipoContrato},
+        sueldo : { value: this.model.sueldo }, //sueldoVariableMensual
+        sueldoMensual : { value: this.model.sueldoMensual },
+        sueldoTrimestral : { value: this.model.sueldoTrimestral },
+        sueldoSemestral : { value: this.model.sueldoSemestral },
+        sueldoAnual : { value: this.model.sueldoAnual },
+        anularSolicitud : { value: "No" },
+        comentariosAnulacion : {value: this.model.comentariosAnulacion},
+        nivelDireccion : { value: this.model.nivelDir },
+        tipoRuta : {
+                               value: ["Unidades","Unidades", "Aprobadores Fijos", "Aprobadores Fijos"],
+                               type: "String",
+                               valueInfo:{
+                                              objectTypeName:"java.util.ArrayList",
+                                              serializationDataFormat:"application/json"
+                                 }
+
+                              },
+        ruta : {
+                              value : ["2doNivelAprobacion", "3erNivelAprobacion", "Remuneraciones"],
+                              type: "String",
+                              valueInfo:{
+                                  objectTypeName:"java.util.ArrayList",
+                                  serializationDataFormat:"application/json"
+                              }
+                        },
+
+        resultadoRutaAprobacion : { value : "[\"Gerencia Media\", \"Gerencia de Unidad o Corporativa\"]",
+                                              type: "Object",
+                                              valueInfo:{
+                                                  objectTypeName:"java.util.ArrayList",
+                                                  serializationDataFormat:"application/json"
+                                                }
+
+                        },
+      },
+      withVariablesInReturn: true
+
+    }*/
+
+   /* const variables = {
+      variables:  {}
+    };*/
 
     //variables.codigo = { value: this.model.codigo };
     //variables.idEmpresa = { value: this.model.idEmpresa };
-    if (this.solicitud.tipoSolicitud === "requisicionPersonal") {
+    if (this.solicitud.tipoSolicitud== "requisicionPersonal") {
+      if(this.taskType_Activity==environment.taskType_Registrar){
+        variables.codigoPosicion = { value: this.model.codigoPosicion };
+        variables.misionCargo = { value: this.model.misionCargo };
+        variables.justificacionCargo = { value: this.model.justificacionCargo };
+        variables.empresa = { value: this.model.compania };
+        variables.unidadNegocio = { value: this.model.unidadNegocio };
+        variables.descripcionPosicion = { value: this.model.descrPosicion };
+        variables.areaDepartamento = {value: this.model.departamento };
+        variables.localidadZona = {value: this.model.localidad};
+        variables.centroCosto = {value: this.model.nomCCosto};
+        variables.reportaa = {value: this.model.reportaA};
+        variables.nivelReportea = {value: this.model.nivelRepa};
+        variables.supervisa = {value: this.model.supervisaA};
+        variables.tipoContrato = {value: this.model.tipoContrato};
+        variables.sueldo = { value: this.model.sueldo }; //sueldoVariableMensual
+        variables.sueldoMensual = { value: this.model.sueldoMensual };
+        variables.sueldoTrimestral = { value: this.model.sueldoTrimestral };
+        variables.sueldoSemestral = { value: this.model.sueldoSemestral };
+        variables.sueldoAnual = { value: this.model.sueldoAnual };
+        variables.anularSolicitud = { value: "No" };
+        variables.comentariosAnulacion = {value: this.model.comentariosAnulacion};
+        variables.nivelDireccion = { value: this.model.nivelDir };
+        variables.tipoRuta = {
+                               value: ["Unidades","Unidades", "Aprobadores Fijos", "Aprobadores Fijos"],
+                               type: "String",
+                               valueInfo:{
+                                              objectTypeName:"java.util.ArrayList",
+                                              serializationDataFormat:"application/json"
+                                 }
 
-      //buttonValue
+                              };
+        variables.ruta = {
+                              value : ["2doNivelAprobacion", "3erNivelAprobacion", "Remuneraciones"],
+                              type: "String",
+                              valueInfo:{
+                                  objectTypeName:"java.util.ArrayList",
+                                  serializationDataFormat:"application/json"
+                              }
+                        };
 
-        if(this.taskType_Activity==environment.taskType_Revisar){ //APROBADORES DINAMICOS
+        variables.resultadoRutaAprobacion = { value : "[\"Gerencia Media\", \"Gerencia de Unidad o Corporativa\"]",
+                                              type: "Object",
+                                              valueInfo:{
+                                                  objectTypeName:"java.util.ArrayList",
+                                                  serializationDataFormat:"application/json"
+                                                }
 
-          variables.atencionRevision = { value : this.buttonValue };
-          variables.comentariosAtencion = { value : this.textareaContent};
-
-        //RQ_GRRHH_RevisarSolicitud
-        }else if(this.taskType_Activity==environment.taskType_RRHH){ //GERENTE RECURSOS HUMANOS
-
-
-          variables.atencionRevisionGerente = { value : this.buttonValue };
-          variables.comentariosAtencionGerenteRRHH = { value : this.textareaContent};
-
-          /*{
-            "variables": {
-            "atencionRevisionGerente": {
-                "value": "aprobar"
-              },
-            "comentariosAtencionGerente": {
-                "value": ""
-              },
-            "ruta": {
-                "value": ""
-              }
-            },
-            "withVariablesInReturn": true
-          }*/
-
-        }else if(this.taskType_Activity==environment.taskType_CREM){// COMITE DE REMUNERACION
-
-
-
-          variables.atencionRevisionRemuneraciones = { value : this.buttonValue };
-          variables.comentariosAtencionRemuneraciones = { value : this.textareaContent};
-
-
-          /*
-                              {
-                  "variables": {
-                  "atencionRevisionRemuneraciones": {
-                      "value": "aprobar"
-                    },
-                  "comentariosAtencionRemuneraciones": {
-                      "value": ""
-                    }
-                  },
-                  "withVariablesInReturn": true
-                }
+                        };
 
 
-          */
-        }
+      }
 
 
+      if(this.taskType_Activity==environment.taskType_RegistrarCandidato){
+
+              variables.tipoSolicitud = { value : "nuevoIngresoReemplazo" };
+
+      }
 
     }
 
+
+
+
+    /*variables.departamento = { value: this.model.departamento };
+    variables.nombreCargo = { value: this.model.nombreCargo };
+    variables.nomCCosto = { value: this.model.nomCCosto };
+
+    variables.codigoPuesto = { value: this.model.codigoPuesto };
+    variables.descrPuesto = { value: this.model.descrPuesto };
+    variables.fechaIngresogrupo = { value: this.model.fechaIngresogrupo };
+    variables.grupoPago = { value: this.model.grupoPago };
+    variables.reportaA = { value: this.model.reportaA };
+    variables.localidad = { value: this.model.localidad };
+    variables.nivelDir = { value: this.model.nivelDir };
+    variables.nivelRepa = { value: this.model.nivelRepa };
+    variables.sucursal = { value: this.model.sucursal };
+
+    variables.tipoContrato = { value: this.model.tipoContrato };
+    variables.descripContrato = { value: this.model.descripContrato };
+    variables.status = { value: this.model.status };
+
+    variables.nivelDireccion = { value: this.model.nivelDir };
+    variables.comentariosAtencion = { value: "SEND STATIC" };
+    variables.correo = {value: this.model.correo}*/
+
+    // tipo_solicitud_descripcion
+    // tipo_motivo_descripcion
+    /*variables.codigoPosicion = this.model.codigoPosicion; // Todos
+
+    variables.nombreCompleto = this.model.nombreCompleto;
+    variables.subledger = this.model.subledger;
+    variables.misionCargo = this.model.misionCargo;
+    variables.justificacion = this.model.justificacion;*/
+
+    /*if (this.tipo_solicitud_descripcion === "requisicionPersonal") {
+      if (
+        this.tipo_motivo_descripcion === "Nuevo" ||
+        this.tipo_motivo_descripcion === "Eventual"
+      ) {
+        variables.codigoPosicion = { value: this.model.codigoPosicion };
+        variables.misionCargo = { value: this.model.misionCargo };
+        variables.justificacion = { value: this.model.justificacionCargo };
+      } else if (this.tipo_motivo_descripcion === "Pasante") {
+        variables.codigoPosicion = { value: this.model.misionCargo };
+      } else if (this.tipo_motivo_descripcion === "Reemplazo") {
+        variables.subledger = { value: this.model.subledger };
+        variables.nombreCompleto = { value: this.model.nombreCompleto };
+        variables.codigoPosicion = { value: this.model.codigoPosicion };
+      }
+    }*/
 
     return { variables};
   }
@@ -1331,6 +1664,8 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
 
   onCancel() {
     console.log("User action cancel");
+    // mmunoz
+    // this.router.navigate(["tasklist/Registrar"], { queryParams: {} });
     this.router.navigate(["tareas/consulta-tareas"]);
   }
 
@@ -1381,10 +1716,121 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
     });
 
   }
+      /*.getNivelesAprobacion(
+        this.solicitud.idTipoSolicitud,
+        this.solicitud.idTipoMotivo,
+        this.detalleSolicitud.nivelDireccion
+      )
+      .subscribe({
+        next: (response) => {
+          this.dataAprobacionesPorPosicion[this.keySelected] =
+            response.nivelAprobacionType.sort(this.compareNivelesAprobacion);
 
+          if (
+            !this.dataNivelesAprobacionPorCodigoPosicion[
+              this.model.codigoPosicion
+            ]
+          ) {
+            this.getDataNivelesAprobacionPorCodigoPosicion();
+          }
+        },
+        error: (error: HttpErrorResponse) => {
+          this.utilService.modalResponse(
+            "No existen niveles de aprobación para este empleado",
+            "error"
+          );
+        },
+      });*/
   }
 
+  /*getNivelesAprobacion() {
+    this.solicitudes
+      .getNivelesAprobacion(
+        this.solicitud.idTipoSolicitud,
+        this.solicitud.idTipoMotivo,
+        this.model.nivelDir
+      )
+      // .getNivelesAprobacion(1, 1, "TA")
+      .subscribe({
+        next: (response) => {
+          this.dataAprobacionesPorPosicion[this.keySelected] =
+            response.nivelAprobacionType.sort(this.compareNivelesAprobacion);
 
+          if (
+            !this.dataNivelesAprobacionPorCodigoPosicion[
+              this.model.codigoPosicion
+            ]
+          ) {
+            this.getDataNivelesAprobacionPorCodigoPosicion();
+          }
+        },
+        error: (error: HttpErrorResponse) => {
+          this.utilService.modalResponse(
+            "No existen niveles de aprobación para este empleado",
+            "error"
+          );
+        },
+      });
+  }*/ // comentado mmunoz
+
+
+  /*getDataNivelesAprobacionPorCodigoPosicion() {
+    this.solicitudes
+      .getDataNivelesAprobacionPorCodigoPosicion(this.model.codigoPosicion)
+      .subscribe({
+        next: (response) => {
+          this.dataNivelesAprobacionPorCodigoPosicion[
+            this.model.codigoPosicion
+          ] = response.evType;
+
+          for (let key1 of Object.keys(this.dataAprobacionesPorPosicion)) {
+            let eachDataNivelesDeAprobacion =
+              this.dataAprobacionesPorPosicion[key1];
+
+            for (let eachData of eachDataNivelesDeAprobacion) {
+              for (let key2 of Object.keys(
+                this.dataNivelesAprobacionPorCodigoPosicion
+              )) {
+                let eachDataNivelPorCodigoPosicion =
+                  this.dataNivelesAprobacionPorCodigoPosicion[key2];
+
+                for (let eachDataNivelPorCodigo of eachDataNivelPorCodigoPosicion) {
+                  if (
+                    eachData.nivelDireccion ==
+                    eachDataNivelPorCodigo.nivelDireccion
+                  ) {
+                    console.log(
+                      "OCURRE UNA COINCIDENCIA (eachData): ",
+                      eachData
+                    );
+                    console.log(
+                      "OCURRE UNA COINCIDENCIA (eachDataNivelPorCodigo): ",
+                      eachDataNivelPorCodigo
+                    );
+                    console.log("\n");
+
+                    eachData["usuario"] = eachDataNivelPorCodigo.usuario;
+                    eachData["descripcionPosicion"] =
+                      eachDataNivelPorCodigo.descripcionPosicion;
+                    break;
+                  }
+                }
+              }
+            }
+          }
+          console.log(
+            "**dataAprobacionesPorPosicion**: ",
+            this.dataAprobacionesPorPosicion
+          );
+        },
+        error: (error: HttpErrorResponse) => {
+          this.utilService.modalResponse(
+            "No existen niveles de aprobación para este empleado",
+            "error"
+          );
+        },
+      });
+  }*/ //comentado mmunoz
 
   getDataNivelesAprobacionPorCodigoPosicion() {
 
@@ -1455,6 +1901,24 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
       });
   }
 
-
+  /*getNivelesAprobacion() {
+    this.solicitudes
+      .getNivelesAprobacion(
+        this.solicitud.idTipoSolicitud,
+        this.solicitud.idTipoMotivo,
+        this.model.nivelDir
+      )
+      // .getNivelesAprobacion(1, 1, "TA")
+      .subscribe({
+        next: (response) => {
+          this.dataNivelesAprobacion = response.nivelAprobacionType.sort(
+            this.compareNivelesAprobacion
+          );
+        },
+        error: (error: HttpErrorResponse) => {
+          this.utilService.modalResponse(error.error, "error");
+        },
+      });
+  }*/
 }
 

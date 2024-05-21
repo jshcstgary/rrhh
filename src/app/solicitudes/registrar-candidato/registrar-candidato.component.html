@@ -28,13 +28,13 @@
           >
             <i class="fas fa-check-circle"></i> Completar Tarea
           </button>
-          <!--<button *ngIf="RegistrarsolicitudCompletada"
+          <button *ngIf="RegistrarsolicitudCompletada"
             type="button"
             (click)="onCancel()"
             class="btn btn-info me-2 mt-1"
           >
             <i class="fas fa-times"></i> Registrar luego
-          </button>-->
+          </button>
         </div>
       </div>
       <div class="row mt-4">
@@ -627,107 +627,142 @@
         </div>
       </div>
 
-
-  <div class="row mt-4">
-    <div class="col-md-4">
-      <div class="mb-4">
-        <a> <h3 class="danger">Atención de Solicitud</h3></a>
+      <div class="row mt-4">
+        <div class="col-md-4">
+          <div class="mb-4">
+            <a> <h3 class="danger">Atención de los probadores</h3></a>
+          </div>
+        </div>
+        <div class="col-md-8">
+          <hr />
+        </div>
       </div>
-    </div>
-    <div class="col-md-8">
-      <hr />
-    </div>
-  </div>
+
+      <div class="row mt-2">
+        <div class="col">
+          <div class="input-group mb-3">
+            <label
+              for="aprobadoresdinamicos"
+              style="color: #0056b3; font-size: 14px; margin: auto auto"
+            >
+              Aprobadores dinámicos
+            </label>
+            &nbsp;
+            <span
+              id="aprobadoresdinamicos"
+              name=""
+              style="color: black; font-size: 14px; margin: auto auto"
+              class="text-center"
+              >{{ detalleSolicitud.aprobadoresDinamicos }}</span
+            >
+          </div>
+        </div>
+      </div>
+
+      <div class="row mt-2">
+        <div class="col">
+          <div class="input-group mb-3">
+            <label
+              for="gerenterrhhcorporativo"
+              style="color: #0056b3; font-size: 14px; margin: auto auto"
+            >
+              Gerente de RRHH Corporativo
+            </label>
+            &nbsp;
+            <span
+              id="gerenterrhhcorporativo"
+              name=""
+              style="color: black; font-size: 14px; margin: auto auto"
+              class="text-center"
+              >{{ detalleSolicitud.gerenteRRHHCorporativo }}</span
+            >
+          </div>
+        </div>
+      </div>
+
+      <div class="row mt-2">
+        <div class="col">
+          <div class="input-group mb-3">
+            <label
+              for="comitederemuneraciones"
+              style="color: #0056b3; font-size: 14px; margin: auto auto"
+            >
+              Comité de Remuneraciones
+            </label>
+            &nbsp;
+            <span
+              id="comitederemuneraciones"
+              name=""
+              style="color: black; font-size: 14px; margin: auto auto"
+              class="text-center"
+              >{{ detalleSolicitud.comiteRemuneraciones }}</span
+            >
+          </div>
+        </div>
+      </div>
 
 
-  <div class="row">
-    <div class="col">
-      <div class="input-group mb-3 contenedor">
-        <label
-        class="input-group-text label-estilo2"
-        for="desicion"
-        >Procesar Solicitud
-    </label>
+      <div class="row mt-4">
+        <div class="col-md-4">
+          <div class="mb-4">
+            <a> <h3 class="danger">Seleccion de Candidato</h3></a>
+          </div>
+        </div>
+        <div class="col-md-8">
+          <hr />
+        </div>
+      </div>
 
-    <div class="btn-group" role="group" aria-label="Basic example" id="desicion">
-      <button type="button"
-              class="btn"
-              [ngClass]="{'btn-primary': !isSelected('aprobar'), 'btn-success': isSelected('aprobar')}"
-              (click)="process('aprobar')"
-              value="aprobar">Aprobar</button>
-      <button type="button"
-              class="btn"
-              [ngClass]="{'btn-primary': !isSelected('devolver'), 'btn-success': isSelected('devolver')}"
-              (click)="process('devolver')"
-              value="devolver">Devolver</button>
-      <button type="button"
-              class="btn"
-              [ngClass]="{'btn-primary': !isSelected('cancelar'), 'btn-success': isSelected('cancelar')}"
-              (click)="process('cancelar')"
-              value="cancelar">Cancelar</button>
-      <button type="button"
-              class="btn"
-              [ngClass]="{'btn-primary': !isSelected('esperar'), 'btn-success': isSelected('esperar')}"
-              (click)="process('esperar')"
-              value="esperar">En espera</button>
-    </div>
+      <!--<div class="row" >
+        <div class="col">
+          <div class="input-group mb-3 contenedor">
+          <label
+              class="input-group-text"
+              for="anular"
+              style="color: black; font-size: 14px; width: 22%"
+              >¿Anular Solicitud?</label>
+            &nbsp;
 
-      <!--<div class="btn-group" role="group" aria-label="Basic example" id="desicion">
-        <button type="button" class="btn btn-primary" (click)="process('aprobar')" value="aprobar">Aprobar</button>
-        <button type="button" class="btn btn-primary" (click)="process('devolver')" value="devolver">Devolver</button>
-        <button type="button" class="btn btn-primary" (click)="process('cancelar')" value="cancelar">Cancelar</button>
-        <button type="button" class="btn btn-primary" (click)="process('esperar')" value="esperar">En espera</button>
-      </div>-->
-    </div>
-    </div>
-  </div>
 
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
+            <label class="form-check-label" for="inlineRadio1">Si</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2" checked>
+            <label class="form-check-label" for="inlineRadio2">No</label>
+          </div>
+
+
+          </div>
+        </div>
+      </div>
 
       <div class="row">
         <div class="col">
           <div class="input-group mb-3 contenedor">
           <label
-              class="input-group-text label-estilo2"
-              for="observacion"
-              >{{observaciontexto}}
+              class="input-group-text"
+              for="anulacion"
+              style="color: black; font-size: 14px; width: 22%"
+              >Comentarios Anulación de Solicitud
           </label>
           &nbsp;
             <textarea
-            [(ngModel)]="textareaContent"
-              id="observacion"
-              name="observacion"
-              #observacion="ngModel"
-              [required]="isRequired"
+              id="anulacion"
+              name="anulacion"
+
               style="color: black; font-size: 14px"
-              [placeholder]="campoObligatorio"
+
+
             ></textarea>
           </div>
         </div>
-      </div>
+      </div>-->
 
-      <div class="row" *ngIf="isFechaMaximaVisible">
-        <div class="col">
-          <div class="input-group mb-3 contenedor">
 
-              <label
-                  class="input-group-text label-estilo2"
-                  for="aprobar"
-                  >Fecha máxima de espera
-              </label>
-
-              <div class="datepicker-container">
-                <mat-form-field appearance="outline">
-                  <mat-label>Fecha</mat-label>
-                  <input matInput [matDatepicker]="picker">
-                  <mat-datepicker-toggle matSuffix [for]="picker" [(ngModel)]="selectedDate">
-                  </mat-datepicker-toggle>
-                  <mat-datepicker #picker></mat-datepicker>
-                </mat-form-field>
-              </div>
-            </div>
-          </div>
-        </div>
 
     </h2>
   </div>
 </form>
+
