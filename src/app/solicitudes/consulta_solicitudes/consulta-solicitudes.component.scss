@@ -1,3 +1,10 @@
+@use "/src/assets/scss/variable" as var;
+
+.data-container {
+	background-color: transparent;
+	border: none;
+}
+
 .ngx-datatable.scroll-vertical{height:70vh;}
 .close {
   font-size: 1.4rem;
@@ -34,4 +41,29 @@
 
   height: 50px;
   width: 100px;
+}
+
+label.input-group-text {
+	width: 25%;
+	color : var.$blue;
+	font-size: 16px;
+	font-weight: semibold;
+}
+
+.content,
+.content > div.card {
+	background-color: var.$white;
+}
+
+.nav-pills {
+	border-bottom: 1px solid var.$blue;
+
+	li > button {
+		border: 1px solid var.$blue;
+		border-bottom: none;
+		border-bottom-left-radius: 0;
+		border-bottom-right-radius: 0;
+		width: 200px;
+		font-size: 15px;
+	}
 }

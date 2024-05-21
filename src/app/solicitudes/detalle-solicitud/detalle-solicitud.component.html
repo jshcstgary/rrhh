@@ -865,7 +865,7 @@
           "
           class="accordion-item"
         >
-          <h2 class="accordion-header">
+          <div class="accordion-header">
             <button
               class="accordion-button"
               type="button"
@@ -892,7 +892,7 @@
                 <div class="col">{{ nivel.nivelAprobacionType.nivelAprobacionRuta }}</div>
               </div>
             </button>
-          </h2>
+          </div>
 
           <div
             [id]="'collapse' + i"
@@ -905,7 +905,6 @@
                 <div class="input-group mb-3">
                   <label
                     for="lvl1descripcion"
-                    style="color: #0056b3; font-size: 14px; margin: auto auto"
                   >
                     Descripción de la posición
                   </label>
@@ -913,8 +912,7 @@
                   <span
                     id="lvl1descripcion"
                     name=""
-                    style="color: black; font-size: 14px; margin: auto auto"
-                    class="text-center"
+                    style="color: black; font-size: 14px;"
                     >{{
                       nivel.aprobador.descripcionPosicion !== "" &&
                       nivel.aprobador.descripcionPosicion !== undefined &&
