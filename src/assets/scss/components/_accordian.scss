@@ -1,5 +1,39 @@
 .accordion {
-  .card {
-    margin-bottom: 1px;
-  }
+	& > .accordion-item[aria-expanded="true"] {
+		border-bottom: 1px solid gray;
+
+		// &:last-child {
+		// 	border-bottom: none;
+		// }
+	}
+
+	button.accordion-button > div.row > div.col:first-child {
+		font-weight: bold;
+	}
+
+	.accordion-header {
+		border-bottom: 1px solid gray;
+	}
+
+	.accordion-collapse.collapse {
+		div.col {
+			margin: 0 20px;
+		}
+
+		.input-group > label {
+			width: 24%;
+			color: #0056b3;
+			font-size: 15px;
+			font-weight: bold;
+		}
+
+		.input-group > span {
+			width: 74%;
+			text-align: left;
+		}
+	}
+
+	.card {
+		margin-bottom: 1px;
+	}
 }

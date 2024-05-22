@@ -1,3 +1,5 @@
+@use "/src/assets/scss/variable" as var;
+
 /*
 Template Name: Admin Template
 Author: Niravjoshi / Wrappixel
@@ -36,7 +38,7 @@ $sidebarheight: 54px;
   }
 
   .page-breadcrumb {
-    background: transparent;
+    background-color: var.$body-bg;
   }
 
   /****************************
@@ -164,6 +166,20 @@ This is for the horizontal layout
         .sidebar-item {
           position: relative;
           width: auto;
+		  transition: background-color 0.3s ease;
+
+		  &::after {
+			display: block;
+			position: absolute;
+			content: "";
+			bottom: 0;
+			left: 0;
+			width: 100%;
+			height: 0;
+			background-color: var.$red;
+			transition: height 0.3s ease;
+		  }
+
           .sidebar-link {
             border-left: 0;
           }
@@ -211,12 +227,20 @@ This is for the horizontal layout
           }
         }
         > .sidebar-item:hover {
-          background: rgba(0, 0, 0, 0.025);
+			//   background: rgba(0, 0, 0, 0.025);
+			background-color: rgba(var.$red, 0.4);
+
+			&::after {
+				height: 5px;
+			}
         }
+		> .sidebar-item > ul.first-level > li:hover {
+			background-color: rgba(var.$red, 0.4);
+		}
         > .sidebar-item:hover ul.first-level,
         > .sidebar-item:hover ul.first-level.collapse {
           display: block;
-          &:after {
+          &::after {
             position: absolute;
             content: "";
             background: rgba(0, 0, 0, 0.025);
