@@ -67,7 +67,7 @@ export class CompletaSolicitudComponent extends CompleteTaskComponent {
         this.textareaContent = '';
         break;
 
-      case 'cancelar':
+      case 'rechazar':
         this.isRequired = true;
         this.campoObligatorio = 'Campo Obligatorio...';
         this.isFechaMaximaVisible = false;

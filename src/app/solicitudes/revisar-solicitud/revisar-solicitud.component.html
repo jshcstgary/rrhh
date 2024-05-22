@@ -662,9 +662,9 @@
               value="devolver">Devolver</button>
       <button type="button"
               class="btn"
-              [ngClass]="{'btn-primary': !isSelected('cancelar'), 'btn-success': isSelected('cancelar')}"
-              (click)="process('cancelar')"
-              value="cancelar">Cancelar</button>
+              [ngClass]="{'btn-primary': !isSelected('rechazar'), 'btn-success': isSelected('rechazar')}"
+              (click)="process('rechazar')"
+              value="rechazar">Cancelar</button>
       <button type="button"
               class="btn"
               [ngClass]="{'btn-primary': !isSelected('esperar'), 'btn-success': isSelected('esperar')}"
@@ -672,12 +672,6 @@
               value="esperar">En espera</button>
     </div>
 
-      <!--<div class="btn-group" role="group" aria-label="Basic example" id="desicion">
-        <button type="button" class="btn btn-primary" (click)="process('aprobar')" value="aprobar">Aprobar</button>
-        <button type="button" class="btn btn-primary" (click)="process('devolver')" value="devolver">Devolver</button>
-        <button type="button" class="btn btn-primary" (click)="process('cancelar')" value="cancelar">Cancelar</button>
-        <button type="button" class="btn btn-primary" (click)="process('esperar')" value="esperar">En espera</button>
-      </div>-->
     </div>
     </div>
   </div>
