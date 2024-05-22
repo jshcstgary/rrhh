@@ -34,6 +34,8 @@ import { MatNativeDateModule ,DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } f
 
 import { ReactiveFormsModule } from '@angular/forms';
 import { RegistrarCandidatoComponent } from './registrar-candidato/registrar-candidato.component';
+import { CompletaSolicitudComponent } from './completa-solicitud/completa-solicitud.component';
+
 
 @NgModule({
   declarations: [
@@ -43,6 +45,8 @@ import { RegistrarCandidatoComponent } from './registrar-candidato/registrar-can
     DetalleSolicitudComponent,
     RevisarSolicitudComponent,
     RegistrarCandidatoComponent,
+    CompletaSolicitudComponent,
+
   ],
   imports: [
     RouterModule.forChild(SolicitudesRoutes),

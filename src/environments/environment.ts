@@ -22,7 +22,7 @@ export const environment = {
 
   taskType_Revisar: "Dinamico_RevisarSolicitud",
 
-  taskType_RRHH: `RQ_GRRHH_RevisarSolicitud`,
+  taskType_RRHH: "RQ_GRRHH_RevisarSolicitud",
 
   taskType_Notificar: "Activity_1bql112",
 

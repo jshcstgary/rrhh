@@ -717,34 +717,20 @@
         <div class="col">
           <div class="input-group mb-3 contenedor">
           <label
-              class="input-group-text"
+              class="input-group-text label-estilo2"
               for="anular"
-              style="color: black; font-size: 14px; width: 22%"
               >¿Anular Solicitud?</label>
             &nbsp;
              <!-- aqui  van los check box-->
 
-             <!--<div class="form-check form-check-inline">
+            <div class="form-check form-check-inline">
               <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="Si" [(ngModel)]="selectedOption" (change)="onSelectionChange()">
               <label class="form-check-label" for="inlineRadio1">Si</label>
             </div>
             <div class="form-check form-check-inline">
               <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="No" [(ngModel)]="selectedOption" (change)="onSelectionChange()">
               <label class="form-check-label" for="inlineRadio2">No</label>
-            </div>-->
-
-
-
-
-          <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="Si">
-            <label class="form-check-label" for="inlineRadio1">Si</label>
-          </div>
-          <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="No" checked>
-            <label class="form-check-label" for="inlineRadio2">No</label>
-          </div>
-
+            </div>
 
           </div>
         </div>
@@ -754,19 +740,16 @@
         <div class="col">
           <div class="input-group mb-3 contenedor">
           <label
-              class="input-group-text"
+              class="input-group-text label-estilo2"
               for="anulacion"
-              style="color: black; font-size: 14px; width: 22%"
               >Comentarios Anulación de Solicitud
           </label>
           &nbsp;
             <textarea
               id="anulacion"
               name="anulacion"
-
+              [(ngModel)]="model.comentariosAnulacion"
               style="color: black; font-size: 14px"
-
-
             ></textarea>
           </div>
         </div>

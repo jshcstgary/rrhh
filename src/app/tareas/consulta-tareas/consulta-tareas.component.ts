@@ -272,7 +272,7 @@ export class ConsultaTareasComponent implements OnInit {
         case environment.taskType_CompletarRequisicion :
 
               this.router.navigate([
-                "/solicitudes/registrar-solicitud",
+                "/solicitudes/completa-solicitud",
                 ids[1],
                 ids[0],
               ]);

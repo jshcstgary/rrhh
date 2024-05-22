@@ -121,13 +121,14 @@ export class SolicitudesService {
     idTipoSolicitud: any,
     idTipoMotivo: any,
     codigoPosicion: any,
-    idNivelDireccion: any
+    idNivelDireccion: any,
+    filtro: string
   ): Observable<IAprobacionesPosicion> {
     const headers = new HttpHeaders({
       idNivelDireccion: idNivelDireccion,
     });
 
-    const myObject: any = { filter: 'A' };
+    const myObject: any = { filter: filtro };
     const httpParams: HttpParamsOptions = { fromObject: myObject } as HttpParamsOptions;
     console.log(
       "Se llama con esto: " +

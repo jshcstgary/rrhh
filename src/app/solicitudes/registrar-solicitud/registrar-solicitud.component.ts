@@ -24,6 +24,7 @@ import { Subject, Observable, OperatorFunction } from "rxjs";
 import {
   debounceTime,
   distinctUntilChanged,
+  isEmpty,
   map,
   switchMap,
 } from "rxjs/operators";
@@ -42,12 +43,6 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
 
   selectedOption: string = 'No';
 
-  /* override model: RegistrarData = new RegistrarData(
-    "123",
-    "Description",
-    0,
-    "Observations"
-  ); */
 
   override model: RegistrarData = new RegistrarData(
     "",
@@ -154,6 +149,13 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
   public dataNivelesDeAprobacion: { [key: string]: any[] } = {};
 
   public dataAprobacionesPorPosicion: { [key: string]: any[] } = {};
+
+  public dataAprobacionesPorPosicionAPS: any = [];
+
+  public dataTipoRuta: any[] = [];
+
+  public dataRuta: any[] = [];
+
 
   // getDataNivelesAprobacionPorCodigoPosicion
   public dataNivelesAprobacionPorCodigoPosicion: { [key: string]: any[] } = {};
@@ -371,6 +373,10 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
     });
   }
 
+  onSelectionChange() {
+    console.log(this.selectedOption);
+  }
+
   searchCodigoPosicion: OperatorFunction<string, readonly string[]> = (
     text$: Observable<string>
   ) =>
@@ -551,7 +557,7 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
         this.solicitud.idTipoSolicitud,
         this.solicitud.idTipoMotivo,
         this.model.codigoPosicion,
-        this.model.nivelDir
+        this.model.nivelDir,'A'
       )
       .subscribe({
         next: (response) => {
@@ -568,6 +574,35 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
         },
       });
   }
+
+  obtenerAprobacionesPorPosicionAPS() {
+    return this.solicitudes
+      .obtenerAprobacionesPorPosicion(
+        this.solicitud.idTipoSolicitud,
+        this.solicitud.idTipoMotivo,
+        this.model.codigoPosicion,
+        this.model.nivelDir,'APS'
+      )
+      .subscribe({
+        next: (response) => {
+          this.dataTipoRuta.length=0;
+          this.dataRuta.length=0;
+          this.dataAprobacionesPorPosicionAPS=response.nivelAprobacionPosicionType;
+          this.dataAprobacionesPorPosicionAPS.forEach(item => {
+            this.dataTipoRuta.push(item.nivelAprobacionType.tipoRuta);
+            this.dataRuta.push(item.nivelAprobacionType.ruta);
+            console.log("Aprobaciones APS = ", item.nivelAprobacionType);
+          });
+        },
+        error: (error: HttpErrorResponse) => {
+          this.utilService.modalResponse(
+            "No existe aprobadores de solicitud para los datos ingresados",
+            "error"
+          );
+        },
+      });
+  }
+
 
   onSelectItem(campo: string, event) {
     let valor = event.item;
@@ -767,6 +802,7 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
       //} // comentado munoz
       await this.getDataEmpleadosEvolution();
       await this.loadDataCamunda(); //comentado para prueba mmunoz
+     // await this.obtenerAprobacionesPorPosicionAPS();
       //console.log("impreme arreglo de aprobadores: ");
       //await this.recorrerArreglo();
 
@@ -893,6 +929,12 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
           this.model.nivelDir;
         if (!this.dataAprobacionesPorPosicion[this.keySelected]) {
           this.getNivelesAprobacion();
+          if(this.model.codigoPosicion.trim().length > 0){
+          this.obtenerAprobacionesPorPosicionAPS();}
+          //console.log("Tipo Ruta", this.dataTipoRuta);
+          //console.log("Ruta", this.dataRuta);
+          let variables = this.generateVariablesFromFormFields();
+          console.log("variables prueba ruta",variables);
         }
 
         //console.log("aprobacion: ",aprobacion);
@@ -1379,11 +1421,12 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
         variables.sueldoTrimestral = { value: this.model.sueldoTrimestral };
         variables.sueldoSemestral = { value: this.model.sueldoSemestral };
         variables.sueldoAnual = { value: this.model.sueldoAnual };
-        variables.anularSolicitud = { value: "No" };
+        variables.anularSolicitud = { value: this.selectedOption };
         variables.comentariosAnulacion = {value: this.model.comentariosAnulacion};
         variables.nivelDireccion = { value: this.model.nivelDir };
         variables.tipoRuta = {
-                               value: ["Unidades","Unidades", "Aprobadores Fijos", "Aprobadores Fijos"],
+                               //value: ["Unidades","Unidades", "Aprobadores Fijos", "Aprobadores Fijos"],
+                               value: this.dataTipoRuta,
                                type: "String",
                                valueInfo:{
                                               objectTypeName:"java.util.ArrayList",
@@ -1392,7 +1435,8 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
 
                               };
         variables.ruta = {
-                              value : ["2doNivelAprobacion", "3erNivelAprobacion", "Remuneraciones"],
+                             // value : ["2doNivelAprobacion", "3erNivelAprobacion", "Remuneraciones"],
+                             value : this.dataRuta,
                               type: "String",
                               valueInfo:{
                                   objectTypeName:"java.util.ArrayList",
@@ -1481,7 +1525,7 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
       this.solicitud.idTipoSolicitud,
       this.solicitud.idTipoMotivo,
       this.detalleSolicitud.codigoPosicion,
-      this.detalleSolicitud.nivelDireccion
+      this.detalleSolicitud.nivelDireccion,'A'
     )
     .subscribe({
       next: (response) => {

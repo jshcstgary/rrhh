@@ -36,7 +36,7 @@ import { toDate } from "date-fns/esm";
   templateUrl: './revisar-solicitud.component.html',
   styleUrls: ['./revisar-solicitud.component.scss'],
   providers: [CamundaRestService, HttpClientModule],
-  exportAs: "registrarSolicitud",
+  exportAs: "revisarSolicitud",
 })
 export class RevisarSolicitudComponent extends CompleteTaskComponent {
   NgForm = NgForm;
@@ -541,7 +541,7 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
         this.solicitud.idTipoSolicitud,
         this.solicitud.idTipoMotivo,
         this.model.codigoPosicion,
-        this.model.nivelDir
+        this.model.nivelDir,'A'
       )
       .subscribe({
         next: (response) => {
@@ -1133,9 +1133,9 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
         "Unique Task id is empty. Cannot initiate task complete.";
       return;
     }
-    /*this.utilService.openLoadingSpinner(
+    this.utilService.openLoadingSpinner(
       "Guardando información, espere por favor..."
-    );*/
+    );
 
     let variables = this.generateVariablesFromFormFields();
 
@@ -1365,7 +1365,7 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
       this.solicitud.idTipoSolicitud,
       this.solicitud.idTipoMotivo,
       this.detalleSolicitud.codigoPosicion,
-      this.detalleSolicitud.nivelDireccion
+      this.detalleSolicitud.nivelDireccion,'A'
     )
     .subscribe({
       next: (response) => {

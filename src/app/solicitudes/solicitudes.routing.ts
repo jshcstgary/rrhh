@@ -6,6 +6,7 @@ import { ConsultaSolicitudesComponent } from "./consulta_solicitudes/consulta-so
 import { DetalleSolicitudComponent } from "./detalle-solicitud/detalle-solicitud.component";
 import { RevisarSolicitudComponent } from "./revisar-solicitud/revisar-solicitud.component";
 import { RegistrarCandidatoComponent } from "./registrar-candidato/registrar-candidato.component";
+import { CompletaSolicitudComponent } from "./completa-solicitud/completa-solicitud.component";
 
 export const SolicitudesRoutes: Routes = [
   {
@@ -57,6 +58,15 @@ export const SolicitudesRoutes: Routes = [
         data: {
           title: "Seleccion de Candidato",
           urls: [{ title: "Solicitudes" }, { title: "Seleccion de Candidato" }],
+        },
+      },
+
+      {
+        path: "completa-solicitud/:id/:idSolicitud",
+        component: CompletaSolicitudComponent,
+        data: {
+          title: "Completar Solicitud",
+          urls: [{ title: "Solicitudes" }, { title: "Completar Solicitud" }],
         },
       },
     ],

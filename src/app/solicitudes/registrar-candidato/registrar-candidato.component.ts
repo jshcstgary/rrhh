@@ -41,12 +41,16 @@ import { SolicitudesService } from "../registrar-solicitud/solicitudes.service";
 export class RegistrarCandidatoComponent extends CompleteTaskComponent {
   NgForm = NgForm;
 
-  /* override model: RegistrarData = new RegistrarData(
-    "123",
-    "Description",
-    0,
-    "Observations"
-  ); */
+  tipoProceso: string;
+  tipoFuente: string;
+  fechas: any = {
+    actualizacionPerfil: '',
+    busquedaCandidatos: '',
+    reingreso: '',
+    finProceso: '',
+    contratacionFamiliares: '',
+    finProcesoFamiliares: ''
+  };
 
   override model: RegistrarData = new RegistrarData(
     "",
@@ -143,6 +147,7 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
 
   public dataTipoSolicitud: any = [];
   public dataTipoMotivo: any = [];
+  public dataTipoProceso: any = [];
 
   // public dataTipoAccion: any;
 
@@ -550,7 +555,7 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
         this.solicitud.idTipoSolicitud,
         this.solicitud.idTipoMotivo,
         this.model.codigoPosicion,
-        this.model.nivelDir
+        this.model.nivelDir,'A'
       )
       .subscribe({
         next: (response) => {
@@ -765,6 +770,7 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
         await this.getSolicitudById(this.id_edit);
       //} // comentado munoz
       await this.getDataEmpleadosEvolution();
+      await this.ObtenerServicioTipoProceso();
       await this.loadDataCamunda(); //comentado para prueba mmunoz
       //console.log("impreme arreglo de aprobadores: ");
       //await this.recorrerArreglo();
@@ -794,6 +800,20 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
           )[0]?.valor;
 
         //this.utilService.closeLoadingSpinner(); //comentado mmunoz
+      },
+      error: (error: HttpErrorResponse) => {
+        this.utilService.modalResponse(error.error, "error");
+      },
+    });
+  }
+
+  ObtenerServicioTipoProceso() {
+    return this.mantenimientoService.getTipoProceso().subscribe({
+      next: (response) => {
+        this.dataTipoProceso = response.map((r) => ({
+          id: r.id,
+          descripcion: r.tipoProceso,
+        })); //verificar la estructura mmunoz
       },
       error: (error: HttpErrorResponse) => {
         this.utilService.modalResponse(error.error, "error");
@@ -1163,9 +1183,9 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
         "Unique Task id is empty. Cannot initiate task complete.";
       return;
     }
-  /*  this.utilService.openLoadingSpinner(
+    this.utilService.openLoadingSpinner(
       "Completando Tarea, espere por favor..."
-    );*/
+    );
 
     let variables = this.generateVariablesFromFormFields();
 
@@ -1700,7 +1720,7 @@ this.jsonResult = JSON.stringify(data, null, 2);*/
       this.solicitud.idTipoSolicitud,
       this.solicitud.idTipoMotivo,
       this.detalleSolicitud.codigoPosicion,
-      this.detalleSolicitud.nivelDireccion
+      this.detalleSolicitud.nivelDireccion,'A'
     )
     .subscribe({
       next: (response) => {
