@@ -1,6 +1,6 @@
-// 
+//
 // Table Common
-// 
+//
 
 .table thead th,
 .table th {
@@ -14,9 +14,9 @@
   }
 }
 
-// 
+//
 // Data-tables
-// 
+//
 table.dataTable {
   thead {
     th,
@@ -30,4 +30,16 @@ table.dataTable {
       text-align: center;
     }
   }
+}
+
+div#app-container-table-component {
+	overflow: visible;
+}
+
+div#app-container-table-component + div {
+	margin-top: 50px;
+}
+
+table#app-table-component {
+	box-shadow: 0px 5px 5px rgba(gray, 0.5);
 }

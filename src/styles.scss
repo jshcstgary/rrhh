@@ -51,34 +51,34 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 	background-color: #fff;
 }
 
-#accordionExample.accordion {
-	& > .accordion-item {
-		border-bottom: 1px solid gray;
+// .accordion {
+// 	& > .accordion-item {
+// 		border-bottom: 1px solid gray;
 
-		// &:last-child {
-		// 	border-bottom: none;
-		// }
-	}
+// 		// &:last-child {
+// 		// 	border-bottom: none;
+// 		// }
+// 	}
 
-	button.accordion-button > div.row > div.col:first-child {
-		font-weight: bold;
-	}
+// 	button.accordion-button > div.row > div.col:first-child {
+// 		font-weight: bold;
+// 	}
 
-	.accordion-collapse.collapse {
-		div.col {
-			margin: 0 20px;
-		}
+// 	.accordion-collapse.collapse {
+// 		div.col {
+// 			margin: 0 20px;
+// 		}
 
-		.input-group > label {
-			width: 24%;
-			color: #0056b3;
-			font-size: 15px;
-			font-weight: bold;
-		}
+// 		.input-group > label {
+// 			width: 24%;
+// 			color: #0056b3;
+// 			font-size: 15px;
+// 			font-weight: bold;
+// 		}
 
-		.input-group > span {
-			width: 74%;
-			text-align: left;
-		}
-	}
-}
+// 		.input-group > span {
+// 			width: 74%;
+// 			text-align: left;
+// 		}
+// 	}
+// }

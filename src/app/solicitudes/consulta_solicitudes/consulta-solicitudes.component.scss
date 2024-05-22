@@ -58,12 +58,27 @@ label.input-group-text {
 .nav-pills {
 	border-bottom: 1px solid var.$blue;
 
-	li > button {
-		border: 1px solid var.$blue;
-		border-bottom: none;
-		border-bottom-left-radius: 0;
-		border-bottom-right-radius: 0;
-		width: 200px;
-		font-size: 15px;
+	li {
+		& > button {
+			border: 1px solid var.$blue;
+			border-bottom: none;
+			border-bottom-left-radius: 0;
+			border-bottom-right-radius: 0;
+			width: 200px;
+			font-size: 15px;
+		}
+
+		&:not(:first-child):not(:last-child) > button {
+			border-top-right-radius: 0;
+			border-top-left-radius: 0;
+		}
+
+		&:first-child > button {
+			border-top-right-radius: 0;
+		}
+
+		&:last-child > button {
+			border-top-left-radius: 0;
+		}
 	}
 }
