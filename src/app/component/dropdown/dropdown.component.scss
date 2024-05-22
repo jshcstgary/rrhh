@@ -1,0 +1,14 @@
+@import "../../../assets/scss/variable";
+
+.btn-profile-name {
+	color: #182844 !important;
+}
+
+.dropdown-item-component:hover {
+  background-color: $blue;
+  color: white !important;
+}
+
+.dropdown-toggle::after {
+  display: none;
+}

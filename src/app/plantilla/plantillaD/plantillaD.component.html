@@ -1,0 +1,121 @@
+<div class="card p-3 bg-white">
+  <!-- <form-component
+    class="mb-2"
+    *ngIf="filterFormInputs.length > 0"
+    [formItems]="filterFormInputs"
+    [formName]="'headerFilter'"
+    [containsSearchButton]="filterFormContainsSearchButton"
+    [searchButtonProps]="filterFormSearchButtonProps"
+    [onChangeFormFunction]="onChangeHeaderFilterForm"
+    [contexto]="contexto"
+  >
+  </form-component> -->
+
+  <div class="form-body">
+    <div class="row">
+      <!--Número de solicitud-->
+      <div class="col-md-3">
+        <div class="mb-3">
+          <label class="azul">Número de solicitud o tarea</label>
+          <input-component
+            [id]="'searchInputFilter'"
+            [type]="'string'"
+            [buttonIcon]="'ti-search'"
+            buttonFunction="filterStringInTable"
+            onChangeFunction="filterStringInTable"
+            [contexto]="this"
+          ></input-component>
+        </div>
+      </div>
+
+      <!-- <div class="col-md-3">
+        <div class="mb-3">
+          <label class="azul">Tareas</label>
+          <input-component
+            [id]="'searchInputFilter'"
+            [type]="'string'"
+            [buttonIcon]="'ti-search'"
+            buttonFunction="filterStringInTable"
+            onChangeFunction="filterStringInTable"
+            [contexto]="this"
+          ></input-component>
+        </div>
+      </div> -->
+
+      <!--Tareas-->
+      <!-- <div class="col-md-3">
+        <div class="mb-3">
+          <label class="azul">Tareas</label>
+          <ng-select
+            #inputSelectProducto
+            name="id_producto"
+            placeholder="Seleccione"
+          >
+            <ng-option>Todos</ng-option>
+          </ng-select>
+        </div>
+      </div> -->
+
+      <!-- <div class="col-md-3">
+        <div class="mb-3 text-center">
+          <button #buttonSearch type="submit" class="btn btn-info me-2">
+            <i class="fas fa-filter"></i> Buscar
+          </button>
+        </div>
+      </div> -->
+      <!-- <div class="col-md-3 d-flex align-items-center justify-content-center">
+        <div class="mb-3">
+          <button #buttonSearch type="submit" class="btn btn-info mt-3 me-5">
+            <i class="fas fa-filter"></i> Buscar
+          </button>
+        </div>
+      </div> -->
+    </div>
+  </div>
+  <form>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="mb-3">
+          <div class="text-end">
+            <button
+              type="button"
+              (click)="pageCrear()"
+              class="btn btn-info me-2"
+            >
+              <i class="fas fa-plus"></i> Agregar
+            </button>
+
+            <button type="submit" class="btn btn-outline-info me-2">
+              <i class="fas fa-file-excel"></i> Exportar
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+  <form>
+    <div class="row mt-3">
+      <div class="col">
+        <table-component
+          [tableName]="mainTableName"
+          [columns]="columnsTable"
+          [dataTable]="dataToTable"
+          [contexto]="this"
+          onSaveRowTable="onSaveRowTable"
+          [tableWidth]="tableWidth"
+          [inputsEditRow]="tableInputsEditRow"
+          [totalRows]="totalRowsInTable"
+          onChangePagination="onChangePaginationTable"
+          onCancelEditRowTable="onCancelEditRowTable"
+          [rowsPerPageValue]="rowsPerPageTable"
+          [page]="pageNumberTable"
+          [isTarea]="isTarea"
+          clickOnActionRow="onRowActionClicked"
+          [allowCloneButton]="allowCloneButtonOnTable"
+          [onRowChange]="onRowChange"
+          onChangeEditRowFunction="onChangeEditRowTableFunction"
+        ></table-component>
+      </div>
+    </div>
+  </form>
+</div>

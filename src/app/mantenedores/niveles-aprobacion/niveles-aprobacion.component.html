@@ -1,0 +1,20 @@
+<plantilla-b-component
+  [dataFilterNivelesAprobacion]="dataFilterNivelesAprobacion"
+  [dataTipoMotivo]="dataTipoMotivo"
+  [dataTipoSolicitudes]="dataTipoSolicitudes"
+  [dataNivelDireccion]="dataNivelDireccion"
+  *ngIf="hasFiltered"
+  [columnsTable]="columnsTable"
+  [originalDataTable]="dataTable"
+  [placeholderHeaderInputText]="'Buscar niveles de aprobacion...'"
+  [contexto]="this"
+  keyNameTable="id"
+  clickOnActionRow="onRowActionClicked"
+  clickOnFilter="filterDataTable"
+  clickOnPageCrear="pageCrear"
+  [IdRowToClone]="IdRowToClone"
+  colIdToDisable="id"
+  titleReport="NIVELES DE APROBACION"
+  [codigoReport]="codigoReporte"
+>
+</plantilla-b-component>

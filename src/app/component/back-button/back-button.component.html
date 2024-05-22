@@ -1,0 +1,12 @@
+<div class="row">
+  <div class="col-12">
+    <i
+      class="fas fa-arrow-left text-info cursor-pointer"
+      (click)="onBack()"
+    ></i>
+    <label class="text-warning main-text ms-2 me-3">{{ mainText }}</label>
+    <label class="text-detail" *ngFor="let detail of textDetails">{{
+      detail
+    }}</label>
+  </div>
+</div>

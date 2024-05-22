@@ -1,0 +1,140 @@
+<nav class="sidebar-nav">
+  <ul id="sidebarnav" [ngStyle]="navbar_bg">
+
+    <li class="sidebar-item">
+      <a class="navbar-brand" href="/">
+        <!-- Logo text -->
+        <span class="logo-text">
+          <!-- dark Logo text -->
+          <!-- Desde aquí toma el logo 2 -->
+          <img src="assets/images/logo-text.png" width="220px" height="60px" alt="homepage" class="dark-logo" />
+          <!--<img src="assets/images/logo-text.png" alt="homepage" class="dark-logo" />-->
+          <!-- Light Logo text -->
+          <img src="assets/images/logo-light-text.png" class="light-logo" alt="homepage" />
+        </span>
+      </a>
+    </li>
+
+    <!-- ============================================================== -->
+    <!-- First level menu -->
+    <li class="sidebar-item first-level" [ngClass]="[sidebarnavItem.ddclass]" [class.active]="showMenu === sidebarnavItem.title"
+      *ngFor="let sidebarnavItem of sidebarnavItems"
+      [routerLinkActive]="sidebarnavItem.submenu.length != 0 ? '' : 'active'">
+      <div class="nav-small-cap" *ngIf="sidebarnavItem.extralink === true">
+        {{ sidebarnavItem.title | translate }}
+      </div>
+      <a class="sidebar-link waves-effect waves-dark" [routerLink]="
+          sidebarnavItem.class === '' ? [sidebarnavItem.path] : null
+        " [ngClass]="[sidebarnavItem.class]" *ngIf="!sidebarnavItem.extralink"
+        (mouseover)="addExpandClass(sidebarnavItem.title)"
+        [routerLinkActive]="sidebarnavItem.submenu.length != 0 ? '' : 'active'">
+        <i [ngClass]="[sidebarnavItem.icon]"></i>
+        <span class="hide-menu">{{ sidebarnavItem.title | translate }}</span>
+      </a>
+      <!-- Second level menu -->
+      <ul aria-expanded="false" class="collapse first-level" *ngIf="sidebarnavItem.submenu.length > 0"
+        [ngClass]="{ in: showMenu === sidebarnavItem.title }">
+        <li class="sidebar-item" *ngFor="let sidebarnavSubItem of sidebarnavItem.submenu"
+          [class.active]="showSubMenu === sidebarnavSubItem.title" [routerLinkActive]="
+            sidebarnavSubItem.submenu.length > 0 ? '' : 'active'
+          ">
+          <a class="sidebar-link" [routerLink]="
+              sidebarnavSubItem.submenu.length > 0
+                ? null
+                : [sidebarnavSubItem.path]
+            " [routerLinkActive]="
+              sidebarnavSubItem.submenu.length != 0 ? '' : 'router-link-active'
+            " [ngClass]="[sidebarnavSubItem.class]" *ngIf="!sidebarnavSubItem.extralink"
+            (mouseover)="addActiveClass(sidebarnavSubItem.title)">
+            <i [ngClass]="[sidebarnavSubItem.icon]"></i>
+            <span class="hide-menu">{{
+              sidebarnavSubItem.title | translate
+              }}</span>
+          </a>
+          <!-- Third level menu -->
+          <ul aria-expanded="false" class="collapse second-level" *ngIf="sidebarnavSubItem.submenu.length > 0"
+            [ngClass]="{ in: showSubMenu === sidebarnavSubItem.title }">
+            <li class="sidebar-item" *ngFor="let sidebarnavSubsubItem of sidebarnavSubItem.submenu"
+              [ngClass]="[sidebarnavSubsubItem.class]">
+              <a class="sidebar-link" [routerLinkActive]="
+                  sidebarnavSubsubItem.submenu.length != 0 ? '' : ''
+                " [routerLink]="
+                  sidebarnavSubsubItem.submenu.length > 0
+                    ? null
+                    : [sidebarnavSubsubItem.path]
+                " *ngIf="!sidebarnavSubsubItem.extralink">
+                <i [ngClass]="[sidebarnavSubsubItem.icon]"></i>
+                <span class="hide-menu">{{
+                  sidebarnavSubsubItem.title | translate
+                  }}</span>
+              </a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+
+    <li>
+      <div></div>
+    </li>
+
+    <li>
+      <div></div>
+    </li>
+
+    <li class="sidebar-item">
+      <div class="user-profile"
+        style="display: flex; flex-direction: row; align-items: center; justify-content: center; gap: 2px;">
+        <button mat-icon-button
+          style="background-color: transparent !important; box-shadow: none !important; outline: none !important; border: none !important;"
+          [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+          <mat-icon style="color: #0056B3">notifications</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu" style="
+            padding: 0 !important;
+            --mat-menu-panel-padding: 0px !important;
+          ">
+          <ul class="list-style-none" style="max-height: 400px; overflow-y: auto; padding: 0 !important;">
+            <li class="pd-4">
+              <div class="drop-title bg-golden text-light-blue p-3">
+                <p class="mb-0 mt-1 text-light-blue fs-2"><b>6 sin leer</b></p>
+                <span class="fw-light fw-bold"> Notificaciones </span>
+              </div>
+            </li>
+            <li>
+              <a href="javascript:void(0)" class="message-item border-bottom d-block text-decoration-none ms-2"
+                *ngFor="let notification of notifications">
+                <span>
+                  <i class="material-icons text-info cursor-pointer mt-3">info</i>
+                </span>
+
+                <span class="mail-contnet d-inline-block w-75 ps-2 align-middle">
+                  <h5 class="message-title">{{ notification.title }}</h5>
+                  <span class="mail-desc fs-2 d-block text-muted text-truncate">{{ notification.subject }}</span>
+                  <span class="time fs-2 d-block text-muted text-truncate">{{
+                    notification.time
+                    }}</span>
+                </span>
+              </a>
+            </li>
+            <li class="mt-1">
+              <a class="link text-center" href="javascript:void(0);">
+                <strong>Ver notificaciones</strong>
+                <i class="fa fa-angle-right ms-2"></i>
+              </a>
+            </li>
+          </ul>
+        </mat-menu>
+
+        <img alt="" src="assets/images/users/user4.jpg" class="user-image" />
+        <dropdown-component [textButton]="userName" [options]="userDropdownOptions"
+          [buttonClasses]="dropdownButtonClasses"></dropdown-component>
+
+      </div>
+    </li>
+    <li>
+      <div></div>
+    </li>
+
+  </ul>
+</nav>

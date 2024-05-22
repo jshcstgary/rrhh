@@ -1,0 +1,26 @@
+/*******************/
+/*social-profile-first*/
+/*******************/
+
+.social-profile-first {
+    text-align: center;
+    padding-top: 22%;
+    margin-bottom: 92px;
+    &.bg-over {
+        background: rgba(56, 83, 161, 0.7);
+    }
+    .middle {
+        vertical-align: middle;
+    }
+    @include media-breakpoint-down(sm) {
+    	margin-bottom: 144px;
+    }
+}
+
+.c3 text {
+    fill: #98a6ad;
+}
+
+.c3 line, .c3 path {
+    stroke: #f3f5f7;
+}

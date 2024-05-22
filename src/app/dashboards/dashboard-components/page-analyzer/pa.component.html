@@ -1,0 +1,101 @@
+<div class="row analytics-info">
+    <div class="col-lg-3 col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">
+                    <span class="lstick"></span>Total Visit</h4>
+                <div class="d-flex align-items-center mt-3">
+                    <div style="height: 55px; width: 100px">
+                        <apx-chart [series]="visitstatisticschartOptions.series" [chart]="visitstatisticschartOptions.chart"
+                            [dataLabels]="visitstatisticschartOptions.dataLabels" [colors]="visitstatisticschartOptions.colors"
+                            [plotOptions]="visitstatisticschartOptions.plotOptions" [yaxis]="visitstatisticschartOptions.yaxis"
+                            [legend]="visitstatisticschartOptions.legend" [fill]="visitstatisticschartOptions.fill"
+                            [tooltip]="visitstatisticschartOptions.tooltip"
+                            [xaxis]="visitstatisticschartOptions.xaxis" [grid]="visitstatisticschartOptions.grid"
+                            [yaxis]="visitstatisticschartOptions.yaxis">
+                        </apx-chart>
+                    </div>
+                    <div class="ms-auto">
+                        <i class="ti-arrow-up text-success"></i>
+                        <span class="counter text-success">8659</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">
+                    <span class="lstick"></span>Total Page Views</h4>
+                <div class="d-flex align-items-center mt-3">
+                    <div style="height: 55px; width: 100px">
+                        <apx-chart [series]="totalpageviewschartOptions.series" [chart]="totalpageviewschartOptions.chart"
+                            [dataLabels]="totalpageviewschartOptions.dataLabels" [colors]="totalpageviewschartOptions.colors"
+                            [plotOptions]="totalpageviewschartOptions.plotOptions" [yaxis]="totalpageviewschartOptions.yaxis"
+                            [legend]="totalpageviewschartOptions.legend" [fill]="totalpageviewschartOptions.fill"
+                            [tooltip]="totalpageviewschartOptions.tooltip"
+                            [xaxis]="totalpageviewschartOptions.xaxis" [grid]="totalpageviewschartOptions.grid"
+                            [yaxis]="totalpageviewschartOptions.yaxis">
+                        </apx-chart>
+                    </div>
+                    <div class="ms-auto">
+                        <i class="ti-arrow-up text-purple"></i>
+                        <span class="counter text-purple">7469</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">
+                    <span class="lstick"></span>Unique Visitors</h4>
+                <div class="d-flex align-items-center mt-3">
+                    <div style="height: 55px; width: 100px">
+                        <apx-chart [series]="uniquevisitorchartOptions.series" [chart]="uniquevisitorchartOptions.chart"
+                            [dataLabels]="uniquevisitorchartOptions.dataLabels" [colors]="uniquevisitorchartOptions.colors"
+                            [plotOptions]="uniquevisitorchartOptions.plotOptions" [yaxis]="uniquevisitorchartOptions.yaxis"
+                            [legend]="uniquevisitorchartOptions.legend" [fill]="uniquevisitorchartOptions.fill"
+                            [tooltip]="uniquevisitorchartOptions.tooltip"
+                            [xaxis]="uniquevisitorchartOptions.xaxis" [grid]="uniquevisitorchartOptions.grid"
+                            [yaxis]="uniquevisitorchartOptions.yaxis">
+                        </apx-chart>
+                    </div>
+                    <div class="ms-auto">
+                        <i class="ti-arrow-up text-info"></i>
+                        <span class="counter text-info">6011</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">
+                    <span class="lstick"></span>Bounce Rate</h4>
+                <div class="d-flex align-items-center mt-3">
+                    <div style="height: 55px; width: 100px">
+                        <apx-chart [series]="bounceratechartOptions.series" [chart]="bounceratechartOptions.chart"
+                            [dataLabels]="bounceratechartOptions.dataLabels" [colors]="bounceratechartOptions.colors"
+                            [plotOptions]="bounceratechartOptions.plotOptions" [yaxis]="bounceratechartOptions.yaxis"
+                            [legend]="bounceratechartOptions.legend" [fill]="bounceratechartOptions.fill"
+                            [tooltip]="bounceratechartOptions.tooltip"
+                            [xaxis]="bounceratechartOptions.xaxis" [grid]="bounceratechartOptions.grid"
+                            [yaxis]="bounceratechartOptions.yaxis">
+                        </apx-chart>
+                    </div>
+                    <div class="ms-auto">
+                        <i class="ti-arrow-up text-danger"></i>
+                        <span class="counter text-danger">18%</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

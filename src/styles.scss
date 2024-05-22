@@ -1,0 +1,84 @@
+/* You can add global styles to this file, and also import other style files */
+
+@import url('https://fonts.googleapis.com/css?family=Nunito+Sans:300,400,600,700,800');
+@import "~bootstrap-icons/font/bootstrap-icons.css";
+@import '~material-icons/iconfont/material-icons.css';
+
+@font-face {
+  font-family: "Montserrat";
+  src: url("./assets/fonts/Montserrat-VariableFont_wght.ttf");
+}
+
+body {
+  font-family: Montserrat, sans-serif;
+}
+/* rutas */
+a.link:hover,
+a.link:focus {
+  color: #000000;
+}
+
+/* tooltip */
+.popover-body {
+  background: #f2f3f5;
+  color: #0753af;
+}
+
+//estilos de usuario y la imagen
+
+.dropdown-item.active {
+  background-color: #C69D08; /* Cambia el color de fondo a dorado */
+}
+
+.dropdown-menu {
+  width: 280px; /* Ajusta el ancho según tus necesidades */
+}
+
+
+.sidebar-nav ul .sidebar-item.active > .sidebar-link{
+  color: #0056B3 !important;
+}
+
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.modal-dialog {
+	width: 600px;
+}
+
+.card-body {
+	background-color: #fff;
+}
+
+// .accordion {
+// 	& > .accordion-item {
+// 		border-bottom: 1px solid gray;
+
+// 		// &:last-child {
+// 		// 	border-bottom: none;
+// 		// }
+// 	}
+
+// 	button.accordion-button > div.row > div.col:first-child {
+// 		font-weight: bold;
+// 	}
+
+// 	.accordion-collapse.collapse {
+// 		div.col {
+// 			margin: 0 20px;
+// 		}
+
+// 		.input-group > label {
+// 			width: 24%;
+// 			color: #0056b3;
+// 			font-size: 15px;
+// 			font-weight: bold;
+// 		}
+
+// 		.input-group > span {
+// 			width: 74%;
+// 			text-align: left;
+// 		}
+// 	}
+// }

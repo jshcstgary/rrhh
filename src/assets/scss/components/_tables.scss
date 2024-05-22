@@ -1,0 +1,45 @@
+//
+// Table Common
+//
+
+.table thead th,
+.table th {
+  font-weight: 500;
+}
+
+.no-wrap {
+  td,
+  th {
+      white-space: nowrap;
+  }
+}
+
+//
+// Data-tables
+//
+table.dataTable {
+  thead {
+    th,
+    td {
+      border-bottom-color: $border-color;
+      text-align: center;
+    }
+  }
+  tbody {
+    td {
+      text-align: center;
+    }
+  }
+}
+
+div#app-container-table-component {
+	overflow: visible;
+}
+
+div#app-container-table-component + div {
+	margin-top: 50px;
+}
+
+table#app-table-component {
+	box-shadow: 0px 5px 5px rgba(gray, 0.5);
+}

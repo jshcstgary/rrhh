@@ -1,0 +1,365 @@
+<div [ngSwitch]="type" class="bg-white">
+  <!-- string -->
+  <div
+    *ngSwitchCase="'string'"
+    [ngStyle]="{
+      display: containsLabel && labelPosition === 'horizontal' && 'flex',
+      'align-items':
+        containsLabel && labelPosition === 'horizontal' && 'center',
+    }"
+  >
+    <label
+      *ngIf="containsLabel && labelPosition === 'horizontal'"
+      [ngClass]="{
+        'pe-5': containsLabel && labelPosition === 'horizontal'
+      }"
+      class="azul"
+      style="font-weight: 500"
+      >{{ label }}</label
+    >
+    <div class="input-group">
+      <input
+        [id]="id"
+        type="text"
+        class="form-control"
+        [placeholder]="placeholder"
+        (keyup)="onChangeInput($event)"
+        (keyup.enter)="onEnterKey()"
+        [defaultValue]="defaultValue"
+        [attr.maxlength]="maxLength"
+        (blur)="onBlurInput($event)"
+        [disabled]="disabled"
+        [ngClass]="{ 'input-text-error': InputHasAnError }"
+        (keypress)="keypress($event)"
+      />
+      <button
+        class="btn btn-outline-info"
+        type="button"
+        *ngIf="containsButton"
+        (click)="onClickButton()"
+      >
+        <i [class]="buttonIcon"></i>
+      </button>
+      <div
+        *ngIf="InputHasAnError"
+        class="text-danger invalid-feedback d-block text-start"
+      >
+        {{ inputMessageError }}
+      </div>
+    </div>
+  </div>
+  <!-- number -->
+  <div
+    *ngSwitchCase="'number'"
+    [ngStyle]="{
+    display: containsLabel && labelPosition === 'horizontal' && 'flex',
+    'align-items':
+      containsLabel && labelPosition === 'horizontal' && 'center',
+  }"
+  >
+    <label
+      *ngIf="containsLabel && labelPosition === 'horizontal'"
+      [ngClass]="{
+        'pe-5': containsLabel && labelPosition === 'horizontal'
+      }"
+      class="azul"
+      style="font-weight: 500"
+      >{{ label }}</label
+    >
+    <div class="input-group">
+      <input
+        [id]="id"
+        type="text"
+        class="form-control"
+        [placeholder]="placeholder"
+        (keyup)="onChangeInput($event)"
+        (keyup.enter)="onEnterKey()"
+        [defaultValue]="defaultValue"
+        [attr.maxlength]="maxLength"
+        (blur)="onBlurInput($event)"
+        [disabled]="disabled"
+        [ngClass]="{ 'input-text-error': InputHasAnError }"
+        (keypress)="keypress($event)"
+      />
+      <button
+        class="btn btn-outline-info"
+        type="button"
+        *ngIf="containsButton"
+        (click)="onClickButton()"
+      >
+        <i [class]="buttonIcon"></i>
+      </button>
+      <div
+        *ngIf="InputHasAnError"
+        class="text-danger invalid-feedback d-block text-start"
+      >
+        {{ inputMessageError }}
+      </div>
+    </div>
+  </div>
+  <!-- color -->
+  <div *ngSwitchCase="'color'">
+    <div class="input-group">
+      <input
+        [style.background]="defaultValue"
+        [id]="id"
+        [disabled]="disabled"
+        class="form-control form-control-color"
+        [cpPosition]="'auto'"
+        [cpCancelButton]="true"
+        [cpColorMode]="'presets'"
+        (colorPickerChange)="onChangeInput($event)"
+        [cpPresetLabel]="'Colores por defecto'"
+        [cpPresetColors]="[
+          '#00FF00',
+          '#0000FF',
+          '#FFFFFF',
+          '#000000',
+          '#C8A2C8',
+          '#FF0000',
+          '#A52A2A',
+          '#FFFF00'
+        ]"
+        [(colorPicker)]="color"
+      />
+    </div>
+  </div>
+  <!-- select -->
+  <div *ngSwitchCase="'select'">
+    <div
+      [ngStyle]="{
+      display: containsLabel && labelPosition === 'horizontal' && 'flex',
+      'align-items':
+        containsLabel && labelPosition === 'horizontal' && 'center',
+    }"
+    >
+      <label
+        *ngIf="containsLabel"
+        class="azul"
+        [ngClass]="{
+          'pe-5': containsLabel && labelPosition === 'horizontal'
+        }"
+        style="font-weight: 500"
+        >{{ label }}</label
+      >
+      <ng-select
+        class="w-100"
+        type="text"
+        [id]="id"
+        [items]="options"
+        [(ngModel)]="selectValue"
+        [placeholder]="placeholder"
+        (change)="onChangeInput($event)"
+        [disabled]="disabled"
+        (keypress)="keypress($event)"
+        [ngClass]="{ 'input-text-error': InputHasAnError }"
+        (blur)="onBlurInput($event)"
+      >
+      </ng-select>
+    </div>
+    <div
+      *ngIf="InputHasAnError"
+      class="text-danger invalid-feedback d-block text-center"
+    >
+      {{ inputMessageError }}
+    </div>
+  </div>
+  <!-- toggle -->
+  <div
+    *ngSwitchCase="'toggle'"
+    [ngStyle]="{
+      display: containsLabel && labelPosition === 'horizontal' && 'flex',
+      'align-items':
+        containsLabel && labelPosition === 'horizontal' && 'center',
+    }"
+  >
+    <label
+      *ngIf="containsLabel"
+      class="azul"
+      [ngClass]="{
+        'pe-5': containsLabel && labelPosition === 'horizontal'
+      }"
+      style="font-weight: 500"
+      >{{ label }}</label
+    >
+    <div class="form-switch text-center">
+      <input
+        [id]="id"
+        class="form-check-input"
+        role="switch"
+        type="checkbox"
+        [disabled]="disabled"
+        (change)="onChangeInput($event)"
+        [defaultChecked]="defaultValue"
+      />
+    </div>
+  </div>
+  <!-- money -->
+  <div
+    *ngSwitchCase="'money'"
+    [ngStyle]="{
+    display: containsLabel && labelPosition === 'horizontal' && 'flex',
+    'align-items':
+      containsLabel && labelPosition === 'horizontal' && 'center',
+  }"
+  >
+    <label
+      *ngIf="containsLabel && labelPosition === 'horizontal'"
+      [ngClass]="{
+        'pe-5': containsLabel && labelPosition === 'horizontal'
+      }"
+      class="azul"
+      style="font-weight: 500"
+      >{{ label }}</label
+    >
+    <div class="input-group">
+      <input
+        [id]="id"
+        type="text"
+        class="form-control"
+        [placeholder]="placeholder"
+        (keyup)="onChangeInput($event)"
+        (keypress)="keypress($event)"
+        (keyup.enter)="onEnterKey()"
+        [defaultValue]="defaultValue"
+        [attr.maxlength]="maxLength"
+        (blur)="onBlurInput($event)"
+        [disabled]="disabled"
+        [ngClass]="{ 'input-text-error': InputHasAnError }"
+      />
+      <button
+        class="btn btn-outline-info"
+        type="button"
+        *ngIf="containsButton"
+        (click)="onClickButton()"
+      >
+        <i [class]="buttonIcon"></i>
+      </button>
+      <div
+        *ngIf="InputHasAnError"
+        class="text-danger invalid-feedback d-block text-start"
+      >
+        {{ inputMessageError }}
+      </div>
+    </div>
+  </div>
+  <!-- CheckBox -->
+  <div *ngSwitchCase="'checkbox'">
+    <input
+      [id]="id"
+      class="form-check-input"
+      type="checkbox"
+      (change)="onChangeInput($event)"
+      [defaultChecked]="defaultValue"
+      [disabled]="disabled"
+    />
+    <label *ngIf="containsLabel" class="azul ps-3" style="font-weight: 500">{{
+      label
+    }}</label>
+  </div>
+  <!-- year -->
+  <div
+    *ngSwitchCase="'year'"
+    [ngStyle]="{
+    display: containsLabel && labelPosition === 'horizontal' && 'flex',
+    'align-items':
+      containsLabel && labelPosition === 'horizontal' && 'center',
+  }"
+  >
+    <label
+      *ngIf="containsLabel"
+      [ngClass]="{
+        'pe-5': containsLabel && labelPosition === 'horizontal'
+      }"
+      class="azul"
+      style="font-weight: 500"
+      >{{ label }}</label
+    >
+    <div class="input-group">
+      <input
+        [id]="id"
+        class="form-control"
+        (keyup)="onChangeInput($event)"
+        (keyup.enter)="onEnterKey()"
+        [defaultValue]="defaultValue"
+        (blur)="onBlurInput($event)"
+        [disabled]="disabled"
+        [ngClass]="{ 'input-text-error': InputHasAnError }"
+        (keypress)="keypress($event)"
+        maxlength="4"
+        min="1900"
+        max="2100"
+        placeholder="YYYY"
+      />
+      <div
+        *ngIf="InputHasAnError"
+        class="text-danger invalid-feedback d-block text-start"
+      >
+        {{ inputMessageError }}
+      </div>
+    </div>
+  </div>
+  <!-- time -->
+  <div
+    *ngSwitchCase="'time'"
+    [ngStyle]="{
+    display: containsLabel && labelPosition === 'horizontal' && 'flex',
+    'align-items':
+      containsLabel && labelPosition === 'horizontal' && 'center',
+  }"
+  >
+    <label
+      *ngIf="containsLabel"
+      [ngClass]="{
+        'pe-5': containsLabel && labelPosition === 'horizontal'
+      }"
+      class="azul"
+      style="font-weight: 500"
+      >{{ label }}</label
+    >
+    <div class="input-group">
+      <input
+        [id]="id"
+        type="time"
+        class="form-control"
+        (keyup)="onChangeInput($event)"
+        (keyup.enter)="onEnterKey()"
+        (change)="onChangeInput($event)"
+        [value]="defaultValue"
+        (blur)="onBlurInput($event)"
+        [disabled]="disabled"
+        [ngClass]="{ 'input-text-error': InputHasAnError }"
+        (keypress)="keypress($event)"
+        seconds="true"
+        step="1"
+        [placeholder]="placeholder"
+      />
+      <div
+        *ngIf="InputHasAnError"
+        class="text-danger invalid-feedback d-block text-start"
+      >
+        {{ inputMessageError }}
+      </div>
+    </div>
+  </div>
+  <!-- visualization -->
+  <div
+    *ngSwitchCase="'visualization'"
+    [ngStyle]="{
+          display: containsLabel && labelPosition === 'horizontal' && 'flex',
+          'align-items':
+            containsLabel && labelPosition === 'horizontal' && 'center',
+        }"
+  >
+    <label
+      *ngIf="containsLabel && labelPosition === 'horizontal'"
+      [ngClass]="{
+        'pe-5': containsLabel && labelPosition === 'horizontal'
+      }"
+      class="azul"
+      style="font-weight: 500"
+      >{{ label }}</label
+    >
+    <label> {{ defaultValue }} </label>
+  </div>
+</div>
