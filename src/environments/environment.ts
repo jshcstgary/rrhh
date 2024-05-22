@@ -15,14 +15,22 @@ export const environment = {
   // Task type 1 - Register - the value maps to the id attribute 'Registrar Solicitud' from bpmn
  // taskType_Registrar: "Activity_1pkw55i",
 
- taskType_Registrar: "RP_RegistrarSolicitud",
+  taskType_Registrar: "RP_RegistrarSolicitud",
 
   // Task type 2 - Review   - the value maps to the id attribute 'Revisar Solicitud' from bpmn
   // taskType_Revisar: "Activity_0wf5xb7",
 
-  taskType_Revisar: "Activity_1p9wq10",
+  taskType_Revisar: "Dinamico_RevisarSolicitud",
+
+  taskType_RRHH: "RQ_GRRHH_RevisarSolicitud",
 
   taskType_Notificar: "Activity_1bql112",
+
+  taskType_CREM: "RQ_CREM_RevisarSolicitud",
+
+  taskType_RegistrarCandidato:  "RP_RegistrarSeleccionCandidato",
+
+  taskType_CompletarRequisicion:  "RP_CompletarRequisicion",
 
   //Servicios de workflow
   //camundaUrl: `${baseC}/`,

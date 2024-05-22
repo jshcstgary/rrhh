@@ -21,6 +21,7 @@ export class MantenimientoService {
   private apiTipoAccionUrl = environment.tipoAccionServiceES;
   private apiAccionUrl = environment.accionServiceES;
   private apiRutaUrl = environment.rutaServiceES;
+  private apiTipoProcesoUrl = environment.tipoProcesoServiceES;
   private apiEmpleadoEvolutionUrl = environment.empleadoServiceEs;
   // http://10.35.3.162:8053/v1/es/item-catalogo/codigo/RBPND
   // http://10.35.3.162:8053/v1/es/item-catalogo/codigo
@@ -30,6 +31,11 @@ export class MantenimientoService {
   public getTipoSolicitud(): Observable<any[]> {
     return this.http.get<any[]>(this.apiSolicitudUrl);
   }
+
+  public getTipoProceso(): Observable<any[]> {
+    return this.http.get<any[]>(this.apiTipoProcesoUrl);
+  }
+
 
   public getTipoRuta(): Observable<ITipoRutaResponse> {
     return this.http.get<ITipoRutaResponse>(this.apiTipoRutaUrl);

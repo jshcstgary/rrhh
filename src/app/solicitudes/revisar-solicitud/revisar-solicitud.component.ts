@@ -36,7 +36,7 @@ import { toDate } from "date-fns/esm";
   templateUrl: './revisar-solicitud.component.html',
   styleUrls: ['./revisar-solicitud.component.scss'],
   providers: [CamundaRestService, HttpClientModule],
-  exportAs: "registrarSolicitud",
+  exportAs: "revisarSolicitud",
 })
 export class RevisarSolicitudComponent extends CompleteTaskComponent {
   NgForm = NgForm;
@@ -47,8 +47,14 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
   campoObligatorio: string = '';
   observaciontexto: string = 'Observación';
   selectedDate: Date = new Date();
+  //buttonValue: string = '';
+
+  buttonValue: string | null = null;
 
   process(action: string) {
+
+    this.buttonValue=action;
+
     console.log(`Acción seleccionada: ${action}`);
     // Aquí puedes añadir la lógica para manejar cada acción
 
@@ -70,14 +76,14 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
         break;
 
       case 'aprobar':
-        this.campoObligatorio = '';
+        this.campoObligatorio = 'Ingrese Comentario de aprobación...';
         this.isFechaMaximaVisible = false;
         this.textareaContent = '';
         this.observaciontexto = 'Observación';
         break;
 
       case 'esperar':
-        this.campoObligatorio = '';
+        this.campoObligatorio = 'Ingrese Comentario en espera...';
         this.isFechaMaximaVisible = true;
         this.textareaContent = '';
         this.observaciontexto = 'Observación';
@@ -86,6 +92,10 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
       default:
     }
 
+  }
+
+  isSelected(action: string): boolean {
+    return this.buttonValue === action;
   }
 
   override model: RegistrarData = new RegistrarData(
@@ -470,12 +480,12 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
         // we are looking for task id 'Registrar' in a recently started process instance 'id'
         this.idDeInstancia = params["id"];
         this.camundaRestService
-          .getTask(environment.taskType_Registrar, params["id"])
+          .getTask(environment.taskType_Revisar, params["id"])
           .subscribe((result) => {
             console.log("INGRESA AQUÍ (registrar): ", result);
             console.log(
-              "environment.taskType_Registrar: ",
-              environment.taskType_Registrar
+              "environment.taskType_Revisar: ",
+              environment.taskType_Revisar
             );
             console.log("params['id']: ", params["id"]);
             this.lookForError(result); // if error, then control gets redirected to err page
@@ -531,7 +541,7 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
         this.solicitud.idTipoSolicitud,
         this.solicitud.idTipoMotivo,
         this.model.codigoPosicion,
-        this.model.nivelDir
+        this.model.nivelDir,'A'
       )
       .subscribe({
         next: (response) => {
@@ -1130,91 +1140,46 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
     let variables = this.generateVariablesFromFormFields();
 
     this.camundaRestService
-      .postCompleteTask(this.uniqueTaskId, variables)
-      .subscribe((res) => {
+    .postCompleteTask(this.uniqueTaskId, variables)
+    .subscribe({
+      next: (res) => {
+        console.log("Complete task notificar");
+        //actualizo la solicitud a enviada
+        /*this.solicitud.empresa = this.model.idEmpresa;
+        this.solicitud.idEmpresa = this.model.idEmpresa;
+
+        this.solicitud.unidadNegocio = this.model.unidadNegocio;
+        this.solicitud.idUnidadNegocio = this.model.unidadNegocio;
+        this.solicitud.estadoSolicitud = "4";
+        console.log("this.solicitud: ", this.solicitud);
+        this.solicitudes
+        .actualizarSolicitud(this.solicitud)
+        .subscribe((responseSolicitud) => {
+        console.log("responseSolicitud: ", responseSolicitud);
 
 
-        this.submitted = true;
-        this.consultaTareasService.getTareaIdParam(this.detalleSolicitud.idSolicitud)
-        .subscribe({
-          next: (tarea) => {
-          console.log("Task: ", tarea);
 
-          this.uniqueTaskId=tarea.solicitudes[0].taskId;
-          this.taskType_Activity = tarea.solicitudes[0].tasK_DEF_KEY;
-          this.nameTask = tarea.solicitudes[0].name;
-          this.id_solicitud_by_params = tarea.solicitudes[0].idSolicitud;
+        });*/
+        //fin actualizo la solicitud a enviada
+        this.utilService.modalResponse(
+          `Solicitud registrada correctamente [${this.idDeInstancia}]. Será redirigido en un momento...`,
+          "success"
+        );
+        setTimeout(() => {
+          this.router.navigate([
+            "/tareas/consulta-tareas",
+          ]);
+        }, 1800);
+      },
+      error: (error: HttpErrorResponse) => {
+        this.utilService.modalResponse(
+          error.error,
+          "error"
+        );
+      },
 
-                    // Verifica si el nombre sigue siendo "Notificar revisión solicitud"
-                    if(this.nameTask === "Notificar revisión solicitud"){
 
-                      variables = this.generateVariablesFromFormFields();
-
-                      this.camundaRestService
-                        .postCompleteTask(this.uniqueTaskId, variables)
-                        .subscribe({
-                          next: (responseCompleyatNotificar) => {
-                            console.log("Complete task notificar");
-                            //actualizo la solicitud a enviada
-                            this.solicitud.empresa = this.model.idEmpresa;
-                            this.solicitud.idEmpresa = this.model.idEmpresa;
-
-                            this.solicitud.unidadNegocio = this.model.unidadNegocio;
-                            this.solicitud.idUnidadNegocio = this.model.unidadNegocio;
-                            this.solicitud.estadoSolicitud = "4";
-                            console.log("this.solicitud: ", this.solicitud);
-                            this.solicitudes
-                            /*.actualizarSolicitud(this.solicitud)
-                            .subscribe((responseSolicitud) => {
-                            console.log("responseSolicitud: ", responseSolicitud);
-
-                            });*/
-                            //fin actualizo la solicitud a enviada
-                            //this.utilService.closeLoadingSpinner();
-                            this.utilService.modalResponse(
-                              `Solicitud registrada correctamente [${this.idDeInstancia}]. Será redirigido en un momento...`,
-                              "success"
-                            );
-                            setTimeout(() => {
-                              this.router.navigate([
-                                "/tareas/consulta-tareas",
-                              ]);
-                            }, 1800);
-                          },
-                          error: (error: HttpErrorResponse) => {
-                            this.utilService.modalResponse(
-                              error.error,
-                              "error"
-                            );
-                          },
-                        });
-
-                      }else{
-
-                        this.utilService.modalResponse(
-                          `La Solicitud esta completada revise la nueva tarea. Será redirigido en un momento...`,
-                          "success"
-                        );
-
-                        setTimeout(() => {
-                          this.router.navigate([
-                            "/tareas/consulta-tareas",
-                          ]);
-                        }, 1800);
-
-                        // El nombre ya no es "Notificar revisión solicitud", haz algo diferente
-                          console.log("Nombre diferente:", this.nameTask);
-                      }
-
-                        this.utilService.closeLoadingSpinner();
-
-                    },
-                    error: (error: HttpErrorResponse) => {
-                      this.utilService.modalResponse(error.error, "error");
-                    },
-
-        });
-      });
+    });
 
     this.submitted = true;
   }
@@ -1285,47 +1250,68 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
 
     //variables.codigo = { value: this.model.codigo };
     //variables.idEmpresa = { value: this.model.idEmpresa };
-    if (this.tipo_solicitud_descripcion === "requisicionPersonal") {
-      if(this.nameTask=="Registrar solicitud"){
-        variables.codigoPosicion = { value: this.model.codigoPosicion };
-        variables.misionCargo = { value: this.model.misionCargo };
-        variables.justificacionCargo = { value: this.model.justificacionCargo };
-        variables.empresa = { value: this.model.compania };
-        variables.unidadNegocio = { value: this.model.unidadNegocio };
-        variables.descripcionPosicion = { value: this.model.descrPosicion };
-        variables.areaDepartamento = {value: this.model.departamento };
-        variables.localidadZona = {value: this.model.localidad};
-        variables.centroCosto = {value: this.model.nomCCosto};
-        variables.reportaa = {value: this.model.reportaA};
-        variables.nivelReporteA = {value: this.model.nivelRepa};
-        variables.supervisa = {value: this.model.supervisaA};
-        variables.tipoContrato = {value: this.model.tipoContrato};
-        variables.sueldo = { value: this.model.sueldo }; //sueldoVariableMensual
-        variables.sueldoMensual = { value: this.model.sueldoMensual };
-        variables.sueldoTrimestral = { value: this.model.sueldoTrimestral };
-        variables.sueldoSemestral = { value: this.model.sueldoSemestral };
-        variables.sueldoAnual = { value: this.model.sueldoAnual };
-        variables.anularSolicitud = { value: "No" };
-        variables.comentariosAnulacion = {value: this.model.comentariosAnulacion};
-        variables.nivelDireccion = { value: this.model.nivelDir };
-        variables.tipoRuta = {value: "Areas Corporativas"};
-        variables.ruta = { value: null };
-        variables.resultadoRutaAprobacion = {value: "Gerencia Media"};
+    if (this.solicitud.tipoSolicitud === "requisicionPersonal") {
 
-      }
+      //buttonValue
 
-      if(this.nameTask=="Notificar revisión solicitud"){
+        if(this.taskType_Activity==environment.taskType_Revisar){ //APROBADORES DINAMICOS
 
-      variables.correo = { value : this.model.correo };
-      variables.mensaje = { value : "Se te asigno la solicitud " + this.id_solicitud_by_params};
-      variables.usuario = { value : "Pablo Perez" };
+          variables.atencionRevision = { value : this.buttonValue };
+          variables.comentariosAtencion = { value : this.textareaContent};
 
-      }
+        //RQ_GRRHH_RevisarSolicitud
+        }else if(this.taskType_Activity==environment.taskType_RRHH){ //GERENTE RECURSOS HUMANOS
+
+
+          variables.atencionRevisionGerente = { value : this.buttonValue };
+          variables.comentariosAtencionGerenteRRHH = { value : this.textareaContent};
+
+          /*{
+            "variables": {
+            "atencionRevisionGerente": {
+                "value": "aprobar"
+              },
+            "comentariosAtencionGerente": {
+                "value": ""
+              },
+            "ruta": {
+                "value": ""
+              }
+            },
+            "withVariablesInReturn": true
+          }*/
+
+        }else if(this.taskType_Activity==environment.taskType_CREM){// COMITE DE REMUNERACION
+
+
+
+          variables.atencionRevisionRemuneraciones = { value : this.buttonValue };
+          variables.comentariosAtencionRemuneraciones = { value : this.textareaContent};
+
+
+          /*
+                              {
+                  "variables": {
+                  "atencionRevisionRemuneraciones": {
+                      "value": "aprobar"
+                    },
+                  "comentariosAtencionRemuneraciones": {
+                      "value": ""
+                    }
+                  },
+                  "withVariablesInReturn": true
+                }
+
+
+          */
+        }
+
+
 
     }
 
 
-    return { variables };
+    return { variables};
   }
 
 
@@ -1379,7 +1365,7 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
       this.solicitud.idTipoSolicitud,
       this.solicitud.idTipoMotivo,
       this.detalleSolicitud.codigoPosicion,
-      this.detalleSolicitud.nivelDireccion
+      this.detalleSolicitud.nivelDireccion,'A'
     )
     .subscribe({
       next: (response) => {

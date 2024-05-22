@@ -5,6 +5,8 @@ import { CompletarSolicitudComponent } from "./completar-solicitud/completar-sol
 import { ConsultaSolicitudesComponent } from "./consulta_solicitudes/consulta-solicitudes.component";
 import { DetalleSolicitudComponent } from "./detalle-solicitud/detalle-solicitud.component";
 import { RevisarSolicitudComponent } from "./revisar-solicitud/revisar-solicitud.component";
+import { RegistrarCandidatoComponent } from "./registrar-candidato/registrar-candidato.component";
+import { CompletaSolicitudComponent } from "./completa-solicitud/completa-solicitud.component";
 
 export const SolicitudesRoutes: Routes = [
   {
@@ -48,6 +50,23 @@ export const SolicitudesRoutes: Routes = [
         data: {
           title: "Revisón de Solicitud",
           urls: [{ title: "Solicitudes" }, { title: "Revisón de Solicitud" }],
+        },
+      },
+      {
+        path: "registrar-candidato/:id/:idSolicitud",
+        component: RegistrarCandidatoComponent,
+        data: {
+          title: "Seleccion de Candidato",
+          urls: [{ title: "Solicitudes" }, { title: "Seleccion de Candidato" }],
+        },
+      },
+
+      {
+        path: "completa-solicitud/:id/:idSolicitud",
+        component: CompletaSolicitudComponent,
+        data: {
+          title: "Completar Solicitud",
+          urls: [{ title: "Solicitudes" }, { title: "Completar Solicitud" }],
         },
       },
     ],

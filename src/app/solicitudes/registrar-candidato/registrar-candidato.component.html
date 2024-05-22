@@ -28,13 +28,13 @@
           >
             <i class="fas fa-check-circle"></i> Completar Tarea
           </button>
-          <!--<button *ngIf="RegistrarsolicitudCompletada"
+          <button *ngIf="RegistrarsolicitudCompletada"
             type="button"
             (click)="onCancel()"
             class="btn btn-info me-2 mt-1"
           >
             <i class="fas fa-times"></i> Registrar luego
-          </button>-->
+          </button>
         </div>
       </div>
       <div class="row mt-4">
@@ -560,7 +560,7 @@
           "
           class="accordion-item"
         >
-          <div class="accordion-header">
+          <h2 class="accordion-header">
             <button
               class="accordion-button"
               type="button"
@@ -589,7 +589,7 @@
                 </div>
               </div>
             </button>
-          </div>
+          </h2>
 
           <div
             [id]="'collapse' + i"
@@ -602,6 +602,7 @@
                 <div class="input-group mb-3">
                   <label
                     for="lvl1descripcion"
+                    style="color: #0056b3; font-size: 14px; margin: auto auto"
                   >
                     Descripción de la posición
                   </label>
@@ -609,7 +610,8 @@
                   <span
                     id="lvl1descripcion"
                     name=""
-                    style="color: black; font-size: 14px;"
+                    style="color: black; font-size: 14px; margin: auto auto"
+                    class="text-center"
                     >{{
                       nivelItem.aprobador.descripcionPosicion !== "" &&
                       nivelItem.aprobador.descripcionPosicion !== undefined &&
@@ -625,107 +627,542 @@
         </div>
       </div>
 
-
-  <div class="row mt-4">
-    <div class="col-md-4">
-      <div class="mb-4">
-        <a> <h3 class="danger">Atención de Solicitud</h3></a>
+      <div class="row mt-4">
+        <div class="col-md-4">
+          <div class="mb-4">
+            <a> <h3 class="danger">Atención de los probadores</h3></a>
+          </div>
+        </div>
+        <div class="col-md-8">
+          <hr />
+        </div>
       </div>
-    </div>
-    <div class="col-md-8">
-      <hr />
-    </div>
-  </div>
 
-
-  <div class="row">
-    <div class="col">
-      <div class="input-group mb-3 contenedor">
-        <label
-        class="input-group-text label-estilo2"
-        for="desicion"
-        >Procesar Solicitud
-    </label>
-
-    <div class="btn-group" role="group" aria-label="Basic example" id="desicion">
-      <button type="button"
-              class="btn"
-              [ngClass]="{'btn-primary': !isSelected('aprobar'), 'btn-success': isSelected('aprobar')}"
-              (click)="process('aprobar')"
-              value="aprobar">Aprobar</button>
-      <button type="button"
-              class="btn"
-              [ngClass]="{'btn-primary': !isSelected('devolver'), 'btn-success': isSelected('devolver')}"
-              (click)="process('devolver')"
-              value="devolver">Devolver</button>
-      <button type="button"
-              class="btn"
-              [ngClass]="{'btn-primary': !isSelected('cancelar'), 'btn-success': isSelected('cancelar')}"
-              (click)="process('cancelar')"
-              value="cancelar">Cancelar</button>
-      <button type="button"
-              class="btn"
-              [ngClass]="{'btn-primary': !isSelected('esperar'), 'btn-success': isSelected('esperar')}"
-              (click)="process('esperar')"
-              value="esperar">En espera</button>
-    </div>
-
-      <!--<div class="btn-group" role="group" aria-label="Basic example" id="desicion">
-        <button type="button" class="btn btn-primary" (click)="process('aprobar')" value="aprobar">Aprobar</button>
-        <button type="button" class="btn btn-primary" (click)="process('devolver')" value="devolver">Devolver</button>
-        <button type="button" class="btn btn-primary" (click)="process('cancelar')" value="cancelar">Cancelar</button>
-        <button type="button" class="btn btn-primary" (click)="process('esperar')" value="esperar">En espera</button>
-      </div>-->
-    </div>
-    </div>
-  </div>
-
-
-      <div class="row">
+      <div class="row mt-2">
         <div class="col">
-          <div class="input-group mb-3 contenedor">
-          <label
-              class="input-group-text label-estilo2"
-              for="observacion"
-              >{{observaciontexto}}
-          </label>
-          &nbsp;
-            <textarea
-            [(ngModel)]="textareaContent"
-              id="observacion"
-              name="observacion"
-              #observacion="ngModel"
-              [required]="isRequired"
-              style="color: black; font-size: 14px"
-              [placeholder]="campoObligatorio"
-            ></textarea>
+          <div class="input-group mb-3">
+            <label
+              for="aprobadoresdinamicos"
+              style="color: #0056b3; font-size: 14px; margin: auto auto"
+            >
+              Aprobadores dinámicos
+            </label>
+            &nbsp;
+            <span
+              id="aprobadoresdinamicos"
+              name=""
+              style="color: black; font-size: 14px; margin: auto auto"
+              class="text-center"
+              >{{ detalleSolicitud.aprobadoresDinamicos }}</span
+            >
           </div>
         </div>
       </div>
 
-      <div class="row" *ngIf="isFechaMaximaVisible">
+      <div class="row mt-2">
         <div class="col">
-          <div class="input-group mb-3 contenedor">
+          <div class="input-group mb-3">
+            <label
+              for="gerenterrhhcorporativo"
+              style="color: #0056b3; font-size: 14px; margin: auto auto"
+            >
+              Gerente de RRHH Corporativo
+            </label>
+            &nbsp;
+            <span
+              id="gerenterrhhcorporativo"
+              name=""
+              style="color: black; font-size: 14px; margin: auto auto"
+              class="text-center"
+              >{{ detalleSolicitud.gerenteRRHHCorporativo }}</span
+            >
+          </div>
+        </div>
+      </div>
 
-              <label
-                  class="input-group-text label-estilo2"
-                  for="aprobar"
-                  >Fecha máxima de espera
-              </label>
+      <div class="row mt-2">
+        <div class="col">
+          <div class="input-group mb-3">
+            <label
+              for="comitederemuneraciones"
+              style="color: #0056b3; font-size: 14px; margin: auto auto"
+            >
+              Comité de Remuneraciones
+            </label>
+            &nbsp;
+            <span
+              id="comitederemuneraciones"
+              name=""
+              style="color: black; font-size: 14px; margin: auto auto"
+              class="text-center"
+              >{{ detalleSolicitud.comiteRemuneraciones }}</span
+            >
+          </div>
+        </div>
+      </div>
 
-              <div class="datepicker-container">
-                <mat-form-field appearance="outline">
-                  <mat-label>Fecha</mat-label>
-                  <input matInput [matDatepicker]="picker">
-                  <mat-datepicker-toggle matSuffix [for]="picker" [(ngModel)]="selectedDate">
-                  </mat-datepicker-toggle>
-                  <mat-datepicker #picker></mat-datepicker>
-                </mat-form-field>
-              </div>
+
+      <div class="row mt-4">
+        <div class="col-md-4">
+          <div class="mb-4">
+            <a> <h3 class="danger">Seleccion de Candidato</h3></a>
+          </div>
+        </div>
+        <div class="col-md-8">
+          <hr />
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6">
+          <div class="input-group mb-3">
+            <label
+              class="input-group-text label-estilo"
+              for="tipoSolicitud"
+              >Tipo Proceso</label
+            >
+            &nbsp;
+
+              <select id="listTipoProceso" >
+              <option value="" *ngFor="let dato of dataTipoProceso">
+                   {{dato.descripcion}}
+               </option>
+              </select>
+
+
+          </div>
+        </div>
+         <div class="col-md-6">
+          <div class="input-group mb-3">
+            <label
+              class="input-group-text label-estilo"
+              for="tipomotivo"
+              >Tipo de fuente</label
+            >
+            &nbsp;
+
+
+            <div class="form-check form-switch">
+              <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" checked>
+              <label class="form-check-label" for="flexSwitchCheckChecked">Externo</label>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+
+
+      <!--Fila Fuente externa-->
+
+      <div class="row">
+        <div class="col-md-6">
+          <div class="input-group mb-3">
+            <label
+              class="input-group-text label-estilo"
+              >Fuente Externa</label
+            >
+            &nbsp;
+            <label
+              class="input-group-text label-estilo3"
+              >Nueva Fuente Externa</label
+            >
+
+          </div>
+        </div>
+
+      </div>
+
+
+
+      <!--Fin Fuente externa-->
+
+      <!--Fila Actualizacion de perfil-->
+
+      <div class="row">
+        <div class="col-md-6">
+          <div class="input-group mb-3">
+            <label
+              class="input-group-text label-estilo"
+              >Actualización del perfil</label
+            >
+            &nbsp;
+            <label
+              class="input-group-text label-estilo3"
+              >11/05/2024 14:16</label
+            >
+
+          </div>
+        </div>
+
+          <div class="col-md-6">
+          <div class="input-group mb-3">
+            <label
+              class="input-group-text label-estilo"
+              >Busqueda de candidatos</label
+            >
+            &nbsp;
+            <label
+              class="input-group-text label-estilo3"
+              >11/05/2024 14:16</label
+            >
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+
+      <!--Fin Actualizacion de Perfil-->
+
+      <div class="row">
+      <div class="col-md-6">
+        <div class="input-group mb-3">
+          <label
+            class="input-group-text label-estilo"
+            >Entrevista</label
+          >
+          &nbsp;
+          <label
+            class="input-group-text label-estilo3"
+            >11/05/2024 14:16</label
+          >
+
+        </div>
+
+      </div>
+
+      <div class="col-md-6">
+        <div class="input-group mb-3">
+          <label
+            class="input-group-text label-estilo"
+            >Pruebas </label
+          >
+          &nbsp;
+          <label
+            class="input-group-text label-estilo3"
+            >11/05/2024 14:16</label
+          >
+
+        </div>
+
+      </div>
+
+      </div>
+
+
+      <div class="row">
+      <div class="col-md-6">
+        <div class="input-group mb-3">
+          <label
+            class="input-group-text label-estilo"
+            >Referencias </label
+          >
+          &nbsp;
+          <label
+            class="input-group-text label-estilo3"
+            >11/05/2024 14:16</label
+          >
+
+        </div>
+
+      </div>
+
+
+
+      <div class="col-md-6">
+        <div class="input-group mb-3">
+          <label
+            class="input-group-text label-estilo"
+            >Elaboracion de informe </label
+          >
+          &nbsp;
+          <label
+            class="input-group-text label-estilo3"
+            >11/05/2024 14:16</label
+          >
+
+        </div>
+
+      </div>
+
+     </div>
+
+
+     <div class="row">
+
+      <div class="col-md-6">
+        <div class="input-group mb-3">
+          <label
+            class="input-group-text label-estilo"
+            >Entrega al jefe solicitante </label
+          >
+          &nbsp;
+          <label
+            class="input-group-text label-estilo3"
+            >11/05/2024 14:16</label
+          >
+
+        </div>
+
+      </div>
+
+
+
+      <div class="col-md-6">
+        <div class="input-group mb-3">
+          <label
+            class="input-group-text label-estilo"
+            >Entrevista por jefatura </label
+          >
+          &nbsp;
+          <label
+            class="input-group-text label-estilo3"
+            >11/05/2024 14:16</label
+          >
+
+        </div>
+
+      </div>
+
+      </div>
+
+      <div class="row">
+      <div class="col-md-6">
+        <div class="input-group mb-3">
+          <label
+            class="input-group-text label-estilo"
+            >Toma de desiciones </label
+          >
+          &nbsp;
+          <label
+            class="input-group-text label-estilo3"
+            >11/05/2024 14:16</label
+          >
+
+        </div>
+
+      </div>
+
+
+
+      <div class="col-md-6">
+        <div class="input-group mb-3">
+          <label
+            class="input-group-text label-estilo"
+            >Candidatos seleccionados </label
+          >
+          &nbsp;
+          <label
+            class="input-group-text label-estilo3"
+            >11/05/2024 14:16</label
+          >
+
+        </div>
+
+      </div>
+
+      </div>
+
+      <div class="row">
+
+      <div class="col-md-6">
+        <div class="input-group mb-3">
+          <label
+            class="input-group-text label-estilo"
+            >Proceso de contratación </label
+          >
+          &nbsp;
+          <label
+            class="input-group-text label-estilo3"
+            >11/05/2024 14:16</label
+          >
+
+        </div>
+
+      </div>
+
+      <div class="col-md-6">
+        <div class="input-group mb-3">
+          <label
+            class="input-group-text label-estilo"
+            >Fin del Proceso de seleccion y contratación </label
+          >
+          &nbsp;
+          <label
+            class="input-group-text label-estilo3"
+            >11/05/2024 14:16</label
+          >
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+
+      <div class="row mt-4">
+        <div class="col-md-4">
+          <div class="mb-4">
+            <a> <h3 class="danger fs-4">Reingreso</h3></a>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+
+        <div class="col-md-6">
+          <div class="input-group mb-3">
+            <label
+              class="input-group-text label-estilo"
+              >Inicio proceso </label>
+            &nbsp;
+            <label
+              class="input-group-text label-estilo3"
+              >11/05/2024 14:16</label
+            >
+
+          </div>
+
+        </div>
+
+
+        <div class="col-md-6">
+          <div class="input-group mb-3">
+            <label
+              class="input-group-text label-estilo"
+              >Fin de proceso </label
+            >
+            &nbsp;
+            <label
+              class="input-group-text label-estilo3"
+              >11/05/2024 14:16</label
+            >
+
+          </div>
+
+        </div>
+
+
+      </div>
+
+      <div class="row mt-4">
+        <div class="col-md-4">
+          <div class="mb-4">
+            <a> <h3 class="danger fs-4">Contratación de familiares</h3></a>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+
+        <div class="col-md-6">
+          <div class="input-group mb-3">
+            <label
+              class="input-group-text label-estilo"
+              >Inicio proceso </label>
+            &nbsp;
+            <label
+              class="input-group-text label-estilo3"
+              >11/05/2024 14:16</label
+            >
+
+          </div>
+
+        </div>
+
+
+        <div class="col-md-6">
+          <div class="input-group mb-3">
+            <label
+              class="input-group-text label-estilo"
+              >Fin de proceso </label
+            >
+            &nbsp;
+            <label
+              class="input-group-text label-estilo3"
+              >11/05/2024 14:16</label
+            >
+
+          </div>
+
+        </div>
+
+
+      </div>
+
+      <!--<div class="container">
+        <div class="row">
+          <div class="col-12">
+            <h2>Tipo de proceso</h2>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="tipoProceso" id="nuevoIngreso" value="Nuevo ingreso/reemplazo" [(ngModel)]="tipoProceso">
+              <label class="form-check-label" for="nuevoIngreso">Nuevo ingreso/reemplazo</label>
+            </div>
+          </div>
+          <div class="col-12">
+            <h2>Tipo de fuente</h2>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="tipoFuente" id="interno" value="Interno" [(ngModel)]="tipoFuente">
+              <label class="form-check-label" for="interno">Interno</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="tipoFuente" id="externo" value="Externo" [(ngModel)]="tipoFuente">
+              <label class="form-check-label" for="externo">Externo</label>
             </div>
           </div>
         </div>
 
+        <div class="row mt-4">
+          <div class="col-md-4">
+            <h3>Fuente externa</h3>
+            <p>Lorem ipsum Lorem ipsum</p>
+          </div>
+        </div>
+
+        <div class="row mt-4">
+          <div class="col-md-4">
+            <h4>Actualización del perfil</h4>
+            <input type="text" class="form-control" [(ngModel)]="fechas.actualizacionPerfil">
+          </div>
+          <div class="col-md-4">
+            <h4>Búsqueda de candidatos</h4>
+            <input type="text" class="form-control" [(ngModel)]="fechas.busquedaCandidatos">
+          </div>
+        </div>-->
+
+        <!-- Repetir la estructura para las otras filas -->
+
+        <!--<div class="row mt-4">
+          <div class="col-md-4">
+            <h4>Reingreso</h4>
+            <input type="text" class="form-control" [(ngModel)]="fechas.reingreso">
+          </div>
+          <div class="col-md-4">
+            <h4>Fin de proceso</h4>
+            <input type="text" class="form-control" [(ngModel)]="fechas.finProceso">
+          </div>
+        </div>
+
+        <div class="row mt-4">
+          <div class="col-md-4">
+            <h4>Contratación de familiares</h4>
+            <input type="text" class="form-control" [(ngModel)]="fechas.contratacionFamiliares">
+          </div>
+          <div class="col-md-4">
+            <h4>Fin de proceso</h4>
+            <input type="text" class="form-control" [(ngModel)]="fechas.finProcesoFamiliares">
+          </div>
+        </div>
+      </div>-->
+
+
+
+
     </h2>
   </div>
 </form>
+
