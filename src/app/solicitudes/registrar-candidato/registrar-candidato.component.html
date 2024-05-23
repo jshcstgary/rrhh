@@ -723,11 +723,30 @@
             >
             &nbsp;
 
-              <select id="listTipoProceso" >
-              <option value="" *ngFor="let dato of dataTipoProceso">
+              <select
+              id="tipoproceso"
+              name="tipoproceso"
+              class="form-select"
+              style="font-size: 14px"
+              required
+              >
+              <option *ngFor="let dato of dataTipoProceso" [value]="dato.id">
                    {{dato.descripcion}}
                </option>
               </select>
+
+             <!-- <select
+              id="tipoproceso"
+              name="tipoproceso"
+              class="form-select"
+              [(ngModel)]=""
+              style="font-size: 14px"
+              required
+            >
+              <option selected>Eventual</option>
+              <option>Temporal</option>
+              <option>Mixto</option>
+            </select>-->
 
 
           </div>
@@ -735,15 +754,22 @@
          <div class="col-md-6">
           <div class="input-group mb-3">
             <label
-              class="input-group-text label-estilo"
-              for="tipomotivo"
+              class="input-group-text label-estilo2"
+              for="flexSwitchCheckChecked"
               >Tipo de fuente</label
             >
             &nbsp;
 
-
-            <div class="form-check form-switch">
-              <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" checked>
+            <div class="form-check form-switch checkbox-container">
+              <label class="form-check-label" for="flexSwitchCheckChecked">Interno</label>
+              <input
+              class="form-check-input"
+              type="checkbox"
+              id="flexSwitchCheckChecked"
+              name="flexSwitchCheckChecked"
+              chequed
+              [(ngModel)]="isChecked"
+              (change)="toggleDivVisibility($event)">
               <label class="form-check-label" for="flexSwitchCheckChecked">Externo</label>
             </div>
 
@@ -755,7 +781,7 @@
 
       <!--Fila Fuente externa-->
 
-      <div class="row">
+      <div class="row" *ngIf="!isDivVisible">
         <div class="col-md-6">
           <div class="input-group mb-3">
             <label
@@ -763,10 +789,20 @@
               >Fuente Externa</label
             >
             &nbsp;
-            <label
-              class="input-group-text label-estilo3"
-              >Nueva Fuente Externa</label
+
+            <select
+            id="selectOptions"
+            [(ngModel)]="selectedOption"
+            name="selectOptions"
+            class="form-select"
+            style="font-size: 14px"
+            required
             >
+              <option *ngFor="let option of options" [value]="option.value">
+                {{ option.descripcion }}
+              </option>
+            </select>
+
 
           </div>
         </div>

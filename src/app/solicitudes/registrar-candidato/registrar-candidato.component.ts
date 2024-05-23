@@ -52,6 +52,19 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
     finProcesoFamiliares: ''
   };
 
+
+
+  isFuenteExternaVisible: boolean = false;
+
+  isChecked = true; // Valor inicial del checkbox
+  isDivVisible = false; // Valor inicial del div, visible
+
+  toggleDivVisibility(event: Event): void {
+    const inputElement = event.target as HTMLInputElement;
+    this.isChecked = inputElement.checked;
+    this.isDivVisible = !this.isChecked;
+  }
+
   override model: RegistrarData = new RegistrarData(
     "",
     "",
@@ -120,6 +133,13 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
   // This is a more likely scenario.
   // In this case, parent flag is set to true. It requires additional handling to derive task id from process instance id.
   public parentIdFlag: string | null = "false"; // set to true if the id is for the process instance, instead of task-id
+ //Multitrabajo, LinkedIn, Instagram
+  selectedOption: string;
+  options: Array<{ value: string, descripcion: string }> = [
+    { value: '1', descripcion: 'Multitrabajo' },
+    { value: '2', descripcion: 'LinkedIn' },
+    { value: '3', descripcion: 'Instagram' },
+  ];
 
   /*
   public dataTipoSolicitud: any = [
@@ -373,6 +393,8 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
       this.idDeInstancia = params.get("id");
       console.log("this.idDeInstancia: ", this.idDeInstancia);
     });
+
+    this.selectedOption = this.options[0].value;
   }
 
   searchCodigoPosicion: OperatorFunction<string, readonly string[]> = (

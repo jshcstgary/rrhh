@@ -102,3 +102,17 @@ h3, h4 {
   margin-top: 20px;
 }
 
+.checkbox-container {
+  display: flex;
+  align-items: center;
+}
+
+.checkbox-container .form-check-label:first-of-type {
+  margin-right: 60px;
+}
+
+.checkbox-container .form-check-label:last-of-type {
+  margin-left: 10px;
+}
+
+
