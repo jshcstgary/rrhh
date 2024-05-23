@@ -1222,11 +1222,11 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
 
           this.solicitud.unidadNegocio = this.model.unidadNegocio;
           this.solicitud.idUnidadNegocio = this.model.unidadNegocio;
-          if(this.taskType_Activity==environment.taskType_CompletarRequisicion){
-                  this.solicitud.estadoSolicitud = "1";
+          if(this.selectedOption=="No"){
+                  this.solicitud.estadoSolicitud = "4";
           }else{
 
-                 this.solicitud.estadoSolicitud = "4";
+                 this.solicitud.estadoSolicitud = "AN";
           }
 
           console.log("this.solicitud: ", this.solicitud);
@@ -1238,6 +1238,9 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
 
 
           });
+
+
+          this.utilService.closeLoadingSpinner();
           //fin actualizo la solicitud a enviada
           this.utilService.modalResponse(
             `Solicitud registrada correctamente [${this.idDeInstancia}]. Será redirigido en un momento...`,
@@ -1259,79 +1262,6 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
 
       });
 
-    //return;
-
-   /* this.camundaRestService
-      .postCompleteTask(this.uniqueTaskId, variables)
-      .subscribe((res) => {
-        console.log("Completar: ", res);
-
-        this.submitted = true;
-        this.consultaTareasService.getTareaIdParam(this.detalleSolicitud.idSolicitud)
-        .subscribe({
-          next: (tarea) => {
-          console.log("Task: ", tarea);
-
-          this.uniqueTaskId=tarea.solicitudes[0].taskId;
-          this.taskType_Activity = tarea.solicitudes[0].tasK_DEF_KEY;
-          this.nameTask = tarea.solicitudes[0].name;
-          this.id_solicitud_by_params = tarea.solicitudes[0].idSolicitud;
-
-                    // Verifica si el nombre sigue siendo "Notificar revisión solicitud"
-                    if(this.nameTask === "Notificar revisión solicitud"){
-
-                      variables = this.generateVariablesFromFormFields();
-
-                      this.camundaRestService
-                        .postCompleteTask(this.uniqueTaskId, variables)
-                        .subscribe({
-                          next: (responseCompleyatNotificar) => {
-                            console.log("Complete task notificar");
-                            this.utilService.modalResponse(
-                              `Solicitud registrada correctamente [${this.idDeInstancia}]. Será redirigido en un momento...`,
-                              "success"
-                            );
-                            setTimeout(() => {
-                              this.router.navigate([
-                                "/tareas/consulta-tareas",
-                              ]);
-                            }, 1800);
-                          },
-                          error: (error: HttpErrorResponse) => {
-                            this.utilService.modalResponse(
-                              error.error,
-                              "error"
-                            );
-                          },
-                        });
-
-                      }else{
-
-                        this.utilService.modalResponse(
-                          `La Solicitud esta completada revise la nueva tarea. Será redirigido en un momento...`,
-                          "success"
-                        );
-
-                        setTimeout(() => {
-                          this.router.navigate([
-                            "/tareas/consulta-tareas",
-                          ]);
-                        }, 1800);
-
-                        // El nombre ya no es "Notificar revisión solicitud", haz algo diferente
-                          console.log("Nombre diferente:", this.nameTask);
-                      }
-
-                      this.utilService.closeLoadingSpinner();
-
-                    },
-                    error: (error: HttpErrorResponse) => {
-                      this.utilService.modalResponse(error.error, "error");
-                    },
-
-        });
-      });*/
-    //this.utilService.closeLoadingSpinner();
     this.submitted = true;
   }
 

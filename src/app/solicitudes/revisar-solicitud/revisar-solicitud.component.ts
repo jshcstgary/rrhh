@@ -1143,24 +1143,75 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
     .postCompleteTask(this.uniqueTaskId, variables)
     .subscribe({
       next: (res) => {
-        console.log("Complete task notificar");
-        //actualizo la solicitud a enviada
-        /*this.solicitud.empresa = this.model.idEmpresa;
-        this.solicitud.idEmpresa = this.model.idEmpresa;
 
-        this.solicitud.unidadNegocio = this.model.unidadNegocio;
-        this.solicitud.idUnidadNegocio = this.model.unidadNegocio;
-        this.solicitud.estadoSolicitud = "4";
-        console.log("this.solicitud: ", this.solicitud);
-        this.solicitudes
-        .actualizarSolicitud(this.solicitud)
-        .subscribe((responseSolicitud) => {
-        console.log("responseSolicitud: ", responseSolicitud);
+        //this.utilService.closeLoadingSpinner();
+      //actualizo la solicitud a enviada
 
 
+      switch (this.buttonValue) {
+      case 'devolver':
+            this.solicitud.empresa = this.model.idEmpresa;
+            this.solicitud.idEmpresa = this.model.idEmpresa;
 
-        });*/
-        //fin actualizo la solicitud a enviada
+            this.solicitud.unidadNegocio = this.model.unidadNegocio;
+            this.solicitud.idUnidadNegocio = this.model.unidadNegocio;
+            this.solicitud.estadoSolicitud = "DV";  //Devolver
+
+            //console.log("this.solicitud: ", this.solicitud);
+            this.solicitudes
+            .actualizarSolicitud(this.solicitud)
+            .subscribe((responseSolicitud) => {
+            //console.log("responseSolicitud: ", responseSolicitud);
+
+            });
+        break;
+
+      case 'rechazar':
+            this.solicitud.empresa = this.model.idEmpresa;
+            this.solicitud.idEmpresa = this.model.idEmpresa;
+
+            this.solicitud.unidadNegocio = this.model.unidadNegocio;
+            this.solicitud.idUnidadNegocio = this.model.unidadNegocio;
+            this.solicitud.estadoSolicitud = "5"; //Cancelado
+            //console.log("this.solicitud: ", this.solicitud);
+            this.solicitudes
+            .actualizarSolicitud(this.solicitud)
+            .subscribe((responseSolicitud) => {
+            //console.log("responseSolicitud: ", responseSolicitud);
+
+            });
+
+
+        break;
+
+      case 'aprobar':
+        //this.solicitud.estadoSolicitud = "1";
+        break;
+
+      case 'esperar':
+            this.solicitud.empresa = this.model.idEmpresa;
+            this.solicitud.idEmpresa = this.model.idEmpresa;
+
+            this.solicitud.unidadNegocio = this.model.unidadNegocio;
+            this.solicitud.idUnidadNegocio = this.model.unidadNegocio;
+            this.solicitud.estadoSolicitud = "2";
+             //console.log("this.solicitud: ", this.solicitud);
+            this.solicitudes
+            .actualizarSolicitud(this.solicitud)
+            .subscribe((responseSolicitud) => {
+            //console.log("responseSolicitud: ", responseSolicitud);
+
+            });
+
+        break;
+
+        default:
+
+
+      }
+      //actualizo la solicitud a enviada
+      this.utilService.closeLoadingSpinner();
+      //fin actualizo la solicitud a enviada
         this.utilService.modalResponse(
           `Solicitud registrada correctamente [${this.idDeInstancia}]. Será redirigido en un momento...`,
           "success"
@@ -1180,6 +1231,8 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
 
 
     });
+
+
 
     this.submitted = true;
   }

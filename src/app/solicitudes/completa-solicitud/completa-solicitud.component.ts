@@ -1145,7 +1145,70 @@ export class CompletaSolicitudComponent extends CompleteTaskComponent {
         next: (res) => {
           console.log("Complete task notificar");
           //actualizo la solicitud a enviada
-          this.solicitud.empresa = this.model.idEmpresa;
+
+
+      switch (this.buttonValue) {
+        case 'devolver':
+              this.solicitud.empresa = this.model.idEmpresa;
+              this.solicitud.idEmpresa = this.model.idEmpresa;
+
+              this.solicitud.unidadNegocio = this.model.unidadNegocio;
+              this.solicitud.idUnidadNegocio = this.model.unidadNegocio;
+              this.solicitud.estadoSolicitud = "DV";  //Devolver
+
+              console.log("this.solicitud: ", this.solicitud);
+              this.solicitudes
+              .actualizarSolicitud(this.solicitud)
+              .subscribe((responseSolicitud) => {
+              console.log("responseSolicitud: ", responseSolicitud);
+
+              });
+          break;
+
+        case 'rechazar':
+              this.solicitud.empresa = this.model.idEmpresa;
+              this.solicitud.idEmpresa = this.model.idEmpresa;
+
+              this.solicitud.unidadNegocio = this.model.unidadNegocio;
+              this.solicitud.idUnidadNegocio = this.model.unidadNegocio;
+              this.solicitud.estadoSolicitud = "5"; //Cancelado
+              console.log("this.solicitud: ", this.solicitud);
+              this.solicitudes
+              .actualizarSolicitud(this.solicitud)
+              .subscribe((responseSolicitud) => {
+              console.log("responseSolicitud: ", responseSolicitud);
+
+              });
+
+
+          break;
+
+        case 'aprobar':
+          //this.solicitud.estadoSolicitud = "1";
+          break;
+
+        case 'esperar':
+              this.solicitud.empresa = this.model.idEmpresa;
+              this.solicitud.idEmpresa = this.model.idEmpresa;
+
+              this.solicitud.unidadNegocio = this.model.unidadNegocio;
+              this.solicitud.idUnidadNegocio = this.model.unidadNegocio;
+              this.solicitud.estadoSolicitud = "2";
+               console.log("this.solicitud: ", this.solicitud);
+              this.solicitudes
+              .actualizarSolicitud(this.solicitud)
+              .subscribe((responseSolicitud) => {
+              console.log("responseSolicitud: ", responseSolicitud);
+
+              });
+
+          break;
+
+          default:
+        }
+        //actualizo la solicitud a enviada
+          //actualizo la solicitud a enviada
+          /*this.solicitud.empresa = this.model.idEmpresa;
           this.solicitud.idEmpresa = this.model.idEmpresa;
 
           this.solicitud.unidadNegocio = this.model.unidadNegocio;
@@ -1165,8 +1228,9 @@ export class CompletaSolicitudComponent extends CompleteTaskComponent {
 
 
 
-          });
+          });*/
           //fin actualizo la solicitud a enviada
+          this.utilService.closeLoadingSpinner();
           this.utilService.modalResponse(
             `Solicitud registrada correctamente [${this.idDeInstancia}]. Será redirigido en un momento...`,
             "success"
