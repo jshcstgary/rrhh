@@ -156,6 +156,8 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
 
   public dataRuta: any[] = [];
 
+  public dataNivelDireccion: any[] = [];
+
 
   // getDataNivelesAprobacionPorCodigoPosicion
   public dataNivelesAprobacionPorCodigoPosicion: { [key: string]: any[] } = {};
@@ -311,7 +313,7 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
 
   private id_solicitud_by_params: any;
 
-  public dataNivelDireccion: any[] = [];
+  public dataAprobadoresDinamicos: any[] = [];
   public suggestions: string[] = [];
 
   public idDeInstancia: any;
@@ -603,6 +605,33 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
       });
   }
 
+  obtenerAprobacionesPorPosicionAPD() {
+    return this.solicitudes
+      .obtenerAprobacionesPorPosicion(
+        this.solicitud.idTipoSolicitud,
+        this.solicitud.idTipoMotivo,
+        this.model.codigoPosicion,
+        this.model.nivelDir,'APD'
+      )
+      .subscribe({
+        next: (response) => {
+          this.dataAprobadoresDinamicos.length=0;
+          this.dataAprobacionesPorPosicionAPS=response.nivelAprobacionPosicionType;
+          this.dataAprobacionesPorPosicionAPS.forEach(item => {
+            this.dataAprobadoresDinamicos.push(item.aprobador.nivelDireccion);
+            console.log("Aprobaciones APD = ", item.aprobador);
+          });
+        },
+        error: (error: HttpErrorResponse) => {
+          this.utilService.modalResponse(
+            "No existe aprobadores de solicitud para los datos ingresados",
+            "error"
+          );
+        },
+      });
+  }
+
+
 
   onSelectItem(campo: string, event) {
     let valor = event.item;
@@ -802,7 +831,6 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
       //} // comentado munoz
       await this.getDataEmpleadosEvolution();
       await this.loadDataCamunda(); //comentado para prueba mmunoz
-     // await this.obtenerAprobacionesPorPosicionAPS();
       //console.log("impreme arreglo de aprobadores: ");
       //await this.recorrerArreglo();
 
@@ -930,8 +958,14 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
         if (!this.dataAprobacionesPorPosicion[this.keySelected]) {
           this.getNivelesAprobacion();
           if(this.model.codigoPosicion.trim().length > 0){
-          this.obtenerAprobacionesPorPosicionAPS();}
-          //console.log("Tipo Ruta", this.dataTipoRuta);
+              this.obtenerAprobacionesPorPosicionAPS();
+              this.obtenerAprobacionesPorPosicionAPD();
+          }
+
+
+          console.log("aprobadores dinamicos", this.dataAprobadoresDinamicos);
+         // const jsonArrayString = JSON.stringify(this.dataAprobadoresDinamicos);
+         // console.log("conversion aprobadores dinamicos", jsonArrayString);
           //console.log("Ruta", this.dataRuta);
           let variables = this.generateVariablesFromFormFields();
           console.log("variables prueba ruta",variables);
@@ -1374,7 +1408,8 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
                               }
                         };
 
-        variables.resultadoRutaAprobacion = { value : "[\"Gerencia Media\", \"Gerencia de Unidad o Corporativa\"]",
+        variables.resultadoRutaAprobacion = { //value : "[\"Gerencia Media\", \"Gerencia de Unidad o Corporativa\"]",
+                                              value: JSON.stringify(this.dataAprobadoresDinamicos),
                                               type: "Object",
                                               valueInfo:{
                                                   objectTypeName:"java.util.ArrayList",

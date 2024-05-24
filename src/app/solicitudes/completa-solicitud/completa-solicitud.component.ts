@@ -1184,7 +1184,7 @@ export class CompletaSolicitudComponent extends CompleteTaskComponent {
           break;
 
         case 'aprobar':
-          //this.solicitud.estadoSolicitud = "1";
+          this.solicitud.estadoSolicitud = "1";
           break;
 
         case 'esperar':
@@ -1206,30 +1206,8 @@ export class CompletaSolicitudComponent extends CompleteTaskComponent {
 
           default:
         }
-        //actualizo la solicitud a enviada
-          //actualizo la solicitud a enviada
-          /*this.solicitud.empresa = this.model.idEmpresa;
-          this.solicitud.idEmpresa = this.model.idEmpresa;
+        //fin actualizo la solicitud a enviada
 
-          this.solicitud.unidadNegocio = this.model.unidadNegocio;
-          this.solicitud.idUnidadNegocio = this.model.unidadNegocio;
-          if(this.taskType_Activity==environment.taskType_CompletarRequisicion){
-                  this.solicitud.estadoSolicitud = "1";
-          }else{
-
-                 this.solicitud.estadoSolicitud = "4";
-          }
-
-          console.log("this.solicitud: ", this.solicitud);
-          this.solicitudes
-          .actualizarSolicitud(this.solicitud)
-          .subscribe((responseSolicitud) => {
-          console.log("responseSolicitud: ", responseSolicitud);
-
-
-
-          });*/
-          //fin actualizo la solicitud a enviada
           this.utilService.closeLoadingSpinner();
           this.utilService.modalResponse(
             `Solicitud registrada correctamente [${this.idDeInstancia}]. Será redirigido en un momento...`,
