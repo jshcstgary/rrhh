@@ -8,7 +8,7 @@
         <div class="col-md-8">
           <div class="mb-3">
             <a (click)="pageSolicitudes()">
-              <h3 class="danger">
+              <h3 class="sol-danger">
                 <i class="bi bi-arrow-left-circle azul"></i> {{ solicitud.idSolicitud }}
               </h3></a
             >
@@ -107,7 +107,7 @@
       <div class="row mt-4">
         <div class="col-md-3">
           <div class="mb-4">
-            <a> <h3 class="danger">Información general</h3></a>
+            <a> <h3 class="sol-danger">Información general</h3></a>
           </div>
         </div>
         <div class="col-md-9">
@@ -129,8 +129,8 @@
               #mivar
               id="tipoSolicitud"
               name="idTipoSolicitud"
-              style="color: black; font-size: 14px; margin: auto auto"
-              class="text-center"
+              style="color: black; font-size: 14px; "
+              class="text-start"
               >{{ solicitud.tipoSolicitud }}</span
             >
             <!-- {{ mivar.textContent }} -->
@@ -147,8 +147,8 @@
             <span
               id="tipomotivo"
               name="tipomotivo"
-              style="color: black; font-size: 14px; margin: auto auto"
-              class="text-center"
+              style="color: black; font-size: 14px; "
+              class="text-start"
               >{{ solicitud.tipoMotivo }}</span
             >
           </div>
@@ -274,8 +274,8 @@
             <span
               id="descripcionposicion"
               name="descripcionposicion"
-              style="color: black; font-size: 14px; margin: auto auto"
-              class="text-center"
+              style="color: black; font-size: 14px; "
+              class="text-start"
               >{{ detalleSolicitud.descripcionPosicion }}</span
             >
           </div>
@@ -477,8 +477,8 @@
             <span
               id="compania"
               name=""
-              style="color: black; font-size: 14px; margin: auto auto"
-              class="text-center"
+              style="color: black; font-size: 14px; "
+              class="text-start"
               >{{ detalleSolicitud.compania }}</span
             >
           </div>
@@ -493,8 +493,8 @@
             <span
               id="unidadnegocio"
               name=""
-              style="color: black; font-size: 14px; margin: auto auto"
-              class="text-center"
+              style="color: black; font-size: 14px; "
+              class="text-start"
               >{{ detalleSolicitud.unidadNegocio }}</span
             >
           </div>
@@ -513,8 +513,8 @@
             <span
               id="departamento"
               name=""
-              style="color: black; font-size: 14px; margin: auto auto"
-              class="text-center"
+              style="color: black; font-size: 14px; "
+              class="text-start"
               >{{ detalleSolicitud.departamento }}</span
             >
           </div>
@@ -529,8 +529,8 @@
             <span
               id="cargo"
               name=""
-              style="color: black; font-size: 14px; margin: auto auto"
-              class="text-center"
+              style="color: black; font-size: 14px; "
+              class="text-start"
               >{{ detalleSolicitud.cargo }}</span
             >
           </div>
@@ -549,8 +549,8 @@
             <span
               id="localidadzona"
               name=""
-              style="color: black; font-size: 14px; margin: auto auto"
-              class="text-center"
+              style="color: black; font-size: 14px; "
+              class="text-start"
               >{{ detalleSolicitud.localidad }}</span
             >
           </div>
@@ -565,8 +565,8 @@
             <span
               id="niveldirección"
               name=""
-              style="color: black; font-size: 14px; margin: auto auto"
-              class="text-center"
+              style="color: black; font-size: 14px; "
+              class="text-start"
               >{{ detalleSolicitud.nivelDireccion }}</span
             >
           </div>
@@ -585,8 +585,8 @@
             <span
               id="centrocosto"
               name=""
-              style="color: black; font-size: 14px; margin: auto auto"
-              class="text-center"
+              style="color: black; font-size: 14px; "
+              class="text-start"
               >{{ detalleSolicitud.centroCosto }}</span
             >
           </div>
@@ -631,7 +631,7 @@
       <div class="row mt-4">
         <div class="col-md-4">
           <div class="mb-4">
-            <a> <h3 class="danger">Funciones y responsabilidades</h3></a>
+            <a> <h3 class="sol-danger">Funciones y responsabilidades</h3></a>
           </div>
         </div>
         <div class="col-md-8">
@@ -651,8 +651,8 @@
             <span
               id="reporta"
               name=""
-              style="color: black; font-size: 14px; margin: auto auto"
-              class="text-center"
+              style="color: black; font-size: 14px; "
+              class="text-start"
               >{{ detalleSolicitud.reportaA }}
             </span>
           </div>
@@ -668,8 +668,8 @@
             <span
               id="supervisaa"
               name=""
-              style="color: black; font-size: 14px; margin: auto auto"
-              class="text-center"
+              style="color: black; font-size: 14px; "
+              class="text-start"
               >{{ detalleSolicitud.supervisaA }}</span
             >
           </div>
@@ -711,8 +711,8 @@
             <span
               id="nivelRepa"
               name=""
-              style="color: black; font-size: 14px; margin: auto auto"
-              class="text-center"
+              style="color: black; font-size: 14px; "
+              class="text-start"
               >{{ detalleSolicitud.nivelReporteA }}</span
             >
           </div>
@@ -743,7 +743,7 @@
       <div class="row mt-4">
         <div class="col-md-4">
           <div class="mb-4">
-            <a> <h3 class="danger fs-4">Tipo de variable</h3></a>
+            <a> <h3 class="sol-danger fs-4">Tipo de variable</h3></a>
           </div>
         </div>
       </div>
@@ -829,7 +829,7 @@
       <div class="row mt-4">
         <div class="col-md-4">
           <div class="mb-4">
-            <a> <h3 class="danger">Aprobadores de la solicitud</h3></a>
+            <a> <h3 class="sol-danger">Aprobadores de la solicitud</h3></a>
           </div>
         </div>
         <div class="col-md-8">
@@ -910,7 +910,7 @@
                 <div class="input-group mb-3">
                   <label
                     for="lvl1comentarios"
-                    style="color: #0056b3; font-size: 14px; margin: auto auto"
+                    style="color: #0056b3; font-size: 14px; "
                   >
                     Comentarios
                   </label>
@@ -918,8 +918,8 @@
                   <span
                     id="lvl1comentarios"
                     name=""
-                    style="color: black; font-size: 14px; margin: auto auto"
-                    class="text-center"
+                    style="color: black; font-size: 14px; "
+                    class="text-start"
                     >No applica</span
                   >
                 </div>
@@ -933,7 +933,7 @@
       <div class="row mt-4">
         <div class="col-md-4">
           <div class="mb-4">
-            <a> <h3 class="danger">Atención de los probadores</h3></a>
+            <a> <h3 class="sol-danger">Atención de los probadores</h3></a>
           </div>
         </div>
         <div class="col-md-8">
@@ -946,7 +946,7 @@
           <div class="input-group mb-3">
             <label
               for="aprobadoresdinamicos"
-              style="color: #0056b3; font-size: 14px; margin: auto auto"
+              style="color: #0056b3; font-size: 14px; "
             >
               Aprobadores dinámicos
             </label>
@@ -954,8 +954,8 @@
             <span
               id="aprobadoresdinamicos"
               name=""
-              style="color: black; font-size: 14px; margin: auto auto"
-              class="text-center"
+              style="color: black; font-size: 14px; "
+              class="text-start"
               >{{ detalleSolicitud.aprobadoresDinamicos }}</span
             >
           </div>
@@ -967,7 +967,7 @@
           <div class="input-group mb-3">
             <label
               for="gerenterrhhcorporativo"
-              style="color: #0056b3; font-size: 14px; margin: auto auto"
+              style="color: #0056b3; font-size: 14px; "
             >
               Gerente de RRHH Corporativo
             </label>
@@ -975,8 +975,8 @@
             <span
               id="gerenterrhhcorporativo"
               name=""
-              style="color: black; font-size: 14px; margin: auto auto"
-              class="text-center"
+              style="color: black; font-size: 14px; "
+              class="text-start"
               >{{ detalleSolicitud.gerenteRRHHCorporativo }}</span
             >
           </div>
@@ -988,7 +988,7 @@
           <div class="input-group mb-3">
             <label
               for="comitederemuneraciones"
-              style="color: #0056b3; font-size: 14px; margin: auto auto"
+              style="color: #0056b3; font-size: 14px; "
             >
               Comité de Remuneraciones
             </label>
@@ -996,8 +996,8 @@
             <span
               id="comitederemuneraciones"
               name=""
-              style="color: black; font-size: 14px; margin: auto auto"
-              class="text-center"
+              style="color: black; font-size: 14px; "
+              class="text-start"
               >{{ detalleSolicitud.comiteRemuneraciones }}</span
             >
           </div>

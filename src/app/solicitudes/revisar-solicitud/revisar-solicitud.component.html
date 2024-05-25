@@ -5,7 +5,7 @@
         <div class="col-md-8">
           <div class="mb-3">
             <a (click)="pageSolicitudes()">
-              <h3 class="danger">
+              <h3 class="sol-danger">
                 <i class="bi bi-arrow-left-circle azul"></i> {{ solicitud.idSolicitud }}
               </h3></a
             >
@@ -40,7 +40,7 @@
       <div class="row mt-4">
         <div class="col-md-3">
           <div class="mb-4">
-            <a> <h3 class="danger">Información general</h3></a>
+            <a> <h3 class="sol-danger">Información general</h3></a>
           </div>
         </div>
         <div class="col-md-9">
@@ -60,8 +60,8 @@
               #mivar
               id="tipoSolicitud"
               name="idTipoSolicitud"
-              style="color: black; font-size: 14px; margin: auto auto"
-              class="text-center"
+              style="color: black; font-size: 14px; "
+              class="text-start"
               >{{ solicitud.tipoSolicitud }}</span
             >
           </div>
@@ -77,8 +77,8 @@
             <span
               id="tipomotivo"
               name="tipomotivo"
-              style="color: black; font-size: 14px; margin: auto auto"
-              class="text-center"
+              style="color: black; font-size: 14px; "
+              class="text-start"
               >{{ solicitud.tipoMotivo }}</span
             >
           </div>
@@ -123,8 +123,8 @@
             <span
               id="descripcionposicion"
               name="descripcionposicion"
-              style="color: black; font-size: 14px; margin: auto auto"
-              class="text-center"
+              style="color: black; font-size: 14px; "
+              class="text-start"
               >{{ model.descrPosicion }}</span
             >
           </div>
@@ -199,8 +199,8 @@
             <span
               id="compania"
               name=""
-              style="color: black; font-size: 14px; margin: auto auto"
-              class="text-center"
+              style="color: black; font-size: 14px; "
+              class="text-start"
               >{{ model.compania }}</span
             >
           </div>
@@ -215,8 +215,8 @@
             <span
               id="unidadnegocio"
               name=""
-              style="color: black; font-size: 14px; margin: auto auto"
-              class="text-center"
+              style="color: black; font-size: 14px; "
+              class="text-start"
               >{{ model.unidadNegocio }}</span
             >
           </div>
@@ -234,8 +234,8 @@
             <span
               id="departamento"
               name=""
-              style="color: black; font-size: 14px; margin: auto auto"
-              class="text-center"
+              style="color: black; font-size: 14px; "
+              class="text-start"
               >{{ model.departamento }}</span
             >
           </div>
@@ -250,8 +250,8 @@
             <span
               id="cargo"
               name=""
-              style="color: black; font-size: 14px; margin: auto auto"
-              class="text-center"
+              style="color: black; font-size: 14px; "
+              class="text-start"
               >{{ model.nombreCargo }}</span
             >
           </div>
@@ -269,8 +269,8 @@
             <span
               id="localidadzona"
               name=""
-              style="color: black; font-size: 14px; margin: auto auto"
-              class="text-center"
+              style="color: black; font-size: 14px; "
+              class="text-start"
               >{{ model.localidad }}</span
             >
           </div>
@@ -285,8 +285,8 @@
             <span
               id="niveldirección"
               name=""
-              style="color: black; font-size: 14px; margin: auto auto"
-              class="text-center"
+              style="color: black; font-size: 14px; "
+              class="text-start"
               >{{ model.nivelDir }}</span
             >
           </div>
@@ -304,8 +304,8 @@
             <span
               id="centrocosto"
               name=""
-              style="color: black; font-size: 14px; margin: auto auto"
-              class="text-center"
+              style="color: black; font-size: 14px; "
+              class="text-start"
               >{{ model.nomCCosto }}</span
             >
           </div>
@@ -352,7 +352,7 @@
       <div class="row mt-4">
         <div class="col-md-4">
           <div class="mb-4">
-            <a> <h3 class="danger">Funciones y responsabilidades</h3></a>
+            <a> <h3 class="sol-danger">Funciones y responsabilidades</h3></a>
           </div>
         </div>
         <div class="col-md-8">
@@ -372,8 +372,8 @@
             <span
               id="reporta"
               name=""
-              style="color: black; font-size: 14px; margin: auto auto"
-              class="text-center"
+              style="color: black; font-size: 14px; "
+              class="text-start"
               >{{ model.reportaA }}
             </span>
           </div>
@@ -389,8 +389,8 @@
             <span
               id="supervisaa"
               name=""
-              style="color: black; font-size: 14px; margin: auto auto"
-              class="text-center"
+              style="color: black; font-size: 14px; "
+              class="text-start"
               >{{ model.supervisaA }}</span
             >
           </div>
@@ -431,8 +431,8 @@
             <span
               id="nivelRepa"
               name=""
-              style="color: black; font-size: 14px; margin: auto auto"
-              class="text-center"
+              style="color: black; font-size: 14px; "
+              class="text-start"
               >{{ model.nivelRepa }}</span
             >
           </div>
@@ -462,7 +462,7 @@
       <div class="row mt-4">
         <div class="col-md-4">
           <div class="mb-4">
-            <a> <h3 class="danger fs-4">Tipo de variable</h3></a>
+            <a> <h3 class="sol-danger fs-4">Tipo de variable</h3></a>
           </div>
         </div>
       </div>
@@ -544,7 +544,7 @@
       <div class="row mt-4">
         <div class="col-md-4">
           <div class="mb-4">
-            <a> <h3 class="danger">Aprobadores de la solicitud</h3></a>
+            <a> <h3 class="sol-danger">Aprobadores de la solicitud</h3></a>
           </div>
         </div>
         <div class="col-md-8">
@@ -629,7 +629,7 @@
   <div class="row mt-4">
     <div class="col-md-4">
       <div class="mb-4">
-        <a> <h3 class="danger">Atención de Solicitud</h3></a>
+        <a> <h3 class="sol-danger">Atención de Solicitud</h3></a>
       </div>
     </div>
     <div class="col-md-8">

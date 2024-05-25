@@ -115,4 +115,23 @@ h3, h4 {
   margin-left: 10px;
 }
 
+.adjustable-label {
+  color: #0056B3;
+  font-size: 16px;
+  background-color: white;
+  font-weight:500;
+  border-style: none;
+  width: 45%;         /* Ajusta al 100% del contenedor padre */
+  word-wrap: break-word; /* Permite que las palabras se dividan en el borde del contenedor */
+  white-space: normal;  /* Permite que el texto se ajuste y baje a la siguiente línea */
+  text-align: left;
+}
+
+.sol-danger{
+
+  color: #C69D08;
+  font-size: 20px;
+  font-weight:500;
+}
+
 
