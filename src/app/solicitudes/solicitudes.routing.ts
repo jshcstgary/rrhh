@@ -7,6 +7,7 @@ import { DetalleSolicitudComponent } from "./detalle-solicitud/detalle-solicitud
 import { RevisarSolicitudComponent } from "./revisar-solicitud/revisar-solicitud.component";
 import { RegistrarCandidatoComponent } from "./registrar-candidato/registrar-candidato.component";
 import { CompletaSolicitudComponent } from "./completa-solicitud/completa-solicitud.component";
+import { ReingresoPersonalComponent } from "./reingreso-personal/reingreso-personal.component";
 
 export const SolicitudesRoutes: Routes = [
   {
@@ -50,6 +51,21 @@ export const SolicitudesRoutes: Routes = [
         data: {
           title: "Revisón de Solicitud",
           urls: [{ title: "Solicitudes" }, { title: "Revisón de Solicitud" }],
+        },
+      },
+      {
+        path: "reingreso-personal/:id/:idSolicitud",
+        component: ReingresoPersonalComponent,
+        data: {
+          title: "Reingreso de personal",
+          urls: [
+            {
+              title: "Solicitudes"
+            },
+            {
+              title: "Reingreso de personal"
+            }
+          ],
         },
       },
       {
