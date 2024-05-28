@@ -59,7 +59,7 @@ export class ConsultaTareasComponent implements OnInit {
     private utilService: UtilService,
     private mantenimientoService: MantenimientoService,
     private router: Router
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.ObtenerServicioTipoSolicitud();
@@ -211,15 +211,15 @@ export class ConsultaTareasComponent implements OnInit {
     if (this.isTarea) {
       let ids = id_edit.split(",");
 
-    this.consultaTareasService.getTareaIdParam(ids[0])
-    .subscribe((tarea)=>{
-      console.log("Task: ", tarea);
+      this.consultaTareasService.getTareaIdParam(ids[0])
+        .subscribe((tarea) => {
+          console.log("Task: ", tarea);
 
-      let taeraopcion = tarea.solicitudes[0].tasK_DEF_KEY;
-      let registrar = environment.taskType_RRHH;
+          let taeraopcion = tarea.solicitudes[0].tasK_DEF_KEY;
+          let registrar = environment.taskType_RRHH;
 
-      switch (tarea.solicitudes[0].tasK_DEF_KEY) {
-        case environment.taskType_Registrar :
+          switch (tarea.solicitudes[0].tasK_DEF_KEY) {
+            case environment.taskType_Registrar:
 
               this.router.navigate([
                 "/solicitudes/registrar-solicitud",
@@ -227,9 +227,9 @@ export class ConsultaTareasComponent implements OnInit {
                 ids[0],
               ]);
 
-          break;
+              break;
 
-        case environment.taskType_Revisar :
+            case environment.taskType_Revisar:
 
               this.router.navigate([
                 "/solicitudes/revisar-solicitud",
@@ -237,39 +237,39 @@ export class ConsultaTareasComponent implements OnInit {
                 ids[0],
               ]);
 
-          break;
-          case environment.taskType_RRHH :
+              break;
+            case environment.taskType_RRHH:
 
-                this.router.navigate([
+              this.router.navigate([
                 "/solicitudes/revisar-solicitud",
                 ids[1],
                 ids[0],
-                ]);
+              ]);
 
-          break;
+              break;
 
-          case environment.taskType_CREM :
+            case environment.taskType_CREM:
 
-                this.router.navigate([
+              this.router.navigate([
                 "/solicitudes/revisar-solicitud",
                 ids[1],
                 ids[0],
-                ]);
+              ]);
 
-           break;
+              break;
 
 
-          case environment.taskType_RegistrarCandidato:
+            case environment.taskType_RegistrarCandidato:
 
-          this.router.navigate([
-            "/solicitudes/registrar-candidato",
-            ids[1],
-            ids[0],
-          ]);
+              this.router.navigate([
+                "/solicitudes/registrar-candidato",
+                ids[1],
+                ids[0],
+              ]);
 
-          break;
+              break;
 
-        case environment.taskType_CompletarRequisicion :
+            case environment.taskType_CompletarRequisicion:
 
               this.router.navigate([
                 "/solicitudes/completa-solicitud",
@@ -277,21 +277,31 @@ export class ConsultaTareasComponent implements OnInit {
                 ids[0],
               ]);
 
-          break;
+              break;
 
-        case environment.taskType_CF :
+            case environment.taskType_CF:
 
               this.router.navigate([
-              "/solicitudes/registrar-familiares",
-              ids[1],
-              ids[0],
+                "/solicitudes/registrar-familiares",
+                ids[1],
+                ids[0],
               ]);
 
-        break;
+              break;
 
-        default:
-      }
-    });
+            case environment.taskType_RG:
+
+              this.router.navigate([
+                "/solicitudes/reingreso-personal",
+                ids[1],
+                ids[0],
+              ]);
+
+              break;
+
+            default:
+          }
+        });
 
 
     }
