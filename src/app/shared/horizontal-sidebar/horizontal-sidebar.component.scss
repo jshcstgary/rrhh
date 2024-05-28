@@ -1,19 +1,35 @@
+.sidebar-item__logo {
+  // border: 1px solid black;
+  margin-top: -7px;
+  margin-left: 10px;
+  margin-right: 100px;
+}
+
+.logo {
+  height: 60px;
+  // width: auto;
+}
+
 .user-image {
   width: 36px;
   height: 36px;
   border-radius: 36px;
 }
+
 @media (max-width: 1023px) {
   .sidebar-nav ul {
     background-image: none !important;
   }
 }
+
 .material-icons.text-warning svg {
   fill: #0056B3 !important;
 }
+
 button.mat-icon-button {
   background-color: transparent !important;
 }
+
 .bg-golden {
   background-color: #C69D08;
 }
@@ -28,16 +44,20 @@ button.mat-icon-button {
 
 /* Estilo para la barra de desplazamiento */
 ul::-webkit-scrollbar {
-  width: 4px; /* Ancho de la barra de desplazamiento */
+  width: 4px;
+  /* Ancho de la barra de desplazamiento */
 }
 
 ul::-webkit-scrollbar-track {
-  background: rgb(255, 255, 255); /* Color del área de seguimiento */
+  background: rgb(255, 255, 255);
+  /* Color del área de seguimiento */
 }
 
 ul::-webkit-scrollbar-thumb {
-  background-color: rgb(196, 196, 233); /* Color del deslizador de la barra de desplazamiento */
-  border-radius: 20px; /* Redondez del deslizador */
+  background-color: rgb(196, 196, 233);
+  /* Color del deslizador de la barra de desplazamiento */
+  border-radius: 20px;
+  /* Redondez del deslizador */
   // border: 3px solid rgb(255, 255, 255); /* Crea un padding alrededor del deslizador */
 }
 
