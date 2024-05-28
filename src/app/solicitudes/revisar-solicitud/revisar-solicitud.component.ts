@@ -479,31 +479,28 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
         // id is parent process instance id. so handle it accordingly
         // we are looking for task id 'Registrar' in a recently started process instance 'id'
         this.idDeInstancia = params["id"];
-        this.camundaRestService
-          .getTask(environment.taskType_Revisar, params["id"])
-          .subscribe((result) => {
-            console.log("INGRESA AQUÍ (registrar): ", result);
-            console.log(
-              "environment.taskType_Revisar: ",
-              environment.taskType_Revisar
-            );
-            console.log("params['id']: ", params["id"]);
-            this.lookForError(result); // if error, then control gets redirected to err page
+        this.consultaTareasService.getTareaIdParam(this.id_solicitud_by_params )
+        .subscribe((tarea)=>{
+          console.log("Task: ", tarea);
 
-            // if result is success - bingo, we got the task id
-            this.uniqueTaskId =
-              result[0].id; /* Es como la tarea que se crea en esa instancia */
-            this.taskId = params["id"]; /* Esta es la instancia */
-            console.log("this.uniqueTaskId: ", this.uniqueTaskId);
-            console.log("this.taskId: ", this.taskId);
-            this.getDetalleSolicitudById(this.id_solicitud_by_params);
+          this.uniqueTaskId=tarea.solicitudes[0].taskId;
+          this.taskType_Activity = tarea.solicitudes[0].tasK_DEF_KEY;
+          this.nameTask = tarea.solicitudes[0].name;
+          this.id_solicitud_by_params = tarea.solicitudes[0].idSolicitud;
+          this.taskId = params["id"];
+
+          this.getDetalleSolicitudById(this.id_solicitud_by_params);
             this.getSolicitudById(this.id_solicitud_by_params);
-            this.date = result[0].created;
+            this.date = tarea.solicitudes[0].fechaCreacion;
             this.loadExistingVariables(
               this.uniqueTaskId ? this.uniqueTaskId : "",
               variableNames
             );
-          });
+
+          if(this.nameTask!=="Registrar solicitud"){
+            this.RegistrarsolicitudCompletada = false;
+          }
+        });
       } else {
         // unique id is from the route params
         this.uniqueTaskId = params["id"];
@@ -1126,7 +1123,7 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
     this.submitted = true;
   }
 
-  onCompletar() { //completar tarea mmunoz
+  /*onCompletar() { //completar tarea mmunoz
     if (this.uniqueTaskId === null) {
       //handle this as an error
       this.errorMessage =
@@ -1144,7 +1141,7 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
     .subscribe({
       next: (res) => {
 
-        //this.utilService.closeLoadingSpinner();
+        this.utilService.closeLoadingSpinner();
       //actualizo la solicitud a enviada
 
 
@@ -1164,6 +1161,7 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
             //console.log("responseSolicitud: ", responseSolicitud);
 
             });
+            //this.utilService.closeLoadingSpinner();
         break;
 
       case 'rechazar':
@@ -1181,11 +1179,12 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
 
             });
 
-
+            //this.utilService.closeLoadingSpinner();
         break;
 
       case 'aprobar':
         //this.solicitud.estadoSolicitud = "1";
+        //this.utilService.closeLoadingSpinner();
         break;
 
       case 'esperar':
@@ -1203,14 +1202,17 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
 
             });
 
+
+            //this.utilService.closeLoadingSpinner();
+
         break;
 
-        default:
+        default:   //this.utilService.closeLoadingSpinner();
 
 
       }
       //actualizo la solicitud a enviada
-      this.utilService.closeLoadingSpinner();
+      //this.utilService.closeLoadingSpinner();
       //fin actualizo la solicitud a enviada
         this.utilService.modalResponse(
           `Solicitud registrada correctamente [${this.idDeInstancia}]. Será redirigido en un momento...`,
@@ -1236,6 +1238,91 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
 
     this.submitted = true;
   }
+*/
+
+  onCompletar() { //completar tarea mmunoz
+    if (this.uniqueTaskId === null) {
+      //handle this as an error
+      this.errorMessage =
+        "Unique Task id is empty. Cannot initiate task complete.";
+      return;
+    }
+    this.utilService.openLoadingSpinner(
+      "Completando Tarea, espere por favor..."
+    );
+
+    let variables = this.generateVariablesFromFormFields();
+
+    this.camundaRestService
+      .postCompleteTask(this.uniqueTaskId, variables)
+      .subscribe({
+        next: (res) => {
+          console.log("Complete task notificar");
+          //actualizo la solicitud a enviada
+          this.solicitud.empresa = this.model.idEmpresa;
+          this.solicitud.idEmpresa = this.model.idEmpresa;
+
+          this.solicitud.unidadNegocio = this.model.unidadNegocio;
+          this.solicitud.idUnidadNegocio = this.model.unidadNegocio;
+
+          switch (this.buttonValue) {
+            case 'devolver':
+                  this.solicitud.estadoSolicitud = "DV";  //Devolver
+              break;
+
+            case 'rechazar':
+                  this.solicitud.estadoSolicitud = "5"; //Cancelado
+              break;
+
+            case 'aprobar':
+                 this.solicitud.estadoSolicitud = "4";
+              break;
+
+            case 'esperar':
+                  this.solicitud.estadoSolicitud = "2";
+
+              break;
+
+              default:
+            }
+
+          console.log("this.solicitud: ", this.solicitud);
+          this.solicitudes
+          .actualizarSolicitud(this.solicitud)
+          .subscribe((responseSolicitud) => {
+          console.log("responseSolicitud: ", responseSolicitud);
+
+
+          });
+
+
+          this.utilService.closeLoadingSpinner();
+          //fin actualizo la solicitud a enviada
+          this.utilService.modalResponse(
+            `Solicitud registrada correctamente [${this.idDeInstancia}]. Será redirigido en un momento...`,
+            "success"
+          );
+          setTimeout(() => {
+            this.router.navigate([
+              "/tareas/consulta-tareas",
+            ]);
+          }, 1800);
+        },
+        error: (error: HttpErrorResponse) => {
+          this.utilService.modalResponse(
+            error.error,
+            "error"
+          );
+        },
+
+
+      });
+
+    this.submitted = true;
+  }
+
+
+
   recorrerArreglo() {
 
     this.keySelected =

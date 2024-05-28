@@ -36,6 +36,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { RegistrarCandidatoComponent } from './registrar-candidato/registrar-candidato.component';
 import { CompletaSolicitudComponent } from './completa-solicitud/completa-solicitud.component';
 import { ReingresoPersonalComponent } from './reingreso-personal/reingreso-personal.component';
+import { RegistrarFamiliaresComponent } from './registrar-familiares/registrar-familiares.component';
 
 
 @NgModule({
@@ -48,6 +49,7 @@ import { ReingresoPersonalComponent } from './reingreso-personal/reingreso-perso
     RegistrarCandidatoComponent,
     CompletaSolicitudComponent,
     ReingresoPersonalComponent,
+    RegistrarFamiliaresComponent,
 
   ],
   imports: [
