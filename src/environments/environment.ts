@@ -32,6 +32,8 @@ export const environment = {
 
   taskType_CompletarRequisicion:  "RP_CompletarRequisicion",
 
+  taskType_CF: "CF_RegistrarSolicitud", //cotratacion de familiares
+
   //Servicios de workflow
   //camundaUrl: `${baseC}/`,
   camundaUrl: `${baseG}/`,

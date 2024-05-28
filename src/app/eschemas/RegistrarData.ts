@@ -83,6 +83,7 @@ export class RegistrarData {
     public sucursal: string = "",
     public unidadNegocio: string = "",
     public tipoContrato: string = "",
+    public tipoProceso: string = "",
     public descripContrato: string = "",
     public status: string = "",
     public correo: string = "",

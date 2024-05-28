@@ -44,18 +44,6 @@ textarea {
   width: 300px; /* Ajusta el ancho según tus necesidades */
 }
 
-.checkbox-container {
-  display: flex;
-  align-items: center;
-}
-
-.checkbox-container .form-check-label:first-of-type {
-  margin-right: 60px;
-}
-
-.checkbox-container .form-check-label:last-of-type {
-  margin-left: 10px;
-}
 
 .label-estilo{
   color: #0056B3;
@@ -78,13 +66,14 @@ textarea {
    text-align: left;
 }
 
+
 .adjustable-label {
   color: #0056B3;
   font-size: 16px;
   background-color: white;
   font-weight:500;
   border-style: none;
-  width: 45%;         /* Ajusta al 100% del contenedor padre */
+  width: 20%;         /* Ajusta al 100% del contenedor padre */
   word-wrap: break-word; /* Permite que las palabras se dividan en el borde del contenedor */
   white-space: normal;  /* Permite que el texto se ajuste y baje a la siguiente línea */
   text-align: left;
@@ -96,5 +85,3 @@ textarea {
   font-size: 20px;
   font-weight:500;
 }
-
-

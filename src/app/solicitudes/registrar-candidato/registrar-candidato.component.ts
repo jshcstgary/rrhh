@@ -41,11 +41,21 @@ import { SolicitudesService } from "../registrar-solicitud/solicitudes.service";
 export class RegistrarCandidatoComponent extends CompleteTaskComponent {
   NgForm = NgForm;
 
-  tipoProceso: string;
+  tipoProceso: string ='';
   tipoFuente: string;
   fechas: any = {
     actualizacionPerfil: '',
     busquedaCandidatos: '',
+    entrevista: '',
+    pruebas: '',
+    referencias: '',
+    elaboracionInforme: '',
+    entregaJefe: '',
+    entrevistaJefatura: '',
+    tomaDecisiones: '',
+    candidatoSeleccionado: '',
+    procesoContratacion: '',
+    finProcesoContratacion: '',
     reingreso: '',
     finProceso: '',
     contratacionFamiliares: '',
@@ -56,8 +66,23 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
 
   isFuenteExternaVisible: boolean = false;
 
-  isChecked = true; // Valor inicial del checkbox
+  //tipoProceso: String = '';
+
+  isChecked: boolean = true; // Valor inicial del checkbox
   isDivVisible = false; // Valor inicial del div, visible
+
+  isCheckedPerfil: boolean=false;
+  isCheckedBusquedaCandidato: boolean=false;
+  isCheckedFinContratacion: boolean=false;
+  isCheckedProcesoContratacion: boolean=false;
+  isCheckedCandidatoSeleccionado: boolean=false;
+  isCheckedTomaDecisiones: boolean=false;
+  isCheckedEntrevistaJefatura: boolean=false;
+  isCheckedEntregaJefe: boolean=false;
+  isCheckedElaboracionInforme: boolean=false;
+  isCheckedReferencias: boolean=false;
+  isCheckedPruebas: boolean=false;
+  isCheckedEntrevista: boolean=false;
 
   toggleDivVisibility(event: Event): void {
     const inputElement = event.target as HTMLInputElement;
@@ -473,23 +498,6 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
       //this.solicitud = params;
       console.log("Mis params: ", params);
       this.misParams = params;
-
-
-      /*this.solicitud.infoGeneral.idTipoSolicitud = this.dataTipoSolicitud.id;
-      this.solicitud.infoGeneral.tipoSolicitud =
-        this.dataTipoSolicitud.tipoSolicitud;
-      this.solicitud.request.idTipoSolicitud = this.dataTipoSolicitud.id;
-      this.solicitud.request.tipoSolicitud =
-        this.dataTipoSolicitud.tipoSolicitud;
-
-      this.solicitud.infoGeneral.idTipoMotivo = this.dataTipoMotivo.id;
-      this.solicitud.infoGeneral.tipoMotivo = this.dataTipoMotivo.tipoMotivo;
-      this.solicitud.request.idTipoMotivo = this.dataTipoMotivo.id;
-
-      this.solicitud.infoGeneral.idTipoAccion = this.dataTipoAccion.id;
-      this.solicitud.infoGeneral.tipoAccion = this.dataTipoAccion.tipoAccion;
-      this.solicitud.request.idTipoAccion = this.dataTipoAccion.id;
-      this.solicitud.request.tipoAccion = this.dataTipoAccion.tipoAccion;*/
     });
 
     this.route.queryParamMap.subscribe((qParams) => {
@@ -515,31 +523,28 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
         // id is parent process instance id. so handle it accordingly
         // we are looking for task id 'Registrar' in a recently started process instance 'id'
         this.idDeInstancia = params["id"];
-        this.camundaRestService
-          .getTask(environment.taskType_Registrar, params["id"])
-          .subscribe((result) => {
-            console.log("INGRESA AQUÍ (registrar): ", result);
-            console.log(
-              "environment.taskType_Registrar: ",
-              environment.taskType_Registrar
-            );
-            console.log("params['id']: ", params["id"]);
-            this.lookForError(result); // if error, then control gets redirected to err page
+        this.consultaTareasService.getTareaIdParam(this.id_solicitud_by_params )
+        .subscribe((tarea)=>{
+          console.log("Task: ", tarea);
 
-            // if result is success - bingo, we got the task id
-            this.uniqueTaskId =
-              result[0].id; /* Es como la tarea que se crea en esa instancia */
-            this.taskId = params["id"]; /* Esta es la instancia */
-            console.log("this.uniqueTaskId: ", this.uniqueTaskId);
-            console.log("this.taskId: ", this.taskId);
-            this.getDetalleSolicitudById(this.id_solicitud_by_params);
+          this.uniqueTaskId=tarea.solicitudes[0].taskId;
+          this.taskType_Activity = tarea.solicitudes[0].tasK_DEF_KEY;
+          this.nameTask = tarea.solicitudes[0].name;
+          this.id_solicitud_by_params = tarea.solicitudes[0].idSolicitud;
+          this.taskId = params["id"];
+
+          this.getDetalleSolicitudById(this.id_solicitud_by_params);
             this.getSolicitudById(this.id_solicitud_by_params);
-            this.date = result[0].created;
+            this.date = tarea.solicitudes[0].fechaCreacion;
             this.loadExistingVariables(
               this.uniqueTaskId ? this.uniqueTaskId : "",
               variableNames
             );
-          });
+
+          if(this.nameTask!=="Registrar solicitud"){
+            this.RegistrarsolicitudCompletada = false;
+          }
+        });
       } else {
         // unique id is from the route params
         this.uniqueTaskId = params["id"];
@@ -1211,6 +1216,8 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
 
     let variables = this.generateVariablesFromFormFields();
 
+    console.log(variables);
+
     this.camundaRestService
       .postCompleteTask(this.uniqueTaskId, variables)
       .subscribe({
@@ -1232,6 +1239,8 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
 
 
           });
+
+          this.utilService.closeLoadingSpinner();
           //fin actualizo la solicitud a enviada
           this.utilService.modalResponse(
             `Solicitud registrada correctamente [${this.idDeInstancia}]. Será redirigido en un momento...`,
@@ -1253,79 +1262,7 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
 
       });
 
-    //return;
 
-   /* this.camundaRestService
-      .postCompleteTask(this.uniqueTaskId, variables)
-      .subscribe((res) => {
-        console.log("Completar: ", res);
-
-        this.submitted = true;
-        this.consultaTareasService.getTareaIdParam(this.detalleSolicitud.idSolicitud)
-        .subscribe({
-          next: (tarea) => {
-          console.log("Task: ", tarea);
-
-          this.uniqueTaskId=tarea.solicitudes[0].taskId;
-          this.taskType_Activity = tarea.solicitudes[0].tasK_DEF_KEY;
-          this.nameTask = tarea.solicitudes[0].name;
-          this.id_solicitud_by_params = tarea.solicitudes[0].idSolicitud;
-
-                    // Verifica si el nombre sigue siendo "Notificar revisión solicitud"
-                    if(this.nameTask === "Notificar revisión solicitud"){
-
-                      variables = this.generateVariablesFromFormFields();
-
-                      this.camundaRestService
-                        .postCompleteTask(this.uniqueTaskId, variables)
-                        .subscribe({
-                          next: (responseCompleyatNotificar) => {
-                            console.log("Complete task notificar");
-                            this.utilService.modalResponse(
-                              `Solicitud registrada correctamente [${this.idDeInstancia}]. Será redirigido en un momento...`,
-                              "success"
-                            );
-                            setTimeout(() => {
-                              this.router.navigate([
-                                "/tareas/consulta-tareas",
-                              ]);
-                            }, 1800);
-                          },
-                          error: (error: HttpErrorResponse) => {
-                            this.utilService.modalResponse(
-                              error.error,
-                              "error"
-                            );
-                          },
-                        });
-
-                      }else{
-
-                        this.utilService.modalResponse(
-                          `La Solicitud esta completada revise la nueva tarea. Será redirigido en un momento...`,
-                          "success"
-                        );
-
-                        setTimeout(() => {
-                          this.router.navigate([
-                            "/tareas/consulta-tareas",
-                          ]);
-                        }, 1800);
-
-                        // El nombre ya no es "Notificar revisión solicitud", haz algo diferente
-                          console.log("Nombre diferente:", this.nameTask);
-                      }
-
-                      this.utilService.closeLoadingSpinner();
-
-                    },
-                    error: (error: HttpErrorResponse) => {
-                      this.utilService.modalResponse(error.error, "error");
-                    },
-
-        });
-      });*/
-    //this.utilService.closeLoadingSpinner();
     this.submitted = true;
   }
 
@@ -1391,300 +1328,24 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
     });
   }
 
+  reasignarSolicitud(){
+
+  }
+
   override generateVariablesFromFormFields() {
-    /*const variables = {
-      variables: {
-        codigo: { value: "" },
-        description: { value: "" },
-        importe: { value: 0 },
-        observations: { value: new String() },
-      },
-    };
-
-    variables.variables["codigo"].value = "AAAA";
-    variables.variables["description"].value = "BBBB";
-    variables.variables["importe"].value = 5000;
-    variables.variables["observations"].value = "DDDD";*/
-
-    /*
-
-    {
-    "usuarioCreacion": "lnmora",
-    "usuarioActualizacion": "lnmora",
-    "estado": "Aprobado",
-    "idInstancia": "c376953d-fcb6-11ee-ae9a-b05adab33404",
-    "idEmpresa": "01",
-    "empresa": "Reybanpac",
-    "idUnidadNegocio": "01",
-    "unidadNegocio": "Lacteos",
-    "estadoSolicitud": "1",
-    "idTipoSolicitud": 1,
-    "idTipoMotivo": 1,
-    "idTipoAccion": 1
-}
-
-    */
-
-    /*const variables = {
-      variables: {
-        ...this.solicitud,
-      },
-    };*/
-
-    // variables.variables["codigo"].value = "AAAA";
-    // variables.variables["description"].value = "BBBB";
-    // variables.variables["importe"].value = 5000;
-    // variables.variables["observations"].value = "DDDD";
-
-    /*
-
-    {
-    "usuarioCreacion": "lnmora",
-    "usuarioActualizacion": "lnmora",
-    "estado": "Aprobado",
-    "idInstancia": "c376953d-fcb6-11ee-ae9a-b05adab33404",
-    "idEmpresa": "01",
-    "empresa": "Reybanpac",
-    "idUnidadNegocio": "01",
-    "unidadNegocio": "Lacteos",
-    "estadoSolicitud": "1",
-    "idTipoSolicitud": 1,
-    "idTipoMotivo": 1,
-    "idTipoAccion": 1
-}
-
-    */
-
-/*const data = {
-  variables: {
-    codigoPosicion: { value: 1040 },
-    misionCargo: { value: "Ingresa Mision del Cargo" },
-    justificacionCargo: { value: "Ingresa Justificacion del Cargo" },
-    empresa: { value: "REYLACTEOS C.L." },
-    unidadNegocio: { value: "LACTEOS" },
-    descripcionPosicion: { value: "20-Asistente de Gerencia" },
-    areaDepartamento: { value: "Mandos Medios / Jefatura" },
-    localidadZona: { value: "Mirador ILA" },
-    centroCosto: { value: "23 Santo Domingo" },
-    reportaa: { value: "79 Gerencia de Procesos" },
-    nivelReportaa: { value: "Gerencia Media" },
-    supervisa: { value: "Supervisa" },
-    tipoContrato: { value: "Eventual con Remuneración Mixta" },
-    sueldo: { value: 200 },
-    sueldoMensual: { value: 150 },
-    sueldoTrimestral: { value: 170 },
-    sueldoSemestral: { value: 500 },
-    sueldoAnual: { value: 25500 },
-    anularSolicitud: { value: "No" },
-    comentariosAnulacion: { value: "" },
-    nivelDireccion: { value: "Operativo" },
-    tipoRuta: {
-      value: ["Unidades", "Aprobadores Fijos"],
-      type: "String",
-      valueInfo: {
-        objectTypeName: "java.util.ArrayList",
-        serializationDataFormat: "application/json"
-      }
-    },
-    ruta: {
-      value: ["1erNivelAprobacion", "2doNivelAprobacion"],
-      type: "String",
-      valueInfo: {
-        objectTypeName: "java.util.ArrayList",
-        serializationDataFormat: "application/json"
-      }
-    },
-    resultadoRutaAprobacion: {
-      value: ["Gerencia Media", "Gerencia de Unidad o Corporativa"],
-      type: "Object",
-      valueInfo: {
-        objectTypeName: "java.util.ArrayList",
-        serializationDataFormat: "application/json"
-      }
-    }
-  },
-  withVariablesInReturn: true
-};
-
-this.jsonResult = JSON.stringify(data, null, 2);*/
-
-
-
 
     let variables: any = {};
-   /* const variable ={
 
-      variables: {
-        codigoPosicion : { value: this.model.codigoPosicion },
-        misionCargo : { value: this.model.misionCargo },
-        justificacionCargo : { value: this.model.justificacionCargo },
-        empresa : { value: this.model.compania },
-        unidadNegocio : { value: this.model.unidadNegocio },
-        descripcionPosicion : { value: this.model.descrPosicion },
-        areaDepartamento : {value: this.model.departamento },
-        localidadZona : {value: this.model.localidad},
-        centroCosto : {value: this.model.nomCCosto},
-        reportaa : {value: this.model.reportaA},
-        nivelReportea : {value: this.model.nivelRepa},
-        supervisa : {value: this.model.supervisaA},
-        tipoContrato : {value: this.model.tipoContrato},
-        sueldo : { value: this.model.sueldo }, //sueldoVariableMensual
-        sueldoMensual : { value: this.model.sueldoMensual },
-        sueldoTrimestral : { value: this.model.sueldoTrimestral },
-        sueldoSemestral : { value: this.model.sueldoSemestral },
-        sueldoAnual : { value: this.model.sueldoAnual },
-        anularSolicitud : { value: "No" },
-        comentariosAnulacion : {value: this.model.comentariosAnulacion},
-        nivelDireccion : { value: this.model.nivelDir },
-        tipoRuta : {
-                               value: ["Unidades","Unidades", "Aprobadores Fijos", "Aprobadores Fijos"],
-                               type: "String",
-                               valueInfo:{
-                                              objectTypeName:"java.util.ArrayList",
-                                              serializationDataFormat:"application/json"
-                                 }
-
-                              },
-        ruta : {
-                              value : ["2doNivelAprobacion", "3erNivelAprobacion", "Remuneraciones"],
-                              type: "String",
-                              valueInfo:{
-                                  objectTypeName:"java.util.ArrayList",
-                                  serializationDataFormat:"application/json"
-                              }
-                        },
-
-        resultadoRutaAprobacion : { value : "[\"Gerencia Media\", \"Gerencia de Unidad o Corporativa\"]",
-                                              type: "Object",
-                                              valueInfo:{
-                                                  objectTypeName:"java.util.ArrayList",
-                                                  serializationDataFormat:"application/json"
-                                                }
-
-                        },
-      },
-      withVariablesInReturn: true
-
-    }*/
-
-   /* const variables = {
-      variables:  {}
-    };*/
-
-    //variables.codigo = { value: this.model.codigo };
-    //variables.idEmpresa = { value: this.model.idEmpresa };
     if (this.solicitud.tipoSolicitud== "requisicionPersonal") {
-      if(this.taskType_Activity==environment.taskType_Registrar){
-        variables.codigoPosicion = { value: this.model.codigoPosicion };
-        variables.misionCargo = { value: this.model.misionCargo };
-        variables.justificacionCargo = { value: this.model.justificacionCargo };
-        variables.empresa = { value: this.model.compania };
-        variables.unidadNegocio = { value: this.model.unidadNegocio };
-        variables.descripcionPosicion = { value: this.model.descrPosicion };
-        variables.areaDepartamento = {value: this.model.departamento };
-        variables.localidadZona = {value: this.model.localidad};
-        variables.centroCosto = {value: this.model.nomCCosto};
-        variables.reportaa = {value: this.model.reportaA};
-        variables.nivelReportea = {value: this.model.nivelRepa};
-        variables.supervisa = {value: this.model.supervisaA};
-        variables.tipoContrato = {value: this.model.tipoContrato};
-        variables.sueldo = { value: this.model.sueldo }; //sueldoVariableMensual
-        variables.sueldoMensual = { value: this.model.sueldoMensual };
-        variables.sueldoTrimestral = { value: this.model.sueldoTrimestral };
-        variables.sueldoSemestral = { value: this.model.sueldoSemestral };
-        variables.sueldoAnual = { value: this.model.sueldoAnual };
-        variables.anularSolicitud = { value: "No" };
-        variables.comentariosAnulacion = {value: this.model.comentariosAnulacion};
-        variables.nivelDireccion = { value: this.model.nivelDir };
-        variables.tipoRuta = {
-                               value: ["Unidades","Unidades", "Aprobadores Fijos", "Aprobadores Fijos"],
-                               type: "String",
-                               valueInfo:{
-                                              objectTypeName:"java.util.ArrayList",
-                                              serializationDataFormat:"application/json"
-                                 }
-
-                              };
-        variables.ruta = {
-                              value : ["2doNivelAprobacion", "3erNivelAprobacion", "Remuneraciones"],
-                              type: "String",
-                              valueInfo:{
-                                  objectTypeName:"java.util.ArrayList",
-                                  serializationDataFormat:"application/json"
-                              }
-                        };
-
-        variables.resultadoRutaAprobacion = { value : "[\"Gerencia Media\", \"Gerencia de Unidad o Corporativa\"]",
-                                              type: "Object",
-                                              valueInfo:{
-                                                  objectTypeName:"java.util.ArrayList",
-                                                  serializationDataFormat:"application/json"
-                                                }
-
-                        };
-
-
-      }
 
 
       if(this.taskType_Activity==environment.taskType_RegistrarCandidato){
 
-              variables.tipoSolicitud = { value : "nuevoIngresoReemplazo" };
+              variables.tipoSolicitud = { value : this.model.tipoProceso };
 
       }
 
     }
-
-
-
-
-    /*variables.departamento = { value: this.model.departamento };
-    variables.nombreCargo = { value: this.model.nombreCargo };
-    variables.nomCCosto = { value: this.model.nomCCosto };
-
-    variables.codigoPuesto = { value: this.model.codigoPuesto };
-    variables.descrPuesto = { value: this.model.descrPuesto };
-    variables.fechaIngresogrupo = { value: this.model.fechaIngresogrupo };
-    variables.grupoPago = { value: this.model.grupoPago };
-    variables.reportaA = { value: this.model.reportaA };
-    variables.localidad = { value: this.model.localidad };
-    variables.nivelDir = { value: this.model.nivelDir };
-    variables.nivelRepa = { value: this.model.nivelRepa };
-    variables.sucursal = { value: this.model.sucursal };
-
-    variables.tipoContrato = { value: this.model.tipoContrato };
-    variables.descripContrato = { value: this.model.descripContrato };
-    variables.status = { value: this.model.status };
-
-    variables.nivelDireccion = { value: this.model.nivelDir };
-    variables.comentariosAtencion = { value: "SEND STATIC" };
-    variables.correo = {value: this.model.correo}*/
-
-    // tipo_solicitud_descripcion
-    // tipo_motivo_descripcion
-    /*variables.codigoPosicion = this.model.codigoPosicion; // Todos
-
-    variables.nombreCompleto = this.model.nombreCompleto;
-    variables.subledger = this.model.subledger;
-    variables.misionCargo = this.model.misionCargo;
-    variables.justificacion = this.model.justificacion;*/
-
-    /*if (this.tipo_solicitud_descripcion === "requisicionPersonal") {
-      if (
-        this.tipo_motivo_descripcion === "Nuevo" ||
-        this.tipo_motivo_descripcion === "Eventual"
-      ) {
-        variables.codigoPosicion = { value: this.model.codigoPosicion };
-        variables.misionCargo = { value: this.model.misionCargo };
-        variables.justificacion = { value: this.model.justificacionCargo };
-      } else if (this.tipo_motivo_descripcion === "Pasante") {
-        variables.codigoPosicion = { value: this.model.misionCargo };
-      } else if (this.tipo_motivo_descripcion === "Reemplazo") {
-        variables.subledger = { value: this.model.subledger };
-        variables.nombreCompleto = { value: this.model.nombreCompleto };
-        variables.codigoPosicion = { value: this.model.codigoPosicion };
-      }
-    }*/
 
     return { variables};
   }
@@ -1943,24 +1604,154 @@ this.jsonResult = JSON.stringify(data, null, 2);*/
       });
   }
 
-  /*getNivelesAprobacion() {
-    this.solicitudes
-      .getNivelesAprobacion(
-        this.solicitud.idTipoSolicitud,
-        this.solicitud.idTipoMotivo,
-        this.model.nivelDir
-      )
-      // .getNivelesAprobacion(1, 1, "TA")
-      .subscribe({
-        next: (response) => {
-          this.dataNivelesAprobacion = response.nivelAprobacionType.sort(
-            this.compareNivelesAprobacion
-          );
-        },
-        error: (error: HttpErrorResponse) => {
-          this.utilService.modalResponse(error.error, "error");
-        },
-      });
-  }*/
+  onCheckboxChangeCandidato(event: any) {
+    const inputElement = event.target as HTMLInputElement;
+
+    switch(inputElement.name){
+     case 'checkPerfil':
+                                    this.isCheckedPerfil = inputElement.checked;
+                                    if(this.isCheckedPerfil ){
+                                      this.fechas.actualizacionPerfil=this.getFormattedDate();
+                                    }else{
+                                      this.fechas.actualizacionPerfil="";
+                                    }
+          break;
+
+     case 'checkBusquedaCandidato':
+                                    this.isCheckedBusquedaCandidato = inputElement.checked;
+                                    if(this.isCheckedBusquedaCandidato ){
+                                      this.fechas.busquedaCandidatos=this.getFormattedDate();
+                                    }else{
+                                      this.fechas.busquedaCandidatos="";
+                                    }
+          break;
+
+     case 'checkEntrevista':
+      this.isCheckedEntrevista = inputElement.checked;
+                                    if(this.isCheckedEntrevista ){
+                                      this.fechas.entrevista=this.getFormattedDate();
+                                    }else{
+                                      this.fechas.entrevista="";
+                                    }
+          break;
+
+      case 'checkPruebas':
+        this.isCheckedPruebas = inputElement.checked;
+                                    if(this.isCheckedPruebas ){
+                                      this.fechas.pruebas=this.getFormattedDate();
+                                    }else{
+                                      this.fechas.pruebas="";
+                                    }
+      break;
+
+      case 'checkReferencias':
+        this.isCheckedReferencias = inputElement.checked;
+
+                                  if(this.isCheckedReferencias ){
+                                    this.fechas.referencias=this.getFormattedDate();
+                                  }else{
+                                    this.fechas.referencias="";
+                                  }
+      break;
+
+
+
+      case 'checkElaboracionInforme':
+        this.isCheckedElaboracionInforme = inputElement.checked;
+
+                              if(this.isCheckedElaboracionInforme ){
+                              this.fechas.elaboracionInforme=this.getFormattedDate();
+                              }else{
+                              this.fechas.elaboracionInforme="";
+                              }
+      break;
+
+
+      case 'checkEntregaJefe':
+        this.isCheckedEntregaJefe = inputElement.checked;
+
+                              if(this.isCheckedEntregaJefe ){
+                              this.fechas.entregaJefe=this.getFormattedDate();
+                              }else{
+                              this.fechas.entregaJefe="";
+                              }
+      break;
+
+
+
+      case 'checkEntrevistaJefatura':
+        this.isCheckedEntrevistaJefatura = inputElement.checked;
+
+                                    if(this.isCheckedEntrevistaJefatura ){
+                                    this.fechas.entrevistaJefatura=this.getFormattedDate();
+                                    }else{
+                                    this.fechas.entrevistaJefatura="";
+                                    }
+      break;
+
+
+      case 'checkTomaDecisiones':
+        this.isCheckedTomaDecisiones = inputElement.checked;
+
+                                    if(this.isCheckedTomaDecisiones ){
+                                    this.fechas.tomaDecisiones=this.getFormattedDate();
+                                    }else{
+                                    this.fechas.tomaDecisiones="";
+                                    }
+      break;
+
+      case 'checkCandidatoSeleccionado':
+        this.isCheckedCandidatoSeleccionado = inputElement.checked;
+
+                                    if(this.isCheckedCandidatoSeleccionado ){
+                                    this.fechas.candidatoSeleccionado=this.getFormattedDate();
+                                    }else{
+                                    this.fechas.candidatoSeleccionado="";
+                                    }
+      break;
+
+
+      case 'checkProcesoContratacion':
+        this.isCheckedProcesoContratacion = inputElement.checked;
+
+                                    if(this.isCheckedProcesoContratacion ){
+                                    this.fechas.procesoContratacion=this.getFormattedDate();
+                                    }else{
+                                    this.fechas.procesoContratacion="";
+                                    }
+      break;
+
+
+      case 'checkFinContratacion':
+        this.isCheckedFinContratacion = inputElement.checked;
+
+                                    if(this.isCheckedFinContratacion ){
+                                    this.fechas.finProcesoContratacion=this.getFormattedDate();
+                                    }else{
+                                    this.fechas.finProcesoContratacion="";
+                                    }
+      break;
+
+      default:
+
+    }
+
+    //this.isDivVisible = !this.isChecked;
+    console.log('Elemecto check',inputElement.name);
+    console.log('Checkbox value:', this.isCheckedPerfil);
+  }
+
+  getFormattedDate(): string {
+    const date = new Date();
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Enero es 0!
+    const year = date.getFullYear();
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+    const seconds = String(date.getSeconds()).padStart(2, '0');
+    return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
+  }
+
+
 }
 

@@ -12,14 +12,7 @@
           </div>
         </div>
         <div class="col-md-4 text-end">
-          <button
-            type="button"
-            (click)="reasignarSolicitud()"
-            class="btn btn-info me-2"
-            >
-            <i class="fas fa-redo"></i> Reasignar
-          </button>
-          <button
+          <button *ngIf="RegistrarsolicitudCompletada"
             type="button"
             type="submit"
             class="btn btn-info me-2 mt-1"
@@ -35,13 +28,13 @@
           >
             <i class="fas fa-check-circle"></i> Completar Tarea
           </button>
-          <!--<button *ngIf="RegistrarsolicitudCompletada"
+          <button *ngIf="RegistrarsolicitudCompletada"
             type="button"
             (click)="onCancel()"
             class="btn btn-info me-2 mt-1"
           >
             <i class="fas fa-times"></i> Registrar luego
-          </button>-->
+          </button>
         </div>
       </div>
       <div class="row mt-4">
@@ -67,7 +60,7 @@
               #mivar
               id="tipoSolicitud"
               name="idTipoSolicitud"
-              style="color: black; font-size: 14px; "
+              style="color: black; font-size: 14px;"
               class="text-start"
               >{{ solicitud.tipoSolicitud }}</span
             >
@@ -84,7 +77,7 @@
             <span
               id="tipomotivo"
               name="tipomotivo"
-              style="color: black; font-size: 14px; "
+              style="color: black; font-size: 14px;"
               class="text-start"
               >{{ solicitud.tipoMotivo }}</span
             >
@@ -130,7 +123,7 @@
             <span
               id="descripcionposicion"
               name="descripcionposicion"
-              style="color: black; font-size: 14px; "
+              style="color: black; font-size: 14px;"
               class="text-start"
               >{{ model.descrPosicion }}</span
             >
@@ -154,7 +147,7 @@
               style="color: black; font-size: 14px; width: 30%"
               [ngbTypeahead]="searchSubledger"
               (selectItem)="onSelectItem('subledger', $event)"
-              class="form-control"
+              class="form-control text-start"
               id="subledger"
               aria-describedby="inputGroupPrepend"
               required
@@ -182,7 +175,7 @@
               style="color: black; font-size: 14px; width: 30%"
               [ngbTypeahead]="searchNombreCompleto"
               (selectItem)="onSelectItem('nombreCompleto', $event)"
-              class="form-control"
+              class="form-control text-start"
               id="nombreempleado"
               aria-describedby="inputGroupPrepend"
               #nombreCompleto="ngModel"
@@ -206,7 +199,7 @@
             <span
               id="compania"
               name=""
-              style="color: black; font-size: 14px; "
+              style="color: black; font-size: 14px;"
               class="text-start"
               >{{ model.compania }}</span
             >
@@ -222,7 +215,7 @@
             <span
               id="unidadnegocio"
               name=""
-              style="color: black; font-size: 14px; "
+              style="color: black; font-size: 14px;"
               class="text-start"
               >{{ model.unidadNegocio }}</span
             >
@@ -241,7 +234,7 @@
             <span
               id="departamento"
               name=""
-              style="color: black; font-size: 14px; "
+              style="color: black; font-size: 14px;"
               class="text-start"
               >{{ model.departamento }}</span
             >
@@ -257,7 +250,7 @@
             <span
               id="cargo"
               name=""
-              style="color: black; font-size: 14px; "
+              style="color: black; font-size: 14px;"
               class="text-start"
               >{{ model.nombreCargo }}</span
             >
@@ -276,7 +269,7 @@
             <span
               id="localidadzona"
               name=""
-              style="color: black; font-size: 14px; "
+              style="color: black; font-size: 14px;"
               class="text-start"
               >{{ model.localidad }}</span
             >
@@ -311,7 +304,7 @@
             <span
               id="centrocosto"
               name=""
-              style="color: black; font-size: 14px; "
+              style="color: black; font-size: 14px;"
               class="text-start"
               >{{ model.nomCCosto }}</span
             >
@@ -340,7 +333,7 @@
         <div class="col">
           <div class="input-group mb-3 contenedor">
             <label
-              class="input-group-text label-estilo2"
+              class="input-group-text adjustable-label"
               for="justificacion"
               >Justificación</label
             >
@@ -359,7 +352,7 @@
       <div class="row mt-4">
         <div class="col-md-4">
           <div class="mb-4">
-            <a> <h3 class="sol-danger">Funciones y responsabilidades</h3></a>
+            <a> <h3 class="sol-danger">Datos de familiares que ya laboran en la empresa</h3></a>
           </div>
         </div>
         <div class="col-md-8">
@@ -373,7 +366,7 @@
             <label
               class="input-group-text label-estilo"
               for="reporta"
-              >Reporta a</label
+              >Nombre de empleado</label
             >
             &nbsp;
             <span
@@ -385,7 +378,7 @@
             </span>
           </div>
         </div>
-        <div class="col-md-6">
+       <!-- <div class="col-md-6">
           <div class="input-group mb-3">
             <label
               class="input-group-text label-estilo"
@@ -401,7 +394,7 @@
               >{{ model.supervisaA }}</span
             >
           </div>
-        </div>
+        </div>-->
       </div>
 
       <div class="row">
@@ -410,7 +403,7 @@
             <label
               class="input-group-text label-estilo"
               for="tipocontrato"
-              >Tipo de contrato</label
+              >Fecha de ingreso</label
             >
             &nbsp;
             <select
@@ -432,7 +425,7 @@
             <label
               class="input-group-text label-estilo"
               for="nivelRepa"
-              >Nivel de reporte</label
+              >Cargo</label
             >
             &nbsp;
             <span
@@ -446,33 +439,6 @@
         </div>
       </div>
 
-      <div class="row">
-        <div class="col-md-6">
-          <div class="input-group mb-3">
-            <label
-              class="input-group-text label-estilo"
-              for="sueldo"
-              >Sueldo</label
-            >
-            &nbsp;
-            <input
-              [(ngModel)]="model.sueldo"
-              type="text"
-              name="sueldo"
-              class="form-control"
-              id="sueldo"
-            />
-          </div>
-        </div>
-      </div>
-
-      <div class="row mt-4">
-        <div class="col-md-4">
-          <div class="mb-4">
-            <a> <h3 class="sol-danger fs-4">Tipo de variable</h3></a>
-          </div>
-        </div>
-      </div>
 
       <div class="row">
         <div class="col-md-6">
@@ -480,7 +446,7 @@
             <label
               class="input-group-text label-estilo"
               for="mensual"
-              >Mensual</label
+              >Unidad</label
             >
             &nbsp;
             <input
@@ -497,7 +463,7 @@
             <label
               class="input-group-text label-estilo"
               for="trimestral"
-              >Trimestral</label
+              >Departamento</label
             >
             &nbsp;
             <input
@@ -511,21 +477,25 @@
         </div>
       </div>
 
+
+
+
+
       <div class="row">
         <div class="col-md-6">
           <div class="input-group mb-3">
             <label
               class="input-group-text label-estilo"
-              for="semestral"
-              >Semestral</label
+              for="mensual"
+              >Localidad</label
             >
             &nbsp;
             <input
-              [(ngModel)]="model.sueldoSemestral"
+              [(ngModel)]="model.sueldoMensual"
               type="text"
-              name="semestral"
+              name="mensual"
               class="form-control"
-              id="semestral"
+              id="mensual"
             />
           </div>
         </div>
@@ -533,20 +503,22 @@
           <div class="input-group mb-3">
             <label
               class="input-group-text label-estilo"
-              for="anual"
-              >Anual</label
+              for="trimestral"
+              >Parentesco</label
             >
             &nbsp;
             <input
-              [(ngModel)]="model.sueldoAnual"
+              [(ngModel)]="model.sueldoTrimestral"
               type="text"
-              name="anual"
+              name="trimestral"
               class="form-control"
-              id="anual"
+              id="trimestral"
             />
           </div>
         </div>
       </div>
+
+
 
       <div class="row mt-4">
         <div class="col-md-4">
@@ -560,73 +532,36 @@
       </div>
 
       <div class="accordion" id="accordionExample">
-        <div
-          *ngFor="
-            let nivelItem of dataAprobacionesPorPosicion[keySelected];
-            let i = index
-          "
-          class="accordion-item"
-        >
-          <h2 class="accordion-header">
-            <button
-              class="accordion-button"
-              type="button"
-              data-bs-toggle="collapse"
-              [attr.data-bs-target]="'#collapse' + i"
-              aria-expanded="true"
-              [attr.aria-controls]="'collapse' + i"
-              style="display: block"
-            >
-              <div
-                class="row"
-                style="align-items: center; justify-content: space-around"
-              >
+        <div *ngFor="let nivelItem of dataAprobacionesPorPosicion[keySelected]; let i = index" class="accordion-item">
+          <div class="accordion-header">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" [attr.data-bs-target]="'#collapse' + i" aria-expanded="true" [attr.aria-controls]="'collapse' + i" style="display: block">
+              <div class="row" style="align-items: center; justify-content: space-around">
                 <div class="col">{{ nivelItem.nivelAprobacionType.ruta }}</div>
-                <div class="col">
-                  {{
-                    nivelItem.aprobador.usuario !== "" &&
-                    nivelItem.aprobador.usuario !== undefined &&
-                    nivelItem.aprobador.usuario != null
-                      ? nivelItem.aprobador.usuario
-                      : "No aplica"
-                  }}
+
+				<div class="col">
+                  {{ nivelItem.aprobador.usuario !== "" && nivelItem.aprobador.usuario !== undefined && nivelItem.aprobador.usuario != null ? nivelItem.aprobador.usuario : "No aplica" }}
                 </div>
+
                 <div class="col">
                   {{ nivelItem.nivelAprobacionType.nivelAprobacionRuta }}
                 </div>
               </div>
             </button>
-          </h2>
+          </div>
 
-          <div
-            [id]="'collapse' + i"
-            class="accordion-collapse collapse"
-            [ngClass]="{ show: i === 0 }"
-            data-bs-parent="#accordionExample"
-          >
+          <div [id]="'collapse' + i" class="accordion-collapse collapse" [ngClass]="{ show: i === 0 }" data-bs-parent="#accordionExample">
             <div class="row mt-2">
               <div class="col">
                 <div class="input-group mb-3">
-                  <label
-                    for="lvl1descripcion"
-                    style="color: #0056b3; font-size: 14px; "
-                  >
+                  <label for="lvl1descripcion">
                     Descripción de la posición
                   </label>
+
                   &nbsp;
-                  <span
-                    id="lvl1descripcion"
-                    name=""
-                    style="color: black; font-size: 14px; "
-                    class="text-start"
-                    >{{
-                      nivelItem.aprobador.descripcionPosicion !== "" &&
-                      nivelItem.aprobador.descripcionPosicion !== undefined &&
-                      nivelItem.aprobador.descripcionPosicion != null
-                        ? nivelItem.aprobador.descripcionPosicion
-                        : "No aplica"
-                    }}</span
-                  >
+
+				  <span id="lvl1descripcion" name="" style="color: black; font-size: 14px;">
+				    {{ nivelItem.aprobador.descripcionPosicion !== "" && nivelItem.aprobador.descripcionPosicion !== undefined && nivelItem.aprobador.descripcionPosicion != null ? nivelItem.aprobador.descripcionPosicion : "No aplica" }}
+				  </span>
                 </div>
               </div>
             </div>
@@ -649,8 +584,8 @@
         <div class="col">
           <div class="input-group mb-3">
             <label
-            class="input-group-text label-estilo"
               for="aprobadoresdinamicos"
+              style="color: #0056b3; font-size: 14px; "
             >
               Aprobadores dinámicos
             </label>
@@ -670,8 +605,8 @@
         <div class="col">
           <div class="input-group mb-3">
             <label
-              class="input-group-text label-estilo"
               for="gerenterrhhcorporativo"
+              style="color: #0056b3; font-size: 14px; "
             >
               Gerente de RRHH Corporativo
             </label>
@@ -691,8 +626,8 @@
         <div class="col">
           <div class="input-group mb-3">
             <label
-              class="input-group-text label-estilo"
               for="comitederemuneraciones"
+              style="color: #0056b3; font-size: 14px; "
             >
               Comité de Remuneraciones
             </label>
@@ -708,10 +643,11 @@
         </div>
       </div>
 
+
       <div class="row mt-4">
         <div class="col-md-4">
           <div class="mb-4">
-            <a> <h3 class="sol-danger">Seleccion de Candidato</h3></a>
+            <a> <h3 class="sol-danger">Anulación de Solicitud</h3></a>
           </div>
         </div>
         <div class="col-md-8">
@@ -719,229 +655,51 @@
         </div>
       </div>
 
-      <div class="row">
-        <div class="col-md-6">
-          <div class="input-group mb-3">
-            <label
-              class="input-group-text label-estilo"
-              for="tipoSolicitud"
-              >Tipo Proceso</label
-            >
+      <div class="row" >
+        <div class="col">
+          <div class="input-group mb-3 contenedor">
+          <label
+              class="input-group-text adjustable-label"
+              for="anular"
+              >¿Anular Solicitud?</label>
             &nbsp;
+             <!-- aqui  van los check box-->
 
-              <select
-              id="tipoproceso"
-              name="tipoproceso"
-              class="form-select"
-              style="font-size: 14px"
-              [(ngModel)]="model.tipoProceso"
-              required
-              >
-              <option
-                  *ngFor="let dato of dataTipoProceso"
-                  [value]="dato.descripcion">
-                   {{dato.descripcion}}
-               </option>
-              </select>
-
-          </div>
-        </div>
-         <div class="col-md-6">
-          <div class="input-group mb-3">
-            <label
-              class="input-group-text label-estilo2"
-              for="flexSwitchCheckChecked"
-              >Tipo de fuente</label
-            >
-            &nbsp;
-
-            <div class="form-check form-switch checkbox-container">
-              <label class="form-check-label" for="flexSwitchCheckChecked">Interno</label>
-              <input
-              class="form-check-input"
-              type="checkbox"
-              id="flexSwitchCheckChecked"
-              name="flexSwitchCheckChecked"
-              chequed
-              [(ngModel)]="isChecked"
-              (change)="toggleDivVisibility($event)">
-              <label class="form-check-label" for="flexSwitchCheckChecked">Externo</label>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="Si" [(ngModel)]="selectedOption" (change)="onSelectionChange()">
+              <label class="form-check-label" for="inlineRadio1">Si</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="No" [(ngModel)]="selectedOption" (change)="onSelectionChange()">
+              <label class="form-check-label" for="inlineRadio2">No</label>
             </div>
 
           </div>
         </div>
       </div>
 
-
-
-      <!--Fila Fuente externa-->
-
-      <div class="row" *ngIf="!isDivVisible">
-        <div class="col-md-6">
-          <div class="input-group mb-3">
-            <label
-              class="input-group-text label-estilo"
-              >Fuente Externa</label
-            >
-            &nbsp;
-
-            <select
-            id="selectOptions"
-            [(ngModel)]="selectedOption"
-            name="selectOptions"
-            class="form-select"
-            style="font-size: 14px"
-            required
-            >
-              <option *ngFor="let option of options" [value]="option.value">
-                {{ option.descripcion }}
-              </option>
-            </select>
-
-
-          </div>
-        </div>
-
-      </div>
-
-
-
-      <!--Fin Fuente externa-->
-
-      <!--Inicio seleccion de candidato-->
-
-      <!--Columnas con tres campos por fila-->
-      <!--<div class="container mt-4">-->
-        <div class="row">
-          <div class="col-md-4 d-flex align-items-center">
-            <input type="checkbox" [(ngModel)]="isCheckedPerfil" (change)="onCheckboxChangeCandidato($event)" name="checkPerfil">
-            <label for="input1" class="input-group-text adjustable-label">Actualización del perfil</label>
-            <input id="input1" type="text" class="form-control" [value]="fechas.actualizacionPerfil" name="perfil" readonly >
-          </div>
-          <div class="col-md-4 d-flex align-items-center">
-            <input type="checkbox" [(ngModel)]="isCheckedBusquedaCandidato" (change)="onCheckboxChangeCandidato($event)" name="checkBusquedaCandidato">
-            <label for="input2" class="input-group-text adjustable-label">Busqueda de candidatos</label>
-            <input id="input2" type="text" class="form-control" [value]="fechas.busquedaCandidatos" name="busquedaCandidato" readonly>
-          </div>
-          <div class="col-md-4 d-flex align-items-center">
-            <input type="checkbox" [(ngModel)]="isCheckedEntrevista" (change)="onCheckboxChangeCandidato($event)" name="checkEntrevista">
-            <label for="input3" class="input-group-text adjustable-label">Entrevista</label>
-            <input id="input3" type="text" class="form-control" [value]="fechas.entrevista" readonly >
-          </div>
-        </div>
-      <!--</div>-->
-
-
-      <!--<div class="container mt-4">-->
-        <div class="row">
-          <div class="col-md-4 d-flex align-items-center">
-            <input type="checkbox" [(ngModel)]="isCheckedPruebas" (change)="onCheckboxChangeCandidato($event)" name="checkPruebas">
-            <label for="input1" class="input-group-text adjustable-label">Pruebas</label>
-            <input id="input1" type="text" class="form-control" [value]="fechas.pruebas" readonly >
-          </div>
-          <div class="col-md-4 d-flex align-items-center">
-            <input type="checkbox" [(ngModel)]="isCheckedReferencias" (change)="onCheckboxChangeCandidato($event)" name="checkReferencias">
-            <label for="input2" class="input-group-text adjustable-label">Referencias</label>
-            <input id="input2" type="text" class="form-control" [value]="fechas.referencias" readonly >
-          </div>
-          <div class="col-md-4 d-flex align-items-center">
-            <input type="checkbox" [(ngModel)]="isCheckedElaboracionInforme" (change)="onCheckboxChangeCandidato($event)" name="checkElaboracionInforme">
-            <label for="input3" class="input-group-text adjustable-label">Elaboración de informe</label>
-            <input id="input3" type="text" class="form-control" [value]="fechas.elaboracionInforme" readonly >
-          </div>
-        </div>
-      <!--</div>-->
-
-
-      <!--<div class="container mt-4">-->
-        <div class="row">
-          <div class="col-md-4 d-flex align-items-center">
-            <input type="checkbox" [(ngModel)]="isCheckedEntregaJefe" (change)="onCheckboxChangeCandidato($event)" name="checkEntregaJefe">
-            <label for="input1" class="input-group-text adjustable-label">Entrega al jefe solicitante</label>
-            <input id="input1" type="text" class="form-control" [value]="fechas.entregaJefe" readonly >
-          </div>
-          <div class="col-md-4 d-flex align-items-center">
-            <input type="checkbox" [(ngModel)]="isCheckedEntrevistaJefatura" (change)="onCheckboxChangeCandidato($event)" name="checkEntrevistaJefatura">
-            <label for="input2" class="input-group-text adjustable-label">Entrevista por jefatura</label>
-            <input id="input2" type="text" class="form-control" [value]="fechas.entrevistaJefatura" readonly >
-          </div>
-          <div class="col-md-4 d-flex align-items-center">
-            <input type="checkbox" [(ngModel)]="isCheckedTomaDecisiones" (change)="onCheckboxChangeCandidato($event)" name="checkTomaDecisiones">
-            <label for="input3" class="input-group-text adjustable-label">Toma de decisiones</label>
-            <input id="input3" type="text" class="form-control" [value]="fechas.tomaDecisiones" readonly >
-          </div>
-        </div>
-      <!--</div>-->
-
-      <!--<div class="container mt-4">-->
-        <div class="row">
-          <div class="col-md-4 d-flex ">
-            <input type="checkbox" [(ngModel)]="isCheckedCandidatoSeleccionado" (change)="onCheckboxChangeCandidato($event)" name="checkCandidatoSeleccionado">
-            <label for="input1" class="input-group-text adjustable-label">Candidato seleccionado</label>
-            <input id="input1" type="text" class="form-control" [value]="fechas.candidatoSeleccionado" readonly >
-          </div>
-          <div class="col-md-4 d-flex ">
-            <input type="checkbox" [(ngModel)]="isCheckedProcesoContratacion" (change)="onCheckboxChangeCandidato($event)" name="checkProcesoContratacion">
-            <label for="input2" class="input-group-text adjustable-label">Proceso de contratación</label>
-            <input id="input2" type="text" class="form-control" [value]="fechas.procesoContratacion" readonly >
-          </div>
-
-        </div>
-      <!--</div>-->
-
-      <!--<div class="container mt-4">-->
-        <div class="row">
-          <div class="col-md-4 d-flex align-items-center">
-            <input type="checkbox" [(ngModel)]="isCheckedFinContratacion" (change)="onCheckboxChangeCandidato($event)" name="checkFinContratacion">
-            <label for="input1" class="input-group-text adjustable-label">Fin del proceso de selección y de contración</label>
-            <input id="input1" type="text" class="form-control" [value]="fechas.finProcesoContratacion" readonly >
-          </div>
-
-        </div>
-      <!--</div>-->
-
-      <!--Fin Seleccion de candidato-->
-      <div class="row mt-4">
-        <div class="col-md-4">
-          <div class="mb-4">
-            <a> <h3 class="sol-danger fs-4">Reingreso</h3></a>
-          </div>
-        </div>
-      </div>
-
-
       <div class="row">
-        <div class="col-md-4 d-flex ">
-          <label for="input1" class="input-group-text adjustable-label">Inicio de proceso</label>
-          <input id="input1" type="text" class="form-control" value="27/05/2024 14:16">
-        </div>
-        <div class="col-md-4 d-flex ">
-          <label for="input2" class="input-group-text adjustable-label">Fin de proceso</label>
-          <input id="input2" type="text" class="form-control" value="27/05/2024 14:16">
-        </div>
-
-      </div>
-
-      <div class="row mt-4">
-        <div class="col-md-4">
-          <div class="mb-4">
-            <a> <h3 class="sol-danger fs-4">Contratación de familiares</h3></a>
+        <div class="col">
+          <div class="input-group mb-3 contenedor">
+          <label
+              class="input-group-text adjustable-label adjustable-label"
+              for="anulacion"
+              >Comentarios Anulación de Solicitud
+          </label>
+          &nbsp;
+            <textarea
+              id="anulacion"
+              name="anulacion"
+              [(ngModel)]="model.comentariosAnulacion"
+              style="color: black; font-size: 14px"
+            ></textarea>
           </div>
         </div>
       </div>
 
-      <div class="row">
-        <div class="col-md-4 d-flex ">
-          <label for="input1" class="input-group-text adjustable-label">Inicio de proceso</label>
-          <input id="input1" type="text" class="form-control" value="27/05/2024 14:16">
-        </div>
-        <div class="col-md-4 d-flex ">
-          <label for="input2" class="input-group-text adjustable-label">Fin de proceso</label>
-          <input id="input2" type="text" class="form-control" value="27/05/2024 14:16">
-        </div>
 
-      </div>
 
     </h2>
   </div>
 </form>
+

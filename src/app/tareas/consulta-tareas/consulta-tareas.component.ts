@@ -279,6 +279,16 @@ export class ConsultaTareasComponent implements OnInit {
 
           break;
 
+        case environment.taskType_CF :
+
+              this.router.navigate([
+              "/solicitudes/registrar-familiares",
+              ids[1],
+              ids[0],
+              ]);
+
+        break;
+
         default:
       }
     });
