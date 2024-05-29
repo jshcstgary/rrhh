@@ -11,6 +11,7 @@ export class CompleteTaskComponent {
   route: ActivatedRoute
   router: Router
   camundaRestService: CamundaRestService
+  aprobadorTask : string | null;
 
   constructor(route: ActivatedRoute,
     router: Router,

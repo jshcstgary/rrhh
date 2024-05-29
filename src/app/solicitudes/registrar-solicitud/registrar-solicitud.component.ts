@@ -971,26 +971,6 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
           console.log("variables prueba ruta",variables);
         }
 
-        //console.log("aprobacion: ",aprobacion);
-       /* console.log(`Elemento en la posición Miguel1 ${this.keySelected}:`, this.dataAprobacionesPorPosicion[this.keySelected][0].nivelAprobacionType.idNivelAprobacion);
-
-        for (const key in this.dataAprobacionesPorPosicion[this.keySelected]) {
-          if (this.dataAprobacionesPorPosicion.hasOwnProperty(key)) {
-            console.log(`Clave: ${key}`);
-            const aprobacionesObj = this.dataAprobacionesPorPosicion[this.keySelected][key];
-            for (const index in aprobacionesObj) {
-              if (aprobacionesObj.hasOwnProperty(index)) {
-                const aprobacion = aprobacionesObj[index];
-                console.log(`Entro en elementos de aprobacion..`);
-                console.log(`Elemento ${index}:`, aprobacion);
-                // Aquí puedes acceder a las propiedades de cada objeto
-                console.log(aprobacion.nivelAprobacionType.idNivelAprobacion);
-                console.log(aprobacion.aprobador.usuario);
-              }
-            }
-          }
-        }*/
-
         this.consultarNextTask(id);
 
       },
@@ -1251,8 +1231,8 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
         next: (res) => {
           console.log("Complete task notificar");
           //actualizo la solicitud a enviada
-          this.solicitud.empresa = this.model.idEmpresa;
-          this.solicitud.idEmpresa = this.model.idEmpresa;
+          this.solicitud.empresa = this.model.compania;
+          this.solicitud.idEmpresa = this.model.compania;
 
           this.solicitud.unidadNegocio = this.model.unidadNegocio;
           this.solicitud.idUnidadNegocio = this.model.unidadNegocio;
@@ -1422,12 +1402,12 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
       }
 
 
-      if(this.taskType_Activity==environment.taskType_CompletarRequisicion){
+      /*if(this.taskType_Activity==environment.taskType_CompletarRequisicion){
 
         variables.atencionCompletarRequisicion = { value : "aprobar" };
 
 
-     }
+     }*/
 
 
 

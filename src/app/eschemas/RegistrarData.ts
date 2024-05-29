@@ -93,7 +93,8 @@ export class RegistrarData {
     public sueldoMensual: string = "",
     public sueldoTrimestral: string = "",
     public sueldoSemestral: string = "",
-    public sueldoAnual: string = "" /* Agrego estos campos que no están en la data */
+    public sueldoAnual: string = "" ,/* Agrego estos campos que no están en la data */
+    public taskNivelAprobador: string = ""
   ) // Este campo no sé de donde viene, no viene en el request de solicitud ni en el de detalle solicitud
   /*public sueldo: number | null = 0,
 
@@ -136,6 +137,7 @@ export class RegistrarData {
     this.descripContrato = "";
     this.status = "";
     this.correo = "";
+    this.taskNivelAprobador
     // this.sueldo = 0;
     // this.mensual = 0;
     // this.trimestral = 0;

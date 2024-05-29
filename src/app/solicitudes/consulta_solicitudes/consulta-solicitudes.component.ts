@@ -331,9 +331,6 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
   ) {
     this.model = calendar.getToday();
     Object.assign(this, { single });
-    /*this.solicitud.idTipoSolicitud = 1;
-    this.solicitud.idTipoMotivo = 1;
-    this.solicitud.idTipoAccion = 1;*/
 
     this.camundaRestService = camundaRestService;
     this.route = route;
@@ -588,12 +585,7 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 
   // tipoSolicitud
   onChangeTipo(id: number, type: string, data: any[]) {
-    /*public dataTipoSolicitudes: any[] = [
-        { id: 1, descripcion: "Requisición de Personal" },
-        { id: 2, descripcion: "Contratación de Familiares" },
-        { id: 3, descripcion: "Reingreso de personal" },
-        { id: 4, descripcion: "Acción de Personal" },
-      ];*/
+
     let descripcion = data.filter((item) => item.id == id)[0]?.descripcion;
     switch (type) {
       case "tipoSolicitud":
@@ -609,12 +601,7 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
   }
 
   onChangeTipoSolicitud(idTipoSolicitud: number) {
-    /*public dataTipoSolicitudes: any[] = [
-        { id: 1, descripcion: "Requisición de Personal" },
-        { id: 2, descripcion: "Contratación de Familiares" },
-        { id: 3, descripcion: "Reingreso de personal" },
-        { id: 4, descripcion: "Acción de Personal" },
-      ];*/
+
     this.tipoSolicitudSeleccionada = idTipoSolicitud;
     this.desactivarTipoMotivo =
       !this.idsOcultarTipoMotivo.includes(idTipoSolicitud);
@@ -654,24 +641,12 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
   }
 
   onChangeTipoMotivo(idTipoMotivo: number) {
-    /*public dataTipoSolicitudes: any[] = [
-        { id: 1, descripcion: "Requisición de Personal" },
-        { id: 2, descripcion: "Contratación de Familiares" },
-        { id: 3, descripcion: "Reingreso de personal" },
-        { id: 4, descripcion: "Acción de Personal" },
-      ];*/
     this.solicitud.tipoMotivo = this.dataTipoMotivo.filter(
       (data) => data.id == idTipoMotivo
     )[0]?.descripcion;
   }
 
   onChangeTipoAccion(idTipoAccion: number) {
-    /*public dataTipoSolicitudes: any[] = [
-        { id: 1, descripcion: "Requisición de Personal" },
-        { id: 2, descripcion: "Contratación de Familiares" },
-        { id: 3, descripcion: "Reingreso de personal" },
-        { id: 4, descripcion: "Acción de Personal" },
-      ];*/
     this.solicitud.tipoAccion = this.dataTipoAccion.filter(
       (data) => data.id == idTipoAccion
     )[0]?.descripcion;
@@ -713,9 +688,6 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
         : result.error.message;
       console.log("routin to app error page", this.errorMessage);
       this.utilService.modalResponse(this.errorMessage, "error");
-      // this.router.navigate(["error"], {
-      //   queryParams: { message: this.errorMessage },
-      // });
     }
   }
 
@@ -846,6 +818,7 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
           const detalles = detallesSolicitud.detalleSolicitudType.find(
             (detalle) => detalle.idSolicitud === solicitud.idSolicitud
           );
+          detalles.estado=solicitud.estado;
           return { ...solicitud, ...detalles };
         });
 
@@ -928,8 +901,8 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
     combinedData$.subscribe((data) => {
       this.utilService.closeLoadingSpinner();
       // this.data_estado.find(itemEstado => itemEstado.codigo == itemSolicitud.estadoSolicitud)
-      // console.log("ESTA ES LA DATA: ", data);
-      // console.log("MI DATA ESTADO AL ITERAR: ", this.data_estado);
+      console.log("ESTA ES LA DATA: ", data);
+      console.log("MI DATA ESTADO AL ITERAR: ", this.data_estado);
       this.dataTable = data.map((itemSolicitud) => {
         let descripcionEstado = this.data_estado.find(
           (itemEstado) => itemEstado.codigo == itemSolicitud.estadoSolicitud
@@ -942,6 +915,7 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
               : "N/A",
         };
       });
+      console.log("ESTA ES LA DATA combinada: ", this.dataTable);
       // Aquí tienes la data combinada y ordenada
     });
 

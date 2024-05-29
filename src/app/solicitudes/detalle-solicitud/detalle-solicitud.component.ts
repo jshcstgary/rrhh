@@ -32,13 +32,6 @@ import { SolicitudesService } from "../registrar-solicitud/solicitudes.service";
 export class DetalleSolicitudComponent extends CompleteTaskComponent {
   NgForm = NgForm;
 
-  /* override model: RegistrarData = new RegistrarData(
-    "123",
-    "Description",
-    0,
-    "Observations"
-  ); */
-
   override model: RegistrarData = new RegistrarData(
     "",
     "",
@@ -298,25 +291,6 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 
   public idDeInstancia: any;
 
-  /*
-  nombresEmpleados: string[] = [
-    ...new Set(
-      this.dataEmpleadoEvolution.map((empleado) => empleado.nombreCompleto)
-    ),
-  ];
-
-  subledgers: string[] = [
-    ...new Set(
-      this.dataEmpleadoEvolution.map((empleado) => empleado.subledger)
-    ),
-  ];
-
-  codigosPosicion: string[] = [
-    ...new Set(
-      this.dataEmpleadoEvolution.map((empleado) => empleado.codigoPosicion)
-    ),
-  ];
-  */
 
   nombresEmpleados: string[] = [];
 
@@ -1260,7 +1234,7 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
     return { variables };
   }
 
-  save2() {
+  /*save2() {
     this.solicitudes
       .guardarDetalleSolicitud(this.solicitudes.modelDetalleSolicitud)
       .subscribe((res) => {
@@ -1274,7 +1248,7 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
           });
         }, 1600);
       });
-  }
+  }*/
 
   onCancel() {
     // mmunoz
@@ -1322,31 +1296,7 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
         );
       },
     });
-      /*.getNivelesAprobacion(
-        this.solicitud.idTipoSolicitud,
-        this.solicitud.idTipoMotivo,
-        this.detalleSolicitud.nivelDireccion
-      )
-      .subscribe({
-        next: (response) => {
-          this.dataNivelesDeAprobacion[this.keySelected] =
-            response.nivelAprobacionType.sort(this.compareNivelesAprobacion);
 
-          if (
-            !this.dataNivelesAprobacionPorCodigoPosicion[
-              this.model.codigoPosicion
-            ]
-          ) {
-            this.getDataNivelesAprobacionPorCodigoPosicion();
-          }
-        },
-        error: (error: HttpErrorResponse) => {
-          this.utilService.modalResponse(
-            "No existen niveles de aprobación para este empleado",
-            "error"
-          );
-        },
-      });*/
   }
   getDataNivelesAprobacionPorCodigoPosicion() {
     this.solicitudes
@@ -1394,23 +1344,10 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
       });
   }
 
-  /*getNivelesAprobacion() {
-    this.solicitudes
-      .getNivelesAprobacion(
-        this.solicitud.idTipoSolicitud,
-        this.solicitud.idTipoMotivo,
-        this.model.nivelDir
-      )
-      // .getNivelesAprobacion(1, 1, "TA")
-      .subscribe({
-        next: (response) => {
-          this.dataNivelesAprobacion = response.nivelAprobacionType.sort(
-            this.compareNivelesAprobacion
-          );
-        },
-        error: (error: HttpErrorResponse) => {
-          this.utilService.modalResponse(error.error, "error");
-        },
-      });
-  }*/
+  obtenerComentariosAtencionPorInstancia(){
+
+    //this.solicitudes.obtenerComentariosAtencionPorInstanciaRaiz()
+  }
+
+
 }

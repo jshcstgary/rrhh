@@ -637,6 +637,50 @@
     </div>
   </div>
 
+  <div class="row">
+    <div class="col-md-6">
+      <div class="input-group mb-3">
+        <label
+          class="input-group-text label-estilo"
+          for="nivelaprobacion"
+          >Nivel de aprobación</label
+        >
+        &nbsp;
+        <span
+          #mivar
+          id="nivelaprobacion"
+          name="nivelaprobacion"
+          style="color: black; font-size: 14px; "
+          class="text-start"
+          >{{ datosAprobadores.idNivelAprobacion }}</span
+        >
+
+        &nbsp;
+        <span
+          #mivar
+          id="descripcionPosicion"
+          name="descripcionPosicion"
+          style="color: #0056B3; font-size: 14px; margin-left: 5%;"
+          class="text-start"
+          >{{ datosAprobadores.descripcionPosicion }}</span
+        >
+
+        &nbsp;
+        <span
+          #mivar
+          id="usuarioaprueba"
+          name="usuarioaprueba"
+          style="color: black; font-size: 14px; margin-left: 5%;"
+          class="text-start"
+          >{{ datosAprobadores.usuario }}</span
+        >
+
+      </div>
+    </div>
+
+
+  </div>
+
 
   <div class="row">
     <div class="col">
@@ -645,7 +689,7 @@
         class="input-group-text label-estilo2"
         for="desicion"
         >Procesar Solicitud
-    </label>
+       </label>
 
     <div class="btn-group" role="group" aria-label="Basic example" id="desicion" >
       <button type="button"

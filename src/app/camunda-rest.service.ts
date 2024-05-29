@@ -75,6 +75,18 @@ export class CamundaRestService {
     );
   }
 
+  getVariablesForTaskLevelAprove(taskId: String): Observable<any> {
+    const endpoint = `${this.engineRestUrl}task/${taskId}/form-variables`;
+
+    return this.http.get<any>(endpoint, httpOptions).pipe(
+      tap((form) => {
+        this.log(`fetched variables`);
+        this.log(form);
+      }),
+      catchError(this.handleError("getVariablesForTask", []))
+    );
+  }
+
   postCompleteTask(taskId: String, variables: Object): Observable<any> {
     const endpoint = `${this.engineRestUrl}task/${taskId}/complete`;
 

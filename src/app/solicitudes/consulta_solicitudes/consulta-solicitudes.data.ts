@@ -26,7 +26,6 @@ export const ConsultaSolicitudesData: IConsultaSolicitudesData = {
     {
       title: "Estado",
       dataIndex: "estado",
-      // type: "bool",
       colType: "string",
     },
     {

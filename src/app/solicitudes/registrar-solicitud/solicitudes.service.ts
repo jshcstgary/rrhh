@@ -155,6 +155,14 @@ export class SolicitudesService {
     );
   }
 
+  public obtenerComentariosAtencionPorInstanciaRaiz(
+    idDeInstanciaRaiz: string
+  ): Observable<any> {
+    return this.http.get<any>(
+      `${this.apiHistoricaCamundaUrl}/variable/${idDeInstanciaRaiz}`
+    );
+  }
+
   public getDataNivelesAprobacionPorCodigoPosicion(
     codigoPosicion: any
   ): Observable<any> {
