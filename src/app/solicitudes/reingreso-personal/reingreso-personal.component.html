@@ -1,0 +1,525 @@
+<form (ngSubmit)="onSubmit()" #SolicitudForm="ngForm" #solicitudForm="ngForm">
+    <div class="card">
+        <div class="card-body text-start">
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="mb-3">
+                        <a (click)="pageSolicitudes()">
+                            <h2 class="sol-danger">
+                                <i class="bi bi-arrow-left-circle azul"></i> {{ solicitud.idSolicitud }}
+                            </h2>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="col-md-4 text-end">
+                    <button *ngIf="RegistrarsolicitudCompletada" type="button" type="submit"
+                        class="btn btn-info me-2 mt-1" aria-label="Close" [disabled]="!solicitudForm.form.valid">
+                        <i class="fas fa-save"></i> Guardar
+                    </button>
+
+                    <button type="button" (click)="onCompletar()" class="btn btn-info me-2 mt-1">
+                        <i class="fas fa-check-circle"></i> Completar Tarea
+                    </button>
+
+                    <button *ngIf="RegistrarsolicitudCompletada" type="button" (click)="onCancel()"
+                        class="btn btn-info me-2 mt-1">
+                        <i class="fas fa-times"></i> Reasignar
+                    </button>
+                </div>
+            </div>
+
+            <div class="row mt-4">
+                <div class="col-md-3">
+                    <div class="mb-4">
+                        <a>
+                            <h2 class="sol-danger">Información general</h2>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="col-md-9">
+                    <hr />
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="input-group mb-3">
+                        <label class="input-group-text label-estilo" for="tipoSolicitud">Tipo de solicitud</label>
+                        &nbsp;
+                        <span #mivar id="tipoSolicitud" name="tipoSolicitud" style="color: black; font-size: 14px;"
+                            class="text-start">Tipo Solicitud</span>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="input-group mb-3">
+                        <label class="input-group-text label-estilo" for="tipoMotivo">Tipo de motivo</label>
+                        &nbsp;
+                        <span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px;"
+                            class="text-start">Tipo Motivo</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="input-group mb-3">
+                        <label class="input-group-text label-estilo" for="nombresApellidos">Nombres y apellidos
+                            completos</label>
+                        &nbsp;
+                        <span #mivar id="nombresApellidos" name="nombresApellidos"
+                            style="color: black; font-size: 14px;" class="text-start">Nombres completos</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col">
+                    <div class="input-group mb-3 contenedor">
+                        <label class="input-group-text label-estilo2" for="observaciones">Observaciones</label>
+                        &nbsp;
+                        <textarea id="observaciones" name="observaciones" rows="3"
+                            style="color: black; font-size: 14px" disabled>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ratione eos eaque, explicabo natus quasi in dolore iure? Provident delectus harum blanditiis, aspernatur minus quis reprehenderit tempora fugiat natus quibusdam earum!</textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-4">
+                <div class="col-md-3">
+                    <div class="mb-4">
+                        <a>
+                            <h2 class="sol-danger">Datos de contratación</h2>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="col-md-9">
+                    <hr />
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="input-group mb-3">
+                        <label class="input-group-text label-estilo" for="empleado">Tipo de contrato</label>
+                        &nbsp;
+                        <select id="empleado" name="empleado" class="form-select" style="font-size: 14px" required>
+                            <option selected>Eventual</option>
+                            <option>Temporal</option>
+                            <option>Mixto</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-4">
+                <div class="col-md-3">
+                    <div class="mb-4">
+                        <a>
+                            <h3 class="sol-danger">Anterior</h3>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="col-md-9">
+                    <hr />
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="input-group mb-3">
+                        <label class="input-group-text label-estilo" for="fechaIngreso">Fecha de inrgeso</label>
+                        &nbsp;
+                        <span id="fechaIngreso" name="" style="color: black; font-size: 14px; "
+                            class="text-start">2024/01/01
+                        </span>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="input-group mb-3">
+                        <label class="input-group-text label-estilo" for="fechaSalida">Fecha de salida</label>
+                        &nbsp;
+                        <span id="fechaSalida" name="" style="color: black; font-size: 14px; "
+                            class="text-start">2024/01/01</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="input-group mb-3">
+                        <label class="input-group-text label-estilo" for="compania">Compañía</label>
+                        &nbsp;
+                        <span id="compania" name="" style="color: black; font-size: 14px; " class="text-start">Compañía
+                        </span>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="input-group mb-3">
+                        <label class="input-group-text label-estilo" for="unidadNegocio">Unidad de negocio</label>
+                        &nbsp;
+                        <span id="unidadNegocio" name="" style="color: black; font-size: 14px; "
+                            class="text-start">Unidad de negocio</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="input-group mb-3">
+                        <label class="input-group-text label-estilo" for="departamento">Departamento</label>
+                        &nbsp;
+                        <span id="departamento" name="" style="color: black; font-size: 14px; "
+                            class="text-start">Departamento
+                        </span>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="input-group mb-3">
+                        <label class="input-group-text label-estilo" for="localidad">Localidad</label>
+                        &nbsp;
+                        <span id="localidad" name="" style="color: black; font-size: 14px; "
+                            class="text-start">Localidad</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="input-group mb-3">
+                        <label class="input-group-text label-estilo" for="puesto">Puesto</label>
+                        &nbsp;
+                        <span id="puesto" name="" style="color: black; font-size: 14px; " class="text-start">Puesto
+                        </span>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="input-group mb-3">
+                        <label class="input-group-text label-estilo" for="responsableRRHH">Responsable de RR.HH.</label>
+                        &nbsp;
+                        <span id="responsableRRHH" name="" style="color: black; font-size: 14px; "
+                            class="text-start">Responsable de RR.HH.</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="input-group mb-3">
+                        <label class="input-group-text label-estilo" for="sueldo">Sueldo</label>
+                        &nbsp;
+                        <span id="sueldo" name="" style="color: black; font-size: 14px; " class="text-start">2000
+                        </span>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="input-group mb-3">
+                        <label class="input-group-text label-estilo" for="remuneracionMensual">Remuneración
+                            mensual</label>
+                        &nbsp;
+                        <span id="remuneracionMensual" name="" style="color: black; font-size: 14px; "
+                            class="text-start">2200</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-4">
+                <div class="col-md-3">
+                    <div class="mb-4">
+                        <a>
+                            <h4 class="sol-danger">Tipo de variable</h4>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="col-md-9">
+                    <hr />
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="input-group mb-3">
+                        <label class="input-group-text label-estilo" for="mensual">Mensual</label>
+                        &nbsp;
+                        <span id="mensual" name="" style="color: black; font-size: 14px; " class="text-start">2000
+                        </span>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="input-group mb-3">
+                        <label class="input-group-text label-estilo" for="trimestral">Trimestral</label>
+                        &nbsp;
+                        <span id="trimestral" name="" style="color: black; font-size: 14px; "
+                            class="text-start">2200</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="input-group mb-3">
+                        <label class="input-group-text label-estilo" for="semestral">Semestral</label>
+                        &nbsp;
+                        <span id="semestral" name="" style="color: black; font-size: 14px; " class="text-start">2000
+                        </span>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="input-group mb-3">
+                        <label class="input-group-text label-estilo" for="anual">Anual</label>
+                        &nbsp;
+                        <span id="anual" name="" style="color: black; font-size: 14px; " class="text-start">2200</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-4">
+                <div class="col-md-3">
+                    <div class="mb-4">
+                        <a>
+                            <h4 class="sol-danger">Jefes</h4>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="col-md-9">
+                    <hr />
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="input-group mb-3">
+                        <label class="input-group-text label-estilo" for="inmediatoSuperior">Inmediato superior</label>
+                        &nbsp;
+                        <span id="inmediatoSuperior" name="" style="color: black; font-size: 14px; " class="text-start">Inmediato superior
+                        </span>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="input-group mb-3">
+                        <label class="input-group-text label-estilo" for="puestoSuperior">Puesto superior</label>
+                        &nbsp;
+                        <span id="puestoSuperior" name="" style="color: black; font-size: 14px; " class="text-start">Puesto superior</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col">
+                    <div class="input-group mb-3 contenedor">
+                        <label class="input-group-text label-estilo2" for="observaciones">Observación del comité de remuneraciones</label>
+                        &nbsp;
+                        <textarea id="observaciones" name="observaciones"
+                            style="color: black; font-size: 14px" disabled>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ratione eos eaque, explicabo natus quasi in dolore iure? Provident delectus harum blanditiis, aspernatur minus quis reprehenderit tempora fugiat natus quibusdam earum!</textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-4">
+                <div class="col-md-3">
+                    <div class="mb-4">
+                        <a>
+                            <h3 class="sol-danger">Actual</h3>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="col-md-9">
+                    <hr />
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="input-group mb-3">
+                        <label class="input-group-text label-estilo" for="compania">Compañía</label>
+                        &nbsp;
+                        <span id="compania" name="" style="color: black; font-size: 14px; " class="text-start">Compañía
+                        </span>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="input-group mb-3">
+                        <label class="input-group-text label-estilo" for="unidadNegocio">Unidad de negocio</label>
+                        &nbsp;
+                        <span id="unidadNegocio" name="" style="color: black; font-size: 14px; "
+                            class="text-start">Unidad de negocio</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="input-group mb-3">
+                        <label class="input-group-text label-estilo" for="departamento">Departamento</label>
+                        &nbsp;
+                        <span id="departamento" name="" style="color: black; font-size: 14px; "
+                            class="text-start">Departamento
+                        </span>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="input-group mb-3">
+                        <label class="input-group-text label-estilo" for="localidad">Localidad</label>
+                        &nbsp;
+                        <span id="localidad" name="" style="color: black; font-size: 14px; "
+                            class="text-start">Localidad</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="input-group mb-3">
+                        <label class="input-group-text label-estilo" for="puesto">Puesto</label>
+                        &nbsp;
+                        <span id="puesto" name="" style="color: black; font-size: 14px; " class="text-start">Puesto
+                        </span>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="input-group mb-3">
+                        <label class="input-group-text label-estilo" for="responsableRRHH">Responsable de RR.HH.</label>
+                        &nbsp;
+                        <span id="responsableRRHH" name="" style="color: black; font-size: 14px; "
+                            class="text-start">Responsable de RR.HH.</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="input-group mb-3">
+                        <label class="input-group-text label-estilo" for="sueldo">Sueldo</label>
+                        &nbsp;
+                        <span id="sueldo" name="" style="color: black; font-size: 14px; " class="text-start">2000
+                        </span>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="input-group mb-3">
+                        <label class="input-group-text label-estilo" for="remuneracionMensual">Remuneración
+                            mensual</label>
+                        &nbsp;
+                        <span id="remuneracionMensual" name="" style="color: black; font-size: 14px; "
+                            class="text-start">2200</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-4">
+                <div class="col-md-3">
+                    <div class="mb-4">
+                        <a>
+                            <h4 class="sol-danger">Tipo de variable</h4>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="col-md-9">
+                    <hr />
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="input-group mb-3">
+                        <label class="input-group-text label-estilo" for="mensual">Mensual</label>
+                        &nbsp;
+                        <span id="mensual" name="" style="color: black; font-size: 14px; " class="text-start">2000
+                        </span>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="input-group mb-3">
+                        <label class="input-group-text label-estilo" for="trimestral">Trimestral</label>
+                        &nbsp;
+                        <span id="trimestral" name="" style="color: black; font-size: 14px; "
+                            class="text-start">2200</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="input-group mb-3">
+                        <label class="input-group-text label-estilo" for="semestral">Semestral</label>
+                        &nbsp;
+                        <span id="semestral" name="" style="color: black; font-size: 14px; " class="text-start">2000
+                        </span>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="input-group mb-3">
+                        <label class="input-group-text label-estilo" for="anual">Anual</label>
+                        &nbsp;
+                        <span id="anual" name="" style="color: black; font-size: 14px; " class="text-start">2200</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-4">
+                <div class="col-md-3">
+                    <div class="mb-4">
+                        <a>
+                            <h4 class="sol-danger">Jefes</h4>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="col-md-9">
+                    <hr />
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="input-group mb-3">
+                        <label class="input-group-text label-estilo" for="inmediatoSuperior">Inmediato superior</label>
+                        &nbsp;
+                        <span id="inmediatoSuperior" name="" style="color: black; font-size: 14px; " class="text-start">Inmediato superior
+                        </span>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="input-group mb-3">
+                        <label class="input-group-text label-estilo" for="puestoSuperior">Puesto superior</label>
+                        &nbsp;
+                        <span id="puestoSuperior" name="" style="color: black; font-size: 14px; " class="text-start">Puesto superior</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col">
+                    <div class="input-group mb-3 contenedor">
+                        <label class="input-group-text label-estilo2" for="observaciones">Observación del comité de remuneraciones</label>
+                        &nbsp;
+                        <textarea id="observaciones" name="observaciones"
+                            style="color: black; font-size: 14px" disabled>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ratione eos eaque, explicabo natus quasi in dolore iure? Provident delectus harum blanditiis, aspernatur minus quis reprehenderit tempora fugiat natus quibusdam earum!</textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
