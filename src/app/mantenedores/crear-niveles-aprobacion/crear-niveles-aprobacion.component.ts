@@ -320,7 +320,7 @@ export class CrearNivelesAprobacionComponent implements OnInit {
           .subscribe(
             (response) => {
               // Inicio
-              this.serviceNivelesAprobacion
+              /*this.serviceNivelesAprobacion
                 .refrescarNivelesAprobaciones()
                 .subscribe(
                   (response) => {
@@ -339,7 +339,7 @@ export class CrearNivelesAprobacionComponent implements OnInit {
                   (error: HttpErrorResponse) => {
                     this.utilService.modalResponse(error.error, "error");
                   }
-                );
+                );*/
 
               // Fin
             },
@@ -357,7 +357,7 @@ export class CrearNivelesAprobacionComponent implements OnInit {
       })
       .subscribe(
         (response) => {
-          this.serviceNivelesAprobacion
+          /*this.serviceNivelesAprobacion
             .refrescarNivelesAprobaciones()
             .subscribe(
               (response) => {
@@ -375,7 +375,7 @@ export class CrearNivelesAprobacionComponent implements OnInit {
               (error: HttpErrorResponse) => {
                 this.utilService.modalResponse(error.error, "error");
               }
-            );
+            );*/
         },
         (error: HttpErrorResponse) => {
           this.utilService.modalResponse(error.error, "error");
