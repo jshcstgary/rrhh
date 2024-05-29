@@ -1503,7 +1503,7 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
                     this.datosAprobadores.idNivelAprobacion =String(Number(index) + 1);
                     this.datosAprobadores.usuario = aprobacion.aprobador.usuario;
                     this.datosAprobadores.nivelDireccion = aprobacion.aprobador.nivelDireccion;
-                    this.datosAprobadores.descripcionPosicion = aprobacion.aprobador.descripcionPosicion;
+                    this.datosAprobadores.descripcionPosicion = aprobacion.aprobador.nivelDireccion;
 
                   }
                 }

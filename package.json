@@ -48,6 +48,7 @@
     "ng2-charts": "^4.1.1",
     "ngx-color-picker": "^16.0.0",
     "ngx-editor": "^15.3.0",
+    "ngx-mask": "^17.0.8",
     "ngx-scrollbar": "^11.0.0",
     "ngx-toastr": "^16.2.0",
     "rxjs": "~7.8.0",
