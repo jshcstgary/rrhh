@@ -958,6 +958,21 @@
               class="text-start"
               >{{ detalleSolicitud.aprobadoresDinamicos }}</span
             >
+            <div *ngFor="let item of dataComentariosAprobaciones">
+                      &nbsp;
+                      <span
+                        id="lcomentariodinamico"
+                        name=""
+                        style="color: black; font-size: 14px;"
+                        >{{
+                          item.text !== "" &&
+                          item.text !== undefined &&
+                          item.text != null
+                            ? item.text
+                            : "No hay comentario"
+                        }}</span
+                      >
+            </div>
           </div>
         </div>
       </div>
@@ -979,6 +994,22 @@
               class="text-start"
               >{{ detalleSolicitud.gerenteRRHHCorporativo }}</span
             >
+            <div *ngFor="let item of dataComentariosAprobacionesRRHH">
+              &nbsp;
+              <span
+                id="lcomentariorrhh"
+                name=""
+                style="color: black; font-size: 14px;"
+                >{{
+                  item.text !== "" &&
+                  item.text !== undefined &&
+                  item.text != null
+                    ? item.text
+                    : "No hay comentario"
+                }}</span
+              >
+
+            </div>
           </div>
         </div>
       </div>
@@ -1000,6 +1031,21 @@
               class="text-start"
               >{{ detalleSolicitud.comiteRemuneraciones }}</span
             >
+            <div *ngFor="let item of dataComentariosAprobacionesCREM">
+              &nbsp;
+              <span
+                id="lcomentariocrem"
+                name=""
+                style="color: black; font-size: 14px;"
+                >{{
+                  item.text !== "" &&
+                  item.text !== undefined &&
+                  item.text != null
+                    ? item.text
+                    : "No hay comentario"
+                }}</span
+              >
+            </div>
           </div>
         </div>
       </div>

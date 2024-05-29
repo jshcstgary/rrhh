@@ -22,6 +22,7 @@ import { DetalleSolicitud } from "src/app/eschemas/DetalleSolicitud";
 import { Subject, Observable, OperatorFunction } from "rxjs";
 import { debounceTime, distinctUntilChanged, map } from "rxjs/operators";
 import { SolicitudesService } from "../registrar-solicitud/solicitudes.service";
+import { ConsultaTareasService } from "src/app/tareas/consulta-tareas/consulta-tareas.service";
 
 @Component({
   selector: "app-detalle-solicitud",
@@ -69,7 +70,7 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
   }>();
 
   // private
-
+  private id_solicitud_by_params: any;
   public solicitudDataInicial = new Solicitud();
   public tipo_solicitud_descripcion: string;
   public tipo_motivo_descripcion: string;
@@ -149,6 +150,11 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
   public dataNivelesAprobacionPorCodigoPosicion: { [key: string]: any[] } = {};
 
   public dataNivelesAprobacion: any;
+
+  public dataComentariosAprobaciones: any[] = [];
+  public dataComentariosAprobacionesPorPosicion: any[] = [];
+  public dataComentariosAprobacionesRRHH: any[] = [];
+  public dataComentariosAprobacionesCREM: any[] = [];
 
   public dataEmpleadoEvolution: any[] = [
     {
@@ -304,7 +310,8 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
     camundaRestService: CamundaRestService,
     private mantenimientoService: MantenimientoService,
     private solicitudes: SolicitudesService,
-    private utilService: UtilService
+    private utilService: UtilService,
+    private consultaTareasService: ConsultaTareasService
   ) {
     super(route, router, camundaRestService);
 
@@ -710,6 +717,12 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
           this.model.nivelDir;
         if (!this.dataNivelesDeAprobacion[this.keySelected]) {
           this.getNivelesAprobacion();
+          this.consultarNextTask(id);
+          if(this.uniqueTaskId!=undefined &&
+            this.uniqueTaskId!=null &&
+            this.uniqueTaskId!=''){
+            this.obtenerComentariosAtencionPorInstanciaRaiz();
+          }
         }
       },
       error: (error: HttpErrorResponse) => {
@@ -1344,10 +1357,76 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
       });
   }
 
-  obtenerComentariosAtencionPorInstancia(){
+  /*obtenerComentariosAtencionPorInstancia(){
 
     //this.solicitudes.obtenerComentariosAtencionPorInstanciaRaiz()
+  }*/
+
+
+  consultarNextTask(IdSolicitud: string) {
+    this.consultaTareasService.getTareaIdParam(IdSolicitud)
+    .subscribe((tarea)=>{
+      console.log("Task: ", tarea);
+
+      this.uniqueTaskId=tarea.solicitudes[0].taskId;
+      this.taskType_Activity = tarea.solicitudes[0].tasK_DEF_KEY;
+      this.nameTask = tarea.solicitudes[0].name;
+      this.id_solicitud_by_params = tarea.solicitudes[0].idSolicitud;
+      this.rootProces = tarea.solicitudes[0].rootProcInstId;
+
+      this.obtenerComentariosAtencionPorInstanciaRaiz();
+
+      /*if(this.nameTask!=="Registrar solicitud"){
+        this.RegistrarsolicitudCompletada = false;
+      }*/
+    });
   }
+
+  obtenerComentariosAtencionPorInstanciaRaiz(){
+
+    return this.solicitudes
+      .obtenerComentariosAtencionPorInstanciaRaiz(
+        this.rootProces
+      )
+      .subscribe({
+        next: (response) => {
+          this.dataComentariosAprobaciones.length=0;
+          this.dataComentariosAprobacionesPorPosicion=response.variableType;
+
+          /*this.uniqueTaskId=tarea.solicitudes[0].taskId;
+          this.taskType_Activity = tarea.solicitudes[0].tasK_DEF_KEY;
+          this.nameTask = tarea.solicitudes[0].name;
+          this.id_solicitud_by_params = tarea.solicitudes[0].idSolicitud;
+          rootProces*/
+          this.dataComentariosAprobaciones=this.filterDataComentarios(this.rootProces, 'RevisionSolicitud', 'comentariosAtencion');
+          this.dataComentariosAprobacionesRRHH=this.filterDataComentarios(this.rootProces, 'RequisicionPersonal', 'comentariosAtencionGerente');
+          this.dataComentariosAprobacionesCREM=this.filterDataComentarios(this.rootProces, 'RequisicionPersonal', 'comentariosAtencionRemuneraciones');
+          //this.dataComentariosAprobacionesPorPosicion.forEach(item => {
+            //this.dataComentariosAprobaciones.push(item.aprobador.nivelDireccion);
+            //console.log("Aprobaciones comentarios = ", item.aprobador);
+          //});
+          console.log("Aprobaciones comentarios diamicos = ", this.dataComentariosAprobaciones);
+          console.log("Aprobaciones comentarios rrhh = ", this.dataComentariosAprobacionesRRHH);
+          console.log("Aprobaciones comentarios CREM = ", this.dataComentariosAprobacionesCREM);
+        },
+        error: (error: HttpErrorResponse) => {
+          this.utilService.modalResponse(
+            "No existe comentarios de aprobadores",
+            "error"
+          );
+        },
+      });
+
+  }
+
+  filterDataComentarios(idInstancia: string, taskKey: string, name: string) {
+    return this.dataComentariosAprobacionesPorPosicion.filter(item =>
+      (idInstancia ? item.rootProcInstId === idInstancia : true) && //Id de instancia
+      (taskKey ? item.procDefKey === taskKey : true) &&
+      (name ? item.name === name : true)
+    );
+  }
+
 
 
 }

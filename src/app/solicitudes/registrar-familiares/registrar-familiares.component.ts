@@ -455,22 +455,6 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
       console.log("Mis params: ", params);
       this.misParams = params;
 
-
-      /*this.solicitud.infoGeneral.idTipoSolicitud = this.dataTipoSolicitud.id;
-      this.solicitud.infoGeneral.tipoSolicitud =
-        this.dataTipoSolicitud.tipoSolicitud;
-      this.solicitud.request.idTipoSolicitud = this.dataTipoSolicitud.id;
-      this.solicitud.request.tipoSolicitud =
-        this.dataTipoSolicitud.tipoSolicitud;
-
-      this.solicitud.infoGeneral.idTipoMotivo = this.dataTipoMotivo.id;
-      this.solicitud.infoGeneral.tipoMotivo = this.dataTipoMotivo.tipoMotivo;
-      this.solicitud.request.idTipoMotivo = this.dataTipoMotivo.id;
-
-      this.solicitud.infoGeneral.idTipoAccion = this.dataTipoAccion.id;
-      this.solicitud.infoGeneral.tipoAccion = this.dataTipoAccion.tipoAccion;
-      this.solicitud.request.idTipoAccion = this.dataTipoAccion.id;
-      this.solicitud.request.tipoAccion = this.dataTipoAccion.tipoAccion;*/
     });
 
     this.route.queryParamMap.subscribe((qParams) => {

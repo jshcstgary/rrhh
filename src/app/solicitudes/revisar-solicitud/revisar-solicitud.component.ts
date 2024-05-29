@@ -351,8 +351,6 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
 
   codigosPosicion: string[] = [];
 
-  public dataAprobacionesPorPosicionAPS: any = [];
-
   constructor(
     route: ActivatedRoute,
     router: Router,
@@ -758,8 +756,6 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
       //} // comentado munoz
       await this.getDataEmpleadosEvolution();
       await this.loadDataCamunda(); //comentado para prueba mmunoz
-
-      //await this. ObtenerNivelAprobadorTask();
       //console.log("impreme arreglo de aprobadores: ");
       //await this.recorrerArreglo();
 
@@ -865,14 +861,19 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
           this.model.nivelDir;
         if (!this.dataAprobacionesPorPosicion[this.keySelected]) {
           this.getNivelesAprobacion();
+
+          this.consultarNextTask(id);
+
+          if(this.uniqueTaskId!=undefined &&
+            this.uniqueTaskId!=null &&
+            this.uniqueTaskId!=''){
+            this.ObtenerNivelAprobadorTask();
+          }
+
         }
 
 
-        this.consultarNextTask(id);
 
-        if(this.uniqueTaskId!=undefined || this.uniqueTaskId!=null || this.uniqueTaskId!=''){
-          this.ObtenerNivelAprobadorTask()
-        }
 
 
       },
@@ -1253,6 +1254,7 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
       this.taskType_Activity = tarea.solicitudes[0].tasK_DEF_KEY;
       this.nameTask = tarea.solicitudes[0].name;
       this.id_solicitud_by_params = tarea.solicitudes[0].idSolicitud;
+      this.rootProces = tarea.solicitudes[0].rootProcInstId;
 
       if(this.nameTask!=="Registrar solicitud"){
         this.RegistrarsolicitudCompletada = false;
@@ -1522,7 +1524,6 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
 
 
   }
-
 
 
 }
