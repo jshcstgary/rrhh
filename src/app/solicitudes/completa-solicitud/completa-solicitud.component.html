@@ -94,7 +94,14 @@
               Código de posición
             </label>
             &nbsp;
-            <input
+            <span
+              id="codigoposicion"
+              name="codigoposicion"
+              style="color: black; font-size: 14px;"
+              class="text-start"
+              >{{ model.codigoPosicion }}</span
+            >
+            <!--<input
               type="text"
               name="codigoposicion"
               [(ngModel)]="model.codigoPosicion"
@@ -109,7 +116,7 @@
             />
             <button class="btn btn-light" type="button" disabled>
               <i class="ti-search"></i>
-            </button>
+            </button>-->
           </div>
         </div>
         <div class="col-md-6">
@@ -317,7 +324,15 @@
               for="misioncargo"
               >Misión del cargo</label
             >
-            <input
+            &nbsp;
+            <span
+              id="misioncargo"
+              name="misioncargo"
+              style="color: black; font-size: 14px;"
+              class="text-start"
+              >{{ model.misionCargo }}</span
+            >
+            <!--<input
               type="text"
               name="misioncargo"
               [(ngModel)]="model.misionCargo"
@@ -325,7 +340,7 @@
               id="misioncargo"
               #misioncargo="ngModel"
               required
-            />
+            />-->
           </div>
         </div>
       </div>
@@ -338,14 +353,21 @@
               >Justificación</label
             >
             &nbsp;
-            <textarea
+            <span
+              id="justificacion"
+              name="justificacion"
+              style="color: black; font-size: 14px;"
+              class="text-start"
+              >{{ model.justificacionCargo }}</span
+            >
+            <!--<textarea
               id="justificacion"
               name="justificacion"
               [(ngModel)]="model.justificacionCargo"
               style="color: black; font-size: 14px"
               required
               #justificacion="ngModel"
-            ></textarea>
+            ></textarea>-->
           </div>
         </div>
       </div>
@@ -406,7 +428,15 @@
               >Tipo de contrato</label
             >
             &nbsp;
-            <select
+            <span
+              id="tipocontrato"
+              name="tipocontrato"
+              style="color: black; font-size: 14px;"
+              class="text-start"
+              >{{ model.tipoContrato }}</span
+            >
+
+            <!--<select
               id="tipocontrato"
               name="tipocontrato"
               class="form-select"
@@ -417,7 +447,7 @@
               <option selected>Eventual</option>
               <option>Temporal</option>
               <option>Mixto</option>
-            </select>
+            </select>-->
           </div>
         </div>
         <div class="col-md-6">
@@ -448,13 +478,20 @@
               >Sueldo</label
             >
             &nbsp;
-            <input
+            <span
+              id="sueldo"
+              name="sueldo"
+              style="color: black; font-size: 14px;"
+              class="text-start"
+              >{{ model.sueldo }}</span
+            >
+            <!--<input
               [(ngModel)]="model.sueldo"
               type="text"
               name="sueldo"
               class="form-control"
               id="sueldo"
-            />
+            />-->
           </div>
         </div>
       </div>
@@ -476,13 +513,20 @@
               >Mensual</label
             >
             &nbsp;
-            <input
+            <span
+              id="mensual"
+              name="mensual"
+              style="color: black; font-size: 14px;"
+              class="text-start"
+              >{{ model.sueldoMensual }}</span
+            >
+            <!--<input
               [(ngModel)]="model.sueldoMensual"
               type="text"
               name="mensual"
               class="form-control"
               id="mensual"
-            />
+            />-->
           </div>
         </div>
         <div class="col-md-6">
@@ -493,13 +537,20 @@
               >Trimestral</label
             >
             &nbsp;
-            <input
+            <span
+              id="trimestral"
+              name="trimestral"
+              style="color: black; font-size: 14px;"
+              class="text-start"
+              >{{ model.sueldoTrimestral }}</span
+            >
+            <!--<input
               [(ngModel)]="model.sueldoTrimestral"
               type="text"
               name="trimestral"
               class="form-control"
               id="trimestral"
-            />
+            />-->
           </div>
         </div>
       </div>
@@ -513,13 +564,20 @@
               >Semestral</label
             >
             &nbsp;
-            <input
+            <span
+              id="semestral"
+              name="semestral"
+              style="color: black; font-size: 14px;"
+              class="text-start"
+              >{{ model.sueldoSemestral }}</span
+            >
+            <!--<input
               [(ngModel)]="model.sueldoSemestral"
               type="text"
               name="semestral"
               class="form-control"
               id="semestral"
-            />
+            />-->
           </div>
         </div>
         <div class="col-md-6">
@@ -530,13 +588,20 @@
               >Anual</label
             >
             &nbsp;
-            <input
+            <span
+              id="anual"
+              name="anual"
+              style="color: black; font-size: 14px;"
+              class="text-start"
+              >{{ model.sueldoAnual }}</span
+            >
+            <!--<input
               [(ngModel)]="model.sueldoAnual"
               type="text"
               name="anual"
               class="form-control"
               id="anual"
-            />
+            />-->
           </div>
         </div>
       </div>
@@ -626,6 +691,121 @@
           </div>
         </div>
       </div>
+
+
+
+      <div class="row mt-4">
+        <div class="col-md-4">
+          <div class="mb-4">
+            <a> <h3 class="sol-danger">Atención de los probadores</h3></a>
+          </div>
+        </div>
+        <div class="col-md-8">
+          <hr />
+        </div>
+      </div>
+
+      <!--Comentarios de aprobadores en seleccion de candidato-->
+
+      <div class="row mt-2">
+        <div class="col">
+          <div *ngFor="let item of dataComentariosAprobaciones; let i = index" class="row mt-2 align-items-center">
+            <div class="col-auto">
+              <label
+                *ngIf="i === 0"
+                class="input-group-text adjustable-label"
+                for="lcomentariodinamico"
+              >
+                Aprobadores dinámicos
+              </label>
+              <label
+                *ngIf="i !== 0"
+                class="input-group-text hidden-label"
+                for="lcomentariodinamico"
+              >
+                Aprobadores dinámicos
+              </label>
+            </div>
+            <div class="col">
+              <span
+                id="lcomentariodinamico"
+                name=""
+                style="color: black; font-size: 14px;"
+              >
+                {{
+                  item.text !== "" &&
+                  item.text !== undefined &&
+                  item.text != null
+                    ? item.text
+                    : "No hay comentario"
+                }}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row mt-2">
+        <div class="col">
+          <div class="input-group mb-3">
+            <label
+              class="input-group-text adjustable-label2"
+              for="lcomentariorrhh"
+            >
+                 Gerente de RRHH Corporativo
+            </label>
+            &nbsp;
+            <div *ngFor="let item of dataComentariosAprobacionesRRHH">
+              &nbsp;
+              <span
+                id="lcomentariorrhh"
+                name=""
+                style="color: black; font-size: 14px;"
+                >{{
+                  item.text !== "" &&
+                  item.text !== undefined &&
+                  item.text != null
+                    ? item.text
+                    : "No hay comentario"
+                }}</span
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="row mt-2">
+        <div class="col">
+          <div class="input-group mb-3">
+            <label
+              class="input-group-text adjustable-label2"
+              for="comitederemuneraciones"
+            >
+              Comité de Remuneraciones
+            </label>
+            &nbsp;
+            <div *ngFor="let item of dataComentariosAprobacionesCREM">
+              &nbsp;
+              <span
+                id="lcomentariocrem"
+                name=""
+                style="color: black; font-size: 14px;"
+                >{{
+                  item.text !== "" &&
+                  item.text !== undefined &&
+                  item.text != null
+                    ? item.text
+                    : "No hay comentario"
+                }}</span
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+     <!--Fin de Comentarios -->
 
 
   <div class="row mt-4">
@@ -720,7 +900,30 @@
               </div>
             </div>
           </div>
-        </div>
+      </div>
+
+      <div class="row" *ngIf="isFechaIngresoVisible">
+        <div class="col">
+          <div class="input-group mb-3 contenedor">
+
+              <label
+                  class="input-group-text label-estilo2"
+                  for="fechaingreso"
+                  >Fecha Ingreso Candidato
+              </label>
+
+              <div class="datepicker-container">
+                <mat-form-field appearance="outline">
+                  <mat-label>Fecha</mat-label>
+                  <input matInput [matDatepicker]="picker2">
+                  <mat-datepicker-toggle matSuffix [for]="picker2" [(ngModel)]="selectedDateIn">
+                  </mat-datepicker-toggle>
+                  <mat-datepicker #picker2></mat-datepicker>
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+      </div>
 
     </h2>
   </div>

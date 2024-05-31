@@ -43,6 +43,7 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
   NgForm = NgForm;
 
   textareaContent: string = '';
+  //variableNivel: string=this.datosAprobadores.nivelDireccion;
   isRequired: boolean = false;
   isFechaMaximaVisible: boolean = false;
   campoObligatorio: string = '';
@@ -864,9 +865,7 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
 
           this.consultarNextTask(id);
 
-          if(this.uniqueTaskId!=undefined &&
-            this.uniqueTaskId!=null &&
-            this.uniqueTaskId!=''){
+          if(this.uniqueTaskId){
             this.ObtenerNivelAprobadorTask();
           }
 
@@ -1275,7 +1274,7 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
         if(this.taskType_Activity==environment.taskType_Revisar){ //APROBADORES DINAMICOS
 
           variables.atencionRevision = { value : this.buttonValue };
-          variables.comentariosAtencion = { value : this.textareaContent};
+          variables.comentariosAtencion = { value : this.datosAprobadores.nivelDireccion + ': ' + this.textareaContent};
 
         //RQ_GRRHH_RevisarSolicitud
         }else if(this.taskType_Activity==environment.taskType_RRHH){ //GERENTE RECURSOS HUMANOS
@@ -1375,7 +1374,13 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
   getNivelesAprobacion() {
    if(this.detalleSolicitud.codigoPosicion !== "" &&
    this.detalleSolicitud.codigoPosicion !== undefined &&
-   this.detalleSolicitud.codigoPosicion != null){
+   this.detalleSolicitud.codigoPosicion != null &&
+   this.solicitud.idTipoSolicitud !== 0 &&
+   this.solicitud.idTipoSolicitud !== undefined &&
+   this.solicitud.idTipoSolicitud !== null &&
+   this.solicitud.idTipoMotivo !== 0 &&
+   this.solicitud.idTipoMotivo !== undefined &&
+   this.solicitud.idTipoMotivo !== null){
 
 
     this.solicitudes
@@ -1475,9 +1480,18 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
 
   ObtenerNivelAprobadorTask(){
 
+
+    let aprobadoractual='';//aprobador.nivelAprobacion.value;
+    let aprobadoractual2='';//aprobador.nivelAprobacion.value;
      this.camundaRestService
       .getVariablesForTaskLevelAprove(this.uniqueTaskId).subscribe({
         next: (aprobador) => {
+          aprobadoractual=aprobador.nivelAprobacion?.value;;//aprobador.nivelAprobacion.value;
+          //aprobadoractual2=aprobador.nivelAprobacion?.value;
+
+          //console.log('aprobador actual2',aprobadoractual2);
+
+
 
           console.log("Inicio recorrer Aprobaciones por posicion: ");
           console.log(`Elemento en la posición Miguel1 ${this.keySelected}:`, this.dataAprobacionesPorPosicion);
@@ -1497,9 +1511,50 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
                   console.log("Descripcion de la posicion",aprobacion.aprobador.descripcionPosicion);
                   console.log("Nivel direccion",aprobacion.aprobador.nivelDireccion);
                   console.log("Usuario aprobador",aprobacion.aprobador.usuario);
-                  console.log("Aprobador a comparar",this.aprobadorTask);
-                  if(aprobacion.aprobador.nivelDireccion.trim()==aprobador.nivelAprobacion.value){
+                  console.log("Actividad ",this.taskType_Activity);
+                  if(aprobadoractual!==undefined){
 
+                    if(aprobacion.aprobador.nivelDireccion.trim()==aprobadoractual){
+
+                      this.datosAprobadores.idNivelAprobacion =String(Number(index) + 1);
+                      this.datosAprobadores.usuario = aprobacion.aprobador.usuario;
+                      this.datosAprobadores.nivelDireccion = aprobacion.aprobador.nivelDireccion;
+                      this.datosAprobadores.descripcionPosicion = aprobacion.aprobador.nivelDireccion;
+
+                    }
+
+
+                  }
+
+                 /* if(aprobacion.aprobador.nivelDireccion.trim()=='Gerente de RRHH Corporativo'){
+
+                    this.datosAprobadores.idNivelAprobacion =String(Number(index) + 1);
+                    this.datosAprobadores.usuario = aprobacion.aprobador.usuario;
+                    this.datosAprobadores.nivelDireccion = aprobacion.aprobador.nivelDireccion;
+                    this.datosAprobadores.descripcionPosicion = aprobacion.aprobador.nivelDireccion;
+
+                  }*/
+
+                  if(this.taskType_Activity==environment.taskType_RRHH && aprobadoractual==undefined){
+
+                    if(aprobacion.aprobador.nivelDireccion.trim().toUpperCase().indexOf('RRHH')>0){
+                    this.datosAprobadores.idNivelAprobacion =String(Number(index) + 1);
+                    this.datosAprobadores.usuario = aprobacion.aprobador.usuario;
+                    this.datosAprobadores.nivelDireccion = aprobacion.aprobador.nivelDireccion;
+                    this.datosAprobadores.descripcionPosicion = aprobacion.aprobador.nivelDireccion;
+                    }
+
+
+                  }else if(this.taskType_Activity==environment.taskType_CREM && aprobadoractual==undefined){
+
+                    if(aprobacion.aprobador.nivelDireccion.trim().toUpperCase().indexOf('REMUNERA')>0){
+                    this.datosAprobadores.idNivelAprobacion =String(Number(index) + 1);
+                    this.datosAprobadores.usuario = aprobacion.aprobador.usuario;
+                    this.datosAprobadores.nivelDireccion = aprobacion.aprobador.nivelDireccion;
+                    this.datosAprobadores.descripcionPosicion = aprobacion.aprobador.nivelDireccion;
+                    }
+
+                  }else if(aprobadoractual==undefined){
                     this.datosAprobadores.idNivelAprobacion =String(Number(index) + 1);
                     this.datosAprobadores.usuario = aprobacion.aprobador.usuario;
                     this.datosAprobadores.nivelDireccion = aprobacion.aprobador.nivelDireccion;

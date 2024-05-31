@@ -44,9 +44,11 @@ export class CompletaSolicitudComponent extends CompleteTaskComponent {
   textareaContent: string = '';
   isRequired: boolean = false;
   isFechaMaximaVisible: boolean = false;
+  isFechaIngresoVisible: boolean = false;
   campoObligatorio: string = '';
   observaciontexto: string = 'Observación';
   selectedDate: Date = new Date();
+  selectedDateIn: Date = new Date();
   //buttonValue: string = '';
 
   buttonValue: string | null = null;
@@ -64,6 +66,7 @@ export class CompletaSolicitudComponent extends CompleteTaskComponent {
         this.campoObligatorio = 'Campo Obligatorio...';
         this.observaciontexto = 'Observación*';
         this.isFechaMaximaVisible = false;
+        this.isFechaIngresoVisible=false;
         this.textareaContent = '';
         break;
 
@@ -71,6 +74,7 @@ export class CompletaSolicitudComponent extends CompleteTaskComponent {
         this.isRequired = true;
         this.campoObligatorio = 'Campo Obligatorio...';
         this.isFechaMaximaVisible = false;
+        this.isFechaIngresoVisible = false;
         this.textareaContent = '';
         this.observaciontexto = 'Observación*';
         break;
@@ -78,6 +82,7 @@ export class CompletaSolicitudComponent extends CompleteTaskComponent {
       case 'aprobar':
         this.campoObligatorio = 'Ingrese Comentario de aprobación...';
         this.isFechaMaximaVisible = false;
+        this.isFechaIngresoVisible = true;
         this.textareaContent = '';
         this.observaciontexto = 'Observación';
         break;
@@ -85,6 +90,7 @@ export class CompletaSolicitudComponent extends CompleteTaskComponent {
       case 'esperar':
         this.campoObligatorio = 'Ingrese Comentario en espera...';
         this.isFechaMaximaVisible = true;
+        this.isFechaIngresoVisible = false;
         this.textareaContent = '';
         this.observaciontexto = 'Observación';
         break;
@@ -348,6 +354,11 @@ export class CompletaSolicitudComponent extends CompleteTaskComponent {
   subledgers: string[] = [];
 
   codigosPosicion: string[] = [];
+
+  public dataComentariosAprobaciones: any[] = [];
+  public dataComentariosAprobacionesPorPosicion: any[] = [];
+  public dataComentariosAprobacionesRRHH: any[] = [];
+  public dataComentariosAprobacionesCREM: any[] = [];
 
   constructor(
     route: ActivatedRoute,
@@ -859,26 +870,8 @@ export class CompletaSolicitudComponent extends CompleteTaskComponent {
           this.model.nivelDir;
         if (!this.dataAprobacionesPorPosicion[this.keySelected]) {
           this.getNivelesAprobacion();
-        }
 
-        console.log("Inicio recorrer Aprobaciones por posicion: ");
-        console.log(`Elemento en la posición Miguel1 ${this.keySelected}:`, this.dataAprobacionesPorPosicion);
-
-        for (const key in this.dataAprobacionesPorPosicion) {
-          if (this.dataAprobacionesPorPosicion.hasOwnProperty(key)) {
-            console.log(`Clave: ${key}`);
-            const aprobacionesObj = this.dataAprobacionesPorPosicion[key];
-            for (const index in aprobacionesObj) {
-              if (aprobacionesObj.hasOwnProperty(index)) {
-                const aprobacion = aprobacionesObj[index];
-                console.log(`Entro en elementos de aprobacion..`);
-                console.log(`Elemento ${index}:`, aprobacion);
-                // Aquí puedes acceder a las propiedades de cada objeto
-                console.log(aprobacion.nivelAprobacionType.idNivelAprobacion);
-                console.log(aprobacion.aprobador.usuario);
-              }
-            }
-          }
+          this.obtenerComentariosAtencionPorInstanciaRaiz();
         }
 
         this.consultarNextTask(id);
@@ -1249,7 +1242,7 @@ export class CompletaSolicitudComponent extends CompleteTaskComponent {
       });
   }
 
-//this.detalleSolicitud.idSolicitud
+
   consultarNextTask(IdSolicitud: string) {
     this.consultaTareasService.getTareaIdParam(IdSolicitud)
     .subscribe((tarea)=>{
@@ -1384,9 +1377,15 @@ export class CompletaSolicitudComponent extends CompleteTaskComponent {
   }
 
   getNivelesAprobacion() {
-   if(this.detalleSolicitud.codigoPosicion !== "" &&
-   this.detalleSolicitud.codigoPosicion !== undefined &&
-   this.detalleSolicitud.codigoPosicion != null){
+    if(this.detalleSolicitud.codigoPosicion !== "" &&
+    this.detalleSolicitud.codigoPosicion !== undefined &&
+    this.detalleSolicitud.codigoPosicion != null &&
+    this.solicitud.idTipoSolicitud !== 0 &&
+    this.solicitud.idTipoSolicitud !== undefined &&
+    this.solicitud.idTipoSolicitud !== null &&
+    this.solicitud.idTipoMotivo !== 0 &&
+    this.solicitud.idTipoMotivo !== undefined &&
+    this.solicitud.idTipoMotivo !== null){
 
 
     this.solicitudes
@@ -1482,6 +1481,41 @@ export class CompletaSolicitudComponent extends CompleteTaskComponent {
           this.router.navigate(["/solicitudes/completar-solicitudes"]);
         }, 1600);*/
       });
+  }
+
+  obtenerComentariosAtencionPorInstanciaRaiz(){
+
+    return this.solicitudes
+      .obtenerComentariosAtencionPorInstanciaRaiz(
+        this.solicitud.idInstancia + 'COMENT'
+      )
+      .subscribe({
+        next: (response) => {
+          this.dataComentariosAprobaciones.length=0;
+          this.dataComentariosAprobacionesPorPosicion=response.variableType;
+          this.dataComentariosAprobaciones=this.filterDataComentarios(this.solicitud.idInstancia, 'RevisionSolicitud', 'comentariosAtencion');
+          this.dataComentariosAprobacionesRRHH=this.filterDataComentarios(this.solicitud.idInstancia, 'RequisicionPersonal', 'comentariosAtencionGerenteRRHH');
+          this.dataComentariosAprobacionesCREM=this.filterDataComentarios(this.solicitud.idInstancia, 'RequisicionPersonal', 'comentariosAtencionRemuneraciones');
+          console.log("Aprobaciones comentarios diamicos = ", this.dataComentariosAprobaciones);
+          console.log("Aprobaciones comentarios rrhh = ", this.dataComentariosAprobacionesRRHH);
+          console.log("Aprobaciones comentarios CREM = ", this.dataComentariosAprobacionesCREM);
+        },
+        error: (error: HttpErrorResponse) => {
+          this.utilService.modalResponse(
+            "No existe comentarios de aprobadores",
+            "error"
+          );
+        },
+      });
+
+  }
+
+  filterDataComentarios(idInstancia: string, taskKey: string, name: string) {
+    return this.dataComentariosAprobacionesPorPosicion.filter(item =>
+      (idInstancia ? item.rootProcInstId === idInstancia : true) && //Id de instancia
+      (taskKey ? item.procDefKey === taskKey : true) &&
+      (name ? item.name === name : true)
+    );
   }
 
 

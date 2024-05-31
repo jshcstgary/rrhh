@@ -166,27 +166,10 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
     { value: '3', descripcion: 'Instagram' },
   ];
 
-  /*
-  public dataTipoSolicitud: any = [
-    { id: 1, descripcion: "Requisición de Personal" },
-    { id: 2, descripcion: "Contratación de Familiares" },
-    { id: 3, descripcion: "Reingreso de personal" },
-    { id: 4, descripcion: "Acción de Personal" },
-  ];
-  public dataTipoMotivo: any = [
-    { id: 1, descripcion: "Nuevo" },
-    { id: 2, descripcion: "Eventual" },
-    { id: 3, descripcion: "Pasante" },
-    { id: 4, descripcion: "Reemplazo" },
-  ];
-
-  // public dataTipoAccion: any;
-
-  public dataTipoAccion: any = [
-    { id: 1, descripcion: "Motivo1" },
-    { id: 2, descripcion: "Motivo2" },
-  ];
-  */
+  public dataComentariosAprobaciones: any[] = [];
+  public dataComentariosAprobacionesPorPosicion: any[] = [];
+  public dataComentariosAprobacionesRRHH: any[] = [];
+  public dataComentariosAprobacionesCREM: any[] = [];
 
   public misParams: Solicitud;
 
@@ -531,6 +514,7 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
           this.taskType_Activity = tarea.solicitudes[0].tasK_DEF_KEY;
           this.nameTask = tarea.solicitudes[0].name;
           this.id_solicitud_by_params = tarea.solicitudes[0].idSolicitud;
+          this.rootProces = tarea.solicitudes[0].rootProcInstId;
           this.taskId = params["id"];
 
           this.getDetalleSolicitudById(this.id_solicitud_by_params);
@@ -854,27 +838,8 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
         console.log("Solicitud por id: ", response);
         this.solicitud = response;
 
-        //data de solicitudes
-
-       /* this.model.codigo=this.solicitud.idSolicitud ;
-        this.model.idEmpresa = this.solicitud.idEmpresa ;
-        this.model.compania=this.solicitud.empresa ;
-        this.model.unidadNegocio=this.solicitud.unidadNegocio;*/
-
-
         this.loadingComplete++;
         this.getDetalleSolicitudById(this.id_edit);
-
-        // tveas, si incluye el id, debo mostrarlos (true)
-        /*this.mostrarTipoJustificacionYMision = this.restrictionsIds.includes(
-          this.solicitud.idTipoMotivo
-        );
-
-        this.mostrarSubledger = this.restrictionsSubledgerIds.includes(
-          this.solicitud.idTipoMotivo
-        );*/ // comentado mmunoz
-
-        //console.log("DATA SOLICITUD BY ID: ", this.solicitud);
       },
       error: (error: HttpErrorResponse) => {
         this.utilService.modalResponse(error.error, "error");
@@ -886,7 +851,7 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
     return this.solicitudes.getDetalleSolicitudById(id).subscribe({
       next: (response: any) => {
         this.detalleSolicitud = response.detalleSolicitudType[0];
-        if( this.detalleSolicitud.codigoPosicion.length > 0){
+      if( this.detalleSolicitud.codigoPosicion.length > 0){
 
         this.model.codigoPosicion = this.detalleSolicitud.codigoPosicion;
         this.model.descrPosicion = this.detalleSolicitud.descripcionPosicion;
@@ -915,11 +880,7 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
 
 
       }
-       /* this.detalleSolicitud.estado = response.estado;
-        this.detalleSolicitud.estado = response.estadoSolicitud;
-        this.detalleSolicitud.idSolicitud = response.idSolicitud;
-        this.detalleSolicitud.unidadNegocio = response.unidadNegocio;*/ //comentado mmunoz
-        //console.log("DATA DETALLE SOLICITUD BY ID: ", this.detalleSolicitud);
+
         this.loadingComplete++;
 
         // tveas, si incluye el id, debo mostrarlos (true)
@@ -939,27 +900,10 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
           this.model.nivelDir;
         if (!this.dataAprobacionesPorPosicion[this.keySelected]) {
           this.getNivelesAprobacion();
+
+            this.obtenerComentariosAtencionPorInstanciaRaiz();
+
         }
-
-        //console.log("aprobacion: ",aprobacion);
-       /* console.log(`Elemento en la posición Miguel1 ${this.keySelected}:`, this.dataAprobacionesPorPosicion[this.keySelected][0].nivelAprobacionType.idNivelAprobacion);
-
-        for (const key in this.dataAprobacionesPorPosicion[this.keySelected]) {
-          if (this.dataAprobacionesPorPosicion.hasOwnProperty(key)) {
-            console.log(`Clave: ${key}`);
-            const aprobacionesObj = this.dataAprobacionesPorPosicion[this.keySelected][key];
-            for (const index in aprobacionesObj) {
-              if (aprobacionesObj.hasOwnProperty(index)) {
-                const aprobacion = aprobacionesObj[index];
-                console.log(`Entro en elementos de aprobacion..`);
-                console.log(`Elemento ${index}:`, aprobacion);
-                // Aquí puedes acceder a las propiedades de cada objeto
-                console.log(aprobacion.nivelAprobacionType.idNivelAprobacion);
-                console.log(aprobacion.aprobador.usuario);
-              }
-            }
-          }
-        }*/
 
         this.consultarNextTask(id);
 
@@ -1070,7 +1014,7 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
       cancelButtonText: "No",
     }).then((result) => {
       if (result.isConfirmed) {
-        this.save();
+        //this.save(); // comentado hasta confirmar que se debe Guardar para seleccion de candidato mmunoz
 
         if (this.submitted) {
         }
@@ -1204,6 +1148,7 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
   }
 
   onCompletar() { //completar tarea mmunoz
+    console.log("Task i de la tarea para completar:",this.uniqueTaskId);
     if (this.uniqueTaskId === null) {
       //handle this as an error
       this.errorMessage =
@@ -1267,32 +1212,6 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
   }
 
 
-  recorrerArreglo() {
-
-    this.keySelected =
-          this.solicitud.idTipoSolicitud +
-          "_" +
-          this.solicitud.idTipoMotivo +
-          "_" +
-          this.model.nivelDir;
-
-    console.log(`Elemento en la posición Miguel1 ${this.keySelected}:`, this.dataAprobacionesPorPosicion);
-
-    for (const key in this.dataAprobacionesPorPosicion) {
-      if (this.dataAprobacionesPorPosicion.hasOwnProperty(key)) {
-        console.log(`Clave: ${key}`);
-        const aprobacionesArray = this.dataAprobacionesPorPosicion[key];
-        for (const aprobacion of aprobacionesArray) {
-          console.log(aprobacion);
-          // Aquí puedes acceder a las propiedades de cada objeto
-          console.log(aprobacion.nivelAprobacionType.idNivelAprobacion);
-          console.log(aprobacion.aprobador.usuario);
-        }
-      }
-    }
-
-}
-
   completeAndCheckTask(taskId: string, variables: any) {
     this.camundaRestService
       .postCompleteTask(taskId, variables)
@@ -1325,6 +1244,7 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
       if(this.taskType_Activity!==environment.taskType_Registrar){
         this.RegistrarsolicitudCompletada = false;
       }
+
     });
   }
 
@@ -1351,24 +1271,8 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
   }
 
 
-  save2() {
-    this.solicitudes
-      .guardarDetalleSolicitud(this.solicitudes.modelDetalleSolicitud)
-      .subscribe((res) => {
-        this.utilService.modalResponse(
-          "Datos ingresados correctamente",
-          "success"
-        );
-        setTimeout(() => {
-          this.router.navigate(["/solicitudes/completar-solicitudes"]);
-        }, 1600);
-      });
-  }
-
   onCancel() {
     console.log("User action cancel");
-    // mmunoz
-    // this.router.navigate(["tasklist/Registrar"], { queryParams: {} });
     this.router.navigate(["tareas/consulta-tareas"]);
   }
 
@@ -1395,7 +1299,13 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
   getNivelesAprobacion() {
    if(this.detalleSolicitud.codigoPosicion !== "" &&
    this.detalleSolicitud.codigoPosicion !== undefined &&
-   this.detalleSolicitud.codigoPosicion != null){
+   this.detalleSolicitud.codigoPosicion != null &&
+   this.solicitud.idTipoSolicitud !== 0 &&
+   this.solicitud.idTipoSolicitud !== undefined &&
+   this.solicitud.idTipoSolicitud !== null &&
+   this.solicitud.idTipoMotivo !== 0 &&
+   this.solicitud.idTipoMotivo !== undefined &&
+   this.solicitud.idTipoMotivo !== null){
 
 
     this.solicitudes
@@ -1419,121 +1329,9 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
     });
 
   }
-      /*.getNivelesAprobacion(
-        this.solicitud.idTipoSolicitud,
-        this.solicitud.idTipoMotivo,
-        this.detalleSolicitud.nivelDireccion
-      )
-      .subscribe({
-        next: (response) => {
-          this.dataAprobacionesPorPosicion[this.keySelected] =
-            response.nivelAprobacionType.sort(this.compareNivelesAprobacion);
 
-          if (
-            !this.dataNivelesAprobacionPorCodigoPosicion[
-              this.model.codigoPosicion
-            ]
-          ) {
-            this.getDataNivelesAprobacionPorCodigoPosicion();
-          }
-        },
-        error: (error: HttpErrorResponse) => {
-          this.utilService.modalResponse(
-            "No existen niveles de aprobación para este empleado",
-            "error"
-          );
-        },
-      });*/
   }
 
-  /*getNivelesAprobacion() {
-    this.solicitudes
-      .getNivelesAprobacion(
-        this.solicitud.idTipoSolicitud,
-        this.solicitud.idTipoMotivo,
-        this.model.nivelDir
-      )
-      // .getNivelesAprobacion(1, 1, "TA")
-      .subscribe({
-        next: (response) => {
-          this.dataAprobacionesPorPosicion[this.keySelected] =
-            response.nivelAprobacionType.sort(this.compareNivelesAprobacion);
-
-          if (
-            !this.dataNivelesAprobacionPorCodigoPosicion[
-              this.model.codigoPosicion
-            ]
-          ) {
-            this.getDataNivelesAprobacionPorCodigoPosicion();
-          }
-        },
-        error: (error: HttpErrorResponse) => {
-          this.utilService.modalResponse(
-            "No existen niveles de aprobación para este empleado",
-            "error"
-          );
-        },
-      });
-  }*/ // comentado mmunoz
-
-
-  /*getDataNivelesAprobacionPorCodigoPosicion() {
-    this.solicitudes
-      .getDataNivelesAprobacionPorCodigoPosicion(this.model.codigoPosicion)
-      .subscribe({
-        next: (response) => {
-          this.dataNivelesAprobacionPorCodigoPosicion[
-            this.model.codigoPosicion
-          ] = response.evType;
-
-          for (let key1 of Object.keys(this.dataAprobacionesPorPosicion)) {
-            let eachDataNivelesDeAprobacion =
-              this.dataAprobacionesPorPosicion[key1];
-
-            for (let eachData of eachDataNivelesDeAprobacion) {
-              for (let key2 of Object.keys(
-                this.dataNivelesAprobacionPorCodigoPosicion
-              )) {
-                let eachDataNivelPorCodigoPosicion =
-                  this.dataNivelesAprobacionPorCodigoPosicion[key2];
-
-                for (let eachDataNivelPorCodigo of eachDataNivelPorCodigoPosicion) {
-                  if (
-                    eachData.nivelDireccion ==
-                    eachDataNivelPorCodigo.nivelDireccion
-                  ) {
-                    console.log(
-                      "OCURRE UNA COINCIDENCIA (eachData): ",
-                      eachData
-                    );
-                    console.log(
-                      "OCURRE UNA COINCIDENCIA (eachDataNivelPorCodigo): ",
-                      eachDataNivelPorCodigo
-                    );
-                    console.log("\n");
-
-                    eachData["usuario"] = eachDataNivelPorCodigo.usuario;
-                    eachData["descripcionPosicion"] =
-                      eachDataNivelPorCodigo.descripcionPosicion;
-                    break;
-                  }
-                }
-              }
-            }
-          }
-          console.log(
-            "**dataAprobacionesPorPosicion**: ",
-            this.dataAprobacionesPorPosicion
-          );
-        },
-        error: (error: HttpErrorResponse) => {
-          this.utilService.modalResponse(
-            "No existen niveles de aprobación para este empleado",
-            "error"
-          );
-        },
-      });
-  }*/ //comentado mmunoz
 
   getDataNivelesAprobacionPorCodigoPosicion() {
 
@@ -1594,13 +1392,7 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
     this.solicitudes
     .guardarDetallesAprobacionesSolicitud(this.solicitudes.modelDetalleAprobaciones)
       .subscribe((res) => {
-        /*this.utilService.modalResponse(
-          "Datos ingresados correctamente",
-          "success"
-        );
-         setTimeout(() => {
-          this.router.navigate(["/solicitudes/completar-solicitudes"]);
-        }, 1600);*/
+
       });
   }
 
@@ -1751,6 +1543,43 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
     const seconds = String(date.getSeconds()).padStart(2, '0');
     return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
   }
+
+
+  obtenerComentariosAtencionPorInstanciaRaiz(){
+
+    return this.solicitudes
+      .obtenerComentariosAtencionPorInstanciaRaiz(
+        this.solicitud.idInstancia + 'COMENT'
+      )
+      .subscribe({
+        next: (response) => {
+          this.dataComentariosAprobaciones.length=0;
+          this.dataComentariosAprobacionesPorPosicion=response.variableType;
+          this.dataComentariosAprobaciones=this.filterDataComentarios(this.solicitud.idInstancia, 'RevisionSolicitud', 'comentariosAtencion');
+          this.dataComentariosAprobacionesRRHH=this.filterDataComentarios(this.solicitud.idInstancia, 'RequisicionPersonal', 'comentariosAtencionGerenteRRHH');
+          this.dataComentariosAprobacionesCREM=this.filterDataComentarios(this.solicitud.idInstancia, 'RequisicionPersonal', 'comentariosAtencionRemuneraciones');
+          console.log("Aprobaciones comentarios diamicos = ", this.dataComentariosAprobaciones);
+          console.log("Aprobaciones comentarios rrhh = ", this.dataComentariosAprobacionesRRHH);
+          console.log("Aprobaciones comentarios CREM = ", this.dataComentariosAprobacionesCREM);
+        },
+        error: (error: HttpErrorResponse) => {
+          this.utilService.modalResponse(
+            "No existe comentarios de aprobadores",
+            "error"
+          );
+        },
+      });
+
+  }
+
+  filterDataComentarios(idInstancia: string, taskKey: string, name: string) {
+    return this.dataComentariosAprobacionesPorPosicion.filter(item =>
+      (idInstancia ? item.rootProcInstId === idInstancia : true) && //Id de instancia
+      (taskKey ? item.procDefKey === taskKey : true) &&
+      (name ? item.name === name : true)
+    );
+  }
+
 
 
 }

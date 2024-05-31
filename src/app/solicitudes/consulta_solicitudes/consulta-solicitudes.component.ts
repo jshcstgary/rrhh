@@ -540,7 +540,8 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
       this.instanceCreated.id != null &&
       this.instanceCreated.id != ""
     ) {
-      return this.instanceCreated.id;
+      //return this.instanceCreated.id;
+      return this.solicitud.idSolicitud;
     }
 
     return "No se ha creado Id de Proceso";

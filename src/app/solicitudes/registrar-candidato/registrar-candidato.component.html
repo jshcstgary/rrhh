@@ -24,7 +24,6 @@
             type="submit"
             class="btn btn-info me-2 mt-1"
             aria-label="Close"
-            [disabled]="!solicitudForm.form.valid"
           >
             <i class="fas fa-save"></i> Guardar
           </button>
@@ -35,13 +34,6 @@
           >
             <i class="fas fa-check-circle"></i> Completar Tarea
           </button>
-          <!--<button *ngIf="RegistrarsolicitudCompletada"
-            type="button"
-            (click)="onCancel()"
-            class="btn btn-info me-2 mt-1"
-          >
-            <i class="fas fa-times"></i> Registrar luego
-          </button>-->
         </div>
       </div>
       <div class="row mt-4">
@@ -101,22 +93,15 @@
               Código de posición
             </label>
             &nbsp;
-            <input
-              type="text"
-              name="codigoposicion"
-              [(ngModel)]="model.codigoPosicion"
-              style="color: black; font-size: 14px; width: 30%"
-              [ngbTypeahead]="searchCodigoPosicion"
-              (selectItem)="onSelectItem('codigoPosicion', $event)"
-              class="form-control"
+            &nbsp;
+            <span
               id="codigoposicion"
-              aria-describedby="inputGroupPrepend"
-              required
-              #codigoposicion="ngModel"
-            />
-            <button class="btn btn-light" type="button" disabled>
-              <i class="ti-search"></i>
-            </button>
+              name="codigoposicion"
+              style="color: black; font-size: 14px; "
+              class="text-start"
+              >{{ model.codigoPosicion }}</span
+            >
+
           </div>
         </div>
         <div class="col-md-6">
@@ -324,15 +309,14 @@
               for="misioncargo"
               >Misión del cargo</label
             >
-            <input
-              type="text"
-              name="misioncargo"
-              [(ngModel)]="model.misionCargo"
-              class="form-control"
-              id="misioncargo"
-              #misioncargo="ngModel"
-              required
-            />
+            <span
+            id="misioncargo"
+            name="misioncargo"
+            style="color: black; font-size: 14px; "
+            class="text-start"
+            >{{ model.misionCargo }}</span
+          >
+
           </div>
         </div>
       </div>
@@ -345,14 +329,13 @@
               >Justificación</label
             >
             &nbsp;
-            <textarea
-              id="justificacion"
-              name="justificacion"
-              [(ngModel)]="model.justificacionCargo"
-              style="color: black; font-size: 14px"
-              required
-              #justificacion="ngModel"
-            ></textarea>
+            <span
+            id="justificacion"
+            name="justificacion"
+            style="color: black; font-size: 14px; "
+            class="text-start"
+            >{{ model.justificacionCargo }}</span
+          >
           </div>
         </div>
       </div>
@@ -413,18 +396,13 @@
               >Tipo de contrato</label
             >
             &nbsp;
-            <select
+            <span
               id="tipocontrato"
               name="tipocontrato"
-              class="form-select"
-              [(ngModel)]="model.tipoContrato"
-              style="font-size: 14px"
-              required
+              style="color: black; font-size: 14px; "
+              class="text-start"
+              >{{ model.tipoContrato }}</span
             >
-              <option selected>Eventual</option>
-              <option>Temporal</option>
-              <option>Mixto</option>
-            </select>
           </div>
         </div>
         <div class="col-md-6">
@@ -455,13 +433,13 @@
               >Sueldo</label
             >
             &nbsp;
-            <input
-              [(ngModel)]="model.sueldo"
-              type="text"
-              name="sueldo"
-              class="form-control"
+            <span
               id="sueldo"
-            />
+              name="sueldo"
+              style="color: black; font-size: 14px; "
+              class="text-start"
+              >{{ model.sueldo }}</span
+            >
           </div>
         </div>
       </div>
@@ -483,13 +461,14 @@
               >Mensual</label
             >
             &nbsp;
-            <input
-              [(ngModel)]="model.sueldoMensual"
-              type="text"
-              name="mensual"
-              class="form-control"
+            <span
               id="mensual"
-            />
+              name="mensual"
+              style="color: black; font-size: 14px; "
+              class="text-start"
+              >{{ model.sueldoMensual }}</span
+            >
+
           </div>
         </div>
         <div class="col-md-6">
@@ -500,13 +479,13 @@
               >Trimestral</label
             >
             &nbsp;
-            <input
-              [(ngModel)]="model.sueldoTrimestral"
-              type="text"
-              name="trimestral"
-              class="form-control"
+            <span
               id="trimestral"
-            />
+              name="trimestral"
+              style="color: black; font-size: 14px; "
+              class="text-start"
+              >{{ model.sueldoTrimestral }}</span
+            >
           </div>
         </div>
       </div>
@@ -520,13 +499,13 @@
               >Semestral</label
             >
             &nbsp;
-            <input
-              [(ngModel)]="model.sueldoSemestral"
-              type="text"
-              name="semestral"
-              class="form-control"
+            <span
               id="semestral"
-            />
+              name="semestral"
+              style="color: black; font-size: 14px; "
+              class="text-start"
+              >{{ model.sueldoSemestral }}</span
+            >
           </div>
         </div>
         <div class="col-md-6">
@@ -537,102 +516,17 @@
               >Anual</label
             >
             &nbsp;
-            <input
-              [(ngModel)]="model.sueldoAnual"
-              type="text"
-              name="anual"
-              class="form-control"
+            <span
               id="anual"
-            />
-          </div>
-        </div>
-      </div>
-
-      <div class="row mt-4">
-        <div class="col-md-4">
-          <div class="mb-4">
-            <a> <h3 class="sol-danger">Aprobadores de la solicitud</h3></a>
-          </div>
-        </div>
-        <div class="col-md-8">
-          <hr />
-        </div>
-      </div>
-
-      <div class="accordion" id="accordionExample">
-        <div
-          *ngFor="
-            let nivelItem of dataAprobacionesPorPosicion[keySelected];
-            let i = index
-          "
-          class="accordion-item"
-        >
-          <div class="accordion-header">
-            <button
-              class="accordion-button"
-              type="button"
-              data-bs-toggle="collapse"
-              [attr.data-bs-target]="'#collapse' + i"
-              aria-expanded="true"
-              [attr.aria-controls]="'collapse' + i"
-              style="display: block"
+              name="anual"
+              style="color: black; font-size: 14px; "
+              class="text-start"
+              >{{ model.sueldoAnual }}</span
             >
-              <div
-                class="row"
-                style="align-items: center; justify-content: space-around"
-              >
-                <div class="col">{{ nivelItem.nivelAprobacionType.ruta }}</div>
-                <div class="col">
-                  {{
-                    nivelItem.aprobador.usuario !== "" &&
-                    nivelItem.aprobador.usuario !== undefined &&
-                    nivelItem.aprobador.usuario != null
-                      ? nivelItem.aprobador.usuario
-                      : "No aplica"
-                  }}
-                </div>
-                <div class="col">
-                  {{ nivelItem.nivelAprobacionType.nivelAprobacionRuta }}
-                </div>
-              </div>
-            </button>
-          </div>
-
-          <div
-            [id]="'collapse' + i"
-            class="accordion-collapse collapse"
-            [ngClass]="{ show: i === 0 }"
-            data-bs-parent="#accordionExample"
-          >
-            <div class="row">
-              <div class="col">
-                <div class="input-group">
-                  <label
-                    for="lvl1descripcion"
-                    style="color: #0056b3; font-size: 14px; "
-                  >
-                    Descripción de la posición
-                  </label>
-                  &nbsp;
-                  <span
-                    id="lvl1descripcion"
-                    name=""
-                    style="color: black; font-size: 14px; "
-                    class="text-start"
-                    >{{
-                      nivelItem.aprobador.descripcionPosicion !== "" &&
-                      nivelItem.aprobador.descripcionPosicion !== undefined &&
-                      nivelItem.aprobador.descripcionPosicion != null
-                        ? nivelItem.aprobador.descripcionPosicion
-                        : "No aplica"
-                    }}</span
-                  >
-                </div>
-              </div>
-            </div>
           </div>
         </div>
       </div>
+
 
       <div class="row mt-4">
         <div class="col-md-4">
@@ -645,23 +539,42 @@
         </div>
       </div>
 
+      <!--Comentarios de aprobadores en seleccion de candidato-->
+
       <div class="row mt-2">
         <div class="col">
-          <div class="input-group mb-3">
-            <label
-            class="input-group-text label-estilo"
-              for="aprobadoresdinamicos"
-            >
-              Aprobadores dinámicos
-            </label>
-            &nbsp;
-            <span
-              id="aprobadoresdinamicos"
-              name=""
-              style="color: black; font-size: 14px; "
-              class="text-start"
-              >{{ detalleSolicitud.aprobadoresDinamicos }}</span
-            >
+          <div *ngFor="let item of dataComentariosAprobaciones; let i = index" class="row mt-2 align-items-center">
+            <div class="col-auto">
+              <label
+                *ngIf="i === 0"
+                class="input-group-text adjustable-label"
+                for="lcomentariodinamico"
+              >
+                Aprobadores dinámicos
+              </label>
+              <label
+                *ngIf="i !== 0"
+                class="input-group-text hidden-label"
+                for="lcomentariodinamico"
+              >
+                Aprobadores dinámicos
+              </label>
+            </div>
+            <div class="col">
+              <span
+                id="lcomentariodinamico"
+                name=""
+                style="color: black; font-size: 14px;"
+              >
+                {{
+                  item.text !== "" &&
+                  item.text !== undefined &&
+                  item.text != null
+                    ? item.text
+                    : "No hay comentario"
+                }}
+              </span>
+            </div>
           </div>
         </div>
       </div>
@@ -670,19 +583,28 @@
         <div class="col">
           <div class="input-group mb-3">
             <label
-              class="input-group-text label-estilo"
-              for="gerenterrhhcorporativo"
+              class="input-group-text adjustable-label2"
+              for="lcomentariorrhh"
             >
-              Gerente de RRHH Corporativo
+               Gerente de RRHH Corporativo
             </label>
             &nbsp;
-            <span
-              id="gerenterrhhcorporativo"
-              name=""
-              style="color: black; font-size: 14px; "
-              class="text-start"
-              >{{ detalleSolicitud.gerenteRRHHCorporativo }}</span
-            >
+
+            <div *ngFor="let item of dataComentariosAprobacionesRRHH">
+              &nbsp;
+              <span
+                id="lcomentariorrhh"
+                name=""
+                style="color: black; font-size: 14px;"
+                >{{
+                  item.text !== "" &&
+                  item.text !== undefined &&
+                  item.text != null
+                    ? item.text
+                    : "No hay comentario"
+                }}</span
+              >
+            </div>
           </div>
         </div>
       </div>
@@ -691,7 +613,7 @@
         <div class="col">
           <div class="input-group mb-3">
             <label
-              class="input-group-text label-estilo"
+              class="input-group-text adjustable-label2"
               for="comitederemuneraciones"
             >
               Comité de Remuneraciones
@@ -704,10 +626,27 @@
               class="text-start"
               >{{ detalleSolicitud.comiteRemuneraciones }}</span
             >
+            <div *ngFor="let item of dataComentariosAprobacionesCREM">
+              &nbsp;
+              <span
+                id="lcomentariocrem"
+                name=""
+                style="color: black; font-size: 14px;"
+                >{{
+                  item.text !== "" &&
+                  item.text !== undefined &&
+                  item.text != null
+                    ? item.text
+                    : "No hay comentario"
+                }}</span
+              >
+            </div>
           </div>
         </div>
       </div>
 
+
+     <!--Fin de Comentarios -->
       <div class="row mt-4">
         <div class="col-md-4">
           <div class="mb-4">

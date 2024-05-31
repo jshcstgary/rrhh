@@ -69,5 +69,66 @@ textarea {
 
   color: #C69D08;
   font-size: 20px;
-  font-weight:500;
+  font-weight:700;
 }
+
+.row {
+  display: flex;
+  flex-wrap: nowrap;
+}
+
+.align-items-center {
+  align-items: center;
+}
+
+.adjustable-label {
+  color: #0056B3;
+  background-color: white;
+  font-size: 16px;
+  white-space: normal;
+  word-wrap: break-word;
+  font-weight:500;
+  border-style: none;
+  text-align: left;
+ // display: block;
+  min-width: 25px; /* Ajusta este valor según sea necesario */
+
+}
+
+/*#lcomentariodinamico {
+  word-wrap: break-word;
+  display: block;
+  margin-left: 5px; /* Asegura que haya un espacio entre la etiqueta y el texto */
+//}*/
+
+.hidden-label {
+  visibility: hidden;
+}
+
+
+/*.adjustable-label {
+  color: #0056B3;
+  font-size: 16px;
+  background-color: white;
+  font-weight:500;
+  border-style: none;
+  width: 10%;      /* Ajusta al 100% del contenedor padre */
+ // word-wrap: break-word; /* Permite que las palabras se dividan en el borde del contenedor */
+ // white-space: normal;  /* Permite que el texto se ajuste y baje a la siguiente línea */
+ // text-align: left;
+//}
+
+/*.row {
+  //display: flex;
+  align-items: flex-start;
+}
+
+#lcomentariodinamico {
+  word-wrap: break-word;
+}
+
+.align-items-center {
+  //align-items: center;
+}*/
+
+
