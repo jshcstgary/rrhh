@@ -1188,7 +1188,7 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
           this.utilService.closeLoadingSpinner();
           //fin actualizo la solicitud a enviada
           this.utilService.modalResponse(
-            `Solicitud registrada correctamente [${this.idDeInstancia}]. Será redirigido en un momento...`,
+            `Solicitud registrada correctamente [${this.solicitud.idSolicitud}]. Será redirigido en un momento...`,
             "success"
           );
           setTimeout(() => {

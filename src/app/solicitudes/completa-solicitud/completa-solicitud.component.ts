@@ -51,7 +51,7 @@ export class CompletaSolicitudComponent extends CompleteTaskComponent {
   selectedDateIn: Date = new Date();
   //buttonValue: string = '';
 
-  buttonValue: string | null = null;
+  buttonValue: string | null = 'aprobar';
 
   process(action: string) {
 
@@ -1177,7 +1177,7 @@ export class CompletaSolicitudComponent extends CompleteTaskComponent {
 
           this.utilService.closeLoadingSpinner();
           this.utilService.modalResponse(
-            `Solicitud registrada correctamente [${this.idDeInstancia}]. Será redirigido en un momento...`,
+            `Solicitud completada correctamente [${this.solicitud.idSolicitud}]. Será redirigido en un momento...`,
             "success"
           );
           setTimeout(() => {

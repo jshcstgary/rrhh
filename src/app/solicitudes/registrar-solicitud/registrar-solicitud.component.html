@@ -12,7 +12,7 @@
           </div>
         </div>
         <div class="col-md-4 text-end">
-          <button *ngIf="RegistrarsolicitudCompletada"
+          <button
             type="button"
             type="submit"
             class="btn btn-info me-2 mt-1"
@@ -21,14 +21,14 @@
           >
             <i class="fas fa-save"></i> Guardar
           </button>
-          <button
+          <button *ngIf="RegistrarsolicitudCompletada"
             type="button"
             (click)="onCompletar()"
             class="btn btn-info me-2 mt-1"
           >
             <i class="fas fa-check-circle"></i> Completar Tarea
           </button>
-          <button *ngIf="RegistrarsolicitudCompletada"
+          <button
             type="button"
             (click)="onCancel()"
             class="btn btn-info me-2 mt-1"

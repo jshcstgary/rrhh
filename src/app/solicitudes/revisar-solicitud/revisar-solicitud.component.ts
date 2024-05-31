@@ -52,7 +52,7 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
   datosAprobadores: DatosAprobadores = new DatosAprobadores();
   //buttonValue: string = '';
 
-  buttonValue: string | null = null;
+  buttonValue: string | null = 'aprobar';
 
   process(action: string) {
 
@@ -1175,7 +1175,7 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
           this.utilService.closeLoadingSpinner();
           //fin actualizo la solicitud a enviada
           this.utilService.modalResponse(
-            `Solicitud registrada correctamente [${this.idDeInstancia}]. Será redirigido en un momento...`,
+            `Solicitud registrada correctamente [${this.solicitud.idSolicitud}]. Será redirigido en un momento...`,
             "success"
           );
           setTimeout(() => {

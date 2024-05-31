@@ -166,13 +166,15 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
 
   public mostrarTipoJustificacionYMision = false;
 
-  public RegistrarsolicitudCompletada = true;
+  public RegistrarsolicitudCompletada = false;
 
   public restrictionsIds: any[] = ["1", "2", 1, 2];
 
   public restrictionsSubledgerIds: any[] = ["4", 4];
 
   public mostrarSubledger = false;
+
+  public IsCodigoPosicion = false;
 
   public dataEmpleadoEvolution: any[] = [
     {
@@ -905,6 +907,8 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
       next: (response: any) => {
         this.detalleSolicitud = response.detalleSolicitudType[0];
         if( this.detalleSolicitud.codigoPosicion.length > 0){
+
+          this.RegistrarsolicitudCompletada= true;
 
         this.model.codigoPosicion = this.detalleSolicitud.codigoPosicion;
         this.model.descrPosicion = this.detalleSolicitud.descripcionPosicion;

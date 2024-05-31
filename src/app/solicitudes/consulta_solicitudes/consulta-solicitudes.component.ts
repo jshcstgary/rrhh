@@ -454,6 +454,8 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
           // const processDefinitionKey = "process_modelo";
           //const processDefinitionKey = params['processdefinitionkey'];
           const variables = this.generatedVariablesFromFormFields();
+
+
           this.camundaRestService
             .postProcessInstance(processDefinitionKey, variables)
             .subscribe((instanceOutput) => {
@@ -496,28 +498,7 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
                     });
                 });
 
-              /*this.solicitudes
-                .guardarSolicitud(this.solicitud)
-                .subscribe((response) => {
-                  console.log("MI MODELO AL ENVIAR ES ESTO: ", this.solicitud);
-                  this.solicitud.idSolicitud = response.idSolicitud;
-                  this.solicitud.fechaActualizacion =
-                    response.fechaActualizacion;
-                  this.solicitud.fechaCreacion = response.fechaCreacion;
-                  this.submitted = true;
-                  console.log("IDDDDD INSTANCIA: ", this.solicitud.idInstancia);
-                  setTimeout(() => {
-                    this.router.navigate(
-                      [
-                        "/solicitudes/registrar-solicitud",
-                        this.solicitud.idInstancia,
-                      ],
-                      {
-                        queryParams: { ...this.solicitud },
-                      }
-                    );
-                  }, 1600);
-                });*/
+
             });
         });
 
@@ -572,6 +553,7 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
   }
 
   generatedVariablesFromFormFields() {
+    let requestData: any;
     let variables: any = {};
 
     variables.tipoSolicitud = { value: this.solicitud.tipoSolicitud };
@@ -581,7 +563,15 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
       variables.tipoMotivo = { value: this.solicitud.tipoMotivo };
     }
 
-    return { variables };
+      requestData = {
+        businessKey: '',
+        variables,
+        withVariablesInReturn: true
+      };
+
+
+    //return { variables };
+    return { requestData };
   }
 
   // tipoSolicitud
