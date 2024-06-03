@@ -319,6 +319,16 @@ export class CrearNivelesAprobacionComponent implements OnInit {
           })
           .subscribe(
             (response) => {
+              this.utilService.closeLoadingSpinner();
+                    this.utilService.modalResponse(
+                      "Datos ingresados correctamente",
+                      "success"
+                    );
+                     setTimeout(() => {
+                      this.router.navigate([
+                        "/mantenedores/niveles-aprobacion",
+                      ]);
+                    }, 1600);
               // Inicio
               /*this.serviceNivelesAprobacion
                 .refrescarNivelesAprobaciones()
@@ -357,6 +367,14 @@ export class CrearNivelesAprobacionComponent implements OnInit {
       })
       .subscribe(
         (response) => {
+          this.utilService.closeLoadingSpinner();
+                this.utilService.modalResponse(
+                  "Datos actualizados correctamente",
+                  "success"
+                );
+                setTimeout(() => {
+                  this.router.navigate(["/mantenedores/niveles-aprobacion"]);
+                }, 1600);
           /*this.serviceNivelesAprobacion
             .refrescarNivelesAprobaciones()
             .subscribe(
