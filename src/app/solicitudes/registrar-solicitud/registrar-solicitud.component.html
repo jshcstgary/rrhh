@@ -369,11 +369,12 @@
             <label
               class="input-group-text label-estilo"
               for="misioncargo"
-              >Misión del cargo</label
+              >Misión del cargo <span style="color: red;">*</span></label
             >
             <input
               type="text"
               name="misioncargo"
+              placeholder="Campo obligatorio"
               [(ngModel)]="model.misionCargo"
               class="form-control"
               id="misioncargo"
@@ -389,12 +390,13 @@
             <label
               class="input-group-text adjustable-label"
               for="justificacion"
-              >Justificación</label
+              >Justificación <span style="color: red;">*</span></label
             >
             &nbsp;
             <textarea
               id="justificacion"
               name="justificacion"
+              placeholder="Campo obligatorio"
               [(ngModel)]="model.justificacionCargo"
               style="color: black; font-size: 14px"
               required

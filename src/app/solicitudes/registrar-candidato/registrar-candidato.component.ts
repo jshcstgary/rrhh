@@ -43,7 +43,7 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
 
 
 
-  tipoProceso: string ='';
+  tipoProceso: string = '';
   tipoFuente: string;
   fechas: any = {
     actualizacionPerfil: '',
@@ -75,18 +75,20 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
   isChecked: boolean = true; // Valor inicial del checkbox
   isDivVisible = false; // Valor inicial del div, visible
 
-  isCheckedPerfil: boolean=false;
-  isCheckedBusquedaCandidato: boolean=false;
-  isCheckedFinContratacion: boolean=false;
-  isCheckedProcesoContratacion: boolean=false;
-  isCheckedCandidatoSeleccionado: boolean=false;
-  isCheckedTomaDecisiones: boolean=false;
-  isCheckedEntrevistaJefatura: boolean=false;
-  isCheckedEntregaJefe: boolean=false;
-  isCheckedElaboracionInforme: boolean=false;
-  isCheckedReferencias: boolean=false;
-  isCheckedPruebas: boolean=false;
-  isCheckedEntrevista: boolean=false;
+  isCheckedPerfil: boolean = false;
+  isCheckedBusquedaCandidato: boolean = false;
+  isCheckedFinContratacion: boolean = false;
+  isCheckedProcesoContratacion: boolean = false;
+  isCheckedCandidatoSeleccionado: boolean = false;
+  isCheckedTomaDecisiones: boolean = false;
+  isCheckedEntrevistaJefatura: boolean = false;
+  isCheckedEntregaJefe: boolean = false;
+  isCheckedElaboracionInforme: boolean = false;
+  isCheckedReferencias: boolean = false;
+  isCheckedPruebas: boolean = false;
+  isCheckedEntrevista: boolean = false;
+
+  nombreCandidato: string = "";
 
   toggleDivVisibility(event: Event): void {
     const inputElement = event.target as HTMLInputElement;
@@ -162,7 +164,7 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
   // This is a more likely scenario.
   // In this case, parent flag is set to true. It requires additional handling to derive task id from process instance id.
   public parentIdFlag: string | null = "false"; // set to true if the id is for the process instance, instead of task-id
- //Multitrabajo, LinkedIn, Instagram
+  //Multitrabajo, LinkedIn, Instagram
   selectedOption: string;
   options: Array<{ value: string, descripcion: string }> = [
     { value: '1', descripcion: 'Multitrabajo' },
@@ -419,8 +421,8 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
         term.length < 1
           ? []
           : this.codigosPosicion
-              .filter((v) => v.toLowerCase().indexOf(term.toLowerCase()) > -1)
-              .slice(0, 10)
+            .filter((v) => v.toLowerCase().indexOf(term.toLowerCase()) > -1)
+            .slice(0, 10)
       )
     );
 
@@ -434,8 +436,8 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
         term.length < 1
           ? []
           : this.subledgers
-              .filter((v) => v.toLowerCase().indexOf(term.toLowerCase()) > -1)
-              .slice(0, 10)
+            .filter((v) => v.toLowerCase().indexOf(term.toLowerCase()) > -1)
+            .slice(0, 10)
       )
     );
 
@@ -449,8 +451,8 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
         term.length < 1
           ? []
           : this.nombresEmpleados
-              .filter((v) => v.toLowerCase().indexOf(term.toLowerCase()) > -1)
-              .slice(0, 10)
+            .filter((v) => v.toLowerCase().indexOf(term.toLowerCase()) > -1)
+            .slice(0, 10)
       )
     );
 
@@ -474,7 +476,7 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
         this.solicitudDataInicial = this.solicitudes.modelSolicitud;
         this.detalleSolicitud = this.solicitudes.modelDetalleSolicitud;
         this.detalleSolicitud.idSolicitud =
-        this.solicitudDataInicial.idSolicitud;
+          this.solicitudDataInicial.idSolicitud;
       }
 
       // console.log("ID editar: ", this.id_edit);
@@ -510,18 +512,18 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
         // id is parent process instance id. so handle it accordingly
         // we are looking for task id 'Registrar' in a recently started process instance 'id'
         this.idDeInstancia = params["id"];
-        this.consultaTareasService.getTareaIdParam(this.id_solicitud_by_params )
-        .subscribe((tarea)=>{
-          console.log("Task: ", tarea);
+        this.consultaTareasService.getTareaIdParam(this.id_solicitud_by_params)
+          .subscribe((tarea) => {
+            console.log("Task: ", tarea);
 
-          this.uniqueTaskId=tarea.solicitudes[0].taskId;
-          this.taskType_Activity = tarea.solicitudes[0].tasK_DEF_KEY;
-          this.nameTask = tarea.solicitudes[0].name;
-          this.id_solicitud_by_params = tarea.solicitudes[0].idSolicitud;
-          this.rootProces = tarea.solicitudes[0].rootProcInstId;
-          this.taskId = params["id"];
+            this.uniqueTaskId = tarea.solicitudes[0].taskId;
+            this.taskType_Activity = tarea.solicitudes[0].tasK_DEF_KEY;
+            this.nameTask = tarea.solicitudes[0].name;
+            this.id_solicitud_by_params = tarea.solicitudes[0].idSolicitud;
+            this.rootProces = tarea.solicitudes[0].rootProcInstId;
+            this.taskId = params["id"];
 
-          this.getDetalleSolicitudById(this.id_solicitud_by_params);
+            this.getDetalleSolicitudById(this.id_solicitud_by_params);
             this.getSolicitudById(this.id_solicitud_by_params);
             this.date = tarea.solicitudes[0].fechaCreacion;
             this.loadExistingVariables(
@@ -529,10 +531,10 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
               variableNames
             );
 
-          if(this.nameTask!=="Registrar solicitud"){
-            this.RegistrarsolicitudCompletada = false;
-          }
-        });
+            if (this.nameTask !== "Registrar solicitud") {
+              this.RegistrarsolicitudCompletada = false;
+            }
+          });
       } else {
         // unique id is from the route params
         this.uniqueTaskId = params["id"];
@@ -570,14 +572,14 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
         this.solicitud.idTipoSolicitud,
         this.solicitud.idTipoMotivo,
         this.model.codigoPosicion,
-        this.model.nivelDir,'A'
+        this.model.nivelDir, 'A'
       )
       .subscribe({
         next: (response) => {
           this.dataAprobacionesPorPosicion[this.keySelected] =
             response.nivelAprobacionPosicionType;
 
-            //console.log("Aprobaciones Miguel = ", response.nivelAprobacionPosicionType);
+          //console.log("Aprobaciones Miguel = ", response.nivelAprobacionPosicionType);
         },
         error: (error: HttpErrorResponse) => {
           this.utilService.modalResponse(
@@ -781,8 +783,8 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
       await this.ObtenerServicioNivelDireccion();
       await this.getSolicitudes();
       //if (this.id_edit !== undefined) { //comentado mmunoz
-        //await this.getDetalleSolicitudById(this.id_edit); //comentado mmunoz
-        await this.getSolicitudById(this.id_edit);
+      //await this.getDetalleSolicitudById(this.id_edit); //comentado mmunoz
+      await this.getSolicitudById(this.id_edit);
       //} // comentado munoz
       await this.getDataEmpleadosEvolution();
       await this.ObtenerServicioTipoProceso();
@@ -855,35 +857,35 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
     return this.solicitudes.getDetalleSolicitudById(id).subscribe({
       next: (response: any) => {
         this.detalleSolicitud = response.detalleSolicitudType[0];
-      if( this.detalleSolicitud.codigoPosicion.length > 0){
+        if (this.detalleSolicitud.codigoPosicion.length > 0) {
 
-        this.model.codigoPosicion = this.detalleSolicitud.codigoPosicion;
-        this.model.descrPosicion = this.detalleSolicitud.descripcionPosicion;
-        this.model.subledger = this.detalleSolicitud.subledger;
-        this.model.nombreCompleto = this.detalleSolicitud.nombreEmpleado;
-        this.model.compania = this.detalleSolicitud.compania;
-        this.model.unidadNegocio = this.detalleSolicitud.unidadNegocio;
-        this.model.departamento = this.detalleSolicitud.departamento;
-        this.model.nombreCargo = this.detalleSolicitud.cargo;
-        this.model.localidad = this.detalleSolicitud.localidad;
-        this.model.nivelDir = this.detalleSolicitud.nivelDireccion;
-        this.model.nomCCosto = this.detalleSolicitud.centroCosto;
-        this.model.misionCargo = this.detalleSolicitud.misionCargo;
-        this.model.justificacionCargo = this.detalleSolicitud.justificacion;
-        this.model.reportaA = this.detalleSolicitud.reportaA;
-        this.model.supervisaA = this.detalleSolicitud.supervisaA;
-        this.model.tipoContrato = this.detalleSolicitud.tipoContrato;
-        this.model.nivelRepa = this.detalleSolicitud.nivelReporteA;
-        this.model.sueldo = this.detalleSolicitud.sueldo;
-        this.model.sueldoMensual = this.detalleSolicitud.sueldoVariableMensual;
-        this.model.sueldoTrimestral = this.detalleSolicitud.sueldoVariableTrimestral;
-        this.model.sueldoSemestral = this.detalleSolicitud.sueldoVariableSemestral;
-        this.model.sueldoAnual = this.detalleSolicitud.sueldoVariableAnual
-        this.model.correo = this.detalleSolicitud.correo;
-        this.model.fechaIngreso = this.detalleSolicitud.fechaIngreso;
+          this.model.codigoPosicion = this.detalleSolicitud.codigoPosicion;
+          this.model.descrPosicion = this.detalleSolicitud.descripcionPosicion;
+          this.model.subledger = this.detalleSolicitud.subledger;
+          this.model.nombreCompleto = this.detalleSolicitud.nombreEmpleado;
+          this.model.compania = this.detalleSolicitud.compania;
+          this.model.unidadNegocio = this.detalleSolicitud.unidadNegocio;
+          this.model.departamento = this.detalleSolicitud.departamento;
+          this.model.nombreCargo = this.detalleSolicitud.cargo;
+          this.model.localidad = this.detalleSolicitud.localidad;
+          this.model.nivelDir = this.detalleSolicitud.nivelDireccion;
+          this.model.nomCCosto = this.detalleSolicitud.centroCosto;
+          this.model.misionCargo = this.detalleSolicitud.misionCargo;
+          this.model.justificacionCargo = this.detalleSolicitud.justificacion;
+          this.model.reportaA = this.detalleSolicitud.reportaA;
+          this.model.supervisaA = this.detalleSolicitud.supervisaA;
+          this.model.tipoContrato = this.detalleSolicitud.tipoContrato;
+          this.model.nivelRepa = this.detalleSolicitud.nivelReporteA;
+          this.model.sueldo = this.detalleSolicitud.sueldo;
+          this.model.sueldoMensual = this.detalleSolicitud.sueldoVariableMensual;
+          this.model.sueldoTrimestral = this.detalleSolicitud.sueldoVariableTrimestral;
+          this.model.sueldoSemestral = this.detalleSolicitud.sueldoVariableSemestral;
+          this.model.sueldoAnual = this.detalleSolicitud.sueldoVariableAnual
+          this.model.correo = this.detalleSolicitud.correo;
+          this.model.fechaIngreso = this.detalleSolicitud.fechaIngreso;
 
 
-      }
+        }
 
         this.loadingComplete++;
 
@@ -905,7 +907,7 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
         if (!this.dataAprobacionesPorPosicion[this.keySelected]) {
           this.getNivelesAprobacion();
 
-            this.obtenerComentariosAtencionPorInstanciaRaiz();
+          this.obtenerComentariosAtencionPorInstanciaRaiz();
 
         }
 
@@ -960,7 +962,7 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
 
   // Prueba servicio
   getSolicitudes() {
-    this.solicitudes.getSolicitudes().subscribe((data) => {});
+    this.solicitudes.getSolicitudes().subscribe((data) => { });
   }
 
   guardarSolicitud() {
@@ -1035,115 +1037,115 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
       "Guardando información, espere por favor..."
     ); // comentado mmunoz
 
-        this.submitted = true;
-        let idInstancia = this.solicitudDataInicial.idInstancia;
+    this.submitted = true;
+    let idInstancia = this.solicitudDataInicial.idInstancia;
+
+
+    console.log(
+      "this.solicitudDataInicial.idInstancia: ",
+      this.solicitudDataInicial.idInstancia
+    );
+
+    let extra = {
+      idEmpresa: this.model.compania,
+      empresa: this.model.compania,
+      estadoSolicitud: "Pendiente",
+      unidadNegocio: this.model.unidadNegocio,
+      idUnidadNegocio: this.model.unidadNegocio,
+    };
+
+    this.solicitud.empresa = this.model.idEmpresa;
+    this.solicitud.idEmpresa = this.model.idEmpresa;
+
+    this.solicitud.unidadNegocio = this.model.unidadNegocio;
+    this.solicitud.idUnidadNegocio = this.model.unidadNegocio;
+    this.solicitud.estadoSolicitud = "2";
+    console.log("this.solicitud: ", this.solicitud);
+    this.solicitudes
+      .actualizarSolicitud(this.solicitud)
+      .subscribe((responseSolicitud) => {
+        console.log("responseSolicitud: ", responseSolicitud);
+
+        this.detalleSolicitud.idSolicitud = this.solicitud.idSolicitud;
+
+        this.detalleSolicitud.areaDepartamento = this.model.departamento;
+
+        this.detalleSolicitud.cargo = this.model.nombreCargo;
+        this.detalleSolicitud.centroCosto = this.model.nomCCosto;
+        this.detalleSolicitud.codigoPosicion = this.model.codigoPosicion;
+        this.detalleSolicitud.compania = this.model.compania; //idEmpresa
+        this.detalleSolicitud.departamento = this.model.departamento;
+        this.detalleSolicitud.descripcionPosicion =
+          this.model.descrPosicion;
+
+        this.detalleSolicitud.justificacion = this.model.justificacionCargo;
+        this.detalleSolicitud.localidad = this.model.localidad;
+        this.detalleSolicitud.localidadZona = this.model.localidad;
+
+        this.detalleSolicitud.misionCargo = this.model.misionCargo;
+        this.detalleSolicitud.nivelDireccion = this.model.nivelDir;
+        this.detalleSolicitud.nivelReporteA = this.model.nivelRepa;
+
+        this.detalleSolicitud.nombreEmpleado = this.model.nombreCompleto;
+
+
+        this.detalleSolicitud.reportaA = this.model.reportaA;
+
+        this.detalleSolicitud.subledger = this.model.subledger;
+
+        this.detalleSolicitud.subledgerEmpleado = this.model.subledger;
+
+        this.detalleSolicitud.sucursal = this.model.sucursal;
+
+        this.detalleSolicitud.misionCargo = this.model.misionCargo;
+        this.detalleSolicitud.justificacion = this.model.justificacionCargo;
+
+        this.detalleSolicitud.sueldo = this.model.sueldo;
+        this.detalleSolicitud.sueldoVariableMensual =
+          this.model.sueldoMensual;
+        this.detalleSolicitud.sueldoVariableTrimestral =
+          this.model.sueldoTrimestral;
+        this.detalleSolicitud.sueldoVariableSemestral =
+          this.model.sueldoSemestral;
+        this.detalleSolicitud.sueldoVariableAnual = this.model.sueldoAnual;
+        this.detalleSolicitud.tipoContrato = this.model.tipoContrato;
+        this.detalleSolicitud.unidadNegocio = this.model.unidadNegocio;
+
+        this.detalleSolicitud.correo = this.model.correo;
+
+        this.detalleSolicitud.supervisaA = this.model.supervisaA;
+
+        this.detalleSolicitud.fechaIngreso = this.model.fechaIngresogrupo == "" ? this.model.fechaIngreso : this.model.fechaIngresogrupo;
 
 
         console.log(
-          "this.solicitudDataInicial.idInstancia: ",
-          this.solicitudDataInicial.idInstancia
+          "ESTO LE MANDO AL ACTUALIZAR this.detalleSolicitud: ",
+          this.detalleSolicitud, this.model
         );
 
-        let extra = {
-          idEmpresa: this.model.compania,
-          empresa: this.model.compania,
-          estadoSolicitud: "Pendiente",
-          unidadNegocio: this.model.unidadNegocio,
-          idUnidadNegocio: this.model.unidadNegocio,
-        };
-
-        this.solicitud.empresa = this.model.idEmpresa;
-        this.solicitud.idEmpresa = this.model.idEmpresa;
-
-        this.solicitud.unidadNegocio = this.model.unidadNegocio;
-        this.solicitud.idUnidadNegocio = this.model.unidadNegocio;
-        this.solicitud.estadoSolicitud = "2";
-        console.log("this.solicitud: ", this.solicitud);
         this.solicitudes
-          .actualizarSolicitud(this.solicitud)
-          .subscribe((responseSolicitud) => {
-            console.log("responseSolicitud: ", responseSolicitud);
+          .actualizarDetalleSolicitud(this.detalleSolicitud)
+          .subscribe((responseDetalle) => {
+            console.log("responseDetalle: ", responseDetalle);
 
-            this.detalleSolicitud.idSolicitud = this.solicitud.idSolicitud;
-
-            this.detalleSolicitud.areaDepartamento = this.model.departamento;
-
-            this.detalleSolicitud.cargo = this.model.nombreCargo;
-            this.detalleSolicitud.centroCosto = this.model.nomCCosto;
-            this.detalleSolicitud.codigoPosicion = this.model.codigoPosicion;
-            this.detalleSolicitud.compania = this.model.compania; //idEmpresa
-            this.detalleSolicitud.departamento = this.model.departamento;
-            this.detalleSolicitud.descripcionPosicion =
-              this.model.descrPosicion;
-
-            this.detalleSolicitud.justificacion = this.model.justificacionCargo;
-            this.detalleSolicitud.localidad = this.model.localidad;
-            this.detalleSolicitud.localidadZona = this.model.localidad;
-
-            this.detalleSolicitud.misionCargo = this.model.misionCargo;
-            this.detalleSolicitud.nivelDireccion = this.model.nivelDir;
-            this.detalleSolicitud.nivelReporteA = this.model.nivelRepa;
-
-            this.detalleSolicitud.nombreEmpleado = this.model.nombreCompleto;
-
-
-            this.detalleSolicitud.reportaA = this.model.reportaA;
-
-            this.detalleSolicitud.subledger = this.model.subledger;
-
-            this.detalleSolicitud.subledgerEmpleado = this.model.subledger;
-
-            this.detalleSolicitud.sucursal = this.model.sucursal;
-
-            this.detalleSolicitud.misionCargo = this.model.misionCargo;
-            this.detalleSolicitud.justificacion = this.model.justificacionCargo;
-
-            this.detalleSolicitud.sueldo = this.model.sueldo;
-            this.detalleSolicitud.sueldoVariableMensual =
-              this.model.sueldoMensual;
-            this.detalleSolicitud.sueldoVariableTrimestral =
-              this.model.sueldoTrimestral;
-            this.detalleSolicitud.sueldoVariableSemestral =
-              this.model.sueldoSemestral;
-            this.detalleSolicitud.sueldoVariableAnual = this.model.sueldoAnual;
-            this.detalleSolicitud.tipoContrato = this.model.tipoContrato;
-            this.detalleSolicitud.unidadNegocio = this.model.unidadNegocio;
-
-            this.detalleSolicitud.correo = this.model.correo;
-
-            this.detalleSolicitud.supervisaA = this.model.supervisaA;
-
-            this.detalleSolicitud.fechaIngreso = this.model.fechaIngresogrupo=="" ? this.model.fechaIngreso: this.model.fechaIngresogrupo;
-
-
-            console.log(
-              "ESTO LE MANDO AL ACTUALIZAR this.detalleSolicitud: ",
-              this.detalleSolicitud,this.model
+            this.utilService.closeLoadingSpinner(); //comentado mmunoz
+            this.utilService.modalResponse(
+              "Datos ingresados correctamente",
+              "success"
             );
 
-            this.solicitudes
-              .actualizarDetalleSolicitud(this.detalleSolicitud)
-              .subscribe((responseDetalle) => {
-                console.log("responseDetalle: ", responseDetalle);
+            console.log(
+              "CON ESTO COMPLETO (this.uniqueTaskId): ",
+              this.uniqueTaskId
+            );
 
-                this.utilService.closeLoadingSpinner(); //comentado mmunoz
-                this.utilService.modalResponse(
-                  "Datos ingresados correctamente",
-                  "success"
-                );
+            console.log("AQUI HAY UN IDDEINSTANCIA?: ", this.idDeInstancia);
 
-                console.log(
-                  "CON ESTO COMPLETO (this.uniqueTaskId): ",
-                  this.uniqueTaskId
-                );
-
-                console.log("AQUI HAY UN IDDEINSTANCIA?: ", this.idDeInstancia);
-
-                setTimeout(() => {
-                  this.router.navigate([
-                    "/tareas/consulta-tareas",
-                  ]);
-                }, 1800);
+            setTimeout(() => {
+              this.router.navigate([
+                "/tareas/consulta-tareas",
+              ]);
+            }, 1800);
 
 
           });
@@ -1152,7 +1154,7 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
   }
 
   onCompletar() { //completar tarea mmunoz
-    console.log("Task i de la tarea para completar:",this.uniqueTaskId);
+    console.log("Task i de la tarea para completar:", this.uniqueTaskId);
     if (this.uniqueTaskId === null) {
       //handle this as an error
       this.errorMessage =
@@ -1181,13 +1183,13 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
           this.solicitud.estadoSolicitud = "4";
           console.log("this.solicitud: ", this.solicitud);
           this.solicitudes
-          .actualizarSolicitud(this.solicitud)
-          .subscribe((responseSolicitud) => {
-          console.log("responseSolicitud: ", responseSolicitud);
+            .actualizarSolicitud(this.solicitud)
+            .subscribe((responseSolicitud) => {
+              console.log("responseSolicitud: ", responseSolicitud);
 
 
 
-          });
+            });
 
           this.utilService.closeLoadingSpinner();
           //fin actualizo la solicitud a enviada
@@ -1234,25 +1236,25 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
       });
   }
 
-//this.detalleSolicitud.idSolicitud
+  //this.detalleSolicitud.idSolicitud
   consultarNextTask(IdSolicitud: string) {
     this.consultaTareasService.getTareaIdParam(IdSolicitud)
-    .subscribe((tarea)=>{
-      console.log("Task: ", tarea);
+      .subscribe((tarea) => {
+        console.log("Task: ", tarea);
 
-      this.uniqueTaskId=tarea.solicitudes[0].taskId;
-      this.taskType_Activity = tarea.solicitudes[0].tasK_DEF_KEY;
-      this.nameTask = tarea.solicitudes[0].name;
-      this.id_solicitud_by_params = tarea.solicitudes[0].idSolicitud;
+        this.uniqueTaskId = tarea.solicitudes[0].taskId;
+        this.taskType_Activity = tarea.solicitudes[0].tasK_DEF_KEY;
+        this.nameTask = tarea.solicitudes[0].name;
+        this.id_solicitud_by_params = tarea.solicitudes[0].idSolicitud;
 
-      if(this.taskType_Activity!==environment.taskType_Registrar){
-        this.RegistrarsolicitudCompletada = false;
-      }
+        if (this.taskType_Activity !== environment.taskType_Registrar) {
+          this.RegistrarsolicitudCompletada = false;
+        }
 
-    });
+      });
   }
 
-  reasignarSolicitud(){
+  reasignarSolicitud() {
 
   }
 
@@ -1260,18 +1262,18 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
 
     let variables: any = {};
 
-    if (this.solicitud.tipoSolicitud== "requisicionPersonal") {
+    if (this.solicitud.tipoSolicitud == "requisicionPersonal") {
 
 
-      if(this.taskType_Activity==environment.taskType_RegistrarCandidato){
+      if (this.taskType_Activity == environment.taskType_RegistrarCandidato) {
 
-              variables.tipoSolicitud = { value : this.model.tipoProceso };
+        variables.tipoSolicitud = { value: this.model.tipoProceso };
 
       }
 
     }
 
-    return { variables};
+    return { variables };
   }
 
 
@@ -1301,100 +1303,100 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
   }
 
   getNivelesAprobacion() {
-   if(this.detalleSolicitud.codigoPosicion !== "" &&
-   this.detalleSolicitud.codigoPosicion !== undefined &&
-   this.detalleSolicitud.codigoPosicion != null &&
-   this.solicitud.idTipoSolicitud !== 0 &&
-   this.solicitud.idTipoSolicitud !== undefined &&
-   this.solicitud.idTipoSolicitud !== null &&
-   this.solicitud.idTipoMotivo !== 0 &&
-   this.solicitud.idTipoMotivo !== undefined &&
-   this.solicitud.idTipoMotivo !== null){
+    if (this.detalleSolicitud.codigoPosicion !== "" &&
+      this.detalleSolicitud.codigoPosicion !== undefined &&
+      this.detalleSolicitud.codigoPosicion != null &&
+      this.solicitud.idTipoSolicitud !== 0 &&
+      this.solicitud.idTipoSolicitud !== undefined &&
+      this.solicitud.idTipoSolicitud !== null &&
+      this.solicitud.idTipoMotivo !== 0 &&
+      this.solicitud.idTipoMotivo !== undefined &&
+      this.solicitud.idTipoMotivo !== null) {
 
 
-    this.solicitudes
-    .obtenerAprobacionesPorPosicion(
-      this.solicitud.idTipoSolicitud,
-      this.solicitud.idTipoMotivo,
-      this.detalleSolicitud.codigoPosicion,
-      this.detalleSolicitud.nivelDireccion,'A'
-    )
-    .subscribe({
-      next: (response) => {
-        this.dataAprobacionesPorPosicion[this.keySelected] =
-          response.nivelAprobacionPosicionType;
-      },
-      error: (error: HttpErrorResponse) => {
-        this.utilService.modalResponse(
-          "No existen niveles de aprobación para este empleado",
-          "error"
-        );
-      },
-    });
+      this.solicitudes
+        .obtenerAprobacionesPorPosicion(
+          this.solicitud.idTipoSolicitud,
+          this.solicitud.idTipoMotivo,
+          this.detalleSolicitud.codigoPosicion,
+          this.detalleSolicitud.nivelDireccion, 'A'
+        )
+        .subscribe({
+          next: (response) => {
+            this.dataAprobacionesPorPosicion[this.keySelected] =
+              response.nivelAprobacionPosicionType;
+          },
+          error: (error: HttpErrorResponse) => {
+            this.utilService.modalResponse(
+              "No existen niveles de aprobación para este empleado",
+              "error"
+            );
+          },
+        });
 
-  }
+    }
 
   }
 
 
   getDataNivelesAprobacionPorCodigoPosicion() {
 
-   if(this.detalleSolicitud.codigoPosicion !== "" &&
-   this.detalleSolicitud.codigoPosicion !== undefined &&
-   this.detalleSolicitud.codigoPosicion != null){
+    if (this.detalleSolicitud.codigoPosicion !== "" &&
+      this.detalleSolicitud.codigoPosicion !== undefined &&
+      this.detalleSolicitud.codigoPosicion != null) {
 
-    this.solicitudes
-      .getDataNivelesAprobacionPorCodigoPosicion(
-        this.detalleSolicitud.codigoPosicion
-      )
-      .subscribe({
-        next: (response) => {
-          this.dataNivelesAprobacionPorCodigoPosicion[
-            this.model.codigoPosicion
-          ] = response.evType;
+      this.solicitudes
+        .getDataNivelesAprobacionPorCodigoPosicion(
+          this.detalleSolicitud.codigoPosicion
+        )
+        .subscribe({
+          next: (response) => {
+            this.dataNivelesAprobacionPorCodigoPosicion[
+              this.model.codigoPosicion
+            ] = response.evType;
 
-          for (let key1 of Object.keys(this.dataAprobacionesPorPosicion)) {
-            let eachDataNivelesDeAprobacion =
-              this.dataAprobacionesPorPosicion[key1];
+            for (let key1 of Object.keys(this.dataAprobacionesPorPosicion)) {
+              let eachDataNivelesDeAprobacion =
+                this.dataAprobacionesPorPosicion[key1];
 
-            for (let eachData of eachDataNivelesDeAprobacion) {
-              for (let key2 of Object.keys(
-                this.dataNivelesAprobacionPorCodigoPosicion
-              )) {
-                let eachDataNivelPorCodigoPosicion =
-                  this.dataNivelesAprobacionPorCodigoPosicion[key2];
+              for (let eachData of eachDataNivelesDeAprobacion) {
+                for (let key2 of Object.keys(
+                  this.dataNivelesAprobacionPorCodigoPosicion
+                )) {
+                  let eachDataNivelPorCodigoPosicion =
+                    this.dataNivelesAprobacionPorCodigoPosicion[key2];
 
-                for (let eachDataNivelPorCodigo of eachDataNivelPorCodigoPosicion) {
-                  if (
-                    eachData.nivelDireccion ==
-                    eachDataNivelPorCodigo.nivelDireccion
-                  ) {
-                    eachData["usuario"] = eachDataNivelPorCodigo.usuario;
-                    eachData["descripcionPosicion"] =
-                      eachDataNivelPorCodigo.descripcionPosicion;
-                    break;
+                  for (let eachDataNivelPorCodigo of eachDataNivelPorCodigoPosicion) {
+                    if (
+                      eachData.nivelDireccion ==
+                      eachDataNivelPorCodigo.nivelDireccion
+                    ) {
+                      eachData["usuario"] = eachDataNivelPorCodigo.usuario;
+                      eachData["descripcionPosicion"] =
+                        eachDataNivelPorCodigo.descripcionPosicion;
+                      break;
+                    }
                   }
-                }
 
-                console.log(`Elemento en la posición`, eachData);
+                  console.log(`Elemento en la posición`, eachData);
+                }
               }
             }
-          }
-        },
-        error: (error: HttpErrorResponse) => {
-          this.utilService.modalResponse(
-            "No existen niveles de aprobación para este empleado",
-            "error"
-          );
-        },
-      });
+          },
+          error: (error: HttpErrorResponse) => {
+            this.utilService.modalResponse(
+              "No existen niveles de aprobación para este empleado",
+              "error"
+            );
+          },
+        });
 
-   }
+    }
   }
 
   saveDetalleAprobaciones() {
     this.solicitudes
-    .guardarDetallesAprobacionesSolicitud(this.solicitudes.modelDetalleAprobaciones)
+      .guardarDetallesAprobacionesSolicitud(this.solicitudes.modelDetalleAprobaciones)
       .subscribe((res) => {
 
       });
@@ -1403,137 +1405,137 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
   onCheckboxChangeCandidato(event: any) {
     const inputElement = event.target as HTMLInputElement;
 
-    switch(inputElement.name){
-     case 'checkPerfil':
-                                    this.isCheckedPerfil = inputElement.checked;
-                                    if(this.isCheckedPerfil ){
-                                      this.fechas.actualizacionPerfil=this.getFormattedDate();
-                                    }else{
-                                      this.fechas.actualizacionPerfil="";
-                                    }
-          break;
+    switch (inputElement.name) {
+      case 'checkPerfil':
+        this.isCheckedPerfil = inputElement.checked;
+        if (this.isCheckedPerfil) {
+          this.fechas.actualizacionPerfil = this.getFormattedDate();
+        } else {
+          this.fechas.actualizacionPerfil = "";
+        }
+        break;
 
-     case 'checkBusquedaCandidato':
-                                    this.isCheckedBusquedaCandidato = inputElement.checked;
-                                    if(this.isCheckedBusquedaCandidato ){
-                                      this.fechas.busquedaCandidatos=this.getFormattedDate();
-                                    }else{
-                                      this.fechas.busquedaCandidatos="";
-                                    }
-          break;
+      case 'checkBusquedaCandidato':
+        this.isCheckedBusquedaCandidato = inputElement.checked;
+        if (this.isCheckedBusquedaCandidato) {
+          this.fechas.busquedaCandidatos = this.getFormattedDate();
+        } else {
+          this.fechas.busquedaCandidatos = "";
+        }
+        break;
 
-     case 'checkEntrevista':
-      this.isCheckedEntrevista = inputElement.checked;
-                                    if(this.isCheckedEntrevista ){
-                                      this.fechas.entrevista=this.getFormattedDate();
-                                    }else{
-                                      this.fechas.entrevista="";
-                                    }
-          break;
+      case 'checkEntrevista':
+        this.isCheckedEntrevista = inputElement.checked;
+        if (this.isCheckedEntrevista) {
+          this.fechas.entrevista = this.getFormattedDate();
+        } else {
+          this.fechas.entrevista = "";
+        }
+        break;
 
       case 'checkPruebas':
         this.isCheckedPruebas = inputElement.checked;
-                                    if(this.isCheckedPruebas ){
-                                      this.fechas.pruebas=this.getFormattedDate();
-                                    }else{
-                                      this.fechas.pruebas="";
-                                    }
-      break;
+        if (this.isCheckedPruebas) {
+          this.fechas.pruebas = this.getFormattedDate();
+        } else {
+          this.fechas.pruebas = "";
+        }
+        break;
 
       case 'checkReferencias':
         this.isCheckedReferencias = inputElement.checked;
 
-                                  if(this.isCheckedReferencias ){
-                                    this.fechas.referencias=this.getFormattedDate();
-                                  }else{
-                                    this.fechas.referencias="";
-                                  }
-      break;
+        if (this.isCheckedReferencias) {
+          this.fechas.referencias = this.getFormattedDate();
+        } else {
+          this.fechas.referencias = "";
+        }
+        break;
 
 
 
       case 'checkElaboracionInforme':
         this.isCheckedElaboracionInforme = inputElement.checked;
 
-                              if(this.isCheckedElaboracionInforme ){
-                              this.fechas.elaboracionInforme=this.getFormattedDate();
-                              }else{
-                              this.fechas.elaboracionInforme="";
-                              }
-      break;
+        if (this.isCheckedElaboracionInforme) {
+          this.fechas.elaboracionInforme = this.getFormattedDate();
+        } else {
+          this.fechas.elaboracionInforme = "";
+        }
+        break;
 
 
       case 'checkEntregaJefe':
         this.isCheckedEntregaJefe = inputElement.checked;
 
-                              if(this.isCheckedEntregaJefe ){
-                              this.fechas.entregaJefe=this.getFormattedDate();
-                              }else{
-                              this.fechas.entregaJefe="";
-                              }
-      break;
+        if (this.isCheckedEntregaJefe) {
+          this.fechas.entregaJefe = this.getFormattedDate();
+        } else {
+          this.fechas.entregaJefe = "";
+        }
+        break;
 
 
 
       case 'checkEntrevistaJefatura':
         this.isCheckedEntrevistaJefatura = inputElement.checked;
 
-                                    if(this.isCheckedEntrevistaJefatura ){
-                                    this.fechas.entrevistaJefatura=this.getFormattedDate();
-                                    }else{
-                                    this.fechas.entrevistaJefatura="";
-                                    }
-      break;
+        if (this.isCheckedEntrevistaJefatura) {
+          this.fechas.entrevistaJefatura = this.getFormattedDate();
+        } else {
+          this.fechas.entrevistaJefatura = "";
+        }
+        break;
 
 
       case 'checkTomaDecisiones':
         this.isCheckedTomaDecisiones = inputElement.checked;
 
-                                    if(this.isCheckedTomaDecisiones ){
-                                    this.fechas.tomaDecisiones=this.getFormattedDate();
-                                    }else{
-                                    this.fechas.tomaDecisiones="";
-                                    }
-      break;
+        if (this.isCheckedTomaDecisiones) {
+          this.fechas.tomaDecisiones = this.getFormattedDate();
+        } else {
+          this.fechas.tomaDecisiones = "";
+        }
+        break;
 
       case 'checkCandidatoSeleccionado':
         this.isCheckedCandidatoSeleccionado = inputElement.checked;
 
-                                    if(this.isCheckedCandidatoSeleccionado ){
-                                    this.fechas.candidatoSeleccionado=this.getFormattedDate();
-                                    }else{
-                                    this.fechas.candidatoSeleccionado="";
-                                    }
-      break;
+        if (this.isCheckedCandidatoSeleccionado) {
+          this.fechas.candidatoSeleccionado = this.getFormattedDate();
+        } else {
+          this.fechas.candidatoSeleccionado = "";
+        }
+        break;
 
 
       case 'checkProcesoContratacion':
         this.isCheckedProcesoContratacion = inputElement.checked;
 
-                                    if(this.isCheckedProcesoContratacion ){
-                                    this.fechas.procesoContratacion=this.getFormattedDate();
-                                    }else{
-                                    this.fechas.procesoContratacion="";
-                                    }
-      break;
+        if (this.isCheckedProcesoContratacion) {
+          this.fechas.procesoContratacion = this.getFormattedDate();
+        } else {
+          this.fechas.procesoContratacion = "";
+        }
+        break;
 
 
       case 'checkFinContratacion':
         this.isCheckedFinContratacion = inputElement.checked;
 
-                                    if(this.isCheckedFinContratacion ){
-                                    this.fechas.finProcesoContratacion=this.getFormattedDate();
-                                    }else{
-                                    this.fechas.finProcesoContratacion="";
-                                    }
-      break;
+        if (this.isCheckedFinContratacion) {
+          this.fechas.finProcesoContratacion = this.getFormattedDate();
+        } else {
+          this.fechas.finProcesoContratacion = "";
+        }
+        break;
 
       default:
 
     }
 
     //this.isDivVisible = !this.isChecked;
-    console.log('Elemecto check',inputElement.name);
+    console.log('Elemecto check', inputElement.name);
     console.log('Checkbox value:', this.isCheckedPerfil);
   }
 
@@ -1549,7 +1551,7 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
   }
 
 
-  obtenerComentariosAtencionPorInstanciaRaiz(){
+  obtenerComentariosAtencionPorInstanciaRaiz() {
 
     return this.solicitudes
       .obtenerComentariosAtencionPorInstanciaRaiz(
@@ -1557,11 +1559,11 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
       )
       .subscribe({
         next: (response) => {
-          this.dataComentariosAprobaciones.length=0;
-          this.dataComentariosAprobacionesPorPosicion=response.variableType;
-          this.dataComentariosAprobaciones=this.filterDataComentarios(this.solicitud.idInstancia, 'RevisionSolicitud', 'comentariosAtencion');
-          this.dataComentariosAprobacionesRRHH=this.filterDataComentarios(this.solicitud.idInstancia, 'RequisicionPersonal', 'comentariosAtencionGerenteRRHH');
-          this.dataComentariosAprobacionesCREM=this.filterDataComentarios(this.solicitud.idInstancia, 'RequisicionPersonal', 'comentariosAtencionRemuneraciones');
+          this.dataComentariosAprobaciones.length = 0;
+          this.dataComentariosAprobacionesPorPosicion = response.variableType;
+          this.dataComentariosAprobaciones = this.filterDataComentarios(this.solicitud.idInstancia, 'RevisionSolicitud', 'comentariosAtencion');
+          this.dataComentariosAprobacionesRRHH = this.filterDataComentarios(this.solicitud.idInstancia, 'RequisicionPersonal', 'comentariosAtencionGerenteRRHH');
+          this.dataComentariosAprobacionesCREM = this.filterDataComentarios(this.solicitud.idInstancia, 'RequisicionPersonal', 'comentariosAtencionRemuneraciones');
           console.log("Aprobaciones comentarios diamicos = ", this.dataComentariosAprobaciones);
           console.log("Aprobaciones comentarios rrhh = ", this.dataComentariosAprobacionesRRHH);
           console.log("Aprobaciones comentarios CREM = ", this.dataComentariosAprobacionesCREM);

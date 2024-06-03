@@ -1075,7 +1075,7 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
 
   onSubmit() {
     Swal.fire({
-      text: "¿Desea crear la Solicitud?",
+      text: "¿Desea guardar los cambios?",
       icon: "question",
       showCancelButton: true,
       confirmButtonColor: "rgb(227, 199, 22)",

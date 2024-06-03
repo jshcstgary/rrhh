@@ -19,15 +19,8 @@
 
 	.accordion-collapse.collapse {
 		padding: 30px 20px;
-		transition: display 5s ease;
 
-		animation: fade-in 3s forwards;
-
-		// &.show {
-		// 	display: block;
-
-		// 	animation: fade-in 3s forwards;
-		// }
+		animation: fade-in 3s;
 
 		.input-group > label {
 			width: 24%;
@@ -46,12 +39,5 @@
 	to {
 		opacity: 100;
 		display: block;
-	}
-}
-
-@keyframes fade-out {
-	to {
-		display: none;
-		opacity: 0;
 	}
 }

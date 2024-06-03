@@ -55,8 +55,7 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
   buttonValue: string | null = 'aprobar';
 
   process(action: string) {
-
-    this.buttonValue=action;
+    this.buttonValue = action;
 
     console.log(`Acción seleccionada: ${action}`);
     // Aquí puedes añadir la lógica para manejar cada acción
@@ -1116,7 +1115,21 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
   }
 
 
-  onCompletar() { //completar tarea mmunoz
+  async onCompletar() { //completar tarea mmunoz
+    const { isConfirmed } = await Swal.fire({
+      text: `¿Desea ${this.buttonValue === "esperar" ? "guardar la solicitud en estado de espera" : `${this.buttonValue} la solicitud`}?`,
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonColor: "rgb(227, 199, 22)",
+      cancelButtonColor: "#77797a",
+      confirmButtonText: "Sí",
+      cancelButtonText: "No",
+    });
+
+    if (!isConfirmed) {
+      return;
+    }
+
     if (this.uniqueTaskId === null) {
       //handle this as an error
       this.errorMessage =
@@ -1175,7 +1188,7 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
           this.utilService.closeLoadingSpinner();
           //fin actualizo la solicitud a enviada
           this.utilService.modalResponse(
-            `Solicitud registrada correctamente [${this.solicitud.idSolicitud}]. Será redirigido en un momento...`,
+            `Solicitud guardada correctamente [${this.solicitud.idSolicitud}]. Será redirigido en un momento...`,
             "success"
           );
           setTimeout(() => {
