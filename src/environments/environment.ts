@@ -7,7 +7,8 @@ export const environment = {
   port: "4200",
   production: false,
   modalConfirmation: false,
-  reporteUS: `${base}:8500/v1/us/reporte`,
+  //reporteUS: `${base}:8500/v1/us/reporte`,
+  reporteUS: `${baseG}/v1/us/reporte`,
 
   // Angular UI app is associated with below BPMN process key
   procesName: "process_modelo",
