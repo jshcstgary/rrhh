@@ -93,8 +93,8 @@ textarea {
 .sol-danger{
 
   color: #C69D08;
-  font-size: 20px;
-  font-weight:700;
+  font-size: 23px;
+  font-weight: 500;
 }
 
 .hidden-label {
@@ -124,5 +124,27 @@ textarea {
  // min-width: 10px; /* Ajusta este valor según sea necesario */
 
 }
+
+/* Define un tamaño estándar para los botones */
+.button-custom {
+  padding: 8px 16px; /* Ajusta el padding superior/inferior y derecho/izquierdo */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 45px; /* Ajusta la altura de los botones */
+  min-width: 120px; /* Ajusta el ancho mínimo de los botones */
+  font-size: 0.875rem; /* Tamaño de la fuente del texto */
+}
+
+/* Aumenta el tamaño del icono */
+.icon-size {
+  font-size: 1.45rem; /* Ajusta el tamaño del icono */
+}
+
+/* Asegura que el icono y el texto estén alineados correctamente */
+.button-custom i {
+  margin-right: 8px; /* Ajusta el margen entre el icono y el texto */
+}
+
 
 

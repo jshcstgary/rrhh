@@ -11,7 +11,61 @@
             >
           </div>
         </div>
-        <div class="col-md-4 text-end">
+
+        <div class="col-md-4 text-end d-flex justify-content-end align-items-center">
+          <button
+            type="submit"
+            class="btn btn-info me-2 d-flex align-items-center justify-content-center button-custom"
+            aria-label="Close"
+            [disabled]="!solicitudForm.form.valid"
+          >
+            <i class="fas fa-save me-2 icon-size"></i> Guardar
+          </button>
+          <button *ngIf="RegistrarsolicitudCompletada"
+            type="button"
+            (click)="onCompletar()"
+            class="btn btn-info me-2 d-flex align-items-center justify-content-center button-custom"
+          >
+            <i class="fas fa-check-circle me-2 icon-size"></i> Completar Tarea
+          </button>
+          <button
+            type="button"
+            (click)="onCancel()"
+            class="btn btn-info d-flex align-items-center justify-content-center button-custom"
+          >
+            <i class="fas fa-times me-2 icon-size"></i> Registrar luego
+          </button>
+        </div>
+
+
+
+
+        <!--<div class="col-md-4 text-end d-flex justify-content-end align-items-center">
+          <button
+            type="submit"
+            class="btn btn-info me-2 mt-1"
+            aria-label="Close"
+            [disabled]="!solicitudForm.form.valid"
+          >
+            <i class="fas fa-save"></i> Guardar
+          </button>
+          <button *ngIf="RegistrarsolicitudCompletada"
+            type="button"
+            (click)="onCompletar()"
+            class="btn btn-info me-2 mt-1"
+          >
+            <i class="fas fa-check-circle"></i> Completar Tarea
+          </button>
+          <button
+            type="button"
+            (click)="onCancel()"
+            class="btn btn-info mt-1"
+          >
+            <i class="fas fa-times"></i> Registrar luego
+          </button>
+        </div>-->
+
+       <!-- <div class="col-md-4 text-end">
           <button
             type="button"
             type="submit"
@@ -35,7 +89,7 @@
           >
             <i class="fas fa-times"></i> Registrar luego
           </button>
-        </div>
+        </div>-->
       </div>
       <div class="row mt-4">
         <div class="col-md-3">
@@ -462,7 +516,7 @@
       <div class="row mt-4">
         <div class="col-md-4">
           <div class="mb-4">
-            <a> <h3 class="sol-danger fs-4">Tipo de variable</h3></a>
+            <a> <h3 class="sol-danger">Tipo de variable</h3></a>
           </div>
         </div>
       </div>

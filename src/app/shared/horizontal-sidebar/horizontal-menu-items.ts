@@ -5,7 +5,7 @@ export const ROUTES: RouteInfo[] = [
     path: "",
     title: "Solicitudes",
     icon: "me-2 mdi mdi-clipboard-text",
-    class: "has-arrow",
+    class: "has-arrow icon-size",
     ddclass: "",
     extralink: false,
     submenu: [

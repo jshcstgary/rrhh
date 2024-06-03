@@ -137,7 +137,8 @@ export class RegistrarData {
     this.descripContrato = "";
     this.status = "";
     this.correo = "";
-    this.taskNivelAprobador
+    this.taskNivelAprobador;
+    this.tipoProceso="";
     // this.sueldo = 0;
     // this.mensual = 0;
     // this.trimestral = 0;

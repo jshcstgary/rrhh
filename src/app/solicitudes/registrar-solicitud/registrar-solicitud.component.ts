@@ -1206,9 +1206,19 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
 
                 setTimeout(() => {
                   this.router.navigate([
-                    "/tareas/consulta-tareas",
-                  ]);
+                    "/solicitudes/registrar-solicitud/" + this.solicitud.idInstancia + "/" + this.solicitud.idSolicitud,
+                  ]).then(() => {
+                    // Recarga la página actual
+                    window.location.reload();
+                  });
                 }, 1800);
+
+
+               /* setTimeout(() => {
+                 this.router.navigate([
+                  "/solicitudes/registrar-solicitud/" + this.solicitud.idInstancia +"/" +this.solicitud.idSolicitud,
+                  ]);
+                }, 1800);*/
 
 
           });
@@ -1261,7 +1271,7 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
           this.utilService.closeLoadingSpinner();
           //fin actualizo la solicitud a enviada
           this.utilService.modalResponse(
-            `Solicitud registrada correctamente [${this.idDeInstancia}]. Será redirigido en un momento...`,
+            `Solicitud registrada correctamente [${this.solicitud.idSolicitud}]. Será redirigido en un momento...`,
             "success"
           );
           setTimeout(() => {

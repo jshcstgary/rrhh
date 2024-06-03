@@ -44,7 +44,7 @@ export class CompletaSolicitudComponent extends CompleteTaskComponent {
   textareaContent: string = '';
   isRequired: boolean = false;
   isFechaMaximaVisible: boolean = false;
-  isFechaIngresoVisible: boolean = false;
+  isFechaIngresoVisible: boolean = true;
   campoObligatorio: string = '';
   observaciontexto: string = 'Observación';
   selectedDate: Date = new Date();
@@ -759,16 +759,9 @@ export class CompletaSolicitudComponent extends CompleteTaskComponent {
       await this.ObtenerServicioTipoAccion();
       await this.ObtenerServicioNivelDireccion();
       await this.getSolicitudes();
-      //if (this.id_edit !== undefined) { //comentado mmunoz
-        //await this.getDetalleSolicitudById(this.id_edit); //comentado mmunoz
-        await this.getSolicitudById(this.id_edit);
-      //} // comentado munoz
+      await this.getSolicitudById(this.id_edit);
       await this.getDataEmpleadosEvolution();
-      await this.loadDataCamunda(); //comentado para prueba mmunoz
-      //console.log("impreme arreglo de aprobadores: ");
-      //await this.recorrerArreglo();
-
-      // await this.getNivelesAprobacion();
+      await this.loadDataCamunda();
       this.utilService.closeLoadingSpinner();
     } catch (error) {
       // Manejar errores aquí de manera centralizada
@@ -1198,31 +1191,6 @@ export class CompletaSolicitudComponent extends CompleteTaskComponent {
 
     this.submitted = true;
   }
-  recorrerArreglo() {
-
-    this.keySelected =
-          this.solicitud.idTipoSolicitud +
-          "_" +
-          this.solicitud.idTipoMotivo +
-          "_" +
-          this.model.nivelDir;
-
-    console.log(`Elemento en la posición Miguel1 ${this.keySelected}:`, this.dataAprobacionesPorPosicion);
-
-    for (const key in this.dataAprobacionesPorPosicion) {
-      if (this.dataAprobacionesPorPosicion.hasOwnProperty(key)) {
-        console.log(`Clave: ${key}`);
-        const aprobacionesArray = this.dataAprobacionesPorPosicion[key];
-        for (const aprobacion of aprobacionesArray) {
-          console.log(aprobacion);
-          // Aquí puedes acceder a las propiedades de cada objeto
-          console.log(aprobacion.nivelAprobacionType.idNivelAprobacion);
-          console.log(aprobacion.aprobador.usuario);
-        }
-      }
-    }
-
-}
 
   completeAndCheckTask(taskId: string, variables: any) {
     this.camundaRestService

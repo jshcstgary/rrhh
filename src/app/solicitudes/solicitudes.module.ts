@@ -19,7 +19,6 @@ import {
 } from "@ng-bootstrap/ng-bootstrap";
 import { NgSelectModule } from "@ng-select/ng-select";
 import { NgxDatatableModule } from "@swimlane/ngx-datatable";
-import { CompletarSolicitudComponent } from "./completar-solicitud/completar-solicitud.component";
 import { DetalleSolicitudComponent } from "./detalle-solicitud/detalle-solicitud.component";
 import { ConsultaSolicitudesComponent } from "./consulta_solicitudes/consulta-solicitudes.component";
 import { RevisarSolicitudComponent } from './revisar-solicitud/revisar-solicitud.component';
@@ -43,7 +42,6 @@ import { RegistrarFamiliaresComponent } from './registrar-familiares/registrar-f
   declarations: [
     RegistrarSolicitudComponent,
     ConsultaSolicitudesComponent,
-    CompletarSolicitudComponent,
     DetalleSolicitudComponent,
     RevisarSolicitudComponent,
     RegistrarCandidatoComponent,

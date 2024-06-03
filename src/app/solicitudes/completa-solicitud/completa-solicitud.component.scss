@@ -113,8 +113,8 @@ textarea {
 .sol-danger{
 
   color: #C69D08;
-  font-size: 20px;
-  font-weight:700;
+  font-size: 23px;
+  font-weight:500;
 }
 
 .hidden-label {
@@ -155,6 +155,11 @@ textarea {
   word-wrap: break-word; /* Permite que las palabras se dividan en el borde del contenedor */
   white-space: normal;  /* Permite que el texto se ajuste y baje a la siguiente línea */
   text-align: left;
+}
+
+/* Aumenta el tamaño del icono */
+.icon-size {
+  font-size: 1.45rem; /* Ajusta el tamaño del icono */
 }
 
 

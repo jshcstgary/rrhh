@@ -41,6 +41,8 @@ import { SolicitudesService } from "../registrar-solicitud/solicitudes.service";
 export class RegistrarCandidatoComponent extends CompleteTaskComponent {
   NgForm = NgForm;
 
+
+
   tipoProceso: string ='';
   tipoFuente: string;
   fechas: any = {
@@ -65,6 +67,8 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
 
 
   isFuenteExternaVisible: boolean = false;
+
+
 
   //tipoProceso: String = '';
 
@@ -1005,7 +1009,7 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
 
   onSubmit() {
     Swal.fire({
-      text: "¿Desea crear la Solicitud?",
+      text: "¿Desea Guardar la Solicitud?",
       icon: "question",
       showCancelButton: true,
       confirmButtonColor: "rgb(227, 199, 22)",

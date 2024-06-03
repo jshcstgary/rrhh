@@ -64,3 +64,8 @@ ul::-webkit-scrollbar-thumb {
 ::ng-deep .mat-menu-panel {
   padding: 0 !important;
 }
+
+/* Aumenta el tamaño del icono */
+.icon-size {
+  font-size: 2rem; /* Ajusta el tamaño del icono */
+}

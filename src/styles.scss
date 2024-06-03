@@ -5,12 +5,14 @@
 @import '~material-icons/iconfont/material-icons.css';
 
 @font-face {
-  font-family: "Montserrat";
-  src: url("./assets/fonts/Montserrat-VariableFont_wght.ttf");
+  font-family: "Raleway";
+  src: url("./assets/fonts/Raleway-VariableFont_wght.ttf");
+  //src: url("./assets/fonts/Montserrat-VariableFont_wght.ttf");
 }
 
 body {
-  font-family: Montserrat, sans-serif;
+ // font-family: Montserrat, sans-serif;
+ font-family: Raleway, sans-serif;
 }
 /* rutas */
 a.link:hover,
@@ -41,7 +43,7 @@ a.link:focus {
 
 
 html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+body { margin: 0; font-family: Raleway, sans-serif; }
 
 .modal-dialog {
 	width: 600px;

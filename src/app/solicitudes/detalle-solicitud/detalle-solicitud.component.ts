@@ -637,21 +637,12 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 
       await this.getSolicitudById(this.id_edit);
       await this.getDataEmpleadosEvolution();
-      // await this.loadDataCamunda();
-      // await this.getNivelesAprobacion();
-      //this.utilService.closeLoadingSpinner();
+
     } catch (error) {
       // Manejar errores aquí de manera centralizada
       this.utilService.modalResponse(error.error, "error");
     }
-    // this.getNivelesAprobacion();
-    // this.getSolicitudById();
-    // this.getDetalleSolicitudById();
-    // this.getSolicitudes();
-    // this.ObtenerServicioTipoSolicitud();
-    // this.ObtenerServicioTipoMotivo();
-    // this.ObtenerServicioTipoAccion();
-    // this.ObtenerServicioNivelDireccion();
+
   }
 
   pageSolicitudes() {
@@ -713,10 +704,7 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
           this.model.nivelDir;
         if (!this.dataNivelesDeAprobacion[this.keySelected]) {
           this.getNivelesAprobacion();
-          //this.consultarNextTask(id);
-          /*if(this.uniqueTaskId!=undefined &&
-            this.uniqueTaskId!=null &&
-            this.uniqueTaskId!=''){*/
+
             this.obtenerComentariosAtencionPorInstanciaRaiz();
           //}
         }
@@ -818,23 +806,7 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
     }
   }
 
-  // tveas comentando método mmunoz
-  /*onSubmit() {
-    if (this.uniqueTaskId === null) {
-      //handle this as an error
-      this.errorMessage =
-        "Unique Task id is empty. Cannot initiate task complete.";
-      console.error(this.errorMessage);
-      return;
-    }
 
-    const variables = this.generateVariablesFromFormFields();
-    // basis of completeing the task using the unique id
-    this.camundaRestService
-      .postCompleteTask(this.uniqueTaskId, variables)
-      .subscribe();
-    this.submitted = true;
-  }*/
 
   onSubmit() {
     Swal.fire({
@@ -891,34 +863,7 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
         this.solicitudes
           .actualizarSolicitud(this.solicitud)
           .subscribe((responseSolicitud) => {
-            // Inicio
 
-            // Fin
-
-            /*this.camundaRestService
-              .getTask(environment.taskType_Notificar, this.idDeInstancia)
-              .subscribe((notificar) => {
-                console.log(
-                  "environment.taskType_Notificar: ",
-                  environment.taskType_Notificar
-                );
-                console.log("this.idDeInstancia: ", this.idDeInstancia);
-                console.log("NOTIFICARRRRRRRRRRR: ", notificar);
-                // this.lookForError(result); // if error, then control gets redirected to err page
-
-                // if result is success - bingo, we got the task id
-                this.uniqueTaskId =
-                  notificar[0].id;
-                this.taskId = this.idDeInstancia;
-                console.log("this.uniqueTaskId: ", this.uniqueTaskId);
-                console.log("this.taskId: ", this.taskId);
-
-                this.date = notificar[0].created;
-                // this.loadExistingVariables(
-                //   this.uniqueTaskId ? this.uniqueTaskId : "",
-                //   variableNames
-                // );
-              });*/
 
             this.detalleSolicitud.areaDepartamento = this.model.departamento;
 
@@ -1046,21 +991,6 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
     this.submitted = true;
   }
 
-  completeAndCheckTask(taskId: string, variables: any) {
-    this.camundaRestService
-      .postCompleteTask(taskId, variables)
-      .subscribe((res) => {
-        // Aquí puedes manejar la respuesta del segundo servicio
-
-        // Verifica si el nombre sigue siendo "Notificar revisión solicitud"
-        if (res.name === "Notificar revisión solicitud") {
-          // Llama nuevamente a la función para completar la siguiente tarea
-          this.completeAndCheckTask(taskId, variables);
-        } else {
-          // El nombre ya no es "Notificar revisión solicitud", haz algo diferente
-        }
-      });
-  }
 
   override generateVariablesFromFormFields() {
 
@@ -1223,13 +1153,8 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
       this.taskType_Activity = tarea.solicitudes[0].tasK_DEF_KEY;
       this.nameTask = tarea.solicitudes[0].name;
       this.id_solicitud_by_params = tarea.solicitudes[0].idSolicitud;
-      //this.rootProces = tarea.solicitudes[0].rootProcInstId;
 
       this.obtenerComentariosAtencionPorInstanciaRaiz();
-
-      /*if(this.nameTask!=="Registrar solicitud"){
-        this.RegistrarsolicitudCompletada = false;
-      }*/
     });
   }
 
