@@ -54,7 +54,7 @@
           </button>
           <button type="button" (click)="onCompletar()"
             class="btn btn-info me-2 d-flex align-items-center justify-content-center button-custom"
-            [disabled]="!isCheckedPerfil || !isCheckedBusquedaCandidato || !isCheckedFinContratacion || !isCheckedProcesoContratacion || !isCheckedCandidatoSeleccionado || !isCheckedTomaDecisiones || !isCheckedEntrevistaJefatura || !isCheckedEntregaJefe || !isCheckedElaboracionInforme || !isCheckedReferencias || !isCheckedPruebas || !isCheckedEntrevista">
+            [disabled]="!isCheckedPerfil || !isCheckedBusquedaCandidato || !isCheckedFinContratacion || !isCheckedProcesoContratacion || !isCheckedCandidatoSeleccionado || !isCheckedTomaDecisiones || !isCheckedEntrevistaJefatura || !isCheckedEntregaJefe || !isCheckedElaboracionInforme || !isCheckedReferencias || !isCheckedPruebas || !isCheckedEntrevista || nombreCandidato === ''">
             <i class="fas fa-check-circle me-2 icon-size"></i> Completar Tarea
           </button>
 
@@ -630,11 +630,11 @@
       <div class="row">
         <div class="col-md-4 d-flex ">
           <label for="input1" class="input-group-text adjustable-label">Inicio de proceso</label>
-          <input id="input1" type="text" class="form-control" value="27/05/2024 14:16">
+          <input id="input1" type="text" class="form-control" [value]="model.tipoProceso === 'reingresoPersonal' || model.tipoProceso === 'contratacionFamiliares' ? '' : getCurrentDate()">
         </div>
         <div class="col-md-4 d-flex ">
           <label for="input2" class="input-group-text adjustable-label">Fin de proceso</label>
-          <input id="input2" type="text" class="form-control" value="27/05/2024 14:16">
+          <input id="input2" type="text" class="form-control" [value]="model.tipoProceso === 'reingresoPersonal' || model.tipoProceso === 'contratacionFamiliares' ? '' : getCurrentDate()">
         </div>
 
       </div>
@@ -652,11 +652,11 @@
       <div class="row">
         <div class="col-md-4 d-flex ">
           <label for="input1" class="input-group-text adjustable-label">Inicio de proceso</label>
-          <input id="input1" type="text" class="form-control" value="27/05/2024 14:16">
+          <input id="input1" type="text" class="form-control" [value]="model.tipoProceso === 'reingresoPersonal' || model.tipoProceso === 'contratacionFamiliares' ? '' : getCurrentDate()">
         </div>
         <div class="col-md-4 d-flex ">
           <label for="input2" class="input-group-text adjustable-label">Fin de proceso</label>
-          <input id="input2" type="text" class="form-control" value="27/05/2024 14:16">
+          <input id="input2" type="text" class="form-control" [value]="model.tipoProceso === 'reingresoPersonal' || model.tipoProceso === 'contratacionFamiliares' ? '' : getCurrentDate()">
         </div>
 
       </div>

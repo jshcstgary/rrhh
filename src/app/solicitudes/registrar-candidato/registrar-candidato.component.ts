@@ -411,6 +411,10 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
     this.selectedOption = this.options[0].value;
   }
 
+  getCurrentDate() {
+    return new Date().toISOString().split("T")[0];
+  }
+
   searchCodigoPosicion: OperatorFunction<string, readonly string[]> = (
     text$: Observable<string>
   ) =>

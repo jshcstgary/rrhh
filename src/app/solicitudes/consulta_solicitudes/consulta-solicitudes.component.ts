@@ -488,7 +488,7 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
                   this.solicitudes
                     .guardarDetalleSolicitud(this.detalleSolicitud)
                     .subscribe((responseDetalle) => {
-                     setTimeout(() => {
+                      setTimeout(() => {
                         this.router.navigate([
                           "/solicitudes/registrar-solicitud",
                           this.solicitud.idInstancia,
@@ -563,11 +563,11 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
       variables.tipoMotivo = { value: this.solicitud.tipoMotivo };
     }
 
-      requestData = {
-        businessKey: '',
-        variables,
-        withVariablesInReturn: true
-      };
+    requestData = {
+      businessKey: '',
+      variables,
+      withVariablesInReturn: true
+    };
 
 
     //return { variables };
@@ -683,35 +683,67 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
   }
 
   filterDataTable() {
-    switch (this.dataFilterSolicitudes.verifyFilterFields()) {
-      case "case1":
-        this.getDataToTable();
-        break;
-      case "case2":
-        this.getDataToTable();
-        break;
-      case "case3":
-        this.getDataToTable();
-        break;
-      case "case4":
-        this.utilService.modalResponse(
-          "Por favor complete los campos del filtro",
-          "info"
-        );
-        break;
-      case "case5":
-        let data = { ...this.dataFilterSolicitudes };
-        data.fechaDesde = this.formatFecha(
-          this.dataFilterSolicitudes,
-          "fechaDesde"
-        );
-        data.fechaHasta = this.formatFecha(
-          this.dataFilterSolicitudes,
-          "fechaHasta"
-        );
-        this.getDataToTableFilter(data);
-        break;
+    console.log(this.dataFilterSolicitudes.idTipoSolicitud);
+    console.log(this.dataFilterSolicitudes);
+
+    if (this.dataFilterSolicitudes.idTipoSolicitud === undefined) {
+      Swal.fire({
+        text: "Mínimo debe seleccionar un Tipo de Solicitud",
+        icon: "warning",
+        confirmButtonColor: "#0056B3",
+        confirmButtonText: "Sí"
+      });
+
+      return;
     }
+
+    const data = structuredClone(this.dataFilterSolicitudes);
+
+    if (this.dataFilterSolicitudes.fechaDesde !== undefined) {
+      data.fechaDesde = this.formatFecha(
+        this.dataFilterSolicitudes,
+        "fechaDesde"
+      );
+    }
+
+    if (this.dataFilterSolicitudes.fechaHasta !== undefined) {
+      data.fechaHasta = this.formatFecha(
+        this.dataFilterSolicitudes,
+        "fechaHasta"
+      );
+    }
+
+    this.getDataToTableFilter(data);
+
+    // switch (this.dataFilterSolicitudes.verifyFilterFields()) {
+    //   case "case1":
+    //     this.getDataToTable();
+    //     break;
+    //   case "case2":
+    //     this.getDataToTable();
+    //     break;
+    //   case "case3":
+    //     this.getDataToTable();
+    //     break;
+    //   case "case4":
+    //     this.utilService.modalResponse(
+    //       "Por favor complete los campos del filtro",
+    //       "info"
+    //     );
+    //     break;
+    //   case "case5":
+    //     let data = { ...this.dataFilterSolicitudes };
+    //     data.fechaDesde = this.formatFecha(
+    //       this.dataFilterSolicitudes,
+    //       "fechaDesde"
+    //     );
+    //     data.fechaHasta = this.formatFecha(
+    //       this.dataFilterSolicitudes,
+    //       "fechaHasta"
+    //     );
+    //     this.getDataToTableFilter(data);
+    //     break;
+    // }
   }
 
   clearFechaDesde(fechaProp: string) {
@@ -809,7 +841,7 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
           const detalles = detallesSolicitud.detalleSolicitudType.find(
             (detalle) => detalle.idSolicitud === solicitud.idSolicitud
           );
-          detalles.estado=solicitud.estado;
+          detalles.estado = solicitud.estado;
           return { ...solicitud, ...detalles };
         });
 

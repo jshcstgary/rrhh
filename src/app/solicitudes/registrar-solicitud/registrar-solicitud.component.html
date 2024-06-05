@@ -28,13 +28,13 @@
           >
             <i class="fas fa-check-circle me-2 icon-size"></i> Completar Tarea
           </button>
-          <button
+          <!-- <button
             type="button"
             (click)="onCancel()"
             class="btn btn-info d-flex align-items-center justify-content-center button-custom"
           >
             <i class="fas fa-times me-2 icon-size"></i> Registrar luego
-          </button>
+          </button> -->
         </div>
 
 
@@ -148,22 +148,32 @@
               Código de posición
             </label>
             &nbsp;
-            <input
-              type="text"
-              name="codigoposicion"
-              [(ngModel)]="model.codigoPosicion"
-              style="color: black; font-size: 14px; width: 30%"
-              [ngbTypeahead]="searchCodigoPosicion"
-              (selectItem)="onSelectItem('codigoPosicion', $event)"
-              class="form-control"
-              id="codigoposicion"
-              aria-describedby="inputGroupPrepend"
-              required
-              #codigoposicion="ngModel"
-            />
-            <button class="btn btn-light" type="button" disabled>
-              <i class="ti-search"></i>
-            </button>
+            <span *ngIf="solicitud.tipoSolicitud === 'requisicionPersonal' && solicitud.tipoMotivo === 'Reemplazo'; else editablePosition"
+              id="descripcionposicion"
+              name="descripcionposicion"
+              style="color: black; font-size: 14px;"
+              class="text-start"
+              >{{ model.codigoPosicion }}</span
+            >
+            <ng-template #editablePosition>
+              <input
+                type="text"
+                name="codigoposicion"
+                [(ngModel)]="model.codigoPosicion"
+                style="color: black; font-size: 14px; width: 30%"
+                [ngbTypeahead]="searchCodigoPosicion"
+                (selectItem)="onSelectItem('codigoPosicion', $event)"
+                class="form-control"
+                id="codigoposicion"
+                aria-describedby="inputGroupPrepend"
+                required
+                #codigoposicion="ngModel"
+                placeholder="Ingrese código"
+              />
+              <button class="btn btn-light" type="button" disabled>
+                <i class="ti-search"></i>
+              </button>
+            </ng-template>
           </div>
         </div>
         <div class="col-md-6">
@@ -206,6 +216,7 @@
               aria-describedby="inputGroupPrepend"
               required
               #subledger="ngModel"
+              placeholder="Ingrese subledger"
             />
             <button class="btn btn-light" type="button" disabled>
               <i class="ti-search"></i>
@@ -233,6 +244,7 @@
               id="nombreempleado"
               aria-describedby="inputGroupPrepend"
               #nombreCompleto="ngModel"
+              placeholder="Ingrese nombre"
               required
             />
             <button class="btn btn-light" type="button" disabled>

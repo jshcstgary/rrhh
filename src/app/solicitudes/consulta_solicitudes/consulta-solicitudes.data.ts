@@ -33,13 +33,7 @@ export const ConsultaSolicitudesData: IConsultaSolicitudesData = {
       type: "actions",
       width: "100px",
       actions: [
-        // { materialIcon: "edit", id: "editOnTable", tooltip: "Editar" },
-        { materialIcon: "info", id: "editOnTable", tooltip: "Info" },
-        {
-          materialIcon: "content_copy",
-          id: "cloneOnTable",
-          tooltip: "Duplicar",
-        },
+        { materialIcon: "info", id: "editOnTable", tooltip: "Info" }
       ],
     },
   ],

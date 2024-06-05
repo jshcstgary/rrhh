@@ -26,6 +26,7 @@ export class DataFilterSolicitudes {
       this.isUndefined(this.estado) &&
       this.isUndefined(this.fechaDesde) &&
       this.isUndefined(this.fechaHasta);
+
     const allNull =
       this.empresa === null &&
       this.unidadNegocio === null &&

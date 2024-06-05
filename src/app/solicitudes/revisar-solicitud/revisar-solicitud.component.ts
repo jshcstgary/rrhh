@@ -1117,7 +1117,7 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
 
   async onCompletar() { //completar tarea mmunoz
     const { isConfirmed } = await Swal.fire({
-      text: `¿Desea ${this.buttonValue === "esperar" ? "guardar la solicitud en estado de espera" : `${this.buttonValue} la solicitud`}?`,
+      text: `¿Desea ${this.buttonValue === "esperar" ? `guardar la solicitud ${this.solicitud.idSolicitud} en estado de espera` : `${this.buttonValue} la solicitud ${this.solicitud.idSolicitud}`}?`,
       icon: "question",
       showCancelButton: true,
       confirmButtonColor: "rgb(227, 199, 22)",

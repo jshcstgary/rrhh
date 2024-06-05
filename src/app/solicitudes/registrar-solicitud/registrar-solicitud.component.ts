@@ -381,9 +381,7 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
     console.log(this.selectedOption);
   }
 
-  searchCodigoPosicion: OperatorFunction<string, readonly string[]> = (
-    text$: Observable<string>
-  ) =>
+  searchCodigoPosicion: OperatorFunction<string, readonly string[]> = (text$: Observable<string>) =>
     text$.pipe(
       debounceTime(200),
       distinctUntilChanged(),
@@ -1446,12 +1444,12 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
       });
   }
 
-  onCancel() {
-    console.log("User action cancel");
-    // mmunoz
-    // this.router.navigate(["tasklist/Registrar"], { queryParams: {} });
-    this.router.navigate(["tareas/consulta-tareas"]);
-  }
+  // onCancel() {
+  //   console.log("User action cancel");
+  //   // mmunoz
+  //   // this.router.navigate(["tasklist/Registrar"], { queryParams: {} });
+  //   this.router.navigate(["tareas/consulta-tareas"]);
+  // }
 
 
 
