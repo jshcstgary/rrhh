@@ -12,12 +12,12 @@
           </div>
         </div>
         <div class="col-md-4 text-end">
-          <button *ngIf="RegistrarsolicitudCompletada"
+          <!-- <button *ngIf="RegistrarsolicitudCompletada" -->
+          <button
             type="button"
-            type="submit"
-            class="btn btn-info me-2 mt-1" 
-            aria-label="Close"
+            class="btn btn-info me-2 mt-1"
             [disabled]="!solicitudForm.form.valid"
+            (click)="saveDetalleAprobaciones()"
           >
             <i class="fas fa-save"></i> Guardar
           </button>
@@ -730,7 +730,7 @@
         <label
         class="input-group-text label-estilo2"
         for="desicion"
-        >Procesar Solicitud
+        >Decisión a tomar
        </label>
 
     <div class="btn-group" role="group" aria-label="Basic example" id="desicion" >

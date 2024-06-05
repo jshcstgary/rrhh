@@ -682,11 +682,19 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
     }
   }
 
+  clearStartDate() {
+    this.dataFilterSolicitudes.fechaDesde = null;
+  }
+
+  clearEndDate() {
+    this.dataFilterSolicitudes.fechaHasta = null;
+  }
+
   filterDataTable() {
     console.log(this.dataFilterSolicitudes.idTipoSolicitud);
     console.log(this.dataFilterSolicitudes);
 
-    if (this.dataFilterSolicitudes.idTipoSolicitud === undefined) {
+    if (this.dataFilterSolicitudes.idTipoSolicitud === undefined || this.dataFilterSolicitudes.idTipoSolicitud === null) {
       Swal.fire({
         text: "Mínimo debe seleccionar un Tipo de Solicitud",
         icon: "warning",
@@ -699,14 +707,14 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 
     const data = structuredClone(this.dataFilterSolicitudes);
 
-    if (this.dataFilterSolicitudes.fechaDesde !== undefined) {
+    if (this.dataFilterSolicitudes.fechaDesde !== undefined && this.dataFilterSolicitudes.fechaDesde !== null) {
       data.fechaDesde = this.formatFecha(
         this.dataFilterSolicitudes,
         "fechaDesde"
       );
     }
 
-    if (this.dataFilterSolicitudes.fechaHasta !== undefined) {
+    if (this.dataFilterSolicitudes.fechaHasta !== undefined && this.dataFilterSolicitudes.fechaHasta !== null) {
       data.fechaHasta = this.formatFecha(
         this.dataFilterSolicitudes,
         "fechaHasta"
@@ -821,17 +829,19 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
   }
 
   getDataToTableFilter(data: any) {
+    const currentDate: string = new Date().toISOString().split("T")[0];
+
     this.utilService.openLoadingSpinner(
       "Cargando información, espere por favor..."
     );
     const combinedData$ = forkJoin(
       this.consultaSolicitudesService.filterSolicitudes(
-        data.empresa,
-        data.unidadNegocio,
-        data.idTipoSolicitud,
-        data.estado,
-        data.fechaDesde,
-        data.fechaHasta
+        data.empresa === null || data.empresa === undefined ? null : data.empresa,
+        data.unidadNegocio === null || data.unidadNegocio === undefined ? null : data.unidadNegocio,
+        data.idTipoSolicitud === null || data.idTipoSolicitud === undefined ? null : data.idTipoSolicitud,
+        data.estado === null || data.estado === undefined ? null : data.estado,
+        data.fechaDesde === null || data.fechaDesde === undefined ? currentDate : data.fechaDesde,
+        data.fechaHasta === null || data.fechaHasta === undefined ? currentDate : data.fechaHasta
       ),
       this.solicitudes.getDetalleSolicitud()
     ).pipe(

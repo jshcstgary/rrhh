@@ -79,8 +79,10 @@ export class SolicitudesService {
 
 
   public guardarDetallesAprobacionesSolicitud(request: any): Observable<any> {
+    console.log(request);
+
     return this.http.post<any>(
-      this.apiDetalleAprobaciones + "/post_arreglo",
+      this.apiDetalleAprobaciones,
       request
     );
   }

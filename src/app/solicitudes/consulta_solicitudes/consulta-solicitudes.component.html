@@ -178,7 +178,7 @@
               </div>
               <ng-template #footerTemplateFechaDesde>
                 <hr class="my-0" />
-                <button class="btn btn-primary btn-sm m-2 float-start">
+                <button class="btn btn-primary btn-sm m-2 float-start" (click)="clearStartDate()">
                   clear
                 </button>
                 <button
@@ -191,7 +191,7 @@
 
               <ng-template #footerTemplateFechaHasta>
                 <hr class="my-0" />
-                <button class="btn btn-primary btn-sm m-2 float-start">
+                <button class="btn btn-primary btn-sm m-2 float-start" (click)="clearEndDate()">
                   clear
                 </button>
                 <button
