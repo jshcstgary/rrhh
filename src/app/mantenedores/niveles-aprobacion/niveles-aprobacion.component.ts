@@ -141,7 +141,7 @@ export class NivelesAprobacionComponent implements OnInit {
   }
 
   ObtenerServicioNivelDireccion() {
-    return this.mantenimientoService.getNiveles().subscribe({
+    return this.mantenimientoService.getNivelesPorTipo("ND").subscribe({
       next: (response) => {
         this.dataNivelDireccion = [
           ...new Set(
