@@ -111,6 +111,12 @@ export class MantenimientoService {
     );
   }
 
+  public getNivelesPorTipo(tipoNivel: string): Observable<INiveles> {
+    return this.http.get<INiveles>(
+      `${this.apiEmpleadoEvolutionUrl}/niveldireccion/${tipoNivel}`
+    );
+  }
+
   public getDataEmpleadosEvolution(): Observable<IEmpleados> {
     return this.http.get<IEmpleados>(this.apiEmpleadoEvolutionUrl);
   }
