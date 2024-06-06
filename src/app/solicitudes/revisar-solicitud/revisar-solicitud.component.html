@@ -18,6 +18,7 @@
             class="btn btn-info me-2 mt-1"
             [disabled]="!solicitudForm.form.valid"
             (click)="saveDetalleAprobaciones()"
+            [disabled]="textareaContent === '' && (buttonValue === 'devolver' || buttonValue === 'rechazar')"
           >
             <i class="fas fa-save"></i> Guardar
           </button>
@@ -25,7 +26,7 @@
             type="button"
             (click)="onCompletar()"
             class="btn btn-info me-2 mt-1"
-            [disabled]="textareaContent === '' && (buttonValue === 'devolver' || buttonValue === 'rechazar')"
+            [disabled]="disabledComplete"
           >
             <i class="fas fa-check-circle  icon-size"></i> Completar Tarea
           </button>

@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { HttpClient, HttpHeaders, HttpParams, HttpParamsOptions } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { environment } from "src/environments/environment";
@@ -30,13 +30,17 @@ export class NivelesAprobacionService {
     idTipoMotivo: any,
     idNivelDireccion: any
   ): Observable<IConsultaNivelesAprobacionResponse> {
-    const headers = new HttpHeaders({
-      idNivelDireccion: idNivelDireccion,
-    });
+    const myObject: any = {
+      id_tipo_sol: idTipoSolicitud,
+      id_tip_mot: idTipoMotivo,
+      IdNivelDireccion: idNivelDireccion,
+    };
 
-    return this.http.get<IConsultaNivelesAprobacionResponse>(
-      `${this.apiUrlNivelAprobacion}/aprobacionesporfiltro/${idTipoSolicitud}/${idTipoMotivo}`,
-      { headers: headers }
+    const httpParams: HttpParamsOptions = { fromObject: myObject } as HttpParamsOptions;
+
+    return this.http.get<IConsultaNivelesAprobacionResponse>(`${this.apiUrlNivelAprobacion}/aprobacionesporfiltro`, {
+        params: new HttpParams(httpParams)
+      }
     );
   }
 

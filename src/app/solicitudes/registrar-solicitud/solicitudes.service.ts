@@ -130,8 +130,15 @@ export class SolicitudesService {
       idNivelDireccion: idNivelDireccion,
     });
 
-    const myObject: any = { filter: filtro };
+    const myObject: any = {
+      id_tipo_sol: idTipoSolicitud,
+      id_tip_mot: idTipoMotivo,
+      cod_pos: codigoPosicion,
+      IdNivelDireccion: idNivelDireccion,
+      filter: filtro
+    };
     const httpParams: HttpParamsOptions = { fromObject: myObject } as HttpParamsOptions;
+
     console.log(
       "Se llama con esto: " +
         "idTipoSolicitud: " +
@@ -143,9 +150,12 @@ export class SolicitudesService {
         ", idNivelDireccion: " +
         idNivelDireccion
     );
-    return this.http.get<IAprobacionesPosicion>(
-      `${this.apiUrlNivelAprobacion}/aprobacionesporposicion/${idTipoSolicitud}/${idTipoMotivo}/${codigoPosicion}`,
-      { params: new HttpParams(httpParams), headers: headers }
+
+    console.log(idNivelDireccion);
+
+    return this.http.get<IAprobacionesPosicion>(`${this.apiUrlNivelAprobacion}/aprobacionesporposicion`, {
+        params: new HttpParams(httpParams)
+      }
     );
   }
 

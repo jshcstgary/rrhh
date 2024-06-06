@@ -1,6 +1,7 @@
 const baseC = "http://10.35.3.180:8188"; //base de camunda Local
 const base = "http://10.35.3.162"; //base de servicios local
 const baseG ="http://181.188.224.250:18043"; //base de servicios api gateway
+export const portalWorkFlow: string = "http://181.188.224.250:4200/";
 
 
 export const environment = {
