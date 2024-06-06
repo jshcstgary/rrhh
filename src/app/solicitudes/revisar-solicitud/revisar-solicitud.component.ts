@@ -1,4 +1,3 @@
-
 import { Component } from "@angular/core";
 import { ActivatedRoute, ParamMap, Router } from "@angular/router";
 import { CamundaRestService } from "../../camunda-rest.service";
@@ -1278,7 +1277,7 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
   }
 
   override generateVariablesFromFormFields() {
-    console.log(this.aprobadorSiguiente.aprobador);
+    //console.log(this.aprobadorSiguiente.aprobador);
 
     let variables: any = {};
 
