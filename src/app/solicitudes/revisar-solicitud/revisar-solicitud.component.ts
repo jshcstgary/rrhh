@@ -1625,7 +1625,9 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
 
                     if (aprobacion.aprobador.nivelDireccion.trim().toUpperCase().indexOf('RRHH') > 0) {
                       if (aprobacionesObj[String(Number(index) + 1)] === undefined || aprobacionesObj[String(Number(index) + 1)] === null) {
-                        this.aprobadorSiguiente = aprobacionesObj[String(Number(index) + 1)];
+                        this.aprobadorSiguiente = aprobacionesObj[index];
+                      }else{
+                        this.aprobadorSiguiente = aprobacionesObj[String(Number(index)+1)];
                       }
 
                       this.solicitudes.modelDetalleAprobaciones.id_Solicitud = this.solicitud.idSolicitud;
