@@ -237,7 +237,7 @@ export class CrearNivelesAprobacionComponent implements OnInit {
   }
 
   ObtenerServicioNivelDireccion() {
-    return this.mantenimientoService.getNiveles().subscribe({
+    return this.mantenimientoService.getNivelesPorTipo("ND").subscribe({
       next: (response) => {
         this.dataNivelDireccion = [
           ...new Set(
@@ -254,7 +254,7 @@ export class CrearNivelesAprobacionComponent implements OnInit {
   }
 
   ObtenerServicioNivelAprobacion() {
-    return this.mantenimientoService.getNiveles().subscribe({
+    return this.mantenimientoService.getNivelesPorTipo("NA").subscribe({
       next: (response) => {
         this.dataNivelAprobacion = [
           ...new Set(
