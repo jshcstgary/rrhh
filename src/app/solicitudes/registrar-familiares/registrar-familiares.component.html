@@ -288,10 +288,16 @@
           </div>
         </div>
       </div>
+
+      <!-- Datos de familiares que ya laboran en la empresa  -->
       <div class="row mt-4">
         <div class="col-md-4">
           <div class="mb-4">
-            <a> <h3 class="sol-danger">Datos de familiares que ya laboran en la empresa</h3></a>
+            <a>
+              <h3 class="sol-danger">
+                Datos de familiares que ya laboran en la empresa
+              </h3>
+            </a>
           </div>
         </div>
         <div class="col-md-8">
@@ -300,165 +306,54 @@
       </div>
 
       <div class="row">
-        <div class="col-md-6">
-          <div class="input-group mb-3">
-            <label
-              class="input-group-text label-estilo"
-              for="reporta"
-              >Nombre de empleado</label
-            >
-            &nbsp;
-            <span
-              id="reporta"
-              name=""
-              style="color: black; font-size: 14px; "
-              class="text-start"
-              >{{ model.reportaA }}
-            </span>
+        <div class="col-md-4">
+          <div class="mb-3">
+            <input-component
+              [id]="'searchInputFilter'"
+              [type]="'string'"
+              [buttonIcon]="'ti-search'"
+              buttonFunction="filterStringInTable"
+              onChangeFunction="filterStringInTable"
+              placeholder="Buscar Empleado"
+              [contexto]="this"
+            ></input-component>
           </div>
         </div>
-       <!-- <div class="col-md-6">
-          <div class="input-group mb-3">
-            <label
-              class="input-group-text label-estilo"
-              for="supervisaa"
-              >Supervisa a</label
-            >
-            &nbsp;
-            <span
-              id="supervisaa"
-              name=""
-              style="color: black; font-size: 14px; "
-              class="text-start"
-              >{{ model.supervisaA }}</span
-            >
-          </div>
-        </div>-->
-      </div>
+        <form>
+          <div class="row mt-3">
+              <table-component
+                tableName="tablaDatosFamiliares"
+                [columns]="columnsDatosFamiliares"
+                [dataTable]="dataTableDatosFamiliares"
+              >
 
-      <div class="row">
-        <div class="col-md-6">
-          <div class="input-group mb-3">
-            <label
-              class="input-group-text label-estilo"
-              for="tipocontrato"
-              >Fecha de ingreso</label
-            >
-            &nbsp;
-            <select
-              id="tipocontrato"
-              name="tipocontrato"
-              class="form-select"
-              [(ngModel)]="model.tipoContrato"
-              style="font-size: 14px"
-              required
-            >
-              <option selected>Eventual</option>
-              <option>Temporal</option>
-              <option>Mixto</option>
-            </select>
+              </table-component>
+              <!-- <table-component
+                [tableName]="mainTableName"
+                [columns]="columnsDatosFamiliares"
+                [dataTable]="dataToTable"
+                [contexto]="this"
+                onSaveRowTable="onSaveRowTable"
+                [tableWidth]="tableWidth"
+                [inputsEditRow]="tableInputsEditRow"
+                [totalRows]="totalRowsInTable"
+                onChangePagination="onChangePaginationTable"
+                onCancelEditRowTable="onCancelEditRowTable"
+                [rowsPerPageValue]="rowsPerPageTable"
+                [page]="pageNumberTable"
+                [isTarea]="isTarea"
+                clickOnActionRow="onRowActionClicked"
+                [allowCloneButton]="allowCloneButtonOnTable"
+                [onRowChange]="onRowChange"
+                onChangeEditRowFunction="onChangeEditRowTableFunction"
+              ></table-component> -->
+            
           </div>
-        </div>
-        <div class="col-md-6">
-          <div class="input-group mb-3">
-            <label
-              class="input-group-text label-estilo"
-              for="nivelRepa"
-              >Cargo</label
-            >
-            &nbsp;
-            <span
-              id="nivelRepa"
-              name=""
-              style="color: black; font-size: 14px; "
-              class="text-start"
-              >{{ model.nivelRepa }}</span
-            >
-          </div>
-        </div>
+        </form>
       </div>
 
 
-      <div class="row">
-        <div class="col-md-6">
-          <div class="input-group mb-3">
-            <label
-              class="input-group-text label-estilo"
-              for="mensual"
-              >Unidad</label
-            >
-            &nbsp;
-            <input
-              [(ngModel)]="model.sueldoMensual"
-              type="text"
-              name="mensual"
-              class="form-control"
-              id="mensual"
-            />
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div class="input-group mb-3">
-            <label
-              class="input-group-text label-estilo"
-              for="trimestral"
-              >Departamento</label
-            >
-            &nbsp;
-            <input
-              [(ngModel)]="model.sueldoTrimestral"
-              type="text"
-              name="trimestral"
-              class="form-control"
-              id="trimestral"
-            />
-          </div>
-        </div>
-      </div>
-
-
-
-
-
-      <div class="row">
-        <div class="col-md-6">
-          <div class="input-group mb-3">
-            <label
-              class="input-group-text label-estilo"
-              for="mensual"
-              >Localidad</label
-            >
-            &nbsp;
-            <input
-              [(ngModel)]="model.sueldoMensual"
-              type="text"
-              name="mensual"
-              class="form-control"
-              id="mensual"
-            />
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div class="input-group mb-3">
-            <label
-              class="input-group-text label-estilo"
-              for="trimestral"
-              >Parentesco</label
-            >
-            &nbsp;
-            <input
-              [(ngModel)]="model.sueldoTrimestral"
-              type="text"
-              name="trimestral"
-              class="form-control"
-              id="trimestral"
-            />
-          </div>
-        </div>
-      </div>
-
-
-
+    <!-- Aprobadores de la solicitud -->
       <div class="row mt-4">
         <div class="col-md-4">
           <div class="mb-4">

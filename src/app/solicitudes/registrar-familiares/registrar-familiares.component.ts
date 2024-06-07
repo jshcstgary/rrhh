@@ -29,6 +29,7 @@ import {
 } from "rxjs/operators";
 import { ConsultaTareasService } from "src/app/tareas/consulta-tareas/consulta-tareas.service";
 import { SolicitudesService } from '../registrar-solicitud/solicitudes.service';
+import { columnsDatosFamiliares, dataTableDatosFamiliares } from './registrar-familiares.data';
 
 @Component({
   selector: 'registrarFamiliares',
@@ -41,7 +42,8 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
   NgForm = NgForm;
 
   selectedOption: string = 'No';
-
+  columnsDatosFamiliares = columnsDatosFamiliares.columns;
+  dataTableDatosFamiliares = dataTableDatosFamiliares;
 
   override model: RegistrarData = new RegistrarData(
     "",
