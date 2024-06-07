@@ -9,6 +9,13 @@
   right: 0;
 }
 
+.modal-custom{
+  width: 100% !important;
+  height: 100%px;
+  background-color: white;
+  display: flex;
+}
+
 .suggestion-item {
   padding: 10px;
   cursor: pointer;

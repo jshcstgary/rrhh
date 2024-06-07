@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, TemplateRef, ViewChild } from '@angular/core';
 import { ActivatedRoute, ParamMap, Router } from "@angular/router";
 import { CamundaRestService } from "../../camunda-rest.service";
 import { CompleteTaskComponent } from "../general/complete-task.component";
@@ -30,6 +30,7 @@ import {
 import { ConsultaTareasService } from "src/app/tareas/consulta-tareas/consulta-tareas.service";
 import { SolicitudesService } from '../registrar-solicitud/solicitudes.service';
 import { columnsDatosFamiliares, dataTableDatosFamiliares } from './registrar-familiares.data';
+import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'registrarFamiliares',
@@ -355,7 +356,8 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
     private mantenimientoService: MantenimientoService,
     private solicitudes: SolicitudesService,
     private utilService: UtilService,
-    private consultaTareasService: ConsultaTareasService
+    private consultaTareasService: ConsultaTareasService,
+    private modalService: NgbModal
   ) {
     super(route, router, camundaRestService);
 
@@ -1557,4 +1559,46 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
       });
   }
 
+  @ViewChild('ModalBuscarEmpleados', { static: true })
+  ModalBuscarEmpleados: TemplateRef<any>;
+  /*Inputs de Buscar Empleados*/
+  searchInp: string;
+      //Iniciar con los inputs con texto relacionaados al nombre de prueba
+  locInp:'Puerto Rico' ;
+  depInp: string;
+  nameEmpInp: string;
+  feInp: string;
+  caInp: string;
+  uniInp: string;
+
+
+  @ViewChild('myModalReasign', { static: true })
+  ModalReasignar: TemplateRef<any>;
+  /*Inputs de Reasignar Empleados*/
+
+  openModal() {
+    this.modalService.open(this.ModalBuscarEmpleados, { ariaLabelledBy: 'modal-title' }).result.then((result) => {
+      console.log(`Closed with: ${result}`);
+      //Iniciar con los inputs con texto relacionaados al nombre de prueba
+      this.locInp = 'Puerto Rico';
+      this.depInp = 'Contrataciones Familiares';
+      this.nameEmpInp = 'Juan Perez'; 
+      this.feInp = '01/12/24';
+      this.caInp = 'RRHH';
+      this.uniInp = 'Unidad de prueba';
+
+      console.log('Todos los inputs', this.searchInp, this.locInp, this.depInp, this.nameEmpInp, this.feInp, this.caInp, this.uniInp);
+    }, (reason) => {
+      console.log(`Dismissed with: ${reason}`);
+    });
+  }
+
+  openModalReasignar() {
+    console.log('Se ejecuto este metodo')
+    this.modalService.open(this.ModalReasignar, { ariaLabelledBy: 'modal-title' }).result.then((result) => {
+      console.log(`Closed with: ${result}`);
+    }, (reason) => {
+      console.log(`Dismissed with: ${reason}`);
+    });
+  }
 }
