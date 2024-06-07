@@ -38,158 +38,96 @@
         </div>
       </div>
       <div class="row mt-4">
-        <div class="col-md-3">
+        <div class="col-md-4">
           <div class="mb-4">
-            <a> <h3 class="sol-danger">Información general</h3></a>
+            <a> <h3 class="sol-danger">Información de persona a contratar</h3></a>
           </div>
         </div>
-        <div class="col-md-9">
+        <div class="col-md-8">
           <hr />
         </div>
       </div>
       <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-3">
           <div class="input-group mb-3">
             <label
               class="input-group-text label-estilo"
               for="tipoSolicitud"
-              >Tipo de solicitud</label
+              >Nro de Solicitud de Requisicion</label
             >
             &nbsp;
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="input-group mb-3">
             <span
               #mivar
               id="tipoSolicitud"
               name="idTipoSolicitud"
               style="color: black; font-size: 14px;"
               class="text-start"
-              >{{ solicitud.tipoSolicitud }}</span
-            >
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div class="input-group mb-3">
-            <label
-              class="input-group-text label-estilo"
-              for="tipomotivo"
-              >Tipo de motivo</label
-            >
-            &nbsp;
-            <span
-              id="tipomotivo"
-              name="tipomotivo"
-              style="color: black; font-size: 14px;"
-              class="text-start"
-              >{{ solicitud.tipoMotivo }}</span
+              >{{ 'Numero 3' }}</span
             >
           </div>
         </div>
       </div>
       <div class="row">
+        <div class="col-md-3">
+          <div class="input-group mb-3">
+            <label
+              class="input-group-text label-estilo"
+              for="tipoSolicitud"
+              >Justificacion*</label
+            >
+            </div>
+            </div>
+
+            <div class="col-md-7">
+              <div class="input-group mb-3">
+                <textarea
+                name="descripcionposicion"
+                [(ngModel)]="model.descrPosicion"
+                style="color: black; font-size: 14px; width: 100%; resize: none;"
+                class="form-control"
+                id="descripcionposicion"
+                rows="3"
+                required
+              ></textarea>
+              </div>
+            </div>
+
+      </div>
+      <div class="row">
         <div class="col-md-6">
-          <div class="input-group">
+          
+        </div>
+      </div>
+      
+      <div class="row">
+        <div class="col-md-3">
             <label
               class="input-group-text label-estilo"
               for="codigoposicion"
             >
-              Código de posición
+              Nombre del candidato seleccionado
             </label>
-            &nbsp;
-            <input
-              type="text"
-              name="codigoposicion"
-              [(ngModel)]="model.codigoPosicion"
-              style="color: black; font-size: 14px; width: 30%"
-              [ngbTypeahead]="searchCodigoPosicion"
-              (selectItem)="onSelectItem('codigoPosicion', $event)"
-              class="form-control"
-              id="codigoposicion"
-              aria-describedby="inputGroupPrepend"
-              required
-              #codigoposicion="ngModel"
-            />
-            <button class="btn btn-light" type="button" disabled>
-              <i class="ti-search"></i>
-            </button>
           </div>
-        </div>
-        <div class="col-md-6">
-          <div class="input-group mb-3">
-            <label
-              class="input-group-text label-estilo"
-              for="descripcionposicion"
-              >Descripción de posición</label
-            >
-            &nbsp;
-            <span
-              id="descripcionposicion"
-              name="descripcionposicion"
-              style="color: black; font-size: 14px;"
-              class="text-start"
-              >{{ model.descrPosicion }}</span
-            >
+          <div class="col-md-6">
+            <div class="input-group mb-3">
+              <span
+                #mivar
+                id="tipoSolicitud"
+                name="idTipoSolicitud"
+                style="color: black; font-size: 14px;"
+                class="text-start"
+                >{{ solicitud.tipoSolicitud }}</span
+              >
+            </div>
           </div>
-        </div>
-      </div>
-      <div class="row" *ngIf="mostrarSubledger">
-        <div class="col-md-6">
-          <div class="input-group mb-3">
-            <label
-              class="input-group-text label-estilo"
-              for="subledger"
-            >
-              Subledger
-            </label>
-            &nbsp;
-            <input
-              type="text"
-              name="subledger"
-              [(ngModel)]="model.subledger"
-              style="color: black; font-size: 14px; width: 30%"
-              [ngbTypeahead]="searchSubledger"
-              (selectItem)="onSelectItem('subledger', $event)"
-              class="form-control text-start"
-              id="subledger"
-              aria-describedby="inputGroupPrepend"
-              required
-              #subledger="ngModel"
-            />
-            <button class="btn btn-light" type="button" disabled>
-              <i class="ti-search"></i>
-            </button>
-          </div>
-        </div>
-
-        <div class="col-md-6">
-          <div class="input-group mb-3">
-            <label
-              class="input-group-text label-estilo"
-              for="nombreempleado"
-            >
-              Empleado
-            </label>
-            &nbsp;
-            <input
-              type="text"
-              name="nombreempleado"
-              [(ngModel)]="model.nombreCompleto"
-              style="color: black; font-size: 14px; width: 30%"
-              [ngbTypeahead]="searchNombreCompleto"
-              (selectItem)="onSelectItem('nombreCompleto', $event)"
-              class="form-control text-start"
-              id="nombreempleado"
-              aria-describedby="inputGroupPrepend"
-              #nombreCompleto="ngModel"
-              required
-            />
-            <button class="btn btn-light" type="button" disabled>
-              <i class="ti-search"></i>
-            </button>
-          </div>
-        </div>
       </div>
 
       <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-7">
           <div class="input-group mb-3">
             <label
               class="input-group-text label-estilo"
@@ -205,7 +143,7 @@
             >
           </div>
         </div>
-        <div class="col-md-6">
+        <div class="col-md">
           <div class="input-group mb-3">
             <label
               class="input-group-text label-estilo"
@@ -224,12 +162,12 @@
       </div>
 
       <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-7">
           <div class="input-group mb-3">
             <label
               class="input-group-text label-estilo"
               for="departamento"
-              >Área/departamento</label
+              >Departamento</label
             >
             <span
               id="departamento"
@@ -240,95 +178,96 @@
             >
           </div>
         </div>
-        <div class="col-md-6">
+        <div class="col-md">
           <div class="input-group mb-3">
             <label
               class="input-group-text label-estilo"
               for="tipocargo"
-              >Tipo de cargo</label
+              >Localidad</label
             >
             <span
               id="cargo"
               name=""
               style="color: black; font-size: 14px;"
               class="text-start"
-              >{{ model.nombreCargo }}</span
+              >{{ model.localidad}}</span
             >
           </div>
         </div>
       </div>
 
       <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-7">
           <div class="input-group mb-3">
             <label
               class="input-group-text label-estilo"
               for="localidadzona"
-              >Localidad zona</label
+              >Cargo</label
             >
             <span
               id="localidadzona"
               name=""
               style="color: black; font-size: 14px;"
               class="text-start"
-              >{{ model.localidad }}</span
+              >{{ 'Prueba' }}</span
             >
           </div>
         </div>
-        <div class="col-md-6">
+        <div class="col-md">
           <div class="input-group mb-3">
             <label
               class="input-group-text label-estilo"
               for="niveldirección"
-              >Nivel de dirección</label
+              >Tipo de contrato</label
             >
             <span
               id="niveldirección"
               name=""
               style="color: black; font-size: 14px; "
               class="text-start"
-              >{{ model.nivelDir }}</span
+              >{{ 'Especial' }}</span
             >
           </div>
         </div>
       </div>
 
       <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-7">
           <div class="input-group mb-3">
             <label
               class="input-group-text label-estilo"
               for="centrocosto"
-              >Centro de costo</label
+              >Jefe solicitante</label
             >
             <span
               id="centrocosto"
               name=""
               style="color: black; font-size: 14px;"
               class="text-start"
-              >{{ model.nomCCosto }}</span
+              >{{ 'Pedro Ramirez' }}</span
             >
           </div>
         </div>
-        <div class="col-md-6" *ngIf="mostrarTipoJustificacionYMision">
-          <div class="input-group mb-3">
-            <label
-              class="input-group-text label-estilo"
-              for="misioncargo"
-              >Misión del cargo</label
-            >
-            <input
-              type="text"
-              name="misioncargo"
-              [(ngModel)]="model.misionCargo"
-              class="form-control"
-              id="misioncargo"
-              #misioncargo="ngModel"
-              required
-            />
+        </div>
+
+        <div class="row">
+          <div class="col-md-7">
+            <div class="input-group mb-3">
+              <label
+                class="input-group-text label-estilo"
+                for="centrocosto"
+                >Responsable de RRHH</label
+              >
+              <span
+                id="centrocosto"
+                name=""
+                style="color: black; font-size: 14px;"
+                class="text-start"
+                >{{ 'Juan Garcez' }}</span
+              >
+            </div>
           </div>
         </div>
-      </div>
       <div class="row" *ngIf="mostrarTipoJustificacionYMision">
         <div class="col">
           <div class="input-group mb-3 contenedor">
