@@ -66,7 +66,7 @@ export class NivelesAprobacionComponent implements OnInit {
         break;
       case "case3":
         this.utilService.modalResponse(
-          "Por favor complete los campos del filtro",
+          "Por favor seleccione el Tipo de Solicitud",
           "info"
         );
         break;
