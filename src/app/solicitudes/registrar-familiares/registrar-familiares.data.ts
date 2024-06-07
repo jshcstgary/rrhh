@@ -1,29 +1,43 @@
-import { IConsultaTareasData } from "src/app/tareas/consulta-tareas/consulta-tareas.data";
+import { IColumnsTable } from "src/app/component/table/table.interface";
+
 
 export const columnsDatosFamiliares: IConsultaTareasData = {
   columns: [
     {
-      title: "Número de solicitud",
-      dataIndex: "idSolicitud",
-      align: "center",
-      sortActive: true,
-    },
-    {
-      title: "Tarea",
+      title: "Nombre",
       dataIndex: "name",
+      // align: "center",
       sortActive: true,
     },
     {
-      title: "Solicitud",
-      dataIndex: "tipoSolicitud",
+      title: "Fecha de Ingreso",
+      dataIndex: "dateIn",
       sortActive: true,
-      colType: "number",
     },
     {
-      title: "Fecha de creación",
-      dataIndex: "startTime",
+      title: "Cargo",
+      dataIndex: "position",
       sortActive: true,
-      colType: "number",
+    },
+    {
+      title: "Unidad",
+      dataIndex: "unit",
+      sortActive: true,
+    },
+    {
+      title: "Departamento",
+      dataIndex: "departament",
+      sortActive: true,
+    },
+    {
+      title: "Localidad",
+      dataIndex: "location",
+      sortActive: true,
+    },
+    {
+      title: "Parentesco",
+      dataIndex: "relationship",
+      sortActive: true,
     },
     {
       title: "Acciones",
@@ -31,6 +45,7 @@ export const columnsDatosFamiliares: IConsultaTareasData = {
       width: "100px",
       actions: [
         { materialIcon: "info", id: "editOnTable", tooltip: "Acciones" },
+        { materialIcon: "delete", id: "delete", tooltip: "Eliminar" },
         // {
         //   materialIcon: "content_copy",
         //   id: "cloneOnTable",
@@ -39,6 +54,12 @@ export const columnsDatosFamiliares: IConsultaTareasData = {
       ],
     },
   ],
-  colsToFilterByTextIdSolicitud: ["idSolicitud", "name"],
+  // colsToFilterByTextIdSolicitud: ["idSolicitud", "name"],
   colsToFilterByTextName: ["name"],
 };
+
+export interface IConsultaTareasData {
+  columns: IColumnsTable;
+  // colsToFilterByTextIdSolicitud: string[];
+  colsToFilterByTextName: string[];
+}
