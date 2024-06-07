@@ -18,6 +18,7 @@ import { NivelesAprobacionService } from "./niveles-aprobacion.service";
 import { DataFilterNivelesAprobacion } from "src/app/eschemas/DataFilterNivelesAprobacion";
 import { MantenimientoService } from "src/app/services/mantenimiento/mantenimiento.service";
 import { Router } from "@angular/router";
+import { DataFilterSolicitudes } from "src/app/eschemas/DataFilterSolicitudes";
 
 @Component({
   selector: "app-niveles-aprobacion",
@@ -37,6 +38,7 @@ export class NivelesAprobacionComponent implements OnInit {
   public dataTipoMotivo: any[] = [];
   public dataTipoSolicitudes: any[] = [];
   public dataNivelDireccion: any[] = [];
+
   constructor(
     private nivelesAprobacionService: NivelesAprobacionService,
     private tableService: TableService,
@@ -44,7 +46,7 @@ export class NivelesAprobacionComponent implements OnInit {
     private utilService: UtilService,
     private mantenimientoService: MantenimientoService,
     private router: Router
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.ObtenerServicioTipoSolicitud();
@@ -54,6 +56,7 @@ export class NivelesAprobacionComponent implements OnInit {
   }
 
   filterDataTable() {
+    console.log(this.dataFilterNivelesAprobacion);
     switch (this.dataFilterNivelesAprobacion.verifyFilterFields()) {
       case "case1":
         this.getDataToTable();

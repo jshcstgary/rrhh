@@ -29,6 +29,7 @@ import {
 } from "rxjs/operators";
 import { ConsultaTareasService } from "src/app/tareas/consulta-tareas/consulta-tareas.service";
 import { SolicitudesService } from "../registrar-solicitud/solicitudes.service";
+import { RegistrarCandidatoService } from "./registrar-candidato.service";
 
 @Component({
   selector: 'app-registrar-candidato',
@@ -41,7 +42,7 @@ import { SolicitudesService } from "../registrar-solicitud/solicitudes.service";
 export class RegistrarCandidatoComponent extends CompleteTaskComponent {
   NgForm = NgForm;
 
-
+  disabledSave: boolean = true;
 
   tipoProceso: string = '';
   tipoFuente: string;
@@ -388,7 +389,8 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
     private mantenimientoService: MantenimientoService,
     private solicitudes: SolicitudesService,
     private utilService: UtilService,
-    private consultaTareasService: ConsultaTareasService
+    private consultaTareasService: ConsultaTareasService,
+    private seleccionCandidatoService: RegistrarCandidatoService
   ) {
     super(route, router, camundaRestService);
 
@@ -408,7 +410,11 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
       console.log("this.idDeInstancia: ", this.idDeInstancia);
     });
 
-    this.selectedOption = this.options[0].value;
+    this.selectedOption = this.options[0].descripcion;
+
+    if (this.tipoProceso !== "") {
+      this.disabledSave = false;
+    }
   }
 
   getCurrentDate() {
@@ -1155,6 +1161,50 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
           });
       }); //aqui debe crear los aprobadores
     this.submitted = true;
+  }
+
+  onChangeTipoProceso() {
+    this.disabledSave = false;
+  }
+
+  async saveCandidato() {
+    const request = {
+      iD_SOLICITUD: this.solicitud.idSolicitud,
+      iD_SOLICITUD_PROCESO: "",
+      tipoFuente: this.isChecked,
+      fuenteExterna: this.isChecked ? this.selectedOption : null,
+      tipoProceso: this.model.tipoProceso,
+      candidato: this.nombreCandidato,
+      actualizacionDelPerfil: this.fechas.actualizacionPerfil === "" ? null : this.fechas.actualizacionPerfil,
+      busquedaDeCandidatos: this.fechas.busquedaCandidatos === "" ? null : this.fechas.busquedaCandidatos,
+      entrevista: this.fechas.entrevista === "" ? null : this.fechas.entrevista,
+      pruebas: this.fechas.pruebas === "" ? null : this.fechas.pruebas,
+      referencias: this.fechas.referencias === "" ? null : this.fechas.referencias,
+      elaboracionDeInforme: this.fechas.elaboracionInforme === "" ? null : this.fechas.elaboracionInforme,
+      entregaAlJefeSol: this.fechas.entregaJefe === "" ? null : this.fechas.entregaJefe,
+      entrevistaPorJefatura: this.fechas.entrevistaJefatura === "" ? null : this.fechas.entrevistaJefatura,
+      tomaDeDesiciones: this.fechas.tomaDecisiones === "" ? null : this.fechas.tomaDecisiones,
+      candidatoSeleccionado: this.fechas.candidatoSeleccionado === "" ? null : this.fechas.candidatoSeleccionado,
+      procesoDeContratacion: this.fechas.procesoContratacion === "" ? null : this.fechas.procesoContratacion,
+      finProcesoContratacion: this.fechas.finProcesoContratacion === "" ? null : this.fechas.finProcesoContratacion,
+      fechaInicioReingreso: this.model.tipoProceso !== 'reingresoPersonal' ? null : this.getCurrentDate(),
+      fechaFinReingreso: null,
+      fechaInicioContratacionFamiliares: this.model.tipoProceso !== 'contratacionFamiliares' ? null : this.getCurrentDate(),
+      fechaFinContratacionFamiliares: null,
+      fechaIngresoCandidato : null
+    };
+
+    console.log(request);
+    return;
+
+    this.seleccionCandidatoService.saveCandidato(request).subscribe({
+      next: () => {
+        console.log("Guardado correctamente");
+      },
+      error: (error) => {
+        console.error(error);
+      }
+    });
   }
 
   onCompletar() { //completar tarea mmunoz
