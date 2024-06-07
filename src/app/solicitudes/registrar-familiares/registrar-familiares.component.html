@@ -1,8 +1,8 @@
 <form (ngSubmit)="onSubmit()" #SolicitudForm="ngForm" #solicitudForm="ngForm">
   <div class="card">
     <h2 class="card-body text-start">
-      <div class="row">
-        <div class="col-md-8">
+      <div class="row justify-around">
+        <div class="col">
           <div class="mb-3">
             <a (click)="pageSolicitudes()">
               <h3 class="sol-danger">
@@ -11,7 +11,7 @@
             >
           </div>
         </div>
-        <div class="col-md-4 text-end">
+        <div class="col text-end">
           <button *ngIf="RegistrarsolicitudCompletada"
             type="button"
             type="submit"

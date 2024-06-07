@@ -91,13 +91,8 @@ export const columnsDatosFamiliares: IConsultaTareasData = {
       type: "actions",
       width: "100px",
       actions: [
-        { materialIcon: "info", id: "editOnTable", tooltip: "Acciones" },
+        { materialIcon: "edit", id: "editOnTable", tooltip: "Editar" },
         { materialIcon: "delete", id: "delete", tooltip: "Eliminar" },
-        // {
-        //   materialIcon: "content_copy",
-        //   id: "cloneOnTable",
-        //   tooltip: "Duplicar",
-        // },
       ],
     },
   ],
