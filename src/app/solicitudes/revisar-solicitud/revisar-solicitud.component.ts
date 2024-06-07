@@ -1307,7 +1307,7 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
           value: this.aprobadorSiguiente.aprobador.correo
         };
         variables.usuarioNotificacionRemuneracion = {
-          value: this.aprobadorSiguiente.aprobador.usuarioAprobador
+          value: this.aprobadorSiguiente.aprobador.usuario
         };
         variables.nivelDireccionNotificacionRemuneracion = {
           value: this.aprobadorSiguiente.aprobador.nivelDireccion
