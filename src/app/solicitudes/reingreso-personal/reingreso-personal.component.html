@@ -12,7 +12,11 @@
                     </div>
                 </div>
 
-                <div class="col-md-4 text-end">
+                <div class="col-md-12 text-end">
+                    <button *ngIf="RegistrarsolicitudCompletada" type="button" (click)="openModalReasignar()"
+                    class="btn btn-info me-2 mt-1">
+                        <i class="fas fa-redo"></i> Reasignar
+                    </button>
                     <button *ngIf="RegistrarsolicitudCompletada" type="button" type="submit"
                         class="btn btn-info me-2 mt-1" aria-label="Close" [disabled]="!solicitudForm.form.valid">
                         <i class="fas fa-save"></i> Guardar
@@ -22,14 +26,10 @@
                         <i class="fas fa-check-circle"></i> Completar Tarea
                     </button>
 
-                    <button *ngIf="RegistrarsolicitudCompletada" type="button" (click)="onCancel()"
-                        class="btn btn-info me-2 mt-1">
-                        <i class="fas fa-times"></i> Reasignar
-                    </button>
                 </div>
             </div>
 
-            <div class="row mt-4">
+            <div class="row mt-2">
                 <div class="col-md-3">
                     <div class="mb-4">
                         <a>
@@ -42,49 +42,52 @@
                     <hr />
                 </div>
             </div>
-
-            <div class="row">
-                <div class="col-md-6">
+            <div class="row mb-2">
+                <div class="col-md-7">
                     <div class="input-group mb-3">
-                        <label class="input-group-text label-estilo" for="tipoSolicitud">Tipo de solicitud</label>
+                        <label class="input-group label-estilo" for="tipoSolicitud">Nro Solicitud de Requisicion</label>
                         &nbsp;
                         <span #mivar id="tipoSolicitud" name="tipoSolicitud" style="color: black; font-size: 14px;"
-                            class="text-start">Tipo Solicitud</span>
+                            class="text-start">RP-0001</span>
                     </div>
                 </div>
-
-                <div class="col-md-6">
+            </div>
+            <div class="row mt-3">
+                <div class="col-md-7">
                     <div class="input-group mb-3">
-                        <label class="input-group-text label-estilo" for="tipoMotivo">Tipo de motivo</label>
+                        <label class="input-group label-estilo" for="tipoMotivo">Apellidos y nombres completos</label>
                         &nbsp;
                         <span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px;"
-                            class="text-start">Tipo Motivo</span>
+                            class="text-start">{{'Juan Benito Perez Gonzales'}}</span>
                     </div>
                 </div>
             </div>
 
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="input-group mb-3">
-                        <label class="input-group-text label-estilo" for="nombresApellidos">Nombres y apellidos
-                            completos</label>
-                        &nbsp;
-                        <span #mivar id="nombresApellidos" name="nombresApellidos"
-                            style="color: black; font-size: 14px;" class="text-start">Nombres completos</span>
+            <div class="row mt-3">
+                <div class="col-md-3">
+                  <div class="input-group mb-3">
+                    <label
+                      class="input-group label-estilo"
+                      for="observaciones"
+                      >Observaciones</label
+                    >
                     </div>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col">
-                    <div class="input-group mb-3 contenedor">
-                        <label class="input-group-text label-estilo2" for="observaciones">Observaciones</label>
-                        &nbsp;
-                        <textarea id="observaciones" name="observaciones" rows="3"
-                            style="color: black; font-size: 14px" disabled>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ratione eos eaque, explicabo natus quasi in dolore iure? Provident delectus harum blanditiis, aspernatur minus quis reprehenderit tempora fugiat natus quibusdam earum!</textarea>
                     </div>
-                </div>
-            </div>
+        
+                    <div class="col-md-7">
+                      <div class="input-group mb-3">
+                        <textarea
+                        name="descripcionposicion"
+                        style="color: black; font-size: 14px; width: 100%; resize: none;"
+                        class="form-control"
+                        id="observaciones"
+                        rows="3"
+                        required
+                      ></textarea>
+                      </div>
+                    </div>
+        
+              </div>
 
             <div class="row mt-4">
                 <div class="col-md-3">
@@ -101,425 +104,547 @@
             </div>
 
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-5">
                     <div class="input-group mb-3">
-                        <label class="input-group-text label-estilo" for="empleado">Tipo de contrato</label>
-                        &nbsp;
-                        <select id="empleado" name="empleado" class="form-select" style="font-size: 14px" required>
-                            <option selected>Eventual</option>
-                            <option>Temporal</option>
-                            <option>Mixto</option>
-                        </select>
+                        <label
+                          class="input-group label-estilo"
+                          for="searchInputFilter"
+                          >Buscar Empleado</label
+                        >
+                      <input-component
+                        [id]="'searchInputFilter'"
+                        [type]="'string'"
+                        [buttonIcon]="'ti-search'"
+                        buttonFunction="filterStringInTable"
+                        onChangeFunction="filterStringInTable"
+                        placeholder=""
+                        (click)="openModal()"
+                        style="width: 50%;"
+                      ></input-component>
                     </div>
-                </div>
+                  </div>
+                  <div class="col-md-1"></div>
+                  <div class="col-md-4">
+                    <div class="input-group mb-3">
+                        <label class="input-group label-estilo" for="tipoMotivo">Empleado</label>
+                        &nbsp;
+                        <span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px;"
+                            class="text-start">{{'SUAREZ MARIETA CAROLINA'}}</span>
+                    </div>
+                  </div>
             </div>
 
-            <div class="row mt-4">
-                <div class="col-md-3">
-                    <div class="mb-4">
-                        <a>
-                            <h3 class="sol-danger">Anterior</h3>
-                        </a>
-                    </div>
+            <div class="row mt-4 mb-4">
+                <div class="col-md-6 d-flex justify-content-center align-items-center">
+                  <div class="mb-3">
+                    <label class="input-group label-estilo" style="font-size: 20px; color: black;" for="tipoMotivo">Actual</label>
+                  </div>
                 </div>
-
-                <div class="col-md-9">
-                    <hr />
+                <div class="col-md-6 d-flex justify-content-center align-items-center">
+                  <div class="mb-3">
+                    <label class="input-group label-estilo" style="font-size: 20px;color: black;" for="tipoMotivo">Anterior</label>
+                  </div>
                 </div>
-            </div>
+              </div>
 
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="input-group mb-3">
-                        <label class="input-group-text label-estilo" for="fechaIngreso">Fecha de inrgeso</label>
-                        &nbsp;
-                        <span id="fechaIngreso" name="" style="color: black; font-size: 14px; "
-                            class="text-start">2024/01/01
-                        </span>
-                    </div>
-                </div>
-
-                <div class="col-md-6">
-                    <div class="input-group mb-3">
-                        <label class="input-group-text label-estilo" for="fechaSalida">Fecha de salida</label>
-                        &nbsp;
-                        <span id="fechaSalida" name="" style="color: black; font-size: 14px; "
-                            class="text-start">2024/01/01</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="input-group mb-3">
-                        <label class="input-group-text label-estilo" for="compania">Compañía</label>
-                        &nbsp;
-                        <span id="compania" name="" style="color: black; font-size: 14px; " class="text-start">Compañía
-                        </span>
-                    </div>
-                </div>
-
-                <div class="col-md-6">
-                    <div class="input-group mb-3">
-                        <label class="input-group-text label-estilo" for="unidadNegocio">Unidad de negocio</label>
-                        &nbsp;
-                        <span id="unidadNegocio" name="" style="color: black; font-size: 14px; "
-                            class="text-start">Unidad de negocio</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="input-group mb-3">
-                        <label class="input-group-text label-estilo" for="departamento">Departamento</label>
-                        &nbsp;
-                        <span id="departamento" name="" style="color: black; font-size: 14px; "
-                            class="text-start">Departamento
-                        </span>
-                    </div>
-                </div>
-
-                <div class="col-md-6">
-                    <div class="input-group mb-3">
-                        <label class="input-group-text label-estilo" for="localidad">Localidad</label>
-                        &nbsp;
-                        <span id="localidad" name="" style="color: black; font-size: 14px; "
-                            class="text-start">Localidad</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="input-group mb-3">
-                        <label class="input-group-text label-estilo" for="puesto">Puesto</label>
-                        &nbsp;
-                        <span id="puesto" name="" style="color: black; font-size: 14px; " class="text-start">Puesto
-                        </span>
-                    </div>
-                </div>
-
-                <div class="col-md-6">
-                    <div class="input-group mb-3">
-                        <label class="input-group-text label-estilo" for="responsableRRHH">Responsable de RR.HH.</label>
-                        &nbsp;
-                        <span id="responsableRRHH" name="" style="color: black; font-size: 14px; "
-                            class="text-start">Responsable de RR.HH.</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="input-group mb-3">
-                        <label class="input-group-text label-estilo" for="sueldo">Sueldo</label>
-                        &nbsp;
-                        <span id="sueldo" name="" style="color: black; font-size: 14px; " class="text-start">2000
-                        </span>
-                    </div>
-                </div>
-
-                <div class="col-md-6">
-                    <div class="input-group mb-3">
-                        <label class="input-group-text label-estilo" for="remuneracionMensual">Remuneración
-                            mensual</label>
-                        &nbsp;
-                        <span id="remuneracionMensual" name="" style="color: black; font-size: 14px; "
-                            class="text-start">2200</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row mt-4">
-                <div class="col-md-3">
-                    <div class="mb-4">
-                        <a>
-                            <h4 class="sol-danger">Tipo de variable</h4>
-                        </a>
-                    </div>
-                </div>
-
-                <div class="col-md-9">
-                    <hr />
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="input-group mb-3">
-                        <label class="input-group-text label-estilo" for="mensual">Mensual</label>
-                        &nbsp;
-                        <span id="mensual" name="" style="color: black; font-size: 14px; " class="text-start">2000
-                        </span>
-                    </div>
-                </div>
-
-                <div class="col-md-6">
-                    <div class="input-group mb-3">
-                        <label class="input-group-text label-estilo" for="trimestral">Trimestral</label>
-                        &nbsp;
-                        <span id="trimestral" name="" style="color: black; font-size: 14px; "
-                            class="text-start">2200</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="input-group mb-3">
-                        <label class="input-group-text label-estilo" for="semestral">Semestral</label>
-                        &nbsp;
-                        <span id="semestral" name="" style="color: black; font-size: 14px; " class="text-start">2000
-                        </span>
-                    </div>
-                </div>
-
-                <div class="col-md-6">
-                    <div class="input-group mb-3">
-                        <label class="input-group-text label-estilo" for="anual">Anual</label>
-                        &nbsp;
-                        <span id="anual" name="" style="color: black; font-size: 14px; " class="text-start">2200</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row mt-4">
-                <div class="col-md-3">
-                    <div class="mb-4">
-                        <a>
-                            <h4 class="sol-danger">Jefes</h4>
-                        </a>
-                    </div>
-                </div>
-
-                <div class="col-md-9">
-                    <hr />
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="input-group mb-3">
-                        <label class="input-group-text label-estilo" for="inmediatoSuperior">Inmediato superior</label>
-                        &nbsp;
-                        <span id="inmediatoSuperior" name="" style="color: black; font-size: 14px; " class="text-start">Inmediato superior
-                        </span>
-                    </div>
-                </div>
-
-                <div class="col-md-6">
-                    <div class="input-group mb-3">
-                        <label class="input-group-text label-estilo" for="puestoSuperior">Puesto superior</label>
-                        &nbsp;
-                        <span id="puestoSuperior" name="" style="color: black; font-size: 14px; " class="text-start">Puesto superior</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row">
+              <div class="row mt-4">
                 <div class="col">
-                    <div class="input-group mb-3 contenedor">
-                        <label class="input-group-text label-estilo2" for="observaciones">Observación del comité de remuneraciones</label>
-                        &nbsp;
-                        <textarea id="observaciones" name="observaciones"
-                            style="color: black; font-size: 14px" disabled>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ratione eos eaque, explicabo natus quasi in dolore iure? Provident delectus harum blanditiis, aspernatur minus quis reprehenderit tempora fugiat natus quibusdam earum!</textarea>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row mt-4">
-                <div class="col-md-3">
-                    <div class="mb-4">
-                        <a>
-                            <h3 class="sol-danger">Actual</h3>
-                        </a>
-                    </div>
-                </div>
-
-                <div class="col-md-9">
-                    <hr />
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-md-6">
                     <div class="input-group mb-3">
-                        <label class="input-group-text label-estilo" for="compania">Compañía</label>
+                        <label class="input-group label-estilo" for="tipoMotivo">Compañía</label>
                         &nbsp;
-                        <span id="compania" name="" style="color: black; font-size: 14px; " class="text-start">Compañía
-                        </span>
+                        <span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px;"
+                            class="text-start">{{'LACTEOS INC'}}</span>
                     </div>
                 </div>
-
-                <div class="col-md-6">
-                    <div class="input-group mb-3">
-                        <label class="input-group-text label-estilo" for="unidadNegocio">Unidad de negocio</label>
-                        &nbsp;
-                        <span id="unidadNegocio" name="" style="color: black; font-size: 14px; "
-                            class="text-start">Unidad de negocio</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="input-group mb-3">
-                        <label class="input-group-text label-estilo" for="departamento">Departamento</label>
-                        &nbsp;
-                        <span id="departamento" name="" style="color: black; font-size: 14px; "
-                            class="text-start">Departamento
-                        </span>
-                    </div>
-                </div>
-
-                <div class="col-md-6">
-                    <div class="input-group mb-3">
-                        <label class="input-group-text label-estilo" for="localidad">Localidad</label>
-                        &nbsp;
-                        <span id="localidad" name="" style="color: black; font-size: 14px; "
-                            class="text-start">Localidad</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="input-group mb-3">
-                        <label class="input-group-text label-estilo" for="puesto">Puesto</label>
-                        &nbsp;
-                        <span id="puesto" name="" style="color: black; font-size: 14px; " class="text-start">Puesto
-                        </span>
-                    </div>
-                </div>
-
-                <div class="col-md-6">
-                    <div class="input-group mb-3">
-                        <label class="input-group-text label-estilo" for="responsableRRHH">Responsable de RR.HH.</label>
-                        &nbsp;
-                        <span id="responsableRRHH" name="" style="color: black; font-size: 14px; "
-                            class="text-start">Responsable de RR.HH.</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="input-group mb-3">
-                        <label class="input-group-text label-estilo" for="sueldo">Sueldo</label>
-                        &nbsp;
-                        <span id="sueldo" name="" style="color: black; font-size: 14px; " class="text-start">2000
-                        </span>
-                    </div>
-                </div>
-
-                <div class="col-md-6">
-                    <div class="input-group mb-3">
-                        <label class="input-group-text label-estilo" for="remuneracionMensual">Remuneración
-                            mensual</label>
-                        &nbsp;
-                        <span id="remuneracionMensual" name="" style="color: black; font-size: 14px; "
-                            class="text-start">2200</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row mt-4">
-                <div class="col-md-3">
-                    <div class="mb-4">
-                        <a>
-                            <h4 class="sol-danger">Tipo de variable</h4>
-                        </a>
-                    </div>
-                </div>
-
-                <div class="col-md-9">
-                    <hr />
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="input-group mb-3">
-                        <label class="input-group-text label-estilo" for="mensual">Mensual</label>
-                        &nbsp;
-                        <span id="mensual" name="" style="color: black; font-size: 14px; " class="text-start">2000
-                        </span>
-                    </div>
-                </div>
-
-                <div class="col-md-6">
-                    <div class="input-group mb-3">
-                        <label class="input-group-text label-estilo" for="trimestral">Trimestral</label>
-                        &nbsp;
-                        <span id="trimestral" name="" style="color: black; font-size: 14px; "
-                            class="text-start">2200</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="input-group mb-3">
-                        <label class="input-group-text label-estilo" for="semestral">Semestral</label>
-                        &nbsp;
-                        <span id="semestral" name="" style="color: black; font-size: 14px; " class="text-start">2000
-                        </span>
-                    </div>
-                </div>
-
-                <div class="col-md-6">
-                    <div class="input-group mb-3">
-                        <label class="input-group-text label-estilo" for="anual">Anual</label>
-                        &nbsp;
-                        <span id="anual" name="" style="color: black; font-size: 14px; " class="text-start">2200</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row mt-4">
-                <div class="col-md-3">
-                    <div class="mb-4">
-                        <a>
-                            <h4 class="sol-danger">Jefes</h4>
-                        </a>
-                    </div>
-                </div>
-
-                <div class="col-md-9">
-                    <hr />
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="input-group mb-3">
-                        <label class="input-group-text label-estilo" for="inmediatoSuperior">Inmediato superior</label>
-                        &nbsp;
-                        <span id="inmediatoSuperior" name="" style="color: black; font-size: 14px; " class="text-start">Inmediato superior
-                        </span>
-                    </div>
-                </div>
-
-                <div class="col-md-6">
-                    <div class="input-group mb-3">
-                        <label class="input-group-text label-estilo" for="puestoSuperior">Puesto superior</label>
-                        &nbsp;
-                        <span id="puestoSuperior" name="" style="color: black; font-size: 14px; " class="text-start">Puesto superior</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row">
                 <div class="col">
-                    <div class="input-group mb-3 contenedor">
-                        <label class="input-group-text label-estilo2" for="observaciones">Observación del comité de remuneraciones</label>
+                    <div class="input-group mb-3">
+                        <label class="input-group label-estilo" for="tipoMotivo">Compañía</label>
                         &nbsp;
-                        <textarea id="observaciones" name="observaciones"
-                            style="color: black; font-size: 14px" disabled>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ratione eos eaque, explicabo natus quasi in dolore iure? Provident delectus harum blanditiis, aspernatur minus quis reprehenderit tempora fugiat natus quibusdam earum!</textarea>
+                        <span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px;"
+                            class="text-start">{{'BANCO NACIONAL'}}</span>
+                    </div>
+                </div>
+              </div>
+
+              <div class="row mt-4">
+                <div class="col">
+                    <div class="input-group mb-3">
+                        <label class="input-group label-estilo" for="tipoMotivo">Compañía</label>
+                        &nbsp;
+                        <span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px;"
+                            class="text-start">{{'LACTEOS INC'}}</span>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="input-group mb-3">
+                        <label class="input-group label-estilo" for="tipoMotivo">Compañía</label>
+                        &nbsp;
+                        <span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px;"
+                            class="text-start">{{'BANCO NACIONAL'}}</span>
+                    </div>
+                </div>
+              </div>
+
+              <div class="row mt-4 mb-4">
+                <div class="col">
+                    <div class="input-group mb-3">
+                        <label class="input-group label-estilo" for="tipoMotivo">Sueldo</label>
+                        &nbsp;
+                        <span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px;"
+                            class="text-start">{{'200'}}</span>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="input-group mb-3">
+                        <label class="input-group label-estilo" for="tipoMotivo">Sueldo</label>
+                        &nbsp;
+                        <span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px;"
+                            class="text-start">{{'400'}}</span>
+                    </div>
+                </div>
+              </div>
+
+              <div class="row mt-4">
+                <div class="col-md-3">
+                    <div class="mb-4">
+                        <a>
+                            <h2 class="sol-danger">Tipo de variable</h2>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="col-md-9">
+                    <hr />
+                </div>
+            </div>
+
+
+            <div class="row mt-4">
+                <div class="col">
+                    <div class="input-group mb-3">
+                        <label class="input-group label-estilo" for="tipoMotivo">Mensual</label>
+                        &nbsp;
+                        <span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px;"
+                            class="text-start">{{'12'}}</span>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="input-group mb-3">
+                        <label class="input-group label-estilo" for="tipoMotivo">Mensual</label>
+                        &nbsp;
+                        <span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px;"
+                            class="text-start">{{'10'}}</span>
+                    </div>
+                </div>
+              </div>
+            <div class="row mt-4">
+                <div class="col">
+                    <div class="input-group mb-3">
+                        <label class="input-group label-estilo" for="tipoMotivo">Trimestral</label>
+                        &nbsp;
+                        <span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px;"
+                            class="text-start">{{''}}</span>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="input-group mb-3">
+                        <label class="input-group label-estilo" for="tipoMotivo">Trimestral</label>
+                        &nbsp;
+                        <span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px;"
+                            class="text-start">{{''}}</span>
+                    </div>
+                </div>
+              </div>
+            <div class="row mt-4">
+                <div class="col">
+                    <div class="input-group mb-3">
+                        <label class="input-group label-estilo" for="tipoMotivo">Semestral</label>
+                        &nbsp;
+                        <span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px;"
+                            class="text-start">{{''}}</span>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="input-group mb-3">
+                        <label class="input-group label-estilo" for="tipoMotivo">Semestral</label>
+                        &nbsp;
+                        <span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px;"
+                            class="text-start">{{''}}</span>
+                    </div>
+                </div>
+              </div>
+            <div class="row mt-4">
+                <div class="col">
+                    <div class="input-group mb-3">
+                        <label class="input-group label-estilo" for="tipoMotivo">Anual</label>
+                        &nbsp;
+                        <span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px;"
+                            class="text-start">{{''}}</span>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="input-group mb-3">
+                        <label class="input-group label-estilo" for="tipoMotivo">Anual</label>
+                        &nbsp;
+                        <span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px;"
+                            class="text-start">{{''}}</span>
+                    </div>
+                </div>
+              </div>
+            <div class="row mt-4">
+                <div class="col">
+                    <div class="input-group mb-3">
+                        <label class="input-group label-estilo" for="tipoMotivo">Remuneracion mensual</label>
+                        &nbsp;
+                        <span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px;"
+                            class="text-start">{{''}}</span>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="input-group mb-3">
+                        <label class="input-group label-estilo" for="tipoMotivo">Remuneracion mensual</label>
+                        &nbsp;
+                        <span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px;"
+                            class="text-start">{{''}}</span>
+                    </div>
+                </div>
+              </div>
+            <div class="row mt-4">
+                <div class="col">
+                    <div class="input-group mb-3">
+                        <label class="input-group label-estilo" for="tipoMotivo">Puesto</label>
+                        &nbsp;
+                        <span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px;"
+                            class="text-start">{{''}}</span>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="input-group mb-3">
+                        <label class="input-group label-estilo" for="tipoMotivo">Puesto</label>
+                        &nbsp;
+                        <span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px;"
+                            class="text-start">{{''}}</span>
+                    </div>
+                </div>
+              </div>
+            <div class="row mt-4">
+                <div class="col">
+                    <div class="input-group mb-3">
+                        <label class="input-group label-estilo" for="tipoMotivo">Unidad de Negocio</label>
+                        &nbsp;
+                        <span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px;"
+                            class="text-start">{{''}}</span>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="input-group mb-3">
+                        <label class="input-group label-estilo" for="tipoMotivo">Unidad de Negocio</label>
+                        &nbsp;
+                        <span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px;"
+                            class="text-start">{{''}}</span>
+                    </div>
+                </div>
+              </div>
+            <div class="row mt-4">
+                <div class="col">
+                    <div class="input-group mb-3">
+                        <label class="input-group label-estilo" for="tipoMotivo">Departamento</label>
+                        &nbsp;
+                        <span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px;"
+                            class="text-start">{{''}}</span>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="input-group mb-3">
+                        <label class="input-group label-estilo" for="tipoMotivo">Departamento</label>
+                        &nbsp;
+                        <span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px;"
+                            class="text-start">{{''}}</span>
+                    </div>
+                </div>
+              </div>
+            <div class="row mt-4">
+                <div class="col">
+                    <div class="input-group mb-3">
+                        <label class="input-group label-estilo" for="tipoMotivo">Localidad</label>
+                        &nbsp;
+                        <span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px;"
+                            class="text-start">{{''}}</span>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="input-group mb-3">
+                        <label class="input-group label-estilo" for="tipoMotivo">Localidad</label>
+                        &nbsp;
+                        <span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px;"
+                            class="text-start">{{''}}</span>
+                    </div>
+                </div>
+              </div>
+            <div class="row mt-4">
+                <div class="col">
+                    <div class="input-group mb-3">
+                        <label class="input-group label-estilo" for="tipoMotivo">Jefe Inmediato Superior</label>
+                        &nbsp;
+                        <input-component
+                        [id]="'searchInputFilter'"
+                        [type]="'string'"
+                        [buttonIcon]="'ti-search'"
+                        buttonFunction="filterStringInTable"
+                        onChangeFunction="filterStringInTable"
+                        placeholder="Inactivo"
+                        style="width: 50%;"
+                      ></input-component>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="input-group mb-3">
+                        <label class="input-group label-estilo" for="tipoMotivo">Jefe Inmediato Superior</label>
+                        &nbsp;
+                        <span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px;"
+                            class="text-start">{{''}}</span>
+                    </div>
+                </div>
+              </div>
+              <div class="row mt-4">
+                <div class="col">
+                    <div class="input-group mb-3">
+                        <label class="input-group label-estilo" for="tipoMotivo">Puesto Jefe Inmediato</label>
+                        &nbsp;
+                        <span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px;"
+                            class="text-start">{{''}}</span>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="input-group mb-3">
+                        <label class="input-group label-estilo" for="tipoMotivo">Puesto Jefe Inmediato</label>
+                        &nbsp;
+                        <span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px;"
+                            class="text-start">{{''}}</span>
+                    </div>
+                </div>
+              </div>
+              <div class="row mt-4">
+                <div class="col">
+                    <div class="input-group mb-3">
+                        <label class="input-group label-estilo" for="tipoMotivo">Jefe Referencia</label>
+                        &nbsp;
+                        <input-component
+                        [id]="'searchInputFilter'"
+                        [type]="'string'"
+                        [buttonIcon]="'ti-search'"
+                        buttonFunction="filterStringInTable"
+                        onChangeFunction="filterStringInTable"
+                        placeholder="Buscar"
+                        style="width: 50%;"
+                      ></input-component>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="input-group mb-3">
+                        <label class="input-group label-estilo" for="tipoMotivo">Responsable RRHH</label>
+                        &nbsp;
+                        <input-component
+                        [id]="'searchInputFilter'"
+                        [type]="'string'"
+                        [buttonIcon]="'ti-search'"
+                        buttonFunction="filterStringInTable"
+                        onChangeFunction="filterStringInTable"
+                        placeholder="Buscar"
+                        style="width: 50%;"
+                      ></input-component>
+                    </div>
+                </div>
+              </div>
+              <div class="row mt-4">
+                <div class="col-md-6">
+                    <div class="input-group mb-3">
+                        <label class="input-group label-estilo" for="tipoMotivo">Puesto Referencia</label>
+                        &nbsp;
+                        <span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px;"
+                            class="text-start">{{'Gerente'}}</span>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-4">
+                    <div class="input-group mb-3 h-100">
+                        <label class="input-group-text label-estilo" for="tipoMotivo">Observaciones del comité de Remuneraciones</label>
+                        <textarea id="observaciones" name="observaciones" style="color: black; font-size: 14px; height: 100px; resize: none; position: absolute; top: 50px; width: 100%;" disabled></textarea>
                     </div>
                 </div>
             </div>
+            <div class="row mt-4">
+                <div class="col">
+                    <div class="input-group mb-3">
+                        <label class="input-group label-estilo" for="tipoMotivo">Fecha de Ingreso</label>
+                        &nbsp;
+                        <span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px;"
+                            class="text-start">{{''}}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-4">
+                <div class="col">
+                    <div class="input-group mb-3">
+                        <label class="input-group label-estilo" for="tipoMotivo">Fecha de Salida</label>
+                        &nbsp;
+                        <span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px;"
+                            class="text-start">{{''}}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-4">
+                <div class="col-md-6">
+                    <div class="input-group mb-3">
+                        <label class="input-group label-estilo" for="tipoMotivo">Responsable RRHH</label>
+                        &nbsp;
+                        <input-component
+                        [id]="'searchInputFilter'"
+                        [type]="'string'"
+                        [buttonIcon]="'ti-search'"
+                        buttonFunction="filterStringInTable"
+                        onChangeFunction="filterStringInTable"
+                        placeholder="Buscar"
+                        style="width: 50%;"
+                      ></input-component>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="row mt-4">
+                <div class="col-md-3">
+                    <div class="mb-4">
+                        <a>
+                            <h3 class="sol-danger">Aprobadores de la solicitud</h3>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="col-md-9">
+                    <hr />
+                </div>
+            </div>
+
+            <table-component
+                tableName="tablaAprobadores"
+                [columns]="columnsAprobadores"
+                [dataTable]="dataTableAprobadores"
+            />
+
+
+<!--INICIO DE MODAL DE REASIGNAR-->>
+<ng-template #myModalReasign let-modal>
+    <div class="modal-custom">
+      <div class="">
+        <div class="p-2 mt-2">
+          <h4 class="mx-2 sol-danger">Reasignar Usuario</h4>
+          <hr class="my-0">
         </div>
+        <div class="px-4">
+          <div class="row">
+            <div class="col-md-12 my-3">
+              <label class="label-estilo" for="searchRsg" style="font-size: 14px; width: 100%;">Buscar</label>
+              <input type="text" [(ngModel)]="searchRsg" class="form-control" id="searchRsg" placeholder="Ingresar los dos apellidos del empleado" style="width: 100%;color: black;">
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6 my-3">
+              <label class="label-estilo" for="nameEmpRsg" style="font-size: 14px; width: 100%;">Nombre Empleado a Reasignar</label>
+              <input readonly id="nameEmpRsg" [(ngModel)]="nameEmpRsg" type="text" class="form-control mb-3" placeholder="Input 1" style="width: 100%;color: black;">
+            </div>
+            <div class="col-md-6 my-3">
+              <label class="label-estilo" for="company" style="font-size: 14px; width: 100%;">Empresa</label>
+              <input readonly id="company" [(ngModel)]="company" type="text" class="form-control mb-3" placeholder="Input 2" style="width: 100%;color: black;">
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6 my-3">
+              <label class="label-estilo" for="codeEmpRsg" style="font-size: 14px; width: 100%;">Codigo Empleado a Reasignar</label>
+              <input readonly id="codeEmpRsg" [(ngModel)]="codeEmpRsg" type="text" class="form-control mb-3" placeholder="Input 3" style="width: 100%; color: black;">
+            </div>
+            <div class="col-md-6 my-3">
+              <label class="label-estilo" for="unBsRsg" style="font-size: 14px; width: 100%;">Unidad de Negocio</label>
+              <input readonly id="unBsRsg" [(ngModel)]="unBsRsg" type="text" class="form-control mb-3" placeholder="Input 4" style="width: 100%; color: black;">
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6 my-3">
+              <label class="label-estilo" for="comentariosRSG" style="font-size: 14px; width: 100%;">Comentarios</label>
+              <textarea
+                  name="comentarios"
+                  style="color: black; font-size: 14px; width: 100%; resize: none;"
+                  class="form-control"
+                  id="comentariosRSG"
+                  rows="3"
+                  required
+                ></textarea>
+            </div>
+            <div class="col-md-6 my-3">
+              <label class="label-estilo" for="userRsg" style="font-size: 14px; width: 100%;">Usuario</label>
+              <input readonly id="userRsg" [(ngModel)]="userRsg"   type="text" class="form-control mb-3" placeholder="Input 4" style="width: 100%;color: black;">
+            </div>
+          </div>
+        </div>
+        <div class="p-4">
+          <button type="button" class="btn btn-primary" (click)="modal.close('Grabar')">Grabar</button>
+          <button type="button" class="mx-3 btn btn-outline-secondary" (click)="modal.dismiss('Cancel')">Cancelar</button>
+        </div>
+      </div>
     </div>
-</form>
+  </ng-template>
+  <!--FIN DE MODAL DE REASIGNAR-->>
+
+  <!--INICIO DE MODAL BUSCAR EMPLEADOS-->>
+<ng-template #ModalBuscarEmpleados let-modal>
+    <div class="modal-custom">
+      <div class="">
+        <div class="p-2 mt-2">
+          <h4 class="mx-2 sol-danger">Crear Solicitud</h4>
+          <hr class="my-0">
+        </div>
+        <div class="px-4">
+          <div class="row">
+            <div class="col-md-12 my-3">
+              <label class="label-estilo" for="searchInp" style="font-size: 14px; width: 100%;">Buscar</label>
+              <input type="text" [(ngModel)]="searchInp" class="form-control" id="searchInp" placeholder="Ingresar los dos apellidos del empleado" style="width: 100%;">
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6 my-3">
+              <label class="label-estilo" for="nameEmpInp" style="font-size: 14px; width: 100%;">Nombre Empleado</label>
+              <input readonly id="nameEmpInp" [(ngModel)]="nameEmpInp" type="text" class="form-control mb-3" placeholder="Input 1" style="width: 100%;">
+            </div>
+            <div class="col-md-6 my-3">
+              <label class="label-estilo" for="feInp" style="font-size: 14px; width: 100%;">Fecha de Ingreso</label>
+              <input readonly id="feInp" [(ngModel)]="feInp" type="text" class="form-control mb-3" placeholder="Input 2" style="width: 100%;">
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6 my-3">
+              <label class="label-estilo" for="caInp" style="font-size: 14px;">Cargo</label>
+              <input readonly id="caInp" [(ngModel)]="caInp" type="text" class="form-control mb-3" placeholder="Input 3" style="width: 100%;">
+            </div>
+            <div class="col-md-6 my-3">
+              <label class="label-estilo" for="uniInp" style="font-size: 14px; width: 100%;">Unidad</label>
+              <input readonly id="uniInp" [(ngModel)]="uniInp" type="text" class="form-control mb-3" placeholder="Input 4" style="width: 100%;">
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6 my-3">
+              <label class="label-estilo" for="depInp" style="font-size: 14px; width: 100%;">Departamento</label>
+              <input readonly id="depInp" [(ngModel)]="depInp" type="text" class="form-control mb-3" placeholder="Input 3" style="width: 100%;">
+            </div>
+            <div class="col-md-6 my-3">
+              <label class="label-estilo" for="locInp" style="font-size: 14px; width: 100%;">Localidad</label>
+              <input readonly id="locInp" [(ngModel)]="locInp" type="text" class="form-control mb-3" placeholder="Input 4" style="width: 100%;">
+            </div>
+          </div>
+        </div>
+        <div class="p-4">
+          <button type="button" class="btn btn-primary" (click)="modal.close('Save')">Seleccionar</button>
+          <button type="button" class="mx-3 btn btn-outline-secondary" (click)="modal.dismiss('Cancel')">Cancelar</button>
+        </div>
+      </div>
+    </div>
+</ng-template>
+<!--FIN DE MODAL BUSCAR EMPLEADOS-->>

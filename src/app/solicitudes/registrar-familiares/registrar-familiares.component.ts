@@ -30,7 +30,7 @@ import {
 import { ConsultaTareasService } from "src/app/tareas/consulta-tareas/consulta-tareas.service";
 import { SolicitudesService } from '../registrar-solicitud/solicitudes.service';
 import { columnsDatosFamiliares, dataTableDatosFamiliares, columnsAprobadores, dataTableAprobadores } from './registrar-familiares.data';
-import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'registrarFamiliares',

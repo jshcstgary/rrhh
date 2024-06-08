@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, TemplateRef, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { NgbTypeaheadSelectItemEvent } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbTypeaheadSelectItemEvent } from '@ng-bootstrap/ng-bootstrap';
 import { CamundaRestService } from 'src/app/camunda-rest.service';
 import { Solicitud } from 'src/app/eschemas/Solicitud';
 import { CompleteTaskComponent } from '../general/complete-task.component';
@@ -17,6 +17,7 @@ import { NgForm } from '@angular/forms';
 import { DetalleSolicitud } from 'src/app/eschemas/DetalleSolicitud';
 import { DatosSolicitud } from 'src/app/eschemas/DatosSolicitud';
 import { environment } from 'src/environments/environment';
+import { columnsAprobadores, dataTableAprobadores } from './reingreso-personal.data';
 
 @Component({
   selector: 'app-reingreso-personal',
@@ -27,6 +28,8 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
   NgForm = NgForm;
 
   selectedOption: string = 'No';
+  columnsAprobadores = columnsAprobadores.columns;
+  dataTableAprobadores = dataTableAprobadores;
 
 
   override model: RegistrarData = new RegistrarData(
@@ -339,7 +342,8 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
     private mantenimientoService: MantenimientoService,
     private solicitudes: SolicitudesService,
     private utilService: UtilService,
-    private consultaTareasService: ConsultaTareasService
+    private consultaTareasService: ConsultaTareasService,
+    private modalService: NgbModal
   ) {
     super(route, router, camundaRestService);
 
@@ -886,4 +890,55 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
   public onSelectItem(codigoPosicion: string, event: NgbTypeaheadSelectItemEvent<any>): void {
 
   }
+
+  @ViewChild('myModalReasign', { static: true })
+  ModalReasignar: TemplateRef<any>;
+  /*Inputs de Reasignar Empleados*/
+  searchRsg: string;
+  nameEmpRsg: string = 'Juan Perez';
+  company: string = 'LACTEOS INC';
+  codeEmpRsg: string = '12093323';
+  unBsRsg: string = 'LACTEOS';
+  userRsg: string = 'juanperez';
+
+  @ViewChild('ModalBuscarEmpleados', { static: true })
+  ModalBuscarEmpleados: TemplateRef<any>;
+  /*Inputs de Buscar Empleados*/
+  searchInp: string;
+  locInp: string = 'Puerto Rico';
+  depInp: string = 'Contrataciones familiares';
+  nameEmpInp: string = 'Juan Perez';
+  feInp: string = '01/12/24';
+  caInp: string = 'Gerente RRHH';
+  uniInp: string = 'Unidad de prueba';
+
+  openModalReasignar() {
+    this.modalService.open(this.ModalReasignar, { ariaLabelledBy: 'modal-title' }).result.then((result) => {
+
+      if(result === 'Grabar'){
+        console.log('Aqui se daria el click');
+        console.log('Inputs Values', this.searchRsg, this.nameEmpRsg, this.company, this.codeEmpRsg, this.unBsRsg, this.userRsg);
+      }
+    }, (reason) => {
+      console.log(`Dismissed with: ${reason}`);
+    });
+  }
+
+  openModal() {
+    this.modalService.open(this.ModalBuscarEmpleados, { ariaLabelledBy: 'modal-title' }).result.then((result) => {
+      console.log(`Closed with: ${result}`);
+
+      if(result === 'Save'){
+        console.log('Aqui para guardar y se deben validar los inputs')
+        console.log('Todos los inputs', this.searchInp, this.locInp, this.depInp, this.nameEmpInp, this.feInp, this.caInp, this.uniInp);
+      }
+
+
+    }, (reason) => {
+      console.log(`Dismissed with: ${reason}`);
+    });
+  }
+
+
+
 }
