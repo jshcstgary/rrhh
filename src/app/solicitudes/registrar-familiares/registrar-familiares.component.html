@@ -368,8 +368,14 @@
           <hr />
         </div>
       </div>
+      <table-component
+                tableName="tablaAprobadores"
+                [columns]="columnsAprobadores"
+                [dataTable]="dataTableAprobadores"
+              />
+      
 
-      <div class="accordion" id="accordionExample">
+      <!-- <div class="accordion" id="accordionExample">
         <div *ngFor="let nivelItem of dataAprobacionesPorPosicion[keySelected]; let i = index" class="accordion-item">
           <div class="accordion-header">
             <button class="accordion-button" type="button" data-bs-toggle="collapse" [attr.data-bs-target]="'#collapse' + i" aria-expanded="true" [attr.aria-controls]="'collapse' + i" style="display: block">
@@ -405,9 +411,9 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
 
-      <div class="row mt-4">
+      <!-- <div class="row mt-4">
         <div class="col-md-4">
           <div class="mb-4">
             <a> <h3 class="sol-danger">Atención de los probadores</h3></a>
@@ -416,9 +422,9 @@
         <div class="col-md-8">
           <hr />
         </div>
-      </div>
+      </div> -->
 
-      <div class="row mt-2">
+      <!-- <div class="row mt-2">
         <div class="col">
           <div class="input-group mb-3">
             <label
@@ -458,14 +464,14 @@
             >
           </div>
         </div>
-      </div>
+      </div> -->
 
-      <div class="row mt-2">
+      <!-- <div class="row mt-2">
         <div class="col">
           <div class="input-group mb-3">
             <label
               for="comitederemuneraciones"
-              style="color: #0056b3; font-size: 14px; "
+              style="color: #0056b3; font-size: 14px;"
             >
               Comité de Remuneraciones
             </label>
@@ -479,10 +485,10 @@
             >
           </div>
         </div>
-      </div>
+      </div> -->
 
 
-      <div class="row mt-4">
+      <!-- <div class="row mt-4">
         <div class="col-md-4">
           <div class="mb-4">
             <a> <h3 class="sol-danger">Anulación de Solicitud</h3></a>
@@ -491,19 +497,19 @@
         <div class="col-md-8">
           <hr />
         </div>
-      </div>
+      </div> -->
 
-      <div class="row" >
+      <!-- <div class="row" >
         <div class="col">
           <div class="input-group mb-3 contenedor">
           <label
               class="input-group-text adjustable-label"
               for="anular"
               >¿Anular Solicitud?</label>
-            &nbsp;
+            &nbsp; -->
              <!-- aqui  van los check box-->
 
-            <div class="form-check form-check-inline">
+            <!-- <div class="form-check form-check-inline">
               <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="Si" [(ngModel)]="selectedOption" (change)="onSelectionChange()">
               <label class="form-check-label" for="inlineRadio1">Si</label>
             </div>
@@ -514,9 +520,9 @@
 
           </div>
         </div>
-      </div>
+      </div> -->
 
-      <div class="row">
+      <!-- <div class="row">
         <div class="col">
           <div class="input-group mb-3 contenedor">
           <label
@@ -533,7 +539,7 @@
             ></textarea>
           </div>
         </div>
-      </div>
+      </div> -->
 
 
 
@@ -607,33 +613,33 @@
       <div class="px-4">
         <div class="row">
           <div class="col-md-12 my-3">
-            <label class="label-estilo" for="input0" style="font-size: 14px; width: 100%;">Buscar</label>
-            <input type="text" class="form-control" id="input0" placeholder="Ingresar los dos apellidos del empleado" style="width: 100%;">
+            <label class="label-estilo" for="searchRsg" style="font-size: 14px; width: 100%;">Buscar</label>
+            <input type="text" [(ngModel)]="searchRsg" class="form-control" id="searchRsg" placeholder="Ingresar los dos apellidos del empleado" style="width: 100%;color: black;">
           </div>
         </div>
         <div class="row">
           <div class="col-md-6 my-3">
-            <label class="label-estilo" for="input1" style="font-size: 14px; width: 100%;">Nombre Empleado a Reasignar</label>
-            <input readonly id="input1" type="text" class="form-control mb-3" placeholder="Input 1" style="width: 100%;">
+            <label class="label-estilo" for="nameEmpRsg" style="font-size: 14px; width: 100%;">Nombre Empleado a Reasignar</label>
+            <input readonly id="nameEmpRsg" [(ngModel)]="nameEmpRsg" type="text" class="form-control mb-3" placeholder="Input 1" style="width: 100%;color: black;">
           </div>
           <div class="col-md-6 my-3">
-            <label class="label-estilo" for="input2" style="font-size: 14px; width: 100%;">Empresa</label>
-            <input readonly id="input2" type="text" class="form-control mb-3" placeholder="Input 2" style="width: 100%;">
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-6 my-3">
-            <label class="label-estilo" for="input3" style="font-size: 14px; width: 100%;">Codigo Empleado a Reasignar</label>
-            <input readonly id="input3" type="text" class="form-control mb-3" placeholder="Input 3" style="width: 100%;">
-          </div>
-          <div class="col-md-6 my-3">
-            <label class="label-estilo" for="input4" style="font-size: 14px; width: 100%;">Unidad de Negocio</label>
-            <input readonly id="input4" type="text" class="form-control mb-3" placeholder="Input 4" style="width: 100%;">
+            <label class="label-estilo" for="company" style="font-size: 14px; width: 100%;">Empresa</label>
+            <input readonly id="company" [(ngModel)]="company" type="text" class="form-control mb-3" placeholder="Input 2" style="width: 100%;color: black;">
           </div>
         </div>
         <div class="row">
           <div class="col-md-6 my-3">
-            <label class="label-estilo" for="input3" style="font-size: 14px; width: 100%;">Comentarios</label>
+            <label class="label-estilo" for="codeEmpRsg" style="font-size: 14px; width: 100%;">Codigo Empleado a Reasignar</label>
+            <input readonly id="codeEmpRsg" [(ngModel)]="codeEmpRsg" type="text" class="form-control mb-3" placeholder="Input 3" style="width: 100%; color: black;">
+          </div>
+          <div class="col-md-6 my-3">
+            <label class="label-estilo" for="unBsRsg" style="font-size: 14px; width: 100%;">Unidad de Negocio</label>
+            <input readonly id="unBsRsg" [(ngModel)]="unBsRsg" type="text" class="form-control mb-3" placeholder="Input 4" style="width: 100%; color: black;">
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6 my-3">
+            <label class="label-estilo" for="comentariosRSG" style="font-size: 14px; width: 100%;">Comentarios</label>
             <textarea
                 name="comentarios"
                 style="color: black; font-size: 14px; width: 100%; resize: none;"
@@ -644,8 +650,8 @@
               ></textarea>
           </div>
           <div class="col-md-6 my-3">
-            <label class="label-estilo" for="input4" style="font-size: 14px; width: 100%;">Usuario</label>
-            <input readonly id="input4" type="text" class="form-control mb-3" placeholder="Input 4" style="width: 100%;">
+            <label class="label-estilo" for="userRsg" style="font-size: 14px; width: 100%;">Usuario</label>
+            <input readonly id="userRsg" [(ngModel)]="userRsg"   type="text" class="form-control mb-3" placeholder="Input 4" style="width: 100%;color: black;">
           </div>
         </div>
       </div>

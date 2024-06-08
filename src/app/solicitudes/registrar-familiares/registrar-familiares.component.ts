@@ -29,7 +29,7 @@ import {
 } from "rxjs/operators";
 import { ConsultaTareasService } from "src/app/tareas/consulta-tareas/consulta-tareas.service";
 import { SolicitudesService } from '../registrar-solicitud/solicitudes.service';
-import { columnsDatosFamiliares, dataTableDatosFamiliares } from './registrar-familiares.data';
+import { columnsDatosFamiliares, dataTableDatosFamiliares, columnsAprobadores, dataTableAprobadores } from './registrar-familiares.data';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
@@ -45,6 +45,8 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
   selectedOption: string = 'No';
   columnsDatosFamiliares = columnsDatosFamiliares.columns;
   dataTableDatosFamiliares = dataTableDatosFamiliares;
+  columnsAprobadores = columnsAprobadores.columns;
+  dataTableAprobadores = dataTableAprobadores;
 
   override model: RegistrarData = new RegistrarData(
     "",
@@ -1563,40 +1565,47 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
   ModalBuscarEmpleados: TemplateRef<any>;
   /*Inputs de Buscar Empleados*/
   searchInp: string;
-      //Iniciar con los inputs con texto relacionaados al nombre de prueba
-  locInp:'Puerto Rico' ;
-  depInp: string;
-  nameEmpInp: string;
-  feInp: string;
-  caInp: string;
-  uniInp: string;
+  locInp: string = 'Puerto Rico';
+  depInp: string = 'Contrataciones familiares';
+  nameEmpInp: string = 'Juan Perez';
+  feInp: string = '01/12/24';
+  caInp: string = 'RRHH';
+  uniInp: string = 'Unidad de prueba';
 
 
   @ViewChild('myModalReasign', { static: true })
   ModalReasignar: TemplateRef<any>;
   /*Inputs de Reasignar Empleados*/
+  searchRsg: string;
+  nameEmpRsg: string = 'Juan Perez';
+  company: string = 'Prueba';
+  codeEmpRsg: string = '12093323';
+  unBsRsg: string = 'Unidad Prueba';
+  userRsg: string = 'juanperez';
+
 
   openModal() {
     this.modalService.open(this.ModalBuscarEmpleados, { ariaLabelledBy: 'modal-title' }).result.then((result) => {
       console.log(`Closed with: ${result}`);
-      //Iniciar con los inputs con texto relacionaados al nombre de prueba
-      this.locInp = 'Puerto Rico';
-      this.depInp = 'Contrataciones Familiares';
-      this.nameEmpInp = 'Juan Perez'; 
-      this.feInp = '01/12/24';
-      this.caInp = 'RRHH';
-      this.uniInp = 'Unidad de prueba';
 
-      console.log('Todos los inputs', this.searchInp, this.locInp, this.depInp, this.nameEmpInp, this.feInp, this.caInp, this.uniInp);
+      if(result === 'Save'){
+        console.log('Aqui para guardar y se deben validar los inputs')
+        console.log('Todos los inputs', this.searchInp, this.locInp, this.depInp, this.nameEmpInp, this.feInp, this.caInp, this.uniInp);
+      }
+
+
     }, (reason) => {
       console.log(`Dismissed with: ${reason}`);
     });
   }
 
   openModalReasignar() {
-    console.log('Se ejecuto este metodo')
     this.modalService.open(this.ModalReasignar, { ariaLabelledBy: 'modal-title' }).result.then((result) => {
-      console.log(`Closed with: ${result}`);
+
+      if(result === 'Grabar'){
+        console.log('Aqui se da click al guardar y se deben validar los inputs');
+        console.log('Inputs Values', this.searchRsg, this.nameEmpRsg, this.company, this.codeEmpRsg, this.unBsRsg, this.userRsg);
+      }
     }, (reason) => {
       console.log(`Dismissed with: ${reason}`);
     });
