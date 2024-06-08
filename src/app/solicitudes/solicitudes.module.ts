@@ -36,7 +36,7 @@ import { RegistrarCandidatoComponent } from './registrar-candidato/registrar-can
 import { CompletaSolicitudComponent } from './completa-solicitud/completa-solicitud.component';
 import { ReingresoPersonalComponent } from './reingreso-personal/reingreso-personal.component';
 import { RegistrarFamiliaresComponent } from './registrar-familiares/registrar-familiares.component';
-import { RegistroComentariosComponent } from "./registro-comentarios/registro-comentarios.component";
+import { RegistroComentariosComponent } from "./registro-comentarios (h17)/registro-comentarios.component";
 
 @NgModule({
   declarations: [
