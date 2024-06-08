@@ -48,7 +48,7 @@ export class BuscarEmpleadosComponent {
     this.mantenimientoService
       .getDataEmpleadosEvolution("ev")
       .pipe(
-        map(this.buscarValor.bind(this, search, "jaffType")),
+        map(this.buscarValor.bind(this, search, "evType")),
         catchError((error) => {
           return this.mantenimientoService
             .getDataEmpleadosEvolution("jaff")
