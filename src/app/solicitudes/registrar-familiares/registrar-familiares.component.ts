@@ -1,3 +1,4 @@
+import { DialogReasignarUsuarioComponent } from './../../shared/reasginar-usuario/reasignar-usuario.component';
 import { Component, TemplateRef, ViewChild } from "@angular/core";
 import { ActivatedRoute, ParamMap, Router } from "@angular/router";
 import { CamundaRestService } from "../../camunda-rest.service";
@@ -40,6 +41,7 @@ import { DialogBuscarEmpleadosComponent } from "./buscar-empleados/buscar-emplea
 
 interface DialogComponents {
   dialogBuscarEmpleados: DialogBuscarEmpleadosComponent;
+  dialogReasignarUsuario: DialogReasignarUsuarioComponent
 }
 
 @Component({
