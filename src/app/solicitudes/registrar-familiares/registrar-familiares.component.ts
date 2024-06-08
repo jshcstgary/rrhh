@@ -35,9 +35,12 @@ import {
   columnsAprobadores,
   dataTableAprobadores,
 } from "./registrar-familiares.data";
-import { ModalDismissReasons, NgbModal } from "@ng-bootstrap/ng-bootstrap";
-import { BuscarEmpleadosComponent } from "./buscar-empleados/buscar-empleados.component";
-import { IEmpleados } from "src/app/services/mantenimiento/empleado.interface";
+import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
+import { DialogBuscarEmpleadosComponent } from "./buscar-empleados/buscar-empleados.component";
+
+interface DialogComponents {
+  dialogBuscarEmpleados: DialogBuscarEmpleadosComponent;
+}
 
 @Component({
   selector: "registrarFamiliares",
@@ -1554,18 +1557,19 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
   unBsRsg: string = "Unidad Prueba";
   userRsg: string = "juanperez";
 
-  openModal(componentName: string) {
-    const dialogComponent = {
-      buscarEmpleados: BuscarEmpleadosComponent,
-      reasignarEmpleados: this.ModalReasignar,
-    };
-
+  dialogComponent = {
+    buscarEmpleados: DialogBuscarEmpleadosComponent,
+    // reasignarEmpleados: this.ModalReasignar,
+  };
+  openModal(componentName: keyof DialogComponents) {
     this.modalService
-      .open(dialogComponent[componentName], { ariaLabelledBy: "modal-title" })
+      .open(this.dialogComponent[componentName], {
+        ariaLabelledBy: "modal-title",
+      })
       .result.then(
         (result) => {
           console.log("Result: ", result);
-          
+
           if (result === "close") {
             return;
           }
