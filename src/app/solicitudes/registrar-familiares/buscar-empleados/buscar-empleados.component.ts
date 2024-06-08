@@ -30,7 +30,7 @@ export class BuscarEmpleadosComponent {
   fields = <Empleados[0]>{
     nombreCompleto: "",
     fechaIngresogrupo: null,
-    descrPuesto: "",
+    nombreCargo: "",
     unidadNegocio: "",
     departamento: "",
     localidad: "",
