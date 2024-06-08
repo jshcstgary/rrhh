@@ -8,6 +8,7 @@ import { RegistrarCandidatoComponent } from "./registrar-candidato/registrar-can
 import { CompletaSolicitudComponent } from "./completa-solicitud/completa-solicitud.component";
 import { ReingresoPersonalComponent } from "./reingreso-personal/reingreso-personal.component";
 import { RegistrarFamiliaresComponent } from "./registrar-familiares/registrar-familiares.component";
+import { RegistroComentariosComponent } from "./registro-comentarios/registro-comentarios.component";
 
 export const SolicitudesRoutes: Routes = [
   {
@@ -57,6 +58,21 @@ export const SolicitudesRoutes: Routes = [
             },
             {
               title: "Reingreso de personal"
+            }
+          ],
+        },
+      },
+      {
+        path: "reingreso-personal/registro-comentarios",
+        component: RegistroComentariosComponent,
+        data: {
+          title: "Registro de Comentarios",
+          urls: [
+            {
+              title: "Solicitudes"
+            },
+            {
+              title: "Registro de Comentarios"
             }
           ],
         },
