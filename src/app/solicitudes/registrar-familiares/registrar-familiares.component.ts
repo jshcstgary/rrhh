@@ -37,6 +37,7 @@ import {
 } from "./registrar-familiares.data";
 import { ModalDismissReasons, NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { BuscarEmpleadosComponent } from "./buscar-empleados/buscar-empleados.component";
+import { IEmpleados } from "src/app/services/mantenimiento/empleado.interface";
 
 @Component({
   selector: "registrarFamiliares",
@@ -364,7 +365,7 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
     private solicitudes: SolicitudesService,
     private utilService: UtilService,
     private consultaTareasService: ConsultaTareasService,
-    private modalService: NgbModal,
+    private modalService: NgbModal
   ) {
     super(route, router, camundaRestService);
 
@@ -1543,15 +1544,6 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
       .subscribe((res) => {});
   }
 
-  /*Inputs de Buscar Empleados*/
-  searchInp: string;
-  locInp: string = "Puerto Rico";
-  depInp: string = "Contrataciones familiares";
-  nameEmpInp: string = "Juan Perez";
-  feInp: string = "01/12/24";
-  caInp: string = "RRHH";
-  uniInp: string = "Unidad de prueba";
-
   @ViewChild("myModalReasign", { static: true })
   ModalReasignar: TemplateRef<any>;
   /*Inputs de Reasignar Empleados*/
@@ -1572,20 +1564,13 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
       .open(dialogComponent[componentName], { ariaLabelledBy: "modal-title" })
       .result.then(
         (result) => {
-          console.log(`Closed with: ${result}`);
-
-          if (result === "Save") {
-            console.log("Aqui para guardar y se deben validar los inputs");
-            console.log(
-              "Todos los inputs",
-              this.searchInp,
-              this.locInp,
-              this.depInp,
-              this.nameEmpInp,
-              this.feInp,
-              this.caInp,
-              this.uniInp
-            );
+          console.log("Result: ", result);
+          
+          if (result === "close") {
+            return;
+          }
+          if (Object.keys(result).length > 0) {
+            this.dataTableDatosFamiliares.push(result);
           }
         },
         (reason) => {

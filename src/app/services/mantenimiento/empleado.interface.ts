@@ -34,4 +34,5 @@ export interface EvType {
   sueldoVariableAnual: string;
   codigoPosicionReportaA: string;
   status: string;
+  parentezco: string;
 }
