@@ -37,7 +37,6 @@ import {
 } from "./registrar-familiares.data";
 import { ModalDismissReasons, NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { BuscarEmpleadosComponent } from "./buscar-empleados/buscar-empleados.component";
-import { MatDialog } from "@angular/material/dialog";
 
 @Component({
   selector: "registrarFamiliares",
@@ -366,7 +365,6 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
     private utilService: UtilService,
     private consultaTareasService: ConsultaTareasService,
     private modalService: NgbModal,
-    public dialog: MatDialog
   ) {
     super(route, router, camundaRestService);
 
