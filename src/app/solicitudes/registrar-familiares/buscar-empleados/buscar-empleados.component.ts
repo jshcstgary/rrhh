@@ -28,8 +28,6 @@ export class DialogBuscarEmpleadosComponent {
 
   constructor(private mantenimientoService: MantenimientoService) {}
 
-  ngOnInit(): void {}
-
   onSeleccionar() {
     this.activeModal.close(this.fields);
   }
