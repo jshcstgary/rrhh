@@ -1,7 +1,7 @@
 <div class="modal-custom">
   <div class="">
     <div class="p-2 mt-2">
-      <h4 class="mx-2 sol-danger">Reasignar Usuarios</h4>
+      <h4 class="mx-2 sol-danger">Buscar Empleados</h4>
       <hr class="my-0" />
     </div>
     <div class="px-4">
@@ -19,7 +19,7 @@
             class="form-control"
             id="searchInp"
             style="width: 100%"
-            (keyup.enter)="onEnter()"
+            (keyup.enter)="onEnter(searchInp)"
           />
         </div>
       </div>
@@ -27,14 +27,14 @@
         <div class="col-md-6 my-3">
           <label
             class="label-estilo"
-            for="fields.name"
+            for="fields.nombreCompleto"
             style="font-size: 14px; width: 100%"
             >Nombre Empleado</label
           >
           <input
             readonly
             id="nameEmpInp"
-            [(ngModel)]="fields.name"
+            [(ngModel)]="fields.nombreCompleto"
             type="text"
             class="form-control mb-3"
             style="width: 100%"
@@ -43,14 +43,14 @@
         <div class="col-md-6 my-3">
           <label
             class="label-estilo"
-            for="fields.fechaIngreso"
+            for="fields.fechaIngresogrupo"
             style="font-size: 14px; width: 100%"
             >Fecha de Ingreso</label
           >
           <input
             readonly
             id="feInp"
-            [(ngModel)]="fields.fechaIngreso"
+            [(ngModel)]="fields.fechaIngresogrupo"
             type="text"
             class="form-control mb-3"
             style="width: 100%"
@@ -59,13 +59,13 @@
       </div>
       <div class="row">
         <div class="col-md-6 my-3">
-          <label class="label-estilo" for="fields.cargo" style="font-size: 14px"
+          <label class="label-estilo" for="fields.descrPuesto" style="font-size: 14px"
             >Cargo</label
           >
           <input
             readonly
             id="caInp"
-            [(ngModel)]="fields.cargo"
+            [(ngModel)]="fields.descrPuesto"
             type="text"
             class="form-control mb-3"
             style="width: 100%"
@@ -74,14 +74,14 @@
         <div class="col-md-6 my-3">
           <label
             class="label-estilo"
-            for="fields.unidad"
+            for="fields.unidadNegocio"
             style="font-size: 14px; width: 100%"
             >Unidad</label
           >
           <input
             readonly
             id="uniInp"
-            [(ngModel)]="fields.unidad"
+            [(ngModel)]="fields.unidadNegocio"
             type="text"
             class="form-control mb-3"
             style="width: 100%"
