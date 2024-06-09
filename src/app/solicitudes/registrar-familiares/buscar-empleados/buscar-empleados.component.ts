@@ -1,11 +1,10 @@
-import { Component, Inject, inject } from "@angular/core";
+import { Component, inject } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
 import { catchError, map } from "rxjs";
-import { IEmpleados } from "src/app/services/mantenimiento/empleado.interface";
+import { IEmpleadoData, IEmpleados } from "src/app/services/mantenimiento/empleado.interface";
 import { MantenimientoService } from "src/app/services/mantenimiento/mantenimiento.service";
 
-type Empleados = IEmpleados["evType"];
 @Component({
   selector: "app-dialog-buscar-empleados",
   templateUrl: "./buscar-empleados.component.html",
@@ -17,7 +16,7 @@ export class DialogBuscarEmpleadosComponent {
   activeModal = inject(NgbActiveModal);
 
   searchInp: string;
-  fields = <Empleados[0]>{
+  fields = <IEmpleadoData>{
     nombreCompleto: "",
     fechaIngresogrupo: null,
     nombreCargo: "",
@@ -45,7 +44,7 @@ export class DialogBuscarEmpleadosComponent {
       )
       .subscribe({
         next: (data) => {
-          this.fields = data as Empleados[0];
+          this.fields = data as IEmpleadoData;
         },
         error: (error) => {
           console.error(error);

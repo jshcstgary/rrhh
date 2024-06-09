@@ -9,15 +9,15 @@
         <div class="col-md-12 my-3">
           <label
             class="label-estilo"
-            for="searchRsg"
+            for="search"
             style="font-size: 14px; width: 100%"
             >Buscar</label
           >
           <input
             type="text"
-            [(ngModel)]="searchRsg"
+            [(ngModel)]="search"
             class="form-control"
-            id="searchRsg"
+            id="search"
             placeholder="Ingresar los dos apellidos del empleado"
             style="width: 100%; color: black"
           />
@@ -27,34 +27,32 @@
         <div class="col-md-6 my-3">
           <label
             class="label-estilo"
-            for="nameEmpRsg"
+            for="fields.nombreCompleto"
             style="font-size: 14px; width: 100%"
             >Nombre Empleado a Reasignar</label
           >
           <input
             readonly
-            id="nameEmpRsg"
-            [(ngModel)]="fields.nameEmpRsg"
+            id="nombreCompleto"
+            [(ngModel)]="fields.nombreCompleto"
             type="text"
             class="form-control mb-3"
-            placeholder="Input 1"
             style="width: 100%; color: black"
           />
         </div>
         <div class="col-md-6 my-3">
           <label
             class="label-estilo"
-            for="company"
+            for="fields.compania"
             style="font-size: 14px; width: 100%"
             >Empresa</label
           >
           <input
             readonly
-            id="company"
-            [(ngModel)]="fields.company"
+            id="compania"
+            [(ngModel)]="fields.compania"
             type="text"
             class="form-control mb-3"
-            placeholder="Input 2"
             style="width: 100%; color: black"
           />
         </div>
@@ -63,34 +61,32 @@
         <div class="col-md-6 my-3">
           <label
             class="label-estilo"
-            for="fields.codeEmpRsg"
+            for="fields.codigo"
             style="font-size: 14px; width: 100%"
             >Codigo Empleado a Reasignar</label
           >
           <input
             readonly
-            id="codeEmpRsg"
-            [(ngModel)]="fields.codeEmpRsg"
+            id="codigo"
+            [(ngModel)]="fields.codigo"
             type="text"
             class="form-control mb-3"
-            placeholder="Input 3"
             style="width: 100%; color: black"
           />
         </div>
         <div class="col-md-6 my-3">
           <label
             class="label-estilo"
-            for="fields.unBsRsg"
+            for="fields.unidadNegocio"
             style="font-size: 14px; width: 100%"
             >Unidad de Negocio</label
           >
           <input
             readonly
-            id="unBsRsg"
-            [(ngModel)]="fields.unBsRsg"
+            id="unidadNegocio"
+            [(ngModel)]="fields.unidadNegocio"
             type="text"
             class="form-control mb-3"
-            placeholder="Input 4"
             style="width: 100%; color: black"
           />
         </div>
@@ -99,7 +95,7 @@
         <div class="col-md-6 my-3">
           <label
             class="label-estilo"
-            for="fields.comentariosRSG"
+            for="fields.comentarios"
             style="font-size: 14px; width: 100%"
             >Comentarios</label
           >
@@ -107,7 +103,7 @@
             name="comentarios"
             style="color: black; font-size: 14px; width: 100%; resize: none"
             class="form-control"
-            id="comentariosRSG"
+            id="comentarios"
             rows="3"
             required
           ></textarea>
@@ -115,17 +111,16 @@
         <div class="col-md-6 my-3">
           <label
             class="label-estilo"
-            for="fields.userRsg"
+            for="fields.usuario"
             style="font-size: 14px; width: 100%"
             >Usuario</label
           >
           <input
             readonly
-            id="userRsg"
-            [(ngModel)]="fields.userRsg"
+            id="usuario"
+            [(ngModel)]="fields.usuario"
             type="text"
             class="form-control mb-3"
-            placeholder="Input 4"
             style="width: 100%; color: black"
           />
         </div>
