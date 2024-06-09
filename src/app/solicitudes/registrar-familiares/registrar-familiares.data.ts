@@ -1,50 +1,51 @@
 import { IColumnsTable } from "src/app/component/table/table.interface";
+import { IEmpleados } from "src/app/services/mantenimiento/empleado.interface";
 
-export const dataTableDatosFamiliares = [
+export const dataTableDatosFamiliares: Partial<IEmpleados["evType"][0]>[] = [
   {
-    name: "Nombre 1",
-    dateIn: "01/01/2021",
-    position: "Cargo 1",
-    unit: "Unidad 1",
-    departament: "Departamento 1",
-    location: "Localidad 1",
-    relationship: "Parentesco 1",
+    nombreCompleto: "Nombre 1",
+    fechaIngresogrupo: new Date(),
+    nombreCargo: "Cargo 1",
+    unidadNegocio: "Unidad 1",
+    departamento: "Departamento 1",
+    localidad: "Localidad 1",
+    parentezco: "Parentezco 1",
   },
   {
-    name: "Nombre 2",
-    dateIn: "02/02/2022",
-    position: "Cargo 2",
-    unit: "Unidad 2",
-    departament: "Departamento 2",
-    location: "Localidad 2",
-    relationship: "Parentesco 2",
+    nombreCompleto: "Nombre 2",
+    fechaIngresogrupo: new Date(),
+    nombreCargo: "Cargo 2",
+    unidadNegocio: "Unidad 2",
+    departamento: "Departamento 2",
+    localidad: "Localidad 2",
+    parentezco: "Parentezco 1",
   },
   {
-    name: "Nombre 3",
-    dateIn: "03/03/2023",
-    position: "Cargo 3",
-    unit: "Unidad 3",
-    departament: "Departamento 3",
-    location: "Localidad 3",
-    relationship: "Parentesco 3",
+    nombreCompleto: "Nombre 3",
+    fechaIngresogrupo: new Date(),
+    nombreCargo: "Cargo 3",
+    unidadNegocio: "Unidad 3",
+    departamento: "Departamento 3",
+    localidad: "Localidad 3",
+    parentezco: "Parentezco 1",
   },
   {
-    name: "Nombre 4",
-    dateIn: "04/04/2024",
-    position: "Cargo 4",
-    unit: "Unidad 4",
-    departament: "Departamento 4",
-    location: "Localidad 4",
-    relationship: "Parentesco 4",
+    nombreCompleto: "Nombre 4",
+    fechaIngresogrupo: new Date(),
+    nombreCargo: "Cargo 4",
+    unidadNegocio: "Unidad 4",
+    departamento: "Departamento 4",
+    localidad: "Localidad 4",
+    parentezco: "Parentezco 1",
   },
   {
-    name: "Nombre 5",
-    dateIn: "05/05/2025",
-    position: "Cargo 5",
-    unit: "Unidad 5",
-    departament: "Departamento 5",
-    location: "Localidad 5",
-    relationship: "Parentesco 5",
+    nombreCompleto: "Nombre 5",
+    fechaIngresogrupo: new Date(),
+    nombreCargo: "Cargo 5",
+    unidadNegocio: "Unidad 5",
+    departamento: "Departamento 5",
+    localidad: "Localidad 5",
+    parentezco: "Parentezco 1",
   },
 ];
 
@@ -52,38 +53,38 @@ export const columnsDatosFamiliares: IConsultaTareasData = {
   columns: [
     {
       title: "Nombre",
-      dataIndex: "name",
+      dataIndex: "nombreCompleto",
       // align: "center",
       sortActive: true,
     },
     {
       title: "Fecha de Ingreso",
-      dataIndex: "dateIn",
+      dataIndex: "fechaIngresogrupo",
       sortActive: true,
     },
     {
       title: "Cargo",
-      dataIndex: "position",
+      dataIndex: "nombreCargo",
       sortActive: true,
     },
     {
       title: "Unidad",
-      dataIndex: "unit",
+      dataIndex: "unidadNegocio",
       sortActive: true,
     },
     {
       title: "Departamento",
-      dataIndex: "departament",
+      dataIndex: "departamento",
       sortActive: true,
     },
     {
       title: "Localidad",
-      dataIndex: "location",
+      dataIndex: "localidad",
       sortActive: true,
     },
     {
       title: "Parentesco",
-      dataIndex: "relationship",
+      dataIndex: "parentezco",
       sortActive: true,
     },
     {
@@ -124,7 +125,7 @@ export const columnsAprobadores: IConsultaTareasData = {
     },
     {
       title: "Nivel de direccion de la posicion",
-      dataIndex: "position",
+      dataIndex: "nombreCargo",
       sortActive: true,
     },
     {
@@ -151,7 +152,7 @@ export const dataTableAprobadores = [
     level: "4 Gerencia Media",
     user: "Luis",
     description: "13218798",
-    position: "3er nivel",
+    nombreCargo: "3er nivel",
     comments: "Muy trabajador",
   },
   {
@@ -159,7 +160,7 @@ export const dataTableAprobadores = [
     level: "3 - Gerencia de unidad o corporativo",
     user: "Carlos",
     description: "107648494 o Coca Cola",
-    position: "4to Nivel",
+    nombreCargo: "4to Nivel",
     comments: "Algo flojo para el cargo",
   },
   {
@@ -167,7 +168,7 @@ export const dataTableAprobadores = [
     level: "Vicepresidencia",
     user: "Juan",
     description: "2 - Gerencia de Mantenimiento",
-    position: "65498216595165",
+    nombreCargo: "65498216595165",
     comments: "Excelente persona",
   },
   {
@@ -175,10 +176,10 @@ export const dataTableAprobadores = [
     level: "Gerente de RRHH corporativo",
     user: "Kevin Duque",
     description: "3 Gerencia alta",
-    position: "6544164565498",
+    nombreCargo: "6544164565498",
     comments: "Buen lider",
   },
-]
+];
 
 export interface IConsultaTareasData {
   columns: IColumnsTable;
