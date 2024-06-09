@@ -17,15 +17,15 @@ import { NgForm } from '@angular/forms';
 import { DetalleSolicitud } from 'src/app/eschemas/DetalleSolicitud';
 import { DatosSolicitud } from 'src/app/eschemas/DatosSolicitud';
 import { environment } from 'src/environments/environment';
-import { columnsAprobadores, dataTableAprobadores } from './reingreso-personal.data';
+import { columnsAprobadores, dataTableAprobadores } from './registrar-comentarios.data';
 import { DialogComponents, dialogComponentList } from 'src/app/shared/dialogComponents/dialog.components';
 
 @Component({
-  selector: 'app-reingreso-personal',
-  templateUrl: './reingreso-personal.component.html',
-  styleUrls: ['./reingreso-personal.component.scss']
+  selector: 'app-registrar-comentarios',
+  templateUrl: './registrar-comentarios.component.html',
+  styleUrls: ['./registrar-comentarios.component.scss']
 })
-export class ReingresoPersonalComponent extends CompleteTaskComponent {
+export class RegistrarComentariosComponent extends CompleteTaskComponent {
   NgForm = NgForm;
 
   selectedOption: string = 'No';
@@ -892,19 +892,7 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
 
   }
 
-  @ViewChild('ModalBuscarEmpleados', { static: true })
-  ModalBuscarEmpleados: TemplateRef<any>;
-  /*Inputs de Buscar Empleados*/
-  searchInp: string;
-  locInp: string = 'Puerto Rico';
-  depInp: string = 'Contrataciones familiares';
-  nameEmpInp: string = 'Juan Perez';
-  feInp: string = '01/12/24';
-  caInp: string = 'Gerente RRHH';
-  uniInp: string = 'Unidad de prueba';
-
-  openModalReasignar(componentName: keyof DialogComponents) {
-    console.log('SE ABRIO EL MODAL')
+  openModal(componentName: keyof DialogComponents) {
     this.modalService
       .open(dialogComponentList[componentName], {
         ariaLabelledBy: "modal-title",
@@ -926,22 +914,6 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
         }
       );
   }
-
-  openModal() {
-    this.modalService.open(this.ModalBuscarEmpleados, { ariaLabelledBy: 'modal-title' }).result.then((result) => {
-      console.log(`Closed with: ${result}`);
-
-      if(result === 'Save'){
-        console.log('Aqui para guardar y se deben validar los inputs')
-        console.log('Todos los inputs', this.searchInp, this.locInp, this.depInp, this.nameEmpInp, this.feInp, this.caInp, this.uniInp);
-      }
-
-
-    }, (reason) => {
-      console.log(`Dismissed with: ${reason}`);
-    });
-  }
-
 
 
 }
