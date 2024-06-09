@@ -1,7 +1,7 @@
 import { IColumnsTable } from "src/app/component/table/table.interface";
-import { IEmpleados } from "src/app/services/mantenimiento/empleado.interface";
+import { IEmpleadoData } from "src/app/services/mantenimiento/empleado.interface";
 
-export const dataTableDatosFamiliares: Partial<IEmpleados["evType"][0]>[] = [
+export const dataTableDatosFamiliares: Partial<IEmpleadoData>[] = [
   {
     nombreCompleto: "Nombre 1",
     fechaIngresogrupo: new Date(),
