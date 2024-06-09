@@ -1,6 +1,5 @@
-import { DialogReasignarUsuarioComponent } from './../../shared/reasginar-usuario/reasignar-usuario.component';
-import { Component, TemplateRef, ViewChild } from "@angular/core";
-import { ActivatedRoute, ParamMap, Router } from "@angular/router";
+import { Component } from "@angular/core";
+import { ActivatedRoute, Router } from "@angular/router";
 import { CamundaRestService } from "../../camunda-rest.service";
 import { CompleteTaskComponent } from "../general/complete-task.component";
 import {
@@ -37,12 +36,10 @@ import {
   dataTableAprobadores,
 } from "./registrar-familiares.data";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
-import { DialogBuscarEmpleadosComponent } from "./buscar-empleados/buscar-empleados.component";
-
-interface DialogComponents {
-  dialogBuscarEmpleados: DialogBuscarEmpleadosComponent;
-  dialogReasignarUsuario: DialogReasignarUsuarioComponent
-}
+import {
+  DialogComponents,
+  dialogComponentList,
+} from "src/app/shared/dialogComponents/dialog.components";
 
 @Component({
   selector: "registrarFamiliares",
@@ -1549,23 +1546,9 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
       .subscribe((res) => {});
   }
 
-  @ViewChild("myModalReasign", { static: true })
-  ModalReasignar: TemplateRef<any>;
-  /*Inputs de Reasignar Empleados*/
-  searchRsg: string;
-  nameEmpRsg: string = "Juan Perez";
-  company: string = "Prueba";
-  codeEmpRsg: string = "12093323";
-  unBsRsg: string = "Unidad Prueba";
-  userRsg: string = "juanperez";
-
-  dialogComponent = {
-    buscarEmpleados: DialogBuscarEmpleadosComponent,
-    // reasignarEmpleados: this.ModalReasignar,
-  };
   openModal(componentName: keyof DialogComponents) {
     this.modalService
-      .open(this.dialogComponent[componentName], {
+      .open(dialogComponentList[componentName], {
         ariaLabelledBy: "modal-title",
       })
       .result.then(
@@ -1577,32 +1560,6 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
           }
           if (Object.keys(result).length > 0) {
             this.dataTableDatosFamiliares.push(result);
-          }
-        },
-        (reason) => {
-          console.log(`Dismissed with: ${reason}`);
-        }
-      );
-  }
-
-  openModalReasignar() {
-    this.modalService
-      .open(this.ModalReasignar, { ariaLabelledBy: "modal-title" })
-      .result.then(
-        (result) => {
-          if (result === "Grabar") {
-            console.log(
-              "Aqui se da click al guardar y se deben validar los inputs"
-            );
-            console.log(
-              "Inputs Values",
-              this.searchRsg,
-              this.nameEmpRsg,
-              this.company,
-              this.codeEmpRsg,
-              this.unBsRsg,
-              this.userRsg
-            );
           }
         },
         (reason) => {
