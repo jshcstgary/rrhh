@@ -37,6 +37,7 @@ import { CompletaSolicitudComponent } from './completa-solicitud/completa-solici
 import { ReingresoPersonalComponent } from './reingreso-personal/reingreso-personal.component';
 import { RegistrarFamiliaresComponent } from './registrar-familiares/registrar-familiares.component';
 import { RegistroComentariosComponent } from "./registro-comentarios (h17)/registro-comentarios.component";
+import { RegistroComentariosComponent as h18} from "./registro-comentarios (h18)/registro-comentarios.component";
 
 @NgModule({
   declarations: [
@@ -48,7 +49,8 @@ import { RegistroComentariosComponent } from "./registro-comentarios (h17)/regis
     CompletaSolicitudComponent,
     ReingresoPersonalComponent,
     RegistrarFamiliaresComponent,
-    RegistroComentariosComponent
+    RegistroComentariosComponent,
+    h18
 
   ],
   imports: [
