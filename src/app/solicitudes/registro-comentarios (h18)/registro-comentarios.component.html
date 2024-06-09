@@ -13,7 +13,7 @@
                 </div>
 
                 <div class="col-md-12 text-end">
-                    <button *ngIf="RegistrarsolicitudCompletada" type="button" (click)="openModalReasignar()"
+                    <button *ngIf="RegistrarsolicitudCompletada" type="button" (click)="openModal('dialogReasignarUsuario')"
                     class="btn btn-info me-2 mt-1">
                         <i class="fas fa-redo"></i> Reasignar
                     </button>
@@ -484,7 +484,7 @@
             />
 
             <div class="row mt-4">
-                <div class="col-md-3">
+                <div class="col-md-5">
                     <div class="mb-4">
                         <a>
                             <h2 class="sol-danger">Ingreso de Referencias de Jefe RRHH</h2>
@@ -492,7 +492,7 @@
                     </div>
                 </div>
 
-                <div class="col-md-9">
+                <div class="col-md-7">
                     <hr />
                 </div>
             </div>
@@ -526,121 +526,3 @@
                     </div>
                 </div>
             </div>
-
-
-<!--INICIO DE MODAL DE REASIGNAR-->>
-<ng-template #myModalReasign let-modal>
-    <div class="modal-custom">
-      <div class="">
-        <div class="p-2 mt-2">
-          <h4 class="mx-2 sol-danger">Reasignar Usuario</h4>
-          <hr class="my-0">
-        </div>
-        <div class="px-4">
-          <div class="row">
-            <div class="col-md-12 my-3">
-              <label class="label-estilo" for="searchRsg" style="font-size: 14px; width: 100%;">Buscar</label>
-              <input type="text" [(ngModel)]="searchRsg" class="form-control" id="searchRsg" placeholder="Ingresar los dos apellidos del empleado" style="width: 100%;color: black;">
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-6 my-3">
-              <label class="label-estilo" for="nameEmpRsg" style="font-size: 14px; width: 100%;">Nombre Empleado a Reasignar</label>
-              <input readonly id="nameEmpRsg" [(ngModel)]="nameEmpRsg" type="text" class="form-control mb-3" placeholder="Input 1" style="width: 100%;color: black;">
-            </div>
-            <div class="col-md-6 my-3">
-              <label class="label-estilo" for="company" style="font-size: 14px; width: 100%;">Empresa</label>
-              <input readonly id="company" [(ngModel)]="company" type="text" class="form-control mb-3" placeholder="Input 2" style="width: 100%;color: black;">
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-6 my-3">
-              <label class="label-estilo" for="codeEmpRsg" style="font-size: 14px; width: 100%;">Codigo Empleado a Reasignar</label>
-              <input readonly id="codeEmpRsg" [(ngModel)]="codeEmpRsg" type="text" class="form-control mb-3" placeholder="Input 3" style="width: 100%; color: black;">
-            </div>
-            <div class="col-md-6 my-3">
-              <label class="label-estilo" for="unBsRsg" style="font-size: 14px; width: 100%;">Unidad de Negocio</label>
-              <input readonly id="unBsRsg" [(ngModel)]="unBsRsg" type="text" class="form-control mb-3" placeholder="Input 4" style="width: 100%; color: black;">
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-6 my-3">
-              <label class="label-estilo" for="comentariosRSG" style="font-size: 14px; width: 100%;">Comentarios</label>
-              <textarea
-                  name="comentarios"
-                  style="color: black; font-size: 14px; width: 100%; resize: none;"
-                  class="form-control"
-                  id="comentariosRSG"
-                  rows="3"
-                  required
-                ></textarea>
-            </div>
-            <div class="col-md-6 my-3">
-              <label class="label-estilo" for="userRsg" style="font-size: 14px; width: 100%;">Usuario</label>
-              <input readonly id="userRsg" [(ngModel)]="userRsg"   type="text" class="form-control mb-3" placeholder="Input 4" style="width: 100%;color: black;">
-            </div>
-          </div>
-        </div>
-        <div class="p-4">
-          <button type="button" class="btn btn-primary" (click)="modal.close('Grabar')">Grabar</button>
-          <button type="button" class="mx-3 btn btn-outline-secondary" (click)="modal.dismiss('Cancel')">Cancelar</button>
-        </div>
-      </div>
-    </div>
-  </ng-template>
-  <!--FIN DE MODAL DE REASIGNAR-->>
-
-  <!--INICIO DE MODAL BUSCAR EMPLEADOS-->>
-<ng-template #ModalBuscarEmpleados let-modal>
-    <div class="modal-custom">
-      <div class="">
-        <div class="p-2 mt-2">
-          <h4 class="mx-2 sol-danger">Crear Solicitud</h4>
-          <hr class="my-0">
-        </div>
-        <div class="px-4">
-          <div class="row">
-            <div class="col-md-12 my-3">
-              <label class="label-estilo" for="searchInp" style="font-size: 14px; width: 100%;">Buscar</label>
-              <input type="text" [(ngModel)]="searchInp" class="form-control" id="searchInp" placeholder="Ingresar los dos apellidos del empleado" style="width: 100%;">
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-6 my-3">
-              <label class="label-estilo" for="nameEmpInp" style="font-size: 14px; width: 100%;">Nombre Empleado</label>
-              <input readonly id="nameEmpInp" [(ngModel)]="nameEmpInp" type="text" class="form-control mb-3" placeholder="Input 1" style="width: 100%;">
-            </div>
-            <div class="col-md-6 my-3">
-              <label class="label-estilo" for="feInp" style="font-size: 14px; width: 100%;">Fecha de Ingreso</label>
-              <input readonly id="feInp" [(ngModel)]="feInp" type="text" class="form-control mb-3" placeholder="Input 2" style="width: 100%;">
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-6 my-3">
-              <label class="label-estilo" for="caInp" style="font-size: 14px;">Cargo</label>
-              <input readonly id="caInp" [(ngModel)]="caInp" type="text" class="form-control mb-3" placeholder="Input 3" style="width: 100%;">
-            </div>
-            <div class="col-md-6 my-3">
-              <label class="label-estilo" for="uniInp" style="font-size: 14px; width: 100%;">Unidad</label>
-              <input readonly id="uniInp" [(ngModel)]="uniInp" type="text" class="form-control mb-3" placeholder="Input 4" style="width: 100%;">
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-6 my-3">
-              <label class="label-estilo" for="depInp" style="font-size: 14px; width: 100%;">Departamento</label>
-              <input readonly id="depInp" [(ngModel)]="depInp" type="text" class="form-control mb-3" placeholder="Input 3" style="width: 100%;">
-            </div>
-            <div class="col-md-6 my-3">
-              <label class="label-estilo" for="locInp" style="font-size: 14px; width: 100%;">Localidad</label>
-              <input readonly id="locInp" [(ngModel)]="locInp" type="text" class="form-control mb-3" placeholder="Input 4" style="width: 100%;">
-            </div>
-          </div>
-        </div>
-        <div class="p-4">
-          <button type="button" class="btn btn-primary" (click)="modal.close('Save')">Seleccionar</button>
-          <button type="button" class="mx-3 btn btn-outline-secondary" (click)="modal.dismiss('Cancel')">Cancelar</button>
-        </div>
-      </div>
-    </div>
-</ng-template>
-<!--FIN DE MODAL BUSCAR EMPLEADOS-->>

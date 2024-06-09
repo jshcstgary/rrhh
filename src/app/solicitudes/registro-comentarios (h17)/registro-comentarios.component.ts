@@ -18,6 +18,7 @@ import { DetalleSolicitud } from 'src/app/eschemas/DetalleSolicitud';
 import { DatosSolicitud } from 'src/app/eschemas/DatosSolicitud';
 import { environment } from 'src/environments/environment';
 import { columnsAprobadores, dataTableAprobadores } from './registro-comentarios.data';
+import { DialogComponents, dialogComponentList } from 'src/app/shared/dialogComponents/dialog.components';
 
 @Component({
   selector: 'app-registro-comentarios',
@@ -891,54 +892,29 @@ export class RegistroComentariosComponent extends CompleteTaskComponent {
 
   }
 
-  @ViewChild('myModalReasign', { static: true })
-  ModalReasignar: TemplateRef<any>;
-  /*Inputs de Reasignar Empleados*/
-  searchRsg: string;
-  nameEmpRsg: string = 'Juan Perez';
-  company: string = 'LACTEOS INC';
-  codeEmpRsg: string = '12093323';
-  unBsRsg: string = 'LACTEOS';
-  userRsg: string = 'juanperez';
 
-  @ViewChild('ModalBuscarEmpleados', { static: true })
-  ModalBuscarEmpleados: TemplateRef<any>;
-  /*Inputs de Buscar Empleados*/
-  searchInp: string;
-  locInp: string = 'Puerto Rico';
-  depInp: string = 'Contrataciones familiares';
-  nameEmpInp: string = 'Juan Perez';
-  feInp: string = '01/12/24';
-  caInp: string = 'Gerente RRHH';
-  uniInp: string = 'Unidad de prueba';
+  openModal(componentName: keyof DialogComponents) {
+    console.log('SE ABRIO EL MODAL')
+    this.modalService
+      .open(dialogComponentList[componentName], {
+        ariaLabelledBy: "modal-title",
+      })
+      .result.then(
+        (result) => {
+          console.log("Result: ", result);
 
-  openModalReasignar() {
-    this.modalService.open(this.ModalReasignar, { ariaLabelledBy: 'modal-title' }).result.then((result) => {
-
-      if(result === 'Grabar'){
-        console.log('Aqui se daria el click');
-        console.log('Inputs Values', this.searchRsg, this.nameEmpRsg, this.company, this.codeEmpRsg, this.unBsRsg, this.userRsg);
-      }
-    }, (reason) => {
-      console.log(`Dismissed with: ${reason}`);
-    });
+          if (result === "close") {
+            return;
+          }
+          if (Object.keys(result).length > 0) {
+            console.log('Probando')
+            // this.dataTableAprobadores.push(result);
+          }
+        },
+        (reason) => {
+          console.log(`Dismissed with: ${reason}`);
+        }
+      );
   }
-
-  openModal() {
-    this.modalService.open(this.ModalBuscarEmpleados, { ariaLabelledBy: 'modal-title' }).result.then((result) => {
-      console.log(`Closed with: ${result}`);
-
-      if(result === 'Save'){
-        console.log('Aqui para guardar y se deben validar los inputs')
-        console.log('Todos los inputs', this.searchInp, this.locInp, this.depInp, this.nameEmpInp, this.feInp, this.caInp, this.uniInp);
-      }
-
-
-    }, (reason) => {
-      console.log(`Dismissed with: ${reason}`);
-    });
-  }
-
-
 
 }

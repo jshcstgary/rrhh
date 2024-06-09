@@ -17,15 +17,15 @@ import { NgForm } from '@angular/forms';
 import { DetalleSolicitud } from 'src/app/eschemas/DetalleSolicitud';
 import { DatosSolicitud } from 'src/app/eschemas/DatosSolicitud';
 import { environment } from 'src/environments/environment';
-import { columnsAprobadores, dataTableAprobadores } from './registro-comentarios.data';
+import { columnsAprobadores, dataTableAprobadores } from './registrar-comentarios.data';
 import { DialogComponents, dialogComponentList } from 'src/app/shared/dialogComponents/dialog.components';
 
 @Component({
-  selector: 'app-registro-comentarios',
-  templateUrl: './registro-comentarios.component.html',
-  styleUrls: ['./registro-comentarios.component.scss']
+  selector: 'app-registrar-comentarios',
+  templateUrl: './registrar-comentarios.component.html',
+  styleUrls: ['./registrar-comentarios.component.scss']
 })
-export class RegistroComentariosComponent extends CompleteTaskComponent {
+export class RegistrarComentariosComponent extends CompleteTaskComponent {
   NgForm = NgForm;
 
   selectedOption: string = 'No';

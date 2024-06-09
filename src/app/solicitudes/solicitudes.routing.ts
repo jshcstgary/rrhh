@@ -10,6 +10,7 @@ import { ReingresoPersonalComponent } from "./reingreso-personal/reingreso-perso
 import { RegistrarFamiliaresComponent } from "./registrar-familiares/registrar-familiares.component";
 import { RegistroComentariosComponent } from "./registro-comentarios (h17)/registro-comentarios.component";
 import { RegistroComentariosComponent as h18 } from "./registro-comentarios (h18)/registro-comentarios.component";
+import { RegistrarComentariosComponent as h19 } from "./registrar-comentario (h19)/registrar-comentarios.component";
 
 export const SolicitudesRoutes: Routes = [
   {
@@ -89,6 +90,21 @@ export const SolicitudesRoutes: Routes = [
             },
             {
               title: "Registro de Comentarios"
+            }
+          ],
+        },
+      },
+      {
+        path: "reingreso-personal/registrar-comentarios",
+        component: h19,
+        data: {
+          title: "Registro de Comentarios h19",
+          urls: [
+            {
+              title: "Solicitudes"
+            },
+            {
+              title: "Registro de Comentarios H19"
             }
           ],
         },
