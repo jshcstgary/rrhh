@@ -5,25 +5,15 @@ import { catchError, map } from "rxjs";
 import { IEmpleados } from "src/app/services/mantenimiento/empleado.interface";
 import { MantenimientoService } from "src/app/services/mantenimiento/mantenimiento.service";
 
-interface BuscarEmpleadosFields {
-  name: string;
-  fechaIngreso: string;
-  cargo: string;
-  unidad: string;
-  departamento: string;
-  localidad: string;
-  parentesco: string;
-}
-
 type Empleados = IEmpleados["evType"];
 @Component({
-  selector: "app-buscar-empleados",
+  selector: "app-dialog-buscar-empleados",
   templateUrl: "./buscar-empleados.component.html",
   styleUrls: ["./buscar-empleados.component.scss"],
   standalone: true,
   imports: [FormsModule],
 })
-export class BuscarEmpleadosComponent {
+export class DialogBuscarEmpleadosComponent {
   activeModal = inject(NgbActiveModal);
 
   searchInp: string;
@@ -37,8 +27,6 @@ export class BuscarEmpleadosComponent {
   };
 
   constructor(private mantenimientoService: MantenimientoService) {}
-
-  ngOnInit(): void {}
 
   onSeleccionar() {
     this.activeModal.close(this.fields);

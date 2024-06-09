@@ -1,16 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { BuscarEmpleadosComponent } from './buscar-empleados.component';
+import { DialogBuscarEmpleadosComponent } from './buscar-empleados.component';
 
-describe('BuscarEmpleadosComponent', () => {
-  let component: BuscarEmpleadosComponent;
-  let fixture: ComponentFixture<BuscarEmpleadosComponent>;
+describe('DialogBuscarEmpleadosComponent', () => {
+  let component: DialogBuscarEmpleadosComponent;
+  let fixture: ComponentFixture<DialogBuscarEmpleadosComponent>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [BuscarEmpleadosComponent]
+      declarations: [DialogBuscarEmpleadosComponent]
     });
-    fixture = TestBed.createComponent(BuscarEmpleadosComponent);
+    fixture = TestBed.createComponent(DialogBuscarEmpleadosComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
