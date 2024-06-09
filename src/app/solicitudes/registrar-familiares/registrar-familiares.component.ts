@@ -31,7 +31,6 @@ import { ConsultaTareasService } from "src/app/tareas/consulta-tareas/consulta-t
 import { SolicitudesService } from "../registrar-solicitud/solicitudes.service";
 import {
   columnsDatosFamiliares,
-  dataTableDatosFamiliares,
   columnsAprobadores,
   dataTableAprobadores,
 } from "./registrar-familiares.data";
@@ -40,6 +39,7 @@ import {
   DialogComponents,
   dialogComponentList,
 } from "src/app/shared/dialogComponents/dialog.components";
+import { IEmpleadoData } from "src/app/services/mantenimiento/empleado.interface";
 
 @Component({
   selector: "registrarFamiliares",
@@ -53,7 +53,7 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
 
   selectedOption: string = "No";
   columnsDatosFamiliares = columnsDatosFamiliares.columns;
-  dataTableDatosFamiliares = dataTableDatosFamiliares;
+  dataTableDatosFamiliares: IEmpleadoData[] = [];
   columnsAprobadores = columnsAprobadores.columns;
   dataTableAprobadores = dataTableAprobadores;
 
@@ -125,28 +125,6 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
   // This is a more likely scenario.
   // In this case, parent flag is set to true. It requires additional handling to derive task id from process instance id.
   public parentIdFlag: string | null = "false"; // set to true if the id is for the process instance, instead of task-id
-
-  /*
-  public dataTipoSolicitud: any = [
-    { id: 1, descripcion: "Requisición de Personal" },
-    { id: 2, descripcion: "Contratación de Familiares" },
-    { id: 3, descripcion: "Reingreso de personal" },
-    { id: 4, descripcion: "Acción de Personal" },
-  ];
-  public dataTipoMotivo: any = [
-    { id: 1, descripcion: "Nuevo" },
-    { id: 2, descripcion: "Eventual" },
-    { id: 3, descripcion: "Pasante" },
-    { id: 4, descripcion: "Reemplazo" },
-  ];
-
-  // public dataTipoAccion: any;
-
-  public dataTipoAccion: any = [
-    { id: 1, descripcion: "Motivo1" },
-    { id: 2, descripcion: "Motivo2" },
-  ];
-  */
 
   public misParams: Solicitud;
 
@@ -332,26 +310,6 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
 
   public loadingComplete = 0;
 
-  /*
-  nombresEmpleados: string[] = [
-    ...new Set(
-      this.dataEmpleadoEvolution.map((empleado) => empleado.nombreCompleto)
-    ),
-  ];
-
-  subledgers: string[] = [
-    ...new Set(
-      this.dataEmpleadoEvolution.map((empleado) => empleado.subledger)
-    ),
-  ];
-
-  codigosPosicion: string[] = [
-    ...new Set(
-      this.dataEmpleadoEvolution.map((empleado) => empleado.codigoPosicion)
-    ),
-  ];
-  */
-
   nombresEmpleados: string[] = [];
 
   subledgers: string[] = [];
@@ -476,12 +434,6 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
       } else {
         this.date = "";
       }
-
-      //
-      // Comentado por ahora
-      /*if (null !== qParams?.get("p")) {
-        this.parentIdFlag = qParams.get("p");
-      }*/
       this.parentIdFlag = "true";
     });
 
@@ -1546,20 +1498,49 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
       .subscribe((res) => {});
   }
 
-  openModal(componentName: keyof DialogComponents) {
+  indexedModal: Record<keyof DialogComponents, any> = {
+    dialogBuscarEmpleados: () => this.openModalBuscarEmpleado(),
+    dialogReasignarUsuario: () => this.openModalReasignarUsuario(),
+  };
+
+  openModal(component: keyof DialogComponents) {
+    this.indexedModal[component]();
+  }
+  openModalBuscarEmpleado() {
     this.modalService
-      .open(dialogComponentList[componentName], {
+      .open(dialogComponentList.dialogBuscarEmpleados, {
         ariaLabelledBy: "modal-title",
       })
       .result.then(
         (result) => {
-          console.log("Result: ", result);
+          if (result?.action === "close") {
+            return;
+          }
 
+          if (result?.data) {
+            this.dataTableDatosFamiliares = [
+              ...this.dataTableDatosFamiliares,
+              result.data,
+            ];
+          }
+        },
+        (reason) => {
+          console.log(`Dismissed with: ${reason}`);
+        }
+      );
+  }
+
+  openModalReasignarUsuario() {
+    this.modalService
+      .open(dialogComponentList.dialogReasignarUsuario, {
+        ariaLabelledBy: "modal-title",
+      })
+      .result.then(
+        (result) => {
           if (result === "close") {
             return;
           }
-          if (Object.keys(result).length > 0) {
-            this.dataTableDatosFamiliares.push(result);
+          if (result?.data) {
           }
         },
         (reason) => {

@@ -267,17 +267,15 @@
       </div>
 
       <!-- Datos de familiares que ya laboran en la empresa  -->
-      <div class="row mt-4">
-        <div class="col-md-4">
+      <div class="row mt-2">
+        <div class="col">
           <div class="mb-4">
-            <a>
-              <h3 class="sol-danger">
-                Datos de familiares que ya laboran en la empresa
-              </h3>
-            </a>
+            <h3 class="sol-danger">
+              Datos de familiares que ya laboran en la empresa
+            </h3>
           </div>
         </div>
-        <div class="col-md-8">
+        <div class="col">
           <hr />
         </div>
       </div>
@@ -346,171 +344,6 @@
         [columns]="columnsAprobadores"
         [dataTable]="dataTableAprobadores"
       />
-
-      <!-- <div class="accordion" id="accordionExample">
-        <div *ngFor="let nivelItem of dataAprobacionesPorPosicion[keySelected]; let i = index" class="accordion-item">
-          <div class="accordion-header">
-            <button class="accordion-button" type="button" data-bs-toggle="collapse" [attr.data-bs-target]="'#collapse' + i" aria-expanded="true" [attr.aria-controls]="'collapse' + i" style="display: block">
-              <div class="row" style="align-items: center; justify-content: space-around">
-                <div class="col">{{ nivelItem.nivelAprobacionType.ruta }}</div>
-
-				<div class="col">
-                  {{ nivelItem.aprobador.usuario !== "" && nivelItem.aprobador.usuario !== undefined && nivelItem.aprobador.usuario != null ? nivelItem.aprobador.usuario : "No aplica" }}
-                </div>
-
-                <div class="col">
-                  {{ nivelItem.nivelAprobacionType.nivelAprobacionRuta }}
-                </div>
-              </div>
-            </button>
-          </div>
-
-          <div [id]="'collapse' + i" class="accordion-collapse collapse" [ngClass]="{ show: i === 0 }" data-bs-parent="#accordionExample">
-            <div class="row">
-              <div class="col">
-                <div class="input-group">
-                  <label for="lvl1descripcion">
-                    Descripción de la posición
-                  </label>
-
-                  &nbsp;
-
-				  <span id="lvl1descripcion" name="" style="color: black; font-size: 14px;">
-				    {{ nivelItem.aprobador.descripcionPosicion !== "" && nivelItem.aprobador.descripcionPosicion !== undefined && nivelItem.aprobador.descripcionPosicion != null ? nivelItem.aprobador.descripcionPosicion : "No aplica" }}
-				  </span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div> -->
-
-      <!-- <div class="row mt-4">
-        <div class="col-md-4">
-          <div class="mb-4">
-            <a> <h3 class="sol-danger">Atención de los probadores</h3></a>
-          </div>
-        </div>
-        <div class="col-md-8">
-          <hr />
-        </div>
-      </div> -->
-
-      <!-- <div class="row mt-2">
-        <div class="col">
-          <div class="input-group mb-3">
-            <label
-              for="aprobadoresdinamicos"
-              style="color: #0056b3; font-size: 14px; "
-            >
-              Aprobadores dinámicos
-            </label>
-            &nbsp;
-            <span
-              id="aprobadoresdinamicos"
-              name=""
-              style="color: black; font-size: 14px; "
-              class="text-start"
-              >{{ detalleSolicitud.aprobadoresDinamicos }}</span
-            >
-          </div>
-        </div>
-      </div>
-
-      <div class="row mt-2">
-        <div class="col">
-          <div class="input-group mb-3">
-            <label
-              for="gerenterrhhcorporativo"
-              style="color: #0056b3; font-size: 14px; "
-            >
-              Gerente de RRHH Corporativo
-            </label>
-            &nbsp;
-            <span
-              id="gerenterrhhcorporativo"
-              name=""
-              style="color: black; font-size: 14px; "
-              class="text-start"
-              >{{ detalleSolicitud.gerenteRRHHCorporativo }}</span
-            >
-          </div>
-        </div>
-      </div> -->
-
-      <!-- <div class="row mt-2">
-        <div class="col">
-          <div class="input-group mb-3">
-            <label
-              for="comitederemuneraciones"
-              style="color: #0056b3; font-size: 14px;"
-            >
-              Comité de Remuneraciones
-            </label>
-            &nbsp;
-            <span
-              id="comitederemuneraciones"
-              name=""
-              style="color: black; font-size: 14px; "
-              class="text-start"
-              >{{ detalleSolicitud.comiteRemuneraciones }}</span
-            >
-          </div>
-        </div>
-      </div> -->
-
-      <!-- <div class="row mt-4">
-        <div class="col-md-4">
-          <div class="mb-4">
-            <a> <h3 class="sol-danger">Anulación de Solicitud</h3></a>
-          </div>
-        </div>
-        <div class="col-md-8">
-          <hr />
-        </div>
-      </div> -->
-
-      <!-- <div class="row" >
-        <div class="col">
-          <div class="input-group mb-3 contenedor">
-          <label
-              class="input-group-text adjustable-label"
-              for="anular"
-              >¿Anular Solicitud?</label>
-            &nbsp; -->
-      <!-- aqui  van los check box-->
-
-      <!-- <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="Si" [(ngModel)]="selectedOption" (change)="onSelectionChange()">
-              <label class="form-check-label" for="inlineRadio1">Si</label>
-            </div>
-            <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="No" [(ngModel)]="selectedOption" (change)="onSelectionChange()">
-              <label class="form-check-label" for="inlineRadio2">No</label>
-            </div>
-
-          </div>
-        </div>
-      </div> -->
-
-      <!-- <div class="row">
-        <div class="col">
-          <div class="input-group mb-3 contenedor">
-          <label
-              class="input-group-text adjustable-label adjustable-label"
-              for="anulacion"
-              >Comentarios Anulación de Solicitud
-          </label>
-          &nbsp;
-            <textarea
-              id="anulacion"
-              name="anulacion"
-              [(ngModel)]="model.comentariosAnulacion"
-              style="color: black; font-size: 14px"
-            ></textarea>
-          </div>
-        </div>
-      </div> -->
     </h2>
   </div>
 </form>
