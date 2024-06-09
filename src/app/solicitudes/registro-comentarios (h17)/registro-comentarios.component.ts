@@ -17,14 +17,14 @@ import { NgForm } from '@angular/forms';
 import { DetalleSolicitud } from 'src/app/eschemas/DetalleSolicitud';
 import { DatosSolicitud } from 'src/app/eschemas/DatosSolicitud';
 import { environment } from 'src/environments/environment';
-import { columnsAprobadores, dataTableAprobadores } from './reingreso-personal.data';
+import { columnsAprobadores, dataTableAprobadores } from './registro-comentarios.data';
 
 @Component({
-  selector: 'app-reingreso-personal',
-  templateUrl: './reingreso-personal.component.html',
-  styleUrls: ['./reingreso-personal.component.scss']
+  selector: 'app-registro-comentarios',
+  templateUrl: './registro-comentarios.component.html',
+  styleUrls: ['./registro-comentarios.component.scss']
 })
-export class ReingresoPersonalComponent extends CompleteTaskComponent {
+export class RegistroComentariosComponent extends CompleteTaskComponent {
   NgForm = NgForm;
 
   selectedOption: string = 'No';
