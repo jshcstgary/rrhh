@@ -94,6 +94,9 @@ export const environment = {
   // detalleAprobacionesServiceES: `${base}:8083/v1/es/detalles_aprobaciones_solicitudes`,
   detalleAprobacionesServiceES: `${baseG}/v1/es/detalles_aprobaciones_solicitudes`,
 
+  // detalleAprobacionesServiceES: `${base}:8086/v1/es/seleccion_candidato`,
+  seleccionCandidatoServiceES: `${baseG}/v1/es/seleccion_candidato`,
+
 
   /*
 
