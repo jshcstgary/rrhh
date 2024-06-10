@@ -419,17 +419,17 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
       {};
       */
 
-      this.solicitud.tipoSolicitud = this.dataTipoSolicitudes.filter(
+      this.solicitud.tipoSolicitud = this.dataTipoSolicitudes.find(
         (data) => data.id == this.solicitud.idTipoSolicitud
-      )[0]?.descripcion;
+      )?.descripcion;
 
       this.solicitud.tipoMotivo = this.dataTiposMotivosPorTipoSolicitud[
         this.solicitud.idTipoSolicitud
-      ].filter((data) => data.id == this.solicitud.idTipoMotivo)[0]?.tipoMotivo;
+      ].find((data) => data.id == this.solicitud.idTipoMotivo)?.tipoMotivo;
 
       this.solicitud.tipoAccion = this.dataTiposAccionesPorTipoSolicitud[
         this.solicitud.idTipoSolicitud
-      ].filter((data) => data.id == this.solicitud.idTipoAccion)[0]?.tipoAccion;
+      ].find((data) => data.id == this.solicitud.idTipoAccion)?.tipoAccion;
 
       // Comentado tveas cambio
       /*
@@ -450,11 +450,12 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
         // Comentado tveas por error
         this.route.params.subscribe((params) => {
           //const processDefinitionKey ="process_modelo";
-          const processDefinitionKey = "RequisicionPersonal";
+          const processDefinitionKey =
+            this.rutaporIdTipoSolicitudIndexada[this.solicitud.idTipoSolicitud]
+              .key || "";
           // const processDefinitionKey = "process_modelo";
           //const processDefinitionKey = params['processdefinitionkey'];
           const variables = this.generatedVariablesFromFormFields();
-
 
           this.camundaRestService
             .postProcessInstance(processDefinitionKey, variables)
@@ -490,15 +491,15 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
                     .subscribe((responseDetalle) => {
                       setTimeout(() => {
                         this.router.navigate([
-                          "/solicitudes/registrar-solicitud",
+                          this.rutaporIdTipoSolicitudIndexada[
+                            this.solicitud.idTipoSolicitud
+                          ].path,
                           this.solicitud.idInstancia,
                           this.solicitud.idSolicitud,
                         ]);
-                      }, 1800);//comentado mmunoz
+                      }, 1800); //comentado mmunoz
                     });
                 });
-
-
             });
         });
 
@@ -514,6 +515,25 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
       }
     });
   }
+
+  rutaporIdTipoSolicitudIndexada = {
+    1: {
+      path: "/solicitudes/registrar-solicitud",
+      key: "RequisicionPersonal",
+    },
+    3: {
+      path: "/solicitudes/registrar-solicitud",
+      key: "AccionPersonal",
+    },
+    5: {
+      path: "/solicitudes/registrar-solicitud",
+      key: "ReingresoPersonal",
+    },
+    6: {
+      path: "/solicitudes/registrar-familiares",
+      key: "ContratacionFamiliares",
+    },
+  };
 
   getCreatedId(): string {
     if (
