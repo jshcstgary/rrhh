@@ -1506,6 +1506,7 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
   openModal(component: keyof DialogComponents) {
     this.indexedModal[component]();
   }
+  
   openModalBuscarEmpleado() {
     this.modalService
       .open(dialogComponentList.dialogBuscarEmpleados, {

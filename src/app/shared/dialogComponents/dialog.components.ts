@@ -1,4 +1,4 @@
-import { DialogBuscarEmpleadosComponent } from "src/app/solicitudes/registrar-familiares/buscar-empleados/buscar-empleados.component";
+import { DialogBuscarEmpleadosComponent } from "src/app/shared/buscar-empleados/buscar-empleados.component";
 import { DialogReasignarUsuarioComponent } from "../reasginar-usuario/reasignar-usuario.component";
 import { Type } from "@angular/core";
 
