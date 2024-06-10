@@ -124,7 +124,7 @@ export class PlantillaBComponent implements AfterViewInit, OnInit, OnChanges {
     this.columnsTable.unshift(PlantillaBData.initialColumns);
   }
   /**
-   * Función para validar si mi formulario mostrara el boton de buscar o no
+   * Función para validefaultActionsItemsdar si mi formulario mostrara el boton de buscar o no
    */
   private validatefilterFormContainsSearchButton() {
     this.filterFormContainsSearchButton =
@@ -366,7 +366,7 @@ export class PlantillaBComponent implements AfterViewInit, OnInit, OnChanges {
     id: string,
     key: string,
     tooltip: string,
-    id_edit
+    id_edit : any
   ) {
     this.IdRowToClone = null;
     this.contexto[this.clickOnActionRow](id, key, tooltip, id_edit);
@@ -385,6 +385,7 @@ export class PlantillaBComponent implements AfterViewInit, OnInit, OnChanges {
   private onCancelEditRowTable() {
     this.filterSortFormatAndPaginateData();
   }
+  
   private async clickOnActionTable(
     idAction: idActionType,
     key: string,

@@ -40,6 +40,7 @@ import {
   dialogComponentList,
 } from "src/app/shared/dialogComponents/dialog.components";
 import { IEmpleadoData } from "src/app/services/mantenimiento/empleado.interface";
+import { idActionType } from "src/app/component/table/table.interface";
 
 @Component({
   selector: "registrarFamiliares",
@@ -1506,7 +1507,7 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
   openModal(component: keyof DialogComponents) {
     this.indexedModal[component]();
   }
-  
+
   openModalBuscarEmpleado() {
     this.modalService
       .open(dialogComponentList.dialogBuscarEmpleados, {
@@ -1548,5 +1549,26 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
           console.log(`Dismissed with: ${reason}`);
         }
       );
+  }
+
+
+  //Funcion para realizar las acciones de la Table Emplerado
+  private async toActionsTable(
+    idAction: idActionType,
+    key: string,
+    tooltip: string
+  ) {
+    switch (idAction) {
+      case "editOnTable":
+        console.log('Aqui quieres editar');
+        break;
+      case "delete":
+        console.log('Quieres borrar los datos');
+      break;
+
+      default:
+          console.log('Accion invalida');
+        break;
+    }
   }
 }
