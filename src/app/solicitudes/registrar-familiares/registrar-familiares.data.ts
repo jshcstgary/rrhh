@@ -5,7 +5,6 @@ export const columnsDatosFamiliares: IConsultaTareasData = {
     {
       title: "Nombre",
       dataIndex: "nombreCompleto",
-      // align: "center",
       sortActive: true,
     },
     {
@@ -84,15 +83,6 @@ export const columnsAprobadores: IConsultaTareasData = {
       dataIndex: "comments",
       sortActive: true,
     },
-    {
-      title: "Acciones",
-      type: "actions",
-      width: "100px",
-      actions: [
-        { materialIcon: "edit", id: "editOnTable", tooltip: "Editar" },
-        { materialIcon: "delete", id: "delete", tooltip: "Eliminar" },
-      ],
-    },
   ],
   colsToFilterByTextName: ["route"],
 };
@@ -134,6 +124,5 @@ export const dataTableAprobadores = [
 
 export interface IConsultaTareasData {
   columns: IColumnsTable;
-  // colsToFilterByTextIdSolicitud: string[];
   colsToFilterByTextName: string[];
 }
