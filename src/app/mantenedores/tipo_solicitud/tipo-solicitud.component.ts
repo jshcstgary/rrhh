@@ -137,7 +137,9 @@ export class TipoSolicitudComponent implements OnInit {
   ) {
     const descripcionNotEmpty =
       this.validationsService.isNotEmptyStringVariable(rowData.tipoSolicitud);
-      if (descripcionNotEmpty) {
+    const codigoTipoSolicitudNotEmpty =
+      this.validationsService.isNotEmptyStringVariable(rowData.codigoTipoSolicitud);
+      if (descripcionNotEmpty && codigoTipoSolicitudNotEmpty) {
         if (
           !environment.modalConfirmation ||
           (await Swal.fire(UtilData.messageToSave)).isConfirmed

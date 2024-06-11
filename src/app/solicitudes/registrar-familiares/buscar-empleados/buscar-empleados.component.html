@@ -127,14 +127,14 @@
       <button
         type="button"
         class="btn btn-primary"
-        (click)="onSeleccionar()"
+        (click)="onSeleccionar(fields)"
       >
         Seleccionar
       </button>
       <button
         type="button"
         class="mx-3 btn btn-outline-secondary"
-        (click)="activeModal.close('close')"
+        (click)="onClose()"
       >
         Cancelar
       </button>
