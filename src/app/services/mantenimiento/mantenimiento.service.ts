@@ -158,6 +158,9 @@ interface FamiliaresCandidatosService {
   familiaresCandidato: FamiliaresCandidatos[];
 }
 export interface FamiliaresCandidatos {
+  idSolicitud: string;
+  idSolicitudPadre?: string;
+  codigoPosicionPadre?: string;
   codigoPosicion: string;
   nombreEmpleado: string;
   descripcionPosicion?: string;

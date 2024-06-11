@@ -794,9 +794,9 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
       //} // comentado munoz
       await this.getDataEmpleadosEvolution();
       await this.loadDataCamunda(); //comentado para prueba mmunoz
-      await this.obtenerServicioFamiliaresCandidatos(
-        this.detalleSolicitud.codigoPosicion
-      );
+      await this.obtenerServicioFamiliaresCandidatos({
+        idSolicitud: this.id_solicitud_by_params,
+      });
       //console.log("impreme arreglo de aprobadores: ");
       //await this.recorrerArreglo();
 
@@ -1007,13 +1007,17 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
     this.solicitudes.getSolicitudes().subscribe((data) => {});
   }
 
-  obtenerServicioFamiliaresCandidatos(codigoPosicion: string) {
+  obtenerServicioFamiliaresCandidatos({
+    idSolicitud,
+  }: {
+    idSolicitud: string;
+  }) {
     return this.mantenimientoService.getFamiliaresCandidato().subscribe({
       next: (response) => {
         const data = response?.familiaresCandidato || [];
 
         this.dataTableDatosFamiliares = data.filter(
-          (d) => d.codigoPosicion === codigoPosicion
+          (d) => d.idSolicitud === idSolicitud
         );
       },
       error: (error: HttpErrorResponse) => {
@@ -1024,7 +1028,10 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
 
   guardarServicioFamiliaresCanidatos() {
     let requestFamiliares: FamiliaresCandidatos = {
+      idSolicitud: "string",
       codigoPosicion: "string",
+      codigoPosicionPadre: "",
+      idSolicitudPadre: "",
       descripcionPosicion: "string",
       nombreEmpleado: "string",
       subledger: "string",
@@ -1582,8 +1589,9 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
           if (result?.data) {
             const data: IEmpleadoData = result.data;
             const dtoFamiliares: FamiliaresCandidatos = {
+              idSolicitud: this.id_solicitud_by_params,
               nombreEmpleado: data.nombreCompleto,
-              fechaCreacion: data.fechaIngresogrupo || new Date(),
+              fechaCreacion: new Date(data.fechaIngresogrupo) ?? new Date(),
               cargo: data.nombreCargo,
               unidad: data.unidadNegocio,
               departamento: data.departamento,
@@ -1595,13 +1603,17 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
             this.mantenimientoService
               .guardarFamiliaresCandidato(dtoFamiliares)
               .subscribe((response) => {
-                console.log("guardarFamiliaresCandidato:", response);
+                console.log(
+                  "guardarFamiliaresCandidato:",
+                  dtoFamiliares,
+                  response
+                );
                 this.dataTableDatosFamiliares = [
                   ...this.dataTableDatosFamiliares,
                   dtoFamiliares,
                 ];
                 this.utilService.modalResponse(
-                  "Datos ingresados correctamente",
+                  "Familiar ingresado correctamente",
                   "success"
                 );
               });
