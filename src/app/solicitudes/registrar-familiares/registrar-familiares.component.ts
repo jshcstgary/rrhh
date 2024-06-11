@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { Component, Type } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { CamundaRestService } from "../../camunda-rest.service";
 import { CompleteTaskComponent } from "../general/complete-task.component";
@@ -41,6 +41,18 @@ import {
 } from "src/app/shared/dialogComponents/dialog.components";
 import { IEmpleadoData } from "src/app/services/mantenimiento/empleado.interface";
 import { idActionType } from "src/app/component/table/table.interface";
+import { DialogBuscarEmpleadosComponent } from "./buscar-empleados/buscar-empleados.component";
+import { DialogReasignarUsuarioComponent } from "src/app/shared/reasginar-usuario/reasignar-usuario.component";
+
+interface DialogComponents {
+  dialogBuscarEmpleados: Type<DialogBuscarEmpleadosComponent>;
+  dialogReasignarUsuario: Type<DialogReasignarUsuarioComponent>;
+}
+
+const dialogComponentList: DialogComponents = {
+  dialogBuscarEmpleados: DialogBuscarEmpleadosComponent,
+  dialogReasignarUsuario: DialogReasignarUsuarioComponent,
+};
 
 @Component({
   selector: "registrarFamiliares",
@@ -1561,14 +1573,14 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
   ) {
     switch (idAction) {
       case "editOnTable":
-        console.log('Aqui quieres editar');
+        console.log("Aqui quieres editar");
         break;
       case "delete":
-        console.log('Quieres borrar los datos');
+        console.log("Quieres borrar los datos");
       break;
 
       default:
-          console.log('Accion invalida');
+        console.log("Accion invalida");
         break;
     }
   }
