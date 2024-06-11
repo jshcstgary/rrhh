@@ -1,4 +1,3 @@
-
 import { Component } from "@angular/core";
 import { ActivatedRoute, ParamMap, Router } from "@angular/router";
 import { CamundaRestService } from "../../camunda-rest.service";
@@ -1439,11 +1438,41 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
                               idSolicitud: res.idSolicitud
                             }
 
+                            const request = {
+                                  iD_SOLICITUD: this.solicitud.idSolicitud,
+                                  iD_SOLICITUD_PROCESO: res.idSolicitud,
+                                  tipoFuente: null,
+                                  fuenteExterna: null,
+                                  tipoProceso: null,
+                                  candidato: null,
+                                  actualizacionDelPerfil: null,
+                                  busquedaDeCandidatos: null,
+                                  entrevista: null,
+                                  pruebas: null,
+                                  referencias: null,
+                                  elaboracionDeInforme: null,
+                                  entregaAlJefeSol: null,
+                                  entrevistaPorJefatura: null,
+                                  tomaDeDesiciones: null,
+                                  candidatoSeleccionado: null,
+                                  procesoDeContratacion: null,
+                                  finProcesoContratacion: null,
+                                  fechaInicioReingreso: null,
+                                  fechaFinReingreso: null,
+                                  fechaInicioContratacionFamiliares: null,
+                                  fechaFinContratacionFamiliares: null,
+                                  fechaIngresoCandidato: null
+                                };
+                            this.seleccionCandidatoService.saveCandidato(request).subscribe({
+                              next: (res) => {
+                                console.log(res);
                             this.solicitudes.guardarDetalleSolicitud(detalle).subscribe({
                               next: (res) => {
                                 console.log(res);
                               }
                             });
+                           }
+                           });
                           }
                         });
                       }
