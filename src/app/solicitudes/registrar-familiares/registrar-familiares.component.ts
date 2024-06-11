@@ -785,7 +785,7 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
       await this.loadDataCamunda(); //comentado para prueba mmunoz
       //console.log("impreme arreglo de aprobadores: ");
       //await this.recorrerArreglo();
-
+      
       // await this.getNivelesAprobacion();
       this.utilService.closeLoadingSpinner();
     } catch (error) {
@@ -1287,12 +1287,13 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
     this.consultaTareasService
       .getTareaIdParam(IdSolicitud)
       .subscribe((tarea) => {
-        console.log("Task: ", tarea);
+        console.log("consultarNextTask: ", tarea);
+        const solicitud = tarea.solicitudes[0];
 
-        this.uniqueTaskId = tarea.solicitudes[0].taskId;
-        this.taskType_Activity = tarea.solicitudes[0].tasK_DEF_KEY;
-        this.nameTask = tarea.solicitudes[0].name;
-        this.id_solicitud_by_params = tarea.solicitudes[0].idSolicitud;
+        this.uniqueTaskId = solicitud.taskId;
+        this.taskType_Activity = solicitud.tasK_DEF_KEY;
+        this.nameTask = solicitud.name;
+        this.id_solicitud_by_params = solicitud.idSolicitud;
 
         if (this.taskType_Activity !== environment.taskType_Registrar) {
           this.RegistrarsolicitudCompletada = false;
