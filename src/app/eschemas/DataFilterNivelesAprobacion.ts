@@ -28,6 +28,15 @@ export class DataFilterNivelesAprobacion {
       this.isUndefinedOrNull(this.tipoSolicitud) ||
       this.isUndefinedOrNull(this.nivelDireccion);
 
+    const atLeastOneUndefinedOrNulltipoSolicitud =
+      this.isUndefinedOrNull(this.tipoSolicitud);
+
+    const atLeastOneUndefinedOrNulltipoMotivo =
+      this.isUndefinedOrNull(this.tipoMotivo);
+
+    const atLeastOneUndefinedOrNullnivelDireccion =
+      this.isUndefinedOrNull(this.nivelDireccion);
+
     if (allUndefined) {
       // return "Toda mi data sin filtrar";
       return "case1";
@@ -35,7 +44,14 @@ export class DataFilterNivelesAprobacion {
       // return "Toda mi data sin filtrar";
       return "case2";
     } else if (atLeastOneUndefinedOrNull) {
+      if (atLeastOneUndefinedOrNulltipoSolicitud) {
       return "case3";
+      }if (atLeastOneUndefinedOrNulltipoMotivo) {
+        this.tipoMotivo = 10000;
+      }if (atLeastOneUndefinedOrNullnivelDireccion) {
+        this.nivelDireccion = 10000;
+      }
+      return "case4";
       // return "Mostrar un error";
     } else {
       return "case4";
