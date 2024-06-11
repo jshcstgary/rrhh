@@ -42,12 +42,6 @@
         </div>-->
 
         <div class="col-md-4 text-end d-flex justify-content-end align-items-center">
-
-          <button type="button" (click)="reasignarSolicitud()"
-            class="btn btn-info me-2 d-flex align-items-center justify-content-center button-custom">
-            <i class="fas fa-redo me-2 icon-size"></i> Reasignar
-          </button>
-
           <button type="button" class="btn btn-info me-2 d-flex align-items-center justify-content-center button-custom"
             aria-label="Close" (click)="saveCandidato()" [disabled]="disabledSave">
             <i class="fas fa-save me-2 icon-size"></i> Guardar
@@ -447,7 +441,9 @@
             &nbsp;
 
             <select id="tipoproceso" name="tipoproceso" class="form-select" style="font-size: 14px"
-              [(ngModel)]="model.tipoProceso" (change)="onChangeTipoProceso()" required>
+              [(ngModel)]="model.tipoProceso" (change)="onChangeTipoProceso()" required [disabled]="model.tipoProceso !== ''">
+              <option value="">Seleccione...</option>
+
               <option *ngFor="let dato of dataTipoProceso; let i = index" [value]="dato.descripcion"
                 [selected]="i > 0 && model.tipoProceso === dato.descripcion">
                 {{dato.descripcion}}
@@ -464,8 +460,7 @@
 
             <div class="form-check form-switch checkbox-container">
               <label class="form-check-label" for="flexSwitchCheckChecked">Interno</label>
-              <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" name="flexSwitchCheckChecked"
-                chequed [(ngModel)]="isChecked" (change)="toggleDivVisibility($event)">
+              <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" name="flexSwitchCheckChecked" [(ngModel)]="isChecked" (change)="toggleDivVisibility($event)">
               <label class="form-check-label" for="flexSwitchCheckChecked">Externo</label>
             </div>
 
@@ -477,7 +472,7 @@
 
       <!--Fila Fuente externa-->
 
-      <div class="row" *ngIf="!isDivVisible">
+      <div class="row" *ngIf="isDivVisible">
         <div class="col-md-6">
           <div class="input-group mb-3">
             <label class="input-group-text label-estilo">Fuente Externa</label>
@@ -485,6 +480,8 @@
 
             <select id="selectOptions" [(ngModel)]="selectedOption" name="selectOptions" class="form-select"
               style="font-size: 14px" required>
+              <option value="">Seleccione...</option>
+
               <option *ngFor="let option of options" [value]="option.descripcion">
                 {{ option.descripcion }}
               </option>
@@ -507,19 +504,21 @@
       <div class="row">
         <div class="col-md-4 d-flex align-items-center">
           <input id="input1" type="checkbox" [(ngModel)]="isCheckedPerfil" (change)="onCheckboxChangeCandidato($event)"
-            name="checkPerfil">
+            name="checkPerfil" [disabled]="disabledFechas.fechaActualizacion">
           <label for="input1" class="input-group-text adjustable-label">Actualización del perfil</label>
-          <input type="text" class="form-control" [value]="fechas.actualizacionPerfil" name="perfil" readonly>
+          <input type="text" class="form-control" [value]="fechas.fechaActualizacion" name="perfil" readonly>
         </div>
+
         <div class="col-md-4 d-flex align-items-center">
           <input id="input2" type="checkbox" [(ngModel)]="isCheckedBusquedaCandidato"
-            (change)="onCheckboxChangeCandidato($event)" name="checkBusquedaCandidato">
+            (change)="onCheckboxChangeCandidato($event)" name="checkBusquedaCandidato" [disabled]="disabledFechas.busquedaCandidatos">
           <label for="input2" class="input-group-text adjustable-label">Busqueda de candidatos</label>
           <input type="text" class="form-control" [value]="fechas.busquedaCandidatos" name="busquedaCandidato" readonly>
         </div>
+
         <div class="col-md-4 d-flex align-items-center">
           <input id="input3" type="checkbox" [(ngModel)]="isCheckedEntrevista"
-            (change)="onCheckboxChangeCandidato($event)" name="checkEntrevista">
+            (change)="onCheckboxChangeCandidato($event)" name="checkEntrevista" [disabled]="disabledFechas.entrevista">
           <label for="input3" class="input-group-text adjustable-label">Entrevista</label>
           <input type="text" class="form-control" [value]="fechas.entrevista" readonly>
         </div>
@@ -531,19 +530,21 @@
       <div class="row">
         <div class="col-md-4 d-flex align-items-center">
           <input id="input4" type="checkbox" [(ngModel)]="isCheckedPruebas" (change)="onCheckboxChangeCandidato($event)"
-            name="checkPruebas">
+            name="checkPruebas" [disabled]="disabledFechas.pruebas">
           <label for="input4" class="input-group-text adjustable-label">Pruebas</label>
           <input type="text" class="form-control" [value]="fechas.pruebas" readonly>
         </div>
+
         <div class="col-md-4 d-flex align-items-center">
           <input id="input5" type="checkbox" [(ngModel)]="isCheckedReferencias"
-            (change)="onCheckboxChangeCandidato($event)" name="checkReferencias">
+            (change)="onCheckboxChangeCandidato($event)" name="checkReferencias" [disabled]="disabledFechas.referencias">
           <label for="input5" class="input-group-text adjustable-label">Referencias</label>
           <input type="text" class="form-control" [value]="fechas.referencias" readonly>
         </div>
+
         <div class="col-md-4 d-flex align-items-center">
           <input id="input6" type="checkbox" [(ngModel)]="isCheckedElaboracionInforme"
-            (change)="onCheckboxChangeCandidato($event)" name="checkElaboracionInforme">
+            (change)="onCheckboxChangeCandidato($event)" name="checkElaboracionInforme" [disabled]="disabledFechas.elaboracionInforme">
           <label for="input6" class="input-group-text adjustable-label">Elaboración de informe</label>
           <input type="text" class="form-control" [value]="fechas.elaboracionInforme" readonly>
         </div>
@@ -555,19 +556,21 @@
       <div class="row">
         <div class="col-md-4 d-flex align-items-center">
           <input id="input7" type="checkbox" [(ngModel)]="isCheckedEntregaJefe"
-            (change)="onCheckboxChangeCandidato($event)" name="checkEntregaJefe">
+            (change)="onCheckboxChangeCandidato($event)" name="checkEntregaJefe" [disabled]="disabledFechas.entregaJefe">
           <label for="input7" class="input-group-text adjustable-label">Entrega al jefe solicitante</label>
           <input type="text" class="form-control" [value]="fechas.entregaJefe" readonly>
         </div>
+
         <div class="col-md-4 d-flex align-items-center">
           <input id="input8" type="checkbox" [(ngModel)]="isCheckedEntrevistaJefatura"
-            (change)="onCheckboxChangeCandidato($event)" name="checkEntrevistaJefatura">
+            (change)="onCheckboxChangeCandidato($event)" name="checkEntrevistaJefatura" [disabled]="disabledFechas.entrevistaJefatura">
           <label for="input8" class="input-group-text adjustable-label">Entrevista por jefatura</label>
           <input type="text" class="form-control" [value]="fechas.entrevistaJefatura" readonly>
         </div>
+
         <div class="col-md-4 d-flex align-items-center">
           <input id="input9" type="checkbox" [(ngModel)]="isCheckedTomaDecisiones"
-            (change)="onCheckboxChangeCandidato($event)" name="checkTomaDecisiones">
+            (change)="onCheckboxChangeCandidato($event)" name="checkTomaDecisiones" [disabled]="disabledFechas.tomaDecisiones">
           <label for="input9" class="input-group-text adjustable-label">Toma de decisiones</label>
           <input type="text" class="form-control" [value]="fechas.tomaDecisiones" readonly>
         </div>
@@ -578,13 +581,13 @@
       <div class="row">
         <div class="col-md-4 d-flex ">
           <input id="input10" type="checkbox" [(ngModel)]="isCheckedCandidatoSeleccionado"
-            (change)="onCheckboxChangeCandidato($event)" name="checkCandidatoSeleccionado">
+            (change)="onCheckboxChangeCandidato($event)" name="checkCandidatoSeleccionado" [disabled]="disabledFechas.candidatoSeleccionado">
           <label for="input10" class="input-group-text adjustable-label">Candidato seleccionado</label>
           <input type="text" class="form-control" [value]="fechas.candidatoSeleccionado" readonly>
         </div>
         <div class="col-md-4 d-flex ">
           <input id="input11" type="checkbox" [(ngModel)]="isCheckedProcesoContratacion"
-            (change)="onCheckboxChangeCandidato($event)" name="checkProcesoContratacion">
+            (change)="onCheckboxChangeCandidato($event)" name="checkProcesoContratacion" [disabled]="disabledFechas.procesoContratacion">
           <label for="input11" class="input-group-text adjustable-label">Proceso de contratación</label>
           <input type="text" class="form-control" [value]="fechas.procesoContratacion" readonly>
         </div>
@@ -596,9 +599,8 @@
       <div class="row">
         <div class="col-md-4 d-flex align-items-center">
           <input id="input12" type="checkbox" [(ngModel)]="isCheckedFinContratacion"
-            (change)="onCheckboxChangeCandidato($event)" name="checkFinContratacion">
-          <label for="input12" class="input-group-text adjustable-label">Fin del proceso de selección y de
-            contración</label>
+            (change)="onCheckboxChangeCandidato($event)" name="checkFinContratacion" [disabled]="disabledFechas.finProcesoContratacion">
+          <label for="input12" class="input-group-text adjustable-label">Fin del proceso de selección y de contración</label>
           <input type="text" class="form-control" [value]="fechas.finProcesoContratacion" readonly>
         </div>
 
@@ -612,7 +614,7 @@
         </div>
         <div class="col-md-4">
           <input type="text" name="nombre-candidato" placeholder="Campo obligatorio" [(ngModel)]="nombreCandidato"
-            class="form-control" id="nombre-candidato" />
+            class="form-control" id="nombre-candidato" [disabled]="disabledNombreCandidato" />
         </div>
       </div>
 
@@ -631,11 +633,12 @@
       <div class="row">
         <div class="col-md-4 d-flex ">
           <label for="input1" class="input-group-text adjustable-label">Inicio de proceso</label>
-          <input id="input1" type="text" class="form-control" [value]="model.tipoProceso !== 'reingresoPersonal' ? '' : getCurrentDate()">
+          <input id="input1" type="text" class="form-control" readonly
+            [value]="fechas.fechaInicioReingreso !== '' ? fechas.reingreso : model.tipoProceso !== 'reingresoPersonal' ? '' : getCurrentDate()">
         </div>
         <div class="col-md-4 d-flex ">
           <label for="input2" class="input-group-text adjustable-label">Fin de proceso</label>
-          <input id="input2" type="text" class="form-control" [value]="''">
+          <input id="input2" type="text" class="form-control" readonly [value]="fechas.finProceso">
         </div>
 
       </div>
@@ -653,11 +656,12 @@
       <div class="row">
         <div class="col-md-4 d-flex ">
           <label for="input1" class="input-group-text adjustable-label">Inicio de proceso</label>
-          <input id="input1" type="text" class="form-control" [value]="model.tipoProceso !== 'contratacionFamiliares' ? '' : getCurrentDate()">
+          <input id="input1" type="text" class="form-control" readonly
+            [value]="fechas.contratacionFamiliares !== '' ? fechas.contratacionFamiliares : model.tipoProceso !== 'contratacionFamiliares' ? '' : getCurrentDate()">
         </div>
         <div class="col-md-4 d-flex ">
           <label for="input2" class="input-group-text adjustable-label">Fin de proceso</label>
-          <input id="input2" type="text" class="form-control" [value]="''">
+          <input id="input2" type="text" class="form-control" readonly [value]="fechas.finProcesoFamiliares">
         </div>
 
       </div>

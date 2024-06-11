@@ -46,7 +46,7 @@ export const environment = {
   // tipoSolicitudServiceES: `${base}:8068/v1/es/tiposolicitud`,
   tipoSolicitudServiceES: `${baseG}/v1/es/tiposolicitud`,
 
-  // seleccionCandidatoServiceES: `${base}:8068/v1/es/seleccion_candidato`,
+  // seleccionCandidatoServiceES: `${base}:8086/v1/es/seleccion_candidato`,
   seleccionCandidatoServiceES: `${baseG}/v1/es/seleccion_candidato`,
 
   // tipoRutaServiceES: `${base}:8069/v1/es/tiporuta`,

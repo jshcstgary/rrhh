@@ -50,6 +50,8 @@ export class PlantillaDComponent implements AfterViewInit, OnInit, OnChanges {
   selected_tipo_solicitud: number;
   selected_niveldireccion: number;
 
+  @Input({ required: false }) public showAddButton: boolean = true;
+
   @Input({ required: true }) public columnsTable: IColumnsTable = [];
   @Input({ required: true }) public originalDataTable: any[] = [];
   @Input() public placeholderHeaderInputText: string = "";
