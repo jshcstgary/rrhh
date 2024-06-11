@@ -441,6 +441,10 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
         (data) => data.id == this.solicitud.idTipoAccion
       )[0]?.descripcion;
       */
+      const REQUISICION_PERSONAL_ID = 1;
+      const solicitudSeleccionada =
+        this.rutaPorIdTipoSolicitudIndexada[this.solicitud.idTipoSolicitud] ??
+        this.rutaPorIdTipoSolicitudIndexada[REQUISICION_PERSONAL_ID];
 
       if (result.isConfirmed) {
         this.utilService.openLoadingSpinner(
@@ -450,9 +454,7 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
         // Comentado tveas por error
         this.route.params.subscribe((params) => {
           //const processDefinitionKey ="process_modelo";
-          const processDefinitionKey =
-            this.rutaporIdTipoSolicitudIndexada[this.solicitud.idTipoSolicitud]
-              .key || "";
+          const processDefinitionKey = solicitudSeleccionada.key;
           // const processDefinitionKey = "process_modelo";
           //const processDefinitionKey = params['processdefinitionkey'];
           const variables = this.generatedVariablesFromFormFields();
@@ -491,9 +493,7 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
                     .subscribe((responseDetalle) => {
                       setTimeout(() => {
                         this.router.navigate([
-                          this.rutaporIdTipoSolicitudIndexada[
-                            this.solicitud.idTipoSolicitud
-                          ].path,
+                          solicitudSeleccionada.path,
                           this.solicitud.idInstancia,
                           this.solicitud.idSolicitud,
                         ]);
@@ -516,7 +516,7 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
     });
   }
 
-  rutaporIdTipoSolicitudIndexada = {
+  rutaPorIdTipoSolicitudIndexada = {
     1: {
       path: "/solicitudes/registrar-solicitud",
       key: "RequisicionPersonal",
@@ -525,14 +525,14 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
       path: "/solicitudes/registrar-solicitud",
       key: "AccionPersonal",
     },
-    5: {
-      path: "/solicitudes/registrar-solicitud",
-      key: "ReingresoPersonal",
-    },
-    6: {
-      path: "/solicitudes/registrar-familiares",
-      key: "ContratacionFamiliares",
-    },
+    // 5: {
+    //   path: "/solicitudes/registrar-solicitud",
+    //   key: "ReingresoPersonal",
+    // },
+    // 6: {
+    //   path: "/solicitudes/registrar-familiares",
+    //   key: "ContratacionFamiliares",
+    // },
   };
 
   getCreatedId(): string {
