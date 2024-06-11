@@ -297,12 +297,12 @@
         </div>
         <form>
           <div class="row mt-3">
-            
             <table-component
               tableName="tablaDatosFamiliares"
               [columns]="columnsDatosFamiliares"
               [dataTable]="dataTableDatosFamiliares"
               clickOnActionRow="toActionsTable"
+              [contexto]="this"
             >
             </table-component>
             <!-- <table-component
@@ -339,11 +339,81 @@
           <hr />
         </div>
       </div>
-      <table-component
-        tableName="tablaAprobadores"
-        [columns]="columnsAprobadores"
-        [dataTable]="dataTableAprobadores"
-      />
+      <div class="accordion" id="accordionExample">
+        <div
+          *ngFor="
+            let nivelItem of dataAprobacionesPorPosicion[keySelected];
+            let i = index
+          "
+          class="accordion-item"
+        >
+          <div class="accordion-header">
+            <button
+              class="accordion-button"
+              type="button"
+              data-bs-toggle="collapse"
+              [attr.data-bs-target]="'#collapse' + i"
+              aria-expanded="true"
+              [attr.aria-controls]="'collapse' + i"
+              style="display: block"
+            >
+              <div
+                class="row"
+                style="align-items: center; justify-content: space-around"
+              >
+                <div class="col">{{ nivelItem.nivelAprobacionType.ruta }}</div>
+
+                <div class="col">
+                  {{
+                    nivelItem.aprobador.usuario !== "" &&
+                    nivelItem.aprobador.usuario !== undefined &&
+                    nivelItem.aprobador.usuario != null
+                      ? nivelItem.aprobador.usuario
+                      : "No aplica"
+                  }}
+                </div>
+
+                <div class="col">
+                  {{ nivelItem.nivelAprobacionType.nivelAprobacionRuta }}
+                </div>
+              </div>
+            </button>
+          </div>
+
+          <div
+            [id]="'collapse' + i"
+            class="accordion-collapse collapse"
+            [ngClass]="{ show: i === 0 }"
+            data-bs-parent="#accordionExample"
+          >
+            <div class="row">
+              <div class="col">
+                <div class="input-group">
+                  <label for="lvl1descripcion">
+                    Descripción de la posición
+                  </label>
+
+                  &nbsp;
+
+                  <span
+                    id="lvl1descripcion"
+                    name=""
+                    style="color: black; font-size: 14px"
+                  >
+                    {{
+                      nivelItem.aprobador.descripcionPosicion !== "" &&
+                      nivelItem.aprobador.descripcionPosicion !== undefined &&
+                      nivelItem.aprobador.descripcionPosicion != null
+                        ? nivelItem.aprobador.descripcionPosicion
+                        : "No aplica"
+                    }}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </h2>
   </div>
 </form>
