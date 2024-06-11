@@ -306,7 +306,7 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
   ];
 
   colorScheme6: any = {
-    domain: ['#2962ff', '#3699ff', '#ee9d01', '#dee2e6']
+    domain: ["#2962ff", "#3699ff", "#ee9d01", "#dee2e6"],
   };
 
   single: any[];
@@ -327,7 +327,6 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
     private calendar: NgbCalendar,
     private camundaRestService: CamundaRestService,
     private modalService: NgbModal
-
   ) {
     this.model = calendar.getToday();
     Object.assign(this, { single });
@@ -441,6 +440,10 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
         (data) => data.id == this.solicitud.idTipoAccion
       )[0]?.descripcion;
       */
+      const REQUISICION_PERSONAL_ID = 1;
+      const solicitudSeleccionada =
+        this.rutaPorIdTipoSolicitudIndexada[this.solicitud.idTipoSolicitud] ??
+        this.rutaPorIdTipoSolicitudIndexada[REQUISICION_PERSONAL_ID];
 
       if (result.isConfirmed) {
         this.utilService.openLoadingSpinner(
@@ -450,9 +453,7 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
         // Comentado tveas por error
         this.route.params.subscribe((params) => {
           //const processDefinitionKey ="process_modelo";
-          const processDefinitionKey =
-            this.rutaporIdTipoSolicitudIndexada[this.solicitud.idTipoSolicitud]
-              .key || "";
+          const processDefinitionKey = solicitudSeleccionada.key;
           // const processDefinitionKey = "process_modelo";
           //const processDefinitionKey = params['processdefinitionkey'];
           const variables = this.generatedVariablesFromFormFields();
@@ -491,9 +492,7 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
                     .subscribe((responseDetalle) => {
                       setTimeout(() => {
                         this.router.navigate([
-                          this.rutaporIdTipoSolicitudIndexada[
-                            this.solicitud.idTipoSolicitud
-                          ].path,
+                          solicitudSeleccionada.path,
                           this.solicitud.idInstancia,
                           this.solicitud.idSolicitud,
                         ]);
@@ -516,7 +515,7 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
     });
   }
 
-  rutaporIdTipoSolicitudIndexada = {
+  rutaPorIdTipoSolicitudIndexada = {
     1: {
       path: "/solicitudes/registrar-solicitud",
       key: "RequisicionPersonal",
@@ -525,14 +524,14 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
       path: "/solicitudes/registrar-solicitud",
       key: "AccionPersonal",
     },
-    5: {
-      path: "/solicitudes/registrar-solicitud",
-      key: "ReingresoPersonal",
-    },
-    6: {
-      path: "/solicitudes/registrar-familiares",
-      key: "ContratacionFamiliares",
-    },
+    // 5: {
+    //   path: "/solicitudes/registrar-solicitud",
+    //   key: "ReingresoPersonal",
+    // },
+    // 6: {
+    //   path: "/solicitudes/registrar-familiares",
+    //   key: "ContratacionFamiliares",
+    // },
   };
 
   getCreatedId(): string {
@@ -584,11 +583,10 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
     }
 
     requestData = {
-      businessKey: '',
+      businessKey: "",
       variables,
-      withVariablesInReturn: true
+      withVariablesInReturn: true,
     };
-
 
     //return { variables };
     return { requestData };
@@ -596,7 +594,6 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 
   // tipoSolicitud
   onChangeTipo(id: number, type: string, data: any[]) {
-
     let descripcion = data.filter((item) => item.id == id)[0]?.descripcion;
     switch (type) {
       case "tipoSolicitud":
@@ -612,7 +609,6 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
   }
 
   onChangeTipoSolicitud(idTipoSolicitud: number) {
-
     this.tipoSolicitudSeleccionada = idTipoSolicitud;
     this.desactivarTipoMotivo =
       !this.idsOcultarTipoMotivo.includes(idTipoSolicitud);
@@ -714,12 +710,15 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
     console.log(this.dataFilterSolicitudes.idTipoSolicitud);
     console.log(this.dataFilterSolicitudes);
 
-    if (this.dataFilterSolicitudes.idTipoSolicitud === undefined || this.dataFilterSolicitudes.idTipoSolicitud === null) {
+    if (
+      this.dataFilterSolicitudes.idTipoSolicitud === undefined ||
+      this.dataFilterSolicitudes.idTipoSolicitud === null
+    ) {
       Swal.fire({
         text: "Mínimo debe seleccionar un Tipo de Solicitud",
         icon: "warning",
         confirmButtonColor: "#0056B3",
-        confirmButtonText: "Sí"
+        confirmButtonText: "Sí",
       });
 
       return;
@@ -727,14 +726,20 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 
     const data = structuredClone(this.dataFilterSolicitudes);
 
-    if (this.dataFilterSolicitudes.fechaDesde !== undefined && this.dataFilterSolicitudes.fechaDesde !== null) {
+    if (
+      this.dataFilterSolicitudes.fechaDesde !== undefined &&
+      this.dataFilterSolicitudes.fechaDesde !== null
+    ) {
       data.fechaDesde = this.formatFecha(
         this.dataFilterSolicitudes,
         "fechaDesde"
       );
     }
 
-    if (this.dataFilterSolicitudes.fechaHasta !== undefined && this.dataFilterSolicitudes.fechaHasta !== null) {
+    if (
+      this.dataFilterSolicitudes.fechaHasta !== undefined &&
+      this.dataFilterSolicitudes.fechaHasta !== null
+    ) {
       data.fechaHasta = this.formatFecha(
         this.dataFilterSolicitudes,
         "fechaHasta"
@@ -856,12 +861,22 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
     );
     const combinedData$ = forkJoin(
       this.consultaSolicitudesService.filterSolicitudes(
-        data.empresa === null || data.empresa === undefined ? null : data.empresa,
-        data.unidadNegocio === null || data.unidadNegocio === undefined ? null : data.unidadNegocio,
-        data.idTipoSolicitud === null || data.idTipoSolicitud === undefined ? null : data.idTipoSolicitud,
+        data.empresa === null || data.empresa === undefined
+          ? null
+          : data.empresa,
+        data.unidadNegocio === null || data.unidadNegocio === undefined
+          ? null
+          : data.unidadNegocio,
+        data.idTipoSolicitud === null || data.idTipoSolicitud === undefined
+          ? null
+          : data.idTipoSolicitud,
         data.estado === null || data.estado === undefined ? null : data.estado,
-        data.fechaDesde === null || data.fechaDesde === undefined ? currentDate : data.fechaDesde,
-        data.fechaHasta === null || data.fechaHasta === undefined ? currentDate : data.fechaHasta
+        data.fechaDesde === null || data.fechaDesde === undefined
+          ? currentDate
+          : data.fechaDesde,
+        data.fechaHasta === null || data.fechaHasta === undefined
+          ? currentDate
+          : data.fechaHasta
       ),
       this.solicitudes.getDetalleSolicitud()
     ).pipe(
@@ -1107,17 +1122,16 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
     this.router.navigate(["/mantenedores/crear-niveles-aprobacion"]);
   }
 
-
   // 6
   onSelect6(data: any): void {
-    console.log('Item clicked', JSON.parse(JSON.stringify(data)));
+    console.log("Item clicked", JSON.parse(JSON.stringify(data)));
   }
 
   onActivate6(data: any): void {
-    console.log('Activate', JSON.parse(JSON.stringify(data)));
+    console.log("Activate", JSON.parse(JSON.stringify(data)));
   }
 
   onDeactivate6(data: any): void {
-    console.log('Deactivate', JSON.parse(JSON.stringify(data)));
+    console.log("Deactivate", JSON.parse(JSON.stringify(data)));
   }
 }

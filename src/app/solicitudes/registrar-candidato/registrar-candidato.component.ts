@@ -29,6 +29,8 @@ import {
 } from "rxjs/operators";
 import { ConsultaTareasService } from "src/app/tareas/consulta-tareas/consulta-tareas.service";
 import { SolicitudesService } from "../registrar-solicitud/solicitudes.service";
+import { RegistrarCandidatoService } from "./registrar-candidato.service";
+import { TipoSolicitudService } from "src/app/mantenedores/tipo_solicitud/tipo-solicitud.service";
 
 @Component({
   selector: 'app-registrar-candidato',
@@ -41,7 +43,7 @@ import { SolicitudesService } from "../registrar-solicitud/solicitudes.service";
 export class RegistrarCandidatoComponent extends CompleteTaskComponent {
   NgForm = NgForm;
 
-
+  disabledSave: boolean = true;
 
   tipoProceso: string = '';
   tipoFuente: string;
@@ -89,6 +91,7 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
   isCheckedEntrevista: boolean = false;
 
   nombreCandidato: string = "";
+  codigoSolicitudProceso: string = "";
 
   toggleDivVisibility(event: Event): void {
     const inputElement = event.target as HTMLInputElement;
@@ -388,7 +391,9 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
     private mantenimientoService: MantenimientoService,
     private solicitudes: SolicitudesService,
     private utilService: UtilService,
-    private consultaTareasService: ConsultaTareasService
+    private consultaTareasService: ConsultaTareasService,
+    private seleccionCandidatoService: RegistrarCandidatoService,
+    private tipoSolicitudServicio: TipoSolicitudService
   ) {
     super(route, router, camundaRestService);
 
@@ -408,7 +413,11 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
       console.log("this.idDeInstancia: ", this.idDeInstancia);
     });
 
-    this.selectedOption = this.options[0].value;
+    this.selectedOption = this.options[0].descripcion;
+
+    if (this.tipoProceso !== "") {
+      this.disabledSave = false;
+    }
   }
 
   getCurrentDate() {
@@ -1157,6 +1166,50 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
     this.submitted = true;
   }
 
+  onChangeTipoProceso() {
+    this.disabledSave = false;
+  }
+
+  async saveCandidato() {
+    const request = {
+      iD_SOLICITUD: this.solicitud.idSolicitud,
+      iD_SOLICITUD_PROCESO: "",
+      tipoFuente: this.isChecked,
+      fuenteExterna: this.isChecked ? this.selectedOption : null,
+      tipoProceso: this.model.tipoProceso,
+      candidato: this.nombreCandidato,
+      actualizacionDelPerfil: this.fechas.actualizacionPerfil === "" ? null : new Date(this.fechas.actualizacionPerfil).toISOString(),
+      busquedaDeCandidatos: this.fechas.busquedaCandidatos === "" ? null : new Date(this.fechas.busquedaCandidatos).toISOString(),
+      entrevista: this.fechas.entrevista === "" ? null : new Date(this.fechas.entrevista).toISOString(),
+      pruebas: this.fechas.pruebas === "" ? null : new Date(this.fechas.pruebas).toISOString(),
+      referencias: this.fechas.referencias === "" ? null : new Date(this.fechas.referencias).toISOString(),
+      elaboracionDeInforme: this.fechas.elaboracionInforme === "" ? null : new Date(this.fechas.elaboracionInforme).toISOString(),
+      entregaAlJefeSol: this.fechas.entregaJefe === "" ? null : new Date(this.fechas.entregaJefe).toISOString(),
+      entrevistaPorJefatura: this.fechas.entrevistaJefatura === "" ? null : new Date(this.fechas.entrevistaJefatura).toISOString(),
+      tomaDeDesiciones: this.fechas.tomaDecisiones === "" ? null : new Date(this.fechas.tomaDecisiones).toISOString(),
+      candidatoSeleccionado: this.fechas.candidatoSeleccionado === "" ? null : new Date(this.fechas.candidatoSeleccionado).toISOString(),
+      procesoDeContratacion: this.fechas.procesoContratacion === "" ? null : new Date(this.fechas.procesoContratacion).toISOString(),
+      finProcesoContratacion: this.fechas.finProcesoContratacion === "" ? null : new Date(this.fechas.finProcesoContratacion).toISOString(),
+      fechaInicioReingreso: this.model.tipoProceso !== 'reingresoPersonal' ? null : this.getCurrentDate(),
+      fechaFinReingreso: null,
+      fechaInicioContratacionFamiliares: this.model.tipoProceso !== 'contratacionFamiliares' ? null : this.getCurrentDate(),
+      fechaFinContratacionFamiliares: null,
+      fechaIngresoCandidato: null
+    };
+
+    console.log(request);
+    // return;
+
+    this.seleccionCandidatoService.saveCandidato(request).subscribe({
+      next: () => {
+        console.log("Guardado correctamente");
+      },
+      error: (error) => {
+        console.error(error);
+      }
+    });
+  }
+
   onCompletar() { //completar tarea mmunoz
     console.log("Task i de la tarea para completar:", this.uniqueTaskId);
     if (this.uniqueTaskId === null) {
@@ -1186,14 +1239,69 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
           this.solicitud.idUnidadNegocio = this.model.unidadNegocio;
           this.solicitud.estadoSolicitud = "4";
           console.log("this.solicitud: ", this.solicitud);
-          this.solicitudes
-            .actualizarSolicitud(this.solicitud)
-            .subscribe((responseSolicitud) => {
-              console.log("responseSolicitud: ", responseSolicitud);
+          this.solicitudes.actualizarSolicitud(this.solicitud).subscribe((responseSolicitud) => {
+            console.log("responseSolicitud: ", responseSolicitud);
 
+            if (this.model.tipoProceso === "contratacionFamiliares" || this.model.tipoProceso === "reingresoPersonal") {
+              if (this.model.tipoProceso === "contratacionFamiliares") {
+                this.codigoSolicitudProceso = "CF";
+              } else if (this.model.tipoProceso === "reingresoPersonal") {
+                this.codigoSolicitudProceso = "RG";
+              }
 
+              this.tipoSolicitudServicio.index().subscribe(
+                {
+                  next: res => {
+                    const idTipoSolicitud = res.tipoSolicitudType.find(r => r.codigoTipoSolicitud === this.codigoSolicitudProceso).id;
 
-            });
+                    const solicitud = {
+                      fechaActualizacion: new Date(),
+                      fechaCreacion: new Date(),
+                      usuarioCreacion: "JOSHUA",
+                      usuarioActualizacion: "JOSHUA",
+                      estado: "3",
+                      idSolicitud: "string",
+                      idInstancia: this.solicitud.idInstancia,
+                      idEmpresa: this.solicitud.idEmpresa,
+                      empresa: this.solicitud.empresa,
+                      idUnidadNegocio: this.solicitud.idUnidadNegocio,
+                      unidadNegocio: this.solicitud.unidadNegocio,
+                      estadoSolicitud: "3",
+                      idTipoSolicitud,
+                      tipoSolicitud: "string",
+                      idTipoMotivo: 0,
+                      tipoMotivo: "string",
+                      idTipoAccion: 0,
+                      tipoAccion: "string"
+                    };
+
+                    this.solicitudes.guardarSolicitud(solicitud).subscribe({
+                      next: res => {
+                        console.log(res);
+
+                        this.solicitudes.getDetalleSolicitudById(this.solicitud.idSolicitud).subscribe({
+                          next: (detalleSolicitud) => {
+                            let detalle = detalleSolicitud.detalleSolicitudType[0];
+
+                            detalle = {
+                              ...detalle,
+                              idSolicitud: res.idSolicitud
+                            }
+
+                            this.solicitudes.guardarDetalleSolicitud(detalle).subscribe({
+                              next: (res) => {
+                                console.log(res);
+                              }
+                            });
+                          }
+                        });
+                      }
+                    });
+                  }
+                }
+              );
+            }
+          });
 
           this.utilService.closeLoadingSpinner();
           //fin actualizo la solicitud a enviada

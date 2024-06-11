@@ -1116,7 +1116,6 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
 
 
   save() {
-
     this.utilService.openLoadingSpinner(
       "Guardando información, espere por favor..."
     ); // comentado mmunoz
@@ -1145,6 +1144,9 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
     this.solicitud.idUnidadNegocio = this.model.unidadNegocio;
     this.solicitud.estadoSolicitud = "2";
     console.log("this.solicitud: ", this.solicitud);
+    console.log(this.detalleSolicitud);
+    console.log(this.model.fechaIngresogrupo)
+
     this.solicitudes
       .actualizarSolicitud(this.solicitud)
       .subscribe((responseSolicitud) => {
@@ -1198,8 +1200,8 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
 
         this.detalleSolicitud.supervisaA = this.model.supervisaA;
 
-        this.detalleSolicitud.fechaIngreso = this.model.fechaIngresogrupo == "" ? this.model.fechaIngreso : this.model.fechaIngresogrupo;
-
+        this.detalleSolicitud.fechaIngreso = this.model.fechaIngresogrupo === "" ? this.model.fechaIngreso : this.model.fechaIngresogrupo;
+        console.log(this.detalleSolicitud.fechaIngreso);
 
         console.log(
           "ESTO LE MANDO AL ACTUALIZAR this.detalleSolicitud: ",
@@ -1486,6 +1488,21 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
         variables.anularSolicitud = { value: this.selectedOption };
         variables.comentariosAnulacion = { value: this.model.comentariosAnulacion };
         variables.nivelDireccion = { value: this.model.nivelDir };
+        variables.correoNotificacionCreador = {
+              value: "pruebapv3@hotmail.com"
+            };
+        variables.usuarioNotificacionCreador = {
+              value: "Carlos Perez Perazo"
+            };
+        variables.nivelDireccionNotificacionCreador = {
+              value: "Jefe de RRHH"
+            };
+        variables.descripcionPosicionCreador = {
+              value: "Jefe de Recursos Humanos"
+            };
+        variables.subledgerNotificacionCreador = {
+              value: "1234567890"
+            };
         variables.idSolicitud = {
           value: this.solicitud.idSolicitud
         };
