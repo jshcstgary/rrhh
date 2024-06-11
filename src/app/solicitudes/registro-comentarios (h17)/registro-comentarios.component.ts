@@ -1,49 +1,37 @@
-import { Component, TemplateRef, ViewChild } from "@angular/core";
-import { ActivatedRoute, Router } from "@angular/router";
-import {
-  NgbModal,
-  NgbTypeaheadSelectItemEvent,
-} from "@ng-bootstrap/ng-bootstrap";
-import { CamundaRestService } from "src/app/camunda-rest.service";
-import { Solicitud } from "src/app/eschemas/Solicitud";
-import { CompleteTaskComponent } from "../general/complete-task.component";
-import { Subject } from "rxjs";
-import { catchError, debounceTime, map } from "rxjs/operators";
-import { RegistrarData } from "src/app/eschemas/RegistrarData";
-import { DatosProcesoInicio } from "src/app/eschemas/DatosProcesoInicio";
-import { UtilService } from "src/app/services/util/util.service";
-import { MantenimientoService } from "src/app/services/mantenimiento/mantenimiento.service";
-import { SolicitudesService } from "../registrar-solicitud/solicitudes.service";
-import { ConsultaTareasService } from "src/app/tareas/consulta-tareas/consulta-tareas.service";
-import { HttpErrorResponse } from "@angular/common/http";
-import { NgForm } from "@angular/forms";
-import { DetalleSolicitud } from "src/app/eschemas/DetalleSolicitud";
-import { DatosSolicitud } from "src/app/eschemas/DatosSolicitud";
-import { environment } from "src/environments/environment";
-import {
-  columnsAprobadores,
-  dataTableAprobadores,
-} from "./reingreso-personal.data";
-import {
-  DialogComponents,
-  dialogComponentList,
-} from "src/app/shared/dialogComponents/dialog.components";
-import {
-  IEmpleadoData,
-  IEmpleados,
-} from "src/app/services/mantenimiento/empleado.interface";
+import { Component, TemplateRef, ViewChild } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { NgbModal, NgbTypeaheadSelectItemEvent } from '@ng-bootstrap/ng-bootstrap';
+import { CamundaRestService } from 'src/app/camunda-rest.service';
+import { Solicitud } from 'src/app/eschemas/Solicitud';
+import { CompleteTaskComponent } from '../general/complete-task.component';
+import { Subject } from 'rxjs';
+import { debounceTime } from "rxjs/operators";
+import { RegistrarData } from 'src/app/eschemas/RegistrarData';
+import { DatosProcesoInicio } from 'src/app/eschemas/DatosProcesoInicio';
+import { UtilService } from 'src/app/services/util/util.service';
+import { MantenimientoService } from 'src/app/services/mantenimiento/mantenimiento.service';
+import { SolicitudesService } from '../registrar-solicitud/solicitudes.service';
+import { ConsultaTareasService } from 'src/app/tareas/consulta-tareas/consulta-tareas.service';
+import { HttpErrorResponse } from '@angular/common/http';
+import { NgForm } from '@angular/forms';
+import { DetalleSolicitud } from 'src/app/eschemas/DetalleSolicitud';
+import { DatosSolicitud } from 'src/app/eschemas/DatosSolicitud';
+import { environment } from 'src/environments/environment';
+import { columnsAprobadores, dataTableAprobadores } from './registro-comentarios.data';
+import { DialogComponents, dialogComponentList } from 'src/app/shared/dialogComponents/dialog.components';
 
 @Component({
-  selector: "app-reingreso-personal",
-  templateUrl: "./reingreso-personal.component.html",
-  styleUrls: ["./reingreso-personal.component.scss"],
+  selector: 'app-registro-comentarios',
+  templateUrl: './registro-comentarios.component.html',
+  styleUrls: ['./registro-comentarios.component.scss']
 })
-export class ReingresoPersonalComponent extends CompleteTaskComponent {
+export class RegistroComentariosComponent extends CompleteTaskComponent {
   NgForm = NgForm;
 
-  selectedOption: string = "No";
+  selectedOption: string = 'No';
   columnsAprobadores = columnsAprobadores.columns;
   dataTableAprobadores = dataTableAprobadores;
+
 
   override model: RegistrarData = new RegistrarData(
     "",
@@ -158,6 +146,7 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
   public dataRuta: any[] = [];
 
   public dataNivelDireccion: any[] = [];
+
 
   // getDataNivelesAprobacionPorCodigoPosicion
   public dataNivelesAprobacionPorCodigoPosicion: { [key: string]: any[] } = {};
@@ -402,6 +391,7 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
       // Manejar errores aquí de manera centralizada
       this.utilService.modalResponse(error.error, "error");
     }
+
   }
 
   ObtenerServicioTipoSolicitud() {
@@ -459,7 +449,7 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
 
   // Prueba servicio
   getSolicitudes() {
-    this.solicitudes.getSolicitudes().subscribe((data) => {});
+    this.solicitudes.getSolicitudes().subscribe((data) => { });
   }
 
   getSolicitudById(id: any) {
@@ -474,6 +464,7 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
          this.model.idEmpresa = this.solicitud.idEmpresa ;
          this.model.compania=this.solicitud.empresa ;
          this.model.unidadNegocio=this.solicitud.unidadNegocio;*/
+
 
         this.loadingComplete++;
         this.getDetalleSolicitudById(this.id_edit);
@@ -559,6 +550,7 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
       //this.solicitud = params;
       console.log("Mis params: ", params);
       this.misParams = params;
+
 
       /*this.solicitud.infoGeneral.idTipoSolicitud = this.dataTipoSolicitud.id;
       this.solicitud.infoGeneral.tipoSolicitud =
@@ -677,6 +669,7 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
       next: (response: any) => {
         this.detalleSolicitud = response.detalleSolicitudType[0];
         if (this.detalleSolicitud.codigoPosicion.length > 0) {
+
           this.model.codigoPosicion = this.detalleSolicitud.codigoPosicion;
           this.model.descrPosicion = this.detalleSolicitud.descripcionPosicion;
           this.model.subledger = this.detalleSolicitud.subledger;
@@ -695,15 +688,14 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
           this.model.tipoContrato = this.detalleSolicitud.tipoContrato;
           this.model.nivelRepa = this.detalleSolicitud.nivelReporteA;
           this.model.sueldo = this.detalleSolicitud.sueldo;
-          this.model.sueldoMensual =
-            this.detalleSolicitud.sueldoVariableMensual;
-          this.model.sueldoTrimestral =
-            this.detalleSolicitud.sueldoVariableTrimestral;
-          this.model.sueldoSemestral =
-            this.detalleSolicitud.sueldoVariableSemestral;
-          this.model.sueldoAnual = this.detalleSolicitud.sueldoVariableAnual;
+          this.model.sueldoMensual = this.detalleSolicitud.sueldoVariableMensual;
+          this.model.sueldoTrimestral = this.detalleSolicitud.sueldoVariableTrimestral;
+          this.model.sueldoSemestral = this.detalleSolicitud.sueldoVariableSemestral;
+          this.model.sueldoAnual = this.detalleSolicitud.sueldoVariableAnual
           this.model.correo = this.detalleSolicitud.correo;
           this.model.fechaIngreso = this.detalleSolicitud.fechaIngreso;
+
+
         }
         /* this.detalleSolicitud.estado = response.estado;
          this.detalleSolicitud.estado = response.estadoSolicitud;
@@ -734,6 +726,7 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
             this.obtenerAprobacionesPorPosicionAPD();
           }
 
+
           console.log("aprobadores dinamicos", this.dataAprobadoresDinamicos);
           // const jsonArrayString = JSON.stringify(this.dataAprobadoresDinamicos);
           // console.log("conversion aprobadores dinamicos", jsonArrayString);
@@ -763,6 +756,7 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
          }*/
 
         this.consultarNextTask(id);
+
       },
       error: (error: HttpErrorResponse) => {
         this.utilService.modalResponse(error.error, "error");
@@ -771,18 +765,17 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
   }
 
   getNivelesAprobacion() {
-    if (
-      this.detalleSolicitud.codigoPosicion !== "" &&
+    if (this.detalleSolicitud.codigoPosicion !== "" &&
       this.detalleSolicitud.codigoPosicion !== undefined &&
-      this.detalleSolicitud.codigoPosicion != null
-    ) {
+      this.detalleSolicitud.codigoPosicion != null) {
+
+
       this.solicitudes
         .obtenerAprobacionesPorPosicion(
           this.solicitud.idTipoSolicitud,
           this.solicitud.idTipoMotivo,
           this.detalleSolicitud.codigoPosicion,
-          this.detalleSolicitud.nivelDireccion,
-          "A"
+          this.detalleSolicitud.nivelDireccion, 'A'
         )
         .subscribe({
           next: (response) => {
@@ -796,7 +789,9 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
             );
           },
         });
+
     }
+
   }
 
   obtenerAprobacionesPorPosicionAPS() {
@@ -805,16 +800,14 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
         this.solicitud.idTipoSolicitud,
         this.solicitud.idTipoMotivo,
         this.model.codigoPosicion,
-        this.model.nivelDir,
-        "APS"
+        this.model.nivelDir,'APS'
       )
       .subscribe({
         next: (response) => {
-          this.dataTipoRuta.length = 0;
-          this.dataRuta.length = 0;
-          this.dataAprobacionesPorPosicionAPS =
-            response.nivelAprobacionPosicionType || [];
-          this.dataAprobacionesPorPosicionAPS.forEach((item) => {
+          this.dataTipoRuta.length=0;
+          this.dataRuta.length=0;
+          this.dataAprobacionesPorPosicionAPS=response.nivelAprobacionPosicionType;
+          this.dataAprobacionesPorPosicionAPS.forEach(item => {
             this.dataTipoRuta.push(item.nivelAprobacionType.tipoRuta);
             this.dataRuta.push(item.nivelAprobacionType.ruta);
             console.log("Aprobaciones APS = ", item.nivelAprobacionType);
@@ -835,15 +828,13 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
         this.solicitud.idTipoSolicitud,
         this.solicitud.idTipoMotivo,
         this.model.codigoPosicion,
-        this.model.nivelDir,
-        "APD"
+        this.model.nivelDir,'APD'
       )
       .subscribe({
         next: (response) => {
-          this.dataAprobadoresDinamicos.length = 0;
-          this.dataAprobacionesPorPosicionAPS =
-            response.nivelAprobacionPosicionType;
-          this.dataAprobacionesPorPosicionAPS.forEach((item) => {
+          this.dataAprobadoresDinamicos.length=0;
+          this.dataAprobacionesPorPosicionAPS=response.nivelAprobacionPosicionType;
+          this.dataAprobacionesPorPosicionAPS.forEach(item => {
             this.dataAprobadoresDinamicos.push(item.aprobador.nivelDireccion);
             console.log("Aprobaciones APD = ", item.aprobador);
           });
@@ -858,20 +849,19 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
   }
 
   consultarNextTask(IdSolicitud: string) {
-    this.consultaTareasService
-      .getTareaIdParam(IdSolicitud)
-      .subscribe((tarea) => {
-        console.log("Task: ", tarea);
+    this.consultaTareasService.getTareaIdParam(IdSolicitud)
+    .subscribe((tarea)=>{
+      console.log("Task: ", tarea);
 
-        this.uniqueTaskId = tarea.solicitudes[0].taskId;
-        this.taskType_Activity = tarea.solicitudes[0].tasK_DEF_KEY;
-        this.nameTask = tarea.solicitudes[0].name;
-        this.id_solicitud_by_params = tarea.solicitudes[0].idSolicitud;
+      this.uniqueTaskId=tarea.solicitudes[0].taskId;
+      this.taskType_Activity = tarea.solicitudes[0].tasK_DEF_KEY;
+      this.nameTask = tarea.solicitudes[0].name;
+      this.id_solicitud_by_params = tarea.solicitudes[0].idSolicitud;
 
-        if (this.taskType_Activity !== environment.taskType_Registrar) {
-          this.RegistrarsolicitudCompletada = false;
-        }
-      });
+      if(this.taskType_Activity!==environment.taskType_Registrar){
+        this.RegistrarsolicitudCompletada = false;
+      }
+    });
   }
 
   lookForError(result: any): void {
@@ -882,28 +872,29 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
     }
   }
 
-  public onSubmit(): void {}
+  public onSubmit(): void {
 
-  public pageSolicitudes(): void {}
+  }
 
-  public onCompletar(): void {}
+  public pageSolicitudes(): void {
 
-  public onCancel(): void {}
+  }
 
-  public onSelectItem(
-    codigoPosicion: string,
-    event: NgbTypeaheadSelectItemEvent<any>
-  ): void {}
+  public onCompletar(): void {
 
-  @ViewChild("ModalBuscarEmpleados", { static: true })
-  ModalBuscarEmpleados: TemplateRef<any>;
-  /*Inputs de Buscar Empleados*/
-  searchInp: string;
-  subledger: string = "";
-  nombreCompleto: string = "";
+  }
 
-  openModalReasignar(componentName: keyof DialogComponents) {
-    console.log("SE ABRIO EL MODAL");
+  public onCancel(): void {
+
+  }
+
+  public onSelectItem(codigoPosicion: string, event: NgbTypeaheadSelectItemEvent<any>): void {
+
+  }
+
+
+  openModal(componentName: keyof DialogComponents) {
+    console.log('SE ABRIO EL MODAL')
     this.modalService
       .open(dialogComponentList[componentName], {
         ariaLabelledBy: "modal-title",
@@ -916,7 +907,7 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
             return;
           }
           if (Object.keys(result).length > 0) {
-            console.log("Probando");
+            console.log('Probando')
             // this.dataTableAprobadores.push(result);
           }
         },
@@ -926,54 +917,4 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
       );
   }
 
-  openModal() {
-    this.modalService
-      .open(this.ModalBuscarEmpleados, { ariaLabelledBy: "modal-title" })
-      .result.then(
-        (result) => {
-          console.log(`Closed with: ${result}`);
-
-          if (result === "Save") {
-            console.log("Aqui para guardar y se deben validar los inputs");
-            console.log("Todos los inputs", this.searchInp);
-          }
-        },
-        (reason) => {
-          console.log(`Dismissed with: ${reason}`);
-        }
-      );
-  }
-
-  onEnter(search: string): void {
-    this.mantenimientoService
-      .getDataEmpleadosEvolution("ev")
-      .pipe(
-        map(this.buscarValor.bind(this, search, "evType")),
-        catchError((error) => {
-          return this.mantenimientoService
-            .getDataEmpleadosEvolution("jaff")
-            .pipe(map(this.buscarValor.bind(this, search, "jaffType")));
-        })
-      )
-      .subscribe({
-        next: (data) => {
-          this.nombreCompleto = (data as IEmpleadoData).nombreCompleto;
-          this.subledger = (data as IEmpleadoData).subledger;
-        },
-        error: (error) => {
-          console.error(error);
-        },
-      });
-  }
-
-  buscarValor = (search, type: "jaffType" | "evType", data: IEmpleados) => {
-    const result = data?.[type].find((item) => {
-      const regex = new RegExp(search, "i");
-      return item.nombreCompleto.match(regex);
-    });
-    if (!result) {
-      throw new Error("No se encontró el valor esperado");
-    }
-    return result;
-  };
 }

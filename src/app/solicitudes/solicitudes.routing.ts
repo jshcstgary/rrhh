@@ -8,6 +8,9 @@ import { RegistrarCandidatoComponent } from "./registrar-candidato/registrar-can
 import { CompletaSolicitudComponent } from "./completa-solicitud/completa-solicitud.component";
 import { ReingresoPersonalComponent } from "./reingreso-personal/reingreso-personal.component";
 import { RegistrarFamiliaresComponent } from "./registrar-familiares/registrar-familiares.component";
+import { RegistroComentariosComponent } from "./registro-comentarios (h17)/registro-comentarios.component";
+import { RegistroComentariosComponent as h18 } from "./registro-comentarios (h18)/registro-comentarios.component";
+import { RegistrarComentariosComponent as h19 } from "./registrar-comentario (h19)/registrar-comentarios.component";
 
 export const SolicitudesRoutes: Routes = [
   {
@@ -57,6 +60,51 @@ export const SolicitudesRoutes: Routes = [
             },
             {
               title: "Reingreso de personal"
+            }
+          ],
+        },
+      },
+      {
+        path: "reingreso-personal/registro-comentarios",
+        component: RegistroComentariosComponent,
+        data: {
+          title: "Registro de Comentarios",
+          urls: [
+            {
+              title: "Solicitudes"
+            },
+            {
+              title: "Registro de Comentarios"
+            }
+          ],
+        },
+      },
+      {
+        path: "reingreso-personal/registro-comentarioss",
+        component: h18,
+        data: {
+          title: "Registro de Comentarios h18",
+          urls: [
+            {
+              title: "Solicitudes"
+            },
+            {
+              title: "Registro de Comentarios"
+            }
+          ],
+        },
+      },
+      {
+        path: "reingreso-personal/registrar-comentarios",
+        component: h19,
+        data: {
+          title: "Registro de Comentarios h19",
+          urls: [
+            {
+              title: "Solicitudes"
+            },
+            {
+              title: "Registro de Comentarios H19"
             }
           ],
         },
