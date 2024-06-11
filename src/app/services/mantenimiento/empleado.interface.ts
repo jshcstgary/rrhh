@@ -34,5 +34,12 @@ export interface EvType {
   sueldoVariableAnual: string;
   codigoPosicionReportaA: string;
   status: string;
-  parentezco: string;
+}
+
+type EmpleadoData = IEmpleados["evType"][0];
+
+export interface IEmpleadoData extends EmpleadoData {
+  comentarios?: string;
+  usuario?: string;
+  parentezco?: string;
 }

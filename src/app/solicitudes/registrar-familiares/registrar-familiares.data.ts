@@ -1,75 +1,25 @@
 import { IColumnsTable } from "src/app/component/table/table.interface";
-import { IEmpleados } from "src/app/services/mantenimiento/empleado.interface";
-
-export const dataTableDatosFamiliares: Partial<IEmpleados["evType"][0]>[] = [
-  {
-    nombreCompleto: "Nombre 1",
-    fechaIngresogrupo: new Date(),
-    nombreCargo: "Cargo 1",
-    unidadNegocio: "Unidad 1",
-    departamento: "Departamento 1",
-    localidad: "Localidad 1",
-    parentezco: "Parentezco 1",
-  },
-  {
-    nombreCompleto: "Nombre 2",
-    fechaIngresogrupo: new Date(),
-    nombreCargo: "Cargo 2",
-    unidadNegocio: "Unidad 2",
-    departamento: "Departamento 2",
-    localidad: "Localidad 2",
-    parentezco: "Parentezco 1",
-  },
-  {
-    nombreCompleto: "Nombre 3",
-    fechaIngresogrupo: new Date(),
-    nombreCargo: "Cargo 3",
-    unidadNegocio: "Unidad 3",
-    departamento: "Departamento 3",
-    localidad: "Localidad 3",
-    parentezco: "Parentezco 1",
-  },
-  {
-    nombreCompleto: "Nombre 4",
-    fechaIngresogrupo: new Date(),
-    nombreCargo: "Cargo 4",
-    unidadNegocio: "Unidad 4",
-    departamento: "Departamento 4",
-    localidad: "Localidad 4",
-    parentezco: "Parentezco 1",
-  },
-  {
-    nombreCompleto: "Nombre 5",
-    fechaIngresogrupo: new Date(),
-    nombreCargo: "Cargo 5",
-    unidadNegocio: "Unidad 5",
-    departamento: "Departamento 5",
-    localidad: "Localidad 5",
-    parentezco: "Parentezco 1",
-  },
-];
 
 export const columnsDatosFamiliares: IConsultaTareasData = {
   columns: [
     {
       title: "Nombre",
-      dataIndex: "nombreCompleto",
-      // align: "center",
+      dataIndex: "nombreEmpleado",
       sortActive: true,
     },
     {
       title: "Fecha de Ingreso",
-      dataIndex: "fechaIngresogrupo",
+      dataIndex: "fechaCreacion",
       sortActive: true,
     },
     {
       title: "Cargo",
-      dataIndex: "nombreCargo",
+      dataIndex: "cargo",
       sortActive: true,
     },
     {
       title: "Unidad",
-      dataIndex: "unidadNegocio",
+      dataIndex: "unidad",
       sortActive: true,
     },
     {
@@ -133,15 +83,6 @@ export const columnsAprobadores: IConsultaTareasData = {
       dataIndex: "comments",
       sortActive: true,
     },
-    {
-      title: "Acciones",
-      type: "actions",
-      width: "100px",
-      actions: [
-        { materialIcon: "edit", id: "editOnTable", tooltip: "Editar" },
-        { materialIcon: "delete", id: "delete", tooltip: "Eliminar" },
-      ],
-    },
   ],
   colsToFilterByTextName: ["route"],
 };
@@ -183,6 +124,5 @@ export const dataTableAprobadores = [
 
 export interface IConsultaTareasData {
   columns: IColumnsTable;
-  // colsToFilterByTextIdSolicitud: string[];
   colsToFilterByTextName: string[];
 }
