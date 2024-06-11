@@ -14,7 +14,10 @@ import { environment } from "../../../environments/environment";
 import { RegistrarData } from "src/app/eschemas/RegistrarData";
 import { DatosProcesoInicio } from "src/app/eschemas/DatosProcesoInicio";
 import { DatosSolicitud } from "src/app/eschemas/DatosSolicitud";
-import { MantenimientoService } from "src/app/services/mantenimiento/mantenimiento.service";
+import {
+  FamiliaresCandidatos,
+  MantenimientoService,
+} from "src/app/services/mantenimiento/mantenimiento.service";
 import { UtilService } from "src/app/services/util/util.service";
 import Swal from "sweetalert2";
 import { Solicitud } from "src/app/eschemas/Solicitud";
@@ -35,10 +38,6 @@ import {
   dataTableAprobadores,
 } from "./registrar-familiares.data";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
-import {
-  DialogComponents,
-  dialogComponentList,
-} from "src/app/shared/dialogComponents/dialog.components";
 import { IEmpleadoData } from "src/app/services/mantenimiento/empleado.interface";
 import { idActionType } from "src/app/component/table/table.interface";
 import { DialogBuscarEmpleadosComponent } from "./buscar-empleados/buscar-empleados.component";
@@ -66,7 +65,7 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
 
   selectedOption: string = "No";
   columnsDatosFamiliares = columnsDatosFamiliares.columns;
-  dataTableDatosFamiliares: IEmpleadoData[] = [];
+  dataTableDatosFamiliares: FamiliaresCandidatos[] = [];
   columnsAprobadores = columnsAprobadores.columns;
   dataTableAprobadores = dataTableAprobadores;
 
@@ -795,9 +794,12 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
       //} // comentado munoz
       await this.getDataEmpleadosEvolution();
       await this.loadDataCamunda(); //comentado para prueba mmunoz
+      await this.obtenerServicioFamiliaresCandidatos(
+        this.detalleSolicitud.codigoPosicion
+      );
       //console.log("impreme arreglo de aprobadores: ");
       //await this.recorrerArreglo();
-      
+
       // await this.getNivelesAprobacion();
       this.utilService.closeLoadingSpinner();
     } catch (error) {
@@ -1003,6 +1005,51 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
   // Prueba servicio
   getSolicitudes() {
     this.solicitudes.getSolicitudes().subscribe((data) => {});
+  }
+
+  obtenerServicioFamiliaresCandidatos(codigoPosicion: string) {
+    return this.mantenimientoService.getFamiliaresCandidato().subscribe({
+      next: (response) => {
+        const data = response?.familiaresCandidato || [];
+
+        this.dataTableDatosFamiliares = data.filter(
+          (d) => d.codigoPosicion === codigoPosicion
+        );
+      },
+      error: (error: HttpErrorResponse) => {
+        this.utilService.modalResponse(error.error, "error");
+      },
+    });
+  }
+
+  guardarServicioFamiliaresCanidatos() {
+    let requestFamiliares: FamiliaresCandidatos = {
+      codigoPosicion: "string",
+      descripcionPosicion: "string",
+      nombreEmpleado: "string",
+      subledger: "string",
+      cargo: "string",
+      unidad: "string",
+      codigoPosicionReportaA: "string",
+      reportaA: "string",
+      departamento: "string",
+      localidad: "string",
+      parentesco: "string",
+      estado: "string",
+      usuarioCreacion: "string",
+      usuarioModificacion: "string",
+      fechaCreacion: "2024-06-11T10:06:39.005Z",
+      fechaModificacion: "2024-06-11T10:06:39.005Z",
+    };
+
+    this.mantenimientoService
+      .guardarFamiliaresCandidato(requestFamiliares)
+      .subscribe((response) => {
+        this.utilService.modalResponse(
+          "Datos ingresados correctamente",
+          "success"
+        );
+      });
   }
 
   guardarSolicitud() {
@@ -1533,10 +1580,31 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
           }
 
           if (result?.data) {
-            this.dataTableDatosFamiliares = [
-              ...this.dataTableDatosFamiliares,
-              result.data,
-            ];
+            const data: IEmpleadoData = result.data;
+            const dtoFamiliares: FamiliaresCandidatos = {
+              nombreEmpleado: data.nombreCompleto,
+              fechaCreacion: data.fechaIngresogrupo || new Date(),
+              cargo: data.nombreCargo,
+              unidad: data.unidadNegocio,
+              departamento: data.departamento,
+              localidad: data.localidad,
+              parentesco: "",
+              codigoPosicion: data.codigoPosicion,
+              fechaModificacion: new Date(),
+            };
+            this.mantenimientoService
+              .guardarFamiliaresCandidato(dtoFamiliares)
+              .subscribe((response) => {
+                console.log("guardarFamiliaresCandidato:", response);
+                this.dataTableDatosFamiliares = [
+                  ...this.dataTableDatosFamiliares,
+                  dtoFamiliares,
+                ];
+                this.utilService.modalResponse(
+                  "Datos ingresados correctamente",
+                  "success"
+                );
+              });
           }
         },
         (reason) => {
@@ -1564,7 +1632,6 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
       );
   }
 
-
   //Funcion para realizar las acciones de la Table Emplerado
   private async toActionsTable(
     idAction: idActionType,
@@ -1577,7 +1644,7 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
         break;
       case "delete":
         console.log("Quieres borrar los datos");
-      break;
+        break;
 
       default:
         console.log("Accion invalida");

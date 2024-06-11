@@ -4,22 +4,22 @@ export const columnsDatosFamiliares: IConsultaTareasData = {
   columns: [
     {
       title: "Nombre",
-      dataIndex: "nombreCompleto",
+      dataIndex: "nombreEmpleado",
       sortActive: true,
     },
     {
       title: "Fecha de Ingreso",
-      dataIndex: "fechaIngresogrupo",
+      dataIndex: "fechaCreacion",
       sortActive: true,
     },
     {
       title: "Cargo",
-      dataIndex: "nombreCargo",
+      dataIndex: "cargo",
       sortActive: true,
     },
     {
       title: "Unidad",
-      dataIndex: "unidadNegocio",
+      dataIndex: "unidad",
       sortActive: true,
     },
     {
