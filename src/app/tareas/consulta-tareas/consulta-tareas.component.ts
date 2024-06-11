@@ -264,22 +264,25 @@ export class ConsultaTareasComponent implements OnInit {
               break;
 
             case environment.taskType_CF:
-
-              this.router.navigate([
-                "/solicitudes/registrar-familiares",
-                ids[1],
-                ids[0],
-              ]);
+              if (tarea.solicitudes[0].tipoSolicitud.toUpperCase().includes("FAMILIA")) {
+                this.router.navigate([
+                  "/solicitudes/registrar-familiares",
+                  ids[1],
+                  ids[0],
+                ]);
+              }
 
               break;
 
             case environment.taskType_RG:
-
-              this.router.navigate([
-                "/solicitudes/reingreso-personal",
-                ids[1],
-                ids[0],
-              ]);
+              console.log(tarea.solicitudes[0].tipoSolicitud.toUpperCase());
+              if (tarea.solicitudes[0].tipoSolicitud.toUpperCase().includes("REINGRESO")) {
+                this.router.navigate([
+                  "/solicitudes/reingreso-personal",
+                  ids[1],
+                  ids[0],
+                ]);
+              }
 
               break;
 
