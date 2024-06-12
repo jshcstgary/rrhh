@@ -34,6 +34,7 @@ import {
 } from "src/app/services/mantenimiento/empleado.interface";
 import { DialogBuscarEmpleadosComponent } from "./buscar-empleados/buscar-empleados.component";
 import { DialogReasignarUsuarioComponent } from "src/app/shared/reasginar-usuario/reasignar-usuario.component";
+import Swal from "sweetalert2";
 
 
 
@@ -618,7 +619,7 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
         // we are looking for task id 'Registrar' in a recently started process instance 'id'
         this.idDeInstancia = params["id"];
         this.camundaRestService
-          .getTask(environment.taskType_Registrar, params["id"])
+          .getTask(environment.taskType_CF, params["id"])
           .subscribe((result) => {
             console.log("INGRESA AQUÍ (registrar): ", result);
             console.log(
@@ -899,11 +900,87 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
     }
   }
 
-  public onSubmit(): void {}
+  onSubmit() {
+
+    Swal.fire({
+      text: "¿Desea crear la Solicitud?",
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonColor: "rgb(227, 199, 22)",
+      cancelButtonColor: "#77797a",
+      confirmButtonText: "Sí",
+      cancelButtonText: "No",
+
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.save();
+
+        if (this.submitted) {
+        }
+
+        //Fin Solicitud
+      }
+    });
+
+  }
 
   public pageSolicitudes(): void {}
 
-  public onCompletar(): void {}
+  onCompletar() {
+    //completar tarea mmunoz
+    if (this.uniqueTaskId === null) {
+      //handle this as an error
+      this.errorMessage =
+        "Unique Task id is empty. Cannot initiate task complete.";
+      return;
+    }
+    this.utilService.openLoadingSpinner(
+      "Completando Tarea, espere por favor..."
+    );
+
+    let variables = this.generateVariablesFromFormFields();
+
+    this.camundaRestService
+      .postCompleteTask(this.uniqueTaskId, variables)
+      .subscribe({
+        next: (res) => {
+          console.log("Complete task notificar");
+          //actualizo la solicitud a enviada
+          this.solicitud.empresa = this.model.idEmpresa;
+          this.solicitud.idEmpresa = this.model.idEmpresa;
+
+          this.solicitud.unidadNegocio = this.model.unidadNegocio;
+          this.solicitud.idUnidadNegocio = this.model.unidadNegocio;
+          if (this.selectedOption == "No") {
+            this.solicitud.estadoSolicitud = "4";
+          } else {
+            this.solicitud.estadoSolicitud = "AN";
+          }
+
+          console.log("this.solicitud: ", this.solicitud);
+          this.solicitudes
+            .actualizarSolicitud(this.solicitud)
+            .subscribe((responseSolicitud) => {
+              console.log("responseSolicitud: ", responseSolicitud);
+            });
+
+          this.utilService.closeLoadingSpinner();
+          //fin actualizo la solicitud a enviada
+          this.utilService.modalResponse(
+            `Solicitud registrada correctamente [${this.idDeInstancia}]. Será redirigido en un momento...`,
+            "success"
+          );
+          setTimeout(() => {
+            this.router.navigate(["/tareas/consulta-tareas"]);
+          }, 1800);
+        },
+        error: (error: HttpErrorResponse) => {
+          this.utilService.modalResponse(error.error, "error");
+        },
+      });
+
+    this.submitted = true;
+  }
 
   public onCancel(): void {}
 
@@ -919,6 +996,130 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
 
   openModal(component: keyof DialogComponents) {
     this.indexedModal[component]();
+  }
+
+  save() {
+    this.utilService.openLoadingSpinner(
+      "Guardando información, espere por favor..."
+    ); // comentado mmunoz
+
+    this.submitted = true;
+    let idInstancia = this.solicitudDataInicial.idInstancia;
+
+    console.log(
+      "this.solicitudDataInicial.idInstancia: ",
+      this.solicitudDataInicial.idInstancia
+    );
+
+    let extra = {
+      idEmpresa: this.model.compania,
+      empresa: this.model.compania,
+      estadoSolicitud: "Pendiente",
+      unidadNegocio: this.model.unidadNegocio,
+      idUnidadNegocio: this.model.unidadNegocio,
+    };
+
+    this.solicitud.empresa = this.model.idEmpresa;
+    this.solicitud.idEmpresa = this.model.idEmpresa;
+
+    this.solicitud.unidadNegocio = this.model.unidadNegocio;
+    this.solicitud.idUnidadNegocio = this.model.unidadNegocio;
+    this.solicitud.estadoSolicitud = "2";
+    console.log("this.solicitud: ", this.solicitud);
+    this.solicitudes
+      .actualizarSolicitud(this.solicitud)
+      .subscribe((responseSolicitud) => {
+        console.log("responseSolicitud: ", responseSolicitud);
+
+        this.detalleSolicitud.idSolicitud = this.solicitud.idSolicitud;
+
+        this.detalleSolicitud.areaDepartamento = this.model.departamento;
+
+        this.detalleSolicitud.cargo = this.model.nombreCargo;
+        this.detalleSolicitud.centroCosto = this.model.nomCCosto;
+        this.detalleSolicitud.codigoPosicion = this.model.codigoPosicion;
+        this.detalleSolicitud.compania = this.model.compania; //idEmpresa
+        this.detalleSolicitud.departamento = this.model.departamento;
+        this.detalleSolicitud.descripcionPosicion = this.model.descrPosicion;
+
+        this.detalleSolicitud.localidad = this.model.localidad;
+        this.detalleSolicitud.localidadZona = this.model.localidad;
+
+        this.detalleSolicitud.misionCargo = this.model.misionCargo;
+        this.detalleSolicitud.nivelDireccion = this.model.nivelDir;
+        this.detalleSolicitud.nivelReporteA = this.model.nivelRepa;
+
+        this.detalleSolicitud.nombreEmpleado = this.model.nombreCompleto;
+
+        this.detalleSolicitud.reportaA = this.model.reportaA;
+
+        this.detalleSolicitud.subledger = this.model.subledger;
+
+        this.detalleSolicitud.subledgerEmpleado = this.model.subledger;
+
+        this.detalleSolicitud.sucursal = this.model.sucursal;
+
+        this.detalleSolicitud.misionCargo =
+          this.model.misionCargo == "" ||
+          this.model.misionCargo == undefined ||
+          this.model.misionCargo == null
+            ? ""
+            : this.model.misionCargo;
+        this.detalleSolicitud.justificacion =
+          this.model.justificacionCargo == "" ||
+          this.model.justificacionCargo == undefined ||
+          this.model.justificacionCargo == null
+            ? ""
+            : this.model.justificacionCargo;
+        this.detalleSolicitud.sueldo = this.model.sueldo;
+        this.detalleSolicitud.sueldoVariableMensual = this.model.sueldoMensual;
+        this.detalleSolicitud.sueldoVariableTrimestral =
+          this.model.sueldoTrimestral;
+        this.detalleSolicitud.sueldoVariableSemestral =
+          this.model.sueldoSemestral;
+        this.detalleSolicitud.sueldoVariableAnual = this.model.sueldoAnual;
+        this.detalleSolicitud.tipoContrato = this.model.tipoContrato;
+        this.detalleSolicitud.unidadNegocio = this.model.unidadNegocio;
+
+        this.detalleSolicitud.correo = this.model.correo;
+
+        this.detalleSolicitud.supervisaA = this.model.supervisaA;
+
+        this.detalleSolicitud.fechaIngreso =
+          this.model.fechaIngresogrupo == ""
+            ? this.model.fechaIngreso
+            : this.model.fechaIngresogrupo;
+
+        console.log(
+          "ESTO LE MANDO AL ACTUALIZAR this.detalleSolicitud: ",
+          this.detalleSolicitud,
+          this.model
+        );
+
+        this.solicitudes
+          .actualizarDetalleSolicitud(this.detalleSolicitud)
+          .subscribe((responseDetalle) => {
+            console.log("responseDetalle: ", responseDetalle);
+
+            this.utilService.closeLoadingSpinner(); //comentado mmunoz
+            this.utilService.modalResponse(
+              "Datos ingresados correctamente",
+              "success"
+            );
+
+            console.log(
+              "CON ESTO COMPLETO (this.uniqueTaskId): ",
+              this.uniqueTaskId
+            );
+
+            console.log("AQUI HAY UN IDDEINSTANCIA?: ", this.idDeInstancia);
+
+            setTimeout(() => {
+              this.router.navigate(["/tareas/consulta-tareas"]);
+            }, 1800);
+          });
+      }); //aqui debe crear los aprobadores
+    this.submitted = true;
   }
 
 
@@ -947,6 +1148,19 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
       );
   }
 
+  public comp: string = '';
+  public sueldo: string = '';
+  public mensual: string = '';
+  public anual: string = '';
+  public trimestral: string = '';
+  public semestral: string = '';
+  public remuneracion: string = '';
+  public puesto: string = '';
+  public unidadNegocio: string = '';
+  public localidad: string = '';
+  public departamento: string = '';
+  public feIng: Date;
+
   openModalBuscarEmpleado() {
     this.modalService
       .open(dialogComponentList.dialogBuscarEmpleados, {
@@ -960,9 +1174,19 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
 
           if (result?.data) {
             const data: IEmpleadoData = result.data;
-            // console.log('AQUIIIII PRUEBA',data.subledger);
-
+            console.log('AQUIIIII PRUEBA',data);
             this.empleadoSearch = data.nombreCompleto
+            this.comp = data.compania;
+            this.sueldo = data.sueldo;
+            this.mensual = data.sueldoVariableMensual;
+            this.anual = data.sueldoVariableAnual;
+            this.trimestral = data.sueldoVariableTrimestral;
+            this.semestral = data.sueldoVariableSemestral;
+            this.puesto = data.descrPuesto;
+            this.unidadNegocio = data.unidadNegocio;
+            this.localidad = data.localidad;
+            this.departamento = data.departamento;
+            this.feIng = data.fechaIngresogrupo;
 
             // this.mantenimientoService
             //   .(dtoFamiliares)

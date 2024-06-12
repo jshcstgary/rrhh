@@ -15,7 +15,6 @@
 
         <div class="col-md-12 text-end">
           <button
-            *ngIf="RegistrarsolicitudCompletada"
             type="button"
             (click)="openModalReasignar('dialogReasignarUsuario')"
             class="btn btn-info me-2 mt-1"
@@ -23,7 +22,6 @@
             <i class="fas fa-redo"></i> Reasignar
           </button>
           <button
-            *ngIf="RegistrarsolicitudCompletada"
             type="button"
             type="submit"
             class="btn btn-info me-2 mt-1"
@@ -200,7 +198,7 @@
               name="tipoMotivo"
               style="color: black; font-size: 14px"
               class="text-start"
-              >{{ "LACTEOS INC" }}</span
+              >{{this.comp}}</span
             >
           </div>
         </div>
@@ -221,38 +219,6 @@
         </div>
       </div>
 
-      <div class="row mt-4">
-        <div class="col">
-          <div class="input-group mb-3">
-            <label class="input-group label-estilo" for="tipoMotivo"
-              >Compañía</label
-            >
-            &nbsp;
-            <span
-              id="tipoMotivo"
-              name="tipoMotivo"
-              style="color: black; font-size: 14px"
-              class="text-start"
-              >{{ "LACTEOS INC" }}</span
-            >
-          </div>
-        </div>
-        <div class="col">
-          <div class="input-group mb-3">
-            <label class="input-group label-estilo" for="tipoMotivo"
-              >Compañía</label
-            >
-            &nbsp;
-            <span
-              id="tipoMotivo"
-              name="tipoMotivo"
-              style="color: black; font-size: 14px"
-              class="text-start"
-              >{{ "BANCO NACIONAL" }}</span
-            >
-          </div>
-        </div>
-      </div>
 
       <div class="row mt-4 mb-4">
         <div class="col">
@@ -266,7 +232,7 @@
               name="tipoMotivo"
               style="color: black; font-size: 14px"
               class="text-start"
-              >{{ "200" }}</span
+              >{{ this.sueldo}}</span
             >
           </div>
         </div>
@@ -281,7 +247,7 @@
               name="tipoMotivo"
               style="color: black; font-size: 14px"
               class="text-start"
-              >{{ "400" }}</span
+              >{{ "" }}</span
             >
           </div>
         </div>
@@ -313,7 +279,7 @@
               name="tipoMotivo"
               style="color: black; font-size: 14px"
               class="text-start"
-              >{{ "12" }}</span
+              >{{ this.mensual }}</span
             >
           </div>
         </div>
@@ -345,7 +311,7 @@
               name="tipoMotivo"
               style="color: black; font-size: 14px"
               class="text-start"
-              >{{ "" }}</span
+              >{{ this.trimestral }}</span
             >
           </div>
         </div>
@@ -377,7 +343,7 @@
               name="tipoMotivo"
               style="color: black; font-size: 14px"
               class="text-start"
-              >{{ "" }}</span
+              >{{ this.semestral }}</span
             >
           </div>
         </div>
@@ -409,7 +375,7 @@
               name="tipoMotivo"
               style="color: black; font-size: 14px"
               class="text-start"
-              >{{ "" }}</span
+              >{{ this.anual}}</span
             >
           </div>
         </div>
@@ -441,7 +407,7 @@
               name="tipoMotivo"
               style="color: black; font-size: 14px"
               class="text-start"
-              >{{ "" }}</span
+              >{{ this.remuneracion }}</span
             >
           </div>
         </div>
@@ -473,7 +439,7 @@
               name="tipoMotivo"
               style="color: black; font-size: 14px"
               class="text-start"
-              >{{ "" }}</span
+              >{{ this.puesto }}</span
             >
           </div>
         </div>
@@ -505,7 +471,7 @@
               name="tipoMotivo"
               style="color: black; font-size: 14px"
               class="text-start"
-              >{{ "" }}</span
+              >{{ this.unidadNegocio }}</span
             >
           </div>
         </div>
@@ -526,7 +492,7 @@
         </div>
       </div>
       <div class="row mt-4">
-        <div class="col">
+        <div class="col-md-6">
           <div class="input-group mb-3">
             <label class="input-group label-estilo" for="tipoMotivo"
               >Departamento</label
@@ -537,11 +503,11 @@
               name="tipoMotivo"
               style="color: black; font-size: 14px"
               class="text-start"
-              >{{ "" }}</span
+              >{{ this.departamento }}</span
             >
           </div>
         </div>
-        <div class="col">
+        <div class="col-md-6">
           <div class="input-group mb-3">
             <label class="input-group label-estilo" for="tipoMotivo"
               >Departamento</label
@@ -558,7 +524,7 @@
         </div>
       </div>
       <div class="row mt-4">
-        <div class="col">
+        <div class="col-md-6">
           <div class="input-group mb-3">
             <label class="input-group label-estilo" for="tipoMotivo"
               >Localidad</label
@@ -569,11 +535,11 @@
               name="tipoMotivo"
               style="color: black; font-size: 14px"
               class="text-start"
-              >{{ "" }}</span
+              >{{ this.localidad }}</span
             >
           </div>
         </div>
-        <div class="col">
+        <div class="col-md-6">
           <div class="input-group mb-3">
             <label class="input-group label-estilo" for="tipoMotivo"
               >Localidad</label
@@ -703,7 +669,7 @@
               name="tipoMotivo"
               style="color: black; font-size: 14px"
               class="text-start"
-              >{{ "Gerente" }}</span
+              >{{ "" }}</span
             >
           </div>
         </div>
@@ -730,7 +696,7 @@
         </div>
       </div>
       <div class="row mt-4">
-        <div class="col">
+        <div class="col-md-6">
           <div class="input-group mb-3">
             <label class="input-group label-estilo" for="tipoMotivo"
               >Fecha de Ingreso</label
@@ -741,13 +707,13 @@
               name="tipoMotivo"
               style="color: black; font-size: 14px"
               class="text-start"
-              >{{ "" }}</span
+              >{{ this.feIng }}</span
             >
           </div>
         </div>
       </div>
       <div class="row mt-4">
-        <div class="col">
+        <div class="col-md-6">
           <div class="input-group mb-3">
             <label class="input-group label-estilo" for="tipoMotivo"
               >Fecha de Salida</label
@@ -758,7 +724,7 @@
               name="tipoMotivo"
               style="color: black; font-size: 14px"
               class="text-start"
-              >{{ "" }}</span
+              >{{ "01/10/24" }}</span
             >
           </div>
         </div>
