@@ -1636,12 +1636,33 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
             return;
           }
           if (result?.data) {
+          if (result?.data) {
           }
         },
         (reason) => {
           console.log(`Dismissed with: ${reason}`);
         }
       );
+  }
+
+  //Funcion para realizar las acciones de la Table Emplerado
+  private async toActionsTable(
+    idAction: idActionType,
+    key: string,
+    tooltip: string
+  ) {
+    switch (idAction) {
+      case "editOnTable":
+        console.log("Aqui quieres editar");
+        break;
+      case "delete":
+        console.log("Quieres borrar los datos");
+        break;
+
+      default:
+        console.log("Accion invalida");
+        break;
+    }
   }
 
   //Funcion para realizar las acciones de la Table Emplerado
