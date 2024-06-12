@@ -43,7 +43,7 @@
 
         <div class="col-md-4 text-end d-flex justify-content-end align-items-center">
           <button type="button" class="btn btn-info me-2 d-flex align-items-center justify-content-center button-custom"
-            aria-label="Close" (click)="saveCandidato()" [disabled]="disabledSave">
+            aria-label="Close" (click)="saveCandidato()" [disabled]="model.tipoProceso === '' && tipoProcesoSaved === ''">
             <i class="fas fa-save me-2 icon-size"></i> Guardar
           </button>
 
@@ -440,16 +440,19 @@
             <label class="input-group-text label-estilo" for="tipoSolicitud">Tipo Proceso</label>
             &nbsp;
 
-            <select id="tipoproceso" name="tipoproceso" class="form-select" style="font-size: 14px"
-              [(ngModel)]="model.tipoProceso" (change)="onChangeTipoProceso()" required [disabled]="model.tipoProceso !== ''">
+
+            <select *ngIf="tipoProcesoSaved === ''; else tipoProceso" id="tipoproceso" name="tipoproceso" class="form-select" style="font-size: 14px"
+              [(ngModel)]="model.tipoProceso" (change)="onChangeTipoProceso()" required [disabled]="disabledTipoProceso">
               <option value="">Seleccione...</option>
 
-              <option *ngFor="let dato of dataTipoProceso; let i = index" [value]="dato.descripcion"
-                [selected]="i > 0 && model.tipoProceso === dato.descripcion">
+              <option *ngFor="let dato of dataTipoProceso; let i = index" [value]="dato.descripcion" [selected]="i > 0 && model.tipoProceso === dato.descripcion">
                 {{dato.descripcion}}
               </option>
             </select>
 
+            <ng-template #tipoProceso>
+              <span>{{ model.tipoProceso }}</span>
+            </ng-template>
 
           </div>
         </div>
@@ -504,9 +507,9 @@
       <div class="row">
         <div class="col-md-4 d-flex align-items-center">
           <input id="input1" type="checkbox" [(ngModel)]="isCheckedPerfil" (change)="onCheckboxChangeCandidato($event)"
-            name="checkPerfil" [disabled]="disabledFechas.fechaActualizacion">
+            name="checkPerfil" [disabled]="disabledFechas.actualizacionPerfil">
           <label for="input1" class="input-group-text adjustable-label">Actualización del perfil</label>
-          <input type="text" class="form-control" [value]="fechas.fechaActualizacion" name="perfil" readonly>
+          <input type="text" class="form-control" [value]="fechas.actualizacionPerfil" name="perfil" readonly>
         </div>
 
         <div class="col-md-4 d-flex align-items-center">
@@ -609,12 +612,11 @@
 
       <div class="row mb-3">
         <div class="col-md-3 me-2">
-          <label class="input-group-text label-estilo" for="nombre-candidato">Nombre del candidato seleccionado <span
-              style="color: red;">*</span></label>
+          <label class="input-group-text label-estilo" for="nombre-candidato">Nombre del candidato seleccionado</label>
         </div>
         <div class="col-md-4">
-          <input type="text" name="nombre-candidato" placeholder="Campo obligatorio" [(ngModel)]="nombreCandidato"
-            class="form-control" id="nombre-candidato" [disabled]="disabledNombreCandidato" />
+          <input type="text" name="nombre-candidato" placeholder="Nombre del candidato" [(ngModel)]="nombreCandidato"
+            class="form-control" id="nombre-candidato" />
         </div>
       </div>
 
@@ -629,12 +631,11 @@
         </div>
       </div>
 
-
       <div class="row">
         <div class="col-md-4 d-flex ">
           <label for="input1" class="input-group-text adjustable-label">Inicio de proceso</label>
           <input id="input1" type="text" class="form-control" readonly
-            [value]="fechas.fechaInicioReingreso !== '' ? fechas.reingreso : model.tipoProceso !== 'reingresoPersonal' ? '' : getCurrentDate()">
+            [value]="fechas.reingreso !== '' ? fechas.reingreso : model.tipoProceso !== 'reingresoPersonal' ? '' : getCurrentDate()">
         </div>
         <div class="col-md-4 d-flex ">
           <label for="input2" class="input-group-text adjustable-label">Fin de proceso</label>

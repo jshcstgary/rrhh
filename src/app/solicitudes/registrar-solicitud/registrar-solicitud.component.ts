@@ -1161,8 +1161,7 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
         this.detalleSolicitud.codigoPosicion = this.model.codigoPosicion;
         this.detalleSolicitud.compania = this.model.compania; //idEmpresa
         this.detalleSolicitud.departamento = this.model.departamento;
-        this.detalleSolicitud.descripcionPosicion =
-          this.model.descrPosicion;
+        this.detalleSolicitud.descripcionPosicion = this.model.descrPosicion;
 
 
         this.detalleSolicitud.localidad = this.model.localidad;
@@ -1186,12 +1185,9 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
         this.detalleSolicitud.misionCargo = this.model.misionCargo == "" || this.model.misionCargo == undefined || this.model.misionCargo == null ? "" : this.model.misionCargo;
         this.detalleSolicitud.justificacion = this.model.justificacionCargo == "" || this.model.justificacionCargo == undefined || this.model.justificacionCargo == null ? "" : this.model.justificacionCargo;
         this.detalleSolicitud.sueldo = this.model.sueldo;
-        this.detalleSolicitud.sueldoVariableMensual =
-          this.model.sueldoMensual;
-        this.detalleSolicitud.sueldoVariableTrimestral =
-          this.model.sueldoTrimestral;
-        this.detalleSolicitud.sueldoVariableSemestral =
-          this.model.sueldoSemestral;
+        this.detalleSolicitud.sueldoVariableMensual = this.model.sueldoMensual;
+        this.detalleSolicitud.sueldoVariableTrimestral = this.model.sueldoTrimestral;
+        this.detalleSolicitud.sueldoVariableSemestral = this.model.sueldoSemestral;
         this.detalleSolicitud.sueldoVariableAnual = this.model.sueldoAnual;
         this.detalleSolicitud.tipoContrato = this.model.tipoContrato;
         this.detalleSolicitud.unidadNegocio = this.model.unidadNegocio;
