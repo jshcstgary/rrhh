@@ -1,4 +1,4 @@
-import { Component, Type } from "@angular/core";
+import { ChangeDetectorRef, Component, SimpleChange, Type } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { CamundaRestService } from "../../camunda-rest.service";
 import { CompleteTaskComponent } from "../general/complete-task.component";
@@ -19,6 +19,7 @@ import {
   MantenimientoService,
 } from "src/app/services/mantenimiento/mantenimiento.service";
 import { UtilService } from "src/app/services/util/util.service";
+import { IInputsComponent } from "src/app/component/input/input.interface";
 import Swal from "sweetalert2";
 import { Solicitud } from "src/app/eschemas/Solicitud";
 import { DetalleSolicitud } from "src/app/eschemas/DetalleSolicitud";
@@ -34,14 +35,14 @@ import { ConsultaTareasService } from "src/app/tareas/consulta-tareas/consulta-t
 import { SolicitudesService } from "../registrar-solicitud/solicitudes.service";
 import {
   columnsDatosFamiliares,
-  columnsAprobadores,
   dataTableAprobadores,
 } from "./registrar-familiares.data";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { IEmpleadoData } from "src/app/services/mantenimiento/empleado.interface";
-import { idActionType } from "src/app/component/table/table.interface";
+import { IRowTableAttributes, idActionType } from "src/app/component/table/table.interface";
 import { DialogBuscarEmpleadosComponent } from "./buscar-empleados/buscar-empleados.component";
 import { DialogReasignarUsuarioComponent } from "src/app/shared/reasginar-usuario/reasignar-usuario.component";
+import { TableService } from "src/app/component/table/table.service";
 
 interface DialogComponents {
   dialogBuscarEmpleados: Type<DialogBuscarEmpleadosComponent>;
@@ -66,8 +67,17 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
   selectedOption: string = "No";
   columnsDatosFamiliares = columnsDatosFamiliares.columns;
   dataTableDatosFamiliares: FamiliaresCandidatos[] = [];
-  columnsAprobadores = columnsAprobadores.columns;
-  dataTableAprobadores = dataTableAprobadores;
+
+  public inputsEditRow : IInputsComponent = [
+    {
+      id: "parentezco",
+      label: "parentezco",
+      type: "string",
+      required: true
+    }
+  ]
+
+
 
   override model: RegistrarData = new RegistrarData(
     "",
@@ -337,7 +347,8 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
     private solicitudes: SolicitudesService,
     private utilService: UtilService,
     private consultaTareasService: ConsultaTareasService,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private tableService: TableService
   ) {
     super(route, router, camundaRestService);
 
@@ -1103,6 +1114,7 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
   }
 
   onSubmit() {
+
     Swal.fire({
       text: "¿Desea crear la Solicitud?",
       icon: "question",
@@ -1111,6 +1123,7 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
       cancelButtonColor: "#77797a",
       confirmButtonText: "Sí",
       cancelButtonText: "No",
+
     }).then((result) => {
       if (result.isConfirmed) {
         this.save();
@@ -1121,6 +1134,7 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
         //Fin Solicitud
       }
     });
+
   }
 
   save() {
@@ -1247,6 +1261,8 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
     this.submitted = true;
   }
 
+
+  //!Esta funcion para completar tarea no se puede completar debido a que al cargar los datos de camunda esta uniqueTaskId se queda en null debido a un error que surje gracias al servicio de camunda especificamente en el metodo getTask (No es que este malo el servicio sino el como se obtiene las tareas, debido a que me trae un array vacio)
   onCompletar() {
     //completar tarea mmunoz
     if (this.uniqueTaskId === null) {
@@ -1588,7 +1604,7 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
 
           if (result?.data) {
             const data: IEmpleadoData = result.data;
-            const dtoFamiliares: FamiliaresCandidatos = {
+            const dtoFamiliares: FamiliaresCandidatos =  {
               idSolicitud: this.id_solicitud_by_params,
               nombreEmpleado: data.nombreCompleto,
               fechaCreacion: new Date(data.fechaIngresogrupo) ?? new Date(),
@@ -1600,6 +1616,8 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
               codigoPosicion: data.codigoPosicion,
               fechaModificacion: new Date(),
             };
+
+
             this.mantenimientoService
               .guardarFamiliaresCandidato(dtoFamiliares)
               .subscribe((response) => {
@@ -1608,10 +1626,7 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
                   dtoFamiliares,
                   response
                 );
-                this.dataTableDatosFamiliares = [
-                  ...this.dataTableDatosFamiliares,
-                  dtoFamiliares,
-                ];
+                this.addNewRow(dtoFamiliares);
                 this.utilService.modalResponse(
                   "Familiar ingresado correctamente",
                   "success"
@@ -1645,18 +1660,81 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
       );
   }
 
-  //Funcion para realizar las acciones de la Table Emplerado
+  /*Inicio de Funciones para la tabla de familiares*/
+  public originalData = []; 
+
+  public ngOnChange(changes: SimpleChange): void {
+    this.originalData = this.formatDataWithKeyNameTable(
+      this.originalData
+    );
+  }
+
+  private contDataFamilia = 0;
+
+
+  public addNewRow(obj: any) {
+    this.contDataFamilia++;
+    const newRow = {
+      key: this.contDataFamilia,
+      ...obj
+    }
+
+    this.dataTableDatosFamiliares = [
+      ...this.dataTableDatosFamiliares,
+      newRow
+    ]
+  }
+
+  public onSaveRowTable(rowData: any, finishedClonningRow: boolean) {
+    if (finishedClonningRow) {
+      // Se está guardando una nueva fila
+      this.dataTableDatosFamiliares.push(rowData);
+    } else {
+      // Se está guardando una fila modificada
+      const index = this.dataTableDatosFamiliares.findIndex(row => row.nombreEmpleado === rowData.nombreEmpleado);
+      if (index !== -1) {
+        this.dataTableDatosFamiliares[index] = rowData;
+      }
+    }
+  }
+
+  private formatDataWithKeyNameTable(data: any[]): any[] {
+    return this.tableService.formatDataToTable(data, 'key');
+  }
+
+  
   private async toActionsTable(
     idAction: idActionType,
     key: string,
-    tooltip: string
   ) {
     switch (idAction) {
       case "editOnTable":
-        console.log("Aqui quieres editar");
+        if (!this.tableService.isAnyEditRowActive) {
+          this.tableService.changeStateIsAnyEditRowActive(true);
+          const rowToEdit: IRowTableAttributes = this.originalData.find(
+            (x: IRowTableAttributes) => x.key === key
+          );
+          rowToEdit.isEditingRow = true;
+          const newDataWithOutRowToEdit = this.formatDataWithKeyNameTable(this.dataTableDatosFamiliares).filter(
+            (x: IRowTableAttributes) => x.key !== key
+          );
+          newDataWithOutRowToEdit.unshift(rowToEdit);
+          this.dataTableDatosFamiliares = newDataWithOutRowToEdit;
+          this.utilService.focusOnHtmlElement(this.columnsDatosFamiliares[2].dataIndex);
+        }
         break;
       case "delete":
         console.log("Quieres borrar los datos");
+
+        const index = this.dataTableDatosFamiliares.findIndex(row => row.key.toString() === key.toString());
+
+        if (index !== -1) {
+          // console.log('Se cambio el estado de la prop')
+          this.dataTableDatosFamiliares[index].estado = 'I';
+        }
+
+        this.dataTableDatosFamiliares = this.dataTableDatosFamiliares.filter(row => row.key.toString() !== key.toString());
+        
         break;
 
       default:
@@ -1664,5 +1742,6 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
         break;
     }
   }
+  /*Fin de Funciones para la tabla de familiares*/
 
 }

@@ -20,9 +20,10 @@
           >
             <i class="fas fa-redo"></i> Reasignar
           </button>
+          
           <button
             type="button"
-            type="submit"
+            (click)="onSubmit()"
             class="btn btn-info me-2 mt-1"
             aria-label="Close"
             [disabled]="!solicitudForm.form.valid"
@@ -301,9 +302,12 @@
               tableName="tablaDatosFamiliares"
               [columns]="columnsDatosFamiliares"
               [dataTable]="dataTableDatosFamiliares"
+              [inputsEditRow]="inputsEditRow"
+              onSaveRowTable="onSaveRowTable"
               clickOnActionRow="toActionsTable"
               [contexto]="this"
             >
+ 
             </table-component>
             <!-- <table-component
                 [tableName]="mainTableName"

@@ -38,8 +38,8 @@ export const PlantillaDData: IPlantillaDData = {
     },
   ],
   initialColumns: {
-    type: "checkbox",
-    width: "65px",
+    // type: "checkbox",
+    // width: "65px",
   },
   swalDeleteOptions: {
     title: `¿Esta seguro que desea eliminar el siguiente registro?`,
