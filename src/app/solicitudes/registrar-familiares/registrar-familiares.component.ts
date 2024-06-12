@@ -795,7 +795,7 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
       await this.getDataEmpleadosEvolution();
       await this.loadDataCamunda(); //comentado para prueba mmunoz
       await this.obtenerServicioFamiliaresCandidatos(
-        this.detalleSolicitud.codigoPosicion
+        {idSolicitud: this.detalleSolicitud.idSolicitud}
       );
       //console.log("impreme arreglo de aprobadores: ");
       //await this.recorrerArreglo();
@@ -1637,7 +1637,7 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
           }
           if (result?.data) {
           if (result?.data) {
-          }
+          }}
         },
         (reason) => {
           console.log(`Dismissed with: ${reason}`);
@@ -1665,23 +1665,4 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
     }
   }
 
-  //Funcion para realizar las acciones de la Table Emplerado
-  private async toActionsTable(
-    idAction: idActionType,
-    key: string,
-    tooltip: string
-  ) {
-    switch (idAction) {
-      case "editOnTable":
-        console.log("Aqui quieres editar");
-        break;
-      case "delete":
-        console.log("Quieres borrar los datos");
-        break;
-
-      default:
-        console.log("Accion invalida");
-        break;
-    }
-  }
 }

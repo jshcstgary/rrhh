@@ -25,7 +25,6 @@ export class MantenimientoService {
   private apiEmpleadoEvolutionUrl = environment.empleadoServiceEs;
   private apiEmpleadoUrlJaff = environment.exempleadoServiceEsJaff;
   private apiFamiliaresCandidato = environment.familiaresCandidationServiceES;
-  private apiFamiliaresCandidato = environment.familiaresCandidationServiceES;
   // http://10.35.3.162:8053/v1/es/item-catalogo/codigo/RBPND
   // http://10.35.3.162:8053/v1/es/item-catalogo/codigo
   private apiCatalogoUrl = environment.CatalogoServiceES;
