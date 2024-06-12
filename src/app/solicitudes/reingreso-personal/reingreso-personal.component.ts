@@ -1,4 +1,4 @@
-import { Component, TemplateRef, ViewChild } from "@angular/core";
+import { Component, TemplateRef, Type, ViewChild } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import {
   NgbModal,
@@ -24,14 +24,29 @@ import {
   columnsAprobadores,
   dataTableAprobadores,
 } from "./reingreso-personal.data";
-import {
-  DialogComponents,
-  dialogComponentList,
-} from "src/app/shared/dialogComponents/dialog.components";
+// import {
+//   DialogComponents,
+//   dialogComponentList,
+// } from "src/app/shared/dialogComponents/dialog.components";
 import {
   IEmpleadoData,
   IEmpleados,
 } from "src/app/services/mantenimiento/empleado.interface";
+import { DialogBuscarEmpleadosComponent } from "./buscar-empleados/buscar-empleados.component";
+import { DialogReasignarUsuarioComponent } from "src/app/shared/reasginar-usuario/reasignar-usuario.component";
+
+
+
+
+interface DialogComponents {
+  dialogBuscarEmpleados: Type<DialogBuscarEmpleadosComponent>;
+  dialogReasignarUsuario: Type<DialogReasignarUsuarioComponent>;
+}
+
+const dialogComponentList: DialogComponents = {
+  dialogBuscarEmpleados: DialogBuscarEmpleadosComponent,
+  dialogReasignarUsuario: DialogReasignarUsuarioComponent,
+};
 
 @Component({
   selector: "app-reingreso-personal",
@@ -44,6 +59,8 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
   selectedOption: string = "No";
   columnsAprobadores = columnsAprobadores.columns;
   dataTableAprobadores = dataTableAprobadores;
+  empleadoSearch : string = "";
+
 
   override model: RegistrarData = new RegistrarData(
     "",
@@ -895,12 +912,16 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
     event: NgbTypeaheadSelectItemEvent<any>
   ): void {}
 
-  @ViewChild("ModalBuscarEmpleados", { static: true })
-  ModalBuscarEmpleados: TemplateRef<any>;
-  /*Inputs de Buscar Empleados*/
-  searchInp: string;
-  subledger: string = "";
-  nombreCompleto: string = "";
+  indexedModal: Record<keyof DialogComponents, any> = {
+    dialogBuscarEmpleados: () => this.openModalBuscarEmpleado(),
+    dialogReasignarUsuario: undefined
+  };
+
+  openModal(component: keyof DialogComponents) {
+    this.indexedModal[component]();
+  }
+
+
 
   openModalReasignar(componentName: keyof DialogComponents) {
     console.log("SE ABRIO EL MODAL");
@@ -926,16 +947,32 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
       );
   }
 
-  openModal() {
+  openModalBuscarEmpleado() {
     this.modalService
-      .open(this.ModalBuscarEmpleados, { ariaLabelledBy: "modal-title" })
+      .open(dialogComponentList.dialogBuscarEmpleados, {
+        ariaLabelledBy: "modal-title",
+      })
       .result.then(
         (result) => {
-          console.log(`Closed with: ${result}`);
+          if (result?.action === "close") {
+            return;
+          }
 
-          if (result === "Save") {
-            console.log("Aqui para guardar y se deben validar los inputs");
-            console.log("Todos los inputs", this.searchInp);
+          if (result?.data) {
+            const data: IEmpleadoData = result.data;
+            // console.log('AQUIIIII PRUEBA',data.subledger);
+
+            this.empleadoSearch = data.nombreCompleto
+
+            // this.mantenimientoService
+            //   .(dtoFamiliares)
+            //   .subscribe((response) => {
+
+            //     this.utilService.modalResponse(
+            //       "Empleado ingresado correctamente",
+            //       "success"
+            //     );
+            //   });
           }
         },
         (reason) => {
@@ -944,36 +981,5 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
       );
   }
 
-  onEnter(search: string): void {
-    this.mantenimientoService
-      .getDataEmpleadosEvolution("ev")
-      .pipe(
-        map(this.buscarValor.bind(this, search, "evType")),
-        catchError((error) => {
-          return this.mantenimientoService
-            .getDataEmpleadosEvolution("jaff")
-            .pipe(map(this.buscarValor.bind(this, search, "jaffType")));
-        })
-      )
-      .subscribe({
-        next: (data) => {
-          this.nombreCompleto = (data as IEmpleadoData).nombreCompleto;
-          this.subledger = (data as IEmpleadoData).subledger;
-        },
-        error: (error) => {
-          console.error(error);
-        },
-      });
-  }
 
-  buscarValor = (search, type: "jaffType" | "evType", data: IEmpleados) => {
-    const result = data?.[type].find((item) => {
-      const regex = new RegExp(search, "i");
-      return item.nombreCompleto.match(regex);
-    });
-    if (!result) {
-      throw new Error("No se encontró el valor esperado");
-    }
-    return result;
-  };
 }

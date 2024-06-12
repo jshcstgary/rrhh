@@ -1,0 +1,79 @@
+    <div class="modal-custom">
+      <div class="">
+        <div class="p-2 mt-2">
+          <h4 class="mx-2 sol-danger">Buscar Empleado</h4>
+          <hr class="my-0" />
+        </div>
+        <div class="px-4">
+          <div class="row">
+            <div class="col-md-12 my-3">
+              <label
+                class="label-estilo"
+                for="searchInp"
+                style="font-size: 14px; width: 100%"
+                >Buscar</label
+              >
+              <input
+                type="text"
+                [(ngModel)]="searchInp"
+                class="form-control"
+                id="searchInp"
+                placeholder="Ingresar los dos apellidos del empleado"
+                (keyup.enter)="onEnter(searchInp)"
+                style="width: 100%"
+              />
+            </div>
+          </div>
+          <div class="col">
+            <div class="col">
+              <label
+                class="label-estilo"
+                for="subledger"
+                style="font-size: 14px; width: 100%"
+                >Subledger</label
+              >
+              <input
+                readonly
+                id="subledger"
+                [(ngModel)]="fields.subledger"
+                type="text"
+                class="form-control mb-3"
+                style="width: 100%"
+              />
+            </div>
+            <div class="col">
+              <label
+                class="label-estilo"
+                for="nombreCompleto"
+                style="font-size: 14px; width: 100%"
+                >Nombre Empleado</label
+              >
+              <input
+                readonly
+                id="nombreCompleto"
+                [(ngModel)]="fields.nombreCompleto"
+                type="text"
+                class="form-control mb-3"
+                style="width: 100%"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="p-4">
+          <button
+            type="button"
+            class="btn btn-primary"
+            (click)="onSeleccionar(fields)"
+          >
+            Seleccionar
+          </button>
+          <button
+            type="button"
+            class="mx-3 btn btn-outline-secondary"
+            (click)="onClose()"
+          >
+            Cancelar
+          </button>
+        </div>
+      </div>
+    </div>
