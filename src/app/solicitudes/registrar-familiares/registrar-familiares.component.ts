@@ -794,9 +794,9 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
       //} // comentado munoz
       await this.getDataEmpleadosEvolution();
       await this.loadDataCamunda(); //comentado para prueba mmunoz
-      await this.obtenerServicioFamiliaresCandidatos({
-        idSolicitud: this.id_solicitud_by_params,
-      });
+      await this.obtenerServicioFamiliaresCandidatos(
+        this.detalleSolicitud.codigoPosicion
+      );
       //console.log("impreme arreglo de aprobadores: ");
       //await this.recorrerArreglo();
 
