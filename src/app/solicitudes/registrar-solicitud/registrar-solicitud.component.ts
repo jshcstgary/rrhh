@@ -108,12 +108,12 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
     descripcionPosicion: string;
     subledger: string;
   } = {
-    correo: "",
-    usuarioAprobador: "",
-    nivelDireccion: "",
-    descripcionPosicion: "",
-    subledger: ""
-  };
+      correo: "",
+      usuarioAprobador: "",
+      nivelDireccion: "",
+      descripcionPosicion: "",
+      subledger: ""
+    };
 
   // Base model refers to the input at the beginning of BPMN
   // that is, Start Event
@@ -158,6 +158,8 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
 
   public dataTipoSolicitud: any = [];
   public dataTipoMotivo: any = [];
+
+  private detalleNivelAprobacion: any[] = [];
 
   // public dataTipoAccion: any;
 
@@ -573,6 +575,41 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
     this.suggestions = [];
   }
 
+  mapearDetallesAprobadores(nivelAprobacionPosicionType: any[]) {
+    this.detalleNivelAprobacion = nivelAprobacionPosicionType.map(({ nivelAprobacionType, aprobador }) => ({
+      id_Solicitud: this.solicitud.idSolicitud,
+      id_NivelAprobacion: nivelAprobacionType.idNivelAprobacion,
+      id_TipoSolicitud: nivelAprobacionType.idTipoSolicitud.toString(),
+      id_Accion: nivelAprobacionType.idAccion,
+      id_TipoMotivo: nivelAprobacionType.idTipoMotivo,
+      id_TipoRuta: nivelAprobacionType.idTipoRuta,
+      id_Ruta: nivelAprobacionType.idRuta,
+      tipoSolicitud: nivelAprobacionType.tipoSolicitud,
+      motivo: nivelAprobacionType.tipoMotivo,
+      tipoRuta: nivelAprobacionType.tipoRuta,
+      ruta: nivelAprobacionType.ruta,
+      accion: nivelAprobacionType.accion,
+      nivelDirecion: nivelAprobacionType.nivelDireccion,
+      nivelAprobacionRuta: nivelAprobacionType.nivelAprobacionRuta,
+      usuarioAprobador: aprobador.usuario,
+      codigoPosicionAprobador: aprobador.codigoPosicion,
+      descripcionPosicionAprobador: aprobador.descripcionPosicion,
+      sudlegerAprobador: aprobador.subledger,
+      codigoPosicionReportaA: aprobador.codigoPosicionReportaA,
+      nivelDireccionAprobador: aprobador.nivelDireccion,
+      estadoAprobacion: "PorRevisar",
+      estado: nivelAprobacionType.estado,
+      correo: aprobador.correo,
+      usuarioCreacion: "",
+      usuarioModificacion: "",
+      comentario: "",
+      fechaCreacion: new Date().toISOString(),
+      fechaModificacion: new Date().toISOString()
+    }));
+
+    console.log(this.detalleNivelAprobacion);
+  }
+
   obtenerAprobacionesPorPosicion() {
     return this.solicitudes
       .obtenerAprobacionesPorPosicion(
@@ -583,6 +620,8 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
       )
       .subscribe({
         next: (response) => {
+          console.log(response);
+
           this.dataAprobacionesPorPosicion[this.keySelected] =
             response.nivelAprobacionPosicionType;
 
@@ -1244,6 +1283,10 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
     this.submitted = true;
   }
 
+  generaNivelesAprobación() {
+
+  }
+
   onCompletar() { //completar tarea mmunoz
     if (this.uniqueTaskId === null) {
       //handle this as an error
@@ -1258,56 +1301,62 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
     let variables = this.generateVariablesFromFormFields();
     // return;
 
-    this.camundaRestService
-      .postCompleteTask(this.uniqueTaskId, variables)
-      .subscribe({
-        next: (res) => {
-          console.log("Complete task notificar");
-          //actualizo la solicitud a enviada
-          this.solicitud.empresa = this.model.compania;
-          this.solicitud.idEmpresa = this.model.compania;
+    debugger;
+    this.solicitudes.cargarDetalleAprobacionesArreglo(this.detalleNivelAprobacion).subscribe({
+      next: (res) => {
+        this.camundaRestService
+          .postCompleteTask(this.uniqueTaskId, variables)
+          .subscribe({
+            next: (res) => {
+              console.log("Complete task notificar");
+              //actualizo la solicitud a enviada
+              this.solicitud.empresa = this.model.compania;
+              this.solicitud.idEmpresa = this.model.compania;
 
-          this.solicitud.unidadNegocio = this.model.unidadNegocio;
-          this.solicitud.idUnidadNegocio = this.model.unidadNegocio;
-          if (this.selectedOption == "No") {
-            this.solicitud.estadoSolicitud = "4";
-          } else {
+              this.solicitud.unidadNegocio = this.model.unidadNegocio;
+              this.solicitud.idUnidadNegocio = this.model.unidadNegocio;
+              if (this.selectedOption == "No") {
+                this.solicitud.estadoSolicitud = "4";
+              } else {
 
-            this.solicitud.estadoSolicitud = "AN";
-          }
+                this.solicitud.estadoSolicitud = "AN";
+              }
 
-          console.log("this.solicitud: ", this.solicitud);
-          this.solicitudes
-            .actualizarSolicitud(this.solicitud)
-            .subscribe((responseSolicitud) => {
-              console.log("responseSolicitud: ", responseSolicitud);
-
-
-
-            });
-
-
-          this.utilService.closeLoadingSpinner();
-          //fin actualizo la solicitud a enviada
-          this.utilService.modalResponse(
-            `Solicitud registrada correctamente [${this.solicitud.idSolicitud}]. Será redirigido en un momento...`,
-            "success"
-          );
-          setTimeout(() => {
-            this.router.navigate([
-              "/tareas/consulta-tareas",
-            ]);
-          }, 1800);
-        },
-        error: (error: HttpErrorResponse) => {
-          this.utilService.modalResponse(
-            error.error,
-            "error"
-          );
-        },
+              console.log("this.solicitud: ", this.solicitud);
+              this.solicitudes
+                .actualizarSolicitud(this.solicitud)
+                .subscribe((responseSolicitud) => {
+                  console.log("responseSolicitud: ", responseSolicitud);
 
 
-      });
+
+                });
+
+
+              this.utilService.closeLoadingSpinner();
+              //fin actualizo la solicitud a enviada
+              this.utilService.modalResponse(
+                `Solicitud registrada correctamente [${this.solicitud.idSolicitud}]. Será redirigido en un momento...`,
+                "success"
+              );
+              setTimeout(() => {
+                this.router.navigate([
+                  "/tareas/consulta-tareas",
+                ]);
+              }, 1800);
+            },
+            error: (error: HttpErrorResponse) => {
+              this.utilService.modalResponse(
+                error.error,
+                "error"
+              );
+            },
+          });
+      },
+      error: (err) => {
+        console.error(err);
+      }
+    });
 
     this.submitted = true;
   }
@@ -1485,20 +1534,20 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
         variables.comentariosAnulacion = { value: this.model.comentariosAnulacion };
         variables.nivelDireccion = { value: this.model.nivelDir };
         variables.correoNotificacionCreador = {
-              value: "pruebapv3@hotmail.com"
-            };
+          value: "pruebapv3@hotmail.com"
+        };
         variables.usuarioNotificacionCreador = {
-              value: "Carlos Perez Perazo"
-            };
+          value: "Carlos Perez Perazo"
+        };
         variables.nivelDireccionNotificacionCreador = {
-              value: "Jefe de RRHH"
-            };
+          value: "Jefe de RRHH"
+        };
         variables.descripcionPosicionCreador = {
-              value: "Jefe de Recursos Humanos"
-            };
+          value: "Jefe de Recursos Humanos"
+        };
         variables.subledgerNotificacionCreador = {
-              value: "1234567890"
-            };
+          value: "1234567890"
+        };
         variables.idSolicitud = {
           value: this.solicitud.idSolicitud
         };
@@ -1610,6 +1659,8 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
         )
         .subscribe({
           next: (response) => {
+            this.mapearDetallesAprobadores(response.nivelAprobacionPosicionType);
+
             this.dataAprobacionesPorPosicion[this.keySelected] =
               response.nivelAprobacionPosicionType;
           },

@@ -4,7 +4,7 @@ import {
 } from "./registrar-solicitudes.interface";
 import { HttpClient, HttpHeaders, HttpParams, HttpParamsOptions } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { Observable } from "rxjs";
+import { Observable, of } from "rxjs";
 import { DetalleSolicitud } from "src/app/eschemas/DetalleSolicitud";
 import { Solicitud } from "src/app/eschemas/Solicitud";
 import { environment } from "src/environments/environment";
@@ -43,6 +43,16 @@ export class SolicitudesService {
 
   public getDetalleSolicitud(): Observable<any> {
     return this.http.get<any>(this.apiUrlSolicitudes + "/detalle-solicitud");
+  }
+
+  cargarDetalleAprobacionesArreglo(detalleAprobaciones: any[]): Observable<any> {
+    return this.http.post<any>(`${this.apiDetalleAprobaciones}/post_arreglo`, {
+      detalleAprobadorSolicitud: detalleAprobaciones
+    });
+  }
+
+  obtenerNivelesAprobacionRegistrados(idSolicitud: string): Observable<any> {
+    return this.http.get<any>(`${this.apiDetalleAprobaciones}/${idSolicitud}`);
   }
 
   public guardarSolicitud(request: any): Observable<any> {

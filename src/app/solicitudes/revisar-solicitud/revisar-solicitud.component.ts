@@ -188,6 +188,7 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
 
   // getDataNivelesAprobacionPorCodigoPosicion
   public dataNivelesAprobacionPorCodigoPosicion: { [key: string]: any[] } = {};
+  public detalleAprobacionesPorPosicion: any[] = [];
 
   public dataNivelesAprobacion: any;
 
@@ -1411,28 +1412,28 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
   }
 
   getNivelesAprobacion() {
-    if (this.detalleSolicitud.codigoPosicion !== "" &&
-      this.detalleSolicitud.codigoPosicion !== undefined &&
-      this.detalleSolicitud.codigoPosicion != null &&
-      this.solicitud.idTipoSolicitud !== 0 &&
-      this.solicitud.idTipoSolicitud !== undefined &&
-      this.solicitud.idTipoSolicitud !== null &&
-      this.solicitud.idTipoMotivo !== 0 &&
-      this.solicitud.idTipoMotivo !== undefined &&
-      this.solicitud.idTipoMotivo !== null) {
-
+    // if (this.detalleSolicitud.codigoPosicion !== "" &&
+    //   this.detalleSolicitud.codigoPosicion !== undefined &&
+    //   this.detalleSolicitud.codigoPosicion != null &&
+    //   this.solicitud.idTipoSolicitud !== 0 &&
+    //   this.solicitud.idTipoSolicitud !== undefined &&
+    //   this.solicitud.idTipoSolicitud !== null &&
+    //   this.solicitud.idTipoMotivo !== 0 &&
+    //   this.solicitud.idTipoMotivo !== undefined &&
+    //   this.solicitud.idTipoMotivo !== null) {
+    if (this.solicitud !== null) {
 
       this.solicitudes
-        .obtenerAprobacionesPorPosicion(
-          this.solicitud.idTipoSolicitud,
-          this.solicitud.idTipoMotivo,
-          this.detalleSolicitud.codigoPosicion,
-          this.detalleSolicitud.nivelDireccion, 'A'
-        )
+        // .obtenerAprobacionesPorPosicion(
+        //   this.solicitud.idTipoSolicitud,
+        //   this.solicitud.idTipoMotivo,
+        //   this.detalleSolicitud.codigoPosicion,
+        //   this.detalleSolicitud.nivelDireccion, 'A'
+        // )
+        .obtenerNivelesAprobacionRegistrados(this.solicitud.idSolicitud)
         .subscribe({
           next: (response) => {
-            this.dataAprobacionesPorPosicion[this.keySelected] =
-              response.nivelAprobacionPosicionType;
+            this.mapearDetallesAprobadores(response);
           },
           error: (error: HttpErrorResponse) => {
             this.utilService.modalResponse(
@@ -1446,62 +1447,120 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
 
   }
 
+  mapearDetallesAprobadores(nivelAprobacionPosicionType: any) {
+    const arrayAprobadores = nivelAprobacionPosicionType.detalleAprobadorSolicitud.map((detalleAprobador) => ({
+      nivelAprobacionType: {
+        idNivelAprobacion: detalleAprobador.id_NivelAprobacion,
+        idNivelAprobacionRuta: detalleAprobador.nivelAprobacionRuta,
+        nivelAprobacionRuta: detalleAprobador.nivelAprobacionRuta,
+        idTipoSolicitud: Number(detalleAprobador.id_TipoSolicitud),
+        tipoSolicitud: detalleAprobador.tipoSolicitud,
+        idAccion: detalleAprobador.id_Accion,
+        accion: detalleAprobador.accion,
+        idNivelDireccion: detalleAprobador.nivelDireccion,
+        nivelDireccion: detalleAprobador.nivelDireccion,
+        idRuta: detalleAprobador.id_Ruta,
+        ruta: detalleAprobador.ruta,
+        idTipoMotivo: detalleAprobador.id_TipoMotivo,
+        tipoMotivo: detalleAprobador.motivo,
+        idTipoRuta: detalleAprobador.id_TipoRuta,
+        tipoRuta: detalleAprobador.tipoRuta,
+        correo: "",
+        fechaActualizacion: detalleAprobador.fechaModificacion,
+        fechaCreacion: detalleAprobador.fechaCreacion,
+        usuarioCreacion: "",
+        usuarioActualizacion: "",
+        estado: detalleAprobador.estado
+      },
+      aprobador: {
+        detalleAprobadorSolicitud: detalleAprobador.detalleAprobadorSolicitud,
+        descripcionPosicion: detalleAprobador.descripcionPosicionAprobador,
+        usuario: detalleAprobador.usuarioAprobador,
+        nivelDireccion: detalleAprobador.nivelDireccionAprobador,
+        codigoPosicionReportaA: detalleAprobador.codigoPosicionReportaA,
+        reportaA: "",
+        supervisaA: "",
+        nivelReporte: "",
+        subledger: detalleAprobador.sudlegerAprobador,
+        correo: detalleAprobador.correo
+      }
+    }));
 
-
-  getDataNivelesAprobacionPorCodigoPosicion() {
-
-    if (this.detalleSolicitud.codigoPosicion !== "" &&
-      this.detalleSolicitud.codigoPosicion !== undefined &&
-      this.detalleSolicitud.codigoPosicion != null) {
-
-      this.solicitudes
-        .getDataNivelesAprobacionPorCodigoPosicion(
-          this.detalleSolicitud.codigoPosicion
-        )
-        .subscribe({
-          next: (response) => {
-            this.dataNivelesAprobacionPorCodigoPosicion[
-              this.model.codigoPosicion
-            ] = response.evType;
-
-            for (let key1 of Object.keys(this.dataAprobacionesPorPosicion)) {
-              let eachDataNivelesDeAprobacion =
-                this.dataAprobacionesPorPosicion[key1];
-
-              for (let eachData of eachDataNivelesDeAprobacion) {
-                for (let key2 of Object.keys(
-                  this.dataNivelesAprobacionPorCodigoPosicion
-                )) {
-                  let eachDataNivelPorCodigoPosicion =
-                    this.dataNivelesAprobacionPorCodigoPosicion[key2];
-
-                  for (let eachDataNivelPorCodigo of eachDataNivelPorCodigoPosicion) {
-                    if (
-                      eachData.nivelDireccion ==
-                      eachDataNivelPorCodigo.nivelDireccion
-                    ) {
-                      eachData["usuario"] = eachDataNivelPorCodigo.usuario;
-                      eachData["descripcionPosicion"] =
-                        eachDataNivelPorCodigo.descripcionPosicion;
-                      break;
-                    }
-                  }
-
-                  console.log(`Elemento en la posición`, eachData);
-                }
-              }
-            }
-          },
-          error: (error: HttpErrorResponse) => {
-            this.utilService.modalResponse(
-              "No existen niveles de aprobación para este empleado",
-              "error"
-            );
-          },
-        });
-
+    this.dataAprobacionesPorPosicion = {
+      [this.keySelected]: arrayAprobadores
     }
+
+    // console.log(this.detalleAprobacionesPorPosicion);
+    console.log(this.dataAprobacionesPorPosicion);
   }
+
+  // obtenerNivelesAprobacionRegistrados() {
+  //   this.solicitudes.obtenerNivelesAprobacionRegistrados().subscribe({
+  //     next: (res) => {
+  //       this.mapearDetallesAprobadores(res);
+
+  //       // this.dataAprobacionesPorPosicion = res.nivelAprobacionPosicionType;
+  //     },
+  //     error: (err) => {
+  //       console.error(err);
+  //     }
+  //   });
+  // }
+
+  // getDataNivelesAprobacionPorCodigoPosicion() {
+
+  //   if (this.detalleSolicitud.codigoPosicion !== "" &&
+  //     this.detalleSolicitud.codigoPosicion !== undefined &&
+  //     this.detalleSolicitud.codigoPosicion != null) {
+
+  //     this.solicitudes
+  //       .getDataNivelesAprobacionPorCodigoPosicion(
+  //         this.detalleSolicitud.codigoPosicion
+  //       )
+  //       .subscribe({
+  //         next: (response) => {
+  //           this.dataNivelesAprobacionPorCodigoPosicion[
+  //             this.model.codigoPosicion
+  //           ] = response.evType;
+
+  //           for (let key1 of Object.keys(this.dataAprobacionesPorPosicion)) {
+  //             let eachDataNivelesDeAprobacion =
+  //               this.dataAprobacionesPorPosicion[key1];
+
+  //             for (let eachData of eachDataNivelesDeAprobacion) {
+  //               for (let key2 of Object.keys(
+  //                 this.dataNivelesAprobacionPorCodigoPosicion
+  //               )) {
+  //                 let eachDataNivelPorCodigoPosicion =
+  //                   this.dataNivelesAprobacionPorCodigoPosicion[key2];
+
+  //                 for (let eachDataNivelPorCodigo of eachDataNivelPorCodigoPosicion) {
+  //                   if (
+  //                     eachData.nivelDireccion ==
+  //                     eachDataNivelPorCodigo.nivelDireccion
+  //                   ) {
+  //                     eachData["usuario"] = eachDataNivelPorCodigo.usuario;
+  //                     eachData["descripcionPosicion"] =
+  //                       eachDataNivelPorCodigo.descripcionPosicion;
+  //                     break;
+  //                   }
+  //                 }
+
+  //                 console.log(`Elemento en la posición`, eachData);
+  //               }
+  //             }
+  //           }
+  //         },
+  //         error: (error: HttpErrorResponse) => {
+  //           this.utilService.modalResponse(
+  //             "No existen niveles de aprobación para este empleado",
+  //             "error"
+  //           );
+  //         },
+  //       });
+
+  //   }
+  // }
 
   saveDetalleAprobaciones() {
     this.solicitudes.modelDetalleAprobaciones.estadoAprobacion = this.buttonValue;
@@ -1626,8 +1685,8 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
                     if (aprobacion.aprobador.nivelDireccion.trim().toUpperCase().indexOf('RRHH') > 0) {
                       if (aprobacionesObj[String(Number(index) + 1)] === undefined || aprobacionesObj[String(Number(index) + 1)] === null) {
                         this.aprobadorSiguiente = aprobacionesObj[index];
-                      }else{
-                        this.aprobadorSiguiente = aprobacionesObj[String(Number(index)+1)];
+                      } else {
+                        this.aprobadorSiguiente = aprobacionesObj[String(Number(index) + 1)];
                       }
 
                       this.solicitudes.modelDetalleAprobaciones.id_Solicitud = this.solicitud.idSolicitud;
