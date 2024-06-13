@@ -41,6 +41,51 @@
         </div>
       </div>
 
+      <div class="row mt-4">
+        <div class="col-md-4">
+          <div class="input-group mb-3">
+            <label class="label-estilo" for="origin"
+              >Creado por:</label
+            >
+            <span
+              id="origin"
+              name=""
+              style="color: black; font-size: 14px"
+              class="text-start"
+              >{{ this.solicitud.usuarioCreacion }}</span
+            >
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="input-group mb-3">
+            <label class="label-estilo" for="unidadnegocio"
+              >Fecha:</label
+            >
+            <span
+              id="date"
+              name=""
+              style="color: black; font-size: 14px"
+              class="text-start"
+              >{{ this.solicitud.fechaCreacion | date:'yyyy/MM/dd' }}</span
+            >
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="input-group mb-3">
+            <label class="label-estilo" for="unidadnegocio"
+              >Nro. Solicitud:</label
+            >
+            <span
+              id="solicitud"
+              name=""
+              style="color: black; font-size: 14px"
+              class="text-start"
+              >{{ this.solicitud.idSolicitud }}</span
+            >
+          </div>
+        </div>
+      </div>
+
       <div class="row mt-2">
         <div class="col-md-3">
           <div class="mb-4">
