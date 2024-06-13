@@ -152,6 +152,13 @@ export class MantenimientoService {
       data
     );
   }
+
+  public putFamiliaredCandidatos(data: Partial<FamiliaresCandidatos>): Observable<FamiliaresCandidatos>{
+    return this.http.put<FamiliaresCandidatos>(
+      `${this.apiFamiliaresCandidato}`,
+      data
+    )
+  }
 }
 
 interface FamiliaresCandidatosService {

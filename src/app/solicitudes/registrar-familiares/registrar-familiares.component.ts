@@ -1731,6 +1731,8 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
         if (index !== -1) {
           // console.log('Se cambio el estado de la prop')
           this.dataTableDatosFamiliares[index].estado = 'I';
+          // console.log('Prueba',this.dataTableDatosFamiliares[index]);
+          await this.mantenimientoService.putFamiliaredCandidatos(this.dataTableDatosFamiliares[index]);
         }
 
         this.dataTableDatosFamiliares = this.dataTableDatosFamiliares.filter(row => row.key.toString() !== key.toString());

@@ -614,7 +614,7 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
       // const variableNames = Object.keys(this.model).join(",");
       const variableNames = Object.keys(this.model).join(",");
 
-      if ("true" === this.parentIdFlag) {
+      if ("true" === this.parentIdFlag) { 
         // id is parent process instance id. so handle it accordingly
         // we are looking for task id 'Registrar' in a recently started process instance 'id'
         this.idDeInstancia = params["id"];
