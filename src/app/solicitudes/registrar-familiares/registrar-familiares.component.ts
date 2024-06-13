@@ -44,6 +44,7 @@ import { DialogBuscarEmpleadosComponent } from "./buscar-empleados/buscar-emplea
 import { DialogReasignarUsuarioComponent } from "src/app/shared/reasginar-usuario/reasignar-usuario.component";
 import { TableService } from "src/app/component/table/table.service";
 
+
 interface DialogComponents {
   dialogBuscarEmpleados: Type<DialogBuscarEmpleadosComponent>;
   dialogReasignarUsuario: Type<DialogReasignarUsuarioComponent>;
@@ -1675,8 +1676,9 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
   public addNewRow(obj: any) {
     this.contDataFamilia++;
     const newRow = {
-      key: this.contDataFamilia,
-      ...obj
+      id: this.contDataFamilia,
+      ...obj,
+      isEditingRow: false
     }
 
     this.dataTableDatosFamiliares = [
@@ -1726,7 +1728,7 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
       case "delete":
         console.log("Quieres borrar los datos");
 
-        const index = this.dataTableDatosFamiliares.findIndex(row => row.key.toString() === key.toString());
+        const index = this.dataTableDatosFamiliares.findIndex(row => row.id.toString() === key.toString());
 
         if (index !== -1) {
           // console.log('Se cambio el estado de la prop')
@@ -1735,7 +1737,7 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
           await this.mantenimientoService.putFamiliaredCandidatos(this.dataTableDatosFamiliares[index]);
         }
 
-        this.dataTableDatosFamiliares = this.dataTableDatosFamiliares.filter(row => row.key.toString() !== key.toString());
+        this.dataTableDatosFamiliares = this.dataTableDatosFamiliares.filter(row => row.id.toString() !== key.toString());
         
         break;
 
@@ -1745,5 +1747,78 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
     }
   }
   /*Fin de Funciones para la tabla de familiares*/
+
+  //*Datos de Prueba
+  // columnsPrueba = [
+  //   { title: 'Nombre', dataIndex: 'name', sortActive: true, sortTypeOrder: 'asc', editable: true },
+  //   { title: 'Edad', dataIndex: 'age', sortActive: true, sortTypeOrder: 'asc', editable: false },
+  //   {
+  //     title: 'Acciones',
+  //     dataIndex: 'actions',
+  //     type: 'actions',
+  //     actions: [
+  //       { id: 'edit', icon: 'fa fa-edit', tooltip: 'Editar' },
+  //       { id: 'delete', icon: 'fa fa-trash', tooltip: 'Eliminar' }
+  //     ]
+  //   }
+  // ];
+
+  // dataPrueba = [
+  //   { key: 1, name: 'Juan', age: 25, isEditingRow: false },
+  //   { key: 2, name: 'Ana', age: 30, isEditingRow: false }
+  // ];
+
+  handleChangeSort(column: any) {
+    // console.log('Change sort:', column);
+    //!Logica para cambiar orden se haga true la prop sortActive
+    //*Si se quiere ordenar
+  }
+
+  handleSaveRowData(row: any) {
+    // console.log('Save row data:', row);
+    this.updateRowData(row);
+  }
+
+  async handleActionClick(event: any) {
+    // console.log('Action click:', event);
+    const {rowKey, actionId} = event;
+
+    switch(actionId){
+      case 'edit':
+        this.startEditingRow(rowKey);
+        break;
+      case 'delete':
+        const index = this.dataTableDatosFamiliares.findIndex(row => row.id.toString() === rowKey.toString());
+
+        if (index !== -1) {
+          this.dataTableDatosFamiliares[index].estado = 'I';
+          await this.mantenimientoService.putFamiliaredCandidatos(this.dataTableDatosFamiliares[index]);
+        }
+
+        this.dataTableDatosFamiliares = this.dataTableDatosFamiliares.filter(row => row.id.toString() !== rowKey.toString());
+        break;
+      default:
+        console.log('Opcion no definida'); 
+        break;
+    }
+  }
+
+  startEditingRow(rowKey: any) {
+    this.dataTableDatosFamiliares = this.dataTableDatosFamiliares.map(row => {
+      if (row.id === rowKey) {
+        row.isEditingRow = true;
+      }
+      return row;
+    });
+  }
+
+  updateRowData(updatedRow: any) {
+    this.dataTableDatosFamiliares = this.dataTableDatosFamiliares.map(row => {
+      if (row.id === updatedRow.key) {
+        return updatedRow;
+      }
+      return row;
+    });
+  }
 
 }

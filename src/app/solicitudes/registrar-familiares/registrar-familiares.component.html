@@ -344,7 +344,7 @@
         </div>
         <form>
           <div class="row mt-3">
-            <table-component
+            <!-- <table-component
               tableName="tablaDatosFamiliares"
               [columns]="columnsDatosFamiliares"
               [dataTable]="dataTableDatosFamiliares"
@@ -352,9 +352,19 @@
               onSaveRowTable="onSaveRowTable"
               clickOnActionRow="toActionsTable"
               [contexto]="this"
+            > -->
+            <!-- </table-component> -->
+            
+            <table-perso
+              [columns]="columnsDatosFamiliares"
+              [data]="dataTableDatosFamiliares"
+              [tableWidth]="'100%'"
+              (changeSort)="handleChangeSort($event)"
+              (saveRowData)="handleSaveRowData($event)"
+              (actionClick)="handleActionClick($event)"
             >
- 
-            </table-component>
+              
+            </table-perso>
             <!-- <table-component
                 [tableName]="mainTableName"
                 [columns]="columnsDatosFamiliares"

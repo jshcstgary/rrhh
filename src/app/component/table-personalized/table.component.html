@@ -1,0 +1,70 @@
+<div class="table-container" id="app-container-table-component">
+<table aria-label="" id="app-table-component" [style.width]="tableWidth">
+    <thead>
+      <tr>
+        <th *ngFor="let column of columns" (click)="onChangeSort(column)">
+            <div class="d-flex justify-content-between cursor-pointer">
+                {{ column.title }}
+            <ng-container *ngIf="column.sortActive">
+                <i [ngClass]="{'fa fa-sort-asc': column.sortTypeOrder === 'asc', 'fa fa-sort-desc': column.sortTypeOrder === 'desc'}"></i>
+            </ng-container>
+        </div>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let row of data">
+        <td *ngFor="let column of columns; let i = index" [ngClass]="{'actions-column': column.type === 'actions'}">
+          <ng-container *ngIf="!row.isEditingRow || !column.editable">
+            <ng-container *ngIf="column.type === 'actions'; else defaultCell">
+              <div class="d-flex justify-content-between">
+                <ng-container *ngIf="!row.isEditingRow; else editIcons">
+                  <ng-container *ngFor="let action of column.actions">
+                    <tooltip-component [text]="action.tooltip">
+                      <i
+                        *ngIf="action.icon"
+                        tabindex="0"
+                        class="text-info cursor-pointer action-icon"
+                        [ngClass]="action.icon"
+                        (click)="clickOnAction(action.id, row.id, action.tooltip, getAdditionalParam(row))"
+                        (keyup.enter)="clickOnAction(action.id, row.id, action.tooltip, getAdditionalParam(row))"
+                      ></i>
+                      <i
+                        *ngIf="action.materialIcon"
+                        tabindex="0"
+                        class="material-icons text-info cursor-pointer action-icon"
+                        (click)="clickOnAction(action.id, row.id, action.tooltip, getAdditionalParam(row))"
+                        (keyup.enter)="clickOnAction(action.id, row.id, action.tooltip, getAdditionalParam(row))"
+                      >
+                        {{ action.materialIcon }}
+                      </i>
+                    </tooltip-component>
+                  </ng-container>
+                </ng-container>
+                <ng-template #editIcons>
+                  <i
+                    tabindex="0"
+                    id="iconSaveEditRowTable"
+                    class="fas fa-save text-info cursor-pointer action-icon"
+                    (click)="onSaveRowDataToModified(row)"
+                    (keyup.enter)="onSaveRowDataToModified(row)"
+                  ></i>
+                </ng-template>
+              </div>
+            </ng-container>
+            <ng-template #defaultCell>
+              {{ row[column.dataIndex] }}
+            </ng-template>
+          </ng-container>
+          <ng-container *ngIf="row.isEditingRow && column.editable">
+            <input
+                class="editable-input"
+                [value]="!row[column.dataIndex] ? '' : row[column.dataIndex]"
+                (input)="onInputChange($event, row, column.dataIndex)"
+            />
+          </ng-container>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

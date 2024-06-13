@@ -165,7 +165,7 @@ interface FamiliaresCandidatosService {
   familiaresCandidato: FamiliaresCandidatos[];
 }
 export interface FamiliaresCandidatos {
-  key?: number;
+  id?: number;
   idSolicitud: string;
   idSolicitudPadre?: string;
   codigoPosicionPadre?: string;
@@ -185,4 +185,5 @@ export interface FamiliaresCandidatos {
   usuarioModificacion?: string;
   fechaCreacion: Date | String;
   fechaModificacion: Date | String;
+  isEditingRow?: Boolean;
 }

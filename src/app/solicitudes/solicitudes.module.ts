@@ -78,12 +78,11 @@ import { RegistrarComentariosComponent as h19 } from "./registrar-comentario (h1
     MatFormFieldModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    ReactiveFormsModule
-
+    ReactiveFormsModule,
   ],
   exports: [
     RevisarSolicitudComponent
-    // Otros componentes que deseas exportar
+    //Otros componentes que deseas exportar
   ],
   providers: [TableService],
 })
