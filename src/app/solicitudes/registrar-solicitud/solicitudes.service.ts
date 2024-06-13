@@ -55,6 +55,14 @@ export class SolicitudesService {
     return this.http.get<any>(`${this.apiDetalleAprobaciones}/${idSolicitud}`);
   }
 
+  obtenerDetallesAprobacionesSolicitudes(idSolicitud: string, subledgerAprobador: string, usuarioAprobador: string = ""): Observable<any> {
+    const headers = new HttpHeaders().set('usuario_aprob', usuarioAprobador);
+
+    return this.http.get<any>(`${this.apiDetalleAprobaciones}/filtrar/${idSolicitud}/${subledgerAprobador}`, {
+      headers
+    });
+  }
+
   public guardarSolicitud(request: any): Observable<any> {
     return this.http.post<any>(this.apiUrlSolicitudes, request);
   }

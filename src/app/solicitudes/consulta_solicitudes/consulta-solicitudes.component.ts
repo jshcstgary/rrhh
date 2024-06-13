@@ -385,14 +385,8 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
   }
 
   ngOnInit() {
-    // this.solicitud.idTipoSolicitud = 1;
-    // this.solicitud.idTipoMotivo = 1;
-    // this.solicitud.idTipoAccion = 1;
     this.getDataToTable();
     this.ObtenerServicioTipoSolicitud();
-    this.ObtenerServicioTipoMotivo();
-    this.ObtenerServicioTipoAccion();
-
     this.obtenerEmpresaYUnidadNegocio();
   }
 

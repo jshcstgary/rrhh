@@ -29,6 +29,7 @@ import {
   switchMap,
 } from "rxjs/operators";
 import { ConsultaTareasService } from "src/app/tareas/consulta-tareas/consulta-tareas.service";
+import { StarterService } from "src/app/starter/starter.service";
 
 @Component({
   selector: "registrarSolicitud",
@@ -378,7 +379,8 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
     private mantenimientoService: MantenimientoService,
     private solicitudes: SolicitudesService,
     private utilService: UtilService,
-    private consultaTareasService: ConsultaTareasService
+    private consultaTareasService: ConsultaTareasService,
+    private starterService: StarterService
   ) {
     super(route, router, camundaRestService);
 
@@ -897,6 +899,8 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
 
       // await this.getNivelesAprobacion();
       this.utilService.closeLoadingSpinner();
+
+      this.starterService.getUser();
     } catch (error) {
       // Manejar errores aquí de manera centralizada
       this.utilService.modalResponse(error.error, "error");
@@ -1283,8 +1287,34 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
     this.submitted = true;
   }
 
-  generaNivelesAprobación() {
-
+  crearRegistradorSolicitud() {
+    this.solicitudes.modelDetalleAprobaciones.id_Solicitud = this.solicitud.idSolicitud;
+    this.solicitudes.modelDetalleAprobaciones.id_NivelAprobacion = 100000;
+    this.solicitudes.modelDetalleAprobaciones.id_TipoSolicitud = this.solicitud.idTipoSolicitud.toString();
+    this.solicitudes.modelDetalleAprobaciones.id_Accion = 100000;
+    this.solicitudes.modelDetalleAprobaciones.id_TipoMotivo = this.solicitud.idTipoMotivo;
+    this.solicitudes.modelDetalleAprobaciones.id_TipoRuta = 100000;
+    this.solicitudes.modelDetalleAprobaciones.id_Ruta = 100000;
+    this.solicitudes.modelDetalleAprobaciones.tipoSolicitud = this.solicitud.tipoSolicitud;
+    this.solicitudes.modelDetalleAprobaciones.motivo = "RegistrarSolicitud";
+    this.solicitudes.modelDetalleAprobaciones.tipoRuta = "RegistrarSolicitud";
+    this.solicitudes.modelDetalleAprobaciones.ruta = "Registrar Solicitud";
+    this.solicitudes.modelDetalleAprobaciones.accion = "RegistrarSolicitud";
+    this.solicitudes.modelDetalleAprobaciones.nivelDirecion = this.starterService.userIniciador.nivelDir;
+    this.solicitudes.modelDetalleAprobaciones.nivelAprobacionRuta = "RegistrarSolicitud";
+    this.solicitudes.modelDetalleAprobaciones.usuarioAprobador = this.starterService.userIniciador.nombreCompleto;
+    this.solicitudes.modelDetalleAprobaciones.codigoPosicionAprobador = this.starterService.userIniciador.codigoPosicion;
+    this.solicitudes.modelDetalleAprobaciones.descripcionPosicionAprobador = this.starterService.userIniciador.descrPosicion;
+    this.solicitudes.modelDetalleAprobaciones.sudlegerAprobador = this.starterService.userIniciador.subledger;
+    this.solicitudes.modelDetalleAprobaciones.nivelDireccionAprobador = this.starterService.userIniciador.nivelDir;
+    this.solicitudes.modelDetalleAprobaciones.codigoPosicionReportaA = this.starterService.userIniciador.codigoPosicionReportaA;
+    this.solicitudes.modelDetalleAprobaciones.estadoAprobacion = "Creado";
+    this.solicitudes.modelDetalleAprobaciones.estado = "A";
+    this.solicitudes.modelDetalleAprobaciones.correo = this.starterService.userIniciador.correo;
+    this.solicitudes.modelDetalleAprobaciones.usuarioCreacion = this.starterService.userIniciador.nombreCompleto;
+    this.solicitudes.modelDetalleAprobaciones.usuarioModificacion = this.starterService.userIniciador.nombreCompleto;
+    this.solicitudes.modelDetalleAprobaciones.fechaCreacion = new Date().toISOString();
+    this.solicitudes.modelDetalleAprobaciones.fechaModificacion = new Date().toISOString();
   }
 
   onCompletar() { //completar tarea mmunoz
@@ -1301,57 +1331,65 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
     let variables = this.generateVariablesFromFormFields();
     // return;
 
-    debugger;
-    this.solicitudes.cargarDetalleAprobacionesArreglo(this.detalleNivelAprobacion).subscribe({
-      next: (res) => {
-        this.camundaRestService
-          .postCompleteTask(this.uniqueTaskId, variables)
-          .subscribe({
-            next: (res) => {
-              console.log("Complete task notificar");
-              //actualizo la solicitud a enviada
-              this.solicitud.empresa = this.model.compania;
-              this.solicitud.idEmpresa = this.model.compania;
+    this.crearRegistradorSolicitud();
 
-              this.solicitud.unidadNegocio = this.model.unidadNegocio;
-              this.solicitud.idUnidadNegocio = this.model.unidadNegocio;
-              if (this.selectedOption == "No") {
-                this.solicitud.estadoSolicitud = "4";
-              } else {
+    this.solicitudes.guardarDetallesAprobacionesSolicitud(this.solicitudes.modelDetalleAprobaciones).subscribe({
+      next: () => {
+        this.solicitudes.cargarDetalleAprobacionesArreglo(this.detalleNivelAprobacion).subscribe({
+          next: (res) => {
+            this.camundaRestService
+              .postCompleteTask(this.uniqueTaskId, variables)
+              .subscribe({
+                next: (res) => {
+                  console.log("Complete task notificar");
+                  //actualizo la solicitud a enviada
+                  this.solicitud.empresa = this.model.compania;
+                  this.solicitud.idEmpresa = this.model.compania;
 
-                this.solicitud.estadoSolicitud = "AN";
-              }
+                  this.solicitud.unidadNegocio = this.model.unidadNegocio;
+                  this.solicitud.idUnidadNegocio = this.model.unidadNegocio;
+                  if (this.selectedOption == "No") {
+                    this.solicitud.estadoSolicitud = "4";
+                  } else {
 
-              console.log("this.solicitud: ", this.solicitud);
-              this.solicitudes
-                .actualizarSolicitud(this.solicitud)
-                .subscribe((responseSolicitud) => {
-                  console.log("responseSolicitud: ", responseSolicitud);
+                    this.solicitud.estadoSolicitud = "AN";
+                  }
+
+                  console.log("this.solicitud: ", this.solicitud);
+                  this.solicitudes
+                    .actualizarSolicitud(this.solicitud)
+                    .subscribe((responseSolicitud) => {
+                      console.log("responseSolicitud: ", responseSolicitud);
 
 
 
-                });
+                    });
 
 
-              this.utilService.closeLoadingSpinner();
-              //fin actualizo la solicitud a enviada
-              this.utilService.modalResponse(
-                `Solicitud registrada correctamente [${this.solicitud.idSolicitud}]. Será redirigido en un momento...`,
-                "success"
-              );
-              setTimeout(() => {
-                this.router.navigate([
-                  "/tareas/consulta-tareas",
-                ]);
-              }, 1800);
-            },
-            error: (error: HttpErrorResponse) => {
-              this.utilService.modalResponse(
-                error.error,
-                "error"
-              );
-            },
-          });
+                  this.utilService.closeLoadingSpinner();
+                  //fin actualizo la solicitud a enviada
+                  this.utilService.modalResponse(
+                    `Solicitud registrada correctamente [${this.solicitud.idSolicitud}]. Será redirigido en un momento...`,
+                    "success"
+                  );
+                  setTimeout(() => {
+                    this.router.navigate([
+                      "/tareas/consulta-tareas",
+                    ]);
+                  }, 1800);
+                },
+                error: (error: HttpErrorResponse) => {
+                  this.utilService.modalResponse(
+                    error.error,
+                    "error"
+                  );
+                },
+              });
+          },
+          error: (err) => {
+            console.error(err);
+          }
+        });
       },
       error: (err) => {
         console.error(err);

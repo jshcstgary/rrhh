@@ -18,6 +18,7 @@ import { ConsultaTareasService } from "./consulta-tareas.service";
 import { DataFilterNivelesAprobacion } from "src/app/eschemas/DataFilterNivelesAprobacion";
 import { MantenimientoService } from "src/app/services/mantenimiento/mantenimiento.service";
 import { Router } from "@angular/router";
+import { SolicitudesService } from "src/app/solicitudes/registrar-solicitud/solicitudes.service";
 
 @Component({
   selector: "app-consulta-tareas",
@@ -58,13 +59,11 @@ export class ConsultaTareasComponent implements OnInit {
     private validationsService: ValidationsService,
     private utilService: UtilService,
     private mantenimientoService: MantenimientoService,
-    private router: Router
+    private router: Router,
+    private solicitudes: SolicitudesService
   ) { }
 
   ngOnInit(): void {
-    this.ObtenerServicioTipoSolicitud();
-    this.ObtenerServicioNivelDireccion();
-    this.ObtenerServicioTipoMotivo();
     this.getDataToTable();
   }
 
@@ -130,7 +129,11 @@ export class ConsultaTareasComponent implements OnInit {
             name: item.name,
             tipoSolicitud: item.tipoSolicitud,
           })
-        )
+        );
+
+        console.log(response);
+        // this.consultaTareasService.
+        // this.solicitudes.obtenerDetallesAprobacionesSolicitudes(this.solicitudes.idSolicitud)
 
         this.utilService.closeLoadingSpinner();
       },
