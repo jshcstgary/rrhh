@@ -232,16 +232,21 @@ export class TableComponent implements OnInit, OnChanges {
    * @param key valor
    */
   public onCheckCell(event: Event, key: string) {
+    debugger;
     const checkValue = (event.target as HTMLInputElement).checked;
+
     if (checkValue && !this.rowsChecked.includes(key)) {
       this.rowsChecked.push(key);
     } else if (!checkValue) {
       this.rowsChecked = this.rowsChecked.filter((value) => value !== key);
     }
+
     this.tableService.onCheckTable(this.tableName, this.rowsChecked);
+
     if (this.onCheck !== undefined) {
       this.contexto[this.onCheck](this.rowsChecked);
     }
+
     this.validateHeaderInputState();
   }
   /**
