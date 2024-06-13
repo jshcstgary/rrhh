@@ -1,4 +1,3 @@
-
 import { Component } from "@angular/core";
 import { ActivatedRoute, ParamMap, Router } from "@angular/router";
 import { CamundaRestService } from "../../camunda-rest.service";
@@ -45,25 +44,44 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
 
   disabledSave: boolean = true;
 
-  tipoProceso: string = '';
+  tipoProceso: string = "";
   tipoFuente: string;
   fechas: any = {
-    actualizacionPerfil: '',
-    busquedaCandidatos: '',
-    entrevista: '',
-    pruebas: '',
-    referencias: '',
-    elaboracionInforme: '',
-    entregaJefe: '',
-    entrevistaJefatura: '',
-    tomaDecisiones: '',
-    candidatoSeleccionado: '',
-    procesoContratacion: '',
-    finProcesoContratacion: '',
-    reingreso: '',
-    finProceso: '',
-    contratacionFamiliares: '',
-    finProcesoFamiliares: ''
+    actualizacionPerfil: "",
+    busquedaCandidatos: "",
+    entrevista: "",
+    pruebas: "",
+    referencias: "",
+    elaboracionInforme: "",
+    entregaJefe: "",
+    entrevistaJefatura: "",
+    tomaDecisiones: "",
+    candidatoSeleccionado: "",
+    procesoContratacion: "",
+    finProcesoContratacion: "",
+    reingreso: "",
+    finProceso: "",
+    contratacionFamiliares: "",
+    finProcesoFamiliares: ""
+  };
+
+  disabledFechas: any = {
+    actualizacionPerfil: false,
+    busquedaCandidatos: false,
+    entrevista: false,
+    pruebas: false,
+    referencias: false,
+    elaboracionInforme: false,
+    entregaJefe: false,
+    entrevistaJefatura: false,
+    tomaDecisiones: false,
+    candidatoSeleccionado: false,
+    procesoContratacion: false,
+    finProcesoContratacion: false,
+    reingreso: false,
+    finProceso: false,
+    contratacionFamiliares: false,
+    finProcesoFamiliares: false
   };
 
 
@@ -91,12 +109,13 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
   isCheckedEntrevista: boolean = false;
 
   nombreCandidato: string = "";
+  disabledNombreCandidato: boolean = false;
   codigoSolicitudProceso: string = "";
 
   toggleDivVisibility(event: Event): void {
     const inputElement = event.target as HTMLInputElement;
     this.isChecked = inputElement.checked;
-    this.isDivVisible = !this.isChecked;
+    this.isDivVisible = this.isChecked;
   }
 
   override model: RegistrarData = new RegistrarData(
@@ -415,9 +434,121 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
 
     this.selectedOption = this.options[0].descripcion;
 
-    if (this.tipoProceso !== "") {
+    this.getCandidatoValues();
+
+    if (this.model.tipoProceso !== "") {
       this.disabledSave = false;
     }
+  }
+
+  getCandidatoValues() {
+    this.seleccionCandidatoService.getCandidatoById(this.id_solicitud_by_params).subscribe({
+      next: (res) => {
+        console.log(res);
+
+        const candidatoValues = res.seleccionCandidatoType[0];
+
+        console.log(candidatoValues);
+
+        this.model.tipoProceso = candidatoValues.tipoProceso;
+        this.selectedOption = candidatoValues.fuenteExterna;
+        this.isChecked = candidatoValues.tipoFuente;
+        console.log(this.isChecked);
+
+        if (this.model.tipoProceso !== "") {
+          this.disabledSave = false;
+        }
+
+        this.disabledFechas.fechaActualizacion = this.fechas.fechaActualizacion !== null && this.fechas.fechaActualizacion !== "";
+        this.fechas.fechaActualizacion = candidatoValues.actualizacionDelPerfil === null ? "" : this.getFormattedDate(candidatoValues.actualizacionDelPerfil);
+        if (this.disabledFechas.fechaActualizacion) {
+          this.isCheckedPerfil = true;
+        }
+
+        this.disabledFechas.busquedaCandidatos = this.fechas.busquedaCandidatos !== null && this.fechas.busquedaCandidatos !== "";
+        this.fechas.busquedaCandidatos = candidatoValues.busquedaDeCandidatos === null ? "" : this.getFormattedDate(candidatoValues.busquedaDeCandidatos);
+        if (this.disabledFechas.busquedaCandidatos) {
+          this.isCheckedBusquedaCandidato = true;
+        }
+
+        this.disabledFechas.entrevista = this.fechas.entrevista !== null && this.fechas.entrevista !== "";
+        this.fechas.entrevista = candidatoValues.entrevista === null ? "" : this.getFormattedDate(candidatoValues.entrevista);
+        if (this.disabledFechas.entrevista) {
+          this.isCheckedEntrevista = true;
+        }
+
+        this.disabledFechas.pruebas = this.fechas.pruebas !== null && this.fechas.pruebas !== "";
+        this.fechas.pruebas = candidatoValues.pruebas === null ? "" : this.getFormattedDate(candidatoValues.pruebas);
+        if (this.disabledFechas.pruebas) {
+          this.isCheckedPruebas = true;
+        }
+
+        this.disabledFechas.referencias = this.fechas.referencias !== null && this.fechas.referencias !== "";
+        this.fechas.referencias = candidatoValues.referencias === null ? "" : this.getFormattedDate(candidatoValues.referencias);
+        if (this.fechas.referencias !== null && this.fechas.referencias !== "") {
+          this.isCheckedReferencias = true;
+        }
+
+        this.disabledFechas.elaboracionDeInforme = this.fechas.elaboracionInforme !== null && this.fechas.elaboracionInforme !== "";
+        this.fechas.elaboracionInforme = candidatoValues.elaboracionDeInforme === null ? "" : this.getFormattedDate(candidatoValues.elaboracionDeInforme);
+        if (this.disabledFechas.elaboracionDeInforme) {
+          this.isCheckedElaboracionInforme = true;
+        }
+
+        this.disabledFechas.entregaJefe = this.fechas.entregaJefe !== null && this.fechas.entregaJefe !== "";
+        this.fechas.entregaJefe = candidatoValues.entregaAlJefeSol === null ? "" : this.getFormattedDate(candidatoValues.entregaAlJefeSol);
+        if (this.disabledFechas.entregaJefe) {
+          this.isCheckedEntregaJefe = true;
+        }
+
+        this.disabledFechas.entrevistaJefatura = this.fechas.entrevistaJefatura !== null && this.fechas.entrevistaJefatura !== "";
+        this.fechas.entrevistaJefatura = candidatoValues.entrevistaPorJefatura === null ? "" : this.getFormattedDate(candidatoValues.entrevistaPorJefatura);
+        if (this.disabledFechas.entrevistaJefatura) {
+          this.isCheckedEntrevistaJefatura = true;
+          }
+
+        this.disabledFechas.tomaDecisiones = this.fechas.tomaDecisiones !== null && this.fechas.tomaDecisiones !== "";
+        this.fechas.tomaDecisiones = candidatoValues.tomaDeDesiciones === null ? "" : this.getFormattedDate(candidatoValues.tomaDeDesiciones);
+        if (this.disabledFechas.tomaDecisiones) {
+          this.isCheckedTomaDecisiones = true;
+        }
+
+        this.disabledFechas.candidatoSeleccionado = this.fechas.candidatoSeleccionado !== null && this.fechas.candidatoSeleccionado !== "";
+        this.fechas.candidatoSeleccionado = candidatoValues.candidatoSeleccionado === null ? "" : this.getFormattedDate(candidatoValues.candidatoSeleccionado);
+        if (this.disabledFechas.candidatoSeleccionado) {
+          this.isCheckedCandidatoSeleccionado = true;
+        }
+
+        this.disabledFechas.procesoContratacion = this.fechas.procesoContratacion !== null && this.fechas.procesoContratacion !== "";
+        this.fechas.procesoContratacion = candidatoValues.procesoDeContratacion === null ? "" : this.getFormattedDate(candidatoValues.procesoDeContratacion);
+        if (this.disabledFechas.procesoContratacion) {
+          this.isCheckedProcesoContratacion = true;
+        }
+
+        this.disabledFechas.finProcesoContratacion = this.fechas.finProcesoContratacion !== null && this.fechas.finProcesoContratacion !== "";
+        this.fechas.finProcesoContratacion = candidatoValues.finProcesoContratacion === null ? "" : this.getFormattedDate(candidatoValues.finProcesoContratacion);
+        if (this.disabledFechas.finProcesoContratacion) {
+          this.isCheckedFinContratacion = true;
+        }
+
+        this.fechas.reingreso = candidatoValues.reingreso === null ? "" : this.getFormattedDate(candidatoValues.reingreso);
+
+        this.fechas.finProceso = candidatoValues.finProceso === null ? "" : this.getFormattedDate(candidatoValues.finProceso);
+
+        this.fechas.contratacionFamiliares = candidatoValues.contratacionFamiliares === null ? "" : this.getFormattedDate(candidatoValues.contratacionFamiliares);
+
+        this.fechas.finProcesoFamiliares = candidatoValues.finProcesoFamiliares === null ? "" : this.getFormattedDate(candidatoValues.finProcesoFamiliares);
+
+        this.nombreCandidato = candidatoValues.candidato;
+        this.disabledNombreCandidato = this.nombreCandidato !== "";
+        console.log(this.nombreCandidato);
+      },
+      error: (err) => {
+        console.log(console.log(err));
+
+        this.disabledSave = false;
+      }
+    });
   }
 
   getCurrentDate() {
@@ -1202,7 +1333,26 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
 
     this.seleccionCandidatoService.saveCandidato(request).subscribe({
       next: () => {
-        console.log("Guardado correctamente");
+        Swal.fire({
+          text: "Datos actualizados con éxito",
+          icon: "success",
+          confirmButtonColor: "rgb(227, 199, 22)",
+          confirmButtonText: "Sí"
+        });
+
+        this.disabledFechas.fechaActualizacion = this.fechas.fechaActualizacion !== null && this.fechas.fechaActualizacion !== "";
+        this.disabledFechas.busquedaCandidatos = this.fechas.busquedaCandidatos !== null && this.fechas.busquedaCandidatos !== "";
+        this.disabledFechas.entrevista = this.fechas.entrevista !== null && this.fechas.entrevista !== "";
+        this.disabledFechas.pruebas = this.fechas.pruebas !== null && this.fechas.pruebas !== "";
+        this.disabledFechas.referencias = this.fechas.referencias !== null && this.fechas.referencias !== "";
+        this.disabledFechas.elaboracionDeInforme = this.fechas.elaboracionInforme !== null && this.fechas.elaboracionInforme !== "";
+        this.disabledFechas.entregaJefe = this.fechas.entregaJefe !== null && this.fechas.entregaJefe !== "";
+        this.disabledFechas.entrevistaJefatura = this.fechas.entrevistaJefatura !== null && this.fechas.entrevistaJefatura !== "";
+        this.disabledFechas.tomaDecisiones = this.fechas.tomaDecisiones !== null && this.fechas.tomaDecisiones !== "";
+        this.disabledFechas.candidatoSeleccionado = this.fechas.candidatoSeleccionado !== null && this.fechas.candidatoSeleccionado !== "";
+        this.disabledFechas.procesoContratacion = this.fechas.procesoContratacion !== null && this.fechas.procesoContratacion !== "";
+        this.disabledFechas.finProcesoContratacion = this.fechas.finProcesoContratacion !== null && this.fechas.finProcesoContratacion !== "";
+        this.disabledNombreCandidato = this.nombreCandidato !== "";
       },
       error: (error) => {
         console.error(error);
@@ -1288,11 +1438,41 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
                               idSolicitud: res.idSolicitud
                             }
 
+                            const request = {
+                                  iD_SOLICITUD: this.solicitud.idSolicitud,
+                                  iD_SOLICITUD_PROCESO: res.idSolicitud,
+                                  tipoFuente: null,
+                                  fuenteExterna: null,
+                                  tipoProceso: null,
+                                  candidato: null,
+                                  actualizacionDelPerfil: null,
+                                  busquedaDeCandidatos: null,
+                                  entrevista: null,
+                                  pruebas: null,
+                                  referencias: null,
+                                  elaboracionDeInforme: null,
+                                  entregaAlJefeSol: null,
+                                  entrevistaPorJefatura: null,
+                                  tomaDeDesiciones: null,
+                                  candidatoSeleccionado: null,
+                                  procesoDeContratacion: null,
+                                  finProcesoContratacion: null,
+                                  fechaInicioReingreso: null,
+                                  fechaFinReingreso: null,
+                                  fechaInicioContratacionFamiliares: null,
+                                  fechaFinContratacionFamiliares: null,
+                                  fechaIngresoCandidato: null
+                                };
+                            this.seleccionCandidatoService.saveCandidato(request).subscribe({
+                              next: (res) => {
+                                console.log(res);
                             this.solicitudes.guardarDetalleSolicitud(detalle).subscribe({
                               next: (res) => {
                                 console.log(res);
                               }
                             });
+                           }
+                           });
                           }
                         });
                       }
@@ -1364,10 +1544,6 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
         }
 
       });
-  }
-
-  reasignarSolicitud() {
-
   }
 
   override generateVariablesFromFormFields() {
@@ -1651,8 +1827,8 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
     console.log('Checkbox value:', this.isCheckedPerfil);
   }
 
-  getFormattedDate(): string {
-    const date = new Date();
+  getFormattedDate(dateValue: string = ""): string {
+    const date = dateValue === "" ? new Date() : new Date(dateValue);
     const day = String(date.getDate()).padStart(2, '0');
     const month = String(date.getMonth() + 1).padStart(2, '0'); // Enero es 0!
     const year = date.getFullYear();
