@@ -1,0 +1,930 @@
+<form (ngSubmit)="onSubmit()" #SolicitudForm="ngForm" #solicitudForm="ngForm">
+    <div class="card">
+      <div class="card-body text-start">
+        <div class="row">
+          <div class="col-md-8">
+            <div class="mb-3">
+              <a (click)="pageSolicitudes()">
+                <h2 class="sol-danger">
+                  <i class="bi bi-arrow-left-circle azul"></i>
+                  {{ solicitud.idSolicitud }}
+                </h2>
+              </a>
+            </div>
+          </div>
+  
+          <div class="col-md-12 text-end">
+            <button
+              type="button"
+              (click)="openModalReasignar('dialogReasignarUsuario')"
+              class="btn btn-info me-2 mt-1"
+            >
+              <i class="fas fa-redo"></i> Reasignar
+            </button>
+            <button
+              type="button"
+              type="submit"
+              class="btn btn-info me-2 mt-1"
+              aria-label="Close"
+              [disabled]="!solicitudForm.form.valid"
+            >
+              <i class="fas fa-save"></i> Guardar
+            </button>
+  
+            <button
+              type="button"
+              (click)="onCompletar()"
+              class="btn btn-info me-2 mt-1"
+            >
+              <i class="fas fa-check-circle"></i> Completar Tarea
+            </button>
+          </div>
+        </div>
+  
+        <div class="row mt-4">
+          <div class="col-md-4">
+            <div class="input-group mb-3">
+              <label class="label-estilo" for="origin"
+                >Creado por:</label
+              >
+              <span
+                id="origin"
+                name=""
+                style="color: black; font-size: 14px"
+                class="text-start"
+                >{{ this.solicitud.usuarioCreacion }}</span
+              >
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="input-group mb-3">
+              <label class="label-estilo" for="unidadnegocio"
+                >Fecha:</label
+              >
+              <span
+                id="date"
+                name=""
+                style="color: black; font-size: 14px"
+                class="text-start"
+                >{{ this.solicitud.fechaCreacion | date:'yyyy/MM/dd' }}</span
+              >
+            </div>
+          </div>
+          <div class="col-md-4 mb-4">
+            <div class="input-group mb-3">
+              <label class="label-estilo" for="unidadnegocio"
+                >Nro. Solicitud:</label
+              >
+              <span
+                id="solicitud"
+                name=""
+                style="color: black; font-size: 14px"
+                class="text-start"
+                >{{ this.solicitud.idSolicitud }}</span
+              >
+            </div>
+          </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-md-5">
+              <div class="input-group mb-3">
+                <label class="input-group label-estilo" for="tipoMotivo"
+                  >Nombre de Empleado</label
+                >
+                &nbsp;
+                <input-component
+                  [id]="'searchInputFilter'"
+                  [type]="'string'"
+                  [buttonIcon]="'ti-search'"
+                  buttonFunction="filterStringInTable"
+                  onChangeFunction="filterStringInTable"
+                  placeholder="Buscar por nombre"
+                  style="width: 50%"
+                ></input-component>
+              </div>
+            </div>
+            <div class="col-md-1"></div>
+            <div class="col-md-5">
+                <div class="input-group mb-3">
+                  <label class="input-group label-estilo" for="tipoMotivo"
+                    >Subledger</label
+                  >
+                  &nbsp;
+                  <input-component
+                    [id]="'searchInputFilter'"
+                    [type]="'string'"
+                    [buttonIcon]="'ti-search'"
+                    buttonFunction="filterStringInTable"
+                    onChangeFunction="filterStringInTable"
+                    placeholder="Buscar por subledger"
+                    style="width: 50%; margin-left: -15%;"
+                  ></input-component>
+                </div>
+              </div>
+                
+          </div>
+  
+        <div class="row mt-2">
+          <div class="col-md-6">
+            <div class="mb-4">
+              <a>
+                <h2 class="sol-danger">Información de Empleados - Datos Actuales</h2>
+              </a>
+            </div>
+          </div>
+  
+          <div class="col-md-6">
+            <hr />
+          </div>
+        </div>
+
+        <div class="row mb-2">
+          <div class="col-md-4">
+            <div class="input-group mb-3">
+              <label class="input-group label-estilo" for="tipoSolicitud"
+                >Fecha de Ingreso</label
+              >
+              &nbsp;
+              <span
+                #mivar
+                id="tipoSolicitud"
+                name="tipoSolicitud"
+                style="color: black; font-size: 14px"
+                class="text-start"
+                >{{ '' }}</span
+              >
+            </div>
+          </div>
+        </div>
+
+        <div class="row mt-4">
+          <div class="col-md-4">
+            <div class="input-group mb-3">
+              <label class="input-group label-estilo" for="tipoMotivo"
+                >Compañia</label
+              >
+              &nbsp;
+              <span
+                id="comp"
+                name="comp"
+                style="color: black; font-size: 14px"
+                class="text-start"
+                >{{ "LACTEOS" }}</span
+              >
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="input-group mb-3">
+              <label class="input-group label-estilo" for="tipoMotivo"
+                >Unidad</label
+              >
+              &nbsp;
+              <span
+                id="unidad"
+                name="unidad"
+                style="color: black; font-size: 14px"
+                class="text-start"
+                >{{ "LECHE" }}</span
+              >
+            </div>
+          </div>
+        </div>
+
+        <div class="row mt-4">
+          <div class="col-md-4">
+            <div class="input-group mb-3">
+              <label class="input-group label-estilo" for="tipoMotivo"
+                >Area / Departamento</label
+              >
+              &nbsp;
+              <span
+                id="comp"
+                name="comp"
+                style="color: black; font-size: 14px"
+                class="text-start"
+                >{{ "Gerencia" }}</span
+              >
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="input-group mb-3">
+              <label class="input-group label-estilo" for="tipoMotivo"
+                >Localidad</label
+              >
+              &nbsp;
+              <span
+                id="unidad"
+                name="unidad"
+                style="color: black; font-size: 14px"
+                class="text-start"
+                >{{ "" }}</span
+              >
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="input-group mb-3">
+              <label class="input-group label-estilo" for="tipoMotivo"
+                >Grupo de Pago</label
+              >
+              &nbsp;
+              <span
+                id="unidad"
+                name="unidad"
+                style="color: black; font-size: 14px"
+                class="text-start"
+                >{{ "grupo_pago" }}</span
+              >
+            </div>
+          </div>
+        </div>
+
+        <div class="row mt-4">
+          <div class="col-md-4">
+            <div class="input-group mb-3">
+              <label class="input-group label-estilo" for="tipoMotivo"
+                >Puesto</label
+              >
+              &nbsp;
+              <span
+                id="comp"
+                name="comp"
+                style="color: black; font-size: 14px"
+                class="text-start"
+                >{{ "Gerencia media" }}</span
+              >
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="input-group mb-3">
+              <label class="input-group label-estilo" for="tipoMotivo"
+                >Centro de Costo</label
+              >
+              &nbsp;
+              <span
+                id="unidad"
+                name="unidad"
+                style="color: black; font-size: 14px"
+                class="text-start"
+                >{{ "" }}</span
+              >
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="input-group mb-3">
+              <label class="input-group label-estilo" for="tipoMotivo"
+                >Sucursal (Nominá)</label
+              >
+              &nbsp;
+              <span
+                id="unidad"
+                name="unidad"
+                style="color: black; font-size: 14px"
+                class="text-start"
+                >{{ "Nuevo Mexico" }}</span
+              >
+            </div>
+          </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-md-3"></div>
+            <div class="col-md-6">
+                <label
+                    class="input-group label-estilo"
+                    style="font-size: 20px; color: black"
+                    for="tipoMotivo"
+                    >Tipo de Variable
+                </label>
+            </div>
+        </div>
+
+        <div class="row mt-4">
+          <div class="col-md-3">
+            <div class="input-group mb-3">
+              <label class="input-group label-estilo" for="tipoMotivo"
+                >Sueldo</label
+              >
+              &nbsp;
+              <span
+                id="comp"
+                name="comp"
+                style="color: black; font-size: 14px"
+                class="text-start"
+                >{{ "100" }}</span
+              >
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="input-group mb-3">
+              <label class="input-group label-estilo" for="me"
+                >Mensual</label
+              >
+              &nbsp;
+              <span
+                id="me"
+                name="me"
+                style="color: black; font-size: 14px"
+                class="text-start"
+                >{{ "" }}</span
+              >
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="input-group mb-3">
+              <label class="input-group label-estilo" for="mov"
+                >Movilizacion</label
+              >
+              &nbsp;
+              <span
+                id="mov"
+                name="mov"
+                style="color: black; font-size: 14px"
+                class="text-start"
+                >{{ "" }}</span
+              >
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="input-group mb-3">
+              <label class="input-group label-estilo" for="al"
+                >Alimentacion</label
+              >
+              &nbsp;
+              <span
+                id="al"
+                name="al"
+                style="color: black; font-size: 14px"
+                class="text-start"
+                >{{ "" }}</span
+              >
+            </div>
+          </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-md-3"></div>
+            <div class="col-md-3">
+                <div class="input-group mb-3">
+                  <label class="input-group label-estilo" for="al"
+                    >Trimestral</label
+                  >
+                  &nbsp;
+                  <span
+                    id="al"
+                    name="al"
+                    style="color: black; font-size: 14px"
+                    class="text-start"
+                    >{{ "" }}</span
+                  >
+                </div>
+              </div>
+        </div>
+        <div class="row mt-4">
+            <div class="col-md-3"></div>
+            <div class="col-md-3">
+                <div class="input-group mb-3">
+                  <label class="input-group label-estilo" for="al"
+                    >Semestral</label
+                  >
+                  &nbsp;
+                  <span
+                    id="al"
+                    name="al"
+                    style="color: black; font-size: 14px"
+                    class="text-start"
+                    >{{ "" }}</span
+                  >
+                </div>
+              </div>
+        </div>
+        <div class="row mt-4">
+            <div class="col-md-3"></div>
+            <div class="col-md-3">
+                <div class="input-group mb-3">
+                  <label class="input-group label-estilo" for="al"
+                    >Anual</label
+                  >
+                  &nbsp;
+                  <span
+                    id="al"
+                    name="al"
+                    style="color: black; font-size: 14px"
+                    class="text-start"
+                    >{{ "" }}</span
+                  >
+                </div>
+              </div>
+        </div>
+  
+        <div class="row mt-4">
+          <div class="col-md-6">
+            <div class="mb-4">
+              <a>
+                <h2 class="sol-danger">Informacion de Empleados - Datos Propuestos</h2>
+              </a>
+            </div>
+          </div>
+  
+          <div class="col-md-6">
+            <hr />
+          </div>
+        </div>
+  
+        <div class="row mt-4">
+          <div class="col-md-4">
+            <div class="input-group mb-3">
+              <label class="input-group label-estilo" for="feCambio"
+                >Fecha de Cambio*</label
+              >
+              <input-component
+                [id]="'feCambio'"
+                [type]="'string'"
+                buttonFunction="filterStringInTable"
+                onChangeFunction="filterStringInTable"
+                placeholder=""
+                style="width: 50%"
+              ></input-component>
+           
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-check form-check-inline">
+              <div class="form-check">
+                <input type="checkbox" class="form-check-input" id="customCheck1"
+                     checked>
+                <label class="form-check-label" for="customCheck1">Transferencia de Compañia</label>
+            </div>
+              </div>
+          </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-md-4">
+                <div class="input-group mb-3">
+                  <label class="input-group label-estilo" for="al"
+                    >Compañia*</label
+                  >
+                  &nbsp;
+                  <span
+                    id="al"
+                    name="al"
+                    style="color: black; font-size: 14px"
+                    class="text-start"
+                    >{{ "REYBANPAC" }}</span
+                  >
+                </div>
+              </div>
+            <div class="col-md-4">
+                <div class="input-group mb-3">
+                  <label class="input-group label-estilo" for="al"
+                    >Unidad de Negocio*</label
+                  >
+                  &nbsp;
+                  <span
+                    id="al"
+                    name="al"
+                    style="color: black; font-size: 14px"
+                    class="text-start"
+                    >{{ "BANANO" }}</span
+                  >
+                </div>
+              </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-md-4">
+              <div class="input-group mb-3">
+                <label class="input-group label-estilo" for="area"
+                  >Area / Departamento*</label
+                >
+                &nbsp;
+                <input-component
+                [id]="'area'"
+                [type]="'string'"
+                buttonFunction=""
+                onChangeFunction=""
+                placeholder=""
+                style="width: 40%"
+              ></input-component>
+                
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="input-group mb-3">
+                <label class="input-group label-estilo" for="localidad"
+                  >Localidad*</label
+                >
+                &nbsp;
+                <input-component
+                [id]="'localidad'"
+                [type]="'string'"
+                buttonFunction=""
+                onChangeFunction=""
+                placeholder=""
+                style="width: 40%"
+              ></input-component>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="input-group mb-3">
+                <label class="input-group label-estilo" for="tipoMotivo"
+                  >Grupo de Pago*</label
+                >
+                &nbsp;
+                <input-component
+                [id]="'group'"
+                [type]="'string'"
+                buttonFunction=""
+                onChangeFunction=""
+                placeholder=""
+                style="width: 40%"
+              ></input-component>
+                
+              </div>
+            </div>
+          </div>
+  
+          <div class="row mt-4">
+            <div class="col-md-4">
+              <div class="input-group mb-3">
+                <label class="input-group label-estilo" for="tipoMotivo"
+                  >Puesto*</label
+                >
+                &nbsp;
+                <input-component
+                [id]="'localidad'"
+                [type]="'string'"
+                buttonFunction=""
+                onChangeFunction=""
+                placeholder=""
+                style="width: 40%"
+              ></input-component>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="input-group mb-3">
+                <label class="input-group label-estilo" for="centro"
+                  >Centro de Costo*</label
+                >
+                &nbsp;
+                <input-component
+                [id]="'centro'"
+                [type]="'string'"
+                buttonFunction=""
+                onChangeFunction=""
+                placeholder=""
+                style="width: 40%"
+              ></input-component>
+                
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="input-group mb-3">
+                <label class="input-group label-estilo" for="sucu"
+                  >Sucursal (Nominá)*</label
+                >
+                &nbsp;
+                <input-component
+                [id]="'sucu'"
+                [type]="'string'"
+                buttonFunction=""
+                onChangeFunction=""
+                placeholder=""
+                style="width: 40%"
+              ></input-component>
+                
+              </div>
+            </div>
+          </div>
+  
+          <div class="row mt-4">
+              <div class="col-md-3"></div>
+              <div class="col-md-6">
+                  <label
+                      class="input-group label-estilo"
+                      style="font-size: 20px; color: black"
+                      for="tipoMotivo"
+                      >Tipo de Variable
+                  </label>
+              </div>
+          </div>
+  
+          <div class="row mt-4">
+            <div class="col-md-3">
+              <div class="input-group mb-3">
+                <label class="input-group label-estilo" for="sueldo"
+                  >Sueldo*</label
+                >
+                &nbsp;
+                <input-component
+                [id]="'sueldo'"
+                [type]="'string'"
+                buttonFunction=""
+                onChangeFunction=""
+                placeholder=""
+                style="width: 40%"
+              ></input-component>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="input-group mb-3">
+                <label class="input-group label-estilo" for="me"
+                  >Mensual*</label
+                >
+                &nbsp;
+                <input-component
+                [id]="'me'"
+                [type]="'string'"
+                buttonFunction=""
+                onChangeFunction=""
+                placeholder=""
+                style="width: 40%"
+              ></input-component>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="input-group mb-3">
+                <label class="input-group label-estilo" for="movi"
+                  >Movilizacion*</label
+                >
+                &nbsp;
+                <input-component
+                [id]="'movi'"
+                [type]="'string'"
+                buttonFunction=""
+                onChangeFunction=""
+                placeholder=""
+                style="width: 40%"
+              ></input-component>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="input-group mb-3">
+                <label class="input-group label-estilo" for="ali"
+                  >Alimentacion*</label
+                >
+                &nbsp;
+                <input-component
+                [id]="'ali'"
+                [type]="'string'"
+                buttonFunction=""
+                onChangeFunction=""
+                placeholder=""
+                style="width: 40%"
+              ></input-component>
+                
+              </div>
+            </div>
+          </div>
+  
+          <div class="row mt-4">
+              <div class="col-md-3"></div>
+              <div class="col-md-3">
+                  <div class="input-group mb-3">
+                    <label class="input-group label-estilo" for="tri"
+                      >Trimestral*</label
+                    >
+                    &nbsp;
+                    <input-component
+                [id]="'tri'"
+                [type]="'string'"
+                buttonFunction=""
+                onChangeFunction=""
+                placeholder=""
+                style="width: 40%"
+              ></input-component>
+                  </div>
+                </div>
+          </div>
+          <div class="row mt-4">
+              <div class="col-md-3"></div>
+              <div class="col-md-3">
+                  <div class="input-group mb-3">
+                    <label class="input-group label-estilo" for="seme"
+                      >Semestral*</label
+                    >
+                    &nbsp;
+                    <input-component
+                [id]="'seme'"
+                [type]="'string'"
+                buttonFunction=""
+                onChangeFunction=""
+                placeholder=""
+                style="width: 40%"
+              ></input-component>
+                  </div>
+                </div>
+          </div>
+          <div class="row mt-4">
+              <div class="col-md-3"></div>
+              <div class="col-md-3">
+                  <div class="input-group mb-3">
+                    <label class="input-group label-estilo" for="anu"
+                      >Anual*</label
+                    >
+                    &nbsp;
+                    <input-component
+                [id]="'anu'"
+                [type]="'string'"
+                buttonFunction=""
+                onChangeFunction=""
+                placeholder=""
+                style="width: 40%"
+              ></input-component>
+                  </div>
+                </div>
+          </div>
+
+          <div class="row mt-4 mb-4">
+              <div class="col-md-6">
+                  <label
+                      class="input-group label-estilo"
+                      style="font-size: 20px; color: black"
+                      for="tipoMotivo"
+                      >Descripcion
+                  </label>
+              </div>
+          </div>
+
+          <div class="row mt-4">
+            <div class="col-md-12">
+                <div class="input-group label-estilo mb-3">
+                  <label class="azul" style="margin-left: 10px;">Tipo de Accion</label>
+                  <ng-select
+                    #inputSelectLabor
+                    name="id_tipo_labor"
+                    placeholder="Transferencia de posicion"
+                    style="margin-left: 22%;"
+                  >
+                  </ng-select>
+                  {{ selected_tipo_accion }}
+                </div>
+              </div>
+          </div>
+
+          <div class="row">
+            <div class="col">
+              <div class="input-group mb-3 contenedor">
+              <label
+                  class="input-group-text adjustable-label adjustable-label"
+                  for="justi"
+                  >Justificacion*
+              </label>
+              &nbsp;
+                <textarea
+                  id="justi"
+                  name="justi"
+                  style="color: black; font-size: 14px; height: 100px;"
+                ></textarea>
+              </div>
+            </div>
+          </div>
+  
+  
+        <div class="row mt-4">
+          <div class="col-md-3">
+            <div class="mb-4">
+              <a>
+                <h3 class="sol-danger">Aprobadores de la solicitud</h3>
+              </a>
+            </div>
+          </div>
+  
+          <div class="col-md-9">
+            <hr />
+          </div>
+        </div>
+  
+        <div class="accordion" id="accordionExample">
+          <div
+            *ngFor="
+              let nivelItem of dataAprobacionesPorPosicion[keySelected];
+              let i = index
+            "
+            class="accordion-item"
+          >
+            <div class="accordion-header">
+              <button
+                class="accordion-button"
+                type="button"
+                data-bs-toggle="collapse"
+                [attr.data-bs-target]="'#collapse' + i"
+                aria-expanded="true"
+                [attr.aria-controls]="'collapse' + i"
+                style="display: block"
+              >
+                <div
+                  class="row"
+                  style="align-items: center; justify-content: space-around"
+                >
+                  <div class="col">{{ nivelItem.nivelAprobacionType.ruta }}</div>
+  
+                  <div class="col">
+                    {{
+                      nivelItem.aprobador.usuario !== "" &&
+                      nivelItem.aprobador.usuario !== undefined &&
+                      nivelItem.aprobador.usuario != null
+                        ? nivelItem.aprobador.usuario
+                        : "No aplica"
+                    }}
+                  </div>
+  
+                  <div class="col">
+                    {{ nivelItem.nivelAprobacionType.nivelAprobacionRuta }}
+                  </div>
+                </div>
+              </button>
+            </div>
+  
+            <div
+              [id]="'collapse' + i"
+              class="accordion-collapse collapse"
+              [ngClass]="{ show: i === 0 }"
+              data-bs-parent="#accordionExample"
+            >
+              <div class="row">
+                <div class="col">
+                  <div class="input-group">
+                    <label for="lvl1descripcion">
+                      Descripción de la posición
+                    </label>
+  
+                    &nbsp;
+  
+                    <span
+                      id="lvl1descripcion"
+                      name=""
+                      style="color: black; font-size: 14px"
+                    >
+                      {{
+                        nivelItem.aprobador.descripcionPosicion !== "" &&
+                        nivelItem.aprobador.descripcionPosicion !== undefined &&
+                        nivelItem.aprobador.descripcionPosicion != null
+                          ? nivelItem.aprobador.descripcionPosicion
+                          : "No aplica"
+                      }}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-md-4">
+              <div class="mb-4">
+                <a> <h3 class="sol-danger">Anulación de Solicitud</h3></a>
+              </div>
+            </div>
+            <div class="col-md-8">
+              <hr />
+            </div>
+          </div>
+    
+          <div class="row" >
+            <div class="col">
+              <div class="input-group mb-3 contenedor">
+              <label
+                  class="input-group-text adjustable-label"
+                  for="anular"
+                  >¿Anular Solicitud?</label>
+                &nbsp;
+    
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="Si" [(ngModel)]="selectedOptionAnulacion" (change)="onSelectionChange()">
+                  <label class="form-check-label" for="inlineRadio1">Si</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="No" [(ngModel)]="selectedOptionAnulacion" (change)="onSelectionChange()">
+                  <label class="form-check-label" for="inlineRadio2">No</label>
+                </div>
+    
+              </div>
+            </div>
+          </div>
+    
+          <div class="row">
+            <div class="col">
+              <div class="input-group mb-3 contenedor">
+              <label
+                  class="input-group adjustable-label adjustable-label"
+                  for="anulacion"
+                  >Comentarios Anulación de Solicitud
+              </label>
+              &nbsp;
+                <textarea
+                  id="anulacion"
+                  name="anulacion"
+                  [(ngModel)]="model.comentariosAnulacion"
+                  style="color: black; font-size: 14px; height: 100px;"
+                ></textarea>
+              </div>
+            </div>
+          </div>
+  
+      </div>
+    </div>
+  </form>
+  
