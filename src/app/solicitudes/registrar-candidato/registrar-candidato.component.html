@@ -442,7 +442,7 @@
 
 
             <select *ngIf="tipoProcesoSaved === ''; else tipoProceso" id="tipoproceso" name="tipoproceso" class="form-select" style="font-size: 14px"
-              [(ngModel)]="model.tipoProceso" (change)="onChangeTipoProceso()" required [disabled]="disabledTipoProceso">
+              [(ngModel)]="model.tipoProceso" (change)="onChangeTipoProceso($event)" required [disabled]="disabledTipoProceso">
               <option value="">Seleccione...</option>
 
               <option *ngFor="let dato of dataTipoProceso; let i = index" [value]="dato.descripcion" [selected]="i > 0 && model.tipoProceso === dato.descripcion">
@@ -635,8 +635,9 @@
         <div class="col-md-4 d-flex ">
           <label for="input1" class="input-group-text adjustable-label">Inicio de proceso</label>
           <input id="input1" type="text" class="form-control" readonly
-            [value]="fechas.reingreso !== '' ? fechas.reingreso : model.tipoProceso !== 'reingresoPersonal' ? '' : getCurrentDate()">
+            [value]="fechas.reingreso">
         </div>
+        
         <div class="col-md-4 d-flex ">
           <label for="input2" class="input-group-text adjustable-label">Fin de proceso</label>
           <input id="input2" type="text" class="form-control" readonly [value]="fechas.finProceso">
@@ -658,7 +659,7 @@
         <div class="col-md-4 d-flex ">
           <label for="input1" class="input-group-text adjustable-label">Inicio de proceso</label>
           <input id="input1" type="text" class="form-control" readonly
-            [value]="fechas.contratacionFamiliares !== '' ? fechas.contratacionFamiliares : model.tipoProceso !== 'contratacionFamiliares' ? '' : getCurrentDate()">
+            [value]="fechas.contratacionFamiliares">
         </div>
         <div class="col-md-4 d-flex ">
           <label for="input2" class="input-group-text adjustable-label">Fin de proceso</label>

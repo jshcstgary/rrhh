@@ -1433,7 +1433,11 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
         .obtenerNivelesAprobacionRegistrados(this.solicitud.idSolicitud)
         .subscribe({
           next: (response) => {
-            this.mapearDetallesAprobadores(response);
+            // this.mapearDetallesAprobadores(response);
+
+            this.dataAprobacionesPorPosicion = {
+              [this.keySelected]: response.nivelAprobacionPosicionType
+            }
           },
           error: (error: HttpErrorResponse) => {
             this.utilService.modalResponse(
@@ -1447,52 +1451,52 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
 
   }
 
-  mapearDetallesAprobadores(nivelAprobacionPosicionType: any) {
-    const arrayAprobadores = nivelAprobacionPosicionType.detalleAprobadorSolicitud.map((detalleAprobador) => ({
-      nivelAprobacionType: {
-        idNivelAprobacion: detalleAprobador.id_NivelAprobacion,
-        idNivelAprobacionRuta: detalleAprobador.nivelAprobacionRuta,
-        nivelAprobacionRuta: detalleAprobador.nivelAprobacionRuta,
-        idTipoSolicitud: Number(detalleAprobador.id_TipoSolicitud),
-        tipoSolicitud: detalleAprobador.tipoSolicitud,
-        idAccion: detalleAprobador.id_Accion,
-        accion: detalleAprobador.accion,
-        idNivelDireccion: detalleAprobador.nivelDireccion,
-        nivelDireccion: detalleAprobador.nivelDireccion,
-        idRuta: detalleAprobador.id_Ruta,
-        ruta: detalleAprobador.ruta,
-        idTipoMotivo: detalleAprobador.id_TipoMotivo,
-        tipoMotivo: detalleAprobador.motivo,
-        idTipoRuta: detalleAprobador.id_TipoRuta,
-        tipoRuta: detalleAprobador.tipoRuta,
-        correo: "",
-        fechaActualizacion: detalleAprobador.fechaModificacion,
-        fechaCreacion: detalleAprobador.fechaCreacion,
-        usuarioCreacion: "",
-        usuarioActualizacion: "",
-        estado: detalleAprobador.estado
-      },
-      aprobador: {
-        detalleAprobadorSolicitud: detalleAprobador.detalleAprobadorSolicitud,
-        descripcionPosicion: detalleAprobador.descripcionPosicionAprobador,
-        usuario: detalleAprobador.usuarioAprobador,
-        nivelDireccion: detalleAprobador.nivelDireccionAprobador,
-        codigoPosicionReportaA: detalleAprobador.codigoPosicionReportaA,
-        reportaA: "",
-        supervisaA: "",
-        nivelReporte: "",
-        subledger: detalleAprobador.sudlegerAprobador,
-        correo: detalleAprobador.correo
-      }
-    }));
+  // mapearDetallesAprobadores(nivelAprobacionPosicionType: any) {
+  //   const arrayAprobadores = nivelAprobacionPosicionType.detalleAprobadorSolicitud.map((detalleAprobador) => ({
+  //     nivelAprobacionType: {
+  //       idNivelAprobacion: detalleAprobador.id_NivelAprobacion,
+  //       idNivelAprobacionRuta: detalleAprobador.nivelAprobacionRuta,
+  //       nivelAprobacionRuta: detalleAprobador.nivelAprobacionRuta,
+  //       idTipoSolicitud: Number(detalleAprobador.id_TipoSolicitud),
+  //       tipoSolicitud: detalleAprobador.tipoSolicitud,
+  //       idAccion: detalleAprobador.id_Accion,
+  //       accion: detalleAprobador.accion,
+  //       idNivelDireccion: detalleAprobador.nivelDireccion,
+  //       nivelDireccion: detalleAprobador.nivelDireccion,
+  //       idRuta: detalleAprobador.id_Ruta,
+  //       ruta: detalleAprobador.ruta,
+  //       idTipoMotivo: detalleAprobador.id_TipoMotivo,
+  //       tipoMotivo: detalleAprobador.motivo,
+  //       idTipoRuta: detalleAprobador.id_TipoRuta,
+  //       tipoRuta: detalleAprobador.tipoRuta,
+  //       correo: "",
+  //       fechaActualizacion: detalleAprobador.fechaModificacion,
+  //       fechaCreacion: detalleAprobador.fechaCreacion,
+  //       usuarioCreacion: "",
+  //       usuarioActualizacion: "",
+  //       estado: detalleAprobador.estado
+  //     },
+  //     aprobador: {
+  //       detalleAprobadorSolicitud: detalleAprobador.detalleAprobadorSolicitud,
+  //       descripcionPosicion: detalleAprobador.descripcionPosicionAprobador,
+  //       usuario: detalleAprobador.usuarioAprobador,
+  //       nivelDireccion: detalleAprobador.nivelDireccionAprobador,
+  //       codigoPosicionReportaA: detalleAprobador.codigoPosicionReportaA,
+  //       reportaA: "",
+  //       supervisaA: "",
+  //       nivelReporte: "",
+  //       subledger: detalleAprobador.sudlegerAprobador,
+  //       correo: detalleAprobador.correo
+  //     }
+  //   }));
 
-    this.dataAprobacionesPorPosicion = {
-      [this.keySelected]: arrayAprobadores
-    }
+  //   this.dataAprobacionesPorPosicion = {
+  //     [this.keySelected]: arrayAprobadores
+  //   }
 
-    // console.log(this.detalleAprobacionesPorPosicion);
-    console.log(this.dataAprobacionesPorPosicion);
-  }
+  //   // console.log(this.detalleAprobacionesPorPosicion);
+  //   console.log(this.dataAprobacionesPorPosicion);
+  // }
 
   // obtenerNivelesAprobacionRegistrados() {
   //   this.solicitudes.obtenerNivelesAprobacionRegistrados().subscribe({

@@ -9,10 +9,15 @@ import { IConsultaNivelesAprobacionResponse } from "./consulta-tareas.interface"
 })
 export class ConsultaTareasService {
   private apiUrlNivelAprobacion = environment.nivelAprobacionServiceES;
+  private apiDetallesAprobacionesSolicitud = environment.detalleAprobacionesServiceES;
 
   private apiUrlTareas = environment.tareasServiceES;
 
   constructor(private http: HttpClient) {}
+
+  obtenerDetallesAprobacionesSolicitudes(subledger: any): Observable<any> {
+    return this.http.get<any>(`${this.apiDetallesAprobacionesSolicitud}/filtrar/60068000?estado=PorRevisar`);
+  }
 
   public obtenerNiveleAprobaciones(): Observable<IConsultaNivelesAprobacionResponse> {
     return this.http.get<IConsultaNivelesAprobacionResponse>(

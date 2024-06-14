@@ -19,6 +19,7 @@ import { DataFilterNivelesAprobacion } from "src/app/eschemas/DataFilterNivelesA
 import { MantenimientoService } from "src/app/services/mantenimiento/mantenimiento.service";
 import { Router } from "@angular/router";
 import { SolicitudesService } from "src/app/solicitudes/registrar-solicitud/solicitudes.service";
+import { StarterService } from "src/app/starter/starter.service";
 
 @Component({
   selector: "app-consulta-tareas",
@@ -60,7 +61,8 @@ export class ConsultaTareasComponent implements OnInit {
     private utilService: UtilService,
     private mantenimientoService: MantenimientoService,
     private router: Router,
-    private solicitudes: SolicitudesService
+    private solicitudes: SolicitudesService,
+    private starterService: StarterService
   ) { }
 
   ngOnInit(): void {
@@ -121,6 +123,7 @@ export class ConsultaTareasComponent implements OnInit {
     this.utilService.openLoadingSpinner(
       "Cargando información. Espere por favor..."
     );
+
     return this.consultaTareasService.getTareas().subscribe({
       next: (response) => {
         this.dataTable = response.solicitudes.map((item) => ({
@@ -133,7 +136,14 @@ export class ConsultaTareasComponent implements OnInit {
 
         console.log(response);
         // this.consultaTareasService.
-        // this.solicitudes.obtenerDetallesAprobacionesSolicitudes(this.solicitudes.idSolicitud)
+        this.consultaTareasService.obtenerDetallesAprobacionesSolicitudes(this.starterService.userIniciador.subledger).subscribe({
+          next: (response) => {
+            console.log(response);
+          },
+          error: (err) => {
+            console.error(err);
+          }
+        });
 
         this.utilService.closeLoadingSpinner();
       },

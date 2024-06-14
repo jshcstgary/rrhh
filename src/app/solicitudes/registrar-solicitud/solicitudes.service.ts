@@ -52,7 +52,7 @@ export class SolicitudesService {
   }
 
   obtenerNivelesAprobacionRegistrados(idSolicitud: string): Observable<any> {
-    return this.http.get<any>(`${this.apiDetalleAprobaciones}/${idSolicitud}`);
+    return this.http.get<any>(`${this.apiDetalleAprobaciones}/aprobacionessolicitud/${idSolicitud}`);
   }
 
   obtenerDetallesAprobacionesSolicitudes(idSolicitud: string, subledgerAprobador: string, usuarioAprobador: string = ""): Observable<any> {

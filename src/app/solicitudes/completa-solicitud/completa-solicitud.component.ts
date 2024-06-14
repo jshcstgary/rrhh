@@ -1344,41 +1344,42 @@ export class CompletaSolicitudComponent extends CompleteTaskComponent {
     }
   }
 
+
   getNivelesAprobacion() {
-    if(this.detalleSolicitud.codigoPosicion !== "" &&
-    this.detalleSolicitud.codigoPosicion !== undefined &&
-    this.detalleSolicitud.codigoPosicion != null &&
-    this.solicitud.idTipoSolicitud !== 0 &&
-    this.solicitud.idTipoSolicitud !== undefined &&
-    this.solicitud.idTipoSolicitud !== null &&
-    this.solicitud.idTipoMotivo !== 0 &&
-    this.solicitud.idTipoMotivo !== undefined &&
-    this.solicitud.idTipoMotivo !== null){
-
-
-    this.solicitudes
-    .obtenerAprobacionesPorPosicion(
-      this.solicitud.idTipoSolicitud,
-      this.solicitud.idTipoMotivo,
-      this.detalleSolicitud.codigoPosicion,
-      this.detalleSolicitud.nivelDireccion,'A'
-    )
-    .subscribe({
-      next: (response) => {
-        this.dataAprobacionesPorPosicion[this.keySelected] =
-          response.nivelAprobacionPosicionType;
-      },
-      error: (error: HttpErrorResponse) => {
-        this.utilService.modalResponse(
-          "No existen niveles de aprobación para este empleado",
-          "error"
-        );
-      },
-    });
-
+    if (this.solicitud !== null) {
+      this.solicitudes.obtenerNivelesAprobacionRegistrados(this.solicitud.idSolicitud).subscribe({
+        next: (response) => {
+          this.dataNivelesDeAprobacion = {
+            [this.keySelected]: response.nivelAprobacionPosicionType
+          };
+        },
+        error: (error: HttpErrorResponse) => {
+          this.utilService.modalResponse(
+            "No existen niveles de aprobación para este empleado",
+            "error"
+          );
+        },
+      });
+    }
   }
 
-  }
+
+  // getNivelesAprobacion() {
+  //   if(this.detalleSolicitud.codigoPosicion !== "" && this.detalleSolicitud.codigoPosicion !== undefined && this.detalleSolicitud.codigoPosicion != null && this.solicitud.idTipoSolicitud !== 0 && this.solicitud.idTipoSolicitud !== undefined && this.solicitud.idTipoSolicitud !== null && this.solicitud.idTipoMotivo !== 0 && this.solicitud.idTipoMotivo !== undefined && this.solicitud.idTipoMotivo !== null) {
+  //     this.solicitudes.obtenerAprobacionesPorPosicion(this.solicitud.idTipoSolicitud, this.solicitud.idTipoMotivo, this.detalleSolicitud.codigoPosicion, this.detalleSolicitud.nivelDireccion, 'A').subscribe({
+  //       next: (response) => {
+  //         this.dataAprobacionesPorPosicion[this.keySelected] =
+  //           response.nivelAprobacionPosicionType;
+  //       },
+  //       error: (error: HttpErrorResponse) => {
+  //         this.utilService.modalResponse(
+  //           "No existen niveles de aprobación para este empleado",
+  //           "error"
+  //         );
+  //       },
+  //     });
+  //   }
+  // }
 
 
 

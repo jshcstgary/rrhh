@@ -1572,19 +1572,19 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
         variables.comentariosAnulacion = { value: this.model.comentariosAnulacion };
         variables.nivelDireccion = { value: this.model.nivelDir };
         variables.correoNotificacionCreador = {
-          value: "pruebapv3@hotmail.com"
+          value: this.starterService.userIniciador.correo
         };
         variables.usuarioNotificacionCreador = {
-          value: "Carlos Perez Perazo"
+          value: this.starterService.userIniciador.nombreCompleto
         };
         variables.nivelDireccionNotificacionCreador = {
-          value: "Jefe de RRHH"
+          value: this.starterService.userIniciador.nivelDir
         };
         variables.descripcionPosicionCreador = {
-          value: "Jefe de Recursos Humanos"
+          value: this.starterService.userIniciador.descrPosicion
         };
         variables.subledgerNotificacionCreador = {
-          value: "1234567890"
+          value: this.starterService.userIniciador.subledger
         };
         variables.idSolicitud = {
           value: this.solicitud.idSolicitud

@@ -486,7 +486,7 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
 
         this.fechas.referencias = candidatoValues.referencias === null ? "" : this.getFormattedDate(candidatoValues.referencias);
         this.disabledFechas.referencias = this.fechas.referencias !== null && this.fechas.referencias !== "";
-        if (this.fechas.referencias !== null && this.fechas.referencias !== "") {
+        if (this.disabledFechas.referencias) {
           this.isCheckedReferencias = true;
         }
 
@@ -548,10 +548,6 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
         this.disabledSave = true;
       }
     });
-  }
-
-  getCurrentDate() {
-    return new Date().toISOString().split("T")[0];
   }
 
   searchCodigoPosicion: OperatorFunction<string, readonly string[]> = (
@@ -1299,12 +1295,26 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
     this.submitted = true;
   }
 
-  onChangeTipoProceso() {
+  onChangeTipoProceso(event: any) {
+    console.log(event.target.value);
     // this.disabledSave = false;
     this.disabledSave = this.model.tipoProceso !== "";
+
+    if (this.model.tipoProceso === "contratacionFamiliares") {
+      this.fechas.contratacionFamiliares = this.getFormattedDate();
+      this.fechas.reingreso = "";
+    } else if (this.model.tipoProceso === "reingresoPersonal") {
+      this.fechas.reingreso = this.getFormattedDate();
+      this.fechas.contratacionFamiliares = "";
+    } else {
+      this.fechas.reingreso = "";
+      this.fechas.contratacionFamiliares = "";
+    }
   }
 
   async saveCandidato() {
+    console.log(this.fechas);
+
     const request = {
       iD_SOLICITUD: this.solicitud.idSolicitud,
       iD_SOLICITUD_PROCESO: "",
@@ -1312,21 +1322,21 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
       fuenteExterna: this.isChecked ? this.selectedOption : null,
       tipoProceso: this.model.tipoProceso,
       candidato: this.nombreCandidato,
-      actualizacionDelPerfil: this.fechas.actualizacionPerfil === "" ? null : new Date(this.fechas.actualizacionPerfil).toISOString(),
-      busquedaDeCandidatos: this.fechas.busquedaCandidatos === "" ? null : new Date(this.fechas.busquedaCandidatos).toISOString(),
-      entrevista: this.fechas.entrevista === "" ? null : new Date(this.fechas.entrevista).toISOString(),
-      pruebas: this.fechas.pruebas === "" ? null : new Date(this.fechas.pruebas).toISOString(),
-      referencias: this.fechas.referencias === "" ? null : new Date(this.fechas.referencias).toISOString(),
-      elaboracionDeInforme: this.fechas.elaboracionInforme === "" ? null : new Date(this.fechas.elaboracionInforme).toISOString(),
-      entregaAlJefeSol: this.fechas.entregaJefe === "" ? null : new Date(this.fechas.entregaJefe).toISOString(),
-      entrevistaPorJefatura: this.fechas.entrevistaJefatura === "" ? null : new Date(this.fechas.entrevistaJefatura).toISOString(),
-      tomaDeDesiciones: this.fechas.tomaDecisiones === "" ? null : new Date(this.fechas.tomaDecisiones).toISOString(),
-      candidatoSeleccionado: this.fechas.candidatoSeleccionado === "" ? null : new Date(this.fechas.candidatoSeleccionado).toISOString(),
-      procesoDeContratacion: this.fechas.procesoContratacion === "" ? null : new Date(this.fechas.procesoContratacion).toISOString(),
-      finProcesoContratacion: this.fechas.finProcesoContratacion === "" ? null : new Date(this.fechas.finProcesoContratacion).toISOString(),
-      fechaInicioReingreso: this.model.tipoProceso !== 'reingresoPersonal' ? null : this.getCurrentDate(),
+      actualizacionDelPerfil: this.fechas.actualizacionPerfil === "" ? null : this.fechas.actualizacionPerfil.replace(" ", "T"),
+      busquedaDeCandidatos: this.fechas.busquedaCandidatos === "" ? null : this.fechas.busquedaCandidatos.replace(" ", "T"),
+      entrevista: this.fechas.entrevista === "" ? null : this.fechas.entrevista.replace(" ", "T"),
+      pruebas: this.fechas.pruebas === "" ? null : this.fechas.pruebas.replace(" ", "T"),
+      referencias: this.fechas.referencias === "" ? null : this.fechas.referencias.replace(" ", "T"),
+      elaboracionDeInforme: this.fechas.elaboracionInforme === "" ? null : this.fechas.elaboracionInforme.replace(" ", "T"),
+      entregaAlJefeSol: this.fechas.entregaJefe === "" ? null : this.fechas.entregaJefe.replace(" ", "T"),
+      entrevistaPorJefatura: this.fechas.entrevistaJefatura === "" ? null : this.fechas.entrevistaJefatura.replace(" ", "T"),
+      tomaDeDesiciones: this.fechas.tomaDecisiones === "" ? null : this.fechas.tomaDecisiones.replace(" ", "T"),
+      candidatoSeleccionado: this.fechas.candidatoSeleccionado === "" ? null : this.fechas.candidatoSeleccionado.replace(" ", "T"),
+      procesoDeContratacion: this.fechas.procesoContratacion === "" ? null : this.fechas.procesoContratacion.replace(" ", "T"),
+      finProcesoContratacion: this.fechas.finProcesoContratacion === "" ? null : this.fechas.finProcesoContratacion.replace(" ", "T"),
+      fechaInicioReingreso: this.fechas.reingreso === '' ? null : this.fechas.reingreso.replace(" ", "T"),
       fechaFinReingreso: null,
-      fechaInicioContratacionFamiliares: this.model.tipoProceso !== 'contratacionFamiliares' ? null : this.getCurrentDate(),
+      fechaInicioContratacionFamiliares: this.fechas.contratacionFamiliares === '' ? null : this.fechas.contratacionFamiliares.replace(" ", "T"),
       fechaFinContratacionFamiliares: null,
       fechaIngresoCandidato: null
     };
@@ -1841,7 +1851,7 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
     const hours = String(date.getHours()).padStart(2, '0');
     const minutes = String(date.getMinutes()).padStart(2, '0');
     const seconds = String(date.getSeconds()).padStart(2, '0');
-    return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
+    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
   }
 
 
