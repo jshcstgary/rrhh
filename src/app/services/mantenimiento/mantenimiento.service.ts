@@ -23,6 +23,8 @@ export class MantenimientoService {
   private apiRutaUrl = environment.rutaServiceES;
   private apiTipoProcesoUrl = environment.tipoProcesoServiceES;
   private apiEmpleadoEvolutionUrl = environment.empleadoServiceEs;
+  private apiEmpleadoUrlJaff = environment.exempleadoServiceEsJaff;
+  private apiFamiliaresCandidato = environment.familiaresCandidationServiceES;
   // http://10.35.3.162:8053/v1/es/item-catalogo/codigo/RBPND
   // http://10.35.3.162:8053/v1/es/item-catalogo/codigo
   private apiCatalogoUrl = environment.CatalogoServiceES;
@@ -35,7 +37,6 @@ export class MantenimientoService {
   public getTipoProceso(): Observable<any[]> {
     return this.http.get<any[]>(this.apiTipoProcesoUrl);
   }
-
 
   public getTipoRuta(): Observable<ITipoRutaResponse> {
     return this.http.get<ITipoRutaResponse>(this.apiTipoRutaUrl);
@@ -88,7 +89,9 @@ export class MantenimientoService {
   // http://10.35.3.162:8053/v1/es/item-catalogo/codigo/RBPND
   // http://10.35.3.162:8053/v1/es/item-catalogo/codigo
   public getCatalogo(codigo: string): Observable<ICatalogoResponse> {
-    return this.http.get<ICatalogoResponse>(`${this.apiCatalogoUrl}/codigo/${codigo}`);
+    return this.http.get<ICatalogoResponse>(
+      `${this.apiCatalogoUrl}/codigo/${codigo}`
+    );
   }
 
   public getCatalogoRBPND(): Observable<ICatalogoResponse> {
@@ -117,8 +120,15 @@ export class MantenimientoService {
     );
   }
 
-  public getDataEmpleadosEvolution(): Observable<IEmpleados> {
-    return this.http.get<IEmpleados>(this.apiEmpleadoEvolutionUrl);
+  empleadosUrl = {
+    ev: this.apiEmpleadoEvolutionUrl,
+    jaff: this.apiEmpleadoUrlJaff,
+  };
+
+  public getDataEmpleadosEvolution(
+    type: "jaff" | "ev" = "ev"
+  ): Observable<IEmpleados> {
+    return this.http.get<IEmpleados>(this.empleadosUrl[type]);
   }
 
   public diagnostic(): Observable<any> {
@@ -127,4 +137,53 @@ export class MantenimientoService {
       `${this.apiCatalogoUrl}/codigo/RBPND`
     );
   }
+
+  public getFamiliaresCandidato(): Observable<FamiliaresCandidatosService> {
+    return this.http.get<FamiliaresCandidatosService>(
+      `${this.apiFamiliaresCandidato}`
+    );
+  }
+
+  public guardarFamiliaresCandidato(
+    data: Partial<FamiliaresCandidatos>
+  ): Observable<FamiliaresCandidatos> {
+    return this.http.post<FamiliaresCandidatos>(
+      `${this.apiFamiliaresCandidato}`,
+      data
+    );
+  }
+
+  public putFamiliaredCandidatos(data: Partial<FamiliaresCandidatos>): Observable<FamiliaresCandidatos>{
+    return this.http.put<FamiliaresCandidatos>(
+      `${this.apiFamiliaresCandidato}`,
+      data
+    )
+  }
+}
+
+interface FamiliaresCandidatosService {
+  familiaresCandidato: FamiliaresCandidatos[];
+}
+export interface FamiliaresCandidatos {
+  id?: number;
+  idSolicitud: string;
+  idSolicitudPadre?: string;
+  codigoPosicionPadre?: string;
+  codigoPosicion: string;
+  nombreEmpleado: string;
+  descripcionPosicion?: string;
+  subledger?: string;
+  cargo?: string;
+  unidad?: string;
+  codigoPosicionReportaA?: string;
+  reportaA?: string;
+  departamento?: string;
+  localidad?: string;
+  parentesco?: string;
+  estado?: string;
+  usuarioCreacion?: string;
+  usuarioModificacion?: string;
+  fechaCreacion: Date | String;
+  fechaModificacion: Date | String;
+  isEditingRow?: Boolean;
 }

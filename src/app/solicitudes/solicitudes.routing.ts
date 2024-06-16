@@ -8,6 +8,12 @@ import { RegistrarCandidatoComponent } from "./registrar-candidato/registrar-can
 import { CompletaSolicitudComponent } from "./completa-solicitud/completa-solicitud.component";
 import { ReingresoPersonalComponent } from "./reingreso-personal/reingreso-personal.component";
 import { RegistrarFamiliaresComponent } from "./registrar-familiares/registrar-familiares.component";
+import { RegistroComentariosComponent } from "./registro-comentarios (h17)/registro-comentarios.component";
+import { RegistroComentariosComponent as h18 } from "./registro-comentarios (h18)/registro-comentarios.component";
+import { RegistrarComentariosComponent as h19 } from "./registrar-comentario (h19)/registrar-comentarios.component";
+import { AccionComponent } from "./accion-personal (h20)/accion-personal.component";
+import { AccionComponent as h21 } from "./accion-personal (h21)/accion-personal.component";
+
 
 export const SolicitudesRoutes: Routes = [
   {
@@ -57,6 +63,81 @@ export const SolicitudesRoutes: Routes = [
             },
             {
               title: "Reingreso de personal"
+            }
+          ],
+        },
+      },
+      {
+        path: "reingreso-personal/registro-comentarios",
+        component: RegistroComentariosComponent,
+        data: {
+          title: "Registro de Comentarios",
+          urls: [
+            {
+              title: "Solicitudes"
+            },
+            {
+              title: "Registro de Comentarios"
+            }
+          ],
+        },
+      },
+      {
+        path: "reingreso-personal/registro-comentarioss",
+        component: h18,
+        data: {
+          title: "Registro de Comentarios h18",
+          urls: [
+            {
+              title: "Solicitudes"
+            },
+            {
+              title: "Registro de Comentarios"
+            }
+          ],
+        },
+      },
+      {
+        path: 'accion-personal/registrar-solicitud',
+        component: AccionComponent,
+        data: {
+          title: "Accion de Personal",
+          urls: [
+            {
+              title: 'Accion',
+            },
+            {
+              title: 'Accion de Personal'
+            }
+          ]
+        }
+      },
+      {
+        path: 'accion-personal/completar-solicitud',
+        component: h21,
+        data: {
+          title: "Completar solicitud",
+          urls: [
+            {
+              title: 'Accion',
+            },
+            {
+              title: 'Accion de Personal'
+            }
+          ]
+        }
+      },
+      {
+        path: "reingreso-personal/registrar-comentarios",
+        component: h19,
+        data: {
+          title: "Registro de Comentarios h19",
+          urls: [
+            {
+              title: "Solicitudes"
+            },
+            {
+              title: "Registro de Comentarios H19"
             }
           ],
         },

@@ -36,6 +36,11 @@ import { RegistrarCandidatoComponent } from './registrar-candidato/registrar-can
 import { CompletaSolicitudComponent } from './completa-solicitud/completa-solicitud.component';
 import { ReingresoPersonalComponent } from './reingreso-personal/reingreso-personal.component';
 import { RegistrarFamiliaresComponent } from './registrar-familiares/registrar-familiares.component';
+import { RegistroComentariosComponent } from "./registro-comentarios (h17)/registro-comentarios.component";
+import { RegistroComentariosComponent as h18} from "./registro-comentarios (h18)/registro-comentarios.component";
+import { RegistrarComentariosComponent as h19 } from "./registrar-comentario (h19)/registrar-comentarios.component";
+import { AccionComponent } from "./accion-personal (h20)/accion-personal.component";
+import { AccionComponent as h21 } from "./accion-personal (h21)/accion-personal.component";
 
 
 @NgModule({
@@ -48,7 +53,11 @@ import { RegistrarFamiliaresComponent } from './registrar-familiares/registrar-f
     CompletaSolicitudComponent,
     ReingresoPersonalComponent,
     RegistrarFamiliaresComponent,
-
+    RegistroComentariosComponent,
+    h18,
+    h19,
+    AccionComponent,
+    h21
   ],
   imports: [
     RouterModule.forChild(SolicitudesRoutes),
@@ -74,12 +83,11 @@ import { RegistrarFamiliaresComponent } from './registrar-familiares/registrar-f
     MatFormFieldModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    ReactiveFormsModule
-
+    ReactiveFormsModule,
   ],
   exports: [
     RevisarSolicitudComponent
-    // Otros componentes que deseas exportar
+    //Otros componentes que deseas exportar
   ],
   providers: [TableService],
 })

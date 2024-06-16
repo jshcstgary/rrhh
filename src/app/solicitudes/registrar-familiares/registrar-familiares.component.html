@@ -1,20 +1,29 @@
 <form (ngSubmit)="onSubmit()" #SolicitudForm="ngForm" #solicitudForm="ngForm">
   <div class="card">
     <h2 class="card-body text-start">
-      <div class="row">
-        <div class="col-md-8">
+      <div class="row justify-around">
+        <div class="col">
           <div class="mb-3">
             <a (click)="pageSolicitudes()">
               <h3 class="sol-danger">
-                <i class="bi bi-arrow-left-circle azul"></i> {{ solicitud.idSolicitud }}
+                <i class="bi bi-arrow-left-circle azul"></i>
+                {{ solicitud.idSolicitud }}
               </h3></a
             >
           </div>
         </div>
-        <div class="col-md-4 text-end">
-          <button *ngIf="RegistrarsolicitudCompletada"
+        <div class="col text-end">
+          <button
             type="button"
-            type="submit"
+            (click)="openModal('dialogReasignarUsuario')"
+            class="btn btn-info me-2 mt-1"
+          >
+            <i class="fas fa-redo"></i> Reasignar
+          </button>
+          
+          <button
+            type="button"
+            (click)="onSubmit()"
             class="btn btn-info me-2 mt-1"
             aria-label="Close"
             [disabled]="!solicitudForm.form.valid"
@@ -28,194 +37,159 @@
           >
             <i class="fas fa-check-circle"></i> Completar Tarea
           </button>
-          <button *ngIf="RegistrarsolicitudCompletada"
-            type="button"
-            (click)="onCancel()"
-            class="btn btn-info me-2 mt-1"
-          >
-            <i class="fas fa-times"></i> Registrar luego
-          </button>
         </div>
+
       </div>
       <div class="row mt-4">
-        <div class="col-md-3">
-          <div class="mb-4">
-            <a> <h3 class="sol-danger">Información general</h3></a>
+        <div class="col-md-4">
+          <div class="input-group mb-3">
+            <label class="input-group-text label-estilo" for="origin"
+              >Creado por:</label
+            >
+            <span
+              id="origin"
+              name=""
+              style="color: black; font-size: 14px"
+              class="text-start"
+              >{{ this.solicitud.usuarioCreacion }}</span
+            >
           </div>
         </div>
-        <div class="col-md-9">
+        <div class="col-md-4">
+          <div class="input-group mb-3">
+            <label class="input-group-text label-estilo" for="unidadnegocio"
+              >Fecha:</label
+            >
+            <span
+              id="date"
+              name=""
+              style="color: black; font-size: 14px"
+              class="text-start"
+              >{{ this.solicitud.fechaCreacion | date:'yyyy/MM/dd' }}</span
+            >
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="input-group mb-3">
+            <label class="input-group-text label-estilo" for="unidadnegocio"
+              >Nro. Solicitud:</label
+            >
+            <span
+              id="solicitud"
+              name=""
+              style="color: black; font-size: 14px"
+              class="text-start"
+              >{{ this.solicitud.idSolicitud }}</span
+            >
+          </div>
+        </div>
+      </div>
+
+      <div class="row mt-4">
+        <div class="col-md-4">
+          <div class="mb-4">
+            <a>
+              <h3 class="sol-danger">Información de persona a contratar</h3></a
+            >
+          </div>
+        </div>
+        <div class="col-md-8">
           <hr />
         </div>
       </div>
       <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-3">
           <div class="input-group mb-3">
-            <label
-              class="input-group-text label-estilo"
-              for="tipoSolicitud"
-              >Tipo de solicitud</label
+            <label class="input-group-text label-estilo" for="tipoSolicitud"
+              >Nro de Solicitud de Requisicion</label
             >
             &nbsp;
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="input-group mb-3">
             <span
               #mivar
               id="tipoSolicitud"
               name="idTipoSolicitud"
-              style="color: black; font-size: 14px;"
+              style="color: black; font-size: 14px"
+              class="text-start"
+              >{{ "Numero 3" }}</span
+            >
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-3">
+          <div class="input-group mb-3">
+            <label class="input-group-text label-estilo" for="tipoSolicitud"
+              >Justificacion*</label
+            >
+          </div>
+        </div>
+
+        <div class="col-md-7">
+          <div class="input-group mb-3">
+            <textarea
+              name="descripcionposicion"
+              [(ngModel)]="model.descrPosicion"
+              style="color: black; font-size: 14px; width: 100%; resize: none"
+              class="form-control"
+              id="descripcionposicion"
+              rows="3"
+              required
+            ></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6"></div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-3">
+          <label class="input-group-text label-estilo" for="codigoposicion">
+            Nombre del candidato seleccionado
+          </label>
+        </div>
+        <div class="col-md-6">
+          <div class="input-group mb-3">
+            <span
+              #mivar
+              id="tipoSolicitud"
+              name="idTipoSolicitud"
+              style="color: black; font-size: 14px"
               class="text-start"
               >{{ solicitud.tipoSolicitud }}</span
             >
           </div>
         </div>
-        <div class="col-md-6">
-          <div class="input-group mb-3">
-            <label
-              class="input-group-text label-estilo"
-              for="tipomotivo"
-              >Tipo de motivo</label
-            >
-            &nbsp;
-            <span
-              id="tipomotivo"
-              name="tipomotivo"
-              style="color: black; font-size: 14px;"
-              class="text-start"
-              >{{ solicitud.tipoMotivo }}</span
-            >
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md-6">
-          <div class="input-group">
-            <label
-              class="input-group-text label-estilo"
-              for="codigoposicion"
-            >
-              Código de posición
-            </label>
-            &nbsp;
-            <input
-              type="text"
-              name="codigoposicion"
-              [(ngModel)]="model.codigoPosicion"
-              style="color: black; font-size: 14px; width: 30%"
-              [ngbTypeahead]="searchCodigoPosicion"
-              (selectItem)="onSelectItem('codigoPosicion', $event)"
-              class="form-control"
-              id="codigoposicion"
-              aria-describedby="inputGroupPrepend"
-              required
-              #codigoposicion="ngModel"
-            />
-            <button class="btn btn-light" type="button" disabled>
-              <i class="ti-search"></i>
-            </button>
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div class="input-group mb-3">
-            <label
-              class="input-group-text label-estilo"
-              for="descripcionposicion"
-              >Descripción de posición</label
-            >
-            &nbsp;
-            <span
-              id="descripcionposicion"
-              name="descripcionposicion"
-              style="color: black; font-size: 14px;"
-              class="text-start"
-              >{{ model.descrPosicion }}</span
-            >
-          </div>
-        </div>
-      </div>
-      <div class="row" *ngIf="mostrarSubledger">
-        <div class="col-md-6">
-          <div class="input-group mb-3">
-            <label
-              class="input-group-text label-estilo"
-              for="subledger"
-            >
-              Subledger
-            </label>
-            &nbsp;
-            <input
-              type="text"
-              name="subledger"
-              [(ngModel)]="model.subledger"
-              style="color: black; font-size: 14px; width: 30%"
-              [ngbTypeahead]="searchSubledger"
-              (selectItem)="onSelectItem('subledger', $event)"
-              class="form-control text-start"
-              id="subledger"
-              aria-describedby="inputGroupPrepend"
-              required
-              #subledger="ngModel"
-            />
-            <button class="btn btn-light" type="button" disabled>
-              <i class="ti-search"></i>
-            </button>
-          </div>
-        </div>
-
-        <div class="col-md-6">
-          <div class="input-group mb-3">
-            <label
-              class="input-group-text label-estilo"
-              for="nombreempleado"
-            >
-              Empleado
-            </label>
-            &nbsp;
-            <input
-              type="text"
-              name="nombreempleado"
-              [(ngModel)]="model.nombreCompleto"
-              style="color: black; font-size: 14px; width: 30%"
-              [ngbTypeahead]="searchNombreCompleto"
-              (selectItem)="onSelectItem('nombreCompleto', $event)"
-              class="form-control text-start"
-              id="nombreempleado"
-              aria-describedby="inputGroupPrepend"
-              #nombreCompleto="ngModel"
-              required
-            />
-            <button class="btn btn-light" type="button" disabled>
-              <i class="ti-search"></i>
-            </button>
-          </div>
-        </div>
       </div>
 
       <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-7">
           <div class="input-group mb-3">
-            <label
-              class="input-group-text label-estilo"
-              for="compania"
+            <label class="input-group-text label-estilo" for="compania"
               >Compañía</label
             >
             <span
               id="compania"
               name=""
-              style="color: black; font-size: 14px;"
+              style="color: black; font-size: 14px"
               class="text-start"
               >{{ model.compania }}</span
             >
           </div>
         </div>
-        <div class="col-md-6">
+        <div class="col-md">
           <div class="input-group mb-3">
-            <label
-              class="input-group-text label-estilo"
-              for="unidadnegocio"
+            <label class="input-group-text label-estilo" for="unidadnegocio"
               >Unidad de negocio</label
             >
             <span
               id="unidadnegocio"
               name=""
-              style="color: black; font-size: 14px;"
+              style="color: black; font-size: 14px"
               class="text-start"
               >{{ model.unidadNegocio }}</span
             >
@@ -224,117 +198,104 @@
       </div>
 
       <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-7">
           <div class="input-group mb-3">
-            <label
-              class="input-group-text label-estilo"
-              for="departamento"
-              >Área/departamento</label
+            <label class="input-group-text label-estilo" for="departamento"
+              >Departamento</label
             >
             <span
               id="departamento"
               name=""
-              style="color: black; font-size: 14px;"
+              style="color: black; font-size: 14px"
               class="text-start"
               >{{ model.departamento }}</span
             >
           </div>
         </div>
-        <div class="col-md-6">
+        <div class="col-md">
           <div class="input-group mb-3">
-            <label
-              class="input-group-text label-estilo"
-              for="tipocargo"
-              >Tipo de cargo</label
+            <label class="input-group-text label-estilo" for="tipocargo"
+              >Localidad</label
             >
             <span
               id="cargo"
               name=""
-              style="color: black; font-size: 14px;"
-              class="text-start"
-              >{{ model.nombreCargo }}</span
-            >
-          </div>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col-md-6">
-          <div class="input-group mb-3">
-            <label
-              class="input-group-text label-estilo"
-              for="localidadzona"
-              >Localidad zona</label
-            >
-            <span
-              id="localidadzona"
-              name=""
-              style="color: black; font-size: 14px;"
+              style="color: black; font-size: 14px"
               class="text-start"
               >{{ model.localidad }}</span
             >
           </div>
         </div>
-        <div class="col-md-6">
+      </div>
+
+      <div class="row">
+        <div class="col-md-7">
           <div class="input-group mb-3">
-            <label
-              class="input-group-text label-estilo"
-              for="niveldirección"
-              >Nivel de dirección</label
+            <label class="input-group-text label-estilo" for="localidadzona"
+              >Cargo</label
+            >
+            <span
+              id="localidadzona"
+              name=""
+              style="color: black; font-size: 14px"
+              class="text-start"
+              >{{ "Prueba" }}</span
+            >
+          </div>
+        </div>
+        <div class="col-md">
+          <div class="input-group mb-3">
+            <label class="input-group-text label-estilo" for="niveldirección"
+              >Tipo de contrato</label
             >
             <span
               id="niveldirección"
               name=""
-              style="color: black; font-size: 14px; "
+              style="color: black; font-size: 14px"
               class="text-start"
-              >{{ model.nivelDir }}</span
+              >{{ "Especial" }}</span
             >
           </div>
         </div>
       </div>
 
       <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-7">
           <div class="input-group mb-3">
-            <label
-              class="input-group-text label-estilo"
-              for="centrocosto"
-              >Centro de costo</label
+            <label class="input-group-text label-estilo" for="centrocosto"
+              >Jefe solicitante</label
             >
             <span
               id="centrocosto"
               name=""
-              style="color: black; font-size: 14px;"
+              style="color: black; font-size: 14px"
               class="text-start"
-              >{{ model.nomCCosto }}</span
+              >{{ "Pedro Ramirez" }}</span
             >
           </div>
         </div>
-        <div class="col-md-6" *ngIf="mostrarTipoJustificacionYMision">
+      </div>
+
+      <div class="row">
+        <div class="col-md-7">
           <div class="input-group mb-3">
-            <label
-              class="input-group-text label-estilo"
-              for="misioncargo"
-              >Misión del cargo</label
+            <label class="input-group-text label-estilo" for="centrocosto"
+              >Responsable de RRHH</label
             >
-            <input
-              type="text"
-              name="misioncargo"
-              [(ngModel)]="model.misionCargo"
-              class="form-control"
-              id="misioncargo"
-              #misioncargo="ngModel"
-              required
-            />
+            <span
+              id="centrocosto"
+              name=""
+              style="color: black; font-size: 14px"
+              class="text-start"
+              >{{ "Juan Garcez" }}</span
+            >
           </div>
         </div>
       </div>
       <div class="row" *ngIf="mostrarTipoJustificacionYMision">
         <div class="col">
           <div class="input-group mb-3 contenedor">
-            <label
-              class="input-group-text adjustable-label"
-              for="justificacion"
+            <label class="input-group-text adjustable-label" for="justificacion"
               >Justificación</label
             >
             &nbsp;
@@ -349,177 +310,85 @@
           </div>
         </div>
       </div>
-      <div class="row mt-4">
-        <div class="col-md-4">
+
+      <!-- Datos de familiares que ya laboran en la empresa  -->
+      <div class="row mt-2">
+        <div class="col">
           <div class="mb-4">
-            <a> <h3 class="sol-danger">Datos de familiares que ya laboran en la empresa</h3></a>
+            <h3 class="sol-danger">
+              Datos de familiares que ya laboran en la empresa
+            </h3>
           </div>
         </div>
-        <div class="col-md-8">
+        <div class="col">
           <hr />
         </div>
       </div>
 
       <div class="row">
-        <div class="col-md-6">
-          <div class="input-group mb-3">
-            <label
-              class="input-group-text label-estilo"
-              for="reporta"
-              >Nombre de empleado</label
-            >
-            &nbsp;
-            <span
-              id="reporta"
-              name=""
-              style="color: black; font-size: 14px; "
-              class="text-start"
-              >{{ model.reportaA }}
-            </span>
+        <div class="col-md-4">
+          <div class="mb-3">
+            <!-- <div (click)="openModal()"> -->
+            <input-component
+              [id]="'searchInputFilter'"
+              [type]="'string'"
+              [buttonIcon]="'ti-search'"
+              buttonFunction="filterStringInTable"
+              onChangeFunction="filterStringInTable"
+              placeholder="Buscar Empleado"
+              [contexto]="this"
+              (click)="openModal('dialogBuscarEmpleados')"
+            ></input-component>
+            <!-- </div> -->
           </div>
         </div>
-       <!-- <div class="col-md-6">
-          <div class="input-group mb-3">
-            <label
-              class="input-group-text label-estilo"
-              for="supervisaa"
-              >Supervisa a</label
+        <form>
+          <div class="row mt-3">
+            <!-- <table-component
+              tableName="tablaDatosFamiliares"
+              [columns]="columnsDatosFamiliares"
+              [dataTable]="dataTableDatosFamiliares"
+              [inputsEditRow]="inputsEditRow"
+              onSaveRowTable="onSaveRowTable"
+              clickOnActionRow="toActionsTable"
+              [contexto]="this"
+            > -->
+            <!-- </table-component> -->
+            
+            <table-personalized
+              [columns]="columnsDatosFamiliares"
+              [data]="dataTableDatosFamiliares"
+              [tableWidth]="'100%'"
+              (changeSort)="handleChangeSort($event)"
+              (saveRowData)="handleSaveRowData($event)"
+              (actionClick)="handleActionClick($event)"
             >
-            &nbsp;
-            <span
-              id="supervisaa"
-              name=""
-              style="color: black; font-size: 14px; "
-              class="text-start"
-              >{{ model.supervisaA }}</span
-            >
+              
+            </table-personalized>
+            <!-- <table-component
+                [tableName]="mainTableName"
+                [columns]="columnsDatosFamiliares"
+                [dataTable]="dataToTable"
+                [contexto]="this"
+                onSaveRowTable="onSaveRowTable"
+                [tableWidth]="tableWidth"
+                [inputsEditRow]="tableInputsEditRow"
+                [totalRows]="totalRowsInTable"
+                onChangePagination="onChangePaginationTable"
+                onCancelEditRowTable="onCancelEditRowTable"
+                [rowsPerPageValue]="rowsPerPageTable"
+                [page]="pageNumberTable"
+                [isTarea]="isTarea"
+                clickOnActionRow="onRowActionClicked"
+                [allowCloneButton]="allowCloneButtonOnTable"
+                [onRowChange]="onRowChange"
+                onChangeEditRowFunction="onChangeEditRowTableFunction"
+              ></table-component> -->
           </div>
-        </div>-->
+        </form>
       </div>
 
-      <div class="row">
-        <div class="col-md-6">
-          <div class="input-group mb-3">
-            <label
-              class="input-group-text label-estilo"
-              for="tipocontrato"
-              >Fecha de ingreso</label
-            >
-            &nbsp;
-            <select
-              id="tipocontrato"
-              name="tipocontrato"
-              class="form-select"
-              [(ngModel)]="model.tipoContrato"
-              style="font-size: 14px"
-              required
-            >
-              <option selected>Eventual</option>
-              <option>Temporal</option>
-              <option>Mixto</option>
-            </select>
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div class="input-group mb-3">
-            <label
-              class="input-group-text label-estilo"
-              for="nivelRepa"
-              >Cargo</label
-            >
-            &nbsp;
-            <span
-              id="nivelRepa"
-              name=""
-              style="color: black; font-size: 14px; "
-              class="text-start"
-              >{{ model.nivelRepa }}</span
-            >
-          </div>
-        </div>
-      </div>
-
-
-      <div class="row">
-        <div class="col-md-6">
-          <div class="input-group mb-3">
-            <label
-              class="input-group-text label-estilo"
-              for="mensual"
-              >Unidad</label
-            >
-            &nbsp;
-            <input
-              [(ngModel)]="model.sueldoMensual"
-              type="text"
-              name="mensual"
-              class="form-control"
-              id="mensual"
-            />
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div class="input-group mb-3">
-            <label
-              class="input-group-text label-estilo"
-              for="trimestral"
-              >Departamento</label
-            >
-            &nbsp;
-            <input
-              [(ngModel)]="model.sueldoTrimestral"
-              type="text"
-              name="trimestral"
-              class="form-control"
-              id="trimestral"
-            />
-          </div>
-        </div>
-      </div>
-
-
-
-
-
-      <div class="row">
-        <div class="col-md-6">
-          <div class="input-group mb-3">
-            <label
-              class="input-group-text label-estilo"
-              for="mensual"
-              >Localidad</label
-            >
-            &nbsp;
-            <input
-              [(ngModel)]="model.sueldoMensual"
-              type="text"
-              name="mensual"
-              class="form-control"
-              id="mensual"
-            />
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div class="input-group mb-3">
-            <label
-              class="input-group-text label-estilo"
-              for="trimestral"
-              >Parentesco</label
-            >
-            &nbsp;
-            <input
-              [(ngModel)]="model.sueldoTrimestral"
-              type="text"
-              name="trimestral"
-              class="form-control"
-              id="trimestral"
-            />
-          </div>
-        </div>
-      </div>
-
-
-
+      <!-- Aprobadores de la solicitud -->
       <div class="row mt-4">
         <div class="col-md-4">
           <div class="mb-4">
@@ -530,16 +399,38 @@
           <hr />
         </div>
       </div>
-
       <div class="accordion" id="accordionExample">
-        <div *ngFor="let nivelItem of dataAprobacionesPorPosicion[keySelected]; let i = index" class="accordion-item">
+        <div
+          *ngFor="
+            let nivelItem of dataAprobacionesPorPosicion[keySelected];
+            let i = index
+          "
+          class="accordion-item"
+        >
           <div class="accordion-header">
-            <button class="accordion-button" type="button" data-bs-toggle="collapse" [attr.data-bs-target]="'#collapse' + i" aria-expanded="true" [attr.aria-controls]="'collapse' + i" style="display: block">
-              <div class="row" style="align-items: center; justify-content: space-around">
+            <button
+              class="accordion-button"
+              type="button"
+              data-bs-toggle="collapse"
+              [attr.data-bs-target]="'#collapse' + i"
+              aria-expanded="true"
+              [attr.aria-controls]="'collapse' + i"
+              style="display: block"
+            >
+              <div
+                class="row"
+                style="align-items: center; justify-content: space-around"
+              >
                 <div class="col">{{ nivelItem.nivelAprobacionType.ruta }}</div>
 
-				<div class="col">
-                  {{ nivelItem.aprobador.usuario !== "" && nivelItem.aprobador.usuario !== undefined && nivelItem.aprobador.usuario != null ? nivelItem.aprobador.usuario : "No aplica" }}
+                <div class="col">
+                  {{
+                    nivelItem.aprobador.usuario !== "" &&
+                    nivelItem.aprobador.usuario !== undefined &&
+                    nivelItem.aprobador.usuario != null
+                      ? nivelItem.aprobador.usuario
+                      : "No aplica"
+                  }}
                 </div>
 
                 <div class="col">
@@ -549,7 +440,12 @@
             </button>
           </div>
 
-          <div [id]="'collapse' + i" class="accordion-collapse collapse" [ngClass]="{ show: i === 0 }" data-bs-parent="#accordionExample">
+          <div
+            [id]="'collapse' + i"
+            class="accordion-collapse collapse"
+            [ngClass]="{ show: i === 0 }"
+            data-bs-parent="#accordionExample"
+          >
             <div class="row">
               <div class="col">
                 <div class="input-group">
@@ -559,147 +455,25 @@
 
                   &nbsp;
 
-				  <span id="lvl1descripcion" name="" style="color: black; font-size: 14px;">
-				    {{ nivelItem.aprobador.descripcionPosicion !== "" && nivelItem.aprobador.descripcionPosicion !== undefined && nivelItem.aprobador.descripcionPosicion != null ? nivelItem.aprobador.descripcionPosicion : "No aplica" }}
-				  </span>
+                  <span
+                    id="lvl1descripcion"
+                    name=""
+                    style="color: black; font-size: 14px"
+                  >
+                    {{
+                      nivelItem.aprobador.descripcionPosicion !== "" &&
+                      nivelItem.aprobador.descripcionPosicion !== undefined &&
+                      nivelItem.aprobador.descripcionPosicion != null
+                        ? nivelItem.aprobador.descripcionPosicion
+                        : "No aplica"
+                    }}
+                  </span>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-
-      <div class="row mt-4">
-        <div class="col-md-4">
-          <div class="mb-4">
-            <a> <h3 class="sol-danger">Atención de los probadores</h3></a>
-          </div>
-        </div>
-        <div class="col-md-8">
-          <hr />
-        </div>
-      </div>
-
-      <div class="row mt-2">
-        <div class="col">
-          <div class="input-group mb-3">
-            <label
-              for="aprobadoresdinamicos"
-              style="color: #0056b3; font-size: 14px; "
-            >
-              Aprobadores dinámicos
-            </label>
-            &nbsp;
-            <span
-              id="aprobadoresdinamicos"
-              name=""
-              style="color: black; font-size: 14px; "
-              class="text-start"
-              >{{ detalleSolicitud.aprobadoresDinamicos }}</span
-            >
-          </div>
-        </div>
-      </div>
-
-      <div class="row mt-2">
-        <div class="col">
-          <div class="input-group mb-3">
-            <label
-              for="gerenterrhhcorporativo"
-              style="color: #0056b3; font-size: 14px; "
-            >
-              Gerente de RRHH Corporativo
-            </label>
-            &nbsp;
-            <span
-              id="gerenterrhhcorporativo"
-              name=""
-              style="color: black; font-size: 14px; "
-              class="text-start"
-              >{{ detalleSolicitud.gerenteRRHHCorporativo }}</span
-            >
-          </div>
-        </div>
-      </div>
-
-      <div class="row mt-2">
-        <div class="col">
-          <div class="input-group mb-3">
-            <label
-              for="comitederemuneraciones"
-              style="color: #0056b3; font-size: 14px; "
-            >
-              Comité de Remuneraciones
-            </label>
-            &nbsp;
-            <span
-              id="comitederemuneraciones"
-              name=""
-              style="color: black; font-size: 14px; "
-              class="text-start"
-              >{{ detalleSolicitud.comiteRemuneraciones }}</span
-            >
-          </div>
-        </div>
-      </div>
-
-
-      <div class="row mt-4">
-        <div class="col-md-4">
-          <div class="mb-4">
-            <a> <h3 class="sol-danger">Anulación de Solicitud</h3></a>
-          </div>
-        </div>
-        <div class="col-md-8">
-          <hr />
-        </div>
-      </div>
-
-      <div class="row" >
-        <div class="col">
-          <div class="input-group mb-3 contenedor">
-          <label
-              class="input-group-text adjustable-label"
-              for="anular"
-              >¿Anular Solicitud?</label>
-            &nbsp;
-             <!-- aqui  van los check box-->
-
-            <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="Si" [(ngModel)]="selectedOption" (change)="onSelectionChange()">
-              <label class="form-check-label" for="inlineRadio1">Si</label>
-            </div>
-            <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="No" [(ngModel)]="selectedOption" (change)="onSelectionChange()">
-              <label class="form-check-label" for="inlineRadio2">No</label>
-            </div>
-
-          </div>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col">
-          <div class="input-group mb-3 contenedor">
-          <label
-              class="input-group-text adjustable-label adjustable-label"
-              for="anulacion"
-              >Comentarios Anulación de Solicitud
-          </label>
-          &nbsp;
-            <textarea
-              id="anulacion"
-              name="anulacion"
-              [(ngModel)]="model.comentariosAnulacion"
-              style="color: black; font-size: 14px"
-            ></textarea>
-          </div>
-        </div>
-      </div>
-
-
-
     </h2>
   </div>
 </form>
-

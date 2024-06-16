@@ -49,6 +49,7 @@ export class CamundaRestService {
       `&taskDefinitionKey=` +
       type;
 
+    console.log('Aqui endpoint de getTask',endpoint)
     return this.http.get<any>(endpoint, httpOptions).pipe(
       tap((form) => this.log(`fetched tasks of type`)),
       catchError(this.handleError("getTask", []))

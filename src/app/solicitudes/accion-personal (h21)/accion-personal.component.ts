@@ -20,10 +20,7 @@ import { NgForm } from "@angular/forms";
 import { DetalleSolicitud } from "src/app/eschemas/DetalleSolicitud";
 import { DatosSolicitud } from "src/app/eschemas/DatosSolicitud";
 import { environment } from "src/environments/environment";
-import {
-  columnsAprobadores,
-  dataTableAprobadores,
-} from "./reingreso-personal.data";
+
 // import {
 //   DialogComponents,
 //   dialogComponentList,
@@ -32,7 +29,6 @@ import {
   IEmpleadoData,
   IEmpleados,
 } from "src/app/services/mantenimiento/empleado.interface";
-import { DialogBuscarEmpleadosComponent } from "./buscar-empleados/buscar-empleados.component";
 import { DialogReasignarUsuarioComponent } from "src/app/shared/reasginar-usuario/reasignar-usuario.component";
 import Swal from "sweetalert2";
 
@@ -40,26 +36,24 @@ import Swal from "sweetalert2";
 
 
 interface DialogComponents {
-  dialogBuscarEmpleados: Type<DialogBuscarEmpleadosComponent>;
   dialogReasignarUsuario: Type<DialogReasignarUsuarioComponent>;
 }
 
 const dialogComponentList: DialogComponents = {
-  dialogBuscarEmpleados: DialogBuscarEmpleadosComponent,
   dialogReasignarUsuario: DialogReasignarUsuarioComponent,
 };
 
 @Component({
-  selector: "app-reingreso-personal",
-  templateUrl: "./reingreso-personal.component.html",
-  styleUrls: ["./reingreso-personal.component.scss"],
+  selector: "app-accion-personal",
+  templateUrl: "./accion-personal.component.html",
+  styleUrls: ["./accion-personal.component.scss"],
 })
-export class ReingresoPersonalComponent extends CompleteTaskComponent {
+export class AccionComponent extends CompleteTaskComponent {
   NgForm = NgForm;
 
+  selectedOptionAnulacion: string;
+  selected_tipo_accion: number;
   selectedOption: string = "No";
-  columnsAprobadores = columnsAprobadores.columns;
-  dataTableAprobadores = dataTableAprobadores;
   empleadoSearch : string = "";
 
 
@@ -990,7 +984,6 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
   ): void {}
 
   indexedModal: Record<keyof DialogComponents, any> = {
-    dialogBuscarEmpleados: () => this.openModalBuscarEmpleado(),
     dialogReasignarUsuario: undefined
   };
 
@@ -1148,62 +1141,8 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
       );
   }
 
-  public comp: string = '';
-  public sueldo: string = '';
-  public mensual: string = '';
-  public anual: string = '';
-  public trimestral: string = '';
-  public semestral: string = '';
-  public remuneracion: string = '';
-  public puesto: string = '';
-  public unidadNegocio: string = '';
-  public localidad: string = '';
-  public departamento: string = '';
-  public feIng: Date;
-
-  openModalBuscarEmpleado() {
-    this.modalService
-      .open(dialogComponentList.dialogBuscarEmpleados, {
-        ariaLabelledBy: "modal-title",
-      })
-      .result.then(
-        (result) => {
-          if (result?.action === "close") {
-            return;
-          }
-
-          if (result?.data) {
-            const data: IEmpleadoData = result.data;
-            console.log('AQUIIIII PRUEBA',data);
-            this.empleadoSearch = data.nombreCompleto
-            this.comp = data.compania;
-            this.sueldo = data.sueldo;
-            this.mensual = data.sueldoVariableMensual;
-            this.anual = data.sueldoVariableAnual;
-            this.trimestral = data.sueldoVariableTrimestral;
-            this.semestral = data.sueldoVariableSemestral;
-            this.puesto = data.descrPuesto;
-            this.unidadNegocio = data.unidadNegocio;
-            this.localidad = data.localidad;
-            this.departamento = data.departamento;
-            this.feIng = data.fechaIngresogrupo;
-
-            // this.mantenimientoService
-            //   .(dtoFamiliares)
-            //   .subscribe((response) => {
-
-            //     this.utilService.modalResponse(
-            //       "Empleado ingresado correctamente",
-            //       "success"
-            //     );
-            //   });
-          }
-        },
-        (reason) => {
-          console.log(`Dismissed with: ${reason}`);
-        }
-      );
+  onSelectionChange() {
+    console.log(this.selectedOptionAnulacion);
   }
-
 
 }

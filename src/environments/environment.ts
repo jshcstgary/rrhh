@@ -75,6 +75,7 @@ export const environment = {
 
   // empleadoServiceEs: `${base}:8078/v1/us/empleadoev`,
   empleadoServiceEs: `${baseG}/v1/us/empleadoev`,
+  exempleadoServiceEsJaff: `${baseG}/v1/us/exempleadojaff`,
 
   // nivelAprobacionRefreshServiceES: `${base}:8075/v1/es/refresh_nivelesAprobacion`,
   nivelAprobacionRefreshServiceES: `${baseG}/v1/es/refresh_nivelesAprobacion`,
@@ -94,7 +95,8 @@ export const environment = {
   // detalleAprobacionesServiceES: `${base}:8083/v1/es/detalles_aprobaciones_solicitudes`,
   detalleAprobacionesServiceES: `${baseG}/v1/es/detalles_aprobaciones_solicitudes`,
 
-
+  // detalleAprobacionesServiceES: `${base}:8086/v1/es/seleccion_candidato`,
+  familiaresCandidationServiceES: `${baseG}/v1/es/familiarescandidato`,
   /*
 
   mantenedores

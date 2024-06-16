@@ -1,66 +1,36 @@
-import { Component, TemplateRef, Type, ViewChild } from "@angular/core";
-import { ActivatedRoute, Router } from "@angular/router";
-import {
-  NgbModal,
-  NgbTypeaheadSelectItemEvent,
-} from "@ng-bootstrap/ng-bootstrap";
-import { CamundaRestService } from "src/app/camunda-rest.service";
-import { Solicitud } from "src/app/eschemas/Solicitud";
-import { CompleteTaskComponent } from "../general/complete-task.component";
-import { Subject } from "rxjs";
-import { catchError, debounceTime, map } from "rxjs/operators";
-import { RegistrarData } from "src/app/eschemas/RegistrarData";
-import { DatosProcesoInicio } from "src/app/eschemas/DatosProcesoInicio";
-import { UtilService } from "src/app/services/util/util.service";
-import { MantenimientoService } from "src/app/services/mantenimiento/mantenimiento.service";
-import { SolicitudesService } from "../registrar-solicitud/solicitudes.service";
-import { ConsultaTareasService } from "src/app/tareas/consulta-tareas/consulta-tareas.service";
-import { HttpErrorResponse } from "@angular/common/http";
-import { NgForm } from "@angular/forms";
-import { DetalleSolicitud } from "src/app/eschemas/DetalleSolicitud";
-import { DatosSolicitud } from "src/app/eschemas/DatosSolicitud";
-import { environment } from "src/environments/environment";
-import {
-  columnsAprobadores,
-  dataTableAprobadores,
-} from "./reingreso-personal.data";
-// import {
-//   DialogComponents,
-//   dialogComponentList,
-// } from "src/app/shared/dialogComponents/dialog.components";
-import {
-  IEmpleadoData,
-  IEmpleados,
-} from "src/app/services/mantenimiento/empleado.interface";
-import { DialogBuscarEmpleadosComponent } from "./buscar-empleados/buscar-empleados.component";
-import { DialogReasignarUsuarioComponent } from "src/app/shared/reasginar-usuario/reasignar-usuario.component";
-import Swal from "sweetalert2";
-
-
-
-
-interface DialogComponents {
-  dialogBuscarEmpleados: Type<DialogBuscarEmpleadosComponent>;
-  dialogReasignarUsuario: Type<DialogReasignarUsuarioComponent>;
-}
-
-const dialogComponentList: DialogComponents = {
-  dialogBuscarEmpleados: DialogBuscarEmpleadosComponent,
-  dialogReasignarUsuario: DialogReasignarUsuarioComponent,
-};
+import { Component, TemplateRef, ViewChild } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { NgbModal, NgbTypeaheadSelectItemEvent } from '@ng-bootstrap/ng-bootstrap';
+import { CamundaRestService } from 'src/app/camunda-rest.service';
+import { Solicitud } from 'src/app/eschemas/Solicitud';
+import { CompleteTaskComponent } from '../general/complete-task.component';
+import { Subject } from 'rxjs';
+import { debounceTime } from "rxjs/operators";
+import { RegistrarData } from 'src/app/eschemas/RegistrarData';
+import { DatosProcesoInicio } from 'src/app/eschemas/DatosProcesoInicio';
+import { UtilService } from 'src/app/services/util/util.service';
+import { MantenimientoService } from 'src/app/services/mantenimiento/mantenimiento.service';
+import { SolicitudesService } from '../registrar-solicitud/solicitudes.service';
+import { ConsultaTareasService } from 'src/app/tareas/consulta-tareas/consulta-tareas.service';
+import { HttpErrorResponse } from '@angular/common/http';
+import { NgForm } from '@angular/forms';
+import { DetalleSolicitud } from 'src/app/eschemas/DetalleSolicitud';
+import { DatosSolicitud } from 'src/app/eschemas/DatosSolicitud';
+import { environment } from 'src/environments/environment';
+import { columnsAprobadores, dataTableAprobadores } from './registro-comentarios.data';
+import { DialogComponents, dialogComponentList } from 'src/app/shared/dialogComponents/dialog.components';
 
 @Component({
-  selector: "app-reingreso-personal",
-  templateUrl: "./reingreso-personal.component.html",
-  styleUrls: ["./reingreso-personal.component.scss"],
+  selector: 'app-registro-comentarios',
+  templateUrl: './registro-comentarios.component.html',
+  styleUrls: ['./registro-comentarios.component.scss']
 })
-export class ReingresoPersonalComponent extends CompleteTaskComponent {
+export class RegistroComentariosComponent extends CompleteTaskComponent {
   NgForm = NgForm;
 
-  selectedOption: string = "No";
+  selectedOption: string = 'No';
   columnsAprobadores = columnsAprobadores.columns;
   dataTableAprobadores = dataTableAprobadores;
-  empleadoSearch : string = "";
 
 
   override model: RegistrarData = new RegistrarData(
@@ -176,6 +146,7 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
   public dataRuta: any[] = [];
 
   public dataNivelDireccion: any[] = [];
+
 
   // getDataNivelesAprobacionPorCodigoPosicion
   public dataNivelesAprobacionPorCodigoPosicion: { [key: string]: any[] } = {};
@@ -420,6 +391,7 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
       // Manejar errores aquí de manera centralizada
       this.utilService.modalResponse(error.error, "error");
     }
+
   }
 
   ObtenerServicioTipoSolicitud() {
@@ -477,7 +449,7 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
 
   // Prueba servicio
   getSolicitudes() {
-    this.solicitudes.getSolicitudes().subscribe((data) => {});
+    this.solicitudes.getSolicitudes().subscribe((data) => { });
   }
 
   getSolicitudById(id: any) {
@@ -492,6 +464,7 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
          this.model.idEmpresa = this.solicitud.idEmpresa ;
          this.model.compania=this.solicitud.empresa ;
          this.model.unidadNegocio=this.solicitud.unidadNegocio;*/
+
 
         this.loadingComplete++;
         this.getDetalleSolicitudById(this.id_edit);
@@ -578,6 +551,7 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
       console.log("Mis params: ", params);
       this.misParams = params;
 
+
       /*this.solicitud.infoGeneral.idTipoSolicitud = this.dataTipoSolicitud.id;
       this.solicitud.infoGeneral.tipoSolicitud =
         this.dataTipoSolicitud.tipoSolicitud;
@@ -614,12 +588,12 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
       // const variableNames = Object.keys(this.model).join(",");
       const variableNames = Object.keys(this.model).join(",");
 
-      if ("true" === this.parentIdFlag) { 
+      if ("true" === this.parentIdFlag) {
         // id is parent process instance id. so handle it accordingly
         // we are looking for task id 'Registrar' in a recently started process instance 'id'
         this.idDeInstancia = params["id"];
         this.camundaRestService
-          .getTask(environment.taskType_CF, params["id"])
+          .getTask(environment.taskType_Registrar, params["id"])
           .subscribe((result) => {
             console.log("INGRESA AQUÍ (registrar): ", result);
             console.log(
@@ -695,6 +669,7 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
       next: (response: any) => {
         this.detalleSolicitud = response.detalleSolicitudType[0];
         if (this.detalleSolicitud.codigoPosicion.length > 0) {
+
           this.model.codigoPosicion = this.detalleSolicitud.codigoPosicion;
           this.model.descrPosicion = this.detalleSolicitud.descripcionPosicion;
           this.model.subledger = this.detalleSolicitud.subledger;
@@ -713,15 +688,14 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
           this.model.tipoContrato = this.detalleSolicitud.tipoContrato;
           this.model.nivelRepa = this.detalleSolicitud.nivelReporteA;
           this.model.sueldo = this.detalleSolicitud.sueldo;
-          this.model.sueldoMensual =
-            this.detalleSolicitud.sueldoVariableMensual;
-          this.model.sueldoTrimestral =
-            this.detalleSolicitud.sueldoVariableTrimestral;
-          this.model.sueldoSemestral =
-            this.detalleSolicitud.sueldoVariableSemestral;
-          this.model.sueldoAnual = this.detalleSolicitud.sueldoVariableAnual;
+          this.model.sueldoMensual = this.detalleSolicitud.sueldoVariableMensual;
+          this.model.sueldoTrimestral = this.detalleSolicitud.sueldoVariableTrimestral;
+          this.model.sueldoSemestral = this.detalleSolicitud.sueldoVariableSemestral;
+          this.model.sueldoAnual = this.detalleSolicitud.sueldoVariableAnual
           this.model.correo = this.detalleSolicitud.correo;
           this.model.fechaIngreso = this.detalleSolicitud.fechaIngreso;
+
+
         }
         /* this.detalleSolicitud.estado = response.estado;
          this.detalleSolicitud.estado = response.estadoSolicitud;
@@ -752,6 +726,7 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
             this.obtenerAprobacionesPorPosicionAPD();
           }
 
+
           console.log("aprobadores dinamicos", this.dataAprobadoresDinamicos);
           // const jsonArrayString = JSON.stringify(this.dataAprobadoresDinamicos);
           // console.log("conversion aprobadores dinamicos", jsonArrayString);
@@ -781,6 +756,7 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
          }*/
 
         this.consultarNextTask(id);
+
       },
       error: (error: HttpErrorResponse) => {
         this.utilService.modalResponse(error.error, "error");
@@ -789,18 +765,17 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
   }
 
   getNivelesAprobacion() {
-    if (
-      this.detalleSolicitud.codigoPosicion !== "" &&
+    if (this.detalleSolicitud.codigoPosicion !== "" &&
       this.detalleSolicitud.codigoPosicion !== undefined &&
-      this.detalleSolicitud.codigoPosicion != null
-    ) {
+      this.detalleSolicitud.codigoPosicion != null) {
+
+
       this.solicitudes
         .obtenerAprobacionesPorPosicion(
           this.solicitud.idTipoSolicitud,
           this.solicitud.idTipoMotivo,
           this.detalleSolicitud.codigoPosicion,
-          this.detalleSolicitud.nivelDireccion,
-          "A"
+          this.detalleSolicitud.nivelDireccion, 'A'
         )
         .subscribe({
           next: (response) => {
@@ -814,7 +789,9 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
             );
           },
         });
+
     }
+
   }
 
   obtenerAprobacionesPorPosicionAPS() {
@@ -823,16 +800,14 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
         this.solicitud.idTipoSolicitud,
         this.solicitud.idTipoMotivo,
         this.model.codigoPosicion,
-        this.model.nivelDir,
-        "APS"
+        this.model.nivelDir,'APS'
       )
       .subscribe({
         next: (response) => {
-          this.dataTipoRuta.length = 0;
-          this.dataRuta.length = 0;
-          this.dataAprobacionesPorPosicionAPS =
-            response.nivelAprobacionPosicionType || [];
-          this.dataAprobacionesPorPosicionAPS.forEach((item) => {
+          this.dataTipoRuta.length=0;
+          this.dataRuta.length=0;
+          this.dataAprobacionesPorPosicionAPS=response.nivelAprobacionPosicionType;
+          this.dataAprobacionesPorPosicionAPS.forEach(item => {
             this.dataTipoRuta.push(item.nivelAprobacionType.tipoRuta);
             this.dataRuta.push(item.nivelAprobacionType.ruta);
             console.log("Aprobaciones APS = ", item.nivelAprobacionType);
@@ -853,15 +828,13 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
         this.solicitud.idTipoSolicitud,
         this.solicitud.idTipoMotivo,
         this.model.codigoPosicion,
-        this.model.nivelDir,
-        "APD"
+        this.model.nivelDir,'APD'
       )
       .subscribe({
         next: (response) => {
-          this.dataAprobadoresDinamicos.length = 0;
-          this.dataAprobacionesPorPosicionAPS =
-            response.nivelAprobacionPosicionType;
-          this.dataAprobacionesPorPosicionAPS.forEach((item) => {
+          this.dataAprobadoresDinamicos.length=0;
+          this.dataAprobacionesPorPosicionAPS=response.nivelAprobacionPosicionType;
+          this.dataAprobacionesPorPosicionAPS.forEach(item => {
             this.dataAprobadoresDinamicos.push(item.aprobador.nivelDireccion);
             console.log("Aprobaciones APD = ", item.aprobador);
           });
@@ -876,20 +849,19 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
   }
 
   consultarNextTask(IdSolicitud: string) {
-    this.consultaTareasService
-      .getTareaIdParam(IdSolicitud)
-      .subscribe((tarea) => {
-        console.log("Task: ", tarea);
+    this.consultaTareasService.getTareaIdParam(IdSolicitud)
+    .subscribe((tarea)=>{
+      console.log("Task: ", tarea);
 
-        this.uniqueTaskId = tarea.solicitudes[0].taskId;
-        this.taskType_Activity = tarea.solicitudes[0].tasK_DEF_KEY;
-        this.nameTask = tarea.solicitudes[0].name;
-        this.id_solicitud_by_params = tarea.solicitudes[0].idSolicitud;
+      this.uniqueTaskId=tarea.solicitudes[0].taskId;
+      this.taskType_Activity = tarea.solicitudes[0].tasK_DEF_KEY;
+      this.nameTask = tarea.solicitudes[0].name;
+      this.id_solicitud_by_params = tarea.solicitudes[0].idSolicitud;
 
-        if (this.taskType_Activity !== environment.taskType_Registrar) {
-          this.RegistrarsolicitudCompletada = false;
-        }
-      });
+      if(this.taskType_Activity!==environment.taskType_Registrar){
+        this.RegistrarsolicitudCompletada = false;
+      }
+    });
   }
 
   lookForError(result: any): void {
@@ -900,232 +872,27 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
     }
   }
 
-  onSubmit() {
-
-    Swal.fire({
-      text: "¿Desea crear la Solicitud?",
-      icon: "question",
-      showCancelButton: true,
-      confirmButtonColor: "rgb(227, 199, 22)",
-      cancelButtonColor: "#77797a",
-      confirmButtonText: "Sí",
-      cancelButtonText: "No",
-
-    }).then((result) => {
-      if (result.isConfirmed) {
-        this.save();
-
-        if (this.submitted) {
-        }
-
-        //Fin Solicitud
-      }
-    });
+  public onSubmit(): void {
 
   }
 
-  public pageSolicitudes(): void {}
+  public pageSolicitudes(): void {
 
-  onCompletar() {
-    //completar tarea mmunoz
-    if (this.uniqueTaskId === null) {
-      //handle this as an error
-      this.errorMessage =
-        "Unique Task id is empty. Cannot initiate task complete.";
-      return;
-    }
-    this.utilService.openLoadingSpinner(
-      "Completando Tarea, espere por favor..."
-    );
-
-    let variables = this.generateVariablesFromFormFields();
-
-    this.camundaRestService
-      .postCompleteTask(this.uniqueTaskId, variables)
-      .subscribe({
-        next: (res) => {
-          console.log("Complete task notificar");
-          //actualizo la solicitud a enviada
-          this.solicitud.empresa = this.model.idEmpresa;
-          this.solicitud.idEmpresa = this.model.idEmpresa;
-
-          this.solicitud.unidadNegocio = this.model.unidadNegocio;
-          this.solicitud.idUnidadNegocio = this.model.unidadNegocio;
-          if (this.selectedOption == "No") {
-            this.solicitud.estadoSolicitud = "4";
-          } else {
-            this.solicitud.estadoSolicitud = "AN";
-          }
-
-          console.log("this.solicitud: ", this.solicitud);
-          this.solicitudes
-            .actualizarSolicitud(this.solicitud)
-            .subscribe((responseSolicitud) => {
-              console.log("responseSolicitud: ", responseSolicitud);
-            });
-
-          this.utilService.closeLoadingSpinner();
-          //fin actualizo la solicitud a enviada
-          this.utilService.modalResponse(
-            `Solicitud registrada correctamente [${this.idDeInstancia}]. Será redirigido en un momento...`,
-            "success"
-          );
-          setTimeout(() => {
-            this.router.navigate(["/tareas/consulta-tareas"]);
-          }, 1800);
-        },
-        error: (error: HttpErrorResponse) => {
-          this.utilService.modalResponse(error.error, "error");
-        },
-      });
-
-    this.submitted = true;
   }
 
-  public onCancel(): void {}
+  public onCompletar(): void {
 
-  public onSelectItem(
-    codigoPosicion: string,
-    event: NgbTypeaheadSelectItemEvent<any>
-  ): void {}
-
-  indexedModal: Record<keyof DialogComponents, any> = {
-    dialogBuscarEmpleados: () => this.openModalBuscarEmpleado(),
-    dialogReasignarUsuario: undefined
-  };
-
-  openModal(component: keyof DialogComponents) {
-    this.indexedModal[component]();
   }
 
-  save() {
-    this.utilService.openLoadingSpinner(
-      "Guardando información, espere por favor..."
-    ); // comentado mmunoz
+  public onCancel(): void {
 
-    this.submitted = true;
-    let idInstancia = this.solicitudDataInicial.idInstancia;
-
-    console.log(
-      "this.solicitudDataInicial.idInstancia: ",
-      this.solicitudDataInicial.idInstancia
-    );
-
-    let extra = {
-      idEmpresa: this.model.compania,
-      empresa: this.model.compania,
-      estadoSolicitud: "Pendiente",
-      unidadNegocio: this.model.unidadNegocio,
-      idUnidadNegocio: this.model.unidadNegocio,
-    };
-
-    this.solicitud.empresa = this.model.idEmpresa;
-    this.solicitud.idEmpresa = this.model.idEmpresa;
-
-    this.solicitud.unidadNegocio = this.model.unidadNegocio;
-    this.solicitud.idUnidadNegocio = this.model.unidadNegocio;
-    this.solicitud.estadoSolicitud = "2";
-    console.log("this.solicitud: ", this.solicitud);
-    this.solicitudes
-      .actualizarSolicitud(this.solicitud)
-      .subscribe((responseSolicitud) => {
-        console.log("responseSolicitud: ", responseSolicitud);
-
-        this.detalleSolicitud.idSolicitud = this.solicitud.idSolicitud;
-
-        this.detalleSolicitud.areaDepartamento = this.model.departamento;
-
-        this.detalleSolicitud.cargo = this.model.nombreCargo;
-        this.detalleSolicitud.centroCosto = this.model.nomCCosto;
-        this.detalleSolicitud.codigoPosicion = this.model.codigoPosicion;
-        this.detalleSolicitud.compania = this.model.compania; //idEmpresa
-        this.detalleSolicitud.departamento = this.model.departamento;
-        this.detalleSolicitud.descripcionPosicion = this.model.descrPosicion;
-
-        this.detalleSolicitud.localidad = this.model.localidad;
-        this.detalleSolicitud.localidadZona = this.model.localidad;
-
-        this.detalleSolicitud.misionCargo = this.model.misionCargo;
-        this.detalleSolicitud.nivelDireccion = this.model.nivelDir;
-        this.detalleSolicitud.nivelReporteA = this.model.nivelRepa;
-
-        this.detalleSolicitud.nombreEmpleado = this.model.nombreCompleto;
-
-        this.detalleSolicitud.reportaA = this.model.reportaA;
-
-        this.detalleSolicitud.subledger = this.model.subledger;
-
-        this.detalleSolicitud.subledgerEmpleado = this.model.subledger;
-
-        this.detalleSolicitud.sucursal = this.model.sucursal;
-
-        this.detalleSolicitud.misionCargo =
-          this.model.misionCargo == "" ||
-          this.model.misionCargo == undefined ||
-          this.model.misionCargo == null
-            ? ""
-            : this.model.misionCargo;
-        this.detalleSolicitud.justificacion =
-          this.model.justificacionCargo == "" ||
-          this.model.justificacionCargo == undefined ||
-          this.model.justificacionCargo == null
-            ? ""
-            : this.model.justificacionCargo;
-        this.detalleSolicitud.sueldo = this.model.sueldo;
-        this.detalleSolicitud.sueldoVariableMensual = this.model.sueldoMensual;
-        this.detalleSolicitud.sueldoVariableTrimestral =
-          this.model.sueldoTrimestral;
-        this.detalleSolicitud.sueldoVariableSemestral =
-          this.model.sueldoSemestral;
-        this.detalleSolicitud.sueldoVariableAnual = this.model.sueldoAnual;
-        this.detalleSolicitud.tipoContrato = this.model.tipoContrato;
-        this.detalleSolicitud.unidadNegocio = this.model.unidadNegocio;
-
-        this.detalleSolicitud.correo = this.model.correo;
-
-        this.detalleSolicitud.supervisaA = this.model.supervisaA;
-
-        this.detalleSolicitud.fechaIngreso =
-          this.model.fechaIngresogrupo == ""
-            ? this.model.fechaIngreso
-            : this.model.fechaIngresogrupo;
-
-        console.log(
-          "ESTO LE MANDO AL ACTUALIZAR this.detalleSolicitud: ",
-          this.detalleSolicitud,
-          this.model
-        );
-
-        this.solicitudes
-          .actualizarDetalleSolicitud(this.detalleSolicitud)
-          .subscribe((responseDetalle) => {
-            console.log("responseDetalle: ", responseDetalle);
-
-            this.utilService.closeLoadingSpinner(); //comentado mmunoz
-            this.utilService.modalResponse(
-              "Datos ingresados correctamente",
-              "success"
-            );
-
-            console.log(
-              "CON ESTO COMPLETO (this.uniqueTaskId): ",
-              this.uniqueTaskId
-            );
-
-            console.log("AQUI HAY UN IDDEINSTANCIA?: ", this.idDeInstancia);
-
-            setTimeout(() => {
-              this.router.navigate(["/tareas/consulta-tareas"]);
-            }, 1800);
-          });
-      }); //aqui debe crear los aprobadores
-    this.submitted = true;
   }
 
+  public onSelectItem(codigoPosicion: string, event: NgbTypeaheadSelectItemEvent<any>): void {
 
+  }
 
-  openModalReasignar(componentName: keyof DialogComponents) {
-    console.log("SE ABRIO EL MODAL");
+  openModal(componentName: keyof DialogComponents) {
     this.modalService
       .open(dialogComponentList[componentName], {
         ariaLabelledBy: "modal-title",
@@ -1138,65 +905,8 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
             return;
           }
           if (Object.keys(result).length > 0) {
-            console.log("Probando");
+            console.log('Probando')
             // this.dataTableAprobadores.push(result);
-          }
-        },
-        (reason) => {
-          console.log(`Dismissed with: ${reason}`);
-        }
-      );
-  }
-
-  public comp: string = '';
-  public sueldo: string = '';
-  public mensual: string = '';
-  public anual: string = '';
-  public trimestral: string = '';
-  public semestral: string = '';
-  public remuneracion: string = '';
-  public puesto: string = '';
-  public unidadNegocio: string = '';
-  public localidad: string = '';
-  public departamento: string = '';
-  public feIng: Date;
-
-  openModalBuscarEmpleado() {
-    this.modalService
-      .open(dialogComponentList.dialogBuscarEmpleados, {
-        ariaLabelledBy: "modal-title",
-      })
-      .result.then(
-        (result) => {
-          if (result?.action === "close") {
-            return;
-          }
-
-          if (result?.data) {
-            const data: IEmpleadoData = result.data;
-            console.log('AQUIIIII PRUEBA',data);
-            this.empleadoSearch = data.nombreCompleto
-            this.comp = data.compania;
-            this.sueldo = data.sueldo;
-            this.mensual = data.sueldoVariableMensual;
-            this.anual = data.sueldoVariableAnual;
-            this.trimestral = data.sueldoVariableTrimestral;
-            this.semestral = data.sueldoVariableSemestral;
-            this.puesto = data.descrPuesto;
-            this.unidadNegocio = data.unidadNegocio;
-            this.localidad = data.localidad;
-            this.departamento = data.departamento;
-            this.feIng = data.fechaIngresogrupo;
-
-            // this.mantenimientoService
-            //   .(dtoFamiliares)
-            //   .subscribe((response) => {
-
-            //     this.utilService.modalResponse(
-            //       "Empleado ingresado correctamente",
-            //       "success"
-            //     );
-            //   });
           }
         },
         (reason) => {

@@ -11,6 +11,7 @@ import { ColorPickerModule } from "ngx-color-picker";
 import { NgSelectModule } from "@ng-select/ng-select";
 import { DropdownComponent } from "./dropdown/dropdown.component";
 import { FormComponent } from "./form/form.component";
+import { TablaComponent } from "./table-personalized/table.component";
 
 @NgModule({
   imports: [
@@ -27,6 +28,7 @@ import { FormComponent } from "./form/form.component";
     InputComponent,
     DropdownComponent,
     FormComponent,
+    TablaComponent
   ],
   exports: [
     TooltipComponent,
@@ -34,6 +36,7 @@ import { FormComponent } from "./form/form.component";
     FormComponent,
     TableComponent,
     DropdownComponent,
+    TablaComponent
   ],
 })
 export class ComponentsModule {}

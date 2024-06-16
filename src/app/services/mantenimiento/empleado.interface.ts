@@ -35,3 +35,11 @@ export interface EvType {
   codigoPosicionReportaA: string;
   status: string;
 }
+
+type EmpleadoData = IEmpleados["evType"][0];
+
+export interface IEmpleadoData extends EmpleadoData {
+  comentarios?: string;
+  usuario?: string;
+  parentezco?: string;
+}
