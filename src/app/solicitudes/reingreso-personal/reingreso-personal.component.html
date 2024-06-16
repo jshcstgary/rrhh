@@ -44,9 +44,7 @@
       <div class="row mt-4">
         <div class="col-md-4">
           <div class="input-group mb-3">
-            <label class="label-estilo" for="origin"
-              >Creado por:</label
-            >
+            <label class="label-estilo" for="origin">Creado por:</label>
             <span
               id="origin"
               name=""
@@ -58,15 +56,13 @@
         </div>
         <div class="col-md-4">
           <div class="input-group mb-3">
-            <label class="label-estilo" for="unidadnegocio"
-              >Fecha:</label
-            >
+            <label class="label-estilo" for="unidadnegocio">Fecha:</label>
             <span
               id="date"
               name=""
               style="color: black; font-size: 14px"
               class="text-start"
-              >{{ this.solicitud.fechaCreacion | date:'yyyy/MM/dd' }}</span
+              >{{ this.solicitud.fechaCreacion | date : "yyyy/MM/dd" }}</span
             >
           </div>
         </div>
@@ -86,19 +82,22 @@
         </div>
       </div>
 
-      <div class="row mt-2">
-        <div class="col-md-3">
-          <div class="mb-4">
-            <a>
-              <h2 class="sol-danger">Información general</h2>
-            </a>
+      <div class="row mt-4">
+        <div class="row mt-4">
+          <div class="col-md-3">
+            <div class="mb-4">
+              <a>
+                <h2 class="sol-danger">Información General</h2>
+              </a>
+            </div>
+          </div>
+
+          <div class="col">
+            <hr />
           </div>
         </div>
-
-        <div class="col-md-9">
-          <hr />
-        </div>
       </div>
+
       <div class="row mb-2">
         <div class="col-md-7">
           <div class="input-group mb-3">
@@ -134,54 +133,6 @@
           </div>
         </div>
       </div>
-        <div class="col-md-9">
-          <hr />
-        </div>
-      </div>
-      <div class="row mb-2">
-        <div class="col-md-7">
-          <div class="input-group mb-3">
-            <label class="input-group label-estilo" for="tipoSolicitud"
-              >Nro Solicitud de Requisicion</label
-            >
-            &nbsp;
-            <span
-              #mivar
-              id="tipoSolicitud"
-              name="tipoSolicitud"
-              style="color: black; font-size: 14px"
-              class="text-start"
-              >RP-0001</span
-            >
-          </div>
-        </div>
-      </div>
-      <div class="row mt-3">
-        <div class="col-md-7">
-          <div class="input-group mb-3">
-            <label class="input-group label-estilo" for="tipoMotivo"
-              >Apellidos y nombres completos</label
-            >
-            &nbsp;
-            <span
-              id="tipoMotivo"
-              name="tipoMotivo"
-              style="color: black; font-size: 14px"
-              class="text-start"
-              >{{ "Juan Benito Perez Gonzales" }}</span
-            >
-          </div>
-        </div>
-      </div>
-
-      <div class="row mt-3">
-        <div class="col-md-3">
-          <div class="input-group mb-3">
-            <label class="input-group label-estilo" for="observaciones"
-              >Observaciones</label
-            >
-          </div>
-        </div>
       <div class="row mt-3">
         <div class="col-md-3">
           <div class="input-group mb-3">
@@ -206,765 +157,739 @@
       </div>
 
       <div class="row mt-4">
-        <div class="col-md-3">
-          <div class="mb-4">
-            <a>
-              <h2 class="sol-danger">Datos de contratación</h2>
-            </a>
+        <div class="row mt-4">
+          <div class="col-md-3">
+            <div class="mb-4">
+              <a>
+                <h2 class="sol-danger">Datos de contratación</h2>
+              </a>
+            </div>
           </div>
-        </div>
-      <div class="row mt-4">
-        <div class="col-md-3">
-          <div class="mb-4">
-            <a>
-              <h2 class="sol-danger">Datos de contratación</h2>
-            </a>
-          </div>
-        </div>
 
-        <div class="col-md-9">
-          <hr />
-        </div>
-      </div>
-        <div class="col-md-9">
-          <hr />
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col-md-5">
-          <div class="input-group mb-3">
-            <label class="input-group label-estilo" for="searchInputFilter"
-              >Buscar Empleado</label
-            >
-            <input-component
-              [id]="'searchInputFilter'"
-              [type]="'string'"
-              [buttonIcon]="'ti-search'"
-              buttonFunction="filterStringInTable"
-              onChangeFunction="filterStringInTable"
-              placeholder=""
-              (click)="openModal('dialogBuscarEmpleados')"
-              style="width: 50%"
-            ></input-component>
-          </div>
-        </div>
-        <div class="col-md-1"></div>
-        <div class="col-md-4">
-          <div class="input-group mb-3">
-            <label class="input-group label-estilo" for="tipoMotivo"
-              >Empleado</label
-            >
-            &nbsp;
-            <span
-              id="empleado"
-              name="empleado"
-              style="color: black; font-size: 14px"
-              class="text-start"
-              >{{ empleadoSearch }}</span
-            >
+          <div class="col">
+            <hr />
           </div>
         </div>
       </div>
 
-      <div class="row mt-4 mb-4">
-        <div class="col-md-6 d-flex justify-content-center align-items-center">
-          <div class="mb-3">
-            <label
-              class="input-group label-estilo"
-              style="font-size: 20px; color: black"
-              for="tipoMotivo"
-              >Actual</label
-            >
-          </div>
-        </div>
-        <div class="col-md-6 d-flex justify-content-center align-items-center">
-          <div class="mb-3">
-            <label
-              class="input-group label-estilo"
-              style="font-size: 20px; color: black"
-              for="tipoMotivo"
-              >Anterior</label
-            >
-          </div>
-        </div>
-      </div>
-      <div class="row mt-4 mb-4">
-        <div class="col-md-6 d-flex justify-content-center align-items-center">
-          <div class="mb-3">
-            <label
-              class="input-group label-estilo"
-              style="font-size: 20px; color: black"
-              for="tipoMotivo"
-              >Actual</label
-            >
-          </div>
-        </div>
-        <div class="col-md-6 d-flex justify-content-center align-items-center">
-          <div class="mb-3">
-            <label
-              class="input-group label-estilo"
-              style="font-size: 20px; color: black"
-              for="tipoMotivo"
-              >Anterior</label
-            >
-          </div>
-        </div>
-      </div>
-
-      <div class="row mt-4">
-        <div class="col">
-          <div class="input-group mb-3">
-            <label class="input-group label-estilo" for="tipoMotivo"
-              >Compañía</label
-            >
-            &nbsp;
-            <span
-              id="tipoMotivo"
-              name="tipoMotivo"
-              style="color: black; font-size: 14px"
-              class="text-start"
-              >{{this.comp}}</span
-            >
-          </div>
-        </div>
-        <div class="col">
-          <div class="input-group mb-3">
-            <label class="input-group label-estilo" for="tipoMotivo"
-              >Compañía</label
-            >
-            &nbsp;
-            <span
-              id="tipoMotivo"
-              name="tipoMotivo"
-              style="color: black; font-size: 14px"
-              class="text-start"
-              >{{ "BANCO NACIONAL" }}</span
-            >
-          </div>
-        </div>
-      </div>
-
-
-      <div class="row mt-4 mb-4">
-        <div class="col">
-          <div class="input-group mb-3">
-            <label class="input-group label-estilo" for="tipoMotivo"
-              >Sueldo</label
-            >
-            &nbsp;
-            <span
-              id="tipoMotivo"
-              name="tipoMotivo"
-              style="color: black; font-size: 14px"
-              class="text-start"
-              >{{ this.sueldo}}</span
-            >
-          </div>
-        </div>
-        <div class="col">
-          <div class="input-group mb-3">
-            <label class="input-group label-estilo" for="tipoMotivo"
-              >Sueldo</label
-            >
-            &nbsp;
-            <span
-              id="tipoMotivo"
-              name="tipoMotivo"
-              style="color: black; font-size: 14px"
-              class="text-start"
-              >{{ "" }}</span
-            >
-          </div>
-        </div>
-      </div>
-
-      <div class="row mt-4">
-        <div class="col-md-3">
-          <div class="mb-4">
-            <a>
-              <h2 class="sol-danger">Tipo de variable</h2>
-            </a>
-          </div>
-        </div>
-
-        <div class="col-md-9">
-          <hr />
-        </div>
-      </div>
-
-      <div class="row mt-4">
-        <div class="col">
-          <div class="input-group mb-3">
-            <label class="input-group label-estilo" for="tipoMotivo"
-              >Mensual</label
-            >
-            &nbsp;
-            <span
-              id="tipoMotivo"
-              name="tipoMotivo"
-              style="color: black; font-size: 14px"
-              class="text-start"
-              >{{ this.mensual }}</span
-            >
-          </div>
-        </div>
-        <div class="col">
-          <div class="input-group mb-3">
-            <label class="input-group label-estilo" for="tipoMotivo"
-              >Mensual</label
-            >
-            &nbsp;
-            <span
-              id="tipoMotivo"
-              name="tipoMotivo"
-              style="color: black; font-size: 14px"
-              class="text-start"
-              >{{ "10" }}</span
-            >
-          </div>
-        </div>
-      </div>
-      <div class="row mt-4">
-        <div class="col">
-          <div class="input-group mb-3">
-            <label class="input-group label-estilo" for="tipoMotivo"
-              >Trimestral</label
-            >
-            &nbsp;
-            <span
-              id="tipoMotivo"
-              name="tipoMotivo"
-              style="color: black; font-size: 14px"
-              class="text-start"
-              >{{ this.trimestral }}</span
-            >
-          </div>
-        </div>
-        <div class="col">
-          <div class="input-group mb-3">
-            <label class="input-group label-estilo" for="tipoMotivo"
-              >Trimestral</label
-            >
-            &nbsp;
-            <span
-              id="tipoMotivo"
-              name="tipoMotivo"
-              style="color: black; font-size: 14px"
-              class="text-start"
-              >{{ "" }}</span
-            >
-          </div>
-        </div>
-      </div>
-      <div class="row mt-4">
-        <div class="col">
-          <div class="input-group mb-3">
-            <label class="input-group label-estilo" for="tipoMotivo"
-              >Semestral</label
-            >
-            &nbsp;
-            <span
-              id="tipoMotivo"
-              name="tipoMotivo"
-              style="color: black; font-size: 14px"
-              class="text-start"
-              >{{ this.semestral }}</span
-            >
-          </div>
-        </div>
-        <div class="col">
-          <div class="input-group mb-3">
-            <label class="input-group label-estilo" for="tipoMotivo"
-              >Semestral</label
-            >
-            &nbsp;
-            <span
-              id="tipoMotivo"
-              name="tipoMotivo"
-              style="color: black; font-size: 14px"
-              class="text-start"
-              >{{ "" }}</span
-            >
-          </div>
-        </div>
-      </div>
-      <div class="row mt-4">
-        <div class="col">
-          <div class="input-group mb-3">
-            <label class="input-group label-estilo" for="tipoMotivo"
-              >Anual</label
-            >
-            &nbsp;
-            <span
-              id="tipoMotivo"
-              name="tipoMotivo"
-              style="color: black; font-size: 14px"
-              class="text-start"
-              >{{ this.anual}}</span
-            >
-          </div>
-        </div>
-        <div class="col">
-          <div class="input-group mb-3">
-            <label class="input-group label-estilo" for="tipoMotivo"
-              >Anual</label
-            >
-            &nbsp;
-            <span
-              id="tipoMotivo"
-              name="tipoMotivo"
-              style="color: black; font-size: 14px"
-              class="text-start"
-              >{{ "" }}</span
-            >
-          </div>
-        </div>
-      </div>
-      <div class="row mt-4">
-        <div class="col">
-          <div class="input-group mb-3">
-            <label class="input-group label-estilo" for="tipoMotivo"
-              >Remuneracion mensual</label
-            >
-            &nbsp;
-            <span
-              id="tipoMotivo"
-              name="tipoMotivo"
-              style="color: black; font-size: 14px"
-              class="text-start"
-              >{{ this.remuneracion }}</span
-            >
-          </div>
-        </div>
-        <div class="col">
-          <div class="input-group mb-3">
-            <label class="input-group label-estilo" for="tipoMotivo"
-              >Remuneracion mensual</label
-            >
-            &nbsp;
-            <span
-              id="tipoMotivo"
-              name="tipoMotivo"
-              style="color: black; font-size: 14px"
-              class="text-start"
-              >{{ "" }}</span
-            >
-          </div>
-        </div>
-      </div>
-      <div class="row mt-4">
-        <div class="col">
-          <div class="input-group mb-3">
-            <label class="input-group label-estilo" for="tipoMotivo"
-              >Puesto</label
-            >
-            &nbsp;
-            <span
-              id="tipoMotivo"
-              name="tipoMotivo"
-              style="color: black; font-size: 14px"
-              class="text-start"
-              >{{ this.puesto }}</span
-            >
-          </div>
-        </div>
-        <div class="col">
-          <div class="input-group mb-3">
-            <label class="input-group label-estilo" for="tipoMotivo"
-              >Puesto</label
-            >
-            &nbsp;
-            <span
-              id="tipoMotivo"
-              name="tipoMotivo"
-              style="color: black; font-size: 14px"
-              class="text-start"
-              >{{ "" }}</span
-            >
-          </div>
-        </div>
-      </div>
-      <div class="row mt-4">
-        <div class="col">
-          <div class="input-group mb-3">
-            <label class="input-group label-estilo" for="tipoMotivo"
-              >Unidad de Negocio</label
-            >
-            &nbsp;
-            <span
-              id="tipoMotivo"
-              name="tipoMotivo"
-              style="color: black; font-size: 14px"
-              class="text-start"
-              >{{ this.unidadNegocio }}</span
-            >
-          </div>
-        </div>
-        <div class="col">
-          <div class="input-group mb-3">
-            <label class="input-group label-estilo" for="tipoMotivo"
-              >Unidad de Negocio</label
-            >
-            &nbsp;
-            <span
-              id="tipoMotivo"
-              name="tipoMotivo"
-              style="color: black; font-size: 14px"
-              class="text-start"
-              >{{ "" }}</span
-            >
-          </div>
-        </div>
-      </div>
-      <div class="row mt-4">
-        <div class="col-md-6">
-          <div class="input-group mb-3">
-            <label class="input-group label-estilo" for="tipoMotivo"
-              >Departamento</label
-            >
-            &nbsp;
-            <span
-              id="tipoMotivo"
-              name="tipoMotivo"
-              style="color: black; font-size: 14px"
-              class="text-start"
-              >{{ this.departamento }}</span
-            >
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div class="input-group mb-3">
-            <label class="input-group label-estilo" for="tipoMotivo"
-              >Departamento</label
-            >
-            &nbsp;
-            <span
-              id="tipoMotivo"
-              name="tipoMotivo"
-              style="color: black; font-size: 14px"
-              class="text-start"
-              >{{ "" }}</span
-            >
-          </div>
-        </div>
-      </div>
-      <div class="row mt-4">
-        <div class="col-md-6">
-          <div class="input-group mb-3">
-            <label class="input-group label-estilo" for="tipoMotivo"
-              >Localidad</label
-            >
-            &nbsp;
-            <span
-              id="tipoMotivo"
-              name="tipoMotivo"
-              style="color: black; font-size: 14px"
-              class="text-start"
-              >{{ this.localidad }}</span
-            >
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div class="input-group mb-3">
-            <label class="input-group label-estilo" for="tipoMotivo"
-              >Localidad</label
-            >
-            &nbsp;
-            <span
-              id="tipoMotivo"
-              name="tipoMotivo"
-              style="color: black; font-size: 14px"
-              class="text-start"
-              >{{ "" }}</span
-            >
-          </div>
-        </div>
-      </div>
-      <div class="row mt-4">
-        <div class="col">
-          <div class="input-group mb-3">
-            <label class="input-group label-estilo" for="tipoMotivo"
-              >Jefe Inmediato Superior</label
-            >
-            &nbsp;
-            <input-component
-              [id]="'searchInputFilter'"
-              [type]="'string'"
-              [buttonIcon]="'ti-search'"
-              buttonFunction="filterStringInTable"
-              onChangeFunction="filterStringInTable"
-              placeholder="Inactivo"
-              style="width: 50%"
-            ></input-component>
-          </div>
-        </div>
-        <div class="col">
-          <div class="input-group mb-3">
-            <label class="input-group label-estilo" for="tipoMotivo"
-              >Jefe Inmediato Superior</label
-            >
-            &nbsp;
-            <span
-              id="tipoMotivo"
-              name="tipoMotivo"
-              style="color: black; font-size: 14px"
-              class="text-start"
-              >{{ "" }}</span
-            >
-          </div>
-        </div>
-      </div>
-      <div class="row mt-4">
-        <div class="col">
-          <div class="input-group mb-3">
-            <label class="input-group label-estilo" for="tipoMotivo"
-              >Puesto Jefe Inmediato</label
-            >
-            &nbsp;
-            <span
-              id="tipoMotivo"
-              name="tipoMotivo"
-              style="color: black; font-size: 14px"
-              class="text-start"
-              >{{ "" }}</span
-            >
-          </div>
-        </div>
-        <div class="col">
-          <div class="input-group mb-3">
-            <label class="input-group label-estilo" for="tipoMotivo"
-              >Puesto Jefe Inmediato</label
-            >
-            &nbsp;
-            <span
-              id="tipoMotivo"
-              name="tipoMotivo"
-              style="color: black; font-size: 14px"
-              class="text-start"
-              >{{ "" }}</span
-            >
-          </div>
-        </div>
-      </div>
-      <div class="row mt-4">
-        <div class="col">
-          <div class="input-group mb-3">
-            <label class="input-group label-estilo" for="tipoMotivo"
-              >Jefe Referencia</label
-            >
-            &nbsp;
-            <input-component
-              [id]="'searchInputFilter'"
-              [type]="'string'"
-              [buttonIcon]="'ti-search'"
-              buttonFunction="filterStringInTable"
-              onChangeFunction="filterStringInTable"
-              placeholder="Buscar"
-              style="width: 50%"
-            ></input-component>
-          </div>
-        </div>
-        <div class="col">
-          <div class="input-group mb-3">
-            <label class="input-group label-estilo" for="tipoMotivo"
-              >Responsable RRHH</label
-            >
-            &nbsp;
-            <input-component
-              [id]="'searchInputFilter'"
-              [type]="'string'"
-              [buttonIcon]="'ti-search'"
-              buttonFunction="filterStringInTable"
-              onChangeFunction="filterStringInTable"
-              placeholder="Buscar"
-              style="width: 50%"
-            ></input-component>
-          </div>
-        </div>
-      </div>
-      <div class="row mt-4">
-        <div class="col-md-6">
-          <div class="input-group mb-3">
-            <label class="input-group label-estilo" for="tipoMotivo"
-              >Puesto Referencia</label
-            >
-            &nbsp;
-            <span
-              id="tipoMotivo"
-              name="tipoMotivo"
-              style="color: black; font-size: 14px"
-              class="text-start"
-              >{{ "" }}</span
-            >
-          </div>
-        </div>
-        <div class="col-md-6 mb-4">
-          <div class="input-group mb-3 h-100">
-            <label class="input-group-text label-estilo" for="tipoMotivo"
-              >Observaciones del comité de Remuneraciones</label
-            >
-            <textarea
-              id="observaciones"
-              name="observaciones"
-              style="
-                color: black;
-                font-size: 14px;
-                height: 100px;
-                resize: none;
-                position: absolute;
-                top: 50px;
-                width: 100%;
-              "
-              disabled
-            ></textarea>
-          </div>
-        </div>
-      </div>
-      <div class="row mt-4">
-        <div class="col-md-6">
-          <div class="input-group mb-3">
-            <label class="input-group label-estilo" for="tipoMotivo"
-              >Fecha de Ingreso</label
-            >
-            &nbsp;
-            <span
-              id="tipoMotivo"
-              name="tipoMotivo"
-              style="color: black; font-size: 14px"
-              class="text-start"
-              >{{ this.feIng }}</span
-            >
-          </div>
-        </div>
-      </div>
-      <div class="row mt-4">
-        <div class="col-md-6">
-          <div class="input-group mb-3">
-            <label class="input-group label-estilo" for="tipoMotivo"
-              >Fecha de Salida</label
-            >
-            &nbsp;
-            <span
-              id="tipoMotivo"
-              name="tipoMotivo"
-              style="color: black; font-size: 14px"
-              class="text-start"
-              >{{ "01/10/24" }}</span
-            >
-          </div>
-        </div>
-      </div>
-      <div class="row mt-4">
-        <div class="col-md-6">
-          <div class="input-group mb-3">
-            <label class="input-group label-estilo" for="tipoMotivo"
-              >Responsable RRHH</label
-            >
-            &nbsp;
-            <input-component
-              [id]="'searchInputFilter'"
-              [type]="'string'"
-              [buttonIcon]="'ti-search'"
-              buttonFunction="filterStringInTable"
-              onChangeFunction="filterStringInTable"
-              placeholder="Buscar"
-              style="width: 50%"
-            ></input-component>
-          </div>
-        </div>
-      </div>
-
-      <div class="row mt-4">
-        <div class="col-md-3">
-          <div class="mb-4">
-            <a>
-              <h3 class="sol-danger">Aprobadores de la solicitud</h3>
-            </a>
-          </div>
-        </div>
-
-        <div class="col-md-9">
-          <hr />
-        </div>
-      </div>
-
-      <div class="accordion" id="accordionExample">
-        <div
-          *ngFor="
-            let nivelItem of dataAprobacionesPorPosicion[keySelected];
-            let i = index
-          "
-          class="accordion-item"
-        >
-          <div class="accordion-header">
-            <button
-              class="accordion-button"
-              type="button"
-              data-bs-toggle="collapse"
-              [attr.data-bs-target]="'#collapse' + i"
-              aria-expanded="true"
-              [attr.aria-controls]="'collapse' + i"
-              style="display: block"
-            >
-              <div
-                class="row"
-                style="align-items: center; justify-content: space-around"
+      <div class="row mt-3">
+        <div class="row">
+          <div class="col-md-5">
+            <div class="input-group mb-3">
+              <label class="input-group label-estilo" for="searchInputFilter"
+                >Buscar Empleado</label
               >
-                <div class="col">{{ nivelItem.nivelAprobacionType.ruta }}</div>
+              <input-component
+                [id]="'searchInputFilter'"
+                [type]="'string'"
+                [buttonIcon]="'ti-search'"
+                buttonFunction="filterStringInTable"
+                onChangeFunction="filterStringInTable"
+                placeholder=""
+                (click)="openModal('dialogBuscarEmpleados')"
+                style="width: 50%"
+              ></input-component>
+            </div>
+          </div>
+          <div class="col-md-1"></div>
+          <div class="col-md-4">
+            <div class="input-group mb-3">
+              <label class="input-group label-estilo" for="tipoMotivo"
+                >Empleado</label
+              >
+              &nbsp;
+              <span
+                id="empleado"
+                name="empleado"
+                style="color: black; font-size: 14px"
+                class="text-start"
+                >{{ empleadoSearch }}</span
+              >
+            </div>
+          </div>
+        </div>
 
-                <div class="col">
-                  {{
-                    nivelItem.aprobador.usuario !== "" &&
-                    nivelItem.aprobador.usuario !== undefined &&
-                    nivelItem.aprobador.usuario != null
-                      ? nivelItem.aprobador.usuario
-                      : "No aplica"
-                  }}
-                </div>
+        <div class="row mt-4 mb-4">
+          <div
+            class="col-md-6 d-flex justify-content-center align-items-center"
+          >
+            <div class="mb-3">
+              <label
+                class="input-group label-estilo"
+                style="font-size: 20px; color: black"
+                for="tipoMotivo"
+                >Actual</label
+              >
+            </div>
+          </div>
+          <div
+            class="col-md-6 d-flex justify-content-center align-items-center"
+          >
+            <div class="mb-3">
+              <label
+                class="input-group label-estilo"
+                style="font-size: 20px; color: black"
+                for="tipoMotivo"
+                >Anterior</label
+              >
+            </div>
+          </div>
+        </div>
 
-                <div class="col">
-                  {{ nivelItem.nivelAprobacionType.nivelAprobacionRuta }}
-                </div>
-              </div>
-            </button>
+        <div class="row mt-4">
+          <div class="col">
+            <div class="input-group mb-3">
+              <label class="input-group label-estilo" for="tipoMotivo"
+                >Compañía</label
+              >
+              &nbsp;
+              <span
+                id="tipoMotivo"
+                name="tipoMotivo"
+                style="color: black; font-size: 14px"
+                class="text-start"
+                >{{ this.comp }}</span
+              >
+            </div>
+          </div>
+          <div class="col">
+            <div class="input-group mb-3">
+              <label class="input-group label-estilo" for="tipoMotivo"
+                >Compañía</label
+              >
+              &nbsp;
+              <span
+                id="tipoMotivo"
+                name="tipoMotivo"
+                style="color: black; font-size: 14px"
+                class="text-start"
+                >{{ "BANCO NACIONAL" }}</span
+              >
+            </div>
+          </div>
+        </div>
+
+        <div class="row mt-4 mb-4">
+          <div class="col">
+            <div class="input-group mb-3">
+              <label class="input-group label-estilo" for="tipoMotivo"
+                >Sueldo</label
+              >
+              &nbsp;
+              <span
+                id="tipoMotivo"
+                name="tipoMotivo"
+                style="color: black; font-size: 14px"
+                class="text-start"
+                >{{ this.sueldo }}</span
+              >
+            </div>
+          </div>
+          <div class="col">
+            <div class="input-group mb-3">
+              <label class="input-group label-estilo" for="tipoMotivo"
+                >Sueldo</label
+              >
+              &nbsp;
+              <span
+                id="tipoMotivo"
+                name="tipoMotivo"
+                style="color: black; font-size: 14px"
+                class="text-start"
+                >{{ "" }}</span
+              >
+            </div>
+          </div>
+        </div>
+
+        <div class="row mt-4">
+          <div class="col-md-3">
+            <div class="mb-4">
+              <a>
+                <h2 class="sol-danger">Tipo de variable</h2>
+              </a>
+            </div>
           </div>
 
+          <div class="col-md-9">
+            <hr />
+          </div>
+        </div>
+
+        <div class="row mt-4">
+          <div class="col">
+            <div class="input-group mb-3">
+              <label class="input-group label-estilo" for="tipoMotivo"
+                >Mensual</label
+              >
+              &nbsp;
+              <span
+                id="tipoMotivo"
+                name="tipoMotivo"
+                style="color: black; font-size: 14px"
+                class="text-start"
+                >{{ this.mensual }}</span
+              >
+            </div>
+          </div>
+          <div class="col">
+            <div class="input-group mb-3">
+              <label class="input-group label-estilo" for="tipoMotivo"
+                >Mensual</label
+              >
+              &nbsp;
+              <span
+                id="tipoMotivo"
+                name="tipoMotivo"
+                style="color: black; font-size: 14px"
+                class="text-start"
+                >{{ "10" }}</span
+              >
+            </div>
+          </div>
+        </div>
+        <div class="row mt-4">
+          <div class="col">
+            <div class="input-group mb-3">
+              <label class="input-group label-estilo" for="tipoMotivo"
+                >Trimestral</label
+              >
+              &nbsp;
+              <span
+                id="tipoMotivo"
+                name="tipoMotivo"
+                style="color: black; font-size: 14px"
+                class="text-start"
+                >{{ this.trimestral }}</span
+              >
+            </div>
+          </div>
+          <div class="col">
+            <div class="input-group mb-3">
+              <label class="input-group label-estilo" for="tipoMotivo"
+                >Trimestral</label
+              >
+              &nbsp;
+              <span
+                id="tipoMotivo"
+                name="tipoMotivo"
+                style="color: black; font-size: 14px"
+                class="text-start"
+                >{{ "" }}</span
+              >
+            </div>
+          </div>
+        </div>
+        <div class="row mt-4">
+          <div class="col">
+            <div class="input-group mb-3">
+              <label class="input-group label-estilo" for="tipoMotivo"
+                >Semestral</label
+              >
+              &nbsp;
+              <span
+                id="tipoMotivo"
+                name="tipoMotivo"
+                style="color: black; font-size: 14px"
+                class="text-start"
+                >{{ this.semestral }}</span
+              >
+            </div>
+          </div>
+          <div class="col">
+            <div class="input-group mb-3">
+              <label class="input-group label-estilo" for="tipoMotivo"
+                >Semestral</label
+              >
+              &nbsp;
+              <span
+                id="tipoMotivo"
+                name="tipoMotivo"
+                style="color: black; font-size: 14px"
+                class="text-start"
+                >{{ "" }}</span
+              >
+            </div>
+          </div>
+        </div>
+        <div class="row mt-4">
+          <div class="col">
+            <div class="input-group mb-3">
+              <label class="input-group label-estilo" for="tipoMotivo"
+                >Anual</label
+              >
+              &nbsp;
+              <span
+                id="tipoMotivo"
+                name="tipoMotivo"
+                style="color: black; font-size: 14px"
+                class="text-start"
+                >{{ this.anual }}</span
+              >
+            </div>
+          </div>
+          <div class="col">
+            <div class="input-group mb-3">
+              <label class="input-group label-estilo" for="tipoMotivo"
+                >Anual</label
+              >
+              &nbsp;
+              <span
+                id="tipoMotivo"
+                name="tipoMotivo"
+                style="color: black; font-size: 14px"
+                class="text-start"
+                >{{ "" }}</span
+              >
+            </div>
+          </div>
+        </div>
+        <div class="row mt-4">
+          <div class="col">
+            <div class="input-group mb-3">
+              <label class="input-group label-estilo" for="tipoMotivo"
+                >Remuneracion mensual</label
+              >
+              &nbsp;
+              <span
+                id="tipoMotivo"
+                name="tipoMotivo"
+                style="color: black; font-size: 14px"
+                class="text-start"
+                >{{ this.remuneracion }}</span
+              >
+            </div>
+          </div>
+          <div class="col">
+            <div class="input-group mb-3">
+              <label class="input-group label-estilo" for="tipoMotivo"
+                >Remuneracion mensual</label
+              >
+              &nbsp;
+              <span
+                id="tipoMotivo"
+                name="tipoMotivo"
+                style="color: black; font-size: 14px"
+                class="text-start"
+                >{{ "" }}</span
+              >
+            </div>
+          </div>
+        </div>
+        <div class="row mt-4">
+          <div class="col">
+            <div class="input-group mb-3">
+              <label class="input-group label-estilo" for="tipoMotivo"
+                >Puesto</label
+              >
+              &nbsp;
+              <span
+                id="tipoMotivo"
+                name="tipoMotivo"
+                style="color: black; font-size: 14px"
+                class="text-start"
+                >{{ this.puesto }}</span
+              >
+            </div>
+          </div>
+          <div class="col">
+            <div class="input-group mb-3">
+              <label class="input-group label-estilo" for="tipoMotivo"
+                >Puesto</label
+              >
+              &nbsp;
+              <span
+                id="tipoMotivo"
+                name="tipoMotivo"
+                style="color: black; font-size: 14px"
+                class="text-start"
+                >{{ "" }}</span
+              >
+            </div>
+          </div>
+        </div>
+        <div class="row mt-4">
+          <div class="col">
+            <div class="input-group mb-3">
+              <label class="input-group label-estilo" for="tipoMotivo"
+                >Unidad de Negocio</label
+              >
+              &nbsp;
+              <span
+                id="tipoMotivo"
+                name="tipoMotivo"
+                style="color: black; font-size: 14px"
+                class="text-start"
+                >{{ this.unidadNegocio }}</span
+              >
+            </div>
+          </div>
+          <div class="col">
+            <div class="input-group mb-3">
+              <label class="input-group label-estilo" for="tipoMotivo"
+                >Unidad de Negocio</label
+              >
+              &nbsp;
+              <span
+                id="tipoMotivo"
+                name="tipoMotivo"
+                style="color: black; font-size: 14px"
+                class="text-start"
+                >{{ "" }}</span
+              >
+            </div>
+          </div>
+        </div>
+        <div class="row mt-4">
+          <div class="col-md-6">
+            <div class="input-group mb-3">
+              <label class="input-group label-estilo" for="tipoMotivo"
+                >Departamento</label
+              >
+              &nbsp;
+              <span
+                id="tipoMotivo"
+                name="tipoMotivo"
+                style="color: black; font-size: 14px"
+                class="text-start"
+                >{{ this.departamento }}</span
+              >
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="input-group mb-3">
+              <label class="input-group label-estilo" for="tipoMotivo"
+                >Departamento</label
+              >
+              &nbsp;
+              <span
+                id="tipoMotivo"
+                name="tipoMotivo"
+                style="color: black; font-size: 14px"
+                class="text-start"
+                >{{ "" }}</span
+              >
+            </div>
+          </div>
+        </div>
+        <div class="row mt-4">
+          <div class="col-md-6">
+            <div class="input-group mb-3">
+              <label class="input-group label-estilo" for="tipoMotivo"
+                >Localidad</label
+              >
+              &nbsp;
+              <span
+                id="tipoMotivo"
+                name="tipoMotivo"
+                style="color: black; font-size: 14px"
+                class="text-start"
+                >{{ this.localidad }}</span
+              >
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="input-group mb-3">
+              <label class="input-group label-estilo" for="tipoMotivo"
+                >Localidad</label
+              >
+              &nbsp;
+              <span
+                id="tipoMotivo"
+                name="tipoMotivo"
+                style="color: black; font-size: 14px"
+                class="text-start"
+                >{{ "" }}</span
+              >
+            </div>
+          </div>
+        </div>
+        <div class="row mt-4">
+          <div class="col">
+            <div class="input-group mb-3">
+              <label class="input-group label-estilo" for="tipoMotivo"
+                >Jefe Inmediato Superior</label
+              >
+              &nbsp;
+              <input-component
+                [id]="'searchInputFilter'"
+                [type]="'string'"
+                [buttonIcon]="'ti-search'"
+                buttonFunction="filterStringInTable"
+                onChangeFunction="filterStringInTable"
+                placeholder="Inactivo"
+                style="width: 50%"
+              ></input-component>
+            </div>
+          </div>
+          <div class="col">
+            <div class="input-group mb-3">
+              <label class="input-group label-estilo" for="tipoMotivo"
+                >Jefe Inmediato Superior</label
+              >
+              &nbsp;
+              <span
+                id="tipoMotivo"
+                name="tipoMotivo"
+                style="color: black; font-size: 14px"
+                class="text-start"
+                >{{ "" }}</span
+              >
+            </div>
+          </div>
+        </div>
+        <div class="row mt-4">
+          <div class="col">
+            <div class="input-group mb-3">
+              <label class="input-group label-estilo" for="tipoMotivo"
+                >Puesto Jefe Inmediato</label
+              >
+              &nbsp;
+              <span
+                id="tipoMotivo"
+                name="tipoMotivo"
+                style="color: black; font-size: 14px"
+                class="text-start"
+                >{{ "" }}</span
+              >
+            </div>
+          </div>
+          <div class="col">
+            <div class="input-group mb-3">
+              <label class="input-group label-estilo" for="tipoMotivo"
+                >Puesto Jefe Inmediato</label
+              >
+              &nbsp;
+              <span
+                id="tipoMotivo"
+                name="tipoMotivo"
+                style="color: black; font-size: 14px"
+                class="text-start"
+                >{{ "" }}</span
+              >
+            </div>
+          </div>
+        </div>
+        <div class="row mt-4">
+          <div class="col">
+            <div class="input-group mb-3">
+              <label class="input-group label-estilo" for="tipoMotivo"
+                >Jefe Referencia</label
+              >
+              &nbsp;
+              <input-component
+                [id]="'searchInputFilter'"
+                [type]="'string'"
+                [buttonIcon]="'ti-search'"
+                buttonFunction="filterStringInTable"
+                onChangeFunction="filterStringInTable"
+                placeholder="Buscar"
+                style="width: 50%"
+              ></input-component>
+            </div>
+          </div>
+          <div class="col">
+            <div class="input-group mb-3">
+              <label class="input-group label-estilo" for="tipoMotivo"
+                >Responsable RRHH</label
+              >
+              &nbsp;
+              <input-component
+                [id]="'searchInputFilter'"
+                [type]="'string'"
+                [buttonIcon]="'ti-search'"
+                buttonFunction="filterStringInTable"
+                onChangeFunction="filterStringInTable"
+                placeholder="Buscar"
+                style="width: 50%"
+              ></input-component>
+            </div>
+          </div>
+        </div>
+        <div class="row mt-4">
+          <div class="col-md-6">
+            <div class="input-group mb-3">
+              <label class="input-group label-estilo" for="tipoMotivo"
+                >Puesto Referencia</label
+              >
+              &nbsp;
+              <span
+                id="tipoMotivo"
+                name="tipoMotivo"
+                style="color: black; font-size: 14px"
+                class="text-start"
+                >{{ "" }}</span
+              >
+            </div>
+          </div>
+          <div class="col-md-6 mb-4">
+            <div class="input-group mb-3 h-100">
+              <label class="input-group-text label-estilo" for="tipoMotivo"
+                >Observaciones del comité de Remuneraciones</label
+              >
+              <textarea
+                id="observaciones"
+                name="observaciones"
+                style="
+                  color: black;
+                  font-size: 14px;
+                  height: 100px;
+                  resize: none;
+                  position: absolute;
+                  top: 50px;
+                  width: 100%;
+                "
+                disabled
+              ></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="row mt-4">
+          <div class="col-md-6">
+            <div class="input-group mb-3">
+              <label class="input-group label-estilo" for="tipoMotivo"
+                >Fecha de Ingreso</label
+              >
+              &nbsp;
+              <span
+                id="tipoMotivo"
+                name="tipoMotivo"
+                style="color: black; font-size: 14px"
+                class="text-start"
+                >{{ this.feIng }}</span
+              >
+            </div>
+          </div>
+        </div>
+        <div class="row mt-4">
+          <div class="col-md-6">
+            <div class="input-group mb-3">
+              <label class="input-group label-estilo" for="tipoMotivo"
+                >Fecha de Salida</label
+              >
+              &nbsp;
+              <span
+                id="tipoMotivo"
+                name="tipoMotivo"
+                style="color: black; font-size: 14px"
+                class="text-start"
+                >{{ "01/10/24" }}</span
+              >
+            </div>
+          </div>
+        </div>
+        <div class="row mt-4">
+          <div class="col-md-6">
+            <div class="input-group mb-3">
+              <label class="input-group label-estilo" for="tipoMotivo"
+                >Responsable RRHH</label
+              >
+              &nbsp;
+              <input-component
+                [id]="'searchInputFilter'"
+                [type]="'string'"
+                [buttonIcon]="'ti-search'"
+                buttonFunction="filterStringInTable"
+                onChangeFunction="filterStringInTable"
+                placeholder="Buscar"
+                style="width: 50%"
+              ></input-component>
+            </div>
+          </div>
+        </div>
+
+        <div class="row mt-4">
+          <div class="col-md-3">
+            <div class="mb-4">
+              <a>
+                <h3 class="sol-danger">Aprobadores de la solicitud</h3>
+              </a>
+            </div>
+          </div>
+
+          <div class="col-md-9">
+            <hr />
+          </div>
+        </div>
+
+        <div class="accordion" id="accordionExample">
           <div
-            [id]="'collapse' + i"
-            class="accordion-collapse collapse"
-            [ngClass]="{ show: i === 0 }"
-            data-bs-parent="#accordionExample"
+            *ngFor="
+              let nivelItem of dataAprobacionesPorPosicion[keySelected];
+              let i = index
+            "
+            class="accordion-item"
           >
-            <div class="row">
-              <div class="col">
-                <div class="input-group">
-                  <label for="lvl1descripcion">
-                    Descripción de la posición
-                  </label>
+            <div class="accordion-header">
+              <button
+                class="accordion-button"
+                type="button"
+                data-bs-toggle="collapse"
+                [attr.data-bs-target]="'#collapse' + i"
+                aria-expanded="true"
+                [attr.aria-controls]="'collapse' + i"
+                style="display: block"
+              >
+                <div
+                  class="row"
+                  style="align-items: center; justify-content: space-around"
+                >
+                  <div class="col">
+                    {{ nivelItem.nivelAprobacionType.ruta }}
+                  </div>
 
-                  &nbsp;
-
-                  <span
-                    id="lvl1descripcion"
-                    name=""
-                    style="color: black; font-size: 14px"
-                  >
+                  <div class="col">
                     {{
-                      nivelItem.aprobador.descripcionPosicion !== "" &&
-                      nivelItem.aprobador.descripcionPosicion !== undefined &&
-                      nivelItem.aprobador.descripcionPosicion != null
-                        ? nivelItem.aprobador.descripcionPosicion
+                      nivelItem.aprobador.usuario !== "" &&
+                      nivelItem.aprobador.usuario !== undefined &&
+                      nivelItem.aprobador.usuario != null
+                        ? nivelItem.aprobador.usuario
                         : "No aplica"
                     }}
-                  </span>
+                  </div>
+
+                  <div class="col">
+                    {{ nivelItem.nivelAprobacionType.nivelAprobacionRuta }}
+                  </div>
+                </div>
+              </button>
+            </div>
+
+            <div
+              [id]="'collapse' + i"
+              class="accordion-collapse collapse"
+              [ngClass]="{ show: i === 0 }"
+              data-bs-parent="#accordionExample"
+            >
+              <div class="row">
+                <div class="col">
+                  <div class="input-group">
+                    <label for="lvl1descripcion">
+                      Descripción de la posición
+                    </label>
+
+                    &nbsp;
+
+                    <span
+                      id="lvl1descripcion"
+                      name=""
+                      style="color: black; font-size: 14px"
+                    >
+                      {{
+                        nivelItem.aprobador.descripcionPosicion !== "" &&
+                        nivelItem.aprobador.descripcionPosicion !== undefined &&
+                        nivelItem.aprobador.descripcionPosicion != null
+                          ? nivelItem.aprobador.descripcionPosicion
+                          : "No aplica"
+                      }}
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-
     </div>
   </div>
 </form>
