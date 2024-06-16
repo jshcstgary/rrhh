@@ -43,7 +43,7 @@ export const columnsDatosFamiliares: IConsultaTareasData = {
           dataIndex: 'actions',
           type: 'actions',
           actions: [
-            { id: 'editOnTable', icon: 'fa fa-edit', tooltip: 'Editar' },
+            { id: 'editOnTable', materialIcon: 'edit', tooltip: 'Editar' },
             { id: 'delete', icon: 'fa fa-trash', tooltip: 'Eliminar' }
           ]
         }
