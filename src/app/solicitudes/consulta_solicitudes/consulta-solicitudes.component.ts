@@ -417,10 +417,6 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
         (data) => data.id == this.solicitud.idTipoSolicitud
       )[0]?.descripcion;
 
-      this.solicitud.codigoTipoSolicitud = this.dataTipoSolicitudes.filter(
-        (data) => data.id == this.solicitud.idTipoSolicitud
-      )[0]?.codigoTipoSolicitud;
-
       this.solicitud.tipoMotivo = this.dataTiposMotivosPorTipoSolicitud[
         this.solicitud.idTipoSolicitud
       ].filter((data) => data.id == this.solicitud.idTipoMotivo)[0]?.tipoMotivo;
@@ -554,13 +550,8 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
     let requestData: any;
     let variables: any = {};
 
-    if (this.solicitud.codigoTipoSolicitud === "RP") {
-      variables.tipoSolicitud = { value: "requisicionPersonal" };
-    }if (this.solicitud.codigoTipoSolicitud === "AP") {
-      variables.tipoSolicitud = { value: "accionPersonal" };
-    } else {
-      variables.tipoSolicitud = { value: this.solicitud.tipoSolicitud };
-    }
+    variables.tipoSolicitud = { value: this.solicitud.tipoSolicitud };
+    
     if (this.solicitud.idTipoSolicitud == this.typeSolicitudSelected) {
       variables.tipoAccion = { value: this.solicitud.tipoAccion };
     } else {
