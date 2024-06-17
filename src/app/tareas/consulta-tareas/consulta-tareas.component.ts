@@ -136,14 +136,14 @@ export class ConsultaTareasComponent implements OnInit {
 
         console.log(response);
         // this.consultaTareasService.
-        this.consultaTareasService.obtenerDetallesAprobacionesSolicitudes(this.starterService.userIniciador.subledger).subscribe({
+      /*  this.consultaTareasService.obtenerDetallesAprobacionesSolicitudes(this.starterService.userIniciador.subledger).subscribe({
           next: (response) => {
             console.log(response);
           },
           error: (err) => {
             console.error(err);
           }
-        });
+        });*/
 
         this.utilService.closeLoadingSpinner();
       },
