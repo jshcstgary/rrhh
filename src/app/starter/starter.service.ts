@@ -13,7 +13,7 @@ export class StarterService {
   constructor(private http: HttpClient) { }
 
   getUser() {
-    this.http.get<any>(`${this._apiEmpleadoUrl}/nombre/612345`).subscribe({
+    this.http.get<any>(`${this._apiEmpleadoUrl}/nombre/60063916`).subscribe({
       next: (user) => {
         this.userIniciador = user.evType[0];
 
