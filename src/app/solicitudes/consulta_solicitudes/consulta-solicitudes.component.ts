@@ -417,6 +417,10 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
         (data) => data.id == this.solicitud.idTipoSolicitud
       )[0]?.descripcion;
 
+      this.solicitud.codigoTipoSolicitud = this.dataTipoSolicitudes.filter(
+        (data) => data.id == this.solicitud.idTipoSolicitud
+      )[0]?.codigoTipoSolicitud;
+
       this.solicitud.tipoMotivo = this.dataTiposMotivosPorTipoSolicitud[
         this.solicitud.idTipoSolicitud
       ].filter((data) => data.id == this.solicitud.idTipoMotivo)[0]?.tipoMotivo;
@@ -550,7 +554,13 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
     let requestData: any;
     let variables: any = {};
 
-    variables.tipoSolicitud = { value: this.solicitud.tipoSolicitud };
+    if (this.solicitud.codigoTipoSolicitud === "RP") {
+      variables.tipoSolicitud = { value: "requisicionPersonal" };
+    }if (this.solicitud.codigoTipoSolicitud === "AP") {
+      variables.tipoSolicitud = { value: "accionPersonal" };
+    } else {
+      variables.tipoSolicitud = { value: this.solicitud.tipoSolicitud };
+    }
     if (this.solicitud.idTipoSolicitud == this.typeSolicitudSelected) {
       variables.tipoAccion = { value: this.solicitud.tipoAccion };
     } else {
@@ -644,6 +654,8 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
         this.dataTipoSolicitudes = response.tipoSolicitudType.map((r) => ({
           id: r.id,
           descripcion: r.tipoSolicitud,
+          codigoTipoSolicitud: r.codigoTipoSolicitud,
+          estado: r.estado
         })); //verificar la estructura mmunoz
       },
       error: (error: HttpErrorResponse) => {
@@ -928,8 +940,6 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
     combinedData$.subscribe((data) => {
       this.utilService.closeLoadingSpinner();
       // this.data_estado.find(itemEstado => itemEstado.codigo == itemSolicitud.estadoSolicitud)
-      console.log("ESTA ES LA DATA: ", data);
-      console.log("MI DATA ESTADO AL ITERAR: ", this.data_estado);
       this.dataTable = data.map((itemSolicitud) => {
         let descripcionEstado = this.data_estado.find(
           (itemEstado) => itemEstado.codigo == itemSolicitud.estadoSolicitud
@@ -942,7 +952,6 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
               : "N/A",
         };
       });
-      console.log("ESTA ES LA DATA combinada: ", this.dataTable);
       // Aquí tienes la data combinada y ordenada
     });
 
