@@ -431,6 +431,7 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
     this.route.paramMap.subscribe((params) => {
       this.id_solicitud_by_params = params.get("idSolicitud");
       this.idDeInstancia = params.get("id");
+      console.log("this.idDeInstancia: ", this.idDeInstancia);
     });
 
     this.selectedOption = this.options[0].descripcion;
@@ -453,6 +454,7 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
         this.isChecked = candidatoValues.tipoFuente;
         this.isDivVisible = this.isChecked;
 
+        console.log(this.model.tipoProceso !== "");
         if (this.model.tipoProceso !== "") {
           this.disabledSave = false;
           this.disabledTipoProceso = true;
@@ -622,6 +624,7 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
 
     this.route.queryParams.subscribe((params: Solicitud) => {
       //this.solicitud = params;
+      console.log("Mis params: ", params);
       this.misParams = params;
     });
 
@@ -650,6 +653,7 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
         this.idDeInstancia = params["id"];
         this.consultaTareasService.getTareaIdParam(this.id_solicitud_by_params)
           .subscribe((tarea) => {
+            console.log("Task: ", tarea);
 
             this.uniqueTaskId = tarea.solicitudes[0].taskId;
             this.taskType_Activity = tarea.solicitudes[0].tasK_DEF_KEY;
@@ -728,10 +732,18 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
   onSelectItem(campo: string, event) {
     let valor = event.item;
     const datosEmpleado = this.dataEmpleadoEvolution.find((empleado) => {
-
+      console.log("Empleado iterando: ", empleado);
+      console.log(
+        "empleado[campo]: " + empleado[campo] + ", valor: ",
+        valor + ", campo: ",
+        campo
+      );
+      console.log("\n");
       return empleado[campo] === valor;
     });
+    console.log("Valor de datosEmpleado: ", datosEmpleado);
     if (datosEmpleado) {
+      console.log("Ingresa en el if: ", datosEmpleado);
       this.model = Object.assign(
         {},
         {
@@ -743,6 +755,7 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
           sueldoAnual: datosEmpleado.sueldoVariableAnual,
         }
       );
+      console.log("ESTE MODELO SE ASIGNA: ", this.model);
       this.keySelected =
         this.solicitud.idTipoSolicitud +
         "_" +
@@ -807,9 +820,18 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
 
   filtrarDatos(campo: string, valor: string) {
     const datosEmpleado = this.dataEmpleadoEvolution.find((empleado) => {
+      console.log("Empleado iterando: ", empleado);
+      console.log(
+        "empleado[campo]: " + empleado[campo] + ", valor: ",
+        valor + ", campo: ",
+        campo
+      );
+      console.log("\n");
       return empleado[campo] === valor;
     });
+    console.log("Valor de datosEmpleado: ", datosEmpleado);
     if (datosEmpleado) {
+      console.log("Ingresa en el if: ", datosEmpleado);
       this.model = Object.assign({}, datosEmpleado);
     } else {
       // this.model.reset();
@@ -830,6 +852,7 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
   }
 
   override loadExistingVariables(taskId: String, variableNames: String) {
+    console.log("load existing variables ...", taskId);
 
     this.camundaRestService
       .getVariablesForTask(taskId, variableNames)
@@ -847,8 +870,14 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
     [x: string]: { value: any };
   }) {
     Object.keys(variables).forEach((variableName) => {
+      console.log("dataTipoAccion = ", this.dataTipoAccion);
+      console.log("dataTipoSolicitud = ", this.dataTipoSolicitud);
+      console.log("dataTipoMotivo = ", this.dataTipoMotivo);
+      console.log("variables: ", variables);
       switch (variableName) {
         case "tipoAccion":
+          console.log("set tipo_accion = ", variables[variableName].value);
+          console.log("this.dataTipoAccion?.filter = ", this.dataTipoAccion);
           this.tipo_accion_descripcion = this.dataTipoAccion?.filter(
             (data) => data.tipoAccion == variables[variableName].value
           )[0]?.tipoAccion;
@@ -856,6 +885,11 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
           break;
 
         case "tipoSolicitud":
+          console.log("set tipo_solicitud = ", variables[variableName].value);
+          console.log(
+            "this.dataTipoSolicitud?.filter = ",
+            this.dataTipoSolicitud
+          );
           this.tipo_solicitud_descripcion =
             this.dataTipoSolicitud.tipoSolicitudType?.filter(
               (data) => data.tipoSolicitud == variables[variableName].value
@@ -864,6 +898,8 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
           break;
 
         case "tipoMotivo":
+          console.log("set tipo_motivo = ", variables[variableName].value);
+          console.log("this.dataTipoMotivo?.filter = ", this.dataTipoMotivo);
           this.tipo_motivo_descripcion = this.dataTipoMotivo?.filter(
             (data) => data.tipoMotivo == variables[variableName].value
           )[0]?.tipoMotivo;
@@ -878,10 +914,11 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
     this.utilService.openLoadingSpinner(
       "Cargando información, espere por favor..."
     );
+    console.log("this.id_solicitud_by_params: ", this.id_solicitud_by_params);
     try {
       await this.ObtenerServicioTipoSolicitud();
-      await this.ObtenerServicioTipoMotivo();
-      await this.ObtenerServicioTipoAccion();
+      //await this.ObtenerServicioTipoMotivo();
+      //await this.ObtenerServicioTipoAccion();
       //await this.ObtenerServicioNivelDireccion();
       //await this.getSolicitudes();
       //if (this.id_edit !== undefined) { //comentado mmunoz
@@ -933,6 +970,7 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
           id: r.id,
           descripcion: r.tipoProceso,
         })); //verificar la estructura mmunoz
+        console.log(this.dataTipoProceso);
       },
       error: (error: HttpErrorResponse) => {
         this.utilService.modalResponse(error.error, "error");
@@ -943,6 +981,7 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
   getSolicitudById(id: any) {
     return this.solicitudes.getSolicitudById(id).subscribe({
       next: async (response: any) => {
+        console.log("Solicitud por id: ", response);
         this.solicitud = response;
 
         await this.ObtenerServicioTipoProceso();
@@ -1143,6 +1182,12 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
     this.submitted = true;
     let idInstancia = this.solicitudDataInicial.idInstancia;
 
+
+    console.log(
+      "this.solicitudDataInicial.idInstancia: ",
+      this.solicitudDataInicial.idInstancia
+    );
+
     let extra = {
       idEmpresa: this.model.compania,
       empresa: this.model.compania,
@@ -1157,9 +1202,11 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
     this.solicitud.unidadNegocio = this.model.unidadNegocio;
     this.solicitud.idUnidadNegocio = this.model.unidadNegocio;
     this.solicitud.estadoSolicitud = "2";
+    console.log("this.solicitud: ", this.solicitud);
     this.solicitudes
       .actualizarSolicitud(this.solicitud)
       .subscribe((responseSolicitud) => {
+        console.log("responseSolicitud: ", responseSolicitud);
 
         this.detalleSolicitud.idSolicitud = this.solicitud.idSolicitud;
 
@@ -1212,15 +1259,29 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
 
         this.detalleSolicitud.fechaIngreso = this.model.fechaIngresogrupo == "" ? this.model.fechaIngreso : this.model.fechaIngresogrupo;
 
+
+        console.log(
+          "ESTO LE MANDO AL ACTUALIZAR this.detalleSolicitud: ",
+          this.detalleSolicitud, this.model
+        );
+
         this.solicitudes
           .actualizarDetalleSolicitud(this.detalleSolicitud)
           .subscribe((responseDetalle) => {
+            console.log("responseDetalle: ", responseDetalle);
 
             this.utilService.closeLoadingSpinner(); //comentado mmunoz
             this.utilService.modalResponse(
               "Datos ingresados correctamente",
               "success"
             );
+
+            console.log(
+              "CON ESTO COMPLETO (this.uniqueTaskId): ",
+              this.uniqueTaskId
+            );
+
+            console.log("AQUI HAY UN IDDEINSTANCIA?: ", this.idDeInstancia);
 
             setTimeout(() => {
               this.router.navigate([
@@ -1235,6 +1296,7 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
   }
 
   onChangeTipoProceso(event: any) {
+    console.log(event.target.value);
     // this.disabledSave = false;
     this.disabledSave = this.model.tipoProceso !== "";
 
@@ -1251,6 +1313,7 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
   }
 
   async saveCandidato() {
+    console.log(this.fechas);
 
     const request = {
       iD_SOLICITUD: this.solicitud.idSolicitud,
@@ -1277,6 +1340,8 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
       fechaFinContratacionFamiliares: null,
       fechaIngresoCandidato: null
     };
+
+    console.log(request);
     // return;
 
     this.seleccionCandidatoService.saveCandidato(request).subscribe({
@@ -1311,6 +1376,7 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
   }
 
   onCompletar() { //completar tarea mmunoz
+    console.log("Task i de la tarea para completar:", this.uniqueTaskId);
     if (this.uniqueTaskId === null) {
       //handle this as an error
       this.errorMessage =
@@ -1323,11 +1389,13 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
 
     let variables = this.generateVariablesFromFormFields();
 
+    console.log(variables);
 
     this.camundaRestService
       .postCompleteTask(this.uniqueTaskId, variables)
       .subscribe({
         next: (res) => {
+          console.log("Complete task notificar");
           //actualizo la solicitud a enviada
           this.solicitud.empresa = this.model.compania;
           this.solicitud.idEmpresa = this.model.compania;
@@ -1335,7 +1403,9 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
           this.solicitud.unidadNegocio = this.model.unidadNegocio;
           this.solicitud.idUnidadNegocio = this.model.unidadNegocio;
           this.solicitud.estadoSolicitud = "4";
+          console.log("this.solicitud: ", this.solicitud);
           this.solicitudes.actualizarSolicitud(this.solicitud).subscribe((responseSolicitud) => {
+            console.log("responseSolicitud: ", responseSolicitud);
 
             if (this.model.tipoProceso === "contratacionFamiliares" || this.model.tipoProceso === "reingresoPersonal") {
               if (this.model.tipoProceso === "contratacionFamiliares") {
@@ -1372,6 +1442,7 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
 
                     this.solicitudes.guardarSolicitud(solicitud).subscribe({
                       next: res => {
+                        console.log(res);
 
                         this.solicitudes.getDetalleSolicitudById(this.solicitud.idSolicitud).subscribe({
                           next: (detalleSolicitud) => {
@@ -1410,8 +1481,10 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
 
                             this.seleccionCandidatoService.saveCandidato(request).subscribe({
                               next: (res) => {
+                                console.log(res);
                                 this.solicitudes.guardarDetalleSolicitud(detalle).subscribe({
                                   next: (res) => {
+                                    console.log(res);
                                   }
                                 });
                               }
@@ -1458,6 +1531,7 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
       .postCompleteTask(taskId, variables)
       .subscribe((res) => {
         // Aquí puedes manejar la respuesta del segundo servicio
+        console.log("Segundo servicio completado:", res);
 
         // Verifica si el nombre sigue siendo "Notificar revisión solicitud"
         if (res.name === "Notificar revisión solicitud") {
@@ -1465,6 +1539,7 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
           this.completeAndCheckTask(taskId, variables);
         } else {
           // El nombre ya no es "Notificar revisión solicitud", haz algo diferente
+          console.log("Nombre diferente:", res.name);
         }
       });
   }
@@ -1473,6 +1548,7 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
   consultarNextTask(IdSolicitud: string) {
     this.consultaTareasService.getTareaIdParam(IdSolicitud)
       .subscribe((tarea) => {
+        console.log("Task: ", tarea);
 
         this.uniqueTaskId = tarea.solicitudes[0].taskId;
         this.taskType_Activity = tarea.solicitudes[0].tasK_DEF_KEY;
@@ -1606,6 +1682,7 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
                     }
                   }
 
+                  console.log(`Elemento en la posición`, eachData);
                 }
               }
             }
@@ -1762,7 +1839,8 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
     }
 
     //this.isDivVisible = !this.isChecked;
-
+    console.log('Elemecto check', inputElement.name);
+    console.log('Checkbox value:', this.isCheckedPerfil);
   }
 
   getFormattedDate(dateValue: string = ""): string {
@@ -1790,7 +1868,9 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
           this.dataComentariosAprobaciones = this.filterDataComentarios(this.solicitud.idInstancia, 'RevisionSolicitud', 'comentariosAtencion');
           this.dataComentariosAprobacionesRRHH = this.filterDataComentarios(this.solicitud.idInstancia, 'RequisicionPersonal', 'comentariosAtencionGerenteRRHH');
           this.dataComentariosAprobacionesCREM = this.filterDataComentarios(this.solicitud.idInstancia, 'RequisicionPersonal', 'comentariosAtencionRemuneraciones');
-
+          console.log("Aprobaciones comentarios diamicos = ", this.dataComentariosAprobaciones);
+          console.log("Aprobaciones comentarios rrhh = ", this.dataComentariosAprobacionesRRHH);
+          console.log("Aprobaciones comentarios CREM = ", this.dataComentariosAprobacionesCREM);
         },
         error: (error: HttpErrorResponse) => {
           this.utilService.modalResponse(
