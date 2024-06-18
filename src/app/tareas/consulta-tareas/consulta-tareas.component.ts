@@ -134,7 +134,6 @@ export class ConsultaTareasComponent implements OnInit {
           })
         );
 
-        console.log(response);
         // this.consultaTareasService.
       /*  this.consultaTareasService.obtenerDetallesAprobacionesSolicitudes(this.starterService.userIniciador.subledger).subscribe({
           next: (response) => {
@@ -210,7 +209,6 @@ export class ConsultaTareasComponent implements OnInit {
 
       this.consultaTareasService.getTareaIdParam(ids[0])
         .subscribe((tarea) => {
-          console.log("Task: ", tarea);
 
           let taeraopcion = tarea.solicitudes[0].tasK_DEF_KEY;
           let registrar = environment.taskType_RRHH;
@@ -288,7 +286,6 @@ export class ConsultaTareasComponent implements OnInit {
               break;
 
             case environment.taskType_RG:
-              console.log(tarea.solicitudes[0].tipoSolicitud.toUpperCase());
               if (tarea.solicitudes[0].tipoSolicitud.toUpperCase().includes("REINGRESO")) {
                 this.router.navigate([
                   "/solicitudes/reingreso-personal",
