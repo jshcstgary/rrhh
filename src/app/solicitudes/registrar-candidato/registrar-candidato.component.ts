@@ -1326,7 +1326,6 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
 
     let variables = this.generateVariablesFromFormFields();
 
-
     this.camundaRestService
       .postCompleteTask(this.uniqueTaskId, variables)
       .subscribe({
@@ -1497,8 +1496,13 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
 
 
       if (this.taskType_Activity == environment.taskType_RegistrarCandidato) {
-
-        variables.tipoSolicitud = { value: this.model.tipoProceso };
+        if (this.model.tipoProceso.toUpperCase().includes("FAMILIA")) {
+          variables.tipoSolicitud = { value: "contratacionFamiliares" };
+        } else if (this.model.tipoProceso.toUpperCase().includes("REINGRESO")) {
+          variables.tipoSolicitud = { value: "reingresoPersonal" };
+        } else if (this.model.tipoProceso.toUpperCase().includes("REEMPLAZO")) {
+          variables.tipoSolicitud = { value: "nuevoIngresoReemplazo" };
+        }
 
       }
 
