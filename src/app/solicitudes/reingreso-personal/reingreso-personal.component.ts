@@ -36,9 +36,6 @@ import { DialogBuscarEmpleadosComponent } from "./buscar-empleados/buscar-emplea
 import { DialogReasignarUsuarioComponent } from "src/app/shared/reasginar-usuario/reasignar-usuario.component";
 import Swal from "sweetalert2";
 
-
-
-
 interface DialogComponents {
   dialogBuscarEmpleados: Type<DialogBuscarEmpleadosComponent>;
   dialogReasignarUsuario: Type<DialogReasignarUsuarioComponent>;
@@ -60,8 +57,7 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
   selectedOption: string = "No";
   columnsAprobadores = columnsAprobadores.columns;
   dataTableAprobadores = dataTableAprobadores;
-  empleadoSearch : string = "";
-
+  empleadoSearch: string = "";
 
   override model: RegistrarData = new RegistrarData(
     "",
@@ -689,7 +685,7 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
       );*/
     }
   }
-
+  modelRemuneracion: number = 0;
   getDetalleSolicitudById(id: any) {
     return this.solicitudes.getDetalleSolicitudById(id).subscribe({
       next: (response: any) => {
@@ -722,6 +718,11 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
           this.model.sueldoAnual = this.detalleSolicitud.sueldoVariableAnual;
           this.model.correo = this.detalleSolicitud.correo;
           this.model.fechaIngreso = this.detalleSolicitud.fechaIngreso;
+          this.modelRemuneracion =
+            +this.model.sueldoAnual / 12 +
+            +this.model.sueldoSemestral / 6 +
+            +this.model.sueldoTrimestral / 3 +
+            +this.model.sueldoMensual;
         }
         /* this.detalleSolicitud.estado = response.estado;
          this.detalleSolicitud.estado = response.estadoSolicitud;
@@ -901,7 +902,6 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
   }
 
   onSubmit() {
-
     Swal.fire({
       text: "¿Desea crear la Solicitud?",
       icon: "question",
@@ -910,7 +910,6 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
       cancelButtonColor: "#77797a",
       confirmButtonText: "Sí",
       cancelButtonText: "No",
-
     }).then((result) => {
       if (result.isConfirmed) {
         this.save();
@@ -921,7 +920,6 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
         //Fin Solicitud
       }
     });
-
   }
 
   public pageSolicitudes(): void {}
@@ -991,7 +989,7 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
 
   indexedModal: Record<keyof DialogComponents, any> = {
     dialogBuscarEmpleados: () => this.openModalBuscarEmpleado(),
-    dialogReasignarUsuario: undefined
+    dialogReasignarUsuario: undefined,
   };
 
   openModal(component: keyof DialogComponents) {
@@ -1122,8 +1120,6 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
     this.submitted = true;
   }
 
-
-
   openModalReasignar(componentName: keyof DialogComponents) {
     console.log("SE ABRIO EL MODAL");
     this.modalService
@@ -1148,17 +1144,17 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
       );
   }
 
-  public comp: string = '';
-  public sueldo: string = '';
-  public mensual: string = '';
-  public anual: string = '';
-  public trimestral: string = '';
-  public semestral: string = '';
-  public remuneracion: string = '';
-  public puesto: string = '';
-  public unidadNegocio: string = '';
-  public localidad: string = '';
-  public departamento: string = '';
+  public comp: string = "";
+  public sueldo: string = "";
+  public mensual: string = "";
+  public anual: string = "";
+  public trimestral: string = "";
+  public semestral: string = "";
+  public remuneracion: number;
+  public puesto: string = "";
+  public unidadNegocio: string = "";
+  public localidad: string = "";
+  public departamento: string = "";
   public feIng: Date;
 
   openModalBuscarEmpleado() {
@@ -1174,8 +1170,8 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
 
           if (result?.data) {
             const data: IEmpleadoData = result.data;
-            console.log('AQUIIIII PRUEBA',data);
-            this.empleadoSearch = data.nombreCompleto
+            console.log("AQUIIIII PRUEBA", data);
+            this.empleadoSearch = data.nombreCompleto;
             this.comp = data.compania;
             this.sueldo = data.sueldo;
             this.mensual = data.sueldoVariableMensual;
@@ -1187,6 +1183,7 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
             this.localidad = data.localidad;
             this.departamento = data.departamento;
             this.feIng = data.fechaIngresogrupo;
+            this.remuneracion = +this.anual / 12 + +this.semestral / 6 + +this.trimestral / 3 + +this.mensual;
 
             // this.mantenimientoService
             //   .(dtoFamiliares)
@@ -1204,6 +1201,4 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
         }
       );
   }
-
-
 }

@@ -53,6 +53,14 @@ export const SolicitudesRoutes: Routes = [
         },
       },
       {
+        path: "registrar-familiares/:id/:idSolicitud",
+        component: RegistrarFamiliaresComponent,
+        data: {
+          title: "Completar Solicitud",
+          urls: [{ title: "Solicitudes" }, { title: "Contratación de Familiares" }],
+        },
+      },
+      {
         path: "reingreso-personal/:id/:idSolicitud",
         component: ReingresoPersonalComponent,
         data: {
@@ -68,7 +76,7 @@ export const SolicitudesRoutes: Routes = [
         },
       },
       {
-        path: "reingreso-personal/registro-comentarios",
+        path: "reingreso-personal/registro-comentarios-jefe/:id/:idSolicitud",
         component: RegistroComentariosComponent,
         data: {
           title: "Registro de Comentarios",
@@ -83,7 +91,7 @@ export const SolicitudesRoutes: Routes = [
         },
       },
       {
-        path: "reingreso-personal/registro-comentarioss",
+        path: "reingreso-personal/registro-comentarios-rrhh/:id/:idSolicitud",
         component: h18,
         data: {
           title: "Registro de Comentarios h18",
@@ -95,6 +103,29 @@ export const SolicitudesRoutes: Routes = [
               title: "Registro de Comentarios"
             }
           ],
+        },
+      },
+      {
+        path: "reingreso-personal/registrar-comentarios-solicitante/:id/:idSolicitud",
+        component: h19,
+        data: {
+          title: "Registro de Comentarios h19",
+          urls: [
+            {
+              title: "Solicitudes"
+            },
+            {
+              title: "Registro de Comentarios H19"
+            }
+          ],
+        },
+      },
+      {
+        path: "registrar-candidato/:id/:idSolicitud",
+        component: RegistrarCandidatoComponent,
+        data: {
+          title: "Seleccion de Candidato",
+          urls: [{ title: "Solicitudes" }, { title: "Seleccion de Candidato" }],
         },
       },
       {
@@ -128,44 +159,11 @@ export const SolicitudesRoutes: Routes = [
         }
       },
       {
-        path: "reingreso-personal/registrar-comentarios",
-        component: h19,
-        data: {
-          title: "Registro de Comentarios h19",
-          urls: [
-            {
-              title: "Solicitudes"
-            },
-            {
-              title: "Registro de Comentarios H19"
-            }
-          ],
-        },
-      },
-      {
-        path: "registrar-candidato/:id/:idSolicitud",
-        component: RegistrarCandidatoComponent,
-        data: {
-          title: "Seleccion de Candidato",
-          urls: [{ title: "Solicitudes" }, { title: "Seleccion de Candidato" }],
-        },
-      },
-
-      {
         path: "completa-solicitud/:id/:idSolicitud",
         component: CompletaSolicitudComponent,
         data: {
           title: "Completar Solicitud",
           urls: [{ title: "Solicitudes" }, { title: "Completar Solicitud" }],
-        },
-      },
-
-      {
-        path: "registrar-familiares/:id/:idSolicitud",
-        component: RegistrarFamiliaresComponent,
-        data: {
-          title: "Completar Solicitud",
-          urls: [{ title: "Solicitudes" }, { title: "Contratación de Familiares" }],
         },
       },
     ],

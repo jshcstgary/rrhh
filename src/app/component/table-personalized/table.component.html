@@ -13,9 +13,9 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let row of data">
-        <td *ngFor="let column of columns; let i = index" [ngClass]="{'actions-column': column.type === 'actions'}">
-          <ng-container *ngIf="!row.isEditingRow || !column.editable">
+      <tr *ngFor="let row of data; let index = index">
+        <td *ngFor="let column of columns" [ngClass]="{'actions-column': column.type === 'actions'}">
+          <ng-container *ngIf="!row.isEditingRow || !column.isEditingRow">
             <ng-container *ngIf="column.type === 'actions'; else defaultCell">
               <div class="d-flex justify-content-between">
                 <ng-container *ngIf="!row.isEditingRow; else editIcons">
@@ -26,15 +26,15 @@
                         tabindex="0"
                         class="text-info cursor-pointer action-icon"
                         [ngClass]="action.icon"
-                        (click)="clickOnAction(action.id, row.id, action.tooltip, getAdditionalParam(row))"
-                        (keyup.enter)="clickOnAction(action.id, row.id, action.tooltip, getAdditionalParam(row))"
+                        (click)="clickOnAction(action.id, index, row, action.tooltip, getAdditionalParam(row))"
+                        (keyup.enter)="clickOnAction(action.id, index, row, action.tooltip, getAdditionalParam(row))"
                       ></i>
                       <i
                         *ngIf="action.materialIcon"
                         tabindex="0"
                         class="material-icons text-info cursor-pointer action-icon"
-                        (click)="clickOnAction(action.id, row.id, action.tooltip, getAdditionalParam(row))"
-                        (keyup.enter)="clickOnAction(action.id, row.id, action.tooltip, getAdditionalParam(row))"
+                        (click)="clickOnAction(action.id, index, row, action.tooltip, getAdditionalParam(row))"
+                        (keyup.enter)="clickOnAction(action.id, index, row, action.tooltip, getAdditionalParam(row))"
                       >
                         {{ action.materialIcon }}
                       </i>
@@ -56,11 +56,11 @@
               {{ row[column.dataIndex] }}
             </ng-template>
           </ng-container>
-          <ng-container *ngIf="row.isEditingRow && column.editable">
+          <ng-container *ngIf="row.isEditingRow && column.isEditingRow">
             <input
                 class="editable-input"
                 [value]="!row[column.dataIndex] ? '' : row[column.dataIndex]"
-                (input)="onInputChange($event, row, column.dataIndex)"
+                (input)="onInputChange($event, row, column.dataIndex, index)"
             />
           </ng-container>
         </td>

@@ -1,4 +1,9 @@
-import { ChangeDetectorRef, Component, SimpleChange, Type } from "@angular/core";
+import {
+  ChangeDetectorRef,
+  Component,
+  SimpleChange,
+  Type,
+} from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { CamundaRestService } from "../../camunda-rest.service";
 import { CompleteTaskComponent } from "../general/complete-task.component";
@@ -39,11 +44,13 @@ import {
 } from "./registrar-familiares.data";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { IEmpleadoData } from "src/app/services/mantenimiento/empleado.interface";
-import { IRowTableAttributes, idActionType } from "src/app/component/table/table.interface";
+import {
+  IRowTableAttributes,
+  idActionType,
+} from "src/app/component/table/table.interface";
 import { DialogBuscarEmpleadosComponent } from "./buscar-empleados/buscar-empleados.component";
 import { DialogReasignarUsuarioComponent } from "src/app/shared/reasginar-usuario/reasignar-usuario.component";
 import { TableService } from "src/app/component/table/table.service";
-
 
 interface DialogComponents {
   dialogBuscarEmpleados: Type<DialogBuscarEmpleadosComponent>;
@@ -69,16 +76,14 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
   columnsDatosFamiliares = columnsDatosFamiliares.columns;
   dataTableDatosFamiliares: FamiliaresCandidatos[] = [];
 
-  public inputsEditRow : IInputsComponent = [
+  public inputsEditRow: IInputsComponent = [
     {
       id: "parentezco",
       label: "parentezco",
       type: "string",
-      required: true
-    }
-  ]
-
-
+      required: true,
+    },
+  ];
 
   override model: RegistrarData = new RegistrarData(
     "",
@@ -470,13 +475,10 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
         // we are looking for task id 'Registrar' in a recently started process instance 'id'
         this.idDeInstancia = params["id"];
         this.camundaRestService
-          .getTask(environment.taskType_Registrar, params["id"])
+          .getTask(environment.taskType_CF, params["id"])
           .subscribe((result) => {
             console.log("INGRESA AQUÍ (registrar): ", result);
-            console.log(
-              "environment.taskType_Registrar: ",
-              environment.taskType_Registrar
-            );
+            console.log("environment.taskType_CF: ", environment.taskType_CF);
             console.log("params['id']: ", params["id"]);
             this.lookForError(result); // if error, then control gets redirected to err page
 
@@ -806,9 +808,9 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
       //} // comentado munoz
       await this.getDataEmpleadosEvolution();
       await this.loadDataCamunda(); //comentado para prueba mmunoz
-      await this.obtenerServicioFamiliaresCandidatos(
-        {idSolicitud: this.detalleSolicitud.idSolicitud}
-      );
+      await this.obtenerServicioFamiliaresCandidatos({
+        idSolicitud: this.id_solicitud_by_params,
+      });
       //console.log("impreme arreglo de aprobadores: ");
       //await this.recorrerArreglo();
 
@@ -1262,7 +1264,6 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
     this.submitted = true;
   }
 
-
   //!Esta funcion para completar tarea no se puede completar debido a que al cargar los datos de camunda esta uniqueTaskId se queda en null debido a un error que surje gracias al servicio de camunda especificamente en el metodo getTask (No es que este malo el servicio sino el como se obtiene las tareas, debido a que me trae un array vacio)
   onCompletar() {
     //completar tarea mmunoz
@@ -1378,7 +1379,7 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
         this.nameTask = solicitud.name;
         this.id_solicitud_by_params = solicitud.idSolicitud;
 
-        if (this.taskType_Activity !== environment.taskType_Registrar) {
+        if (this.taskType_Activity !== environment.taskType_CF) {
           this.RegistrarsolicitudCompletada = false;
         }
       });
@@ -1391,7 +1392,7 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
       this.tipo_solicitud_descripcion === "requisicionPersonal" ||
       this.solicitud.tipoSolicitud === "requisicionPersonal"
     ) {
-      if (this.taskType_Activity == environment.taskType_Registrar) {
+      if (this.taskType_Activity == environment.taskType_CF) {
         variables.codigoPosicion = { value: this.model.codigoPosicion };
         variables.misionCargo = { value: this.model.misionCargo };
         variables.justificacionCargo = { value: this.model.justificacionCargo };
@@ -1605,7 +1606,7 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
 
           if (result?.data) {
             const data: IEmpleadoData = result.data;
-            const dtoFamiliares: FamiliaresCandidatos =  {
+            const dtoFamiliares: FamiliaresCandidatos = {
               idSolicitud: this.id_solicitud_by_params,
               nombreEmpleado: data.nombreCompleto,
               fechaCreacion: new Date(data.fechaIngresogrupo) ?? new Date(),
@@ -1617,7 +1618,6 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
               codigoPosicion: data.codigoPosicion,
               fechaModificacion: new Date(),
             };
-
 
             this.mantenimientoService
               .guardarFamiliaresCandidato(dtoFamiliares)
@@ -1652,8 +1652,9 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
             return;
           }
           if (result?.data) {
-          if (result?.data) {
-          }}
+            if (result?.data) {
+            }
+          }
         },
         (reason) => {
           console.log(`Dismissed with: ${reason}`);
@@ -1662,29 +1663,20 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
   }
 
   /*Inicio de Funciones para la tabla de familiares*/
-  public originalData = []; 
+  public originalData = [];
 
   public ngOnChange(changes: SimpleChange): void {
-    this.originalData = this.formatDataWithKeyNameTable(
-      this.originalData
-    );
+    this.originalData = this.formatDataWithKeyNameTable(this.originalData);
   }
 
-  private contDataFamilia = 0;
-
-
   public addNewRow(obj: any) {
-    this.contDataFamilia++;
     const newRow = {
-      id: this.contDataFamilia,
+      id: this.dataTableDatosFamiliares.length + 1,
       ...obj,
-      isEditingRow: false
-    }
+      isEditingRow: false,
+    };
 
-    this.dataTableDatosFamiliares = [
-      ...this.dataTableDatosFamiliares,
-      newRow
-    ]
+    this.dataTableDatosFamiliares = [...this.dataTableDatosFamiliares, newRow];
   }
 
   public onSaveRowTable(rowData: any, finishedClonningRow: boolean) {
@@ -1693,7 +1685,9 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
       this.dataTableDatosFamiliares.push(rowData);
     } else {
       // Se está guardando una fila modificada
-      const index = this.dataTableDatosFamiliares.findIndex(row => row.nombreEmpleado === rowData.nombreEmpleado);
+      const index = this.dataTableDatosFamiliares.findIndex(
+        (row) => row.nombreEmpleado === rowData.nombreEmpleado
+      );
       if (index !== -1) {
         this.dataTableDatosFamiliares[index] = rowData;
       }
@@ -1701,72 +1695,8 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
   }
 
   private formatDataWithKeyNameTable(data: any[]): any[] {
-    return this.tableService.formatDataToTable(data, 'key');
+    return this.tableService.formatDataToTable(data, "key");
   }
-
-  
-  private async toActionsTable(
-    idAction: idActionType,
-    key: string,
-  ) {
-    switch (idAction) {
-      case "editOnTable":
-        if (!this.tableService.isAnyEditRowActive) {
-          this.tableService.changeStateIsAnyEditRowActive(true);
-          const rowToEdit: IRowTableAttributes = this.originalData.find(
-            (x: IRowTableAttributes) => x.key === key
-          );
-          rowToEdit.isEditingRow = true;
-          const newDataWithOutRowToEdit = this.formatDataWithKeyNameTable(this.dataTableDatosFamiliares).filter(
-            (x: IRowTableAttributes) => x.key !== key
-          );
-          newDataWithOutRowToEdit.unshift(rowToEdit);
-          this.dataTableDatosFamiliares = newDataWithOutRowToEdit;
-          this.utilService.focusOnHtmlElement(this.columnsDatosFamiliares[2].dataIndex);
-        }
-        break;
-      case "delete":
-        console.log("Quieres borrar los datos");
-
-        const index = this.dataTableDatosFamiliares.findIndex(row => row.id.toString() === key.toString());
-
-        if (index !== -1) {
-          // console.log('Se cambio el estado de la prop')
-          this.dataTableDatosFamiliares[index].estado = 'I';
-          // console.log('Prueba',this.dataTableDatosFamiliares[index]);
-          await this.mantenimientoService.putFamiliaredCandidatos(this.dataTableDatosFamiliares[index]);
-        }
-
-        this.dataTableDatosFamiliares = this.dataTableDatosFamiliares.filter(row => row.id.toString() !== key.toString());
-        
-        break;
-
-      default:
-        console.log("Accion invalida");
-        break;
-    }
-  }
-  /*Fin de Funciones para la tabla de familiares*/
-
-  //*Datos de Prueba
-  // columnsPrueba = [
-  //   { title: 'Nombre', dataIndex: 'name', sortActive: true, sortTypeOrder: 'asc', editable: true },
-  //   { title: 'Edad', dataIndex: 'age', sortActive: true, sortTypeOrder: 'asc', editable: false },
-  //   {
-  //     title: 'Acciones',
-  //     dataIndex: 'actions',
-  //     type: 'actions',
-  //     actions: [
-  //       { id: 'edit', icon: 'fa fa-edit', tooltip: 'Editar' },
-  //       { id: 'delete', icon: 'fa fa-trash', tooltip: 'Eliminar' }
-  //     ]
-  //   }
-  // ];
-
-  // dataPrueba = [
-  //   { key: 1, name: 'Juan', age: 25, isEditingRow: false },
-  //   { key: 2, name: 'Ana', age: 30, isEditingRow: false }
-  // ];
 
   handleChangeSort(column: any) {
     // console.log('Change sort:', column);
@@ -1781,44 +1711,52 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
 
   async handleActionClick(event: any) {
     // console.log('Action click:', event);
-    const {rowKey, actionId} = event;
+    const { index, action } = event;
 
-    switch(actionId){
-      case 'edit':
-        this.startEditingRow(rowKey);
+    switch (action) {
+      case "editOnTable":
+        this.startEditingRow(index);
         break;
-      case 'delete':
-        const index = this.dataTableDatosFamiliares.findIndex(row => row.id.toString() === rowKey.toString());
+      case "delete":
+        this.dataTableDatosFamiliares[index].estado = "I";
+        await this.mantenimientoService
+          .putFamiliaredCandidatos(this.dataTableDatosFamiliares[index])
+          .subscribe((response) => {
+            console.log("response", response);
+            this.utilService.modalResponse(
+              "Familiar eliminado correctamente",
+              "success"
+            );
+          });
 
-        if (index !== -1) {
-          this.dataTableDatosFamiliares[index].estado = 'I';
-          await this.mantenimientoService.putFamiliaredCandidatos(this.dataTableDatosFamiliares[index]);
-        }
-
-        this.dataTableDatosFamiliares = this.dataTableDatosFamiliares.filter(row => row.id.toString() !== rowKey.toString());
+        this.dataTableDatosFamiliares = this.dataTableDatosFamiliares.filter(
+          (row) => row.estado !== "I"
+        );
         break;
       default:
-        console.log('Opcion no definida'); 
+        console.log("Opcion no definida");
         break;
     }
   }
 
-  startEditingRow(rowKey: any) {
-    this.dataTableDatosFamiliares = this.dataTableDatosFamiliares.map(row => {
-      if (row.id === rowKey) {
-        row.isEditingRow = true;
+  startEditingRow(index) {
+    // this.dataTableDatosFamiliares[index].isEditingRow = true;
+    this.dataTableDatosFamiliares = this.dataTableDatosFamiliares.map(
+      (row, indexRow) => {
+        if (indexRow === index) {
+          row.isEditingRow = true;
+        }
+        return row;
       }
-      return row;
-    });
+    );
   }
 
   updateRowData(updatedRow: any) {
-    this.dataTableDatosFamiliares = this.dataTableDatosFamiliares.map(row => {
+    this.dataTableDatosFamiliares = this.dataTableDatosFamiliares.map((row) => {
       if (row.id === updatedRow.key) {
         return updatedRow;
       }
       return row;
     });
   }
-
 }

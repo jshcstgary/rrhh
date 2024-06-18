@@ -1,14 +1,14 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from "@angular/core";
 
 @Component({
-  selector: 'table-perso',
-  templateUrl: './table.component.html',
-  styleUrls: ['./table.component.scss'],
+  selector: "table-personalized",
+  templateUrl: "./table.component.html",
+  styleUrls: ["./table.component.scss"],
 })
 export class TablaComponent {
   @Input() columns: any[] = [];
   @Input() data: any[] = [];
-  @Input() tableWidth: string = '100%';
+  @Input() tableWidth: string = "100%";
 
   @Output() changeSort = new EventEmitter<any>();
   @Output() saveRowData = new EventEmitter<any>();
@@ -23,13 +23,20 @@ export class TablaComponent {
     this.saveRowData.emit(row);
   }
 
-  onInputChange(event: Event, row: any, dataIndex: string) {
+  onInputChange(event: Event, row: any, dataIndex: string, index) {
     const input = event.target as HTMLInputElement;
-    row[dataIndex] = input.value;
+    row[dataIndex][index] = input.value;
+    this.clickOnAction("save", index, row, "Guardar", this.getAdditionalParam(row));
   }
 
-  clickOnAction(actionId: string, rowKey: any, tooltip: string, additionalParam: any) {
-    this.actionClick.emit({ actionId, rowKey, tooltip, additionalParam });
+  clickOnAction(
+    action: string,
+    index,
+    row: any,
+    tooltip: string,
+    additionalParam: any
+  ) {
+    this.actionClick.emit({ action, index, row, tooltip, additionalParam });
   }
 
   getAdditionalParam(row: any) {

@@ -1,6 +1,6 @@
 import { IColumnsTable } from "src/app/component/table/table.interface";
 
-export const columnsDatosFamiliares = {
+export const columnsDatosFamiliares: IConsultaTareasData = {
   columns: [
     {
       title: "Nombre",
@@ -36,14 +36,14 @@ export const columnsDatosFamiliares = {
       title: "Parentesco",
       dataIndex: "parentezco",
       sortActive: true,
-      editable: true
+      isEditingRow: true,
     },
     {
           title: 'Acciones',
           dataIndex: 'actions',
           type: 'actions',
           actions: [
-            { id: 'edit', icon: 'fa fa-edit', tooltip: 'Editar' },
+            { id: 'editOnTable', materialIcon: 'edit', tooltip: 'Editar' },
             { id: 'delete', icon: 'fa fa-trash', tooltip: 'Eliminar' }
           ]
         }
