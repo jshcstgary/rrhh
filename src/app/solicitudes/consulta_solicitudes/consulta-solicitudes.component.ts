@@ -204,6 +204,9 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
   public errorMessage: string;
   public typeSolicitudSelected: any;
   public tipoSolicitudSeleccionada: any;
+  public codigoTipoSolicitud: string;
+  public processDefinitionKey: string;
+
 
   // public dataTiposMotivosPorTipoSolicitud : any[] = [];
 
@@ -413,6 +416,10 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
       {};
       */
 
+      this.codigoTipoSolicitud = this.dataTipoSolicitudes.filter(
+        (data) => data.id == this.solicitud.idTipoSolicitud
+      )[0]?.codigoTipoSolicitud;
+
       this.solicitud.tipoSolicitud = this.dataTipoSolicitudes.filter(
         (data) => data.id == this.solicitud.idTipoSolicitud
       )[0]?.descripcion;
@@ -444,19 +451,18 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
         // Comentado tveas por error
         this.route.params.subscribe((params) => {
           //const processDefinitionKey ="process_modelo";
-           const processDefinitionKey = "RequisicionPersonal";
-          if (this.dataTipoSolicitudes.filter((data) => data.id == this.solicitud.idTipoSolicitud )[0]?.codigoTipoSolicitud === "AP")
+           this.processDefinitionKey = "RequisicionPersonal";
+          if (this.codigoTipoSolicitud === "AP")
           {          
-            const processDefinitionKey = "AccionPersonal";
+            this.processDefinitionKey = "AccionPersonal";
           }
           
-          // const processDefinitionKey = "process_modelo";
-          //const processDefinitionKey = params['processdefinitionkey'];
+console.log(this.processDefinitionKey+this.codigoTipoSolicitud);          //const processDefinitionKey = params['processdefinitionkey'];
           const variables = this.generatedVariablesFromFormFields();
 
 
           this.camundaRestService
-            .postProcessInstance(processDefinitionKey, variables)
+            .postProcessInstance(this.processDefinitionKey, variables)
             .subscribe((instanceOutput) => {
               this.lookForError(instanceOutput);
               this.utilService.closeLoadingSpinner();
