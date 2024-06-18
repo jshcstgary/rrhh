@@ -719,7 +719,7 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
       await this.ObtenerServicioTipoMotivo();
       await this.ObtenerServicioTipoAccion();
       //await this.ObtenerServicioNivelDireccion();
-      await this.getSolicitudes();
+      //await this.getSolicitudes();
       //if (this.id_edit !== undefined) { //comentado mmunoz
       //await this.getDetalleSolicitudById(this.id_edit); //comentado mmunoz
       await this.getSolicitudById(this.id_edit);
