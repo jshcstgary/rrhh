@@ -15,10 +15,6 @@ export class ConsultaTareasService {
 
   constructor(private http: HttpClient) {}
 
-  obtenerDetallesAprobacionesSolicitudes(subledger: any): Observable<any> {
-    return this.http.get<any>(`${this.apiDetallesAprobacionesSolicitud}/filtrar/60068000?estado=PorRevisar`);
-  }
-
   public obtenerNiveleAprobaciones(): Observable<IConsultaNivelesAprobacionResponse> {
     return this.http.get<IConsultaNivelesAprobacionResponse>(
       `${this.apiUrlNivelAprobacion}`
@@ -38,6 +34,10 @@ export class ConsultaTareasService {
 
   public getTareas(): Observable<any> {
     return this.http.get<any>(`${this.apiUrlTareas}`);
+  }
+
+  public getTareasUsuario(idUsuario: string): Observable<any> {
+    return this.http.get<any>(`${this.apiUrlTareas}/consultartareasporsubleger/${idUsuario}`);
   }
 
   public getTareaIdParam(

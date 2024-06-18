@@ -12,15 +12,16 @@ export class StarterService {
 
   constructor(private http: HttpClient) { }
 
-  getUser() {
-    this.http.get<any>(`${this._apiEmpleadoUrl}/nombre/60063916`).subscribe({
-      next: (user) => {
-        this.userIniciador = user.evType[0];
+  getUser(idUsuario: string) {
+    return this.http.get<any>(`${this._apiEmpleadoUrl}/nombre/${idUsuario}`);
+    // this.http.get<any>(`${this._apiEmpleadoUrl}/nombre/${idUsuario}`).subscribe({
+    //   next: (user) => {
+    //     this.userIniciador = user.evType[0];
 
-      },
-      error: (err) => {
-        console.error(err);
-      }
-    });
+    //   },
+    //   error: (err) => {
+    //     console.error(err);
+    //   }
+    // });
   }
 }
