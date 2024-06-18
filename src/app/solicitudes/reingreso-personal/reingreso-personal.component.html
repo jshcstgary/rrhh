@@ -113,7 +113,7 @@
                   name="tipoSolicitud"
                   style="color: black; font-size: 14px"
                   class="text-start"
-                  >RP-0001</span
+                  >{{ solicitud.idSolicitud }}</span
                 >
               </div>
             </div>
@@ -130,7 +130,7 @@
                   name="tipoMotivo"
                   style="color: black; font-size: 14px"
                   class="text-start"
-                  >{{ "Juan Benito Perez Gonzales" }}</span
+                  >{{ model.nombreCompleto }}</span
                 >
               </div>
             </div>
@@ -230,7 +230,7 @@
                     class="input-group label-estilo"
                     style="font-size: 20px; color: black"
                     for="tipoMotivo"
-                    >Actual</label
+                    >Anterior</label
                   >
                 </div>
               </div>
@@ -242,7 +242,7 @@
                     class="input-group label-estilo"
                     style="font-size: 20px; color: black"
                     for="tipoMotivo"
-                    >Anterior</label
+                    >Actual</label
                   >
                 </div>
               </div>
@@ -275,7 +275,7 @@
                     name="tipoMotivo"
                     style="color: black; font-size: 14px"
                     class="text-start"
-                    >{{ "BANCO NACIONAL" }}</span
+                    >{{ model.compania }}</span
                   >
                 </div>
               </div>
@@ -308,7 +308,7 @@
                     name="tipoMotivo"
                     style="color: black; font-size: 14px"
                     class="text-start"
-                    >{{ "" }}</span
+                    >{{ model.sueldo }}</span
                   >
                 </div>
               </div>
@@ -351,7 +351,7 @@
                     name="tipoMotivo"
                     style="color: black; font-size: 14px"
                     class="text-start"
-                    >{{ "10" }}</span
+                    >{{ model.sueldoMensual }}</span
                   >
                 </div>
               </div>
@@ -383,7 +383,7 @@
                     name="tipoMotivo"
                     style="color: black; font-size: 14px"
                     class="text-start"
-                    >{{ "" }}</span
+                    >{{ model.sueldoTrimestral }}</span
                   >
                 </div>
               </div>
@@ -415,7 +415,7 @@
                     name="tipoMotivo"
                     style="color: black; font-size: 14px"
                     class="text-start"
-                    >{{ "" }}</span
+                    >{{ model.sueldoSemestral }}</span
                   >
                 </div>
               </div>
@@ -447,7 +447,7 @@
                     name="tipoMotivo"
                     style="color: black; font-size: 14px"
                     class="text-start"
-                    >{{ "" }}</span
+                    >{{ model.sueldoAnual }}</span
                   >
                 </div>
               </div>
@@ -479,7 +479,7 @@
                     name="tipoMotivo"
                     style="color: black; font-size: 14px"
                     class="text-start"
-                    >{{ "" }}</span
+                    >{{ modelRemuneracion }}</span
                   >
                 </div>
               </div>
