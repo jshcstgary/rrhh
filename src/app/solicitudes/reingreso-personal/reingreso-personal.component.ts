@@ -1,4 +1,4 @@
-import { Component, TemplateRef, Type, ViewChild } from "@angular/core";
+import { Component, Output, TemplateRef, Type, ViewChild } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import {
   NgbModal,
@@ -1201,4 +1201,97 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
         }
       );
   }
+
+
+  jefeReferencia: string = '';
+  isDisabledJR: boolean = false;
+  responsableRRHH: string = '';
+  isDisabledRH: boolean = false;
+  jefeInmediato: string = '';
+  isDisabledJI: boolean = false;
+
+
+
+  searchJefeReferencia = (value: string): void => {
+    this.mantenimientoService
+    .getDataEmpleadosEvolution("ev")
+    .pipe(
+      map(this.buscarValor.bind(this, value, "evType")),
+      catchError((error) => {
+        return this.mantenimientoService
+          .getDataEmpleadosEvolution("jaff")
+          .pipe(map(this.buscarValor.bind(this, value, "jaffType")));
+      })
+    )
+    .subscribe({
+      next: (data) => {
+        console.log('Encontro', data)
+        const fields = data as IEmpleadoData;
+        this.jefeReferencia = fields.nombreCompleto;
+        this.isDisabledJR = true;
+      },
+      error: (error) => {
+        console.error(error);
+      },
+    });
+  }
+  searchResponsableRRHH = (value: string): void => {
+    this.mantenimientoService
+    .getDataEmpleadosEvolution("ev")
+    .pipe(
+      map(this.buscarValor.bind(this, value, "evType")),
+      catchError((error) => {
+        return this.mantenimientoService
+          .getDataEmpleadosEvolution("jaff")
+          .pipe(map(this.buscarValor.bind(this, value, "jaffType")));
+      })
+    )
+    .subscribe({
+      next: (data) => {
+        console.log('Encontro', data)
+        const fields = data as IEmpleadoData;
+        this.responsableRRHH = fields.nombreCompleto;
+        this.isDisabledRH = true;
+      },
+      error: (error) => {
+        console.error(error);
+      },
+    });
+  }
+  searchJefeInmediatoSuperior = (value: string): void => {
+    this.mantenimientoService
+    .getDataEmpleadosEvolution("ev")
+    .pipe(
+      map(this.buscarValor.bind(this, value, "evType")),
+      catchError((error) => {
+        return this.mantenimientoService
+          .getDataEmpleadosEvolution("jaff")
+          .pipe(map(this.buscarValor.bind(this, value, "jaffType")));
+      })
+    )
+    .subscribe({
+      next: (data) => {
+        console.log('Encontro', data)
+        const fields = data as IEmpleadoData;
+        this.jefeInmediato = fields.nombreCompleto;
+        this.isDisabledJI = true;
+      },
+      error: (error) => {
+        console.error(error);
+      },
+    });
+  }
+
+  buscarValor = (search, type: "jaffType" | "evType", data: IEmpleados) => {
+    const result = data?.[type].find((item) => {
+      const regex = new RegExp(search, "i");
+      return item.nombreCompleto.match(regex);
+    });
+    if (!result) {
+      throw new Error("No se encontró el valor esperado");
+    }
+    return result;
+  };
+
+
 }

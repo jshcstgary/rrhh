@@ -511,7 +511,7 @@
                     name="tipoMotivo"
                     style="color: black; font-size: 14px"
                     class="text-start"
-                    >{{ "" }}</span
+                    >{{ model.descrPosicion }}</span
                   >
                 </div>
               </div>
@@ -543,7 +543,7 @@
                     name="tipoMotivo"
                     style="color: black; font-size: 14px"
                     class="text-start"
-                    >{{ "" }}</span
+                    >{{ model.unidadNegocio}}</span
                   >
                 </div>
               </div>
@@ -575,7 +575,7 @@
                     name="tipoMotivo"
                     style="color: black; font-size: 14px"
                     class="text-start"
-                    >{{ "" }}</span
+                    >{{ model.departamento }}</span
                   >
                 </div>
               </div>
@@ -607,7 +607,7 @@
                     name="tipoMotivo"
                     style="color: black; font-size: 14px"
                     class="text-start"
-                    >{{ "" }}</span
+                    >{{ model.localidad }}</span
                   >
                 </div>
               </div>
@@ -620,13 +620,15 @@
                   >
                   &nbsp;
                   <input-component
-                    [id]="'searchInputFilter'"
-                    [type]="'string'"
-                    [buttonIcon]="'ti-search'"
-                    buttonFunction="filterStringInTable"
-                    onChangeFunction="filterStringInTable"
-                    placeholder="Inactivo"
-                    style="width: 50%"
+                  [id]="'searchInputFilter'"
+                  [type]="'string'"
+                  [buttonIcon]="'ti-search'"
+                  buttonFunction="searchJefeInmediatoSuperior"
+                  placeholder="Buscar"
+                  [theValue]="jefeInmediato"
+                  [contexto]="this"
+                  style="width: 50%"
+                  [disabled]="isDisabledJI"
                   ></input-component>
                 </div>
               </div>
@@ -685,15 +687,20 @@
                     >Jefe Referencia</label
                   >
                   &nbsp;
-                  <input-component
-                    [id]="'searchInputFilter'"
-                    [type]="'string'"
-                    [buttonIcon]="'ti-search'"
-                    buttonFunction="filterStringInTable"
-                    onChangeFunction="filterStringInTable"
-                    placeholder="Buscar"
-                    style="width: 50%"
-                  ></input-component>
+
+                    <input-component
+                      [id]="'searchInputFilter'"
+                      [type]="'string'"
+                      [buttonIcon]="'ti-search'"
+                      buttonFunction="searchJefeReferencia"
+                      placeholder="Buscar"
+                      [theValue]="jefeReferencia"
+                      [contexto]="this"
+                      style="width: 50%"
+                      [disabled]="isDisabledJR"
+                    ></input-component>
+
+
                 </div>
               </div>
               <div class="col">
@@ -703,13 +710,15 @@
                   >
                   &nbsp;
                   <input-component
-                    [id]="'searchInputFilter'"
-                    [type]="'string'"
-                    [buttonIcon]="'ti-search'"
-                    buttonFunction="filterStringInTable"
-                    onChangeFunction="filterStringInTable"
-                    placeholder="Buscar"
-                    style="width: 50%"
+                  [id]="'searchInputFilter'"
+                  [type]="'string'"
+                  [buttonIcon]="'ti-search'"
+                  buttonFunction="searchResponsableRRHH"
+                  placeholder="Buscar"
+                  [theValue]="responsableRRHH"
+                  [contexto]="this"
+                  style="width: 50%"
+                  [disabled]="isDisabledRH"
                   ></input-component>
                 </div>
               </div>
@@ -738,6 +747,7 @@
                   <textarea
                     id="observaciones"
                     name="observaciones"
+                    [value]="model.justificacionCargo"
                     style="
                       color: black;
                       font-size: 14px;

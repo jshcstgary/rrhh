@@ -32,6 +32,8 @@ export class InputComponent implements OnInit {
   @Input() public allowedKeys: allowedKeysType = [];
   @Input() public decimals: number = 2;
 
+  @Input() public theValue: string = ""; 
+
   public containsButton: boolean = false;
   public containsLabel: boolean = false;
   public value: any = null;
