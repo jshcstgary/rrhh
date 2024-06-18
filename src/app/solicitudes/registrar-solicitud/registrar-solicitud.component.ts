@@ -1377,9 +1377,6 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
 
   override generateVariablesFromFormFields() {
     let variables: any = {};
-
-    if (this.tipo_solicitud_descripcion.toUpperCase().includes("REQUISICION") || this.solicitud.tipoSolicitud.toUpperCase().includes("REQUISICIÓN")
-    ||this.tipo_solicitud_descripcion.toUpperCase().includes("ACCION") || this.solicitud.tipoSolicitud.toUpperCase().includes("ACCIÓN")) {
       if (this.taskType_Activity == environment.taskType_Registrar) {
         this.dataAprobacionesPorPosicionAPS.forEach(elemento => {
           if (elemento.aprobador.nivelDireccion === this.NIVEL_APROBACION_GERENCIA_MEDIA) {
@@ -1547,9 +1544,6 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
 
      }*/
 
-
-
-    }
 
 
     return { variables };
