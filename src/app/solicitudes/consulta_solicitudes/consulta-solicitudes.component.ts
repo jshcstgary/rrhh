@@ -457,7 +457,6 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
             this.processDefinitionKey = "AccionPersonal";
           }
           
-console.log(this.processDefinitionKey+this.codigoTipoSolicitud);          //const processDefinitionKey = params['processdefinitionkey'];
           const variables = this.generatedVariablesFromFormFields();
 
 
