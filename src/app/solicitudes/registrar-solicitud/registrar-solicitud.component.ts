@@ -837,7 +837,6 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
       await this.ObtenerServicioTipoSolicitud();
       await this.ObtenerServicioTipoMotivo();
       await this.ObtenerServicioTipoAccion();
-      await this.ObtenerServicioNivelDireccion();
       await this.getSolicitudes();
       //if (this.id_edit !== undefined) { //comentado mmunoz
       //await this.getDetalleSolicitudById(this.id_edit); //comentado mmunoz
