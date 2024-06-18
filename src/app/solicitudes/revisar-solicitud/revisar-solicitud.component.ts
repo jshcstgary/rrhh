@@ -1220,7 +1220,7 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
 
     //variables.codigo = { value: this.model.codigo };
     //variables.idEmpresa = { value: this.model.idEmpresa };
-    if (this.solicitud.tipoSolicitud === "requisicionPersonal") {
+    if (this.solicitud.tipoSolicitud.toUpperCase().includes("REQUISICION")||this.solicitud.tipoSolicitud.toUpperCase().includes("REQUISICIÓN")||this.solicitud.tipoSolicitud.toUpperCase().includes("ACCION")||this.solicitud.tipoSolicitud.toUpperCase().includes("ACCIÓN")) {
 
       //buttonValue
 
