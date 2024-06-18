@@ -17,7 +17,6 @@ export class StarterService {
       next: (user) => {
         this.userIniciador = user.evType[0];
 
-        console.log(this.userIniciador);
       },
       error: (err) => {
         console.error(err);
