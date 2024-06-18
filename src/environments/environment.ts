@@ -40,6 +40,8 @@ export const environment = {
 
   taskType_RG: "RG_RegistrarSolicitud", // Reingreso de personal
 
+  taskType_AP: "AP_RegistrarSolicitud", // Acción de personal
+
   //Servicios de workflow
   // camundaUrl: `${baseC}/`,
  /// camundaUrl: `${baseG}/`,
