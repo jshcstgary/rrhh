@@ -21,6 +21,8 @@ export const environment = {
 
   taskType_Registrar: "RP_RegistrarSolicitud",
 
+  taskType_APRegistrar: "AP_RegistrarSolicitud",
+
   // Task type 2 - Review   - the value maps to the id attribute 'Revisar Solicitud' from bpmn
   // taskType_Revisar: "Activity_0wf5xb7",
 
