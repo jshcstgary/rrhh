@@ -445,7 +445,9 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
         this.route.params.subscribe((params) => {
           //const processDefinitionKey ="process_modelo";
            const processDefinitionKey = "RequisicionPersonal";
-          if (this.dataTipoSolicitudes.filter((data) => data.id == this.solicitud.idTipoSolicitud )[0]?.codigoTipoSolicitud === "AP")  {           const processDefinitionKey = "AccionPersonal";
+          if (this.dataTipoSolicitudes.filter((data) => data.id == this.solicitud.idTipoSolicitud )[0]?.codigoTipoSolicitud === "AP")
+          {          
+            const processDefinitionKey = "AccionPersonal";
           }
           
           // const processDefinitionKey = "process_modelo";
