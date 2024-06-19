@@ -1266,10 +1266,8 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
     let variables = this.generateVariablesFromFormFields();
     // return;
 
-    this.crearRegistradorSolicitud();
+    //this.crearRegistradorSolicitud();
 
-    this.solicitudes.guardarDetallesAprobacionesSolicitud(this.solicitudes.modelDetalleAprobaciones).subscribe({
-      next: () => {
         this.solicitudes.cargarDetalleAprobacionesArreglo(this.detalleNivelAprobacion).subscribe({
           next: (res) => {
             this.camundaRestService
@@ -1317,11 +1315,6 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
                   );
                 },
               });
-          },
-          error: (err) => {
-            console.error(err);
-          }
-        });
       },
       error: (err) => {
         console.error(err);
