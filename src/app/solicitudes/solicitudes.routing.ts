@@ -129,7 +129,7 @@ export const SolicitudesRoutes: Routes = [
         },
       },
       {
-        path: 'accion-personal/registrar-solicitud',
+        path: 'accion-personal/registrar-solicitud/:id/:idSolicitud',
         component: AccionComponent,
         data: {
           title: "Accion de Personal",
@@ -144,7 +144,7 @@ export const SolicitudesRoutes: Routes = [
         }
       },
       {
-        path: 'accion-personal/completar-solicitud',
+        path: 'accion-personal/completar-solicitud/:id/:idSolicitud',
         component: h21,
         data: {
           title: "Completar solicitud",
