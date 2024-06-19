@@ -77,6 +77,10 @@ export const environment = {
   empleadoServiceEs: `${baseG}/v1/us/empleadoev`,
   exempleadoServiceEsJaff: `${baseG}/v1/us/exempleadojaff`,
 
+  // empleadoServiceSpyral
+  exempleadoServiceEsSpyral: `${baseG}/v1/us/exempleadosp`,
+  
+
   // nivelAprobacionRefreshServiceES: `${base}:8075/v1/es/refresh_nivelesAprobacion`,
   nivelAprobacionRefreshServiceES: `${baseG}/v1/es/refresh_nivelesAprobacion`,
 

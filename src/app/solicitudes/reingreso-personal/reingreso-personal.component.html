@@ -643,7 +643,7 @@
                     name="tipoMotivo"
                     style="color: black; font-size: 14px"
                     class="text-start"
-                    >{{ "" }}</span
+                    >{{ model.jefeInmediatoSuperior }}</span
                   >
                 </div>
               </div>
@@ -660,7 +660,7 @@
                     name="tipoMotivo"
                     style="color: black; font-size: 14px"
                     class="text-start"
-                    >{{ "" }}</span
+                    >{{ this.puestoJefeInmediato }}</span
                   >
                 </div>
               </div>
@@ -675,7 +675,7 @@
                     name="tipoMotivo"
                     style="color: black; font-size: 14px"
                     class="text-start"
-                    >{{ "" }}</span
+                    >{{ model.puestoJefeInmediato }}</span
                   >
                 </div>
               </div>
@@ -713,12 +713,12 @@
                   [id]="'searchInputFilter'"
                   [type]="'string'"
                   [buttonIcon]="'ti-search'"
-                  buttonFunction="searchResponsableRRHH"
+                  buttonFunction="searchResponsableRRHHac"
                   placeholder="Buscar"
-                  [theValue]="responsableRRHH"
+                  [theValue]="responsableRRHHac"
                   [contexto]="this"
                   style="width: 50%"
-                  [disabled]="isDisabledRH"
+                  [disabled]="isDisabledRHac"
                   ></input-component>
                 </div>
               </div>
@@ -735,7 +735,7 @@
                     name="tipoMotivo"
                     style="color: black; font-size: 14px"
                     class="text-start"
-                    >{{ "" }}</span
+                    >{{ this.puestoJefeReferencia }}</span
                   >
                 </div>
               </div>
@@ -804,13 +804,15 @@
                   >
                   &nbsp;
                   <input-component
-                    [id]="'searchInputFilter'"
-                    [type]="'string'"
-                    [buttonIcon]="'ti-search'"
-                    buttonFunction="filterStringInTable"
-                    onChangeFunction="filterStringInTable"
-                    placeholder="Buscar"
-                    style="width: 50%"
+                  [id]="'searchInputFilter'"
+                  [type]="'string'"
+                  [buttonIcon]="'ti-search'"
+                  buttonFunction="searchResponsableRRHHan"
+                  placeholder="Buscar"
+                  [theValue]="responsableRRHHan"
+                  [contexto]="this"
+                  style="width: 50%"
+                  [disabled]="isDisabledRHan"
                   ></input-component>
                 </div>
               </div>

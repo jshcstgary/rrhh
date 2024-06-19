@@ -71,6 +71,8 @@ export class RegistrarData {
     public codigoPuesto: string = "",
     public descrPuesto: string = "",
     public fechaIngresogrupo: string = "",
+    public puestoJefeInmediato: string = '',
+    public jefeInmediatoSuperior: string = '',
     public grupoPago: string = "",
     public reportaA: string = "",
     public supervisaA: string = "",

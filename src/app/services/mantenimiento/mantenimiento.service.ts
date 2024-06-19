@@ -24,6 +24,7 @@ export class MantenimientoService {
   private apiTipoProcesoUrl = environment.tipoProcesoServiceES;
   private apiEmpleadoEvolutionUrl = environment.empleadoServiceEs;
   private apiEmpleadoUrlJaff = environment.exempleadoServiceEsJaff;
+  private apiEmpleadoUrlSpyral = environment.exempleadoServiceEsSpyral;
   private apiFamiliaresCandidato = environment.familiaresCandidationServiceES;
   // http://10.35.3.162:8053/v1/es/item-catalogo/codigo/RBPND
   // http://10.35.3.162:8053/v1/es/item-catalogo/codigo
@@ -123,10 +124,11 @@ export class MantenimientoService {
   empleadosUrl = {
     ev: this.apiEmpleadoEvolutionUrl,
     jaff: this.apiEmpleadoUrlJaff,
+    spyral: this.apiEmpleadoUrlSpyral
   };
 
   public getDataEmpleadosEvolution(
-    type: "jaff" | "ev" = "ev"
+    type: "jaff" | "ev" | 'spyral' = "ev"
   ): Observable<IEmpleados> {
     return this.http.get<IEmpleados>(this.empleadosUrl[type]);
   }
