@@ -1220,9 +1220,9 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
   crearRegistradorSolicitud() {
     this.starterService.getUser(localStorage.getItem("idUsuario")!).subscribe({
       next: (res) => {
-        this.solicitudes.modelDetalleAprobaciones.id_Solicitud = this.solicitud.idSolicitud;
+        id_Solicitud = this.solicitud.idSolicitud;
         this.solicitudes.modelDetalleAprobaciones.id_NivelAprobacion = 100000;
-        this.solicitudes.modelDetalleAprobaciones.id_TipoSolicitud = this.solicitud.idTipoSolicitud.toString();
+        this.solicitudes.modelDetalleAprobaciothis.solicitudes.modelDetalleAprobaciones.nes.id_TipoSolicitud = this.solicitud.idTipoSolicitud.toString();
         this.solicitudes.modelDetalleAprobaciones.id_Accion = 100000;
         this.solicitudes.modelDetalleAprobaciones.id_TipoMotivo = this.solicitud.idTipoMotivo;
         this.solicitudes.modelDetalleAprobaciones.id_TipoRuta = 100000;
@@ -1493,19 +1493,19 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
       variables.comentariosAnulacion = { value: this.model.comentariosAnulacion };
       variables.nivelDireccion = { value: this.model.nivelDir };
       variables.correoNotificacionCreador = {
-        value: this.starterService.userIniciador.correo
+        value: this.solicitudes.modelDetalleAprobaciones.correo
       };
       variables.usuarioNotificacionCreador = {
-        value: this.starterService.userIniciador.nombreCompleto
+        value: this.solicitudes.modelDetalleAprobaciones.usuarioAprobador
       };
       variables.nivelDireccionNotificacionCreador = {
-        value: this.starterService.userIniciador.nivelDir
+        value: this.solicitudes.modelDetalleAprobaciones.nivelDireccionAprobador
       };
       variables.descripcionPosicionCreador = {
-        value: this.starterService.userIniciador.descrPosicion
+        value: this.solicitudes.modelDetalleAprobaciones.descripcionPosicionAprobador
       };
       variables.subledgerNotificacionCreador = {
-        value: this.starterService.userIniciador.subledger
+        value: this.solicitudes.modelDetalleAprobaciones.sudlegerAprobador
       };
       variables.idSolicitud = {
         value: this.solicitud.idSolicitud
