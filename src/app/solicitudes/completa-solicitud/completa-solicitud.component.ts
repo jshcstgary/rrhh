@@ -1384,6 +1384,39 @@ export class CompletaSolicitudComponent extends CompleteTaskComponent {
     }
   }
 
+crearRegistradorSolicitud() {
+    this.starterService.getUser(localStorage.getItem("idUsuario")!).subscribe({
+      next: (res) => {
+        this.solicitudes.modelDetalleAprobaciones.id_Solicitud = this.solicitud.idSolicitud;
+        this.solicitudes.modelDetalleAprobaciones.id_NivelAprobacion = 100000;
+        this.solicitudes.modelDetalleAprobaciones.id_TipoSolicitud = this.solicitud.idTipoSolicitud.toString();
+        this.solicitudes.modelDetalleAprobaciones.id_Accion = 100000;
+        this.solicitudes.modelDetalleAprobaciones.id_TipoMotivo = this.solicitud.idTipoMotivo;
+        this.solicitudes.modelDetalleAprobaciones.id_TipoRuta = 100000;
+        this.solicitudes.modelDetalleAprobaciones.id_Ruta = 100000;
+        this.solicitudes.modelDetalleAprobaciones.tipoSolicitud = this.solicitud.tipoSolicitud;
+        this.solicitudes.modelDetalleAprobaciones.motivo = "CompletarRequisicion";
+        this.solicitudes.modelDetalleAprobaciones.tipoRuta = "CompletarRequisicion";
+        this.solicitudes.modelDetalleAprobaciones.ruta = "Completar Requisicion";
+        this.solicitudes.modelDetalleAprobaciones.accion = "CompletarRequisicion";
+        this.solicitudes.modelDetalleAprobaciones.nivelDirecion = res.evType[0].nivelDir;
+        this.solicitudes.modelDetalleAprobaciones.nivelAprobacionRuta = "CompletarRequisicion";
+        this.solicitudes.modelDetalleAprobaciones.usuarioAprobador = res.evType[0].nombreCompleto;
+        this.solicitudes.modelDetalleAprobaciones.codigoPosicionAprobador = res.evType[0].codigoPosicion;
+        this.solicitudes.modelDetalleAprobaciones.descripcionPosicionAprobador = res.evType[0].descrPosicion;
+        this.solicitudes.modelDetalleAprobaciones.sudlegerAprobador = res.evType[0].subledger;
+        this.solicitudes.modelDetalleAprobaciones.nivelDireccionAprobador = res.evType[0].nivelDir;
+        this.solicitudes.modelDetalleAprobaciones.codigoPosicionReportaA = res.evType[0].codigoPosicionReportaA;
+        this.solicitudes.modelDetalleAprobaciones.estadoAprobacion = "Completado";
+        this.solicitudes.modelDetalleAprobaciones.estado = "A";
+        this.solicitudes.modelDetalleAprobaciones.correo = res.evType[0].correo;
+        this.solicitudes.modelDetalleAprobaciones.usuarioCreacion = res.evType[0].nombreCompleto;
+        this.solicitudes.modelDetalleAprobaciones.usuarioModificacion = res.evType[0].nombreCompleto;
+        this.solicitudes.modelDetalleAprobaciones.fechaCreacion = new Date().toISOString();
+        this.solicitudes.modelDetalleAprobaciones.fechaModificacion = new Date().toISOString();
+      }
+    });
+  }
 
   saveDetalleAprobaciones() {
     // this.solicitudes
@@ -1397,7 +1430,7 @@ export class CompletaSolicitudComponent extends CompleteTaskComponent {
     //       this.router.navigate(["/solicitudes/completar-solicitudes"]);
     //     }, 1600);*/
     //   });
-
+    this.crearRegistradorSolicitud();
     this.solicitudes.modelDetalleAprobaciones.estadoAprobacion = this.buttonValue;
     this.solicitudes.modelDetalleAprobaciones.comentario = this.textareaContent;
 
