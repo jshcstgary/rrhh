@@ -1224,120 +1224,60 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
 
 
   searchJefeReferencia = (value: string): void => {
-    this.mantenimientoService
-    .getDataEmpleadosEvolution("ev")
-      .pipe(
-      map(this.buscarValor.bind(this, value, "evType")),
-      catchError((error) => {
-        return this.mantenimientoService
-          .getDataEmpleadosEvolution("jaff")
-          .pipe(map(this.buscarValor.bind(this, value, "jaffType")));
-      }),
-      catchError(error => {
-        return this.mantenimientoService
-          .getDataEmpleadosEvolution('spyral')
-          .pipe(map(this.buscarValor.bind(this,value,'spyralType')))
-      }),
-    )
-    .subscribe({
-      next: (data) => {
-        console.log('Encontro', data)
-        const fields = data as IEmpleadoData;
-        this.jefeReferencia = fields.nombreCompleto;
-        this.puestoJefeReferencia = fields.descrPuesto;
-        this.isDisabledJR = true;
-      },
-      error: (error) => {
-        console.error(error);
-      },
-    });
+    this.searchEmpleado(value, (data) => {
+      this.jefeReferencia = data.nombreCompleto;
+      this.puestoJefeReferencia = data.descrPuesto;
+      this.isDisabledJR = true;
+    })
   }
   searchResponsableRRHHan = (value: string): void => {
-    this.mantenimientoService
-    .getDataEmpleadosEvolution("ev")
-      .pipe(
-      map(this.buscarValor.bind(this, value, "evType")),
-      catchError((error) => {
-        return this.mantenimientoService
-          .getDataEmpleadosEvolution("jaff")
-          .pipe(map(this.buscarValor.bind(this, value, "jaffType")));
-      }),
-      catchError(error => {
-        return this.mantenimientoService
-          .getDataEmpleadosEvolution('spyral')
-          .pipe(map(this.buscarValor.bind(this,value,'spyralType')))
-      }),
-    )
-    .subscribe({
-      next: (data) => {
-        console.log('Encontro', data)
-        const fields = data as IEmpleadoData;
-        this.responsableRRHHan = fields.nombreCompleto;
-        this.isDisabledRHan = true;
-      },
-      error: (error) => {
-        console.error(error);
-      },
-    });
+    this.searchEmpleado(value, (data) => {
+      this.responsableRRHHan = data.nombreCompleto;
+      this.isDisabledRHan = true;
+    })
   }
 
   searchResponsableRRHHac = (value: string): void => {
-    this.mantenimientoService
-    .getDataEmpleadosEvolution("ev")
-      .pipe(
-      map(this.buscarValor.bind(this, value, "evType")),
-      catchError((error) => {
-        return this.mantenimientoService
-          .getDataEmpleadosEvolution("jaff")
-          .pipe(map(this.buscarValor.bind(this, value, "jaffType")));
-      }),
-      catchError(error => {
-        return this.mantenimientoService
-          .getDataEmpleadosEvolution('spyral')
-          .pipe(map(this.buscarValor.bind(this,value,'spyralType')))
-      }),
-    )
-    .subscribe({
-      next: (data) => {
-        console.log('Encontro', data)
-        const fields = data as IEmpleadoData;
-        this.responsableRRHHac = fields.nombreCompleto;
-        this.isDisabledRHac = true;
-      },
-      error: (error) => {
-        console.error(error);
-      },
-    });
+    this.searchEmpleado(value, (data) => {
+      this.responsableRRHHac = data.nombreCompleto;
+      this.isDisabledRHac = true;
+    })
   }
 
   searchJefeInmediatoSuperior = (value: string): void => {
-    this.mantenimientoService
-    .getDataEmpleadosEvolution("ev")
-      .pipe(
-      map(this.buscarValor.bind(this, value, "evType")),
-      catchError((error) => {
-        return this.mantenimientoService
-          .getDataEmpleadosEvolution("jaff")
-          .pipe(map(this.buscarValor.bind(this, value, "jaffType")));
-      }),
-      catchError(error => {
-        return this.mantenimientoService
-          .getDataEmpleadosEvolution('spyral')
-          .pipe(map(this.buscarValor.bind(this,value,'spyralType')))
-      }),
-    )
-    .subscribe({
-      next: (data) => {
-        console.log('Encontro', data)
-        const fields = data as IEmpleadoData;
-        this.jefeInmediato = fields.nombreCompleto;
-        this.puestoJefeInmediato = fields.descrPuesto;
+    this.searchEmpleado(value, (data) => {
+        this.jefeInmediato = data.nombreCompleto;
+        this.puestoJefeInmediato = data.descrPuesto;
         this.isDisabledJI = true;
-      },
-      error: (error) => {
-        console.error(error);
-      },
-    });
+    })
+  }
+
+
+  searchEmpleado = (value: string, setEmpleadoData: (data: IEmpleadoData) => void): void => {
+    this.mantenimientoService
+      .getDataEmpleadosEvolution("ev")
+      .pipe(
+        map(this.buscarValor.bind(this, value, "evType")),
+        catchError((error) => {
+          return this.mantenimientoService
+            .getDataEmpleadosEvolution("jaff")
+            .pipe(map(this.buscarValor.bind(this, value, "jaffType")));
+        }),
+        catchError(error => {
+          return this.mantenimientoService
+            .getDataEmpleadosEvolution('spyral')
+            .pipe(map(this.buscarValor.bind(this,value,'spyralType')))
+        }),
+      )
+      .subscribe({
+        next: (data) => {
+          console.log('Encontro', data);
+          setEmpleadoData(data as IEmpleadoData);
+        },
+        error: (error) => {
+          console.error(error);
+        },
+      });
   }
 
   buscarValor = (search, type: "jaffType" | "evType" | 'spyralType', data: IEmpleados) => {
