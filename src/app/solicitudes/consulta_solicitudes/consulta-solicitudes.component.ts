@@ -65,7 +65,7 @@ import { DataFilterSolicitudes } from "src/app/eschemas/DataFilterSolicitudes";
 import { ConsultaSolicitudesService } from "./consulta-solicitudes.service";
 import { DetalleSolicitud } from "src/app/eschemas/DetalleSolicitud";
 import { single } from "src/app/charts/ngx-charts/chartData";
-import { StarterService } from "src/app/starter/starter.service";
+//import { StarterService } from "src/app/starter/starter.service";
 
 
 //import { single} from './chartData';
@@ -332,8 +332,8 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
     private router: Router,
     private calendar: NgbCalendar,
     private camundaRestService: CamundaRestService,
-    private modalService: NgbModal,
-    private starterService: StarterService
+    private modalService: NgbModal
+    //private starterService: StarterService
 
   ) {
     this.model = calendar.getToday();
@@ -401,7 +401,7 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
     this.router.navigate(["/solicitudes/crear-tipo-solicitud"]);
   }
 
-crearRegistradorSolicitud() {
+/*crearRegistradorSolicitud() {
     this.starterService.getUser(localStorage.getItem("idUsuario")!).subscribe({
       next: (res) => {
         this.solicitudes.modelDetalleAprobaciones.id_Solicitud = this.solicitud.idSolicitud;
@@ -431,7 +431,7 @@ crearRegistradorSolicitud() {
         this.solicitudes.modelDetalleAprobaciones.usuarioModificacion = res.evType[0].nombreCompleto;
         this.solicitudes.modelDetalleAprobaciones.fechaCreacion = new Date().toISOString();
         this.solicitudes.modelDetalleAprobaciones.fechaModificacion = new Date().toISOString();
-      }
+      }*/
 
   //Crear Solicitud
   CrearInstanciaSolicitud() {
@@ -495,9 +495,9 @@ crearRegistradorSolicitud() {
           
           const variables = this.generatedVariablesFromFormFields();
 
-          this.crearRegistradorSolicitud();
-          this.solicitudes.guardarDetallesAprobacionesSolicitud(this.solicitudes.modelDetalleAprobaciones).subscribe({
-          next: () => {
+         // this.crearRegistradorSolicitud();
+         // this.solicitudes.guardarDetallesAprobacionesSolicitud(this.solicitudes.modelDetalleAprobaciones).subscribe({
+         // next: () => {
           this.camundaRestService
             .postProcessInstance(this.processDefinitionKey, variables)
             .subscribe((instanceOutput) => {
@@ -542,11 +542,11 @@ crearRegistradorSolicitud() {
 
 
             });
-            },
+        /*    },
           error: (err) => {
             console.error(err);
           }
-        });
+        });*/
         });
 
         if (this.submitted) {
