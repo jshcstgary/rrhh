@@ -98,7 +98,7 @@
                     name="name"
                     style="color: black; font-size: 14px"
                     class="text-start"
-                    >{{ "SUAREZ MARIETA CAROLINA" }}</span
+                    >{{ this.detalleSolicitud.nombreEmpleado }}</span
                   >
               </div>
             </div>
@@ -114,304 +114,305 @@
                     name="sub"
                     style="color: black; font-size: 14px"
                     class="text-start"
-                    >{{ "83746784" }}</span
+                    >{{ this.detalleSolicitud.subledgerEmpleado }}</span
                   >
                 </div>
               </div>
                 
           </div>
   
-        <div class="row mt-4">
-          <div class="col-md-6">
-            <div class="mb-4">
-              <a>
-                <h2 class="sol-danger">Información de Empleados - Datos Actuales</h2>
-              </a>
+          <div class="row mt-2">
+            <div class="col-md-6">
+              <div class="mb-4">
+                <a>
+                  <h2 class="sol-danger">Información de Empleados - Datos Actuales</h2>
+                </a>
+              </div>
+            </div>
+    
+            <div class="col-md-6">
+              <hr />
             </div>
           </div>
   
-          <div class="col-md-6">
-            <hr />
-          </div>
-        </div>
-
-        <div class="row mb-2">
-          <div class="col-md-4">
-            <div class="input-group mb-3">
-              <label class="input-group label-estilo" for="tipoSolicitud"
-                >Fecha de Ingreso</label
-              >
-              &nbsp;
-              <span
-                #mivar
-                id="tipoSolicitud"
-                name="tipoSolicitud"
-                style="color: black; font-size: 14px"
-                class="text-start"
-                >{{ '' }}</span
-              >
-            </div>
-          </div>
-        </div>
-
-        <div class="row mt-4">
-          <div class="col-md-4">
-            <div class="input-group mb-3">
-              <label class="input-group label-estilo" for="tipoMotivo"
-                >Compañia</label
-              >
-              &nbsp;
-              <span
-                id="comp"
-                name="comp"
-                style="color: black; font-size: 14px"
-                class="text-start"
-                >{{ "LACTEOS" }}</span
-              >
-            </div>
-          </div>
-          <div class="col-md-4">
-            <div class="input-group mb-3">
-              <label class="input-group label-estilo" for="tipoMotivo"
-                >Unidad</label
-              >
-              &nbsp;
-              <span
-                id="unidad"
-                name="unidad"
-                style="color: black; font-size: 14px"
-                class="text-start"
-                >{{ "LECHE" }}</span
-              >
-            </div>
-          </div>
-        </div>
-
-        <div class="row mt-4">
-          <div class="col-md-4">
-            <div class="input-group mb-3">
-              <label class="input-group label-estilo" for="tipoMotivo"
-                >Area / Departamento</label
-              >
-              &nbsp;
-              <span
-                id="comp"
-                name="comp"
-                style="color: black; font-size: 14px"
-                class="text-start"
-                >{{ "Gerencia" }}</span
-              >
-            </div>
-          </div>
-          <div class="col-md-4">
-            <div class="input-group mb-3">
-              <label class="input-group label-estilo" for="tipoMotivo"
-                >Localidad</label
-              >
-              &nbsp;
-              <span
-                id="unidad"
-                name="unidad"
-                style="color: black; font-size: 14px"
-                class="text-start"
-                >{{ "" }}</span
-              >
-            </div>
-          </div>
-          <div class="col-md-4">
-            <div class="input-group mb-3">
-              <label class="input-group label-estilo" for="tipoMotivo"
-                >Grupo de Pago</label
-              >
-              &nbsp;
-              <span
-                id="unidad"
-                name="unidad"
-                style="color: black; font-size: 14px"
-                class="text-start"
-                >{{ "grupo_pago" }}</span
-              >
-            </div>
-          </div>
-        </div>
-
-        <div class="row mt-4">
-          <div class="col-md-4">
-            <div class="input-group mb-3">
-              <label class="input-group label-estilo" for="tipoMotivo"
-                >Puesto</label
-              >
-              &nbsp;
-              <span
-                id="comp"
-                name="comp"
-                style="color: black; font-size: 14px"
-                class="text-start"
-                >{{ "Gerencia media" }}</span
-              >
-            </div>
-          </div>
-          <div class="col-md-4">
-            <div class="input-group mb-3">
-              <label class="input-group label-estilo" for="tipoMotivo"
-                >Centro de Costo</label
-              >
-              &nbsp;
-              <span
-                id="unidad"
-                name="unidad"
-                style="color: black; font-size: 14px"
-                class="text-start"
-                >{{ "" }}</span
-              >
-            </div>
-          </div>
-          <div class="col-md-4">
-            <div class="input-group mb-3">
-              <label class="input-group label-estilo" for="tipoMotivo"
-                >Sucursal (Nominá)</label
-              >
-              &nbsp;
-              <span
-                id="unidad"
-                name="unidad"
-                style="color: black; font-size: 14px"
-                class="text-start"
-                >{{ "Nuevo Mexico" }}</span
-              >
-            </div>
-          </div>
-        </div>
-
-        <div class="row mt-4">
-            <div class="col-md-3"></div>
-            <div class="col-md-6">
-                <label
-                    class="input-group label-estilo"
-                    style="font-size: 20px; color: black"
-                    for="tipoMotivo"
-                    >Tipo de Variable
-                </label>
-            </div>
-        </div>
-
-        <div class="row mt-4">
-          <div class="col-md-3">
-            <div class="input-group mb-3">
-              <label class="input-group label-estilo" for="tipoMotivo"
-                >Sueldo</label
-              >
-              &nbsp;
-              <span
-                id="comp"
-                name="comp"
-                style="color: black; font-size: 14px"
-                class="text-start"
-                >{{ "100" }}</span
-              >
-            </div>
-          </div>
-          <div class="col-md-3">
-            <div class="input-group mb-3">
-              <label class="input-group label-estilo" for="me"
-                >Mensual</label
-              >
-              &nbsp;
-              <span
-                id="me"
-                name="me"
-                style="color: black; font-size: 14px"
-                class="text-start"
-                >{{ "" }}</span
-              >
-            </div>
-          </div>
-          <div class="col-md-3">
-            <div class="input-group mb-3">
-              <label class="input-group label-estilo" for="mov"
-                >Movilizacion</label
-              >
-              &nbsp;
-              <span
-                id="mov"
-                name="mov"
-                style="color: black; font-size: 14px"
-                class="text-start"
-                >{{ "" }}</span
-              >
-            </div>
-          </div>
-          <div class="col-md-3">
-            <div class="input-group mb-3">
-              <label class="input-group label-estilo" for="al"
-                >Alimentacion</label
-              >
-              &nbsp;
-              <span
-                id="al"
-                name="al"
-                style="color: black; font-size: 14px"
-                class="text-start"
-                >{{ "" }}</span
-              >
-            </div>
-          </div>
-        </div>
-
-        <div class="row mt-4">
-            <div class="col-md-3"></div>
-            <div class="col-md-3">
-                <div class="input-group mb-3">
-                  <label class="input-group label-estilo" for="al"
-                    >Trimestral</label
-                  >
-                  &nbsp;
-                  <span
-                    id="al"
-                    name="al"
-                    style="color: black; font-size: 14px"
-                    class="text-start"
-                    >{{ "" }}</span
-                  >
-                </div>
+          <div class="row mb-2">
+            <div class="col-md-4">
+              <div class="input-group mb-3">
+                <label class="input-group label-estilo" for="tipoSolicitud"
+                  >Fecha de Ingreso</label
+                >
+                &nbsp;
+                <span
+                  #mivar
+                  id="tipoSolicitud"
+                  name="tipoSolicitud"
+                  style="color: black; font-size: 14px"
+                  class="text-start"
+                  >{{ this.detalleSolicitud.fechaIngreso | date:'yyyy/MM/dd' }}</span
+                >
               </div>
-        </div>
-        <div class="row mt-4">
-            <div class="col-md-3"></div>
-            <div class="col-md-3">
-                <div class="input-group mb-3">
-                  <label class="input-group label-estilo" for="al"
-                    >Semestral</label
-                  >
-                  &nbsp;
-                  <span
-                    id="al"
-                    name="al"
-                    style="color: black; font-size: 14px"
-                    class="text-start"
-                    >{{ "" }}</span
-                  >
-                </div>
+            </div>
+          </div>
+  
+          <div class="row mt-4">
+            <div class="col-md-4">
+              <div class="input-group mb-3">
+                <label class="input-group label-estilo" for="tipoMotivo"
+                  >Compañia</label
+                >
+                &nbsp;
+                <span
+                  id="comp"
+                  name="comp"
+                  style="color: black; font-size: 14px"
+                  class="text-start"
+                  >{{ this.detalleSolicitud.compania }}</span
+                >
               </div>
-        </div>
-        <div class="row mt-4">
-            <div class="col-md-3"></div>
-            <div class="col-md-3">
-                <div class="input-group mb-3">
-                  <label class="input-group label-estilo" for="al"
-                    >Anual</label
-                  >
-                  &nbsp;
-                  <span
-                    id="al"
-                    name="al"
-                    style="color: black; font-size: 14px"
-                    class="text-start"
-                    >{{ "" }}</span
-                  >
-                </div>
+            </div>
+            <div class="col-md-4">
+              <div class="input-group mb-3">
+                <label class="input-group label-estilo" for="tipoMotivo"
+                  >Unidad</label
+                >
+                &nbsp;
+                <span
+                  id="unidad"
+                  name="unidad"
+                  style="color: black; font-size: 14px"
+                  class="text-start"
+                  >{{ this.detalleSolicitud.unidad }}</span
+                >
               </div>
-        </div>
+            </div>
+          </div>
+  
+          <div class="row mt-4">
+            <div class="col-md-4">
+              <div class="input-group mb-3">
+                <label class="input-group label-estilo" for="tipoMotivo"
+                  >Area / Departamento</label
+                >
+                &nbsp;
+                <span
+                  id="comp"
+                  name="comp"
+                  style="color: black; font-size: 14px"
+                  class="text-start"
+                  >{{ this.detalleSolicitud.areaDepartamento }}</span
+                >
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="input-group mb-3">
+                <label class="input-group label-estilo" for="tipoMotivo"
+                  >Localidad</label
+                >
+                &nbsp;
+                <span
+                  id="unidad"
+                  name="unidad"
+                  style="color: black; font-size: 14px"
+                  class="text-start"
+                  >{{ this.detalleSolicitud.localidad }}</span
+                >
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="input-group mb-3">
+                <label class="input-group label-estilo" for="tipoMotivo"
+                  >Grupo de Pago</label
+                >
+                &nbsp;
+                <span
+                  id="unidad"
+                  name="unidad"
+                  style="color: black; font-size: 14px"
+                  class="text-start"
+                  >{{ this.detalleSolicitud.grupoDePago }}</span
+                >
+              </div>
+            </div>
+          </div>
+  
+          <div class="row mt-4">
+            <div class="col-md-4">
+              <div class="input-group mb-3">
+                <label class="input-group label-estilo" for="tipoMotivo"
+                  >Puesto</label
+                >
+                &nbsp;
+                <span
+                  id="comp"
+                  name="comp"
+                  style="color: black; font-size: 14px"
+                  class="text-start"
+                  >{{ this.detalleSolicitud.puesto }}</span
+                >
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="input-group mb-3">
+                <label class="input-group label-estilo" for="tipoMotivo"
+                  >Centro de Costo</label
+                >
+                &nbsp;
+                <span
+                  id="unidad"
+                  name="unidad"
+                  style="color: black; font-size: 14px"
+                  class="text-start"
+                  >{{ this.detalleSolicitud.centroCosto }}</span
+                >
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="input-group mb-3">
+                <label class="input-group label-estilo" for="tipoMotivo"
+                  >Sucursal (Nominá)</label
+                >
+                &nbsp;
+                <span
+                  id="unidad"
+                  name="unidad"
+                  style="color: black; font-size: 14px"
+                  class="text-start"
+                  >{{ this.detalleSolicitud.sucursal }}</span
+                >
+              </div>
+            </div>
+          </div>
+  
+          <div class="row mt-4">
+              <div class="col-md-3"></div>
+              <div class="col-md-6">
+                  <label
+                      class="input-group label-estilo"
+                      style="font-size: 20px; color: black"
+                      for="tipoMotivo"
+                      >Tipo de Variable
+                  </label>
+              </div>
+          </div>
+  
+          <div class="row mt-4">
+            <div class="col-md-3">
+              <div class="input-group mb-3">
+                <label class="input-group label-estilo" for="tipoMotivo"
+                  >Sueldo</label
+                >
+                &nbsp;
+                <span
+                  id="comp"
+                  name="comp"
+                  style="color: black; font-size: 14px"
+                  class="text-start"
+                  >{{ this.detalleSolicitud.sueldo }}</span
+                >
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="input-group mb-3">
+                <label class="input-group label-estilo" for="me"
+                  >Mensual</label
+                >
+                &nbsp;
+                <span
+                  id="me"
+                  name="me"
+                  style="color: black; font-size: 14px"
+                  class="text-start"
+                  >{{ this.detalleSolicitud.sueldoVariableMensual }}</span
+                >
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="input-group mb-3">
+                <label class="input-group label-estilo" for="mov"
+                  >Movilizacion</label
+                >
+                &nbsp;
+                <span
+                  id="mov"
+                  name="mov"
+                  style="color: black; font-size: 14px"
+                  class="text-start"
+                  >{{ this.detalleSolicitud.movilizacion }}</span
+                >
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="input-group mb-3">
+                <label class="input-group label-estilo" for="al"
+                  >Alimentacion</label
+                >
+                &nbsp;
+                <span
+                  id="al"
+                  name="al"
+                  style="color: black; font-size: 14px"
+                  class="text-start"
+                  >{{ this.detalleSolicitud.alimentacion }}</span
+                >
+              </div>
+            </div>
+          </div>
+  
+          <div class="row mt-4">
+              <div class="col-md-3"></div>
+              <div class="col-md-3">
+                  <div class="input-group mb-3">
+                    <label class="input-group label-estilo" for="al"
+                      >Trimestral</label
+                    >
+                    &nbsp;
+                    <span
+                      id="al"
+                      name="al"
+                      style="color: black; font-size: 14px"
+                      class="text-start"
+                      >{{ this.detalleSolicitud.sueldoVariableTrimestral }}</span
+                    >
+                  </div>
+                </div>
+          </div>
+          <div class="row mt-4">
+              <div class="col-md-3"></div>
+              <div class="col-md-3">
+                  <div class="input-group mb-3">
+                    <label class="input-group label-estilo" for="al"
+                      >Semestral</label
+                    >
+                    &nbsp;
+                    <span
+                      id="al"
+                      name="al"
+                      style="color: black; font-size: 14px"
+                      class="text-start"
+                      >{{ this.detalleSolicitud.sueldoVariableSemestral }}</span
+                    >
+                  </div>
+                </div>
+          </div>
+          <div class="row mt-4">
+              <div class="col-md-3"></div>
+              <div class="col-md-3">
+                  <div class="input-group mb-3">
+                    <label class="input-group label-estilo" for="al"
+                      >Anual</label
+                    >
+                    &nbsp;
+                    <span
+                      id="al"
+                      name="al"
+                      style="color: black; font-size: 14px"
+                      class="text-start"
+                      >{{ this.detalleSolicitud.sueldoVariableAnual }}</span
+                    >
+                  </div>
+                </div>
+          </div>
+    
   
         <div class="row mt-4">
           <div class="col-md-3">
