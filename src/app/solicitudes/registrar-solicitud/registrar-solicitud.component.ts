@@ -1222,7 +1222,7 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
       next: (res) => {
         this.solicitudes.modelDetalleAprobaciones.id_Solicitud = this.solicitud.idSolicitud;
         this.solicitudes.modelDetalleAprobaciones.id_NivelAprobacion = 100000;
-        this.solicitudes.modelDetalleAprobaciothis.solicitudes.modelDetalleAprobaciones.nes.id_TipoSolicitud = this.solicitud.idTipoSolicitud.toString();
+        this.solicitudes.modelDetalleAprobaciones.id_TipoSolicitud = this.solicitud.idTipoSolicitud.toString();
         this.solicitudes.modelDetalleAprobaciones.id_Accion = 100000;
         this.solicitudes.modelDetalleAprobaciones.id_TipoMotivo = this.solicitud.idTipoMotivo;
         this.solicitudes.modelDetalleAprobaciones.id_TipoRuta = 100000;
