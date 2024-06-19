@@ -25,7 +25,7 @@ export class TablaComponent {
 
   onInputChange(event: Event, row: any, dataIndex: string, index) {
     const input = event.target as HTMLInputElement;
-    row[dataIndex][index] = input.value;
+    row[dataIndex] = input.value;
     this.clickOnAction("save", index, row, "Guardar", this.getAdditionalParam(row));
   }
 

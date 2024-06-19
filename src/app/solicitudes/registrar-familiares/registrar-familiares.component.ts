@@ -1750,7 +1750,9 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
 
   updateRowData(updatedRow: any) {
     this.dataTableDatosFamiliares = this.dataTableDatosFamiliares.map((row) => {
-      if (row.id === updatedRow.key) {
+      console.log('Aqui row nueva', updatedRow);
+      console.log('Aqui row anterior', row)
+      if (row.id === updatedRow.id) {
         return updatedRow;
       }
       return row;

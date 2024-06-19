@@ -664,13 +664,15 @@ export class RegistroComentariosComponent extends CompleteTaskComponent {
     }
   }
 
+  modelRemuneracion: number = 0;
   getDetalleSolicitudById(id: any) {
     return this.solicitudes.getDetalleSolicitudById(id).subscribe({
       next: (response: any) => {
         this.detalleSolicitud = response.detalleSolicitudType[0];
         if (this.detalleSolicitud.codigoPosicion.length > 0) {
-
           this.model.codigoPosicion = this.detalleSolicitud.codigoPosicion;
+          this.model.puestoJefeInmediato = this.detalleSolicitud.puestoJefeInmediato;
+          this.model.jefeInmediatoSuperior = this.detalleSolicitud.jefeInmediatoSuperior;
           this.model.descrPosicion = this.detalleSolicitud.descripcionPosicion;
           this.model.subledger = this.detalleSolicitud.subledger;
           this.model.nombreCompleto = this.detalleSolicitud.nombreEmpleado;
@@ -688,14 +690,20 @@ export class RegistroComentariosComponent extends CompleteTaskComponent {
           this.model.tipoContrato = this.detalleSolicitud.tipoContrato;
           this.model.nivelRepa = this.detalleSolicitud.nivelReporteA;
           this.model.sueldo = this.detalleSolicitud.sueldo;
-          this.model.sueldoMensual = this.detalleSolicitud.sueldoVariableMensual;
-          this.model.sueldoTrimestral = this.detalleSolicitud.sueldoVariableTrimestral;
-          this.model.sueldoSemestral = this.detalleSolicitud.sueldoVariableSemestral;
-          this.model.sueldoAnual = this.detalleSolicitud.sueldoVariableAnual
+          this.model.sueldoMensual =
+            this.detalleSolicitud.sueldoVariableMensual;
+          this.model.sueldoTrimestral =
+            this.detalleSolicitud.sueldoVariableTrimestral;
+          this.model.sueldoSemestral =
+            this.detalleSolicitud.sueldoVariableSemestral;
+          this.model.sueldoAnual = this.detalleSolicitud.sueldoVariableAnual;
           this.model.correo = this.detalleSolicitud.correo;
           this.model.fechaIngreso = this.detalleSolicitud.fechaIngreso;
-
-
+          this.modelRemuneracion =
+            +this.model.sueldoAnual / 12 +
+            +this.model.sueldoSemestral / 6 +
+            +this.model.sueldoTrimestral / 3 +
+            +this.model.sueldoMensual;
         }
         /* this.detalleSolicitud.estado = response.estado;
          this.detalleSolicitud.estado = response.estadoSolicitud;

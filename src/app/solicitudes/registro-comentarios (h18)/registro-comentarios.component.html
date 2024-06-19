@@ -42,48 +42,6 @@
                       class="text-start"
                       >{{ this.solicitud.usuarioCreacion }}</span
                     ><div class="row mt-4">
-        <div class="col-md-4">
-          <div class="input-group mb-3">
-            <label class="input-group-text label-estilo" for="origin"
-              >Creado por:</label
-            >
-            <span
-              id="origin"
-              name=""
-              style="color: black; font-size: 14px"
-              class="text-start"
-              >{{ this.solicitud.usuarioCreacion }}</span
-            >
-          </div>
-        </div>
-        <div class="col-md-4">
-          <div class="input-group mb-3">
-            <label class="input-group-text label-estilo" for="unidadnegocio"
-              >Fecha:</label
-            >
-            <span
-              id="date"
-              name=""
-              style="color: black; font-size: 14px"
-              class="text-start"
-              >{{ this.solicitud.fechaCreacion | date:'yyyy/MM/dd' }}</span
-            >
-          </div>
-        </div>
-        <div class="col-md-4">
-          <div class="input-group mb-3">
-            <label class="input-group-text label-estilo" for="unidadnegocio"
-              >Nro. Solicitud:</label
-            >
-            <span
-              id="solicitud"
-              name=""
-              style="color: black; font-size: 14px"
-              class="text-start"
-              >{{ this.solicitud.idSolicitud }}</span
-            >
-          </div>
-        </div>
       </div>
                   </div>
                 </div>
@@ -131,27 +89,30 @@
                 </div>
             </div>
             <div class="row mb-2">
+              <div class="col-md-1"></div>
                 <div class="col-md-7">
                     <div class="input-group mb-3">
                         <label class="input-group label-estilo" for="tipoSolicitud">Nro Solicitud de Requisicion</label>
                         &nbsp;
                         <span #mivar id="tipoSolicitud" name="tipoSolicitud" style="color: black; font-size: 14px;"
-                            class="text-start">RP-0001</span>
+                            class="text-start">{{this.solicitud.idSolicitud}}</span>
                     </div>
                 </div>
             </div>
             <div class="row mt-3">
+              <div class="col-md-1"></div>
                 <div class="col-md-7">
                     <div class="input-group mb-3">
                         <label class="input-group label-estilo" for="tipoMotivo">Apellidos y nombres completos</label>
                         &nbsp;
                         <span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px;"
-                            class="text-start">{{'Juan Benito Perez Gonzales'}}</span>
+                            class="text-start">{{this.model.nombreCompleto}}</span>
                     </div>
                 </div>
             </div>
 
             <div class="row mt-3">
+              <div class="col-md-1"></div>
                 <div class="col-md-3">
                   <div class="input-group mb-3">
                     <label
@@ -178,6 +139,7 @@
               </div>
 
             <div class="row mt-4">
+              
                 <div class="col-md-3">
                     <div class="mb-4">
                         <a>
@@ -192,23 +154,25 @@
             </div>
 
             <div class="row">
+              <div class="col-md-1"></div>
                   <div class="col-md-10">
                     <div class="input-group mb-3">
                         <label class="input-group label-estilo" for="tipoMotivo">Empleado</label>
                         &nbsp;
                         <span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px;"
-                            class="text-start">{{'SUAREZ MARIETA CAROLINA'}}</span>
+                            class="text-start">{{this.detalleSolicitud.nombreEmpleado}}</span>
                     </div>
                   </div>
             </div>
 
             <div class="row mt-4 mb-4">
-                <div class="col-md-6 d-flex justify-content-center align-items-center">
+              <div class="col-md-1"></div>
+                <div class="col d-flex justify-content-center align-items-center">
                   <div class="mb-3">
                     <label class="input-group label-estilo" style="font-size: 20px; color: black;" for="tipoMotivo">Actual</label>
                   </div>
                 </div>
-                <div class="col-md-6 d-flex justify-content-center align-items-center">
+                <div class="col d-flex justify-content-center align-items-center">
                   <div class="mb-3">
                     <label class="input-group label-estilo" style="font-size: 20px;color: black;" for="tipoMotivo">Anterior</label>
                   </div>
@@ -216,12 +180,13 @@
               </div>
 
               <div class="row mt-4">
+                <div class="col-md-1"></div>
                 <div class="col">
                     <div class="input-group mb-3">
                         <label class="input-group label-estilo" for="tipoMotivo">Compañía</label>
                         &nbsp;
                         <span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px;"
-                            class="text-start">{{'LACTEOS INC'}}</span>
+                            class="text-start">{{this.model.compania}}</span>
                     </div>
                 </div>
                 <div class="col">
@@ -229,37 +194,19 @@
                         <label class="input-group label-estilo" for="tipoMotivo">Compañía</label>
                         &nbsp;
                         <span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px;"
-                            class="text-start">{{'BANCO NACIONAL'}}</span>
-                    </div>
-                </div>
-              </div>
-
-              <div class="row mt-4">
-                <div class="col">
-                    <div class="input-group mb-3">
-                        <label class="input-group label-estilo" for="tipoMotivo">Compañía</label>
-                        &nbsp;
-                        <span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px;"
-                            class="text-start">{{'LACTEOS INC'}}</span>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="input-group mb-3">
-                        <label class="input-group label-estilo" for="tipoMotivo">Compañía</label>
-                        &nbsp;
-                        <span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px;"
-                            class="text-start">{{'BANCO NACIONAL'}}</span>
+                            class="text-start">{{this.detalleSolicitud.compania}}</span>
                     </div>
                 </div>
               </div>
 
               <div class="row mt-4 mb-4">
+                <div class="col-md-1"></div>
                 <div class="col">
                     <div class="input-group mb-3">
                         <label class="input-group label-estilo" for="tipoMotivo">Sueldo</label>
                         &nbsp;
                         <span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px;"
-                            class="text-start">{{'200'}}</span>
+                            class="text-start">{{this.model.sueldo}}</span>
                     </div>
                 </div>
                 <div class="col">
@@ -267,7 +214,7 @@
                         <label class="input-group label-estilo" for="tipoMotivo">Sueldo</label>
                         &nbsp;
                         <span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px;"
-                            class="text-start">{{'400'}}</span>
+                            class="text-start">{{this.detalleSolicitud.sueldo}}</span>
                     </div>
                 </div>
               </div>
@@ -288,12 +235,13 @@
 
 
             <div class="row mt-4">
+              <div class="col-md-1"></div>
                 <div class="col">
                     <div class="input-group mb-3">
                         <label class="input-group label-estilo" for="tipoMotivo">Mensual</label>
                         &nbsp;
                         <span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px;"
-                            class="text-start">{{'12'}}</span>
+                            class="text-start">{{this.model.sueldoMensual}}</span>
                     </div>
                 </div>
                 <div class="col">
@@ -301,17 +249,18 @@
                         <label class="input-group label-estilo" for="tipoMotivo">Mensual</label>
                         &nbsp;
                         <span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px;"
-                            class="text-start">{{'10'}}</span>
+                            class="text-start">{{this.detalleSolicitud.sueldoVariableMensual}}</span>
                     </div>
                 </div>
               </div>
             <div class="row mt-4">
+              <div class="col-md-1"></div>
                 <div class="col">
                     <div class="input-group mb-3">
                         <label class="input-group label-estilo" for="tipoMotivo">Trimestral</label>
                         &nbsp;
                         <span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px;"
-                            class="text-start">{{''}}</span>
+                            class="text-start">{{this.model.sueldoTrimestral}}</span>
                     </div>
                 </div>
                 <div class="col">
@@ -319,17 +268,18 @@
                         <label class="input-group label-estilo" for="tipoMotivo">Trimestral</label>
                         &nbsp;
                         <span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px;"
-                            class="text-start">{{''}}</span>
+                            class="text-start">{{this.detalleSolicitud.sueldoVariableTrimestral}}</span>
                     </div>
                 </div>
               </div>
             <div class="row mt-4">
+              <div class="col-md-1"></div>
                 <div class="col">
                     <div class="input-group mb-3">
                         <label class="input-group label-estilo" for="tipoMotivo">Semestral</label>
                         &nbsp;
                         <span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px;"
-                            class="text-start">{{''}}</span>
+                            class="text-start">{{this.model.sueldoSemestral}}</span>
                     </div>
                 </div>
                 <div class="col">
@@ -337,53 +287,58 @@
                         <label class="input-group label-estilo" for="tipoMotivo">Semestral</label>
                         &nbsp;
                         <span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px;"
-                            class="text-start">{{''}}</span>
+                            class="text-start">{{this.detalleSolicitud.sueldoVariableSemestral}}</span>
                     </div>
                 </div>
               </div>
             <div class="row mt-4">
+              <div class="col-md-1"></div>
                 <div class="col">
                     <div class="input-group mb-3">
                         <label class="input-group label-estilo" for="tipoMotivo">Anual</label>
                         &nbsp;
                         <span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px;"
-                            class="text-start">{{''}}</span>
+                            class="text-start">{{this.model.sueldoAnual}}</span>
                     </div>
                 </div>
                 <div class="col">
+                  
                     <div class="input-group mb-3">
                         <label class="input-group label-estilo" for="tipoMotivo">Anual</label>
                         &nbsp;
                         <span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px;"
-                            class="text-start">{{''}}</span>
+                            class="text-start">{{this.detalleSolicitud.sueldoVariableAnual}}</span>
                     </div>
                 </div>
               </div>
             <div class="row mt-4">
+              <div class="col-md-1"></div>
                 <div class="col">
                     <div class="input-group mb-3">
                         <label class="input-group label-estilo" for="tipoMotivo">Remuneracion mensual</label>
                         &nbsp;
                         <span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px;"
-                            class="text-start">{{''}}</span>
+                            class="text-start">{{this.modelRemuneracion}}</span>
                     </div>
                 </div>
                 <div class="col">
+                  
                     <div class="input-group mb-3">
                         <label class="input-group label-estilo" for="tipoMotivo">Remuneracion mensual</label>
                         &nbsp;
                         <span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px;"
-                            class="text-start">{{''}}</span>
+                            class="text-start">{{this.modelRemuneracion}}</span>
                     </div>
                 </div>
               </div>
             <div class="row mt-4">
+              <div class="col-md-1"></div>
                 <div class="col">
                     <div class="input-group mb-3">
                         <label class="input-group label-estilo" for="tipoMotivo">Puesto</label>
                         &nbsp;
                         <span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px;"
-                            class="text-start">{{''}}</span>
+                            class="text-start">{{this.model.descrPuesto}}</span>
                     </div>
                 </div>
                 <div class="col">
@@ -391,17 +346,18 @@
                         <label class="input-group label-estilo" for="tipoMotivo">Puesto</label>
                         &nbsp;
                         <span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px;"
-                            class="text-start">{{''}}</span>
+                            class="text-start">{{this.detalleSolicitud.puesto}}</span>
                     </div>
                 </div>
               </div>
             <div class="row mt-4">
+              <div class="col-md-1"></div>
                 <div class="col">
                     <div class="input-group mb-3">
                         <label class="input-group label-estilo" for="tipoMotivo">Unidad de Negocio</label>
                         &nbsp;
                         <span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px;"
-                            class="text-start">{{''}}</span>
+                            class="text-start">{{this.model.unidadNegocio}}</span>
                     </div>
                 </div>
                 <div class="col">
@@ -409,17 +365,18 @@
                         <label class="input-group label-estilo" for="tipoMotivo">Unidad de Negocio</label>
                         &nbsp;
                         <span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px;"
-                            class="text-start">{{''}}</span>
+                            class="text-start">{{this.detalleSolicitud.unidadNegocio}}</span>
                     </div>
                 </div>
               </div>
             <div class="row mt-4">
+              <div class="col-md-1"></div>
                 <div class="col">
                     <div class="input-group mb-3">
                         <label class="input-group label-estilo" for="tipoMotivo">Departamento</label>
                         &nbsp;
                         <span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px;"
-                            class="text-start">{{''}}</span>
+                            class="text-start">{{this.model.departamento}}</span>
                     </div>
                 </div>
                 <div class="col">
@@ -427,17 +384,18 @@
                         <label class="input-group label-estilo" for="tipoMotivo">Departamento</label>
                         &nbsp;
                         <span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px;"
-                            class="text-start">{{''}}</span>
+                            class="text-start">{{this.detalleSolicitud.departamento}}</span>
                     </div>
                 </div>
               </div>
             <div class="row mt-4">
+              <div class="col-md-1"></div>
                 <div class="col">
                     <div class="input-group mb-3">
                         <label class="input-group label-estilo" for="tipoMotivo">Localidad</label>
                         &nbsp;
                         <span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px;"
-                            class="text-start">{{''}}</span>
+                            class="text-start">{{this.model.localidad}}</span>
                     </div>
                 </div>
                 <div class="col">
@@ -445,17 +403,18 @@
                         <label class="input-group label-estilo" for="tipoMotivo">Localidad</label>
                         &nbsp;
                         <span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px;"
-                            class="text-start">{{''}}</span>
+                            class="text-start">{{this.detalleSolicitud.localidad}}</span>
                     </div>
                 </div>
               </div>
             <div class="row mt-4">
+              <div class="col-md-1"></div>
                 <div class="col">
                     <div class="input-group mb-3">
                         <label class="input-group label-estilo" for="tipoMotivo">Jefe Inmediato Superior</label>
                         &nbsp;
                         <span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px;"
-                            class="text-start">{{'No Aplica'}}</span>
+                            class="text-start">{{this.model.jefeInmediatoSuperior === '' ? 'No aplica' : this.model.jefeInmediatoSuperior}}</span>
                     </div>
                 </div>
                 <div class="col">
@@ -463,17 +422,18 @@
                         <label class="input-group label-estilo" for="tipoMotivo">Jefe Inmediato Superior</label>
                         &nbsp;
                         <span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px;"
-                            class="text-start">{{''}}</span>
+                            class="text-start">{{this.detalleSolicitud.jefeInmediatoSuperior === '' ? 'No aplica' : this.detalleSolicitud.jefeInmediatoSuperior}}</span>
                     </div>
                 </div>
               </div>
               <div class="row mt-4">
+                <div class="col-md-1"></div>
                 <div class="col">
                     <div class="input-group mb-3">
                         <label class="input-group label-estilo" for="tipoMotivo">Puesto Jefe In Superior</label>
                         &nbsp;
                         <span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px;"
-                            class="text-start">{{'No Aplica'}}</span>
+                            class="text-start">{{this.model.jefeInmediatoSuperior === '' ? 'No aplica' : this.model.jefeInmediatoSuperior}}</span>
                     </div>
                 </div>
                 <div class="col">
@@ -481,17 +441,18 @@
                         <label class="input-group label-estilo" for="tipoMotivo">Puesto Jefe Inmediato</label>
                         &nbsp;
                         <span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px;"
-                            class="text-start">{{''}}</span>
+                            class="text-start">{{this.detalleSolicitud.jefeInmediatoSuperior === '' ? 'No aplica' : this.detalleSolicitud.jefeInmediatoSuperior}}</span>
                     </div>
                 </div>
               </div>
               <div class="row mt-4">
+                <div class="col-md-1"></div>
                 <div class="col">
                     <div class="input-group mb-3">
                         <label class="input-group label-estilo" for="jeferef">Jefe Referencia</label>
                         &nbsp;
                         <span id="jeferef" name="jeferef" style="color: black; font-size: 14px;"
-                        class="text-start">{{''}}</span>
+                        class="text-start">{{this.detalleSolicitud.jefeAnteriorJefeReferencia}}</span>
                     </div>
                 </div>
                 <div class="col">
@@ -499,53 +460,57 @@
                         <label class="input-group label-estilo" for="respon">Responsable RRHH</label>
                         &nbsp;
                         <span id="respon" name="respon" style="color: black; font-size: 14px;"
-                            class="text-start">{{''}}</span>
+                            class="text-start">{{this.detalleSolicitud.responsableRRHH}}</span>
                     </div>
                 </div>
               </div>
               <div class="row mt-4">
-                <div class="col-md-6">
+                <div class="col-md-1"></div>
+                <div class="col">
                     <div class="input-group mb-3">
                         <label class="input-group label-estilo" for="tipoMotivo">Puesto Referencia</label>
                         &nbsp;
                         <span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px;"
-                            class="text-start">{{'Gerente'}}</span>
+                            class="text-start">{{this.detalleSolicitud.cargoReferencia}}</span>
                     </div>
                 </div>
-                <div class="col-md-6 mb-4">
+                <div class="col mb-4">
                     <div class="input-group mb-3 h-100">
                         <label class="input-group-text label-estilo" for="tipoMotivo">Observaciones del comité de Remuneraciones</label>
-                        <textarea id="observaciones" name="observaciones" style="color: black; font-size: 14px; height: 100px; resize: none; position: absolute; top: 50px; width: 100%;" disabled></textarea>
+                        <textarea [value]="this.detalleSolicitud.justificacion" id="observaciones" name="observaciones" style="color: black; font-size: 14px; height: 100px; resize: none; position: absolute; top: 50px; width: 100%;" disabled></textarea>
                     </div>
                 </div>
             </div>
             <div class="row mt-4">
-                <div class="col">
+              <div class="col-md-1"></div>
+                <div class="col-md-6">
                     <div class="input-group mb-3">
                         <label class="input-group label-estilo" for="tipoMotivo">Fecha de Ingreso</label>
                         &nbsp;
                         <span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px;"
-                            class="text-start">{{''}}</span>
+                            class="text-start">{{this.detalleSolicitud.fechaIngreso | date:'yyyy/MM/dd'}}</span>
                     </div>
                 </div>
             </div>
             <div class="row mt-4">
-                <div class="col">
+              <div class="col-md-1"></div>
+                <div class="col-md-6">
                     <div class="input-group mb-3">
                         <label class="input-group label-estilo" for="tipoMotivo">Fecha de Salida</label>
                         &nbsp;
                         <span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px;"
-                            class="text-start">{{''}}</span>
+                            class="text-start">{{this.detalleSolicitud.fechaSalida | date:'yyyy/MM/dd'}}</span>
                     </div>
                 </div>
             </div>
             <div class="row mt-4">
+              <div class="col-md-1"></div>
                 <div class="col-md-6">
                     <div class="input-group mb-3">
                         <label class="input-group label-estilo" for="responRight">Responsable RRHH</label>
                         &nbsp;
                         <span id="responRight" name="responRight" style="color: black; font-size: 14px;"
-                            class="text-start">{{''}}</span>
+                            class="text-start">{{this.model.responsableRRHH}}</span>
                     </div>
                 </div>
             </div>
@@ -661,16 +626,17 @@
                 </div>
             </div>
             <div class="row mb-2">
+              <div class="col-md-1"></div>
                 <div class="col-md-7">
                     <div class="input-group mb-3">
                         <label class="input-group label-estilo" for="tipoSolicitud">Forma de Salida *</label>
                         &nbsp;
-                        <span #mivar id="tipoSolicitud" name="tipoSolicitud" style="color: black; font-size: 14px;"
-                            class="text-start">{{'Por la puerta'}}</span>
+                        <input type="text" style="border: 1px solid blue; border-radius: 7px; width:50%;">
                     </div>
                 </div>
             </div>
             <div class="row mt-3">
+              <div class="col-md-1"></div>
                 <div class="col-md-7">
                     <div class="input-group mb-3">
                         <label class="input-group label-estilo" for="tipoMotivo">Curso real de salida</label>
@@ -681,6 +647,7 @@
                 </div>
             </div>
               <div class="row mt-3">
+                <div class="col-md-1"></div>
                 <div class="col-md-7">
                     <div class="input-group mb-3">
                         <label class="input-group label-estilo" for="tipoMotivo">Fecha</label>

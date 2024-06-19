@@ -96,7 +96,8 @@ export class RegistrarData {
     public sueldoTrimestral: string = "",
     public sueldoSemestral: string = "",
     public sueldoAnual: string = "" ,/* Agrego estos campos que no están en la data */
-    public taskNivelAprobador: string = ""
+    public taskNivelAprobador: string = "",
+    public responsableRRHH: string =  ''
   ) // Este campo no sé de donde viene, no viene en el request de solicitud ni en el de detalle solicitud
   /*public sueldo: number | null = 0,
 
