@@ -39,6 +39,10 @@ export class MantenimientoService {
     return this.http.get<any[]>(this.apiTipoProcesoUrl);
   }
 
+  public getTipoProcesoPorTipoSolicitud(idTipoSolicitud): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiTipoProcesoUrl}/tiposolicitud/${idTipoSolicitud}`);
+  }
+
   public getTipoRuta(): Observable<ITipoRutaResponse> {
     return this.http.get<ITipoRutaResponse>(this.apiTipoRutaUrl);
   }

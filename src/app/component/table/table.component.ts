@@ -232,7 +232,6 @@ export class TableComponent implements OnInit, OnChanges {
    * @param key valor
    */
   public onCheckCell(event: Event, key: string) {
-    debugger;
     const checkValue = (event.target as HTMLInputElement).checked;
 
     if (checkValue && !this.rowsChecked.includes(key)) {

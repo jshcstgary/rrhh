@@ -65,6 +65,9 @@ import { DataFilterSolicitudes } from "src/app/eschemas/DataFilterSolicitudes";
 import { ConsultaSolicitudesService } from "./consulta-solicitudes.service";
 import { DetalleSolicitud } from "src/app/eschemas/DetalleSolicitud";
 import { single } from "src/app/charts/ngx-charts/chartData";
+//import { StarterService } from "src/app/starter/starter.service";
+
+
 //import { single} from './chartData';
 declare var require: any;
 const data: any = require("./company.json");
@@ -204,6 +207,9 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
   public errorMessage: string;
   public typeSolicitudSelected: any;
   public tipoSolicitudSeleccionada: any;
+  public codigoTipoSolicitud: string;
+  public processDefinitionKey: string;
+
 
   // public dataTiposMotivosPorTipoSolicitud : any[] = [];
 
@@ -327,6 +333,8 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
     private calendar: NgbCalendar,
     private camundaRestService: CamundaRestService,
     private modalService: NgbModal
+    //private starterService: StarterService
+
   ) {
     this.model = calendar.getToday();
     Object.assign(this, { single });
@@ -384,20 +392,46 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
   }
 
   ngOnInit() {
-    // this.solicitud.idTipoSolicitud = 1;
-    // this.solicitud.idTipoMotivo = 1;
-    // this.solicitud.idTipoAccion = 1;
     this.getDataToTable();
     this.ObtenerServicioTipoSolicitud();
-    this.ObtenerServicioTipoMotivo();
-    this.ObtenerServicioTipoAccion();
-
     this.obtenerEmpresaYUnidadNegocio();
   }
 
   PageCrear() {
     this.router.navigate(["/solicitudes/crear-tipo-solicitud"]);
   }
+
+/*crearRegistradorSolicitud() {
+    this.starterService.getUser(localStorage.getItem("idUsuario")!).subscribe({
+      next: (res) => {
+        this.solicitudes.modelDetalleAprobaciones.id_Solicitud = this.solicitud.idSolicitud;
+        this.solicitudes.modelDetalleAprobaciones.id_NivelAprobacion = 100000;
+        this.solicitudes.modelDetalleAprobaciones.id_TipoSolicitud = this.solicitud.idTipoSolicitud.toString();
+        this.solicitudes.modelDetalleAprobaciones.id_Accion = 100000;
+        this.solicitudes.modelDetalleAprobaciones.id_TipoMotivo = this.solicitud.idTipoMotivo;
+        this.solicitudes.modelDetalleAprobaciones.id_TipoRuta = 100000;
+        this.solicitudes.modelDetalleAprobaciones.id_Ruta = 100000;
+        this.solicitudes.modelDetalleAprobaciones.tipoSolicitud = this.solicitud.tipoSolicitud;
+        this.solicitudes.modelDetalleAprobaciones.motivo = "RegistrarSolicitud";
+        this.solicitudes.modelDetalleAprobaciones.tipoRuta = "RegistrarSolicitud";
+        this.solicitudes.modelDetalleAprobaciones.ruta = "Registrar Solicitud";
+        this.solicitudes.modelDetalleAprobaciones.accion = "RegistrarSolicitud";
+        this.solicitudes.modelDetalleAprobaciones.nivelDirecion = res.evType[0].nivelDir;
+        this.solicitudes.modelDetalleAprobaciones.nivelAprobacionRuta = "RegistrarSolicitud";
+        this.solicitudes.modelDetalleAprobaciones.usuarioAprobador = res.evType[0].nombreCompleto;
+        this.solicitudes.modelDetalleAprobaciones.codigoPosicionAprobador = res.evType[0].codigoPosicion;
+        this.solicitudes.modelDetalleAprobaciones.descripcionPosicionAprobador = res.evType[0].descrPosicion;
+        this.solicitudes.modelDetalleAprobaciones.sudlegerAprobador = res.evType[0].subledger;
+        this.solicitudes.modelDetalleAprobaciones.nivelDireccionAprobador = res.evType[0].nivelDir;
+        this.solicitudes.modelDetalleAprobaciones.codigoPosicionReportaA = res.evType[0].codigoPosicionReportaA;
+        this.solicitudes.modelDetalleAprobaciones.estadoAprobacion = "Creado";
+        this.solicitudes.modelDetalleAprobaciones.estado = "A";
+        this.solicitudes.modelDetalleAprobaciones.correo = res.evType[0].correo;
+        this.solicitudes.modelDetalleAprobaciones.usuarioCreacion = res.evType[0].nombreCompleto;
+        this.solicitudes.modelDetalleAprobaciones.usuarioModificacion = res.evType[0].nombreCompleto;
+        this.solicitudes.modelDetalleAprobaciones.fechaCreacion = new Date().toISOString();
+        this.solicitudes.modelDetalleAprobaciones.fechaModificacion = new Date().toISOString();
+      }*/
 
   //Crear Solicitud
   CrearInstanciaSolicitud() {
@@ -418,9 +452,13 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
       {};
       */
 
-      this.solicitud.tipoSolicitud = this.dataTipoSolicitudes.find(
+      this.codigoTipoSolicitud = this.dataTipoSolicitudes.filter(
         (data) => data.id == this.solicitud.idTipoSolicitud
-      )?.descripcion;
+      )[0]?.codigoTipoSolicitud;
+
+      this.solicitud.tipoSolicitud = this.dataTipoSolicitudes.filter(
+        (data) => data.id == this.solicitud.idTipoSolicitud
+      )[0]?.descripcion;
 
       this.solicitud.tipoMotivo = this.dataTiposMotivosPorTipoSolicitud[
         this.solicitud.idTipoSolicitud
@@ -453,13 +491,19 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
         // Comentado tveas por error
         this.route.params.subscribe((params) => {
           //const processDefinitionKey ="process_modelo";
-          const processDefinitionKey = solicitudSeleccionada.key;
-          // const processDefinitionKey = "process_modelo";
-          //const processDefinitionKey = params['processdefinitionkey'];
+           this.processDefinitionKey = "RequisicionPersonal";
+          if (this.codigoTipoSolicitud === "AP")
+          {          
+            this.processDefinitionKey = "AccionPersonal";
+          }
+          
           const variables = this.generatedVariablesFromFormFields();
 
+         // this.crearRegistradorSolicitud();
+         // this.solicitudes.guardarDetallesAprobacionesSolicitud(this.solicitudes.modelDetalleAprobaciones).subscribe({
+         // next: () => {
           this.camundaRestService
-            .postProcessInstance(processDefinitionKey, variables)
+            .postProcessInstance(this.processDefinitionKey, variables)
             .subscribe((instanceOutput) => {
               this.lookForError(instanceOutput);
               this.utilService.closeLoadingSpinner();
@@ -500,6 +544,11 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
                     });
                 });
             });
+        /*    },
+          error: (err) => {
+            console.error(err);
+          }
+        });*/
         });
 
         if (this.submitted) {
@@ -576,6 +625,7 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
     let variables: any = {};
 
     variables.tipoSolicitud = { value: this.solicitud.tipoSolicitud };
+    
     if (this.solicitud.idTipoSolicitud == this.typeSolicitudSelected) {
       variables.tipoAccion = { value: this.solicitud.tipoAccion };
     } else {
@@ -666,6 +716,8 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
         this.dataTipoSolicitudes = response.tipoSolicitudType.map((r) => ({
           id: r.id,
           descripcion: r.tipoSolicitud,
+          codigoTipoSolicitud: r.codigoTipoSolicitud,
+          estado: r.estado
         })); //verificar la estructura mmunoz
       },
       error: (error: HttpErrorResponse) => {
@@ -969,8 +1021,6 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
     combinedData$.subscribe((data) => {
       this.utilService.closeLoadingSpinner();
       // this.data_estado.find(itemEstado => itemEstado.codigo == itemSolicitud.estadoSolicitud)
-      console.log("ESTA ES LA DATA: ", data);
-      console.log("MI DATA ESTADO AL ITERAR: ", this.data_estado);
       this.dataTable = data.map((itemSolicitud) => {
         let descripcionEstado = this.data_estado.find(
           (itemEstado) => itemEstado.codigo == itemSolicitud.estadoSolicitud
@@ -983,7 +1033,6 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
               : "N/A",
         };
       });
-      console.log("ESTA ES LA DATA combinada: ", this.dataTable);
       // Aquí tienes la data combinada y ordenada
     });
 

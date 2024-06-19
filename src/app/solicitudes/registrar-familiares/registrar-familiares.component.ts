@@ -1388,11 +1388,8 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
   override generateVariablesFromFormFields() {
     let variables: any = {};
 
-    if (
-      this.tipo_solicitud_descripcion === "requisicionPersonal" ||
-      this.solicitud.tipoSolicitud === "requisicionPersonal"
-    ) {
-      if (this.taskType_Activity == environment.taskType_CF) {
+    if (this.tipo_solicitud_descripcion.toUpperCase().includes("REQUISICION") || this.solicitud.tipoSolicitud.toUpperCase().includes("REQUISICIÓN")) {
+      if(this.taskType_Activity==environment.taskType_Registrar){
         variables.codigoPosicion = { value: this.model.codigoPosicion };
         variables.misionCargo = { value: this.model.misionCargo };
         variables.justificacionCargo = { value: this.model.justificacionCargo };

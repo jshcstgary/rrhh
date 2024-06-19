@@ -9,6 +9,7 @@ import { IConsultaNivelesAprobacionResponse } from "./consulta-tareas.interface"
 })
 export class ConsultaTareasService {
   private apiUrlNivelAprobacion = environment.nivelAprobacionServiceES;
+  private apiDetallesAprobacionesSolicitud = environment.detalleAprobacionesServiceES;
 
   private apiUrlTareas = environment.tareasServiceES;
 
@@ -33,6 +34,10 @@ export class ConsultaTareasService {
 
   public getTareas(): Observable<any> {
     return this.http.get<any>(`${this.apiUrlTareas}`);
+  }
+
+  public getTareasUsuario(idUsuario: string): Observable<any> {
+    return this.http.get<any>(`${this.apiUrlTareas}/consultartareasporsubleger/${idUsuario}`);
   }
 
   public getTareaIdParam(

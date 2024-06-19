@@ -45,9 +45,7 @@ export class CamundaRestService {
     const endpoint =
       `${this.engineRestUrl}task?sortBy=created&sortOrder=desc&maxResults=1` +
       `&processInstanceId=` +
-      processInstanceId +
-      `&taskDefinitionKey=` +
-      type;
+      processInstanceId;
 
     console.log('Aqui endpoint de getTask',endpoint)
     return this.http.get<any>(endpoint, httpOptions).pipe(

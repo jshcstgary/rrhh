@@ -86,14 +86,14 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
 
 
 
-  isFuenteExternaVisible: boolean = false;
+  isFuenteExternaVisible: boolean = true;
 
 
 
   //tipoProceso: String = '';
 
   isChecked: boolean = true; // Valor inicial del checkbox
-  isDivVisible = false; // Valor inicial del div, visible
+  isDivVisible = true; // Valor inicial del div, visible
 
   isCheckedPerfil: boolean = false;
   isCheckedBusquedaCandidato: boolean = false;
@@ -109,8 +109,8 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
   isCheckedEntrevista: boolean = false;
 
   nombreCandidato: string = "";
-  disabledNombreCandidato: boolean = false;
   codigoSolicitudProceso: string = "";
+  disabledTipoProceso: boolean = false;
 
   toggleDivVisibility(event: Event): void {
     const inputElement = event.target as HTMLInputElement;
@@ -376,6 +376,8 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
 
   public loadingComplete = 0;
 
+  public tipoProcesoSaved: string = "";
+
   /*
   nombresEmpleados: string[] = [
     ...new Set(
@@ -429,7 +431,6 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
     this.route.paramMap.subscribe((params) => {
       this.id_solicitud_by_params = params.get("idSolicitud");
       this.idDeInstancia = params.get("id");
-      console.log("this.idDeInstancia: ", this.idDeInstancia);
     });
 
     this.selectedOption = this.options[0].descripcion;
@@ -444,115 +445,107 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
   getCandidatoValues() {
     this.seleccionCandidatoService.getCandidatoById(this.id_solicitud_by_params).subscribe({
       next: (res) => {
-        console.log(res);
-
         const candidatoValues = res.seleccionCandidatoType[0];
 
-        console.log(candidatoValues);
-
         this.model.tipoProceso = candidatoValues.tipoProceso;
+        this.tipoProcesoSaved = candidatoValues.tipoProceso;
         this.selectedOption = candidatoValues.fuenteExterna;
         this.isChecked = candidatoValues.tipoFuente;
-        console.log(this.isChecked);
+        this.isDivVisible = this.isChecked;
 
         if (this.model.tipoProceso !== "") {
           this.disabledSave = false;
+          this.disabledTipoProceso = true;
         }
 
-        this.disabledFechas.fechaActualizacion = this.fechas.fechaActualizacion !== null && this.fechas.fechaActualizacion !== "";
-        this.fechas.fechaActualizacion = candidatoValues.actualizacionDelPerfil === null ? "" : this.getFormattedDate(candidatoValues.actualizacionDelPerfil);
-        if (this.disabledFechas.fechaActualizacion) {
+        this.fechas.actualizacionPerfil = candidatoValues.actualizacionDelPerfil === null ? "" : this.getFormattedDate(candidatoValues.actualizacionDelPerfil);
+        this.disabledFechas.actualizacionPerfil = this.fechas.actualizacionPerfil !== null && this.fechas.actualizacionPerfil !== "";
+        if (this.disabledFechas.actualizacionPerfil) {
           this.isCheckedPerfil = true;
         }
 
-        this.disabledFechas.busquedaCandidatos = this.fechas.busquedaCandidatos !== null && this.fechas.busquedaCandidatos !== "";
         this.fechas.busquedaCandidatos = candidatoValues.busquedaDeCandidatos === null ? "" : this.getFormattedDate(candidatoValues.busquedaDeCandidatos);
+        this.disabledFechas.busquedaCandidatos = this.fechas.busquedaCandidatos !== null && this.fechas.busquedaCandidatos !== "";
         if (this.disabledFechas.busquedaCandidatos) {
           this.isCheckedBusquedaCandidato = true;
         }
 
-        this.disabledFechas.entrevista = this.fechas.entrevista !== null && this.fechas.entrevista !== "";
         this.fechas.entrevista = candidatoValues.entrevista === null ? "" : this.getFormattedDate(candidatoValues.entrevista);
+        this.disabledFechas.entrevista = this.fechas.entrevista !== null && this.fechas.entrevista !== "";
         if (this.disabledFechas.entrevista) {
           this.isCheckedEntrevista = true;
         }
 
-        this.disabledFechas.pruebas = this.fechas.pruebas !== null && this.fechas.pruebas !== "";
         this.fechas.pruebas = candidatoValues.pruebas === null ? "" : this.getFormattedDate(candidatoValues.pruebas);
+        this.disabledFechas.pruebas = this.fechas.pruebas !== null && this.fechas.pruebas !== "";
         if (this.disabledFechas.pruebas) {
           this.isCheckedPruebas = true;
         }
 
-        this.disabledFechas.referencias = this.fechas.referencias !== null && this.fechas.referencias !== "";
         this.fechas.referencias = candidatoValues.referencias === null ? "" : this.getFormattedDate(candidatoValues.referencias);
-        if (this.fechas.referencias !== null && this.fechas.referencias !== "") {
+        this.disabledFechas.referencias = this.fechas.referencias !== null && this.fechas.referencias !== "";
+        if (this.disabledFechas.referencias) {
           this.isCheckedReferencias = true;
         }
 
-        this.disabledFechas.elaboracionDeInforme = this.fechas.elaboracionInforme !== null && this.fechas.elaboracionInforme !== "";
         this.fechas.elaboracionInforme = candidatoValues.elaboracionDeInforme === null ? "" : this.getFormattedDate(candidatoValues.elaboracionDeInforme);
-        if (this.disabledFechas.elaboracionDeInforme) {
+        this.disabledFechas.elaboracionInforme = this.fechas.elaboracionInforme !== null && this.fechas.elaboracionInforme !== "";
+        if (this.disabledFechas.elaboracionInforme) {
           this.isCheckedElaboracionInforme = true;
         }
 
-        this.disabledFechas.entregaJefe = this.fechas.entregaJefe !== null && this.fechas.entregaJefe !== "";
         this.fechas.entregaJefe = candidatoValues.entregaAlJefeSol === null ? "" : this.getFormattedDate(candidatoValues.entregaAlJefeSol);
+        this.disabledFechas.entregaJefe = this.fechas.entregaJefe !== null && this.fechas.entregaJefe !== "";
         if (this.disabledFechas.entregaJefe) {
           this.isCheckedEntregaJefe = true;
         }
 
-        this.disabledFechas.entrevistaJefatura = this.fechas.entrevistaJefatura !== null && this.fechas.entrevistaJefatura !== "";
         this.fechas.entrevistaJefatura = candidatoValues.entrevistaPorJefatura === null ? "" : this.getFormattedDate(candidatoValues.entrevistaPorJefatura);
+        this.disabledFechas.entrevistaJefatura = this.fechas.entrevistaJefatura !== null && this.fechas.entrevistaJefatura !== "";
         if (this.disabledFechas.entrevistaJefatura) {
           this.isCheckedEntrevistaJefatura = true;
           }
 
-        this.disabledFechas.tomaDecisiones = this.fechas.tomaDecisiones !== null && this.fechas.tomaDecisiones !== "";
-        this.fechas.tomaDecisiones = candidatoValues.tomaDeDesiciones === null ? "" : this.getFormattedDate(candidatoValues.tomaDeDesiciones);
+          this.fechas.tomaDecisiones = candidatoValues.tomaDeDesiciones === null ? "" : this.getFormattedDate(candidatoValues.tomaDeDesiciones);
+          this.disabledFechas.tomaDecisiones = this.fechas.tomaDecisiones !== null && this.fechas.tomaDecisiones !== "";
         if (this.disabledFechas.tomaDecisiones) {
           this.isCheckedTomaDecisiones = true;
         }
 
-        this.disabledFechas.candidatoSeleccionado = this.fechas.candidatoSeleccionado !== null && this.fechas.candidatoSeleccionado !== "";
         this.fechas.candidatoSeleccionado = candidatoValues.candidatoSeleccionado === null ? "" : this.getFormattedDate(candidatoValues.candidatoSeleccionado);
+        this.disabledFechas.candidatoSeleccionado = this.fechas.candidatoSeleccionado !== null && this.fechas.candidatoSeleccionado !== "";
         if (this.disabledFechas.candidatoSeleccionado) {
           this.isCheckedCandidatoSeleccionado = true;
         }
 
-        this.disabledFechas.procesoContratacion = this.fechas.procesoContratacion !== null && this.fechas.procesoContratacion !== "";
         this.fechas.procesoContratacion = candidatoValues.procesoDeContratacion === null ? "" : this.getFormattedDate(candidatoValues.procesoDeContratacion);
+        this.disabledFechas.procesoContratacion = this.fechas.procesoContratacion !== null && this.fechas.procesoContratacion !== "";
         if (this.disabledFechas.procesoContratacion) {
           this.isCheckedProcesoContratacion = true;
         }
 
-        this.disabledFechas.finProcesoContratacion = this.fechas.finProcesoContratacion !== null && this.fechas.finProcesoContratacion !== "";
         this.fechas.finProcesoContratacion = candidatoValues.finProcesoContratacion === null ? "" : this.getFormattedDate(candidatoValues.finProcesoContratacion);
+        this.disabledFechas.finProcesoContratacion = this.fechas.finProcesoContratacion !== null && this.fechas.finProcesoContratacion !== "";
         if (this.disabledFechas.finProcesoContratacion) {
           this.isCheckedFinContratacion = true;
         }
 
-        this.fechas.reingreso = candidatoValues.reingreso === null ? "" : this.getFormattedDate(candidatoValues.reingreso);
+        this.fechas.reingreso = candidatoValues.fechaInicioReingreso === null ? "" : this.getFormattedDate(candidatoValues.fechaInicioReingreso);
 
-        this.fechas.finProceso = candidatoValues.finProceso === null ? "" : this.getFormattedDate(candidatoValues.finProceso);
+        this.fechas.finProceso = candidatoValues.fechaFinReingreso === null ? "" : this.getFormattedDate(candidatoValues.fechaFinReingreso);
 
-        this.fechas.contratacionFamiliares = candidatoValues.contratacionFamiliares === null ? "" : this.getFormattedDate(candidatoValues.contratacionFamiliares);
+        this.fechas.contratacionFamiliares = candidatoValues.fechaInicioContratacionFamiliares === null ? "" : this.getFormattedDate(candidatoValues.fechaInicioContratacionFamiliares);
 
-        this.fechas.finProcesoFamiliares = candidatoValues.finProcesoFamiliares === null ? "" : this.getFormattedDate(candidatoValues.finProcesoFamiliares);
+        this.fechas.finProcesoFamiliares = candidatoValues.fechaFinContratacionFamiliares === null ? "" : this.getFormattedDate(candidatoValues.fechaFinContratacionFamiliares);
 
         this.nombreCandidato = candidatoValues.candidato;
-        this.disabledNombreCandidato = this.nombreCandidato !== "";
-        console.log(this.nombreCandidato);
       },
       error: (err) => {
         console.log(console.log(err));
 
-        this.disabledSave = false;
+        this.disabledSave = true;
       }
     });
-  }
-
-  getCurrentDate() {
-    return new Date().toISOString().split("T")[0];
   }
 
   searchCodigoPosicion: OperatorFunction<string, readonly string[]> = (
@@ -629,7 +622,6 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
 
     this.route.queryParams.subscribe((params: Solicitud) => {
       //this.solicitud = params;
-      console.log("Mis params: ", params);
       this.misParams = params;
     });
 
@@ -658,7 +650,6 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
         this.idDeInstancia = params["id"];
         this.consultaTareasService.getTareaIdParam(this.id_solicitud_by_params)
           .subscribe((tarea) => {
-            console.log("Task: ", tarea);
 
             this.uniqueTaskId = tarea.solicitudes[0].taskId;
             this.taskType_Activity = tarea.solicitudes[0].tasK_DEF_KEY;
@@ -737,18 +728,10 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
   onSelectItem(campo: string, event) {
     let valor = event.item;
     const datosEmpleado = this.dataEmpleadoEvolution.find((empleado) => {
-      console.log("Empleado iterando: ", empleado);
-      console.log(
-        "empleado[campo]: " + empleado[campo] + ", valor: ",
-        valor + ", campo: ",
-        campo
-      );
-      console.log("\n");
+
       return empleado[campo] === valor;
     });
-    console.log("Valor de datosEmpleado: ", datosEmpleado);
     if (datosEmpleado) {
-      console.log("Ingresa en el if: ", datosEmpleado);
       this.model = Object.assign(
         {},
         {
@@ -760,7 +743,6 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
           sueldoAnual: datosEmpleado.sueldoVariableAnual,
         }
       );
-      console.log("ESTE MODELO SE ASIGNA: ", this.model);
       this.keySelected =
         this.solicitud.idTipoSolicitud +
         "_" +
@@ -825,18 +807,10 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
 
   filtrarDatos(campo: string, valor: string) {
     const datosEmpleado = this.dataEmpleadoEvolution.find((empleado) => {
-      console.log("Empleado iterando: ", empleado);
-      console.log(
-        "empleado[campo]: " + empleado[campo] + ", valor: ",
-        valor + ", campo: ",
-        campo
-      );
-      console.log("\n");
+
       return empleado[campo] === valor;
     });
-    console.log("Valor de datosEmpleado: ", datosEmpleado);
     if (datosEmpleado) {
-      console.log("Ingresa en el if: ", datosEmpleado);
       this.model = Object.assign({}, datosEmpleado);
     } else {
       // this.model.reset();
@@ -857,7 +831,6 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
   }
 
   override loadExistingVariables(taskId: String, variableNames: String) {
-    console.log("load existing variables ...", taskId);
 
     this.camundaRestService
       .getVariablesForTask(taskId, variableNames)
@@ -875,14 +848,9 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
     [x: string]: { value: any };
   }) {
     Object.keys(variables).forEach((variableName) => {
-      console.log("dataTipoAccion = ", this.dataTipoAccion);
-      console.log("dataTipoSolicitud = ", this.dataTipoSolicitud);
-      console.log("dataTipoMotivo = ", this.dataTipoMotivo);
-      console.log("variables: ", variables);
+
       switch (variableName) {
         case "tipoAccion":
-          console.log("set tipo_accion = ", variables[variableName].value);
-          console.log("this.dataTipoAccion?.filter = ", this.dataTipoAccion);
           this.tipo_accion_descripcion = this.dataTipoAccion?.filter(
             (data) => data.tipoAccion == variables[variableName].value
           )[0]?.tipoAccion;
@@ -890,11 +858,6 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
           break;
 
         case "tipoSolicitud":
-          console.log("set tipo_solicitud = ", variables[variableName].value);
-          console.log(
-            "this.dataTipoSolicitud?.filter = ",
-            this.dataTipoSolicitud
-          );
           this.tipo_solicitud_descripcion =
             this.dataTipoSolicitud.tipoSolicitudType?.filter(
               (data) => data.tipoSolicitud == variables[variableName].value
@@ -903,8 +866,6 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
           break;
 
         case "tipoMotivo":
-          console.log("set tipo_motivo = ", variables[variableName].value);
-          console.log("this.dataTipoMotivo?.filter = ", this.dataTipoMotivo);
           this.tipo_motivo_descripcion = this.dataTipoMotivo?.filter(
             (data) => data.tipoMotivo == variables[variableName].value
           )[0]?.tipoMotivo;
@@ -919,19 +880,18 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
     this.utilService.openLoadingSpinner(
       "Cargando información, espere por favor..."
     );
-    console.log("this.id_solicitud_by_params: ", this.id_solicitud_by_params);
     try {
       await this.ObtenerServicioTipoSolicitud();
       await this.ObtenerServicioTipoMotivo();
       await this.ObtenerServicioTipoAccion();
-      await this.ObtenerServicioNivelDireccion();
-      await this.getSolicitudes();
+      //await this.ObtenerServicioNivelDireccion();
+      //await this.getSolicitudes();
       //if (this.id_edit !== undefined) { //comentado mmunoz
       //await this.getDetalleSolicitudById(this.id_edit); //comentado mmunoz
       await this.getSolicitudById(this.id_edit);
       //} // comentado munoz
       await this.getDataEmpleadosEvolution();
-      await this.ObtenerServicioTipoProceso();
+      // await this.ObtenerServicioTipoProceso();
       await this.loadDataCamunda(); //comentado para prueba mmunoz
       //console.log("impreme arreglo de aprobadores: ");
       //await this.recorrerArreglo();
@@ -969,7 +929,7 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
   }
 
   ObtenerServicioTipoProceso() {
-    return this.mantenimientoService.getTipoProceso().subscribe({
+    return this.mantenimientoService.getTipoProcesoPorTipoSolicitud(this.solicitud.idTipoSolicitud).subscribe({
       next: (response) => {
         this.dataTipoProceso = response.map((r) => ({
           id: r.id,
@@ -984,9 +944,10 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
 
   getSolicitudById(id: any) {
     return this.solicitudes.getSolicitudById(id).subscribe({
-      next: (response: any) => {
-        console.log("Solicitud por id: ", response);
+      next: async (response: any) => {
         this.solicitud = response;
+
+        await this.ObtenerServicioTipoProceso();
 
         this.loadingComplete++;
         this.getDetalleSolicitudById(this.id_edit);
@@ -1184,12 +1145,6 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
     this.submitted = true;
     let idInstancia = this.solicitudDataInicial.idInstancia;
 
-
-    console.log(
-      "this.solicitudDataInicial.idInstancia: ",
-      this.solicitudDataInicial.idInstancia
-    );
-
     let extra = {
       idEmpresa: this.model.compania,
       empresa: this.model.compania,
@@ -1204,11 +1159,9 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
     this.solicitud.unidadNegocio = this.model.unidadNegocio;
     this.solicitud.idUnidadNegocio = this.model.unidadNegocio;
     this.solicitud.estadoSolicitud = "2";
-    console.log("this.solicitud: ", this.solicitud);
     this.solicitudes
       .actualizarSolicitud(this.solicitud)
       .subscribe((responseSolicitud) => {
-        console.log("responseSolicitud: ", responseSolicitud);
 
         this.detalleSolicitud.idSolicitud = this.solicitud.idSolicitud;
 
@@ -1261,29 +1214,15 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
 
         this.detalleSolicitud.fechaIngreso = this.model.fechaIngresogrupo == "" ? this.model.fechaIngreso : this.model.fechaIngresogrupo;
 
-
-        console.log(
-          "ESTO LE MANDO AL ACTUALIZAR this.detalleSolicitud: ",
-          this.detalleSolicitud, this.model
-        );
-
         this.solicitudes
           .actualizarDetalleSolicitud(this.detalleSolicitud)
           .subscribe((responseDetalle) => {
-            console.log("responseDetalle: ", responseDetalle);
 
             this.utilService.closeLoadingSpinner(); //comentado mmunoz
             this.utilService.modalResponse(
               "Datos ingresados correctamente",
               "success"
             );
-
-            console.log(
-              "CON ESTO COMPLETO (this.uniqueTaskId): ",
-              this.uniqueTaskId
-            );
-
-            console.log("AQUI HAY UN IDDEINSTANCIA?: ", this.idDeInstancia);
 
             setTimeout(() => {
               this.router.navigate([
@@ -1297,11 +1236,24 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
     this.submitted = true;
   }
 
-  onChangeTipoProceso() {
-    this.disabledSave = false;
+  onChangeTipoProceso(event: any) {
+    // this.disabledSave = false;
+    this.disabledSave = this.model.tipoProceso !== "";
+
+    if (this.model.tipoProceso.toUpperCase().includes("FAMILIA")) {
+      this.fechas.contratacionFamiliares = this.getFormattedDate();
+      this.fechas.reingreso = "";
+    } else if (this.model.tipoProceso.toUpperCase().includes("REINGRESO")) {
+      this.fechas.reingreso = this.getFormattedDate();
+      this.fechas.contratacionFamiliares = "";
+    } else {
+      this.fechas.reingreso = "";
+      this.fechas.contratacionFamiliares = "";
+    }
   }
 
   async saveCandidato() {
+
     const request = {
       iD_SOLICITUD: this.solicitud.idSolicitud,
       iD_SOLICITUD_PROCESO: "",
@@ -1309,26 +1261,25 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
       fuenteExterna: this.isChecked ? this.selectedOption : null,
       tipoProceso: this.model.tipoProceso,
       candidato: this.nombreCandidato,
-      actualizacionDelPerfil: this.fechas.actualizacionPerfil === "" ? null : new Date(this.fechas.actualizacionPerfil).toISOString(),
-      busquedaDeCandidatos: this.fechas.busquedaCandidatos === "" ? null : new Date(this.fechas.busquedaCandidatos).toISOString(),
-      entrevista: this.fechas.entrevista === "" ? null : new Date(this.fechas.entrevista).toISOString(),
-      pruebas: this.fechas.pruebas === "" ? null : new Date(this.fechas.pruebas).toISOString(),
-      referencias: this.fechas.referencias === "" ? null : new Date(this.fechas.referencias).toISOString(),
-      elaboracionDeInforme: this.fechas.elaboracionInforme === "" ? null : new Date(this.fechas.elaboracionInforme).toISOString(),
-      entregaAlJefeSol: this.fechas.entregaJefe === "" ? null : new Date(this.fechas.entregaJefe).toISOString(),
-      entrevistaPorJefatura: this.fechas.entrevistaJefatura === "" ? null : new Date(this.fechas.entrevistaJefatura).toISOString(),
-      tomaDeDesiciones: this.fechas.tomaDecisiones === "" ? null : new Date(this.fechas.tomaDecisiones).toISOString(),
-      candidatoSeleccionado: this.fechas.candidatoSeleccionado === "" ? null : new Date(this.fechas.candidatoSeleccionado).toISOString(),
-      procesoDeContratacion: this.fechas.procesoContratacion === "" ? null : new Date(this.fechas.procesoContratacion).toISOString(),
-      finProcesoContratacion: this.fechas.finProcesoContratacion === "" ? null : new Date(this.fechas.finProcesoContratacion).toISOString(),
-      fechaInicioReingreso: this.model.tipoProceso !== 'reingresoPersonal' ? null : this.getCurrentDate(),
+      actualizacionDelPerfil: this.fechas.actualizacionPerfil === "" ? null : this.fechas.actualizacionPerfil.replace(" ", "T"),
+      busquedaDeCandidatos: this.fechas.busquedaCandidatos === "" ? null : this.fechas.busquedaCandidatos.replace(" ", "T"),
+      entrevista: this.fechas.entrevista === "" ? null : this.fechas.entrevista.replace(" ", "T"),
+      pruebas: this.fechas.pruebas === "" ? null : this.fechas.pruebas.replace(" ", "T"),
+      referencias: this.fechas.referencias === "" ? null : this.fechas.referencias.replace(" ", "T"),
+      elaboracionDeInforme: this.fechas.elaboracionInforme === "" ? null : this.fechas.elaboracionInforme.replace(" ", "T"),
+      entregaAlJefeSol: this.fechas.entregaJefe === "" ? null : this.fechas.entregaJefe.replace(" ", "T"),
+      entrevistaPorJefatura: this.fechas.entrevistaJefatura === "" ? null : this.fechas.entrevistaJefatura.replace(" ", "T"),
+      tomaDeDesiciones: this.fechas.tomaDecisiones === "" ? null : this.fechas.tomaDecisiones.replace(" ", "T"),
+      candidatoSeleccionado: this.fechas.candidatoSeleccionado === "" ? null : this.fechas.candidatoSeleccionado.replace(" ", "T"),
+      procesoDeContratacion: this.fechas.procesoContratacion === "" ? null : this.fechas.procesoContratacion.replace(" ", "T"),
+      finProcesoContratacion: this.fechas.finProcesoContratacion === "" ? null : this.fechas.finProcesoContratacion.replace(" ", "T"),
+      fechaInicioReingreso: this.fechas.reingreso === '' ? null : this.fechas.reingreso.replace(" ", "T"),
       fechaFinReingreso: null,
-      fechaInicioContratacionFamiliares: this.model.tipoProceso !== 'contratacionFamiliares' ? null : this.getCurrentDate(),
+      fechaInicioContratacionFamiliares: this.fechas.contratacionFamiliares === '' ? null : this.fechas.contratacionFamiliares.replace(" ", "T"),
       fechaFinContratacionFamiliares: null,
       fechaIngresoCandidato: null
     };
 
-    console.log(request);
     // return;
 
     this.seleccionCandidatoService.saveCandidato(request).subscribe({
@@ -1340,19 +1291,21 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
           confirmButtonText: "Sí"
         });
 
-        this.disabledFechas.fechaActualizacion = this.fechas.fechaActualizacion !== null && this.fechas.fechaActualizacion !== "";
+        this.tipoProcesoSaved = this.model.tipoProceso;
+        this.disabledTipoProceso = this.tipoProcesoSaved !== "";
+
+        this.disabledFechas.actualizacionPerfil = this.fechas.actualizacionPerfil !== null && this.fechas.actualizacionPerfil !== "";
         this.disabledFechas.busquedaCandidatos = this.fechas.busquedaCandidatos !== null && this.fechas.busquedaCandidatos !== "";
         this.disabledFechas.entrevista = this.fechas.entrevista !== null && this.fechas.entrevista !== "";
         this.disabledFechas.pruebas = this.fechas.pruebas !== null && this.fechas.pruebas !== "";
         this.disabledFechas.referencias = this.fechas.referencias !== null && this.fechas.referencias !== "";
-        this.disabledFechas.elaboracionDeInforme = this.fechas.elaboracionInforme !== null && this.fechas.elaboracionInforme !== "";
+        this.disabledFechas.elaboracionInforme = this.fechas.elaboracionInforme !== null && this.fechas.elaboracionInforme !== "";
         this.disabledFechas.entregaJefe = this.fechas.entregaJefe !== null && this.fechas.entregaJefe !== "";
         this.disabledFechas.entrevistaJefatura = this.fechas.entrevistaJefatura !== null && this.fechas.entrevistaJefatura !== "";
         this.disabledFechas.tomaDecisiones = this.fechas.tomaDecisiones !== null && this.fechas.tomaDecisiones !== "";
         this.disabledFechas.candidatoSeleccionado = this.fechas.candidatoSeleccionado !== null && this.fechas.candidatoSeleccionado !== "";
         this.disabledFechas.procesoContratacion = this.fechas.procesoContratacion !== null && this.fechas.procesoContratacion !== "";
         this.disabledFechas.finProcesoContratacion = this.fechas.finProcesoContratacion !== null && this.fechas.finProcesoContratacion !== "";
-        this.disabledNombreCandidato = this.nombreCandidato !== "";
       },
       error: (error) => {
         console.error(error);
@@ -1361,7 +1314,6 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
   }
 
   onCompletar() { //completar tarea mmunoz
-    console.log("Task i de la tarea para completar:", this.uniqueTaskId);
     if (this.uniqueTaskId === null) {
       //handle this as an error
       this.errorMessage =
@@ -1374,13 +1326,10 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
 
     let variables = this.generateVariablesFromFormFields();
 
-    console.log(variables);
-
     this.camundaRestService
       .postCompleteTask(this.uniqueTaskId, variables)
       .subscribe({
         next: (res) => {
-          console.log("Complete task notificar");
           //actualizo la solicitud a enviada
           this.solicitud.empresa = this.model.compania;
           this.solicitud.idEmpresa = this.model.compania;
@@ -1388,14 +1337,12 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
           this.solicitud.unidadNegocio = this.model.unidadNegocio;
           this.solicitud.idUnidadNegocio = this.model.unidadNegocio;
           this.solicitud.estadoSolicitud = "4";
-          console.log("this.solicitud: ", this.solicitud);
           this.solicitudes.actualizarSolicitud(this.solicitud).subscribe((responseSolicitud) => {
-            console.log("responseSolicitud: ", responseSolicitud);
 
-            if (this.model.tipoProceso === "contratacionFamiliares" || this.model.tipoProceso === "reingresoPersonal") {
-              if (this.model.tipoProceso === "contratacionFamiliares") {
+            if (this.model.tipoProceso.toUpperCase().includes("FAMILIA") || this.model.tipoProceso.toUpperCase().includes("REINGRESO")) {
+              if (this.model.tipoProceso.toUpperCase().includes("FAMILIA")) {
                 this.codigoSolicitudProceso = "CF";
-              } else if (this.model.tipoProceso === "reingresoPersonal") {
+              } else if (this.model.tipoProceso.toUpperCase().includes("REINGRESO")) {
                 this.codigoSolicitudProceso = "RG";
               }
 
@@ -1407,8 +1354,8 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
                     const solicitud = {
                       fechaActualizacion: new Date(),
                       fechaCreacion: new Date(),
-                      usuarioCreacion: "JOSHUA",
-                      usuarioActualizacion: "JOSHUA",
+                      usuarioCreacion: this.solicitud.usuarioCreacion,
+                      usuarioActualizacion: this.solicitud.usuarioActualizacion,
                       estado: "3",
                       idSolicitud: "string",
                       idInstancia: this.solicitud.idInstancia,
@@ -1427,7 +1374,6 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
 
                     this.solicitudes.guardarSolicitud(solicitud).subscribe({
                       next: res => {
-                        console.log(res);
 
                         this.solicitudes.getDetalleSolicitudById(this.solicitud.idSolicitud).subscribe({
                           next: (detalleSolicitud) => {
@@ -1439,40 +1385,39 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
                             }
 
                             const request = {
-                                  iD_SOLICITUD: this.solicitud.idSolicitud,
-                                  iD_SOLICITUD_PROCESO: res.idSolicitud,
-                                  tipoFuente: null,
-                                  fuenteExterna: null,
-                                  tipoProceso: null,
-                                  candidato: null,
-                                  actualizacionDelPerfil: null,
-                                  busquedaDeCandidatos: null,
-                                  entrevista: null,
-                                  pruebas: null,
-                                  referencias: null,
-                                  elaboracionDeInforme: null,
-                                  entregaAlJefeSol: null,
-                                  entrevistaPorJefatura: null,
-                                  tomaDeDesiciones: null,
-                                  candidatoSeleccionado: null,
-                                  procesoDeContratacion: null,
-                                  finProcesoContratacion: null,
-                                  fechaInicioReingreso: null,
-                                  fechaFinReingreso: null,
-                                  fechaInicioContratacionFamiliares: null,
-                                  fechaFinContratacionFamiliares: null,
-                                  fechaIngresoCandidato: null
-                                };
+                              iD_SOLICITUD: this.solicitud.idSolicitud,
+                              iD_SOLICITUD_PROCESO: res.idSolicitud,
+                              tipoFuente: null,
+                              fuenteExterna: null,
+                              tipoProceso: null,
+                              candidato: null,
+                              actualizacionDelPerfil: null,
+                              busquedaDeCandidatos: null,
+                              entrevista: null,
+                              pruebas: null,
+                              referencias: null,
+                              elaboracionDeInforme: null,
+                              entregaAlJefeSol: null,
+                              entrevistaPorJefatura: null,
+                              tomaDeDesiciones: null,
+                              candidatoSeleccionado: null,
+                              procesoDeContratacion: null,
+                              finProcesoContratacion: null,
+                              fechaInicioReingreso: null,
+                              fechaFinReingreso: null,
+                              fechaInicioContratacionFamiliares: null,
+                              fechaFinContratacionFamiliares: null,
+                              fechaIngresoCandidato: null
+                            };
+
                             this.seleccionCandidatoService.saveCandidato(request).subscribe({
                               next: (res) => {
-                                console.log(res);
-                            this.solicitudes.guardarDetalleSolicitud(detalle).subscribe({
-                              next: (res) => {
-                                console.log(res);
+                                this.solicitudes.guardarDetalleSolicitud(detalle).subscribe({
+                                  next: (res) => {
+                                  }
+                                });
                               }
                             });
-                           }
-                           });
                           }
                         });
                       }
@@ -1515,7 +1460,6 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
       .postCompleteTask(taskId, variables)
       .subscribe((res) => {
         // Aquí puedes manejar la respuesta del segundo servicio
-        console.log("Segundo servicio completado:", res);
 
         // Verifica si el nombre sigue siendo "Notificar revisión solicitud"
         if (res.name === "Notificar revisión solicitud") {
@@ -1523,7 +1467,6 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
           this.completeAndCheckTask(taskId, variables);
         } else {
           // El nombre ya no es "Notificar revisión solicitud", haz algo diferente
-          console.log("Nombre diferente:", res.name);
         }
       });
   }
@@ -1532,7 +1475,6 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
   consultarNextTask(IdSolicitud: string) {
     this.consultaTareasService.getTareaIdParam(IdSolicitud)
       .subscribe((tarea) => {
-        console.log("Task: ", tarea);
 
         this.uniqueTaskId = tarea.solicitudes[0].taskId;
         this.taskType_Activity = tarea.solicitudes[0].tasK_DEF_KEY;
@@ -1550,12 +1492,17 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
 
     let variables: any = {};
 
-    if (this.solicitud.tipoSolicitud == "requisicionPersonal") {
+    if (this.solicitud.tipoSolicitud.toUpperCase().includes("REQUISICION")||this.solicitud.tipoSolicitud.toUpperCase().includes("REQUISICIÓN")) {
 
 
       if (this.taskType_Activity == environment.taskType_RegistrarCandidato) {
-
-        variables.tipoSolicitud = { value: this.model.tipoProceso };
+        if (this.model.tipoProceso.toUpperCase().includes("FAMILIA")) {
+          variables.tipoSolicitud = { value: "contratacionFamiliares" };
+        } else if (this.model.tipoProceso.toUpperCase().includes("REINGRESO")) {
+          variables.tipoSolicitud = { value: "reingresoPersonal" };
+        } else if (this.model.tipoProceso.toUpperCase().includes("REEMPLAZO")) {
+          variables.tipoSolicitud = { value: "nuevoIngresoReemplazo" };
+        }
 
       }
 
@@ -1666,7 +1613,6 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
                     }
                   }
 
-                  console.log(`Elemento en la posición`, eachData);
                 }
               }
             }
@@ -1823,8 +1769,6 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
     }
 
     //this.isDivVisible = !this.isChecked;
-    console.log('Elemecto check', inputElement.name);
-    console.log('Checkbox value:', this.isCheckedPerfil);
   }
 
   getFormattedDate(dateValue: string = ""): string {
@@ -1835,7 +1779,7 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
     const hours = String(date.getHours()).padStart(2, '0');
     const minutes = String(date.getMinutes()).padStart(2, '0');
     const seconds = String(date.getSeconds()).padStart(2, '0');
-    return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
+    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
   }
 
 
@@ -1852,9 +1796,6 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
           this.dataComentariosAprobaciones = this.filterDataComentarios(this.solicitud.idInstancia, 'RevisionSolicitud', 'comentariosAtencion');
           this.dataComentariosAprobacionesRRHH = this.filterDataComentarios(this.solicitud.idInstancia, 'RequisicionPersonal', 'comentariosAtencionGerenteRRHH');
           this.dataComentariosAprobacionesCREM = this.filterDataComentarios(this.solicitud.idInstancia, 'RequisicionPersonal', 'comentariosAtencionRemuneraciones');
-          console.log("Aprobaciones comentarios diamicos = ", this.dataComentariosAprobaciones);
-          console.log("Aprobaciones comentarios rrhh = ", this.dataComentariosAprobacionesRRHH);
-          console.log("Aprobaciones comentarios CREM = ", this.dataComentariosAprobacionesCREM);
         },
         error: (error: HttpErrorResponse) => {
           this.utilService.modalResponse(

@@ -1,5 +1,5 @@
 # Etapa 1: Construir la aplicación Angular
-FROM node:18 as builder
+FROM node:18-alpine as builder
 
 WORKDIR /app
 
@@ -18,7 +18,7 @@ RUN npx ng build --configuration=development
 RUN echo "esto es desa"
 
 # Etapa 2: Configurar el servidor Nginx para servir la aplicación
-FROM nginx:latest
+FROM nginx:alpine
 
 # Copiar la aplicación compilada desde la etapa 1
 COPY --from=builder /app/dist/elite-admin-angular /usr/share/nginx/html
@@ -28,6 +28,7 @@ COPY ./nginx.conf /etc/nginx/conf.d/default.conf
 
 # Exponer el puerto 80
 EXPOSE 80
-
+RUN apk update
+RUN apk upgrade busybox
 # Comando por defecto para iniciar Nginx
 CMD ["nginx", "-g", "daemon off;"]

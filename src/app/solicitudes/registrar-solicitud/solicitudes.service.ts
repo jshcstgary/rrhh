@@ -4,7 +4,7 @@ import {
 } from "./registrar-solicitudes.interface";
 import { HttpClient, HttpHeaders, HttpParams, HttpParamsOptions } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { Observable } from "rxjs";
+import { Observable, of } from "rxjs";
 import { DetalleSolicitud } from "src/app/eschemas/DetalleSolicitud";
 import { Solicitud } from "src/app/eschemas/Solicitud";
 import { environment } from "src/environments/environment";
@@ -31,7 +31,6 @@ export class SolicitudesService {
   }
 
   public getSolicitudById(idSolicitud: any): Observable<any> {
-    console.log("getSolicitudById call with: ", idSolicitud);
     return this.http.get<any>(`${this.apiUrlSolicitudes}/${idSolicitud}`);
   }
 
@@ -43,6 +42,24 @@ export class SolicitudesService {
 
   public getDetalleSolicitud(): Observable<any> {
     return this.http.get<any>(this.apiUrlSolicitudes + "/detalle-solicitud");
+  }
+
+  cargarDetalleAprobacionesArreglo(detalleAprobaciones: any[]): Observable<any> {
+    return this.http.post<any>(`${this.apiDetalleAprobaciones}/post_arreglo`, {
+      detalleAprobadorSolicitud: detalleAprobaciones
+    });
+  }
+
+  obtenerNivelesAprobacionRegistrados(idSolicitud: string): Observable<any> {
+    return this.http.get<any>(`${this.apiDetalleAprobaciones}/aprobacionessolicitud/${idSolicitud}`);
+  }
+
+  obtenerDetallesAprobacionesSolicitudes(idSolicitud: string, subledgerAprobador: string, usuarioAprobador: string = ""): Observable<any> {
+    const headers = new HttpHeaders().set('usuario_aprob', usuarioAprobador);
+
+    return this.http.get<any>(`${this.apiDetalleAprobaciones}/filtrar/${idSolicitud}/${subledgerAprobador}`, {
+      headers
+    });
   }
 
   public guardarSolicitud(request: any): Observable<any> {
@@ -79,7 +96,6 @@ export class SolicitudesService {
 
 
   public guardarDetallesAprobacionesSolicitud(request: any): Observable<any> {
-    console.log(request);
 
     return this.http.post<any>(
       this.apiDetalleAprobaciones,
@@ -138,20 +154,6 @@ export class SolicitudesService {
       filter: filtro
     };
     const httpParams: HttpParamsOptions = { fromObject: myObject } as HttpParamsOptions;
-
-    console.log(
-      "Se llama con esto: " +
-        "idTipoSolicitud: " +
-        idTipoSolicitud +
-        ", idTipoMotivo: " +
-        idTipoMotivo +
-        ", codigoPosicion: " +
-        codigoPosicion +
-        ", idNivelDireccion: " +
-        idNivelDireccion
-    );
-
-    console.log(idNivelDireccion);
 
     return this.http.get<IAprobacionesPosicion>(`${this.apiUrlNivelAprobacion}/aprobacionesporposicion`, {
         params: new HttpParams(httpParams)

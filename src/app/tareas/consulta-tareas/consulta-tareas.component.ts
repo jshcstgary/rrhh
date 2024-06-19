@@ -18,6 +18,8 @@ import { ConsultaTareasService } from "./consulta-tareas.service";
 import { DataFilterNivelesAprobacion } from "src/app/eschemas/DataFilterNivelesAprobacion";
 import { MantenimientoService } from "src/app/services/mantenimiento/mantenimiento.service";
 import { Router } from "@angular/router";
+import { SolicitudesService } from "src/app/solicitudes/registrar-solicitud/solicitudes.service";
+import { StarterService } from "src/app/starter/starter.service";
 
 @Component({
   selector: "app-consulta-tareas",
@@ -58,13 +60,12 @@ export class ConsultaTareasComponent implements OnInit {
     private validationsService: ValidationsService,
     private utilService: UtilService,
     private mantenimientoService: MantenimientoService,
-    private router: Router
+    private router: Router,
+    private solicitudes: SolicitudesService,
+    private starterService: StarterService
   ) { }
 
   ngOnInit(): void {
-    this.ObtenerServicioTipoSolicitud();
-    this.ObtenerServicioNivelDireccion();
-    this.ObtenerServicioTipoMotivo();
     this.getDataToTable();
   }
 
@@ -122,22 +123,38 @@ export class ConsultaTareasComponent implements OnInit {
     this.utilService.openLoadingSpinner(
       "Cargando información. Espere por favor..."
     );
-    return this.consultaTareasService.getTareas().subscribe({
-      next: (response) => {
-        this.dataTable = response.solicitudes.map((item) => ({
-            idSolicitud: item.idSolicitud + "," + item.rootProcInstId,
-            startTime: item.startTime,
-            name: item.name,
-            tipoSolicitud: item.tipoSolicitud,
-          })
-        )
 
-        this.utilService.closeLoadingSpinner();
-      },
-      error: (error: HttpErrorResponse) => {
-        this.utilService.modalResponse(error.error, "error");
-      },
+    this.starterService.getUser(localStorage.getItem("idUsuario")!).subscribe({
+      next: (res) => {
+        return this.consultaTareasService.getTareasUsuario(res.evType[0].subledger).subscribe({
+          next: (response) => {
+            this.dataTable = response.solicitudes.map((item) => ({
+                idSolicitud: item.idSolicitud + "," + item.rootProcInstId,
+                startTime: item.startTime,
+                name: item.name,
+                tipoSolicitud: item.tipoSolicitud,
+              })
+            );
+
+            // this.consultaTareasService.
+          /*  this.consultaTareasService.obtenerDetallesAprobacionesSolicitudes(this.starterService.userIniciador.subledger).subscribe({
+              next: (response) => {
+                console.log(response);
+              },
+              error: (err) => {
+                console.error(err);
+              }
+            });*/
+
+            this.utilService.closeLoadingSpinner();
+          },
+          error: (error: HttpErrorResponse) => {
+            this.utilService.modalResponse(error.error, "error");
+          },
+        });
+      }
     });
+    console.log(localStorage.getItem("idUsuario")!);
   }
 
   //LLenar combo Tipo Solicitud
@@ -197,7 +214,6 @@ export class ConsultaTareasComponent implements OnInit {
 
       this.consultaTareasService.getTareaIdParam(ids[0])
         .subscribe((tarea) => {
-          console.log("Task: ", tarea);
 
           let taeraopcion = tarea.solicitudes[0].tasK_DEF_KEY;
           let registrar = environment.taskType_RRHH;
@@ -275,7 +291,6 @@ export class ConsultaTareasComponent implements OnInit {
               break;
 
             case environment.taskType_RG:
-              console.log(tarea.solicitudes[0].tipoSolicitud.toUpperCase());
               if (tarea.solicitudes[0].tipoSolicitud.toUpperCase().includes("REINGRESO")) {
                 this.router.navigate([
                   "/solicitudes/reingreso-personal",
