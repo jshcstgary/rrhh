@@ -94,11 +94,14 @@
                 >
                 &nbsp;
                 <input-component
-                  [id]="'searchInputFilter'"
+                  [id]="'empleadoSearch'"
                   [type]="'string'"
                   [buttonIcon]="'ti-search'"
-                  buttonFunction="filterStringInTable"
-                  onChangeFunction="filterStringInTable"
+                  buttonFunction="searchEmpleado"
+                  placeholder="Buscar"
+                  [theValue]="empleado"
+                  [contexto]="this"
+                  [disabled]="isDisabledEmpleado"
                   placeholder="Buscar por nombre"
                   style="width: 50%"
                 ></input-component>
@@ -112,11 +115,14 @@
                   >
                   &nbsp;
                   <input-component
-                    [id]="'searchInputFilter'"
+                    [id]="'subledgerSearch'"
                     [type]="'string'"
                     [buttonIcon]="'ti-search'"
-                    buttonFunction="filterStringInTable"
-                    onChangeFunction="filterStringInTable"
+                    buttonFunction="searchSubledger"
+                    placeholder="Buscar"
+                    [theValue]="subledger"
+                    [contexto]="this"
+                    [disabled]="isDisabledSubledger"
                     placeholder="Buscar por subledger"
                     style="width: 50%; margin-left: -15%;"
                   ></input-component>
@@ -152,7 +158,7 @@
                 name="tipoSolicitud"
                 style="color: black; font-size: 14px"
                 class="text-start"
-                >{{ '' }}</span
+                >{{ this.detalleSolicitud.fechaIngreso | date:'yyyy/MM/dd' }}</span
               >
             </div>
           </div>
@@ -170,7 +176,7 @@
                 name="comp"
                 style="color: black; font-size: 14px"
                 class="text-start"
-                >{{ "LACTEOS" }}</span
+                >{{ this.detalleSolicitud.compania }}</span
               >
             </div>
           </div>
@@ -185,7 +191,7 @@
                 name="unidad"
                 style="color: black; font-size: 14px"
                 class="text-start"
-                >{{ "LECHE" }}</span
+                >{{ this.detalleSolicitud.unidad }}</span
               >
             </div>
           </div>
@@ -203,7 +209,7 @@
                 name="comp"
                 style="color: black; font-size: 14px"
                 class="text-start"
-                >{{ "Gerencia" }}</span
+                >{{ this.detalleSolicitud.areaDepartamento }}</span
               >
             </div>
           </div>
@@ -218,7 +224,7 @@
                 name="unidad"
                 style="color: black; font-size: 14px"
                 class="text-start"
-                >{{ "" }}</span
+                >{{ this.detalleSolicitud.localidad }}</span
               >
             </div>
           </div>
@@ -233,7 +239,7 @@
                 name="unidad"
                 style="color: black; font-size: 14px"
                 class="text-start"
-                >{{ "grupo_pago" }}</span
+                >{{ this.detalleSolicitud.grupoDePago }}</span
               >
             </div>
           </div>
@@ -251,7 +257,7 @@
                 name="comp"
                 style="color: black; font-size: 14px"
                 class="text-start"
-                >{{ "Gerencia media" }}</span
+                >{{ this.detalleSolicitud.puesto }}</span
               >
             </div>
           </div>
@@ -266,7 +272,7 @@
                 name="unidad"
                 style="color: black; font-size: 14px"
                 class="text-start"
-                >{{ "" }}</span
+                >{{ this.detalleSolicitud.centroCosto }}</span
               >
             </div>
           </div>
@@ -281,7 +287,7 @@
                 name="unidad"
                 style="color: black; font-size: 14px"
                 class="text-start"
-                >{{ "Nuevo Mexico" }}</span
+                >{{ this.detalleSolicitud.sucursal }}</span
               >
             </div>
           </div>
@@ -311,7 +317,7 @@
                 name="comp"
                 style="color: black; font-size: 14px"
                 class="text-start"
-                >{{ "100" }}</span
+                >{{ this.detalleSolicitud.sueldo }}</span
               >
             </div>
           </div>
@@ -326,7 +332,7 @@
                 name="me"
                 style="color: black; font-size: 14px"
                 class="text-start"
-                >{{ "" }}</span
+                >{{ this.detalleSolicitud.sueldoVariableMensual }}</span
               >
             </div>
           </div>
@@ -341,7 +347,7 @@
                 name="mov"
                 style="color: black; font-size: 14px"
                 class="text-start"
-                >{{ "" }}</span
+                >{{ this.detalleSolicitud.movilizacion }}</span
               >
             </div>
           </div>
@@ -356,7 +362,7 @@
                 name="al"
                 style="color: black; font-size: 14px"
                 class="text-start"
-                >{{ "" }}</span
+                >{{ this.detalleSolicitud.alimentacion }}</span
               >
             </div>
           </div>
@@ -375,7 +381,7 @@
                     name="al"
                     style="color: black; font-size: 14px"
                     class="text-start"
-                    >{{ "" }}</span
+                    >{{ this.detalleSolicitud.sueldoVariableTrimestral }}</span
                   >
                 </div>
               </div>
@@ -393,7 +399,7 @@
                     name="al"
                     style="color: black; font-size: 14px"
                     class="text-start"
-                    >{{ "" }}</span
+                    >{{ this.detalleSolicitud.sueldoVariableSemestral }}</span
                   >
                 </div>
               </div>
@@ -411,7 +417,7 @@
                     name="al"
                     style="color: black; font-size: 14px"
                     class="text-start"
-                    >{{ "" }}</span
+                    >{{ this.detalleSolicitud.sueldoVariableAnual }}</span
                   >
                 </div>
               </div>
@@ -471,7 +477,7 @@
                     name="al"
                     style="color: black; font-size: 14px"
                     class="text-start"
-                    >{{ "REYBANPAC" }}</span
+                    >{{ this.detalleSolicitud.compania }}</span
                   >
                 </div>
               </div>
@@ -486,7 +492,7 @@
                     name="al"
                     style="color: black; font-size: 14px"
                     class="text-start"
-                    >{{ "BANANO" }}</span
+                    >{{ this.detalleSolicitud.unidadNegocio }}</span
                   >
                 </div>
               </div>

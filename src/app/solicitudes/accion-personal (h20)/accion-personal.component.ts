@@ -1145,4 +1145,67 @@ export class AccionComponent extends CompleteTaskComponent {
     console.log(this.selectedOptionAnulacion);
   }
 
+  empleado: string = '';
+  isDisabledEmpleado: boolean = false;
+  subledger: string = '';
+  isDisabledSubledger: boolean = false;
+
+  
+  searchEmpleado = (value: string): void => {
+    this.search(value, 'nombreCompleto', (data) => {
+      this.empleado = data.nombreCompleto;
+      this.isDisabledEmpleado = true;
+      this.subledger = data.subledger;
+      this.isDisabledSubledger = true;
+    })
+  }
+
+  searchSubledger = (value: string): void => {
+    this.search(value, 'subledger', (data) => {
+      this.empleado = data.nombreCompleto;
+      this.isDisabledEmpleado = true;
+      this.subledger = data.subledger;
+      this.isDisabledSubledger = true;
+    })
+  }
+
+
+  search = (value: string, propSearch: 'nombreCompleto' | 'subledger', setEmpleadoData: (data: IEmpleadoData) => void): void => {
+    this.mantenimientoService
+      .getDataEmpleadosEvolution("ev")
+      .pipe(
+        map(this.buscarValor.bind(this, value, "evType", propSearch)), // Asegúrate de pasar propSearch aquí
+        catchError((error) => {
+          return this.mantenimientoService
+            .getDataEmpleadosEvolution("jaff")
+            .pipe(map(this.buscarValor.bind(this, value, "jaffType", propSearch)));
+        }),
+        catchError(error => {
+          return this.mantenimientoService
+            .getDataEmpleadosEvolution('spyral')
+            .pipe(map(this.buscarValor.bind(this, value, 'spyralType', propSearch)))
+        }),
+      )
+      .subscribe({
+        next: (data) => {
+          console.log('Encontro', data);
+          setEmpleadoData(data as IEmpleadoData);
+        },
+        error: (error) => {
+          console.error(error);
+        },
+      });
+  }
+  
+  buscarValor = (search, type: "jaffType" | "evType" | 'spyralType', propSearch: 'nombreCompleto' | 'subledger', data: IEmpleados) => {
+    const result = data?.[type].find((item) => {
+      const regex = new RegExp(search, "i");
+      return item[propSearch]?.match(regex); // Asegúrate de que item[propSearch] exista
+    });
+    if (!result) {
+      throw new Error("No se encontró el valor esperado");
+    }
+    return result;
+  };
+
 }
