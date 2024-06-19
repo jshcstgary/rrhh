@@ -604,7 +604,6 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
     });
 
     console.log(this.detalleNivelAprobacion);
-    debugger;
   }
 
   obtenerAprobacionesPorPosicion() {
