@@ -65,6 +65,9 @@ import { DataFilterSolicitudes } from "src/app/eschemas/DataFilterSolicitudes";
 import { ConsultaSolicitudesService } from "./consulta-solicitudes.service";
 import { DetalleSolicitud } from "src/app/eschemas/DetalleSolicitud";
 import { single } from "src/app/charts/ngx-charts/chartData";
+import { StarterService } from "src/app/starter/starter.service";
+
+
 //import { single} from './chartData';
 declare var require: any;
 const data: any = require("./company.json");
@@ -329,7 +332,8 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
     private router: Router,
     private calendar: NgbCalendar,
     private camundaRestService: CamundaRestService,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private starterService: StarterService
 
   ) {
     this.model = calendar.getToday();
@@ -397,6 +401,38 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
     this.router.navigate(["/solicitudes/crear-tipo-solicitud"]);
   }
 
+crearRegistradorSolicitud() {
+    this.starterService.getUser(localStorage.getItem("idUsuario")!).subscribe({
+      next: (res) => {
+        this.solicitudes.modelDetalleAprobaciones.id_Solicitud = this.solicitud.idSolicitud;
+        this.solicitudes.modelDetalleAprobaciones.id_NivelAprobacion = 100000;
+        this.solicitudes.modelDetalleAprobaciones.id_TipoSolicitud = this.solicitud.idTipoSolicitud.toString();
+        this.solicitudes.modelDetalleAprobaciones.id_Accion = 100000;
+        this.solicitudes.modelDetalleAprobaciones.id_TipoMotivo = this.solicitud.idTipoMotivo;
+        this.solicitudes.modelDetalleAprobaciones.id_TipoRuta = 100000;
+        this.solicitudes.modelDetalleAprobaciones.id_Ruta = 100000;
+        this.solicitudes.modelDetalleAprobaciones.tipoSolicitud = this.solicitud.tipoSolicitud;
+        this.solicitudes.modelDetalleAprobaciones.motivo = "RegistrarSolicitud";
+        this.solicitudes.modelDetalleAprobaciones.tipoRuta = "RegistrarSolicitud";
+        this.solicitudes.modelDetalleAprobaciones.ruta = "Registrar Solicitud";
+        this.solicitudes.modelDetalleAprobaciones.accion = "RegistrarSolicitud";
+        this.solicitudes.modelDetalleAprobaciones.nivelDirecion = res.evType[0].nivelDir;
+        this.solicitudes.modelDetalleAprobaciones.nivelAprobacionRuta = "RegistrarSolicitud";
+        this.solicitudes.modelDetalleAprobaciones.usuarioAprobador = res.evType[0].nombreCompleto;
+        this.solicitudes.modelDetalleAprobaciones.codigoPosicionAprobador = res.evType[0].codigoPosicion;
+        this.solicitudes.modelDetalleAprobaciones.descripcionPosicionAprobador = res.evType[0].descrPosicion;
+        this.solicitudes.modelDetalleAprobaciones.sudlegerAprobador = res.evType[0].subledger;
+        this.solicitudes.modelDetalleAprobaciones.nivelDireccionAprobador = res.evType[0].nivelDir;
+        this.solicitudes.modelDetalleAprobaciones.codigoPosicionReportaA = res.evType[0].codigoPosicionReportaA;
+        this.solicitudes.modelDetalleAprobaciones.estadoAprobacion = "Creado";
+        this.solicitudes.modelDetalleAprobaciones.estado = "A";
+        this.solicitudes.modelDetalleAprobaciones.correo = res.evType[0].correo;
+        this.solicitudes.modelDetalleAprobaciones.usuarioCreacion = res.evType[0].nombreCompleto;
+        this.solicitudes.modelDetalleAprobaciones.usuarioModificacion = res.evType[0].nombreCompleto;
+        this.solicitudes.modelDetalleAprobaciones.fechaCreacion = new Date().toISOString();
+        this.solicitudes.modelDetalleAprobaciones.fechaModificacion = new Date().toISOString();
+      }
+
   //Crear Solicitud
   CrearInstanciaSolicitud() {
     Swal.fire({
@@ -459,7 +495,9 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
           
           const variables = this.generatedVariablesFromFormFields();
 
-
+          this.crearRegistradorSolicitud();
+          this.solicitudes.guardarDetallesAprobacionesSolicitud(this.solicitudes.modelDetalleAprobaciones).subscribe({
+          next: () => {
           this.camundaRestService
             .postProcessInstance(this.processDefinitionKey, variables)
             .subscribe((instanceOutput) => {
@@ -504,6 +542,11 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 
 
             });
+            },
+          error: (err) => {
+            console.error(err);
+          }
+        });
         });
 
         if (this.submitted) {
