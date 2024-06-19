@@ -593,7 +593,7 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
           nivelDireccionAprobador: aprobador.nivelDireccion,
           estadoAprobacion: nivelAprobacionType.idNivelAprobacionRuta.toUpperCase().includes("RRHH") ? "PorRevisarRRHH" : (nivelAprobacionType.idNivelAprobacionRuta.toUpperCase().includes("REMUNERA") ? "PorRevisarRemuneracion" : "PorRevisar"),
           estado: nivelAprobacionType.estado,
-          correo: aprobador.correo,
+          correo: aprobador.correo === null ? "" : aprobador.correo,
           usuarioCreacion: res.evType[0].nombreCompleto,
           usuarioModificacion: res.evType[0].nombreCompleto,
           comentario: "",
