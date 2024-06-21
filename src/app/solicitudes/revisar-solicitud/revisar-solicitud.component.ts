@@ -1116,7 +1116,9 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
             .actualizarSolicitud(this.solicitud)
             .subscribe({
               next: () => {
-                this.consultarNextTaskAprobador(this.solicitud.idSolicitud);
+                setTimeout(() => {
+                  this.consultarNextTaskAprobador(this.solicitud.idSolicitud);
+                }, 3000);
               },
               error: (error) => {
                 console.error(error);

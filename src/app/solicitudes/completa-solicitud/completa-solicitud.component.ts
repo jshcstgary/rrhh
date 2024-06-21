@@ -1384,16 +1384,16 @@ export class CompletaSolicitudComponent extends CompleteTaskComponent {
     }
   }
 
-crearRegistradorSolicitud() {
+  crearRegistradorSolicitud() {
     this.starterService.getUser(localStorage.getItem("idUsuario")!).subscribe({
       next: (res) => {
         this.solicitudes.modelDetalleAprobaciones.id_Solicitud = this.solicitud.idSolicitud;
-        this.solicitudes.modelDetalleAprobaciones.id_NivelAprobacion = 100000;
+        this.solicitudes.modelDetalleAprobaciones.id_NivelAprobacion = 200000;
         this.solicitudes.modelDetalleAprobaciones.id_TipoSolicitud = this.solicitud.idTipoSolicitud.toString();
-        this.solicitudes.modelDetalleAprobaciones.id_Accion = 100000;
+        this.solicitudes.modelDetalleAprobaciones.id_Accion = 200000;
         this.solicitudes.modelDetalleAprobaciones.id_TipoMotivo = this.solicitud.idTipoMotivo;
-        this.solicitudes.modelDetalleAprobaciones.id_TipoRuta = 100000;
-        this.solicitudes.modelDetalleAprobaciones.id_Ruta = 100000;
+        this.solicitudes.modelDetalleAprobaciones.id_TipoRuta = 200000;
+        this.solicitudes.modelDetalleAprobaciones.id_Ruta = 200000;
         this.solicitudes.modelDetalleAprobaciones.tipoSolicitud = this.solicitud.tipoSolicitud;
         this.solicitudes.modelDetalleAprobaciones.motivo = "CompletarRequisicion";
         this.solicitudes.modelDetalleAprobaciones.tipoRuta = "CompletarRequisicion";

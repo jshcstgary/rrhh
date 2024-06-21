@@ -596,7 +596,7 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
           sudlegerAprobador: aprobador.subledger,
           codigoPosicionReportaA: aprobador.codigoPosicionReportaA,
           nivelDireccionAprobador: aprobador.nivelDireccion,
-          estadoAprobacion: nivelAprobacionType.idNivelAprobacionRuta.toUpperCase().includes("RRHH") ? "PorRevisarRRHH" : (nivelAprobacionType.idNivelAprobacionRuta.toUpperCase().includes("REMUNERA") ? "PorRevisarRemuneracion" : "PendienteAsignacion"),
+          estadoAprobacion: nivelAprobacionType.idNivelAprobacionRuta.toUpperCase().includes("RRHH") ? "PorRevisarRRHH" : (nivelAprobacionType.idNivelAprobacionRuta.toUpperCase().includes("REMUNERA") ? "PorRevisarRemuneraciones" : "PendienteAsignacion"),
           estado: nivelAprobacionType.estado,
           correo: aprobador.correo === null ? "" : aprobador.correo,
           usuarioCreacion: res.evType[0].nombreCompleto,
@@ -817,7 +817,7 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
         this.keySelected = `${this.solicitud.idTipoSolicitud}_${this.solicitud.idTipoMotivo}_${this.model.codigoPosicion}_${this.model.nivelDir}`;
 
         if (tipo === "nombreCompleto") {
-          this.nombresEmpleados = [ ...new Set(this.dataEmpleadoEvolution.map((empleado) => empleado.nombreCompleto)) ];
+          this.nombresEmpleados = [...new Set(this.dataEmpleadoEvolution.map((empleado) => empleado.nombreCompleto))];
         }
 
         if (!this.dataAprobacionesPorPosicion[this.keySelected]) {
@@ -1355,24 +1355,25 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
                 .actualizarSolicitud(this.solicitud)
                 .subscribe({
                   next: (responseSolicitud) => {
-                    console.log(this.solicitud.idSolicitud);
-                    this.consultarNextTaskAprobador(this.solicitud.idSolicitud);
-
-                    // if (this.uniqueTaskId) {
-                    //  this.ObtenerNivelAprobadorTask();
-                    // }
-
-                    this.utilService.closeLoadingSpinner();
-                    //fin actualizo la solicitud a enviada
-                    this.utilService.modalResponse(
-                      `Solicitud registrada correctamente [${this.solicitud.idSolicitud}]. Será redirigido en un momento...`,
-                      "success"
-                    );
                     setTimeout(() => {
-                      this.router.navigate([
-                        "/tareas/consulta-tareas",
-                      ]);
-                    }, 1800);
+                      this.consultarNextTaskAprobador(this.solicitud.idSolicitud);
+
+                      // if (this.uniqueTaskId) {
+                      //  this.ObtenerNivelAprobadorTask();
+                      // }
+
+                      this.utilService.closeLoadingSpinner();
+                      //fin actualizo la solicitud a enviada
+                      this.utilService.modalResponse(
+                        `Solicitud registrada correctamente [${this.solicitud.idSolicitud}]. Será redirigido en un momento...`,
+                        "success"
+                      );
+                      setTimeout(() => {
+                        this.router.navigate([
+                          "/tareas/consulta-tareas",
+                        ]);
+                      }, 1800);
+                    }, 3000);
                   },
                   error: (error) => {
                     console.error(error);
