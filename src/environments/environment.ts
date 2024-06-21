@@ -1,4 +1,4 @@
-const baseC = "http://10.35.3.180:8188"; //base de camunda Local
+const baseC = "http://10.35.3.187:8188"; //base de camunda Local
 const base = "http://10.35.3.162"; //base de servicios local
 const baseRBP = "http://192.168.44.180"; //base de servicios local
 const baseG ="http://181.188.224.250:18043"; //base de servicios api gateway
