@@ -148,21 +148,21 @@
               Código de posición
             </label>
             &nbsp;
-            <span *ngIf="solicitud.tipoSolicitud === 'requisicionPersonal' && solicitud.tipoMotivo === 'Reemplazo'; else editablePosition"
+            <span *ngIf="solicitud.tipoMotivo === 'Reemplazo'; else editablePosition"
               id="descripcionposicion"
               name="descripcionposicion"
               style="color: black; font-size: 14px;"
               class="text-start"
               >{{ model.codigoPosicion }}</span
             >
+            <!-- [ngbTypeahead]="searchCodigoPosicion"
+            (selectItem)="onSelectItem('codigoPosicion', $event)" -->
             <ng-template #editablePosition>
               <input
                 type="text"
                 name="codigoposicion"
                 [(ngModel)]="model.codigoPosicion"
                 style="color: black; font-size: 14px; width: 30%"
-                [ngbTypeahead]="searchCodigoPosicion"
-                (selectItem)="onSelectItem('codigoPosicion', $event)"
                 class="form-control"
                 id="codigoposicion"
                 aria-describedby="inputGroupPrepend"
@@ -170,7 +170,7 @@
                 #codigoposicion="ngModel"
                 placeholder="Ingrese código"
               />
-              <button class="btn btn-light" type="button" disabled>
+              <button class="btn btn-light" type="button" (click)="getDataEmpleadosEvolution('codigoPosicion')">
                 <i class="ti-search"></i>
               </button>
             </ng-template>
@@ -204,13 +204,13 @@
               Subledger
             </label>
             &nbsp;
+            <!-- [ngbTypeahead]="searchSubledger"
+            (selectItem)="onSelectItem('subledger', $event)" -->
             <input
               type="text"
               name="subledger"
               [(ngModel)]="model.subledger"
               style="color: black; font-size: 14px; width: 30%"
-              [ngbTypeahead]="searchSubledger"
-              (selectItem)="onSelectItem('subledger', $event)"
               class="form-control text-start"
               id="subledger"
               aria-describedby="inputGroupPrepend"
@@ -218,7 +218,7 @@
               #subledger="ngModel"
               placeholder="Ingrese subledger"
             />
-            <button class="btn btn-light" type="button" disabled>
+            <button class="btn btn-light" type="button" (click)="getDataEmpleadosEvolution('subledger')">
               <i class="ti-search"></i>
             </button>
           </div>
@@ -227,27 +227,29 @@
         <div class="col-md-6">
           <div class="input-group mb-3">
             <label
-              class="input-group-text label-estilo"
-              for="nombreempleado"
+            class="input-group-text label-estilo"
+            for="nombreempleado"
             >
-              Empleado
-            </label>
-            &nbsp;
+            Empleado
+          </label>
+          &nbsp;
+          <!-- [ngbTypeahead]="searchNombreCompleto"
+          (selectItem)="onSelectItem('nombreCompleto', $event)" -->
             <input
               type="text"
-              name="nombreempleado"
+              name="nombreCompleto"
               [(ngModel)]="model.nombreCompleto"
               style="color: black; font-size: 14px; width: 30%"
+              class="form-control text-start"
+              id="nombreCompleto"
               [ngbTypeahead]="searchNombreCompleto"
               (selectItem)="onSelectItem('nombreCompleto', $event)"
-              class="form-control text-start"
-              id="nombreempleado"
               aria-describedby="inputGroupPrepend"
               #nombreCompleto="ngModel"
               placeholder="Ingrese nombre"
               required
             />
-            <button class="btn btn-light" type="button" disabled>
+            <button class="btn btn-light" type="button" (click)="getDataEmpleadosEvolution('nombreCompleto')">
               <i class="ti-search"></i>
             </button>
           </div>

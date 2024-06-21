@@ -14,6 +14,7 @@ export class AprobadorFijo {
     public usuariO_MODIFICACION: string = "",
     public descripcioN_POSICION: string = "",
     public supervisA_A: string = "",
-    public niveL_REPORTE: string = ""
+    public niveL_REPORTE: string = "",
+    public correo: string = ""
   ) {}
 }

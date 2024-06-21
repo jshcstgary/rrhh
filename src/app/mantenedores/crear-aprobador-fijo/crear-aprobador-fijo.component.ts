@@ -54,6 +54,8 @@ export class CrearAprobadorFijoComponent implements OnInit {
 
   public dataRutasPorTipoRuta: { [idSolicitud: number]: any[] } = {};
 
+  public disableButton: boolean = true;
+
   /*public dataEmpleadoEvolution: any[] = [
     {
       codigo: "CODIGO_1", //?
@@ -193,7 +195,7 @@ export class CrearAprobadorFijoComponent implements OnInit {
 
   subledgers: string[] = [];
 
-  codigosPosicion: string[] = [];
+  correosEmpleado: string[] = [];
 
   /*
   nombresEmpleados: string[] = [
@@ -215,32 +217,82 @@ export class CrearAprobadorFijoComponent implements OnInit {
   ];
   */
 
-  getDataEmpleadosEvolution() {
-    return this.mantenimientoService.getDataEmpleadosEvolution().subscribe({
+  clearModel() {
+    this.modelo.iD_APROBADOR = 0;
+    this.modelo.niveL_DIRECCION = "";
+    this.modelo.codigO_POSICION = "";
+    this.modelo.subleger = "";
+    this.modelo.nombre = "";
+    this.modelo.codigO_POSICION_REPORTA_A = "";
+    this.modelo.reportA_A = "";
+    this.modelo.estado = false;
+    this.modelo.fechA_CREACION = "";
+    this.modelo.fechA_MODIFICACION = "";
+    this.modelo.usuariO_CREACION = "";
+    this.modelo.usuariO_MODIFICACION = "";
+    this.modelo.descripcioN_POSICION = "";
+    this.modelo.supervisA_A = "";
+    this.modelo.niveL_REPORTE = "";
+    this.modelo.correo = "";
+
+    this.disableButton = true;
+  }
+
+  getDataEmpleadosEvolution(tipo: string) {
+    let tipoValue: string = "";
+
+    if (tipo === "correo") {
+      tipoValue = this.modelo.correo;
+    } else if (tipo === "subledger") {
+      tipoValue = this.modelo.subleger;
+    } else if (tipo === "nombreEmpleado") {
+      tipoValue = this.modelo.nombre;
+    }
+
+    return this.mantenimientoService.getDataEmpleadosEvolutionPorId(tipoValue).subscribe({
       next: (response) => {
+        if (response.evType.length === 0) {
+          Swal.fire({
+            text: "No se encontró registro",
+            icon: "info",
+            confirmButtonColor: "rgb(227, 199, 22)",
+            confirmButtonText: "Sí",
+          });
+
+          this.clearModel();
+
+          return;
+        }
+
         this.dataEmpleadoEvolution = response.evType;
 
-        this.nombresEmpleados = [
-          ...new Set(
-            this.dataEmpleadoEvolution.map(
-              (empleado) => empleado.nombreCompleto
-            )
-          ),
-        ];
+        let fechaActual = new Date();
+        let fechaEnFormatoISO = fechaActual.toISOString();
 
-        this.subledgers = [
-          ...new Set(
-            this.dataEmpleadoEvolution.map((empleado) => empleado.subledger)
-          ),
-        ];
+        this.modelo.iD_APROBADOR = 1;
+        this.modelo.niveL_DIRECCION = "Gerente de RRHH Corporativo";
+        this.modelo.codigO_POSICION = this.dataEmpleadoEvolution[0].codigoPosicion;
+        this.modelo.subleger = this.dataEmpleadoEvolution[0].subledger;
+        this.modelo.nombre = this.dataEmpleadoEvolution[0].nombreCompleto;
+        this.modelo.codigO_POSICION_REPORTA_A = "N/A";
+        this.modelo.reportA_A = this.dataEmpleadoEvolution[0].reportaA;
+        this.modelo.estado = true;
+        this.modelo.fechA_CREACION = fechaEnFormatoISO;
+        this.modelo.fechA_MODIFICACION = fechaEnFormatoISO;
+        this.modelo.usuariO_CREACION = fechaEnFormatoISO;
+        this.modelo.usuariO_MODIFICACION = fechaEnFormatoISO;
+        this.modelo.descripcioN_POSICION = this.dataEmpleadoEvolution[0].descrPosicion;
+        this.modelo.supervisA_A = "N/A";
+        this.modelo.niveL_REPORTE = this.dataEmpleadoEvolution[0].nivelReporte;
+        this.modelo.correo = this.dataEmpleadoEvolution[0].correo
 
-        this.codigosPosicion = [
-          ...new Set(
-            this.dataEmpleadoEvolution.map(
-              (empleado) => empleado.codigoPosicion
-            )
-          ),
-        ];
+        if (tipo === "nombreEmpleado") {
+          this.nombresEmpleados = [ ...new Set(this.dataEmpleadoEvolution.map((empleado) => empleado.nombreCompleto)) ];
+
+          return;
+        }
+
+        this.disableButton = false;
       },
       error: (error: HttpErrorResponse) => {
         this.utilService.modalResponse(error.error, "error");
@@ -270,20 +322,20 @@ export class CrearAprobadorFijoComponent implements OnInit {
     this.router.navigate(["/mantenedores/aprobadores-fijos"]);
   }
 
-  searchCodigoPosicion: OperatorFunction<string, readonly string[]> = (
-    text$: Observable<string>
-  ) =>
-    text$.pipe(
-      debounceTime(200),
-      distinctUntilChanged(),
-      map((term) =>
-        term.length < 1
-          ? []
-          : this.codigosPosicion
-              .filter((v) => v.toLowerCase().indexOf(term.toLowerCase()) > -1)
-              .slice(0, 10)
-      )
-    );
+  // searchCorreoEmpleado: OperatorFunction<string, readonly string[]> = (
+  //   text$: Observable<string>
+  // ) =>
+  //   text$.pipe(
+  //     debounceTime(200),
+  //     distinctUntilChanged(),
+  //     map((term) =>
+  //       term.length < 1
+  //         ? []
+  //         : this.correosEmpleado
+  //             .filter((v) => v.toLowerCase().indexOf(term.toLowerCase()) > -1)
+  //             .slice(0, 10)
+  //     )
+  //   );
 
   searchNombreCompleto: OperatorFunction<string, readonly string[]> = (
     text$: Observable<string>
@@ -300,62 +352,35 @@ export class CrearAprobadorFijoComponent implements OnInit {
       )
     );
 
-  searchSubledger: OperatorFunction<string, readonly string[]> = (
-    text$: Observable<string>
-  ) =>
-    text$.pipe(
-      debounceTime(200),
-      distinctUntilChanged(),
-      map((term) =>
-        term.length < 1
-          ? []
-          : this.subledgers
-              .filter((v) => v.toLowerCase().indexOf(term.toLowerCase()) > -1)
-              .slice(0, 10)
-      )
-    );
+  // searchSubledger: OperatorFunction<string, readonly string[]> = (
+  //   text$: Observable<string>
+  // ) =>
+  //   text$.pipe(
+  //     debounceTime(200),
+  //     distinctUntilChanged(),
+  //     map((term) =>
+  //       term.length < 1
+  //         ? []
+  //         : this.subledgers
+  //             .filter((v) => v.toLowerCase().indexOf(term.toLowerCase()) > -1)
+  //             .slice(0, 10)
+  //     )
+  //   );
 
   onSelectItem(campo: string, event) {
     let valor = event.item;
+
     const datosEmpleado = this.dataEmpleadoEvolution.find((empleado) => {
       return empleado[campo] === valor;
     });
+
     if (datosEmpleado) {
-      /*
-
-      codigo: "CODIGO_2",
-      idEmpresa: "ID_EMPRESA",
-      compania: "Reybanpac",
-      departamento: "Inventarios",
-      nombreCargo: "Gerencia de Proyectos",
-      nomCCosto: "Zona camarones",
-      codigoPosicion: "0426",
-      descrPosicion: "Gerencia de Proyectos",
-      codigoPuesto: "CODIGO_PUESTO",
-      descrPuesto: "Gerencia media",
-      fechaIngresogrupo: "2024-04-15T12:08:34.473",
-      grupoPago: "GRUPO_PAGO",
-      reportaA: "0427",
-      localidad: "Hacienda",
-      nivelDir: "Gerencia Media",
-      descrNivelDir: "Gerencia Media",
-      nivelRepa: "Gerencia Medios",
-      nombreCompleto: "MOROCHO VARGAS CAL ESTUARIO",
-      subledger: "60067579",
-      sucursal: "SUSURSAL 1",
-      unidadNegocio: "UNIDAD NEGOCIO 1",
-      tipoContrato: "Eventual",
-      descripContrato: "Eventual con remuneracion mixta",
-      status: true,
-
-      */
       let fechaActual = new Date();
       let fechaEnFormatoISO = fechaActual.toISOString();
-      // this.modelo.ID_APROBACION = ;
+
       this.modelo.iD_APROBADOR = 1;
-      this.modelo.niveL_DIRECCION = datosEmpleado.nivelDir;
+      this.modelo.niveL_DIRECCION = "Gerente de RRHH Corporativo";
       this.modelo.codigO_POSICION = datosEmpleado.codigoPosicion;
-      // let fechaActual = new Date();
       this.modelo.subleger = datosEmpleado.subledger;
       this.modelo.nombre = datosEmpleado.nombreCompleto;
       this.modelo.codigO_POSICION_REPORTA_A = "N/A";
@@ -368,18 +393,7 @@ export class CrearAprobadorFijoComponent implements OnInit {
       this.modelo.descripcioN_POSICION = datosEmpleado.descrPosicion;
       this.modelo.supervisA_A = "N/A";
       this.modelo.niveL_REPORTE = datosEmpleado.nivelReporte;
-
-      // this.model = Object.assign({}, datosEmpleado);
-      // console.log("ESTE MODELO SE ASIGNA: ", this.model);
-      /*this.keySelected =
-        this.solicitud.idTipoSolicitud +
-        "_" +
-        this.solicitud.idTipoMotivo +
-        "_" +
-        this.model.nivelDir;
-      if (!this.dataNivelesDeAprobacion[this.keySelected]) {
-        this.getNivelesAprobacion();
-      }*/
+      this.modelo.correo = datosEmpleado.correo
     } else {
       // this.model.reset();
       let tempSearch = valor;
@@ -414,7 +428,7 @@ export class CrearAprobadorFijoComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getDataEmpleadosEvolution();
+    // this.getDataEmpleadosEvolution();
     /*this.ObtenerServicioTipoSolicitud();
     this.ObtenerServicioTipoMotivo();
     this.ObtenerServicioAccion();
@@ -632,6 +646,18 @@ export class CrearAprobadorFijoComponent implements OnInit {
   }*/
 
   guardarAprobadorFijo() {
+    console.log(this.modelo.niveL_DIRECCION);
+    if (this.modelo.niveL_DIRECCION === "") {
+      Swal.fire({
+        text: "Seleccione un nivel de aprobación",
+        icon: "warning",
+        confirmButtonColor: "rgb(227, 199, 22)",
+        confirmButtonText: "Ok",
+      });
+
+      return;
+    }
+
     this.utilService.openLoadingSpinner(
       "Guardando información, espere por favor..."
     );
@@ -646,8 +672,8 @@ export class CrearAprobadorFijoComponent implements OnInit {
           ...this.modelo,
           estado: this.modelo.estado ? "A" : "I",
         })
-        .subscribe(
-          (response) => {
+        .subscribe({
+          next: (response) => {
             // Inicio
             this.utilService.closeLoadingSpinner();
             this.utilService.modalResponse(
@@ -660,10 +686,10 @@ export class CrearAprobadorFijoComponent implements OnInit {
 
             // Fin
           },
-          (error: HttpErrorResponse) => {
+          error: (error: HttpErrorResponse) => {
             this.utilService.modalResponse(error.error, "error");
           }
-        );
+        });
     });
     return;
   }

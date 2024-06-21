@@ -152,7 +152,6 @@ export class JobsListComponent implements OnInit {
   // ===========================================================================================
 
   onItemChange(item: any) {
-    debugger;
     if (item.value === 'all') {
       this.filjobs = this.jobs;
     } else {
@@ -175,7 +174,6 @@ export class JobsListComponent implements OnInit {
   }
 
   onSubmit() {
-    debugger;
     let j = new Job();
 
     j.id =

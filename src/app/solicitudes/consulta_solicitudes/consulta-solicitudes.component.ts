@@ -65,6 +65,7 @@ import { DataFilterSolicitudes } from "src/app/eschemas/DataFilterSolicitudes";
 import { ConsultaSolicitudesService } from "./consulta-solicitudes.service";
 import { DetalleSolicitud } from "src/app/eschemas/DetalleSolicitud";
 import { single } from "src/app/charts/ngx-charts/chartData";
+import { StarterService } from "src/app/starter/starter.service";
 //import { StarterService } from "src/app/starter/starter.service";
 
 
@@ -332,8 +333,8 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
     private router: Router,
     private calendar: NgbCalendar,
     private camundaRestService: CamundaRestService,
-    private modalService: NgbModal
-    //private starterService: StarterService
+    private modalService: NgbModal,
+    private starterService: StarterService
 
   ) {
     this.model = calendar.getToday();
@@ -401,41 +402,39 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
     this.router.navigate(["/solicitudes/crear-tipo-solicitud"]);
   }
 
-/*crearRegistradorSolicitud() {
-    this.starterService.getUser(localStorage.getItem("idUsuario")!).subscribe({
-      next: (res) => {
-        this.solicitudes.modelDetalleAprobaciones.id_Solicitud = this.solicitud.idSolicitud;
-        this.solicitudes.modelDetalleAprobaciones.id_NivelAprobacion = 100000;
-        this.solicitudes.modelDetalleAprobaciones.id_TipoSolicitud = this.solicitud.idTipoSolicitud.toString();
-        this.solicitudes.modelDetalleAprobaciones.id_Accion = 100000;
-        this.solicitudes.modelDetalleAprobaciones.id_TipoMotivo = this.solicitud.idTipoMotivo;
-        this.solicitudes.modelDetalleAprobaciones.id_TipoRuta = 100000;
-        this.solicitudes.modelDetalleAprobaciones.id_Ruta = 100000;
-        this.solicitudes.modelDetalleAprobaciones.tipoSolicitud = this.solicitud.tipoSolicitud;
-        this.solicitudes.modelDetalleAprobaciones.motivo = "RegistrarSolicitud";
-        this.solicitudes.modelDetalleAprobaciones.tipoRuta = "RegistrarSolicitud";
-        this.solicitudes.modelDetalleAprobaciones.ruta = "Registrar Solicitud";
-        this.solicitudes.modelDetalleAprobaciones.accion = "RegistrarSolicitud";
-        this.solicitudes.modelDetalleAprobaciones.nivelDirecion = res.evType[0].nivelDir;
-        this.solicitudes.modelDetalleAprobaciones.nivelAprobacionRuta = "RegistrarSolicitud";
-        this.solicitudes.modelDetalleAprobaciones.usuarioAprobador = res.evType[0].nombreCompleto;
-        this.solicitudes.modelDetalleAprobaciones.codigoPosicionAprobador = res.evType[0].codigoPosicion;
-        this.solicitudes.modelDetalleAprobaciones.descripcionPosicionAprobador = res.evType[0].descrPosicion;
-        this.solicitudes.modelDetalleAprobaciones.sudlegerAprobador = res.evType[0].subledger;
-        this.solicitudes.modelDetalleAprobaciones.nivelDireccionAprobador = res.evType[0].nivelDir;
-        this.solicitudes.modelDetalleAprobaciones.codigoPosicionReportaA = res.evType[0].codigoPosicionReportaA;
-        this.solicitudes.modelDetalleAprobaciones.estadoAprobacion = "Creado";
-        this.solicitudes.modelDetalleAprobaciones.estado = "A";
-        this.solicitudes.modelDetalleAprobaciones.correo = res.evType[0].correo;
-        this.solicitudes.modelDetalleAprobaciones.usuarioCreacion = res.evType[0].nombreCompleto;
-        this.solicitudes.modelDetalleAprobaciones.usuarioModificacion = res.evType[0].nombreCompleto;
-        this.solicitudes.modelDetalleAprobaciones.fechaCreacion = new Date().toISOString();
-        this.solicitudes.modelDetalleAprobaciones.fechaModificacion = new Date().toISOString();
-      }*/
+  fillData(res: any) {
+    this.solicitudes.modelDetalleAprobaciones.id_Solicitud = this.solicitud.idSolicitud;
+    this.solicitudes.modelDetalleAprobaciones.id_NivelAprobacion = 100000;
+    this.solicitudes.modelDetalleAprobaciones.id_TipoSolicitud = this.solicitud.idTipoSolicitud.toString();
+    this.solicitudes.modelDetalleAprobaciones.id_Accion = 100000;
+    this.solicitudes.modelDetalleAprobaciones.id_TipoMotivo = this.solicitud.idTipoMotivo;
+    this.solicitudes.modelDetalleAprobaciones.id_TipoRuta = 100000;
+    this.solicitudes.modelDetalleAprobaciones.id_Ruta = 100000;
+    this.solicitudes.modelDetalleAprobaciones.tipoSolicitud = this.solicitud.tipoSolicitud;
+    this.solicitudes.modelDetalleAprobaciones.motivo = "RegistrarSolicitud";
+    this.solicitudes.modelDetalleAprobaciones.tipoRuta = "RegistrarSolicitud";
+    this.solicitudes.modelDetalleAprobaciones.ruta = "Registrar Solicitud";
+    this.solicitudes.modelDetalleAprobaciones.accion = "RegistrarSolicitud";
+    this.solicitudes.modelDetalleAprobaciones.nivelDirecion = res.evType[0].nivelDir;
+    this.solicitudes.modelDetalleAprobaciones.nivelAprobacionRuta = "RegistrarSolicitud";
+    this.solicitudes.modelDetalleAprobaciones.usuarioAprobador = res.evType[0].nombreCompleto;
+    this.solicitudes.modelDetalleAprobaciones.codigoPosicionAprobador = res.evType[0].codigoPosicion;
+    this.solicitudes.modelDetalleAprobaciones.descripcionPosicionAprobador = res.evType[0].descrPosicion;
+    this.solicitudes.modelDetalleAprobaciones.sudlegerAprobador = res.evType[0].subledger;
+    this.solicitudes.modelDetalleAprobaciones.nivelDireccionAprobador = res.evType[0].nivelDir;
+    this.solicitudes.modelDetalleAprobaciones.codigoPosicionReportaA = res.evType[0].codigoPosicionReportaA;
+    this.solicitudes.modelDetalleAprobaciones.estadoAprobacion = "Creado";
+    this.solicitudes.modelDetalleAprobaciones.estado = "A";
+    this.solicitudes.modelDetalleAprobaciones.correo = res.evType[0].correo;
+    this.solicitudes.modelDetalleAprobaciones.usuarioCreacion = res.evType[0].nombreCompleto;
+    this.solicitudes.modelDetalleAprobaciones.usuarioModificacion = res.evType[0].nombreCompleto;
+    this.solicitudes.modelDetalleAprobaciones.fechaCreacion = new Date().toISOString();
+    this.solicitudes.modelDetalleAprobaciones.fechaModificacion = new Date().toISOString();
+  }
 
   //Crear Solicitud
-  CrearInstanciaSolicitud() {
-    Swal.fire({
+  async CrearInstanciaSolicitud() {
+    const { isConfirmed } = await Swal.fire({
       text: "¿Desea crear la Solicitud?",
       icon: "question",
       showCancelButton: true,
@@ -443,123 +442,231 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
       cancelButtonColor: "#77797a",
       confirmButtonText: "Sí",
       cancelButtonText: "No",
-    }).then((result) => {
-      /*
-      public dataTiposMotivosPorTipoSolicitud: { [idSolicitud: number]: any[] } =
-      {};
+    });
 
-      public dataTiposAccionesPorTipoSolicitud: { [idSolicitud: number]: any[] } =
-      {};
-      */
+    if (!isConfirmed) {
+      return;
+    }
 
-      this.codigoTipoSolicitud = this.dataTipoSolicitudes.filter(
-        (data) => data.id == this.solicitud.idTipoSolicitud
-      )[0]?.codigoTipoSolicitud;
+    this.codigoTipoSolicitud = this.dataTipoSolicitudes.filter((data) => data.id == this.solicitud.idTipoSolicitud)[0]?.codigoTipoSolicitud;
 
-      this.solicitud.tipoSolicitud = this.dataTipoSolicitudes.filter(
-        (data) => data.id == this.solicitud.idTipoSolicitud
-      )[0]?.descripcion;
+    this.solicitud.tipoSolicitud = this.dataTipoSolicitudes.filter((data) => data.id == this.solicitud.idTipoSolicitud)[0]?.descripcion;
 
-      this.solicitud.tipoMotivo = this.dataTiposMotivosPorTipoSolicitud[
-        this.solicitud.idTipoSolicitud
-      ].filter((data) => data.id == this.solicitud.idTipoMotivo)[0]?.tipoMotivo;
+    this.solicitud.tipoMotivo = this.dataTiposMotivosPorTipoSolicitud[this.solicitud.idTipoSolicitud].filter((data) => data.id == this.solicitud.idTipoMotivo)[0]?.tipoMotivo;
 
-      this.solicitud.tipoAccion = this.dataTiposAccionesPorTipoSolicitud[
-        this.solicitud.idTipoSolicitud
-      ].filter((data) => data.id == this.solicitud.idTipoAccion)[0]?.tipoAccion;
+    this.solicitud.tipoAccion = this.dataTiposAccionesPorTipoSolicitud[this.solicitud.idTipoSolicitud].filter((data) => data.id == this.solicitud.idTipoAccion)[0]?.tipoAccion;
 
-      // Comentado tveas cambio
-      /*
-      this.solicitud.tipoMotivo = this.dataTipoMotivo.filter(
-        (data) => data.id == this.solicitud.idTipoMotivo
-      )[0]?.descripcion;
+    // if (result.isConfirmed) {
+    this.utilService.openLoadingSpinner("Creando solicitud, espere por favor.");
 
-      this.solicitud.tipoAccion = this.dataTipoAccion.filter(
-        (data) => data.id == this.solicitud.idTipoAccion
-      )[0]?.descripcion;
-      */
+    this.route.params.subscribe({
+      next: () => {
+        this.processDefinitionKey = "RequisicionPersonal";
 
-      if (result.isConfirmed) {
-        this.utilService.openLoadingSpinner(
-          "Creando solicitud, espere por favor."
-        );
-        // Inicio de Solicitud
-        // Comentado tveas por error
-        this.route.params.subscribe((params) => {
-          //const processDefinitionKey ="process_modelo";
-           this.processDefinitionKey = "RequisicionPersonal";
-          if (this.codigoTipoSolicitud === "AP")
-          {          
-            this.processDefinitionKey = "AccionPersonal";
-          }
-          
-          const variables = this.generatedVariablesFromFormFields();
-
-         // this.crearRegistradorSolicitud();
-         // this.solicitudes.guardarDetallesAprobacionesSolicitud(this.solicitudes.modelDetalleAprobaciones).subscribe({
-         // next: () => {
-          this.camundaRestService
-            .postProcessInstance(this.processDefinitionKey, variables)
-            .subscribe((instanceOutput) => {
-              this.lookForError(instanceOutput);
-              this.utilService.closeLoadingSpinner();
-              this.instanceCreated = new DatosInstanciaProceso(
-                instanceOutput.businessKey,
-                instanceOutput.definitionId,
-                instanceOutput.id,
-                instanceOutput.tenantId
-              );
-              this.solicitud.idInstancia = instanceOutput.id;
-              this.solicitud.estado = "Creado"; //tveas TODO improve [Activo]
-              this.solicitud.estadoSolicitud = "3"; // tveas TODO improve [Creado]
-
-              this.solicitudes
-                .guardarSolicitud(this.solicitud)
-                .subscribe((responseSolicitud) => {
-                  this.solicitud.idSolicitud = responseSolicitud.idSolicitud;
-                  this.solicitud.fechaActualizacion =
-                    responseSolicitud.fechaActualizacion;
-                  this.solicitud.fechaCreacion =
-                    responseSolicitud.fechaCreacion;
-                  this.submitted = true;
-                  // console.log("IDDDDD INSTANCIA: ", this.solicitud.idInstancia);
-                  this.detalleSolicitud.idSolicitud =
-                    responseSolicitud.idSolicitud;
-                  this.detalleSolicitud.estado = "A";
-
-                  this.solicitudes
-                    .guardarDetalleSolicitud(this.detalleSolicitud)
-                    .subscribe((responseDetalle) => {
-                      setTimeout(() => {
-                        this.router.navigate([
-                          "/solicitudes/registrar-solicitud",
-                          this.solicitud.idInstancia,
-                          this.solicitud.idSolicitud,
-                        ]);
-                      }, 1800);//comentado mmunoz
-                    });
-                });
-
-
-            });
-        /*    },
-          error: (err) => {
-            console.error(err);
-          }
-        });*/
-        });
-
-        if (this.submitted) {
-          /*this.utilService.modalResponse(
-            "Datos ingresados correctamente",
-            "success"
-          );*/
-          // this.router.navigate(["/solicitudes/registrar-solicitud"]);
+        if (this.codigoTipoSolicitud === "AP") {
+          this.processDefinitionKey = "AccionPersonal";
         }
 
-        //Fin Solicitud
+        const variables = this.generatedVariablesFromFormFields();
+
+        this.camundaRestService.postProcessInstance(this.processDefinitionKey, variables).subscribe({
+          next: (instanceOutput) => {
+            this.instanceCreated = new DatosInstanciaProceso(instanceOutput.businessKey, instanceOutput.definitionId, instanceOutput.id, instanceOutput.tenantId);
+
+            this.lookForError(instanceOutput);
+            this.utilService.closeLoadingSpinner();
+
+            this.solicitud.idInstancia = instanceOutput.id;
+            this.solicitud.estado = "Creado"; //tveas TODO improve [Activo]
+            this.solicitud.estadoSolicitud = "3"; // tveas TODO improve [Creado]
+
+            this.solicitudes.guardarSolicitud(this.solicitud).subscribe({
+              next: (responseSolicitud) => {
+                this.solicitud.idSolicitud = responseSolicitud.idSolicitud;
+                this.solicitud.fechaActualizacion = responseSolicitud.fechaActualizacion;
+                this.solicitud.fechaCreacion = responseSolicitud.fechaCreacion;
+                this.submitted = true;
+                this.detalleSolicitud.idSolicitud = responseSolicitud.idSolicitud;
+                this.detalleSolicitud.estado = "A";
+
+                this.solicitudes.guardarDetalleSolicitud(this.detalleSolicitud).subscribe({
+                  next: () => {
+                    this.starterService.getUser(localStorage.getItem("idUsuario")!).subscribe({
+                      next: (res) => {
+                        this.fillData(res);
+
+                        this.solicitudes.guardarDetallesAprobacionesSolicitud(this.solicitudes.modelDetalleAprobaciones).subscribe({
+                          next: () => {
+                            setTimeout(() => {
+                              this.router.navigate([
+                                "/solicitudes/registrar-solicitud",
+                                this.solicitud.idInstancia,
+                                this.solicitud.idSolicitud,
+                              ]);
+                            }, 1800);//comentado mmunoz
+                          },
+                          error: (err) => {
+                            console.error(err);
+                          }
+                        });
+                      },
+                      error: (error) => {
+                        console.error(error);
+                      }
+                    });
+                  },
+                  error: (error) => {
+                    console.error(error);
+                  }
+                });
+              },
+              error: (error) => {
+                console.error(error);
+              }
+            });
+          },
+          error: (error) => {
+            console.error(error);
+          }
+        });
+      },
+      error: (error) => {
+        console.error(error);
       }
     });
+
+    if (this.submitted) {
+      /*this.utilService.modalResponse(
+        "Datos ingresados correctamente",
+        "success"
+      );*/
+      // this.router.navigate(["/solicitudes/registrar-solicitud"]);
+    }
+
+        //Fin Solicitud
+      // }
+
+
+
+
+
+
+
+    // Swal.fire({
+    //   text: "¿Desea crear la Solicitud?",
+    //   icon: "question",
+    //   showCancelButton: true,
+    //   confirmButtonColor: "rgb(227, 199, 22)",
+    //   cancelButtonColor: "#77797a",
+    //   confirmButtonText: "Sí",
+    //   cancelButtonText: "No",
+    // }).then((result) => {
+    //   this.codigoTipoSolicitud = this.dataTipoSolicitudes.filter((data) => data.id == this.solicitud.idTipoSolicitud)[0]?.codigoTipoSolicitud;
+
+    //   this.solicitud.tipoSolicitud = this.dataTipoSolicitudes.filter((data) => data.id == this.solicitud.idTipoSolicitud)[0]?.descripcion;
+
+    //   this.solicitud.tipoMotivo = this.dataTiposMotivosPorTipoSolicitud[this.solicitud.idTipoSolicitud].filter((data) => data.id == this.solicitud.idTipoMotivo)[0]?.tipoMotivo;
+
+    //   this.solicitud.tipoAccion = this.dataTiposAccionesPorTipoSolicitud[this.solicitud.idTipoSolicitud].filter((data) => data.id == this.solicitud.idTipoAccion)[0]?.tipoAccion;
+
+    //   if (result.isConfirmed) {
+    //     this.utilService.openLoadingSpinner("Creando solicitud, espere por favor.");
+    //     // Inicio de Solicitud
+    //     // Comentado tveas por error
+
+    //     this.route.params.subscribe({
+    //       next: (params) => {
+    //         //const processDefinitionKey ="process_modelo";
+    //         this.processDefinitionKey = "RequisicionPersonal";
+    //         if (this.codigoTipoSolicitud === "AP") {
+    //           this.processDefinitionKey = "AccionPersonal";
+    //         }
+
+    //         const variables = this.generatedVariablesFromFormFields();
+
+    //         this.camundaRestService.postProcessInstance(this.processDefinitionKey, variables).subscribe({
+    //           next: (instanceOutput) => {
+    //             this.lookForError(instanceOutput);
+    //             this.utilService.closeLoadingSpinner();
+    //             this.instanceCreated = new DatosInstanciaProceso(
+    //               instanceOutput.businessKey,
+    //               instanceOutput.definitionId,
+    //               instanceOutput.id,
+    //               instanceOutput.tenantId
+    //             );
+    //             this.solicitud.idInstancia = instanceOutput.id;
+    //             this.solicitud.estado = "Creado"; //tveas TODO improve [Activo]
+    //             this.solicitud.estadoSolicitud = "3"; // tveas TODO improve [Creado]
+
+    //             this.solicitudes.guardarSolicitud(this.solicitud).subscribe({
+    //               next: (responseSolicitud) => {
+    //                 this.solicitud.idSolicitud = responseSolicitud.idSolicitud;
+    //                 this.solicitud.fechaActualizacion =
+    //                   responseSolicitud.fechaActualizacion;
+    //                 this.solicitud.fechaCreacion =
+    //                   responseSolicitud.fechaCreacion;
+    //                 this.submitted = true;
+    //                 // console.log("IDDDDD INSTANCIA: ", this.solicitud.idInstancia);
+    //                 this.detalleSolicitud.idSolicitud = responseSolicitud.idSolicitud;
+    //                 this.detalleSolicitud.estado = "A";
+
+    //                 this.solicitudes.guardarDetalleSolicitud(this.detalleSolicitud).subscribe({
+    //                   next: (responseDetalle) => {
+    //                     this.starterService.getUser(localStorage.getItem("idUsuario")!).subscribe({
+    //                       next: (res) => {
+    //                         this.fillData(res);
+
+    //                         this.solicitudes.guardarDetallesAprobacionesSolicitud(this.solicitudes.modelDetalleAprobaciones).subscribe({
+    //                           next: () => {
+    //                             setTimeout(() => {
+    //                               this.router.navigate([
+    //                                 "/solicitudes/registrar-solicitud",
+    //                                 this.solicitud.idInstancia,
+    //                                 this.solicitud.idSolicitud,
+    //                               ]);
+    //                             }, 1800);//comentado mmunoz
+    //                           },
+    //                           error: (err) => {
+    //                             console.error(err);
+    //                           }
+    //                         });
+    //                       },
+    //                       error: (error) => {
+    //                         console.error(error);
+    //                       }
+    //                     });
+    //                   },
+    //                   error: (error) => {
+    //                     console.error(error);
+    //                   }
+    //                 });
+    //               },
+    //               error: (error) => {
+    //                 console.error(error);
+    //               }
+    //             });
+    //           },
+    //           error: (error) => {
+    //             console.error(error);
+    //           }
+    //         });
+    //       },
+    //       error: (error) => {
+    //         console.error(error);
+    //       }
+    //     });
+
+    //     if (this.submitted) {
+    //       /*this.utilService.modalResponse(
+    //         "Datos ingresados correctamente",
+    //         "success"
+    //       );*/
+    //       // this.router.navigate(["/solicitudes/registrar-solicitud"]);
+    //     }
+
+    //     //Fin Solicitud
+    //   }
+    // });
   }
 
   getCreatedId(): string {
@@ -604,7 +711,7 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
     let variables: any = {};
 
     variables.tipoSolicitud = { value: this.solicitud.tipoSolicitud };
-    
+
     if (this.solicitud.idTipoSolicitud == this.typeSolicitudSelected) {
       variables.tipoAccion = { value: this.solicitud.tipoAccion };
     } else {

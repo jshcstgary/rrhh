@@ -124,6 +124,10 @@ export class MantenimientoService {
     return this.http.get<IEmpleados>(this.apiEmpleadoEvolutionUrl);
   }
 
+  public getDataEmpleadosEvolutionPorId(id: string): Observable<IEmpleados> {
+    return this.http.get<IEmpleados>(`${this.apiEmpleadoEvolutionUrl}/nombre/${id}`);
+  }
+
   public diagnostic(): Observable<any> {
     return this.http.get<any>(
       //"http://10.35.3.162:8053/v1/es/item-catalogo/codigo/RBPND"
