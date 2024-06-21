@@ -9,8 +9,8 @@ export const environment = {
   port: "4200",
   production: false,
   modalConfirmation: false,
-  //reporteUS: `${base}:8500/v1/us/reporte`,
-  reporteUS: `${baseG}/v1/us/reporte`,
+  reporteUS: `${base}:8500/v1/us/reporte`,
+  // reporteUS: `${baseG}/v1/us/reporte`,
   //reporteUS: `${baseRBP}:8500/v1/us/reporte`,
 
   // Angular UI app is associated with below BPMN process key
@@ -43,8 +43,8 @@ export const environment = {
   taskType_AP: "AP_RegistrarSolicitud", // Acción de personal
 
   //Servicios de workflow
-  // camundaUrl: `${baseC}/`,
-  camundaUrl: `${baseG}/`,
+  camundaUrl: `${baseC}/`,
+  // camundaUrl: `${baseG}/`,
   // camundaUrl: `localhost:8080/`,
   // camundaUrl: `${baseRBP}:8290/`,
 
