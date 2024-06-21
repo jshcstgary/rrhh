@@ -1373,7 +1373,7 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
                           "/tareas/consulta-tareas",
                         ]);
                       }, 1800);
-                    }, 3000);
+                    }, 2000);
                   },
                   error: (error) => {
                     console.error(error);
