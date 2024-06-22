@@ -1208,4 +1208,12 @@ export class AccionComponent extends CompleteTaskComponent {
     return result;
   };
 
+  viewInputs: boolean = true;
+
+  onCheckedComp = (event: Event): void => {
+    const isChecked = (event.target as HTMLInputElement).checked;
+    console.log(isChecked)
+    this.viewInputs = isChecked;
+  }
+
 }

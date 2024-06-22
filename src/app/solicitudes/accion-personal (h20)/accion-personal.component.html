@@ -439,7 +439,7 @@
   
         <div class="row mt-4">
           <div class="col-md-4">
-            <div class="input-group mb-3">
+            <div *ngIf="!viewInputs" class="input-group mb-3">
               <label class="input-group label-estilo" for="feCambio"
                 >Fecha de Cambio*</label
               >
@@ -458,7 +458,7 @@
             <div class="form-check form-check-inline">
               <div class="form-check">
                 <input type="checkbox" class="form-check-input" id="customCheck1"
-                     checked>
+                     checked (change)="onCheckedComp($event)">
                 <label class="form-check-label" for="customCheck1">Transferencia de Compañia</label>
             </div>
               </div>
@@ -468,37 +468,43 @@
         <div class="row mt-4">
             <div class="col-md-4">
                 <div class="input-group mb-3">
-                  <label class="input-group label-estilo" for="al"
+                  <label class="input-group label-estilo" for="comp"
                     >Compañia*</label
                   >
                   &nbsp;
-                  <span
-                    id="al"
-                    name="al"
-                    style="color: black; font-size: 14px"
-                    class="text-start"
-                    >{{ this.detalleSolicitud.compania }}</span
-                  >
+                  <input-component
+                    [id]="'comp'"
+                    [type]="'string'"
+                    buttonFunction=""
+                    onChangeFunction=""
+                    placeholder=""
+                    style="width: 40%"
+                    [disabled]="!viewInputs"
+                    [theValue]="!viewInputs ? '' : this.detalleSolicitud.compania"
+                 ></input-component>
                 </div>
               </div>
             <div class="col-md-4">
                 <div class="input-group mb-3">
-                  <label class="input-group label-estilo" for="al"
+                  <label class="input-group label-estilo" for="un"
                     >Unidad de Negocio*</label
                   >
                   &nbsp;
-                  <span
-                    id="al"
-                    name="al"
-                    style="color: black; font-size: 14px"
-                    class="text-start"
-                    >{{ this.detalleSolicitud.unidadNegocio }}</span
-                  >
+                  <input-component
+                    [id]="'un'"
+                    [type]="'string'"
+                    buttonFunction=""
+                    onChangeFunction=""
+                    placeholder=""
+                    style="width: 40%"
+                    [disabled]="!viewInputs"
+                    [theValue]="!viewInputs ? '' : this.detalleSolicitud.unidadNegocio"
+                   ></input-component>
                 </div>
               </div>
         </div>
 
-        <div class="row mt-4">
+        <div *ngIf="!viewInputs" class="row mt-4">
             <div class="col-md-4">
               <div class="input-group mb-3">
                 <label class="input-group label-estilo" for="area"
@@ -551,7 +557,7 @@
             </div>
           </div>
   
-          <div class="row mt-4">
+          <div *ngIf="!viewInputs" class="row mt-4">
             <div class="col-md-4">
               <div class="input-group mb-3">
                 <label class="input-group label-estilo" for="tipoMotivo"
@@ -604,7 +610,7 @@
             </div>
           </div>
   
-          <div class="row mt-4">
+          <div *ngIf="!viewInputs" class="row mt-4">
               <div class="col-md-3"></div>
               <div class="col-md-6">
                   <label
@@ -616,7 +622,7 @@
               </div>
           </div>
   
-          <div class="row mt-4">
+          <div *ngIf="!viewInputs" class="row mt-4">
             <div class="col-md-3">
               <div class="input-group mb-3">
                 <label class="input-group label-estilo" for="sueldo"
@@ -684,7 +690,7 @@
             </div>
           </div>
   
-          <div class="row mt-4">
+          <div *ngIf="!viewInputs" class="row mt-4">
               <div class="col-md-3"></div>
               <div class="col-md-3">
                   <div class="input-group mb-3">
@@ -703,7 +709,7 @@
                   </div>
                 </div>
           </div>
-          <div class="row mt-4">
+          <div *ngIf="!viewInputs" class="row mt-4">
               <div class="col-md-3"></div>
               <div class="col-md-3">
                   <div class="input-group mb-3">
@@ -722,7 +728,7 @@
                   </div>
                 </div>
           </div>
-          <div class="row mt-4">
+          <div *ngIf="!viewInputs" class="row mt-4">
               <div class="col-md-3"></div>
               <div class="col-md-3">
                   <div class="input-group mb-3">
@@ -742,7 +748,7 @@
                 </div>
           </div>
 
-          <div class="row mt-4 mb-4">
+          <div *ngIf="!viewInputs" class="row mt-4 mb-4">
               <div class="col-md-6">
                   <label
                       class="input-group label-estilo"
@@ -753,7 +759,7 @@
               </div>
           </div>
 
-          <div class="row mt-4">
+          <div *ngIf="!viewInputs" class="row mt-4">
             <div class="col-md-12">
                 <div class="input-group label-estilo mb-3">
                   <label class="azul" style="margin-left: 10px;">Tipo de Accion</label>
@@ -769,7 +775,7 @@
               </div>
           </div>
 
-          <div class="row">
+          <div *ngIf="!viewInputs" class="row">
             <div class="col">
               <div class="input-group mb-3 contenedor">
               <label
