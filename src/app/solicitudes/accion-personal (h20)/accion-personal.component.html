@@ -446,10 +446,13 @@
               <input-component
                 [id]="'feCambio'"
                 [type]="'string'"
-                buttonFunction="filterStringInTable"
-                onChangeFunction="filterStringInTable"
+                buttonFunction=""
+                onChangeFunction="validateFechaCambio"
+                [contexto]="this"
+                [theValue]="fechaCambio"
                 placeholder=""
                 style="width: 50%"
+                [disabled]="isDisabledFechaCambio"
               ></input-component>
            
             </div>

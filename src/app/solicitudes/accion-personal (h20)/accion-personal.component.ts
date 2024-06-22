@@ -1216,4 +1216,71 @@ export class AccionComponent extends CompleteTaskComponent {
     this.viewInputs = isChecked;
   }
 
+
+  fechaCambio: string = '';
+  isDisabledFechaCambio: boolean = false;
+
+  validateFechaCambio = (value: string) => {
+    const fechaReferencia = this.formatter(this.detalleSolicitud.fechaIngreso); 
+
+    if (value.length !== 10) {
+      return;
+    }
+
+    this.isDisabledFechaCambio = true;
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) {
+      this.errorFechaCambio(`El formato ingresado no es valido`);
+      this.isDisabledFechaCambio = false;
+      return;
+    }
+
+    const fechaIngresada = new Date(value);
+
+    if (isNaN(fechaIngresada.getTime())) {
+      this.errorFechaCambio(`La fecha ingresada no es valida, por favor verifique`);
+      this.isDisabledFechaCambio = false;
+      return;
+    }
+
+    const diferenciaMeses = this.calcularDiferenciaMeses(fechaReferencia, fechaIngresada);
+
+    if (diferenciaMeses > 1) {
+      this.errorFechaCambio(`La fecha de estar dentro del mes en el que se genero esta solicitud`);
+      this.isDisabledFechaCambio = false;
+      return;
+    }
+
+  }
+
+  errorFechaCambio = (msg: string) => {
+    Swal.fire({
+      title: 'Error',
+      text: msg,
+      icon: 'error',
+      confirmButtonText: 'Ok'
+    });
+  }
+
+  calcularDiferenciaMeses = (fechaDesde: Date, fechaHasta: Date) => {
+    const year1 = fechaDesde.getFullYear();
+    const year2 = fechaHasta.getFullYear();
+    const month1 = fechaDesde.getMonth();
+    const month2 = fechaHasta.getMonth();
+    const diferencia = (year2 - year1) * 12 + (month2 - month1);
+    return diferencia;
+  }
+
+  formatter = (timestamp : any): Date => {
+    const fecha = new Date(timestamp);
+
+    const fechaFormateada = new Intl.DateTimeFormat('en-CA', { 
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit'
+    }).format(fecha);
+
+    return new Date(fechaFormateada);
+
+  }
+
 }
