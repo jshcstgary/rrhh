@@ -938,24 +938,24 @@ export class CompletaSolicitudComponent extends CompleteTaskComponent {
 
 
   onSubmit() {
-    Swal.fire({
-      text: "¿Desea crear la Solicitud?",
-      icon: "question",
-      showCancelButton: true,
-      confirmButtonColor: "rgb(227, 199, 22)",
-      cancelButtonColor: "#77797a",
-      confirmButtonText: "Sí",
-      cancelButtonText: "No",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        this.save();
+    this.save();
+    // Swal.fire({
+    //   text: "¿Desea crear la Solicitud?",
+    //   icon: "question",
+    //   showCancelButton: true,
+    //   confirmButtonColor: "rgb(227, 199, 22)",
+    //   cancelButtonColor: "#77797a",
+    //   confirmButtonText: "Sí",
+    //   cancelButtonText: "No",
+    // }).then((result) => {
+    //   if (result.isConfirmed) {
 
-        if (this.submitted) {
-        }
+    //     if (this.submitted) {
+    //     }
 
-        //Fin Solicitud
-      }
-    });
+    //     //Fin Solicitud
+    //   }
+    // });
   }
 
   save() {

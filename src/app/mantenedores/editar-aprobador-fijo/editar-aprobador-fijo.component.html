@@ -27,7 +27,7 @@ Correo<!--Modal Crer Solicittud-->
 
               <button *ngIf="id_edit !== undefined" type="button" class="mr-10 fz-14 btn btn-warning btn-icon-end"
                 aria-label="Close" aria-label="Close" (click)="actualizarAprobadorFijo()" [disabled]="disableButton">
-                <i class="fas fa-save"></i> Editar
+                <i class="fas fa-save"></i> Guardar
               </button>
             </div>
           </div>
@@ -151,7 +151,7 @@ Correo<!--Modal Crer Solicittud-->
             <div class="col-md-12" style="width: 75%">
               <div class="input-group mb-3">
                 <label class="input-group-text" for="nivelDireccion"
-                  style="color: black; font-size: 14px; width: 45%">Nivel de dirección</label>
+                  style="color: black; font-size: 14px; width: 45%">Nivel de aprobación</label>
                 <select [(ngModel)]="modelo.niveL_DIRECCION" id="tiposolicitud" name="tiposolicitud" class="form-select"
                   style="font-size: 14px" required>
                   <option value="" hidden>Selecccione</option>

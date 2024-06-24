@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { FullComponent } from './layouts/full/full.component';
 import { BlankComponent } from './layouts/blank/blank.component';
+import { LoginComponent } from './auth/pages/login/login.component';
 
 export const Approutes: Routes = [
   {
@@ -25,22 +26,35 @@ export const Approutes: Routes = [
       {
         path: 'solicitudes',
         loadChildren: () =>
-        import('./solicitudes/solicitudes.module').then(
-          m => m.SolicitudesModule
+          import('./solicitudes/solicitudes.module').then(
+            m => m.SolicitudesModule
           ),
       },
       {
         path: 'tareas',
         loadChildren: () =>
-        import('./tareas/tareas.module').then(
-          m => m.TareasModule
+          import('./tareas/tareas.module').then(
+            m => m.TareasModule
           ),
       },
       {
         path: 'mantenedores',
         loadChildren: () =>
-        import('./mantenedores/mantenedores.module').then(
-          m => m.MantenedoresModule
+          import('./mantenedores/mantenedores.module').then(
+            m => m.MantenedoresModule
+          ),
+      },
+    ],
+  },
+  {
+    path: '',
+    component: LoginComponent,
+    children: [
+      {
+        path: 'login',
+        loadChildren: () =>
+          import('./auth/auth.module').then(
+            (m) => m.AuthModule
           ),
       },
     ],
