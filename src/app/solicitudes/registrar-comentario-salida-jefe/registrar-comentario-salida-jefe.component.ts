@@ -1,31 +1,31 @@
-import { Component, TemplateRef, ViewChild } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
+import { Component } from '@angular/core';
+import { NgForm } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal, NgbTypeaheadSelectItemEvent } from '@ng-bootstrap/ng-bootstrap';
-import { CamundaRestService } from 'src/app/camunda-rest.service';
-import { Solicitud } from 'src/app/eschemas/Solicitud';
-import { CompleteTaskComponent } from '../general/complete-task.component';
 import { Subject } from 'rxjs';
 import { debounceTime } from "rxjs/operators";
-import { RegistrarData } from 'src/app/eschemas/RegistrarData';
+import { CamundaRestService } from 'src/app/camunda-rest.service';
 import { DatosProcesoInicio } from 'src/app/eschemas/DatosProcesoInicio';
-import { UtilService } from 'src/app/services/util/util.service';
-import { MantenimientoService } from 'src/app/services/mantenimiento/mantenimiento.service';
-import { SolicitudesService } from '../registrar-solicitud/solicitudes.service';
-import { ConsultaTareasService } from 'src/app/tareas/consulta-tareas/consulta-tareas.service';
-import { HttpErrorResponse } from '@angular/common/http';
-import { NgForm } from '@angular/forms';
-import { DetalleSolicitud } from 'src/app/eschemas/DetalleSolicitud';
 import { DatosSolicitud } from 'src/app/eschemas/DatosSolicitud';
-import { environment } from 'src/environments/environment';
-import { columnsAprobadores, dataTableAprobadores } from './registrar-comentarios.data';
+import { DetalleSolicitud } from 'src/app/eschemas/DetalleSolicitud';
+import { RegistrarData } from 'src/app/eschemas/RegistrarData';
+import { Solicitud } from 'src/app/eschemas/Solicitud';
+import { MantenimientoService } from 'src/app/services/mantenimiento/mantenimiento.service';
+import { UtilService } from 'src/app/services/util/util.service';
 import { DialogComponents, dialogComponentList } from 'src/app/shared/dialogComponents/dialog.components';
+import { ConsultaTareasService } from 'src/app/tareas/consulta-tareas/consulta-tareas.service';
+import { environment } from 'src/environments/environment';
+import { CompleteTaskComponent } from '../general/complete-task.component';
+import { SolicitudesService } from '../registrar-solicitud/solicitudes.service';
+import { columnsAprobadores, dataTableAprobadores } from './registrar-comentario-salida-jefe.data';
 
 @Component({
-  selector: 'app-registrar-comentarios',
-  templateUrl: './registrar-comentarios.component.html',
-  styleUrls: ['./registrar-comentarios.component.scss']
+  selector: 'app-registrar-comentario-salida-jefe',
+  templateUrl: './registrar-comentario-salida-jefe.component.html',
+  styleUrls: ['./registrar-comentario-salida-jefe.component.scss']
 })
-export class RegistrarComentariosComponent extends CompleteTaskComponent {
+export class RegistrarComentarioSalidaJefeComponent extends CompleteTaskComponent {
   NgForm = NgForm;
 
   selectedOption: string = 'No';
@@ -745,7 +745,7 @@ export class RegistrarComentariosComponent extends CompleteTaskComponent {
 
         //console.log("aprobacion: ",aprobacion);
         /* console.log(`Elemento en la posición Miguel1 ${this.keySelected}:`, this.dataAprobacionesPorPosicion[this.keySelected][0].nivelAprobacionType.idNivelAprobacion);
- 
+
          for (const key in this.dataAprobacionesPorPosicion[this.keySelected]) {
            if (this.dataAprobacionesPorPosicion.hasOwnProperty(key)) {
              console.log(`Clave: ${key}`);
@@ -900,7 +900,9 @@ export class RegistrarComentariosComponent extends CompleteTaskComponent {
 
   }
 
+
   openModal(componentName: keyof DialogComponents) {
+    console.log('SE ABRIO EL MODAL')
     this.modalService
       .open(dialogComponentList[componentName], {
         ariaLabelledBy: "modal-title",
@@ -922,6 +924,5 @@ export class RegistrarComentariosComponent extends CompleteTaskComponent {
         }
       );
   }
-
 
 }

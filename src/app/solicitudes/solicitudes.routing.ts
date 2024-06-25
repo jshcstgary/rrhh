@@ -1,18 +1,18 @@
 import { Routes } from "@angular/router";
 
-import { RegistrarSolicitudComponent } from "./registrar-solicitud/registrar-solicitud.component";
+import { CompletaSolicitudComponent } from "./completa-solicitud/completa-solicitud.component";
+import { CompletarAccionPersonalComponent as h21 } from "./completar-accion-personal/completar-accion-personal.component";
 import { ConsultaSolicitudesComponent } from "./consulta_solicitudes/consulta-solicitudes.component";
 import { DetalleSolicitudComponent } from "./detalle-solicitud/detalle-solicitud.component";
-import { RevisarSolicitudComponent } from "./revisar-solicitud/revisar-solicitud.component";
+import { RegistrarAccionPersonalComponent } from "./registrar-accion-personal/registrar-accion-personal.component";
 import { RegistrarCandidatoComponent } from "./registrar-candidato/registrar-candidato.component";
-import { CompletaSolicitudComponent } from "./completa-solicitud/completa-solicitud.component";
-import { ReingresoPersonalComponent } from "./reingreso-personal/reingreso-personal.component";
+import { RegistrarComentarioReingresoComponent as h19 } from "./registrar-comentario-reingreso/registrar-comentario-reingreso.component";
+import { RegistrarComentarioSalidaJefeComponent } from "./registrar-comentario-salida-jefe/registrar-comentario-salida-jefe.component";
+import { RegistrarComentarioSalidaRRHHComponent as h18 } from "./registrar-comentario-salida-rrhh/registrar-comentario-salida-rrhh.component";
 import { RegistrarFamiliaresComponent } from "./registrar-familiares/registrar-familiares.component";
-import { RegistroComentariosComponent } from "./registro-comentarios (h17)/registro-comentarios.component";
-import { RegistroComentariosComponent as h18 } from "./registro-comentarios (h18)/registro-comentarios.component";
-import { RegistrarComentariosComponent as h19 } from "./registrar-comentario (h19)/registrar-comentarios.component";
-import { AccionComponent } from "./accion-personal (h20)/accion-personal.component";
-import { AccionComponent as h21 } from "./accion-personal (h21)/accion-personal.component";
+import { RegistrarSolicitudComponent } from "./registrar-solicitud/registrar-solicitud.component";
+import { ReingresoPersonalComponent } from "./reingreso-personal/reingreso-personal.component";
+import { RevisarSolicitudComponent } from "./revisar-solicitud/revisar-solicitud.component";
 
 
 export const SolicitudesRoutes: Routes = [
@@ -77,7 +77,7 @@ export const SolicitudesRoutes: Routes = [
       },
       {
         path: "reingreso-personal/registro-comentarios-jefe/:id/:idSolicitud",
-        component: RegistroComentariosComponent,
+        component: RegistrarComentarioSalidaJefeComponent,
         data: {
           title: "Registro de Comentarios",
           urls: [
@@ -130,7 +130,7 @@ export const SolicitudesRoutes: Routes = [
       },
       {
         path: 'accion-personal/registrar-solicitud/:id/:idSolicitud',
-        component: AccionComponent,
+        component: RegistrarAccionPersonalComponent,
         data: {
           title: "Accion de Personal",
           urls: [

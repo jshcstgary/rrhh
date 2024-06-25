@@ -1,31 +1,31 @@
-import { Component, TemplateRef, ViewChild } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
+import { Component } from '@angular/core';
+import { NgForm } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal, NgbTypeaheadSelectItemEvent } from '@ng-bootstrap/ng-bootstrap';
-import { CamundaRestService } from 'src/app/camunda-rest.service';
-import { Solicitud } from 'src/app/eschemas/Solicitud';
-import { CompleteTaskComponent } from '../general/complete-task.component';
 import { Subject } from 'rxjs';
 import { debounceTime } from "rxjs/operators";
-import { RegistrarData } from 'src/app/eschemas/RegistrarData';
+import { CamundaRestService } from 'src/app/camunda-rest.service';
 import { DatosProcesoInicio } from 'src/app/eschemas/DatosProcesoInicio';
-import { UtilService } from 'src/app/services/util/util.service';
-import { MantenimientoService } from 'src/app/services/mantenimiento/mantenimiento.service';
-import { SolicitudesService } from '../registrar-solicitud/solicitudes.service';
-import { ConsultaTareasService } from 'src/app/tareas/consulta-tareas/consulta-tareas.service';
-import { HttpErrorResponse } from '@angular/common/http';
-import { NgForm } from '@angular/forms';
-import { DetalleSolicitud } from 'src/app/eschemas/DetalleSolicitud';
 import { DatosSolicitud } from 'src/app/eschemas/DatosSolicitud';
-import { environment } from 'src/environments/environment';
-import { columnsAprobadores, dataTableAprobadores } from './registro-comentarios.data';
+import { DetalleSolicitud } from 'src/app/eschemas/DetalleSolicitud';
+import { RegistrarData } from 'src/app/eschemas/RegistrarData';
+import { Solicitud } from 'src/app/eschemas/Solicitud';
+import { MantenimientoService } from 'src/app/services/mantenimiento/mantenimiento.service';
+import { UtilService } from 'src/app/services/util/util.service';
 import { DialogComponents, dialogComponentList } from 'src/app/shared/dialogComponents/dialog.components';
+import { ConsultaTareasService } from 'src/app/tareas/consulta-tareas/consulta-tareas.service';
+import { environment } from 'src/environments/environment';
+import { CompleteTaskComponent } from '../general/complete-task.component';
+import { SolicitudesService } from '../registrar-solicitud/solicitudes.service';
+import { columnsAprobadores, dataTableAprobadores } from './registrar-comentario-reingreso.data';
 
 @Component({
-  selector: 'app-registro-comentarios',
-  templateUrl: './registro-comentarios.component.html',
-  styleUrls: ['./registro-comentarios.component.scss']
+  selector: 'app-registrar-comentario-reingreso',
+  templateUrl: './registrar-comentario-reingreso.component.html',
+  styleUrls: ['./registrar-comentario-reingreso.component.scss']
 })
-export class RegistroComentariosComponent extends CompleteTaskComponent {
+export class RegistrarComentarioReingresoComponent extends CompleteTaskComponent {
   NgForm = NgForm;
 
   selectedOption: string = 'No';
@@ -330,7 +330,6 @@ export class RegistroComentariosComponent extends CompleteTaskComponent {
   */
 
   nombresEmpleados: string[] = [];
-  formaSalida: string = '';
 
   subledgers: string[] = [];
 
@@ -671,9 +670,7 @@ export class RegistroComentariosComponent extends CompleteTaskComponent {
       next: (response: any) => {
         this.detalleSolicitud = response.detalleSolicitudType[0];
         if (this.detalleSolicitud.codigoPosicion.length > 0) {
-
           this.model.codigoPosicion = this.detalleSolicitud.codigoPosicion;
-          this.model.responsableRRHH = this.detalleSolicitud.responsableRRHH
           this.model.puestoJefeInmediato = this.detalleSolicitud.puestoJefeInmediato;
           this.model.jefeInmediatoSuperior = this.detalleSolicitud.jefeInmediatoSuperior;
           this.model.descrPosicion = this.detalleSolicitud.descripcionPosicion;
@@ -707,8 +704,6 @@ export class RegistroComentariosComponent extends CompleteTaskComponent {
             +this.model.sueldoSemestral / 6 +
             +this.model.sueldoTrimestral / 3 +
             +this.model.sueldoMensual;
-
-
         }
         /* this.detalleSolicitud.estado = response.estado;
          this.detalleSolicitud.estado = response.estadoSolicitud;
@@ -750,7 +745,7 @@ export class RegistroComentariosComponent extends CompleteTaskComponent {
 
         //console.log("aprobacion: ",aprobacion);
         /* console.log(`Elemento en la posición Miguel1 ${this.keySelected}:`, this.dataAprobacionesPorPosicion[this.keySelected][0].nivelAprobacionType.idNivelAprobacion);
- 
+
          for (const key in this.dataAprobacionesPorPosicion[this.keySelected]) {
            if (this.dataAprobacionesPorPosicion.hasOwnProperty(key)) {
              console.log(`Clave: ${key}`);

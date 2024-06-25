@@ -676,7 +676,7 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
             "No existe aprobadores de solicitud para los datos ingresados",
             "error"
           );
-        },
+        }
       });
   }
 
@@ -718,7 +718,10 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
       sueldoTrimestral: "",
       sueldoSemestral: "",
       sueldoAnual: "",
-      taskNivelAprobador: ""
+      taskNivelAprobador: "",
+	  puestoJefeInmediato: "",
+      jefeInmediatoSuperior: "",
+      responsableRRHH: ""
     };
   }
 
@@ -1524,93 +1527,8 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
       });
   }
 
-  override generateVariablesFromFormFields() {
+	override generateVariablesFromFormFields() {
     let variables: any = {};
-    this.crearRegistradorSolicitud();
-    if (this.taskType_Activity == environment.taskType_Registrar) {
-      this.dataAprobacionesPorPosicionAPS.forEach(elemento => {
-        if (elemento.aprobador.nivelDireccion === this.NIVEL_APROBACION_GERENCIA_MEDIA) {
-          variables.correoNotificacionGerenciaMedia = {
-            value: elemento.aprobador.correo
-          };
-          variables.usuarioNotificacionGerenciaMedia = {
-            value: elemento.aprobador.usuario
-          };
-          variables.nivelDireccionNotificacionGerenciaMedia = {
-            value: elemento.aprobador.nivelDireccion
-          };
-          variables.descripcionPosicionNotificacionGerenciaMedia = {
-            value: elemento.aprobador.descripcionPosicion
-          };
-          variables.subledgerNotificacionGerenciaMedia = {
-            value: elemento.aprobador.subledger
-          };
-        } else if (elemento.aprobador.nivelDireccion === this.NIVEL_APROBACION_GERENCIA_UNIDAD) {
-          variables.correoNotificacionGerenciaUnidadCorporativa = {
-            value: elemento.aprobador.correo
-          };
-          variables.usuarioNotificacionGerenciaUnidadCorporativa = {
-            value: elemento.aprobador.usuario
-          };
-          variables.nivelDireccionNotificacionGerenciaUnidadCorporativa = {
-            value: elemento.aprobador.nivelDireccion
-          };
-          variables.descripcionPosicionNotificacionGerenciaUnidadCorporativa = {
-            value: elemento.aprobador.descripcionPosicion
-          };
-          variables.subledgerNotificacionGerenciaUnidadCorporativa = {
-            value: elemento.aprobador.subledger
-          };
-        } else if (elemento.aprobador.nivelDireccion === this.NIVEL_APROBACION_JEFATURA) {
-          variables.correoNotificacionJefatura = {
-            value: elemento.aprobador.correo
-          };
-          variables.usuarioNotificacionJefatura = {
-            value: elemento.aprobador.usuario
-          };
-          variables.nivelDireccionNotificacionJefatura = {
-            value: elemento.aprobador.nivelDireccion
-          };
-          variables.descripcionPosicionNotificacionJefatura = {
-            value: elemento.aprobador.descripcionPosicion
-          };
-          variables.subledgerNotificacionJefatura = {
-            value: elemento.aprobador.subledger
-          };
-        } else if (elemento.aprobador.nivelDireccion === this.NIVEL_APROBACION_VICEPRESIDENCIA) {
-          variables.correoNotificacionVicepresidencia = {
-            value: elemento.aprobador.correo
-          };
-          variables.usuarioNotificacionVicepresidencia = {
-            value: elemento.aprobador.usuario
-          };
-          variables.nivelDireccionNotificacionVicepresidencia = {
-            value: elemento.aprobador.nivelDireccion
-          };
-          variables.descripcionPosicionNotificacionVicepresidencia = {
-            value: elemento.aprobador.descripcionPosicion
-          };
-          variables.subledgerNotificacionVicepresidencia = {
-            value: elemento.aprobador.subledger
-          };
-        } else if (elemento.aprobador.nivelDireccion === this.NIVEL_APROBACION_RRHH) {
-          variables.correoNotificacionGerenteRRHH = {
-            value: elemento.aprobador.correo
-          };
-          variables.usuarioNotificacionGerenteRRHH = {
-            value: elemento.aprobador.usuario
-          };
-          variables.nivelDireccionNotificacionGerenteRRHH = {
-            value: elemento.aprobador.nivelDireccion
-          };
-          variables.descripcionPosicionNotificacionGerenteRRHH = {
-            value: elemento.aprobador.descripcionPosicion
-          };
-          variables.subledgerNotificacionGerenteRRHH = {
-            value: elemento.aprobador.subledger
-          };
-        }
-      });
 
     this.crearRegistradorSolicitud();
 
@@ -1785,7 +1703,6 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
 
     return { variables };
   }
-
 
   save2() {
     this.solicitudes

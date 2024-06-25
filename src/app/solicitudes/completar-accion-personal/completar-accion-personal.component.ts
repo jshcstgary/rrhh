@@ -1,34 +1,30 @@
-import { Component, TemplateRef, Type, ViewChild } from "@angular/core";
+import { HttpErrorResponse } from "@angular/common/http";
+import { Component, Type } from "@angular/core";
+import { NgForm } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 import {
-  NgbModal,
-  NgbTypeaheadSelectItemEvent,
+	NgbModal,
+	NgbTypeaheadSelectItemEvent,
 } from "@ng-bootstrap/ng-bootstrap";
-import { CamundaRestService } from "src/app/camunda-rest.service";
-import { Solicitud } from "src/app/eschemas/Solicitud";
-import { CompleteTaskComponent } from "../general/complete-task.component";
 import { Subject } from "rxjs";
-import { catchError, debounceTime, map } from "rxjs/operators";
-import { RegistrarData } from "src/app/eschemas/RegistrarData";
+import { debounceTime } from "rxjs/operators";
+import { CamundaRestService } from "src/app/camunda-rest.service";
 import { DatosProcesoInicio } from "src/app/eschemas/DatosProcesoInicio";
-import { UtilService } from "src/app/services/util/util.service";
-import { MantenimientoService } from "src/app/services/mantenimiento/mantenimiento.service";
-import { SolicitudesService } from "../registrar-solicitud/solicitudes.service";
-import { ConsultaTareasService } from "src/app/tareas/consulta-tareas/consulta-tareas.service";
-import { HttpErrorResponse } from "@angular/common/http";
-import { NgForm } from "@angular/forms";
-import { DetalleSolicitud } from "src/app/eschemas/DetalleSolicitud";
 import { DatosSolicitud } from "src/app/eschemas/DatosSolicitud";
+import { DetalleSolicitud } from "src/app/eschemas/DetalleSolicitud";
+import { RegistrarData } from "src/app/eschemas/RegistrarData";
+import { Solicitud } from "src/app/eschemas/Solicitud";
+import { MantenimientoService } from "src/app/services/mantenimiento/mantenimiento.service";
+import { UtilService } from "src/app/services/util/util.service";
+import { ConsultaTareasService } from "src/app/tareas/consulta-tareas/consulta-tareas.service";
 import { environment } from "src/environments/environment";
+import { CompleteTaskComponent } from "../general/complete-task.component";
+import { SolicitudesService } from "../registrar-solicitud/solicitudes.service";
 
 // import {
 //   DialogComponents,
 //   dialogComponentList,
 // } from "src/app/shared/dialogComponents/dialog.components";
-import {
-  IEmpleadoData,
-  IEmpleados,
-} from "src/app/services/mantenimiento/empleado.interface";
 import { DialogReasignarUsuarioComponent } from "src/app/shared/reasginar-usuario/reasignar-usuario.component";
 import Swal from "sweetalert2";
 
@@ -44,11 +40,11 @@ const dialogComponentList: DialogComponents = {
 };
 
 @Component({
-  selector: "app-accion-personal",
-  templateUrl: "./accion-personal.component.html",
-  styleUrls: ["./accion-personal.component.scss"],
+  selector: "app-completar-accion-personal",
+  templateUrl: "./completar-accion-personal.component.html",
+  styleUrls: ["./completar-accion-personal.component.scss"],
 })
-export class AccionComponent extends CompleteTaskComponent {
+export class CompletarAccionPersonalComponent extends CompleteTaskComponent {
   NgForm = NgForm;
 
   selectedOptionAnulacion: string;
@@ -608,7 +604,7 @@ export class AccionComponent extends CompleteTaskComponent {
       // const variableNames = Object.keys(this.model).join(",");
       const variableNames = Object.keys(this.model).join(",");
 
-      if ("true" === this.parentIdFlag) { 
+      if ("true" === this.parentIdFlag) {
         // id is parent process instance id. so handle it accordingly
         // we are looking for task id 'Registrar' in a recently started process instance 'id'
         this.idDeInstancia = params["id"];
@@ -756,7 +752,7 @@ export class AccionComponent extends CompleteTaskComponent {
 
         //console.log("aprobacion: ",aprobacion);
         /* console.log(`Elemento en la posición Miguel1 ${this.keySelected}:`, this.dataAprobacionesPorPosicion[this.keySelected][0].nivelAprobacionType.idNivelAprobacion);
- 
+
          for (const key in this.dataAprobacionesPorPosicion[this.keySelected]) {
            if (this.dataAprobacionesPorPosicion.hasOwnProperty(key)) {
              console.log(`Clave: ${key}`);
@@ -1143,144 +1139,6 @@ export class AccionComponent extends CompleteTaskComponent {
 
   onSelectionChange() {
     console.log(this.selectedOptionAnulacion);
-  }
-
-  empleado: string = '';
-  isDisabledEmpleado: boolean = false;
-  subledger: string = '';
-  isDisabledSubledger: boolean = false;
-
-  
-  searchEmpleado = (value: string): void => {
-    this.search(value, 'nombreCompleto', (data) => {
-      this.empleado = data.nombreCompleto;
-      this.isDisabledEmpleado = true;
-      this.subledger = data.subledger;
-      this.isDisabledSubledger = true;
-    })
-  }
-
-  searchSubledger = (value: string): void => {
-    this.search(value, 'subledger', (data) => {
-      this.empleado = data.nombreCompleto;
-      this.isDisabledEmpleado = true;
-      this.subledger = data.subledger;
-      this.isDisabledSubledger = true;
-    })
-  }
-
-
-  search = (value: string, propSearch: 'nombreCompleto' | 'subledger', setEmpleadoData: (data: IEmpleadoData) => void): void => {
-    this.mantenimientoService
-      .getDataEmpleadosEvolution("ev")
-      .pipe(
-        map(this.buscarValor.bind(this, value, "evType", propSearch)), // Asegúrate de pasar propSearch aquí
-        catchError((error) => {
-          return this.mantenimientoService
-            .getDataEmpleadosEvolution("jaff")
-            .pipe(map(this.buscarValor.bind(this, value, "jaffType", propSearch)));
-        }),
-        catchError(error => {
-          return this.mantenimientoService
-            .getDataEmpleadosEvolution('spyral')
-            .pipe(map(this.buscarValor.bind(this, value, 'spyralType', propSearch)))
-        }),
-      )
-      .subscribe({
-        next: (data) => {
-          console.log('Encontro', data);
-          setEmpleadoData(data as IEmpleadoData);
-        },
-        error: (error) => {
-          console.error(error);
-        },
-      });
-  }
-  
-  buscarValor = (search, type: "jaffType" | "evType" | 'spyralType', propSearch: 'nombreCompleto' | 'subledger', data: IEmpleados) => {
-    const result = data?.[type].find((item) => {
-      const regex = new RegExp(search, "i");
-      return item[propSearch]?.match(regex); // Asegúrate de que item[propSearch] exista
-    });
-    if (!result) {
-      throw new Error("No se encontró el valor esperado");
-    }
-    return result;
-  };
-
-  viewInputs: boolean = true;
-
-  onCheckedComp = (event: Event): void => {
-    const isChecked = (event.target as HTMLInputElement).checked;
-    console.log(isChecked)
-    this.viewInputs = isChecked;
-  }
-
-
-  fechaCambio: string = '';
-  isDisabledFechaCambio: boolean = false;
-
-  validateFechaCambio = (value: string) => {
-    const fechaReferencia = this.formatter(this.detalleSolicitud.fechaIngreso); 
-
-    if (value.length !== 10) {
-      return;
-    }
-
-    this.isDisabledFechaCambio = true;
-    if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) {
-      this.errorFechaCambio(`El formato ingresado no es valido`);
-      this.isDisabledFechaCambio = false;
-      return;
-    }
-
-    const fechaIngresada = new Date(value);
-
-    if (isNaN(fechaIngresada.getTime())) {
-      this.errorFechaCambio(`La fecha ingresada no es valida, por favor verifique`);
-      this.isDisabledFechaCambio = false;
-      return;
-    }
-
-    const diferenciaMeses = this.calcularDiferenciaMeses(fechaReferencia, fechaIngresada);
-
-    if (diferenciaMeses > 1) {
-      this.errorFechaCambio(`La fecha de estar dentro del mes en el que se genero esta solicitud`);
-      this.isDisabledFechaCambio = false;
-      return;
-    }
-
-  }
-
-  errorFechaCambio = (msg: string) => {
-    Swal.fire({
-      title: 'Error',
-      text: msg,
-      icon: 'error',
-      confirmButtonText: 'Ok'
-    });
-  }
-
-  calcularDiferenciaMeses = (fechaDesde: Date, fechaHasta: Date) => {
-    const year1 = fechaDesde.getFullYear();
-    const year2 = fechaHasta.getFullYear();
-    const month1 = fechaDesde.getMonth();
-    const month2 = fechaHasta.getMonth();
-    const diferencia = (year2 - year1) * 12 + (month2 - month1);
-    return diferencia;
-  }
-
-  formatter = (timestamp : any): Date => {
-    const fecha = new Date(timestamp);
-
-    const fechaFormateada = new Intl.DateTimeFormat('en-CA', { 
-      year: 'numeric',
-      month: '2-digit',
-      day: '2-digit'
-    }).format(fecha);
-
-    return new Date(fechaFormateada);
-
   }
 
 }

@@ -71,8 +71,6 @@ export class RegistrarData {
     public codigoPuesto: string = "",
     public descrPuesto: string = "",
     public fechaIngresogrupo: string = "",
-    public puestoJefeInmediato: string = '',
-    public jefeInmediatoSuperior: string = '',
     public grupoPago: string = "",
     public reportaA: string = "",
     public supervisaA: string = "",
@@ -97,6 +95,8 @@ export class RegistrarData {
     public sueldoSemestral: string = "",
     public sueldoAnual: string = "" ,/* Agrego estos campos que no están en la data */
     public taskNivelAprobador: string = "",
+    public puestoJefeInmediato: string = '',
+    public jefeInmediatoSuperior: string = '',
     public responsableRRHH: string =  ''
   ) // Este campo no sé de donde viene, no viene en el request de solicitud ni en el de detalle solicitud
   /*public sueldo: number | null = 0,
