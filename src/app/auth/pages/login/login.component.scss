@@ -1,0 +1,30 @@
+.login-container {
+  background-image: url(../../../../assets/images/login-imagen.jpg);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #0056b3;
+}
+
+.login-card {
+  padding-top: 20px;
+  background-color: white;
+  width: 450px;
+  min-height: 375px;
+}
+.login-title,
+.login-subtitle {
+  text-align: center;
+  font-weight: bold;
+}
+.login-subtitle {
+  font-size: 20px;
+}
+.login-button {
+  font-weight: 600;
+  color: #0056b3;
+}

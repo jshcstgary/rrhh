@@ -114,38 +114,43 @@ export class RegistrarData {
     public anual: number | null = 0*/
   {}
 
-  reset() {
-    this.codigo = "";
-    this.idEmpresa = "";
-    this.compania = "";
-    this.departamento = "";
-    this.nombreCargo = "";
-    this.nomCCosto = "";
-    this.codigoPosicion = "";
-    this.descrPosicion = "";
-    this.codigoPuesto = "";
-    this.descrPuesto = "";
-    this.fechaIngresogrupo = "";
-    this.grupoPago = "";
-    this.reportaA = "";
-    this.localidad = "";
-    this.nivelDir = "";
-    this.descrNivelDir = "";
-    this.nivelRepa = "";
-    this.nombreCompleto = "";
-    this.subledger = "";
-    this.sucursal = "";
-    this.unidadNegocio = "";
-    this.tipoContrato = "";
-    this.descripContrato = "";
-    this.status = "";
-    this.correo = "";
-    this.taskNivelAprobador;
-    this.tipoProceso="";
-    // this.sueldo = 0;
-    // this.mensual = 0;
-    // this.trimestral = 0;
-    // this.semestral = 0;
-    // this.anual = 0;
-  }
+  // reset() {
+  //   this.codigo = "";
+  //   this.idEmpresa = "";
+  //   this.compania = "";
+  //   this.departamento = "";
+  //   this.nombreCargo = "";
+  //   this.nomCCosto = "";
+  //   this.misionCargo = "";
+  //   this.justificacionCargo = "";
+  //   this.codigoPosicion = "";
+  //   this.descrPosicion = "";
+  //   this.codigoPuesto = "";
+  //   this.descrPuesto = "";
+  //   this.fechaIngresogrupo = "";
+  //   this.grupoPago = "";
+  //   this.reportaA = "";
+  //   this.supervisaA = "";
+  //   this.localidad = "";
+  //   this.nivelDir = "";
+  //   this.descrNivelDir = "";
+  //   this.nivelRepa = "";
+  //   this.nombreCompleto = "";
+  //   this.subledger = "";
+  //   this.sucursal = "";
+  //   this.unidadNegocio = "";
+  //   this.tipoContrato = "";
+  //   this.tipoProceso = "";
+  //   this.descripContrato = "";
+  //   this.status = "";
+  //   this.correo = "";
+  //   this.fechaIngreso = new Date();
+  //   this.comentariosAnulacion = "";
+  //   this.sueldo = "";
+  //   this.sueldoMensual = "";
+  //   this.sueldoTrimestral = "";
+  //   this.sueldoSemestral = "";
+  //   this.sueldoAnual = "";
+  //   this.taskNivelAprobador = "";
+  // }
 }

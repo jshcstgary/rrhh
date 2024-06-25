@@ -1,15 +1,11 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { environment } from "src/environments/environment";
 import { Observable } from "rxjs";
-import {
-  ITiposolicitud,
-  ITiposolicitudes,
-} from "src/app/mantenedores/tipo_solicitud/tipo-solicitud.interface";
 import { ITipoRutaResponse } from "src/app/mantenedores/ruta/ruta.interface";
+import { environment } from "src/environments/environment";
 import { ICatalogoResponse } from "./catalogo.interface";
-import { INiveles } from "./niveles.interface";
 import { IEmpleados } from "./empleado.interface";
+import { INiveles } from "./niveles.interface";
 
 @Injectable({
   providedIn: "root",
@@ -25,7 +21,7 @@ export class MantenimientoService {
   private apiEmpleadoEvolutionUrl = environment.empleadoServiceEs;
   private apiEmpleadoUrlJaff = environment.exempleadoServiceEsJaff;
   private apiEmpleadoUrlSpyral = environment.exempleadoServiceEsSpyral;
-  private apiFamiliaresCandidato = environment.familiaresCandidationServiceES;
+  private apiFamiliaresCandidato = environment.familiaresCandidatoServiceES;
   // http://10.35.3.162:8053/v1/es/item-catalogo/codigo/RBPND
   // http://10.35.3.162:8053/v1/es/item-catalogo/codigo
   private apiCatalogoUrl = environment.CatalogoServiceES;
@@ -135,6 +131,10 @@ export class MantenimientoService {
     type: "jaff" | "ev" | 'spyral' = "ev"
   ): Observable<IEmpleados> {
     return this.http.get<IEmpleados>(this.empleadosUrl[type]);
+  }
+
+  public getDataEmpleadosEvolutionPorId(id: string): Observable<IEmpleados> {
+    return this.http.get<IEmpleados>(`${this.apiEmpleadoEvolutionUrl}/nombre/${id}`);
   }
 
   public diagnostic(): Observable<any> {

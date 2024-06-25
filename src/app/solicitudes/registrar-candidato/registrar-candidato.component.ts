@@ -30,6 +30,7 @@ import { ConsultaTareasService } from "src/app/tareas/consulta-tareas/consulta-t
 import { SolicitudesService } from "../registrar-solicitud/solicitudes.service";
 import { RegistrarCandidatoService } from "./registrar-candidato.service";
 import { TipoSolicitudService } from "src/app/mantenedores/tipo_solicitud/tipo-solicitud.service";
+import { StarterService } from "src/app/starter/starter.service";
 
 @Component({
   selector: 'app-registrar-candidato',
@@ -414,7 +415,8 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
     private utilService: UtilService,
     private consultaTareasService: ConsultaTareasService,
     private seleccionCandidatoService: RegistrarCandidatoService,
-    private tipoSolicitudServicio: TipoSolicitudService
+    private tipoSolicitudServicio: TipoSolicitudService,
+    private starterService: StarterService
   ) {
     super(route, router, camundaRestService);
 
@@ -504,10 +506,10 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
         this.disabledFechas.entrevistaJefatura = this.fechas.entrevistaJefatura !== null && this.fechas.entrevistaJefatura !== "";
         if (this.disabledFechas.entrevistaJefatura) {
           this.isCheckedEntrevistaJefatura = true;
-          }
+        }
 
-          this.fechas.tomaDecisiones = candidatoValues.tomaDeDesiciones === null ? "" : this.getFormattedDate(candidatoValues.tomaDeDesiciones);
-          this.disabledFechas.tomaDecisiones = this.fechas.tomaDecisiones !== null && this.fechas.tomaDecisiones !== "";
+        this.fechas.tomaDecisiones = candidatoValues.tomaDeDesiciones === null ? "" : this.getFormattedDate(candidatoValues.tomaDeDesiciones);
+        this.disabledFechas.tomaDecisiones = this.fechas.tomaDecisiones !== null && this.fechas.tomaDecisiones !== "";
         if (this.disabledFechas.tomaDecisiones) {
           this.isCheckedTomaDecisiones = true;
         }
@@ -1135,6 +1137,35 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
     });
   }
 
+  llenarModelDetalleAprobaciones(res) {
+    this.solicitudes.modelDetalleAprobaciones.id_Solicitud = this.solicitud.idSolicitud;
+    this.solicitudes.modelDetalleAprobaciones.id_NivelAprobacion = 150000;
+    this.solicitudes.modelDetalleAprobaciones.id_TipoSolicitud = this.solicitud.idTipoSolicitud.toString();
+    this.solicitudes.modelDetalleAprobaciones.id_Accion = 150000;
+    this.solicitudes.modelDetalleAprobaciones.id_TipoMotivo = this.solicitud.idTipoMotivo;
+    this.solicitudes.modelDetalleAprobaciones.id_TipoRuta = 150000;
+    this.solicitudes.modelDetalleAprobaciones.id_Ruta = 150000;
+    this.solicitudes.modelDetalleAprobaciones.tipoSolicitud = this.solicitud.tipoSolicitud;
+    this.solicitudes.modelDetalleAprobaciones.motivo = "SeleccionCandidato";
+    this.solicitudes.modelDetalleAprobaciones.tipoRuta = "SeleccionCandidato";
+    this.solicitudes.modelDetalleAprobaciones.ruta = "Selección de Candidato";
+    this.solicitudes.modelDetalleAprobaciones.accion = "SeleccionCandidato";
+    this.solicitudes.modelDetalleAprobaciones.nivelDirecion = res.evType[0].nivelDir;
+    this.solicitudes.modelDetalleAprobaciones.nivelAprobacionRuta = "SeleccionCandidato";
+    this.solicitudes.modelDetalleAprobaciones.usuarioAprobador = res.evType[0].nombreCompleto;
+    this.solicitudes.modelDetalleAprobaciones.codigoPosicionAprobador = res.evType[0].codigoPosicion;
+    this.solicitudes.modelDetalleAprobaciones.descripcionPosicionAprobador = res.evType[0].descrPosicion;
+    this.solicitudes.modelDetalleAprobaciones.sudlegerAprobador = res.evType[0].subledger;
+    this.solicitudes.modelDetalleAprobaciones.nivelDireccionAprobador = res.evType[0].nivelDir;
+    this.solicitudes.modelDetalleAprobaciones.codigoPosicionReportaA = res.evType[0].codigoPosicionReportaA;
+    this.solicitudes.modelDetalleAprobaciones.estadoAprobacion = "SeleccionCandidato";
+    this.solicitudes.modelDetalleAprobaciones.estado = "A";
+    this.solicitudes.modelDetalleAprobaciones.correo = res.evType[0].correo;
+    this.solicitudes.modelDetalleAprobaciones.usuarioCreacion = res.evType[0].nombreCompleto;
+    this.solicitudes.modelDetalleAprobaciones.usuarioModificacion = res.evType[0].nombreCompleto;
+    this.solicitudes.modelDetalleAprobaciones.fechaCreacion = new Date().toISOString();
+    this.solicitudes.modelDetalleAprobaciones.fechaModificacion = new Date().toISOString();
+  }
 
   save() {
 
@@ -1159,80 +1190,88 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
     this.solicitud.unidadNegocio = this.model.unidadNegocio;
     this.solicitud.idUnidadNegocio = this.model.unidadNegocio;
     this.solicitud.estadoSolicitud = "2";
-    this.solicitudes
-      .actualizarSolicitud(this.solicitud)
-      .subscribe((responseSolicitud) => {
 
-        this.detalleSolicitud.idSolicitud = this.solicitud.idSolicitud;
-
-        this.detalleSolicitud.areaDepartamento = this.model.departamento;
-
-        this.detalleSolicitud.cargo = this.model.nombreCargo;
-        this.detalleSolicitud.centroCosto = this.model.nomCCosto;
-        this.detalleSolicitud.codigoPosicion = this.model.codigoPosicion;
-        this.detalleSolicitud.compania = this.model.compania; //idEmpresa
-        this.detalleSolicitud.departamento = this.model.departamento;
-        this.detalleSolicitud.descripcionPosicion =
-          this.model.descrPosicion;
-
-        this.detalleSolicitud.justificacion = this.model.justificacionCargo;
-        this.detalleSolicitud.localidad = this.model.localidad;
-        this.detalleSolicitud.localidadZona = this.model.localidad;
-
-        this.detalleSolicitud.misionCargo = this.model.misionCargo;
-        this.detalleSolicitud.nivelDireccion = this.model.nivelDir;
-        this.detalleSolicitud.nivelReporteA = this.model.nivelRepa;
-
-        this.detalleSolicitud.nombreEmpleado = this.model.nombreCompleto;
-
-
-        this.detalleSolicitud.reportaA = this.model.reportaA;
-
-        this.detalleSolicitud.subledger = this.model.subledger;
-
-        this.detalleSolicitud.subledgerEmpleado = this.model.subledger;
-
-        this.detalleSolicitud.sucursal = this.model.sucursal;
-
-        this.detalleSolicitud.misionCargo = this.model.misionCargo;
-        this.detalleSolicitud.justificacion = this.model.justificacionCargo;
-
-        this.detalleSolicitud.sueldo = this.model.sueldo;
-        this.detalleSolicitud.sueldoVariableMensual =
-          this.model.sueldoMensual;
-        this.detalleSolicitud.sueldoVariableTrimestral =
-          this.model.sueldoTrimestral;
-        this.detalleSolicitud.sueldoVariableSemestral =
-          this.model.sueldoSemestral;
-        this.detalleSolicitud.sueldoVariableAnual = this.model.sueldoAnual;
-        this.detalleSolicitud.tipoContrato = this.model.tipoContrato;
-        this.detalleSolicitud.unidadNegocio = this.model.unidadNegocio;
-
-        this.detalleSolicitud.correo = this.model.correo;
-
-        this.detalleSolicitud.supervisaA = this.model.supervisaA;
-
-        this.detalleSolicitud.fechaIngreso = this.model.fechaIngresogrupo == "" ? this.model.fechaIngreso : this.model.fechaIngresogrupo;
+    this.starterService.getUser(localStorage.getItem("idUsuario")!).subscribe({
+      next: (res) => {
+        this.llenarModelDetalleAprobaciones(res);
 
         this.solicitudes
-          .actualizarDetalleSolicitud(this.detalleSolicitud)
-          .subscribe((responseDetalle) => {
+          .actualizarSolicitud(this.solicitud)
+          .subscribe((responseSolicitud) => {
 
-            this.utilService.closeLoadingSpinner(); //comentado mmunoz
-            this.utilService.modalResponse(
-              "Datos ingresados correctamente",
-              "success"
-            );
+            this.detalleSolicitud.idSolicitud = this.solicitud.idSolicitud;
 
-            setTimeout(() => {
-              this.router.navigate([
-                "/tareas/consulta-tareas",
-              ]);
-            }, 1800);
+            this.detalleSolicitud.areaDepartamento = this.model.departamento;
+
+            this.detalleSolicitud.cargo = this.model.nombreCargo;
+            this.detalleSolicitud.centroCosto = this.model.nomCCosto;
+            this.detalleSolicitud.codigoPosicion = this.model.codigoPosicion;
+            this.detalleSolicitud.compania = this.model.compania; //idEmpresa
+            this.detalleSolicitud.departamento = this.model.departamento;
+            this.detalleSolicitud.descripcionPosicion =
+              this.model.descrPosicion;
+
+            this.detalleSolicitud.justificacion = this.model.justificacionCargo;
+            this.detalleSolicitud.localidad = this.model.localidad;
+            this.detalleSolicitud.localidadZona = this.model.localidad;
+
+            this.detalleSolicitud.misionCargo = this.model.misionCargo;
+            this.detalleSolicitud.nivelDireccion = this.model.nivelDir;
+            this.detalleSolicitud.nivelReporteA = this.model.nivelRepa;
+
+            this.detalleSolicitud.nombreEmpleado = this.model.nombreCompleto;
 
 
-          });
-      }); //aqui debe crear los aprobadores
+            this.detalleSolicitud.reportaA = this.model.reportaA;
+
+            this.detalleSolicitud.subledger = this.model.subledger;
+
+            this.detalleSolicitud.subledgerEmpleado = this.model.subledger;
+
+            this.detalleSolicitud.sucursal = this.model.sucursal;
+
+            this.detalleSolicitud.misionCargo = this.model.misionCargo;
+            this.detalleSolicitud.justificacion = this.model.justificacionCargo;
+
+            this.detalleSolicitud.sueldo = this.model.sueldo;
+            this.detalleSolicitud.sueldoVariableMensual =
+              this.model.sueldoMensual;
+            this.detalleSolicitud.sueldoVariableTrimestral =
+              this.model.sueldoTrimestral;
+            this.detalleSolicitud.sueldoVariableSemestral =
+              this.model.sueldoSemestral;
+            this.detalleSolicitud.sueldoVariableAnual = this.model.sueldoAnual;
+            this.detalleSolicitud.tipoContrato = this.model.tipoContrato;
+            this.detalleSolicitud.unidadNegocio = this.model.unidadNegocio;
+
+            this.detalleSolicitud.correo = this.model.correo;
+
+            this.detalleSolicitud.supervisaA = this.model.supervisaA;
+
+            this.detalleSolicitud.fechaIngreso = this.model.fechaIngresogrupo == "" ? this.model.fechaIngreso : this.model.fechaIngresogrupo;
+
+            this.solicitudes
+              .actualizarDetalleSolicitud(this.detalleSolicitud)
+              .subscribe((responseDetalle) => {
+
+                this.utilService.closeLoadingSpinner(); //comentado mmunoz
+                this.utilService.modalResponse(
+                  "Datos ingresados correctamente",
+                  "success"
+                );
+
+                setTimeout(() => {
+                  this.router.navigate([
+                    "/tareas/consulta-tareas",
+                  ]);
+                }, 1800);
+
+
+              });
+          }); //aqui debe crear los aprobadores
+      }
+    });
+
     this.submitted = true;
   }
 
@@ -1284,28 +1323,36 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
 
     this.seleccionCandidatoService.saveCandidato(request).subscribe({
       next: () => {
-        Swal.fire({
-          text: "Datos actualizados con éxito",
-          icon: "success",
-          confirmButtonColor: "rgb(227, 199, 22)",
-          confirmButtonText: "Sí"
+        this.starterService.getUser(localStorage.getItem("idUsuario")!).subscribe({
+          next: (res) => {
+            this.llenarModelDetalleAprobaciones(res);
+
+            this.saveDetalleAprobaciones()
+
+            Swal.fire({
+              text: "Datos actualizados con éxito",
+              icon: "success",
+              confirmButtonColor: "rgb(227, 199, 22)",
+              confirmButtonText: "Sí"
+            });
+
+            this.tipoProcesoSaved = this.model.tipoProceso;
+            this.disabledTipoProceso = this.tipoProcesoSaved !== "";
+
+            this.disabledFechas.actualizacionPerfil = this.fechas.actualizacionPerfil !== null && this.fechas.actualizacionPerfil !== "";
+            this.disabledFechas.busquedaCandidatos = this.fechas.busquedaCandidatos !== null && this.fechas.busquedaCandidatos !== "";
+            this.disabledFechas.entrevista = this.fechas.entrevista !== null && this.fechas.entrevista !== "";
+            this.disabledFechas.pruebas = this.fechas.pruebas !== null && this.fechas.pruebas !== "";
+            this.disabledFechas.referencias = this.fechas.referencias !== null && this.fechas.referencias !== "";
+            this.disabledFechas.elaboracionInforme = this.fechas.elaboracionInforme !== null && this.fechas.elaboracionInforme !== "";
+            this.disabledFechas.entregaJefe = this.fechas.entregaJefe !== null && this.fechas.entregaJefe !== "";
+            this.disabledFechas.entrevistaJefatura = this.fechas.entrevistaJefatura !== null && this.fechas.entrevistaJefatura !== "";
+            this.disabledFechas.tomaDecisiones = this.fechas.tomaDecisiones !== null && this.fechas.tomaDecisiones !== "";
+            this.disabledFechas.candidatoSeleccionado = this.fechas.candidatoSeleccionado !== null && this.fechas.candidatoSeleccionado !== "";
+            this.disabledFechas.procesoContratacion = this.fechas.procesoContratacion !== null && this.fechas.procesoContratacion !== "";
+            this.disabledFechas.finProcesoContratacion = this.fechas.finProcesoContratacion !== null && this.fechas.finProcesoContratacion !== "";
+          }
         });
-
-        this.tipoProcesoSaved = this.model.tipoProceso;
-        this.disabledTipoProceso = this.tipoProcesoSaved !== "";
-
-        this.disabledFechas.actualizacionPerfil = this.fechas.actualizacionPerfil !== null && this.fechas.actualizacionPerfil !== "";
-        this.disabledFechas.busquedaCandidatos = this.fechas.busquedaCandidatos !== null && this.fechas.busquedaCandidatos !== "";
-        this.disabledFechas.entrevista = this.fechas.entrevista !== null && this.fechas.entrevista !== "";
-        this.disabledFechas.pruebas = this.fechas.pruebas !== null && this.fechas.pruebas !== "";
-        this.disabledFechas.referencias = this.fechas.referencias !== null && this.fechas.referencias !== "";
-        this.disabledFechas.elaboracionInforme = this.fechas.elaboracionInforme !== null && this.fechas.elaboracionInforme !== "";
-        this.disabledFechas.entregaJefe = this.fechas.entregaJefe !== null && this.fechas.entregaJefe !== "";
-        this.disabledFechas.entrevistaJefatura = this.fechas.entrevistaJefatura !== null && this.fechas.entrevistaJefatura !== "";
-        this.disabledFechas.tomaDecisiones = this.fechas.tomaDecisiones !== null && this.fechas.tomaDecisiones !== "";
-        this.disabledFechas.candidatoSeleccionado = this.fechas.candidatoSeleccionado !== null && this.fechas.candidatoSeleccionado !== "";
-        this.disabledFechas.procesoContratacion = this.fechas.procesoContratacion !== null && this.fechas.procesoContratacion !== "";
-        this.disabledFechas.finProcesoContratacion = this.fechas.finProcesoContratacion !== null && this.fechas.finProcesoContratacion !== "";
       },
       error: (error) => {
         console.error(error);
@@ -1492,7 +1539,7 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
 
     let variables: any = {};
 
-    if (this.solicitud.tipoSolicitud.toUpperCase().includes("REQUISICION")||this.solicitud.tipoSolicitud.toUpperCase().includes("REQUISICIÓN")) {
+    if (this.solicitud.tipoSolicitud.toUpperCase().includes("REQUISICION") || this.solicitud.tipoSolicitud.toUpperCase().includes("REQUISICIÓN")) {
 
 
       if (this.taskType_Activity == environment.taskType_RegistrarCandidato) {
@@ -1818,4 +1865,3 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
 
 
 }
-

@@ -320,9 +320,9 @@
                   <!-- <option value="" hidden>Selecccione</option> -->
                   <option
                     *ngFor="let item of dataNivelAprobacion"
-                    [value]="item"
+                    [value]="item.id"
                   >
-                    {{ item }}
+                    {{ item.descripcion }}
                   </option>
                 </select>
               </div>

@@ -13,7 +13,7 @@ export class JobApplyComponent implements OnInit {
 
   applyDetail: UntypedFormGroup;
 
-  constructor(public fb: UntypedFormBuilder) { 
+  constructor(public fb: UntypedFormBuilder) {
 
     this.applyDetail = this.fb.group({
 
@@ -32,7 +32,6 @@ export class JobApplyComponent implements OnInit {
 
 
   onSubmit() {
-    debugger;
     
   }
 

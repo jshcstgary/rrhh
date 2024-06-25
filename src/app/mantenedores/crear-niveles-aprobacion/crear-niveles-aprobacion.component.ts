@@ -253,22 +253,22 @@ export class CrearNivelesAprobacionComponent implements OnInit {
     });
   }
 
-  ObtenerServicioNivelAprobacion() {
-    return this.mantenimientoService.getNivelesPorTipo("NA").subscribe({
-      next: (response) => {
-        this.dataNivelAprobacion = [
-          ...new Set(
-            response.evType.map((item) => {
-              return item.nivelDir;
-            })
-          ),
-        ];
-      },
-      error: (error: HttpErrorResponse) => {
-        this.utilService.modalResponse(error.error, "error");
-      },
-    });
-  }
+  // ObtenerServicioNivelAprobacion() {
+  //   return this.mantenimientoService.getNivelesPorTipo("NA").subscribe({
+  //     next: (response) => {
+  //       this.dataNivelAprobacion = [
+  //         ...new Set(
+  //           response.evType.map((item) => {
+  //             return item.nivelDir;
+  //           })
+  //         ),
+  //       ];
+  //     },
+  //     error: (error: HttpErrorResponse) => {
+  //       this.utilService.modalResponse(error.error, "error");
+  //     },
+  //   });
+  // }
 
   // Cambio en el consumo del API comentado tveas
   /*ObtenerServicioNivelDireccion() {
@@ -289,21 +289,30 @@ export class CrearNivelesAprobacionComponent implements OnInit {
   }*/
 
   // Cambio en el consumo del API comentado tveas
-  /*ObtenerServicioNivelAprobacion() {
+  ObtenerServicioNivelAprobacion() {
     console.log("Executing ObtenerServicioNivelAprobacion() method");
     return this.mantenimientoService.getCatalogo("RBPNA").subscribe({
-      // return this.mantenimientoService.getCatalogoRBPNA().subscribe({
-      next: (response) => {
-        this.dataNivelAprobacion = response.itemCatalogoTypes.map((r) => ({
+      next: (res) => {
+        this.dataNivelAprobacion = res.itemCatalogoTypes.map((r) => ({
           id: r.codigo,
           descripcion: r.valor,
-        })); //verificar la estructura mmunoz
-      },
-      error: (error: HttpErrorResponse) => {
-        this.utilService.modalResponse(error.error, "error");
-      },
+        }));
+
+        console.log(this.dataNivelAprobacion);
+      }
+      // return this.mantenimientoService.getCatalogoRBPNA().subscribe({
+      //   next: (response) => {
+      //     this.dataNivelAprobacion = response.itemCatalogoTypes.map((r) => ({
+      //       id: r.codigo,
+      //       descripcion: r.valor,
+      //     })); //verificar la estructura mmunoz
+      //   },
+      //   error: (error: HttpErrorResponse) => {
+      //     this.utilService.modalResponse(error.error, "error");
+      //   }
+      // }),
     });
-  }*/
+  }
 
   procesarNivelAprobacion() {
     this.utilService.openLoadingSpinner(
@@ -320,15 +329,15 @@ export class CrearNivelesAprobacionComponent implements OnInit {
           .subscribe(
             (response) => {
               this.utilService.closeLoadingSpinner();
-                    this.utilService.modalResponse(
-                      "Datos ingresados correctamente",
-                      "success"
-                    );
-                     setTimeout(() => {
-                      this.router.navigate([
-                        "/mantenedores/niveles-aprobacion",
-                      ]);
-                    }, 1600);
+              this.utilService.modalResponse(
+                "Datos ingresados correctamente",
+                "success"
+              );
+              setTimeout(() => {
+                this.router.navigate([
+                  "/mantenedores/niveles-aprobacion",
+                ]);
+              }, 1600);
               // Inicio
               /*this.serviceNivelesAprobacion
                 .refrescarNivelesAprobaciones()
@@ -368,13 +377,13 @@ export class CrearNivelesAprobacionComponent implements OnInit {
       .subscribe(
         (response) => {
           this.utilService.closeLoadingSpinner();
-                this.utilService.modalResponse(
-                  "Datos actualizados correctamente",
-                  "success"
-                );
-                setTimeout(() => {
-                  this.router.navigate(["/mantenedores/niveles-aprobacion"]);
-                }, 1600);
+          this.utilService.modalResponse(
+            "Datos actualizados correctamente",
+            "success"
+          );
+          setTimeout(() => {
+            this.router.navigate(["/mantenedores/niveles-aprobacion"]);
+          }, 1600);
           /*this.serviceNivelesAprobacion
             .refrescarNivelesAprobaciones()
             .subscribe(
