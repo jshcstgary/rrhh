@@ -1,18 +1,20 @@
 import { Routes } from "@angular/router";
 
 import { CompletaSolicitudComponent } from "./completa-solicitud/completa-solicitud.component";
-import { CompletarAccionPersonalComponent as h21 } from "./completar-accion-personal/completar-accion-personal.component";
 import { ConsultaSolicitudesComponent } from "./consulta_solicitudes/consulta-solicitudes.component";
 import { DetalleSolicitudComponent } from "./detalle-solicitud/detalle-solicitud.component";
-import { RegistrarAccionPersonalComponent } from "./registrar-accion-personal/registrar-accion-personal.component";
 import { RegistrarCandidatoComponent } from "./registrar-candidato/registrar-candidato.component";
-import { RegistrarComentarioReingresoComponent as h19 } from "./registrar-comentario-reingreso/registrar-comentario-reingreso.component";
-import { RegistrarComentarioSalidaJefeComponent } from "./registrar-comentario-salida-jefe/registrar-comentario-salida-jefe.component";
-import { RegistrarComentarioSalidaRRHHComponent as h18 } from "./registrar-comentario-salida-rrhh/registrar-comentario-salida-rrhh.component";
-import { RegistrarFamiliaresComponent } from "./registrar-familiares/registrar-familiares.component";
 import { RegistrarSolicitudComponent } from "./registrar-solicitud/registrar-solicitud.component";
-import { ReingresoPersonalComponent } from "./reingreso-personal/reingreso-personal.component";
 import { RevisarSolicitudComponent } from "./revisar-solicitud/revisar-solicitud.component";
+
+// HISTORIAS - CGARCIA
+import { RegistrarFamiliaresComponent } from "./registrar-familiares/registrar-familiares.component";
+import { ReingresoPersonalComponent } from "./reingreso-personal/reingreso-personal.component";
+import { RegistrarComentarioSalidaJefeComponent } from "./registrar-comentario-salida-jefe/registrar-comentario-salida-jefe.component";
+import { RegistrarComentarioSalidaRRHHComponent } from "./registrar-comentario-salida-rrhh/registrar-comentario-salida-rrhh.component";
+import { RegistrarComentarioReingresoComponent } from "./registrar-comentario-reingreso/registrar-comentario-reingreso.component";
+import { RegistrarAccionPersonalComponent } from "./registrar-accion-personal/registrar-accion-personal.component";
+import { CompletarAccionPersonalComponent } from "./completar-accion-personal/completar-accion-personal.component";
 
 
 export const SolicitudesRoutes: Routes = [
@@ -92,7 +94,7 @@ export const SolicitudesRoutes: Routes = [
       },
       {
         path: "reingreso-personal/registro-comentarios-rrhh/:id/:idSolicitud",
-        component: h18,
+        component: RegistrarComentarioSalidaRRHHComponent,
         data: {
           title: "Registro de Comentarios h18",
           urls: [
@@ -107,7 +109,7 @@ export const SolicitudesRoutes: Routes = [
       },
       {
         path: "reingreso-personal/registrar-comentarios-solicitante/:id/:idSolicitud",
-        component: h19,
+        component: RegistrarComentarioReingresoComponent,
         data: {
           title: "Registro de Comentarios h19",
           urls: [
@@ -145,7 +147,7 @@ export const SolicitudesRoutes: Routes = [
       },
       {
         path: 'accion-personal/completar-solicitud/:id/:idSolicitud',
-        component: h21,
+        component: CompletarAccionPersonalComponent,
         data: {
           title: "Completar solicitud",
           urls: [

@@ -1,8 +1,10 @@
-const baseC = "http://10.35.3.187:8188"; //base de camunda Local
+// const baseC = "http://10.35.3.187:8188"; //base de camunda Local
+const baseC = "http://10.35.3.162:8090"; //base de camunda Local
 const base = "http://10.35.3.162"; //base de servicios local
 const baseRBP = "http://192.168.44.180"; //base de servicios local
 const baseG ="http://181.188.224.250:18043"; //base de servicios api gateway
-export const portalWorkFlow: string = "http://181.188.224.250:4200/";
+
+export const portalWorkFlow: string = "http://10.35.3.162:4200/";
 
 
 export const environment = {
@@ -127,6 +129,11 @@ export const environment = {
   familiaresCandidatoServiceES: `${base}:8087/v1/es/familiarescandidato`,
   // familiaresCandidatoServiceES: `${baseG}/v1/es/familiarescandidato`,
   // familiaresCandidatoServiceES: `${baseRBP}:8087/v1/es/familiarescandidato`,
+
+  senEmailService: `${base}:8084/v1/es/mail`,
+  // senEmailService: `${baseG}/v1/es/mail`,
+  // senEmailService: `${baseRBP}:8087/v1/es/mail`,
+
   /*
 
   mantenedores

@@ -17,7 +17,7 @@ import { UtilData } from "src/app/services/util/util.data";
 import { ConsultaTareasService } from "./consulta-tareas.service";
 import { DataFilterNivelesAprobacion } from "src/app/eschemas/DataFilterNivelesAprobacion";
 import { MantenimientoService } from "src/app/services/mantenimiento/mantenimiento.service";
-import { Router } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { SolicitudesService } from "src/app/solicitudes/registrar-solicitud/solicitudes.service";
 import { StarterService } from "src/app/starter/starter.service";
 
@@ -62,11 +62,21 @@ export class ConsultaTareasComponent implements OnInit {
     private mantenimientoService: MantenimientoService,
     private router: Router,
     private solicitudes: SolicitudesService,
-    private starterService: StarterService
+    private starterService: StarterService,
+    private _route: ActivatedRoute
   ) { }
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
+    const idUsuario = await this._route.snapshot.queryParamMap.get("idUsuario");
+
+    if (idUsuario !== null && idUsuario !== undefined) {
+      localStorage.setItem("idUsuario", idUsuario);
+    }
+
     this.getDataToTable();
+  }
+
+  ngAfterViewInit() {
   }
 
   filterDataTable() {
@@ -129,22 +139,22 @@ export class ConsultaTareasComponent implements OnInit {
         return this.consultaTareasService.getTareasUsuario(res.evType[0].subledger).subscribe({
           next: (response) => {
             this.dataTable = response.solicitudes.map((item) => ({
-                idSolicitud: item.idSolicitud + "," + item.rootProcInstId,
-                startTime: item.startTime,
-                name: item.name,
-                tipoSolicitud: item.tipoSolicitud,
-              })
+              idSolicitud: item.idSolicitud + "," + item.rootProcInstId,
+              startTime: item.startTime,
+              name: item.name,
+              tipoSolicitud: item.tipoSolicitud,
+            })
             );
 
             // this.consultaTareasService.
-          /*  this.consultaTareasService.obtenerDetallesAprobacionesSolicitudes(this.starterService.userIniciador.subledger).subscribe({
-              next: (response) => {
-                console.log(response);
-              },
-              error: (err) => {
-                console.error(err);
-              }
-            });*/
+            /*  this.consultaTareasService.obtenerDetallesAprobacionesSolicitudes(this.starterService.userIniciador.subledger).subscribe({
+                next: (response) => {
+                  console.log(response);
+                },
+                error: (err) => {
+                  console.error(err);
+                }
+              });*/
 
             this.utilService.closeLoadingSpinner();
           },

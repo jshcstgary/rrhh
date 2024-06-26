@@ -44,6 +44,15 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
 
   selectedOption: string = 'No';
 
+  emailVariables = {
+    de: "",
+    password: "",
+    alias: "",
+    para: "",
+    asunto: "",
+    cuerpo: ""
+  };
+
   private readonly NIVEL_APROBACION_GERENCIA_MEDIA: string = "GERENCIA MEDIA";
   private readonly NIVEL_APROBACION_GERENCIA_UNIDAD: string = "GERENCIA DE UNIDAD O CORPORATIVA";
   private readonly NIVEL_APROBACION_JEFATURA: string = "JEFATURA";
@@ -1353,34 +1362,36 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
                 this.solicitud.estadoSolicitud = "AN";
               }
 
-              this.solicitudes
-                .actualizarSolicitud(this.solicitud)
-                .subscribe({
-                  next: (responseSolicitud) => {
+              this.solicitudes.actualizarSolicitud(this.solicitud).subscribe({
+                next: (responseSolicitud) => {
+                  setTimeout(() => {
+                    this.consultarNextTaskAprobador(this.solicitud.idSolicitud);
+
+                    this.solicitudes.sendEmail(this.emailVariables).subscribe({
+                      next: () => {
+                      },
+                      error: (error) => {
+                        console.error(error);
+                      }
+                    });
+
+                    this.utilService.closeLoadingSpinner();
+                    //fin actualizo la solicitud a enviada
+                    this.utilService.modalResponse(
+                      `Solicitud registrada correctamente [${this.solicitud.idSolicitud}]. Será redirigido en un momento...`,
+                      "success"
+                    );
                     setTimeout(() => {
-                      this.consultarNextTaskAprobador(this.solicitud.idSolicitud);
-
-                      // if (this.uniqueTaskId) {
-                      //  this.ObtenerNivelAprobadorTask();
-                      // }
-
-                      this.utilService.closeLoadingSpinner();
-                      //fin actualizo la solicitud a enviada
-                      this.utilService.modalResponse(
-                        `Solicitud registrada correctamente [${this.solicitud.idSolicitud}]. Será redirigido en un momento...`,
-                        "success"
-                      );
-                      setTimeout(() => {
-                        this.router.navigate([
-                          "/tareas/consulta-tareas",
-                        ]);
-                      }, 1800);
-                    }, 3000);
-                  },
-                  error: (error) => {
-                    console.error(error);
-                  }
-                });
+                      this.router.navigate([
+                        "/tareas/consulta-tareas",
+                      ]);
+                    }, 1800);
+                  }, 3000);
+                },
+                error: (error) => {
+                  console.error(error);
+                }
+              });
             },
             error: (error: HttpErrorResponse) => {
               this.utilService.modalResponse(
@@ -1533,7 +1544,41 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
     this.crearRegistradorSolicitud();
 
     if (this.taskType_Activity == environment.taskType_Registrar) {
-      this.dataAprobacionesPorPosicionAPS.forEach(elemento => {
+      this.dataAprobacionesPorPosicionAPS.forEach((elemento, index) => {
+        if (index === 0) {
+          const htmlString = "<!DOCTYPE html>\r\n<html lang=\"es\">\r\n\r\n<head>\r\n  <meta charset=\"UTF-8\">\r\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n  <title>Document<\/title>\r\n<\/head>\r\n\r\n<body>\r\n  <h2>Estimado(a)<\/h2>\r\n  <h3>{NOMBRE_APROBADOR}<\/h3>\r\n\r\n  <P>La Solicitud de {TIPO_SOLICITUD} {ID_SOLICITUD} para la posici\u00F3n de {DESCRIPCION_POSICION} est\u00E1 disponible para su\r\n    revisi\u00F3n y aprobaci\u00F3n.<\/P>\r\n\r\n  <p>\r\n    <b>\r\n      Favor ingresar al siguiente enlace: <a href=\"{URL_APROBACION}\">{URL_APROBACION}<\/a>\r\n      <br>\r\n      <br>\r\n      Gracias por su atenci\u00F3n.\r\n    <\/b>\r\n  <\/p>\r\n<\/body>\r\n\r\n<\/html>\r\n";
+
+          const modifiedHtmlString = htmlString.replace("{NOMBRE_APROBADOR}", elemento.aprobador.usuario).replace("{TIPO_SOLICITUD}", this.solicitud.tipoSolicitud).replace("{ID_SOLICITUD}", this.solicitud.idSolicitud).replace("{DESCRIPCION_POSICION}", this.detalleSolicitud.descripcionPosicion).replace(new RegExp("{URL_APROBACION}", "g"), `${portalWorkFlow}tareas/consulta-tareas?idUsuario=${elemento.aprobador.subledger}`);
+
+          variables.correo_notificador_creador = {
+            value: this.solicitudes.modelDetalleAprobaciones.correo
+          };
+          variables.alias = {
+            value: this.solicitudes.modelDetalleAprobaciones.correo
+          };
+          variables.correo_aprobador = {
+            value: elemento.aprobador.correo
+          };
+          variables.asunto_revision_solicitud = {
+            value: `Autorización de Solicitud de ${this.solicitud.tipoSolicitud} ${this.solicitud.idSolicitud}`
+          };
+          variables.cuerpo_notificacion = {
+            value: modifiedHtmlString
+          };
+          variables.password = {
+            value: "p4$$w0rd"
+          };
+
+          this.emailVariables = {
+            de: this.solicitudes.modelDetalleAprobaciones.correo,
+            para: elemento.aprobador.correo,
+            alias: this.solicitudes.modelDetalleAprobaciones.correo,
+            asunto: variables.asunto_revision_solicitud.value,
+            cuerpo: modifiedHtmlString,
+            password: variables.password.value
+          };
+        }
+
         if (elemento.aprobador.nivelDireccion === this.NIVEL_APROBACION_GERENCIA_MEDIA) {
           variables.correoNotificacionGerenciaMedia = {
             value: elemento.aprobador.correo
@@ -1638,9 +1683,6 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
       variables.anularSolicitud = { value: this.selectedOption };
       variables.comentariosAnulacion = { value: this.model.comentariosAnulacion };
       variables.nivelDireccion = { value: this.model.nivelDir };
-      variables.correoNotificacionCreador = {
-        value: this.solicitudes.modelDetalleAprobaciones.correo
-      };
       variables.usuarioNotificacionCreador = {
         value: this.solicitudes.modelDetalleAprobaciones.usuarioAprobador
       };
@@ -1653,7 +1695,7 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
       variables.subledgerNotificacionCreador = {
         value: this.solicitudes.modelDetalleAprobaciones.sudlegerAprobador
       };
-      variables.idSolicitud = {
+      variables.Id_Solicitud = {
         value: this.solicitud.idSolicitud
       };
       variables.tipoSolicitud = {

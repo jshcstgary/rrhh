@@ -610,7 +610,7 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
       // const variableNames = Object.keys(this.model).join(",");
       const variableNames = Object.keys(this.model).join(",");
 
-      if ("true" === this.parentIdFlag) { 
+      if ("true" === this.parentIdFlag) {
         // id is parent process instance id. so handle it accordingly
         // we are looking for task id 'Registrar' in a recently started process instance 'id'
         this.idDeInstancia = params["id"];
@@ -765,7 +765,7 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
 
         //console.log("aprobacion: ",aprobacion);
         /* console.log(`Elemento en la posición Miguel1 ${this.keySelected}:`, this.dataAprobacionesPorPosicion[this.keySelected][0].nivelAprobacionType.idNivelAprobacion);
- 
+
          for (const key in this.dataAprobacionesPorPosicion[this.keySelected]) {
            if (this.dataAprobacionesPorPosicion.hasOwnProperty(key)) {
              console.log(`Clave: ${key}`);
@@ -864,6 +864,7 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
           this.dataAprobadoresDinamicos.length = 0;
           this.dataAprobacionesPorPosicionAPS =
             response.nivelAprobacionPosicionType;
+          console.log(this.dataAprobacionesPorPosicionAPS);
           this.dataAprobacionesPorPosicionAPS.forEach((item) => {
             this.dataAprobadoresDinamicos.push(item.aprobador.nivelDireccion);
             console.log("Aprobaciones APD = ", item.aprobador);
@@ -1210,13 +1211,13 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
   jefeReferencia: string = '';
   puestoJefeReferencia: string = '';
   isDisabledJR: boolean = false;
-  
+
   responsableRRHHan: string = '';
   isDisabledRHan: boolean = false;
-  
+
   responsableRRHHac: string = '';
   isDisabledRHac: boolean = false;
-  
+
   jefeInmediato: string = '';
   puestoJefeInmediato: string = '';
   isDisabledJI: boolean = false;

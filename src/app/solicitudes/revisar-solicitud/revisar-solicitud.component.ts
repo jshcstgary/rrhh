@@ -54,6 +54,15 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
 
   buttonValue: string | null = 'aprobar';
 
+  emailVariables = {
+    de: "",
+    para: "",
+    alias: "",
+    asunto: "",
+    cuerpo: "",
+    password: ""
+  };
+
   private aprobadorSiguiente: any = {};
 
   process(action: string) {
@@ -1153,6 +1162,7 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
 
   consultarNextTaskAprobador(IdSolicitud: string) {
     this.consultaTareasService.getTareaIdParam(IdSolicitud).subscribe((tarea) => {
+      // debugger;
       this.uniqueTaskId = tarea.solicitudes[0].taskId;
       this.taskType_Activity = tarea.solicitudes[0].tasK_DEF_KEY;
       this.nameTask = tarea.solicitudes[0].name;
@@ -1163,52 +1173,89 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
       }
 
       let aprobadoractual = "";
+      let aprobadorRRHH = "";
+      let aprobadorRemuneracion = "";
 
       this.camundaRestService.getVariablesForTaskLevelAprove(this.uniqueTaskId).subscribe({
         next: (aprobador) => {
           aprobadoractual = aprobador.nivelAprobacion?.value;
 
-          if (aprobadoractual !== undefined) {
-            this.dataAprobacionesPorPosicion[this.keySelected].forEach((elemento) => {
-              if (elemento.aprobador.nivelDireccion.trim() == aprobadoractual) {
-                this.solicitudes.modelDetalleAprobaciones.id_Solicitud = this.solicitud.idSolicitud;
-                this.solicitudes.modelDetalleAprobaciones.id_NivelAprobacion = elemento.nivelAprobacionType.idNivelAprobacion;
-                this.solicitudes.modelDetalleAprobaciones.id_TipoSolicitud = elemento.nivelAprobacionType.idTipoSolicitud.toString();
-                this.solicitudes.modelDetalleAprobaciones.id_Accion = elemento.nivelAprobacionType.idAccion;
-                this.solicitudes.modelDetalleAprobaciones.id_TipoMotivo = elemento.nivelAprobacionType.idTipoMotivo;
-                this.solicitudes.modelDetalleAprobaciones.id_TipoRuta = elemento.nivelAprobacionType.idTipoRuta;
-                this.solicitudes.modelDetalleAprobaciones.id_Ruta = elemento.nivelAprobacionType.idRuta;
-                this.solicitudes.modelDetalleAprobaciones.tipoSolicitud = elemento.nivelAprobacionType.tipoSolicitud;
-                this.solicitudes.modelDetalleAprobaciones.motivo = elemento.nivelAprobacionType.tipoMotivo;
-                this.solicitudes.modelDetalleAprobaciones.tipoRuta = elemento.nivelAprobacionType.tipoRuta;
-                this.solicitudes.modelDetalleAprobaciones.ruta = elemento.nivelAprobacionType.ruta;
-                this.solicitudes.modelDetalleAprobaciones.accion = elemento.nivelAprobacionType.accion;
-                this.solicitudes.modelDetalleAprobaciones.nivelDirecion = elemento.nivelAprobacionType.nivelDireccion;
-                this.solicitudes.modelDetalleAprobaciones.nivelAprobacionRuta = elemento.nivelAprobacionType.nivelAprobacionRuta;
-                this.solicitudes.modelDetalleAprobaciones.usuarioAprobador = elemento.aprobador.usuario;
-                this.solicitudes.modelDetalleAprobaciones.codigoPosicionAprobador = elemento.aprobador.codigoPosicion;
-                this.solicitudes.modelDetalleAprobaciones.descripcionPosicionAprobador = elemento.aprobador.descripcionPosicion;
-                this.solicitudes.modelDetalleAprobaciones.sudlegerAprobador = elemento.aprobador.subledger;
-                this.solicitudes.modelDetalleAprobaciones.nivelDireccionAprobador = elemento.aprobador.nivelDireccion;
-                this.solicitudes.modelDetalleAprobaciones.codigoPosicionReportaA = elemento.aprobador.codigoPosicionReportaA;
-                this.solicitudes.modelDetalleAprobaciones.estado = "A";
-                this.solicitudes.modelDetalleAprobaciones.estadoAprobacion = "PorRevisar";
-                this.solicitudes.modelDetalleAprobaciones.correo = elemento.aprobador.correo;
-                this.solicitudes.modelDetalleAprobaciones.usuarioCreacion = elemento.aprobador.usuario;
-                this.solicitudes.modelDetalleAprobaciones.usuarioModificacion = elemento.aprobador.usuario;
-                this.solicitudes.modelDetalleAprobaciones.fechaCreacion = new Date().toISOString();
-                this.solicitudes.modelDetalleAprobaciones.fechaModificacion = new Date().toISOString();
-              }
-            });
+          // debugger;
+          if (aprobadoractual === undefined || aprobadoractual === null) {
+            aprobadorRRHH = aprobador.nivelDireccionNotificacionGerenteRRHH?.value;
+            aprobadorRemuneracion = this.aprobadorSiguiente.aprobador.nivelDireccion;
 
-            this.solicitudes.guardarDetallesAprobacionesSolicitud(this.solicitudes.modelDetalleAprobaciones).subscribe({
-              next: () => {
-              },
-              error: (err) => {
-                console.error(err);
-              }
-            });
+            if (aprobadorRRHH !== undefined && aprobadorRRHH !== null && this.taskType_Activity.toUpperCase().includes("RRHH")) {
+              aprobadoractual = aprobadorRRHH;
+            } else if (aprobadorRemuneracion !== undefined && aprobadorRemuneracion !== null && this.taskType_Activity.toUpperCase().includes("REMUNERA")) {
+              aprobadoractual = aprobadorRemuneracion;
+            }
+
+            console.log(aprobadorRRHH);
+            console.log(aprobadorRemuneracion);
           }
+
+          this.dataAprobacionesPorPosicion[this.keySelected].forEach((elemento) => {
+            if (elemento.aprobador.nivelDireccion.trim() == aprobadoractual) {
+              const htmlString = "<!DOCTYPE html>\r\n<html lang=\"es\">\r\n\r\n<head>\r\n  <meta charset=\"UTF-8\">\r\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n  <title>Document<\/title>\r\n<\/head>\r\n\r\n<body>\r\n  <h2>Estimado(a)<\/h2>\r\n  <h3>{NOMBRE_APROBADOR}<\/h3>\r\n\r\n  <P>La Solicitud de {TIPO_SOLICITUD} {ID_SOLICITUD} para la posici\u00F3n de {DESCRIPCION_POSICION} est\u00E1 disponible para su\r\n    revisi\u00F3n y aprobaci\u00F3n.<\/P>\r\n\r\n  <p>\r\n    <b>\r\n      Favor ingresar al siguiente enlace: <a href=\"{URL_APROBACION}\">{URL_APROBACION}<\/a>\r\n      <br>\r\n      <br>\r\n      Gracias por su atenci\u00F3n.\r\n    <\/b>\r\n  <\/p>\r\n<\/body>\r\n\r\n<\/html>\r\n";
+
+              const modifiedHtmlString = htmlString.replace("{NOMBRE_APROBADOR}", elemento.aprobador.usuario).replace("{TIPO_SOLICITUD}", this.solicitud.tipoSolicitud).replace("{ID_SOLICITUD}", this.solicitud.idSolicitud).replace("{DESCRIPCION_POSICION}", this.detalleSolicitud.descripcionPosicion).replace(new RegExp("{URL_APROBACION}", "g"), `${portalWorkFlow}tareas/consulta-tareas?idUsuario=${elemento.aprobador.subledger}`);
+
+              this.emailVariables = {
+                de: "solicitud.workflow@rbp.com",
+                para: elemento.aprobador.correo,
+                alias: "solicitud.workflow@rbp.com",
+                asunto: `Autorización de Solicitud de ${this.solicitud.tipoSolicitud} ${this.solicitud.idSolicitud}`,
+                cuerpo: modifiedHtmlString,
+                password: "p4$$w0rd"
+              };
+
+              this.solicitudes.modelDetalleAprobaciones.id_Solicitud = this.solicitud.idSolicitud;
+              this.solicitudes.modelDetalleAprobaciones.id_NivelAprobacion = elemento.nivelAprobacionType.idNivelAprobacion;
+              this.solicitudes.modelDetalleAprobaciones.id_TipoSolicitud = elemento.nivelAprobacionType.idTipoSolicitud.toString();
+              this.solicitudes.modelDetalleAprobaciones.id_Accion = elemento.nivelAprobacionType.idAccion;
+              this.solicitudes.modelDetalleAprobaciones.id_TipoMotivo = elemento.nivelAprobacionType.idTipoMotivo;
+              this.solicitudes.modelDetalleAprobaciones.id_TipoRuta = elemento.nivelAprobacionType.idTipoRuta;
+              this.solicitudes.modelDetalleAprobaciones.id_Ruta = elemento.nivelAprobacionType.idRuta;
+              this.solicitudes.modelDetalleAprobaciones.tipoSolicitud = elemento.nivelAprobacionType.tipoSolicitud;
+              this.solicitudes.modelDetalleAprobaciones.motivo = elemento.nivelAprobacionType.tipoMotivo;
+              this.solicitudes.modelDetalleAprobaciones.tipoRuta = elemento.nivelAprobacionType.tipoRuta;
+              this.solicitudes.modelDetalleAprobaciones.ruta = elemento.nivelAprobacionType.ruta;
+              this.solicitudes.modelDetalleAprobaciones.accion = elemento.nivelAprobacionType.accion;
+              this.solicitudes.modelDetalleAprobaciones.nivelDirecion = elemento.nivelAprobacionType.nivelDireccion;
+              this.solicitudes.modelDetalleAprobaciones.nivelAprobacionRuta = elemento.nivelAprobacionType.nivelAprobacionRuta;
+              this.solicitudes.modelDetalleAprobaciones.usuarioAprobador = elemento.aprobador.usuario;
+              this.solicitudes.modelDetalleAprobaciones.codigoPosicionAprobador = elemento.aprobador.codigoPosicion;
+              this.solicitudes.modelDetalleAprobaciones.descripcionPosicionAprobador = elemento.aprobador.descripcionPosicion;
+              this.solicitudes.modelDetalleAprobaciones.sudlegerAprobador = elemento.aprobador.subledger;
+              this.solicitudes.modelDetalleAprobaciones.nivelDireccionAprobador = elemento.aprobador.nivelDireccion;
+              this.solicitudes.modelDetalleAprobaciones.codigoPosicionReportaA = elemento.aprobador.codigoPosicionReportaA;
+              this.solicitudes.modelDetalleAprobaciones.estado = "A";
+              if (!this.taskType_Activity.toUpperCase().includes("RRHH") && !this.taskType_Activity.toUpperCase().includes("REMUNERA")) {
+                this.solicitudes.modelDetalleAprobaciones.estadoAprobacion = "PorRevisar";
+              }
+              this.solicitudes.modelDetalleAprobaciones.correo = elemento.aprobador.correo;
+              this.solicitudes.modelDetalleAprobaciones.usuarioCreacion = elemento.aprobador.usuario;
+              this.solicitudes.modelDetalleAprobaciones.usuarioModificacion = elemento.aprobador.usuario;
+              this.solicitudes.modelDetalleAprobaciones.fechaCreacion = new Date().toISOString();
+              this.solicitudes.modelDetalleAprobaciones.fechaModificacion = new Date().toISOString();
+            }
+          });
+
+          this.solicitudes.guardarDetallesAprobacionesSolicitud(this.solicitudes.modelDetalleAprobaciones).subscribe({
+            next: () => {
+              this.solicitudes.sendEmail(this.emailVariables).subscribe({
+                next: () => {
+                },
+                error: (error) => {
+                  console.error(error);
+                }
+              });
+            },
+            error: (err) => {
+              console.error(err);
+            }
+          });
         }
       });
     });

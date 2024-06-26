@@ -20,6 +20,7 @@ export class SolicitudesService {
   private apiEmpleadoEvolutionUrl = environment.empleadoServiceEs;
   private apiHistoricaCamundaUrl = environment.historicaCamundaServiceEs;
   private apiDetalleAprobaciones = environment.detalleAprobacionesServiceES;
+  private apiEmail = environment.senEmailService;
 
   public modelSolicitud = new Solicitud();
   public modelDetalleSolicitud = new DetalleSolicitud();
@@ -60,6 +61,10 @@ export class SolicitudesService {
     return this.http.get<any>(`${this.apiDetalleAprobaciones}/filtrar/${idSolicitud}/${subledgerAprobador}`, {
       headers
     });
+  }
+
+  sendEmail(request: any): Observable<any> {
+    return this.http.post<any>(this.apiEmail, request);
   }
 
   public guardarSolicitud(request: any): Observable<any> {

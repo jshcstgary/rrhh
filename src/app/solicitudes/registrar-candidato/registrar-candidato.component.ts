@@ -1167,6 +1167,36 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
     this.solicitudes.modelDetalleAprobaciones.fechaModificacion = new Date().toISOString();
   }
 
+  llenarModelDetalleAprobacionesCF_RG(res: any, idSolicitud: string, idTipoSolicitud: string, descripcionTipoSolicitud: string) {
+    this.solicitudes.modelDetalleAprobaciones.id_Solicitud = idSolicitud;
+    this.solicitudes.modelDetalleAprobaciones.id_NivelAprobacion = 100000;
+    this.solicitudes.modelDetalleAprobaciones.id_TipoSolicitud = idTipoSolicitud.toString();
+    this.solicitudes.modelDetalleAprobaciones.id_Accion = 100000;
+    this.solicitudes.modelDetalleAprobaciones.id_TipoMotivo = 0;
+    this.solicitudes.modelDetalleAprobaciones.id_TipoRuta = 100000;
+    this.solicitudes.modelDetalleAprobaciones.id_Ruta = 100000;
+    this.solicitudes.modelDetalleAprobaciones.tipoSolicitud = descripcionTipoSolicitud;
+    this.solicitudes.modelDetalleAprobaciones.motivo = "RegistrarSolicitud";
+    this.solicitudes.modelDetalleAprobaciones.tipoRuta = "RegistrarSolicitud";
+    this.solicitudes.modelDetalleAprobaciones.ruta = descripcionTipoSolicitud;
+    this.solicitudes.modelDetalleAprobaciones.accion = "RegistrarSolicitud";
+    this.solicitudes.modelDetalleAprobaciones.nivelDirecion = res.evType[0].nivelDir;
+    this.solicitudes.modelDetalleAprobaciones.nivelAprobacionRuta = "RegistrarSolicitud";
+    this.solicitudes.modelDetalleAprobaciones.usuarioAprobador = res.evType[0].nombreCompleto;
+    this.solicitudes.modelDetalleAprobaciones.codigoPosicionAprobador = res.evType[0].codigoPosicion;
+    this.solicitudes.modelDetalleAprobaciones.descripcionPosicionAprobador = res.evType[0].descrPosicion;
+    this.solicitudes.modelDetalleAprobaciones.sudlegerAprobador = res.evType[0].subledger;
+    this.solicitudes.modelDetalleAprobaciones.nivelDireccionAprobador = res.evType[0].nivelDir;
+    this.solicitudes.modelDetalleAprobaciones.codigoPosicionReportaA = res.evType[0].codigoPosicionReportaA;
+    this.solicitudes.modelDetalleAprobaciones.estadoAprobacion = "Creado";
+    this.solicitudes.modelDetalleAprobaciones.estado = "A";
+    this.solicitudes.modelDetalleAprobaciones.correo = res.evType[0].correo;
+    this.solicitudes.modelDetalleAprobaciones.usuarioCreacion = res.evType[0].nombreCompleto;
+    this.solicitudes.modelDetalleAprobaciones.usuarioModificacion = res.evType[0].nombreCompleto;
+    this.solicitudes.modelDetalleAprobaciones.fechaCreacion = new Date().toISOString();
+    this.solicitudes.modelDetalleAprobaciones.fechaModificacion = new Date().toISOString();
+  }
+
   save() {
 
     this.utilService.openLoadingSpinner(
@@ -1376,7 +1406,7 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
     this.camundaRestService
       .postCompleteTask(this.uniqueTaskId, variables)
       .subscribe({
-        next: (res) => {
+        next: () => {
           //actualizo la solicitud a enviada
           this.solicitud.empresa = this.model.compania;
           this.solicitud.idEmpresa = this.model.compania;
@@ -1384,7 +1414,7 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
           this.solicitud.unidadNegocio = this.model.unidadNegocio;
           this.solicitud.idUnidadNegocio = this.model.unidadNegocio;
           this.solicitud.estadoSolicitud = "4";
-          this.solicitudes.actualizarSolicitud(this.solicitud).subscribe((responseSolicitud) => {
+          this.solicitudes.actualizarSolicitud(this.solicitud).subscribe(() => {
 
             if (this.model.tipoProceso.toUpperCase().includes("FAMILIA") || this.model.tipoProceso.toUpperCase().includes("REINGRESO")) {
               if (this.model.tipoProceso.toUpperCase().includes("FAMILIA")) {
@@ -1397,6 +1427,7 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
                 {
                   next: res => {
                     const idTipoSolicitud = res.tipoSolicitudType.find(r => r.codigoTipoSolicitud === this.codigoSolicitudProceso).id;
+                    const descripcionTipoSolicitud = res.tipoSolicitudType.find(r => r.codigoTipoSolicitud === this.codigoSolicitudProceso).tipoSolicitud;
 
                     const solicitud = {
                       fechaActualizacion: new Date(),
@@ -1420,7 +1451,7 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
                     };
 
                     this.solicitudes.guardarSolicitud(solicitud).subscribe({
-                      next: res => {
+                      next: resSolicitud => {
 
                         this.solicitudes.getDetalleSolicitudById(this.solicitud.idSolicitud).subscribe({
                           next: (detalleSolicitud) => {
@@ -1428,12 +1459,12 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
 
                             detalle = {
                               ...detalle,
-                              idSolicitud: res.idSolicitud
+                              idSolicitud: resSolicitud.idSolicitud
                             }
 
                             const request = {
                               iD_SOLICITUD: this.solicitud.idSolicitud,
-                              iD_SOLICITUD_PROCESO: res.idSolicitud,
+                              iD_SOLICITUD_PROCESO: resSolicitud.idSolicitud,
                               tipoFuente: null,
                               fuenteExterna: null,
                               tipoProceso: null,
@@ -1458,9 +1489,16 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
                             };
 
                             this.seleccionCandidatoService.saveCandidato(request).subscribe({
-                              next: (res) => {
+                              next: () => {
                                 this.solicitudes.guardarDetalleSolicitud(detalle).subscribe({
-                                  next: (res) => {
+                                  next: () => {
+                                    this.starterService.getUser(localStorage.getItem("idUsuario")!).subscribe({
+                                      next: (user) => {
+                                        this.llenarModelDetalleAprobacionesCF_RG(user, resSolicitud.idSolicitud, idTipoSolicitud, descripcionTipoSolicitud);
+
+                                        this.solicitudes.guardarDetallesAprobacionesSolicitud(this.solicitudes.modelDetalleAprobaciones).subscribe((res) => {});
+                                      }
+                                    });
                                   }
                                 });
                               }
