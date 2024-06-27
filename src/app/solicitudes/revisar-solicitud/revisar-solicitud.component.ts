@@ -1694,9 +1694,14 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
                       this.aprobadorSiguiente = aprobacionesObj[String(Number(index) + 1)];
                       this.aprobadorEnProceso = aprobacionesObj[String(Number(index) + 1)];
                       }else{
-                        this.aprobadorSiguiente = aprobacionesObj[String(Number(index) + 2)];
-                        this.aprobadorEnProceso = aprobacionesObj[String(Number(index) + 2)];
-                      }
+                        const aprobacionSiguiente = aprobacionesObj[String(Number(index) + 2)];
+                        if (aprobacionSiguiente.aprobador.nivelDireccion !== "") {
+                          this.aprobadorSiguiente = aprobacionesObj[String(Number(index) + 2)];
+                          this.aprobadorEnProceso = aprobacionesObj[String(Number(index) + 2)];
+                      }else{
+                        this.aprobadorSiguiente = aprobacionesObj[index];
+                        this.aprobadorEnProceso = aprobacionesObj[index];
+                      }}
 
                       this.solicitudes.modelDetalleAprobaciones.id_Solicitud = this.solicitud.idSolicitud;
                       this.solicitudes.modelDetalleAprobaciones.id_NivelAprobacion = aprobacion.nivelAprobacionType.idNivelAprobacion;
