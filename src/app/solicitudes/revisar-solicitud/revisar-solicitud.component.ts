@@ -66,6 +66,7 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
   };
 
   private aprobadorSiguiente: any = {};
+  private aprobadorActual: any = {};
 
   process(action: string) {
     this.buttonValue = action;
@@ -1175,6 +1176,7 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
       }
 
       let aprobadoractual = "";
+      let aprobadoractualModel = "";
       let subledgerCreador = "";
       let correoCreador = "";
       let usuarioCreador = "";
@@ -1191,6 +1193,7 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
           // debugger;
           if (aprobadoractual === undefined || aprobadoractual === null) {
             aprobadoractual = this.aprobadorSiguiente.aprobador.nivelDireccion;
+            aprobadoractualModel = this.aprobadorActual.aprobador.nivelDireccion
           }
 
           this.dataAprobacionesPorPosicion[this.keySelected].forEach((elemento) => {
@@ -1266,7 +1269,7 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
           });
         }else{
           if(this.apruebaRemuneraciones === "SI"){
-            if (aprobadoractual.toUpperCase().includes("REMUNERA")) {
+            if (aprobadoractualModel.toUpperCase().includes("REMUNERA")) {
             const htmlString = "<!DOCTYPE html>\r\n<html lang=\"es\">\r\n\r\n<head>\r\n  <meta charset=\"UTF-8\">\r\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n  <title>Document<\/title>\r\n<\/head>\r\n\r\n<body>\r\n  <h2>Estimado(a)<\/h2>\r\n  <h3>{NOMBRE_APROBADOR}<\/h3>\r\n\r\n  <P>Se le informa que se encuentra aprobada la Solicitud {ID_SOLICITUD}<\/P>\r\n\r\n  <p>\r\n    <b>\r\n      Favor ingresar al siguiente enlace: <a href=\"{URL_APROBACION}\">{URL_APROBACION}<\/a>\r\n      <br>\r\n      <br>\r\n      Gracias por su atenci\u00F3n.\r\n    <\/b>\r\n  <\/p>\r\n<\/body>\r\n\r\n<\/html>";
 
               const modifiedHtmlString = htmlString.replace("{NOMBRE_APROBADOR}", usuarioCreador).replace("{ID_SOLICITUD}", this.solicitud.idSolicitud).replace(new RegExp("{URL_APROBACION}", "g"), `${portalWorkFlow}tareas/consulta-tareas?idUsuario=${subledgerCreador}`);
@@ -1783,6 +1786,7 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
                         this.aprobadorFijo = "SI";
                       } else {
                         this.aprobadorSiguiente = aprobacionesObj[String(Number(index) + 1)];
+                        this.aprobadorActual = aprobacionesObj[index];
                         this.apruebaRemuneraciones = "SI";
                         this.aprobadorFijo = "SI";
                       }
