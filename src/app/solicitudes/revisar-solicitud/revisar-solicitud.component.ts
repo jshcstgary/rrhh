@@ -1193,7 +1193,7 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
           // debugger;
           if (aprobadoractual === undefined || aprobadoractual === null) {
             aprobadoractual = this.aprobadorSiguiente.aprobador.nivelDireccion;
-            aprobadoractualModel = this.aprobadorActual.aprobador.nivelDireccion
+            aprobadoractualModel = this.aprobadorActual.aprobador.nivelDireccion;
           }
 
           this.dataAprobacionesPorPosicion[this.keySelected].forEach((elemento) => {
