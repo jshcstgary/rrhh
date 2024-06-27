@@ -64,6 +64,7 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
   };
 
   private aprobadorSiguiente: any = {};
+  private aprobadorEnProceso: any = {};
 
   process(action: string) {
     this.buttonValue = action;
@@ -1186,7 +1187,7 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
 
           // debugger;
           if (aprobadoractual === undefined || aprobadoractual === null) {
-            aprobadoractual = this.aprobadorSiguiente.aprobador.nivelDireccion;
+            aprobadoractual = this.aprobadorEnProceso.aprobador.nivelDireccion;
           }
 
           this.dataAprobacionesPorPosicion[this.keySelected].forEach((elemento) => {
@@ -1680,6 +1681,8 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
                   if (aprobadoractual !== undefined) {
                     if (aprobacion.aprobador.nivelDireccion.trim() == aprobadoractual) {
                       this.aprobadorSiguiente = aprobacionesObj[String(Number(index) + 1)];
+                      this.aprobadorEnProceso = aprobacionesObj[index];
+                      
 
                       this.solicitudes.modelDetalleAprobaciones.id_Solicitud = this.solicitud.idSolicitud;
                       this.solicitudes.modelDetalleAprobaciones.id_NivelAprobacion = aprobacion.nivelAprobacionType.idNivelAprobacion;
@@ -1732,8 +1735,10 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
                     if (aprobacion.aprobador.nivelDireccion.trim().toUpperCase().indexOf('RRHH') > 0) {
                       if (aprobacionesObj[String(Number(index) + 1)] === undefined || aprobacionesObj[String(Number(index) + 1)] === null) {
                         this.aprobadorSiguiente = aprobacionesObj[index];
+                        this.aprobadorEnProceso = aprobacionesObj[index];
                       } else {
                         this.aprobadorSiguiente = aprobacionesObj[String(Number(index) + 1)];
+                        this.aprobadorEnProceso = aprobacionesObj[index];
                       }
 
                       this.solicitudes.modelDetalleAprobaciones.id_Solicitud = this.solicitud.idSolicitud;
@@ -1774,6 +1779,7 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
 
                     if (aprobacion.aprobador.nivelDireccion.trim().toUpperCase().indexOf('REMUNERA') > 0) {
                       this.aprobadorSiguiente = aprobacionesObj[index];
+                      this.aprobadorEnProceso = aprobacionesObj[index];
 
                       this.solicitudes.modelDetalleAprobaciones.id_Solicitud = this.solicitud.idSolicitud;
                       this.solicitudes.modelDetalleAprobaciones.id_NivelAprobacion = aprobacion.nivelAprobacionType.idNivelAprobacion;
