@@ -1187,6 +1187,7 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
           // debugger;
           if (aprobadoractual === undefined || aprobadoractual === null) {
             aprobadoractual = this.aprobadorSiguiente.aprobador.nivelDireccion;
+          }
 
           this.dataAprobacionesPorPosicion[this.keySelected].forEach((elemento) => {
             if (elemento.aprobador.nivelDireccion.trim() == aprobadoractual) {
@@ -1266,10 +1267,6 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
             }
           });
         }
-         },
-            error: (err) => {
-              console.error(err);
-            }
       });
     });
   }
