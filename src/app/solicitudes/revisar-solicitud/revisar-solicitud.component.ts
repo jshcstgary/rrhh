@@ -1688,9 +1688,15 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
                   console.log("Actividad ", this.taskType_Activity);
                   if (aprobadoractual !== undefined) {
                     if (aprobacion.aprobador.nivelDireccion.trim() == aprobadoractual) {
+                      
+                      const aprobacionSiguiente = aprobacionesObj[String(Number(index) + 1)];
+                      if (aprobacionSiguiente.aprobador.nivelDireccion !== "") {
                       this.aprobadorSiguiente = aprobacionesObj[String(Number(index) + 1)];
                       this.aprobadorEnProceso = aprobacionesObj[String(Number(index) + 1)];
-                      
+                      }else{
+                        this.aprobadorSiguiente = aprobacionesObj[String(Number(index) + 2)];
+                        this.aprobadorEnProceso = aprobacionesObj[String(Number(index) + 2)];
+                      }
 
                       this.solicitudes.modelDetalleAprobaciones.id_Solicitud = this.solicitud.idSolicitud;
                       this.solicitudes.modelDetalleAprobaciones.id_NivelAprobacion = aprobacion.nivelAprobacionType.idNivelAprobacion;
