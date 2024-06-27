@@ -1343,9 +1343,7 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
                   console.error(error);
                 }
               });
-         }
-        }
-       } 
+       }
       });
     });
   }
