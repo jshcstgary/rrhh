@@ -1176,7 +1176,7 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
       let aprobadoractual = "";
       let subledgerCreador = "";
       let correoCreador = "";
-      let nombreAprobador = "";
+      let usuarioCreador = "";
       let aprobadorRRHH = "";
       let aprobadorRemuneracion = "";
 
@@ -1185,7 +1185,7 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
           aprobadoractual = aprobador.nivelAprobacion?.value;
           correoCreador = aprobador.correo_notificador_creador?.value;
           subledgerCreador = aprobador.subledgerNotificacionCreador?.value;
-          nombreAprobador = aprobador.usuarioNotificacionCreador?.value;
+          usuarioCreador = aprobador.usuarioNotificacionCreador?.value;
 
           // debugger;
           if (aprobadoractual === undefined || aprobadoractual === null) {
@@ -1245,7 +1245,7 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
               if (aprobadoractual.toUpperCase().includes("REMUNERA")) {
             const htmlString = "<!DOCTYPE html>\r\n<html lang=\"es\">\r\n\r\n<head>\r\n  <meta charset=\"UTF-8\">\r\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n  <title>Document<\/title>\r\n<\/head>\r\n\r\n<body>\r\n  <h2>Estimado(a)<\/h2>\r\n  <h3>{NOMBRE_APROBADOR}<\/h3>\r\n\r\n  <P>Se le informa que se encuentra aprobada la Solicitud {ID_SOLICITUD}<\/P>\r\n\r\n  <p>\r\n    <b>\r\n      Favor ingresar al siguiente enlace: <a href=\"{URL_APROBACION}\">{URL_APROBACION}<\/a>\r\n      <br>\r\n      <br>\r\n      Gracias por su atenci\u00F3n.\r\n    <\/b>\r\n  <\/p>\r\n<\/body>\r\n\r\n<\/html>";
 
-              const modifiedHtmlString = htmlString.replace("{NOMBRE_APROBADOR}", nombreAprobador).replace("{ID_SOLICITUD}", this.solicitud.idSolicitud).replace(new RegExp("{URL_APROBACION}", "g"), `${portalWorkFlow}tareas/consulta-tareas?idUsuario=${subledgerCreador}`);
+              const modifiedHtmlString = htmlString.replace("{NOMBRE_APROBADOR}", usuarioCreador).replace("{ID_SOLICITUD}", this.solicitud.idSolicitud).replace(new RegExp("{URL_APROBACION}", "g"), `${portalWorkFlow}tareas/consulta-tareas?idUsuario=${subledgerCreador}`);
 
               this.emailVariables = {
                 de: "solicitud.workflow@rbp.com",
@@ -1684,38 +1684,6 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
                     if (aprobacion.aprobador.nivelDireccion.trim() == aprobadoractual) {
                       this.aprobadorSiguiente = aprobacionesObj[String(Number(index) + 1)];
                       this.aprobadorEnProceso = aprobacionesObj[String(Number(index) + 1)];
-
-                      if (aprobacionesObj[String(Number(index) + 1)] !== undefined || aprobacionesObj[String(Number(index) + 1)] !== null) {
-                        const aprobacionSiguiente = aprobacionesObj[String(Number(index) + 1)];
-                        if (aprobacionSiguiente.aprobador.nivelDireccion.trim() == "") {
-                          if (aprobacionesObj[String(Number(index) + 2)] !== undefined || aprobacionesObj[String(Number(index) + 2)] !== null) {
-                        const aprobacionSiguiente = aprobacionesObj[String(Number(index) + 2)];
-                        if (aprobacionSiguiente.aprobador.nivelDireccion.trim() == "") {
-                          if (aprobacionesObj[String(Number(index) + 3)] !== undefined || aprobacionesObj[String(Number(index) + 3)] !== null) {
-                         const aprobacionSiguiente = aprobacionesObj[String(Number(index) + 3)];
-                         if (aprobacionSiguiente.aprobador.nivelDireccion.trim() == "") {
-                         if (aprobacionesObj[String(Number(index) + 4)] !== undefined || aprobacionesObj[String(Number(index) + 4)] !== null) {
-                         const aprobacionSiguiente = aprobacionesObj[String(Number(index) + 4)];
-                         if (aprobacionSiguiente.aprobador.nivelDireccion.trim() == "") {
-                         this.aprobadorSiguiente = aprobacionesObj[String(Number(index) + 5)];
-                         this.aprobadorEnProceso = aprobacionesObj[String(Number(index) + 5)];
-                        }else{
-                         this.aprobadorSiguiente = aprobacionesObj[String(Number(index) + 4)];
-                         this.aprobadorEnProceso = aprobacionesObj[String(Number(index) + 4)];
-                        }}}else{
-                         this.aprobadorSiguiente = aprobacionesObj[String(Number(index) + 3)];
-                         this.aprobadorEnProceso = aprobacionesObj[String(Number(index) + 3)];
-                        }}}else{
-                         this.aprobadorSiguiente = aprobacionesObj[String(Number(index) + 2)];
-                         this.aprobadorEnProceso = aprobacionesObj[String(Number(index) + 2)];
-                        }}
-                        }else{
-                         this.aprobadorSiguiente = aprobacionesObj[String(Number(index) + 1)];
-                         this.aprobadorEnProceso = aprobacionesObj[String(Number(index) + 1)];
-                        }}else{
-                         this.aprobadorSiguiente = aprobacionesObj[index];
-                         this.aprobadorEnProceso = aprobacionesObj[index];
-                        }
                       
 
                       this.solicitudes.modelDetalleAprobaciones.id_Solicitud = this.solicitud.idSolicitud;
@@ -1767,18 +1735,13 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
                   if (this.taskType_Activity == environment.taskType_RRHH && aprobadoractual === undefined) {
 
                     if (aprobacion.aprobador.nivelDireccion.trim().toUpperCase().indexOf('RRHH') > 0) {
-                       if (aprobacionesObj[String(Number(index) + 1)] !== undefined || aprobacionesObj[String(Number(index) + 1)] !== null) {
-                        const aprobacionSiguiente = aprobacionesObj[String(Number(index) + 1)];
-                        if (aprobacionSiguiente.aprobador.nivelDireccion.trim() == "") {
-                          this.aprobadorSiguiente = aprobacionesObj[index];
-                          this.aprobadorEnProceso = aprobacionesObj[index];
-                        }else{
-                         this.aprobadorSiguiente = aprobacionesObj[String(Number(index) + 1)];
-                         this.aprobadorEnProceso = aprobacionesObj[String(Number(index) + 1)];
-                        }}else{
-                         this.aprobadorSiguiente = aprobacionesObj[index];
-                         this.aprobadorEnProceso = aprobacionesObj[index];
-                        }
+                      if (aprobacionesObj[String(Number(index) + 1)] === undefined || aprobacionesObj[String(Number(index) + 1)] === null) {
+                        this.aprobadorSiguiente = aprobacionesObj[index];
+                        this.aprobadorEnProceso = aprobacionesObj[index];
+                      } else {
+                        this.aprobadorSiguiente = aprobacionesObj[String(Number(index) + 1)];
+                        this.aprobadorEnProceso = aprobacionesObj[index];
+                      }
 
                       this.solicitudes.modelDetalleAprobaciones.id_Solicitud = this.solicitud.idSolicitud;
                       this.solicitudes.modelDetalleAprobaciones.id_NivelAprobacion = aprobacion.nivelAprobacionType.idNivelAprobacion;
