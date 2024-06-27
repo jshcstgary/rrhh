@@ -1230,9 +1230,15 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
               this.solicitudes.modelDetalleAprobaciones.nivelDireccionAprobador = elemento.aprobador.nivelDireccion;
               this.solicitudes.modelDetalleAprobaciones.codigoPosicionReportaA = elemento.aprobador.codigoPosicionReportaA;
               this.solicitudes.modelDetalleAprobaciones.estado = "A";
-              if (!(aprobadoractual.toUpperCase().includes("RRHH")) && !(aprobadoractual.toUpperCase().includes("REMUNERA"))) {
-                this.solicitudes.modelDetalleAprobaciones.estadoAprobacion = "PorRevisar";
-              }
+              if (aprobadoractual.toUpperCase().includes("RRHH")) {
+                this.solicitudes.modelDetalleAprobaciones.estadoAprobacion = "PorRevisarRRHH";
+              }else{
+                  if (aprobadoractual.toUpperCase().includes("REMUNERA")) {
+                    this.solicitudes.modelDetalleAprobaciones.estadoAprobacion = "PorRevisarRemuneraciones";
+                  }else{
+                    this.solicitudes.modelDetalleAprobaciones.estadoAprobacion = "PorRevisar";
+                  }
+                }
               this.solicitudes.modelDetalleAprobaciones.correo = elemento.aprobador.correo;
               this.solicitudes.modelDetalleAprobaciones.usuarioCreacion = elemento.aprobador.usuario;
               this.solicitudes.modelDetalleAprobaciones.usuarioModificacion = elemento.aprobador.usuario;
