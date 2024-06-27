@@ -42,7 +42,8 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
   NgForm = NgForm;
 
   textareaContent: string = '';
-  apruebaRemuneraciones: string = 'NO';
+  apruebaRemuneraciones: string = "NO";
+  aprobadorFijo: string = "NO";
   //variableNivel: string=this.datosAprobadores.nivelDireccion;
   disabledComplete: boolean = true;
   isRequired: boolean = false;
@@ -1174,7 +1175,6 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
       }
 
       let aprobadoractual = "";
-      let existeAprobadorFijo = "NO";
       let subledgerCreador = "";
       let correoCreador = "";
       let usuarioCreador = "";
@@ -1232,11 +1232,9 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
               this.solicitudes.modelDetalleAprobaciones.estado = "A";
               if (aprobadoractual.toUpperCase().includes("RRHH")) {
                 this.solicitudes.modelDetalleAprobaciones.estadoAprobacion = "PorRevisarRRHH";
-                existeAprobadorFijo="SI";
               }else{
                   if (aprobadoractual.toUpperCase().includes("REMUNERA")) {
                     this.solicitudes.modelDetalleAprobaciones.estadoAprobacion = "PorRevisarRemuneraciones";
-                    existeAprobadorFijo="SI";
                   }else{
                     this.solicitudes.modelDetalleAprobaciones.estadoAprobacion = "PorRevisar";
                   }
@@ -1250,7 +1248,7 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
             }
            }
           });
-         if(existeAprobadorFijo === "NO"){
+         if(this.aprobadorFijo === "NO"){
           this.solicitudes.guardarDetallesAprobacionesSolicitud(this.solicitudes.modelDetalleAprobaciones).subscribe({
             next: () => {             
 
@@ -1782,9 +1780,11 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
                       if (aprobacionesObj[String(Number(index) + 1)] === undefined || aprobacionesObj[String(Number(index) + 1)] === null) {
                         this.aprobadorSiguiente = aprobacionesObj[index];
                         this.apruebaRemuneraciones = "NO";
+                        this.aprobadorFijo = "SI";
                       } else {
                         this.aprobadorSiguiente = aprobacionesObj[String(Number(index) + 1)];
                         this.apruebaRemuneraciones = "SI";
+                        this.aprobadorFijo = "SI";
                       }
 
                       this.solicitudes.modelDetalleAprobaciones.id_Solicitud = this.solicitud.idSolicitud;
