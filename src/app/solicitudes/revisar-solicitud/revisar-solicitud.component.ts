@@ -42,6 +42,7 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
   NgForm = NgForm;
 
   textareaContent: string = '';
+  apruebaRemuneraciones: string = 'NO';
   //variableNivel: string=this.datosAprobadores.nivelDireccion;
   disabledComplete: boolean = true;
   isRequired: boolean = false;
@@ -64,7 +65,6 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
   };
 
   private aprobadorSiguiente: any = {};
-  private aprobadorEnProceso: any = {};
 
   process(action: string) {
     this.buttonValue = action;
@@ -1174,7 +1174,7 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
       }
 
       let aprobadoractual = "";
-      let existeAprobador = "NO";
+      let existeAprobadorFijo = "NO";
       let subledgerCreador = "";
       let correoCreador = "";
       let usuarioCreador = "";
@@ -1190,7 +1190,7 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
 
           // debugger;
           if (aprobadoractual === undefined || aprobadoractual === null) {
-            aprobadoractual = this.aprobadorEnProceso.aprobador.nivelDireccion;
+            aprobadoractual = this.aprobadorSiguiente.aprobador.nivelDireccion;
           }
 
           this.dataAprobacionesPorPosicion[this.keySelected].forEach((elemento) => {
@@ -1232,9 +1232,11 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
               this.solicitudes.modelDetalleAprobaciones.estado = "A";
               if (aprobadoractual.toUpperCase().includes("RRHH")) {
                 this.solicitudes.modelDetalleAprobaciones.estadoAprobacion = "PorRevisarRRHH";
+                existeAprobadorFijo="SI";
               }else{
                   if (aprobadoractual.toUpperCase().includes("REMUNERA")) {
                     this.solicitudes.modelDetalleAprobaciones.estadoAprobacion = "PorRevisarRemuneraciones";
+                    existeAprobadorFijo="SI";
                   }else{
                     this.solicitudes.modelDetalleAprobaciones.estadoAprobacion = "PorRevisar";
                   }
@@ -1244,15 +1246,29 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
               this.solicitudes.modelDetalleAprobaciones.usuarioModificacion = elemento.aprobador.usuario;
               this.solicitudes.modelDetalleAprobaciones.fechaCreacion = new Date().toISOString();
               this.solicitudes.modelDetalleAprobaciones.fechaModificacion = new Date().toISOString();
-              existeAprobador="SI";
+              
             }
            }
           });
-         if(existeAprobador === "SI"){
+         if(existeAprobadorFijo === "NO"){
           this.solicitudes.guardarDetallesAprobacionesSolicitud(this.solicitudes.modelDetalleAprobaciones).subscribe({
             next: () => {             
 
-              if (aprobadoractual.toUpperCase().includes("REMUNERA")) {
+              this.solicitudes.sendEmail(this.emailVariables).subscribe({
+                next: () => {
+                },
+                error: (error) => {
+                  console.error(error);
+                }
+              });
+            },
+            error: (err) => {
+              console.error(err);
+            }
+          });
+        }else{
+          if(this.apruebaRemuneraciones === "SI"){
+            if (aprobadoractual.toUpperCase().includes("REMUNERA")) {
             const htmlString = "<!DOCTYPE html>\r\n<html lang=\"es\">\r\n\r\n<head>\r\n  <meta charset=\"UTF-8\">\r\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n  <title>Document<\/title>\r\n<\/head>\r\n\r\n<body>\r\n  <h2>Estimado(a)<\/h2>\r\n  <h3>{NOMBRE_APROBADOR}<\/h3>\r\n\r\n  <P>Se le informa que se encuentra aprobada la Solicitud {ID_SOLICITUD}<\/P>\r\n\r\n  <p>\r\n    <b>\r\n      Favor ingresar al siguiente enlace: <a href=\"{URL_APROBACION}\">{URL_APROBACION}<\/a>\r\n      <br>\r\n      <br>\r\n      Gracias por su atenci\u00F3n.\r\n    <\/b>\r\n  <\/p>\r\n<\/body>\r\n\r\n<\/html>";
 
               const modifiedHtmlString = htmlString.replace("{NOMBRE_APROBADOR}", usuarioCreador).replace("{ID_SOLICITUD}", this.solicitud.idSolicitud).replace(new RegExp("{URL_APROBACION}", "g"), `${portalWorkFlow}tareas/consulta-tareas?idUsuario=${subledgerCreador}`);
@@ -1266,20 +1282,28 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
                 password: "p4$$w0rd"
               };
             }
-           
-              this.solicitudes.sendEmail(this.emailVariables).subscribe({
+          }else{
+            const htmlString = "<!DOCTYPE html>\r\n<html lang=\"es\">\r\n\r\n<head>\r\n  <meta charset=\"UTF-8\">\r\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n  <title>Document<\/title>\r\n<\/head>\r\n\r\n<body>\r\n  <h2>Estimado(a)<\/h2>\r\n  <h3>{NOMBRE_APROBADOR}<\/h3>\r\n\r\n  <P>Se le informa que se encuentra aprobada la Solicitud {ID_SOLICITUD}<\/P>\r\n\r\n  <p>\r\n    <b>\r\n      Favor ingresar al siguiente enlace: <a href=\"{URL_APROBACION}\">{URL_APROBACION}<\/a>\r\n      <br>\r\n      <br>\r\n      Gracias por su atenci\u00F3n.\r\n    <\/b>\r\n  <\/p>\r\n<\/body>\r\n\r\n<\/html>";
+
+              const modifiedHtmlString = htmlString.replace("{NOMBRE_APROBADOR}", usuarioCreador).replace("{ID_SOLICITUD}", this.solicitud.idSolicitud).replace(new RegExp("{URL_APROBACION}", "g"), `${portalWorkFlow}tareas/consulta-tareas?idUsuario=${subledgerCreador}`);
+
+              this.emailVariables = {
+                de: "solicitud.workflow@rbp.com",
+                para: correoCreador,
+                alias: "solicitud.workflow@rbp.com",
+                asunto: "Notificación Iniciador",
+                cuerpo: modifiedHtmlString,
+                password: "p4$$w0rd"
+              };
+          }
+          this.solicitudes.sendEmail(this.emailVariables).subscribe({
                 next: () => {
                 },
                 error: (error) => {
                   console.error(error);
                 }
               });
-            },
-            error: (err) => {
-              console.error(err);
-            }
-          });
-        }
+         }
         }
       });
     });
@@ -1698,15 +1722,12 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
                       const aprobacionSiguiente = aprobacionesObj[String(Number(index) + 1)];
                       if (aprobacionSiguiente.aprobador.nivelDireccion !== "") {
                       this.aprobadorSiguiente = aprobacionesObj[String(Number(index) + 1)];
-                      this.aprobadorEnProceso = aprobacionesObj[String(Number(index) + 1)];
                       }else{
                         const aprobacionSiguiente = aprobacionesObj[String(Number(index) + 2)];
                         if (aprobacionSiguiente.aprobador.nivelDireccion !== "") {
                           this.aprobadorSiguiente = aprobacionesObj[String(Number(index) + 2)];
-                          this.aprobadorEnProceso = aprobacionesObj[String(Number(index) + 2)];
                       }else{
                         this.aprobadorSiguiente = aprobacionesObj[index];
-                        this.aprobadorEnProceso = aprobacionesObj[index];
                       }}
 
                       this.solicitudes.modelDetalleAprobaciones.id_Solicitud = this.solicitud.idSolicitud;
@@ -1760,10 +1781,10 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
                     if (aprobacion.aprobador.nivelDireccion.trim().toUpperCase().indexOf('RRHH') > 0) {
                       if (aprobacionesObj[String(Number(index) + 1)] === undefined || aprobacionesObj[String(Number(index) + 1)] === null) {
                         this.aprobadorSiguiente = aprobacionesObj[index];
-                        this.aprobadorEnProceso = aprobacionesObj[index];
+                        this.apruebaRemuneraciones = "NO";
                       } else {
                         this.aprobadorSiguiente = aprobacionesObj[String(Number(index) + 1)];
-                        this.aprobadorEnProceso = aprobacionesObj[index];
+                        this.apruebaRemuneraciones = "SI";
                       }
 
                       this.solicitudes.modelDetalleAprobaciones.id_Solicitud = this.solicitud.idSolicitud;
@@ -1804,7 +1825,6 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
 
                     if (aprobacion.aprobador.nivelDireccion.trim().toUpperCase().indexOf('REMUNERA') > 0) {
                       this.aprobadorSiguiente = aprobacionesObj[index];
-                      this.aprobadorEnProceso = aprobacionesObj[index];
 
                       this.solicitudes.modelDetalleAprobaciones.id_Solicitud = this.solicitud.idSolicitud;
                       this.solicitudes.modelDetalleAprobaciones.id_NivelAprobacion = aprobacion.nivelAprobacionType.idNivelAprobacion;
