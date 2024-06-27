@@ -1719,6 +1719,7 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
                   console.log("Actividad ", this.taskType_Activity);
                   if (aprobadoractual !== undefined) {
                     if (aprobacion.aprobador.nivelDireccion.trim() == aprobadoractual) {
+                      this.aprobadorActual = aprobacionesObj[index];
                       
                       const aprobacionSiguiente = aprobacionesObj[String(Number(index) + 1)];
                       if (aprobacionSiguiente.aprobador.nivelDireccion !== "") {
@@ -1729,6 +1730,7 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
                           this.aprobadorSiguiente = aprobacionesObj[String(Number(index) + 2)];
                       }else{
                         this.aprobadorSiguiente = aprobacionesObj[index];
+                        this.aprobadorActual = aprobacionesObj[index];
                       }}
 
                       this.solicitudes.modelDetalleAprobaciones.id_Solicitud = this.solicitud.idSolicitud;
@@ -1828,6 +1830,7 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
                   } else if (this.taskType_Activity == environment.taskType_CREM && aprobadoractual === undefined) {
 
                     if (aprobacion.aprobador.nivelDireccion.trim().toUpperCase().indexOf('REMUNERA') > 0) {
+                      this.aprobadorActual = aprobacionesObj[index];
                       this.aprobadorSiguiente = aprobacionesObj[index];
                       this.aprobadorFijo = "SI";
 
