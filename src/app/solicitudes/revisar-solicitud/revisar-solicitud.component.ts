@@ -1681,7 +1681,7 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
                   if (aprobadoractual !== undefined) {
                     if (aprobacion.aprobador.nivelDireccion.trim() == aprobadoractual) {
                       this.aprobadorSiguiente = aprobacionesObj[String(Number(index) + 1)];
-                      this.aprobadorEnProceso = aprobacionesObj[index];
+                      this.aprobadorEnProceso = aprobacionesObj[String(Number(index) + 1)];
                       
 
                       this.solicitudes.modelDetalleAprobaciones.id_Solicitud = this.solicitud.idSolicitud;
@@ -1730,7 +1730,7 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
 
                    }*/
 
-                  if (this.taskType_Activity == environment.taskType_RRHH && aprobadoractual == undefined) {
+                  if (this.taskType_Activity == environment.taskType_RRHH && aprobadoractual === undefined) {
 
                     if (aprobacion.aprobador.nivelDireccion.trim().toUpperCase().indexOf('RRHH') > 0) {
                       if (aprobacionesObj[String(Number(index) + 1)] === undefined || aprobacionesObj[String(Number(index) + 1)] === null) {
@@ -1775,7 +1775,7 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
                     }
 
 
-                  } else if (this.taskType_Activity == environment.taskType_CREM && aprobadoractual == undefined) {
+                  } else if (this.taskType_Activity == environment.taskType_CREM && aprobadoractual === undefined) {
 
                     if (aprobacion.aprobador.nivelDireccion.trim().toUpperCase().indexOf('REMUNERA') > 0) {
                       this.aprobadorSiguiente = aprobacionesObj[index];
