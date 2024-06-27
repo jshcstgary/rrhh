@@ -13,10 +13,10 @@
         </div>
         <div class="col-md-4 text-end">
           <!-- <button *ngIf="RegistrarsolicitudCompletada" -->
+          <!-- [disabled]="!solicitudForm.form.valid" -->
           <button
             type="button"
             class="btn btn-info me-2 mt-1"
-            [disabled]="!solicitudForm.form.valid"
             (click)="saveDetalleAprobaciones()"
             [disabled]="textareaContent === '' && (buttonValue === 'devolver' || buttonValue === 'rechazar')"
           >
@@ -797,8 +797,8 @@
               <div class="datepicker-container">
                 <mat-form-field appearance="outline">
                   <mat-label>Fecha</mat-label>
-                  <input matInput [matDatepicker]="picker">
-                  <mat-datepicker-toggle matSuffix [for]="picker" [(ngModel)]="selectedDate">
+                  <input matInput [matDatepicker]="picker" [(ngModel)]="selectedDate" name="espera-maxima">
+                  <mat-datepicker-toggle matSuffix [for]="picker">
                   </mat-datepicker-toggle>
                   <mat-datepicker #picker></mat-datepicker>
                 </mat-form-field>
@@ -806,7 +806,6 @@
             </div>
           </div>
         </div>
-
     </h2>
   </div>
 </form>

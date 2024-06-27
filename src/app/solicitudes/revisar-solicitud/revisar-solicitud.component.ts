@@ -1249,13 +1249,13 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
               this.solicitudes.modelDetalleAprobaciones.usuarioModificacion = elemento.aprobador.usuario;
               this.solicitudes.modelDetalleAprobaciones.fechaCreacion = new Date().toISOString();
               this.solicitudes.modelDetalleAprobaciones.fechaModificacion = new Date().toISOString();
-              
+
             }
            }
           });
          if(this.aprobadorFijo === "NO"){
           this.solicitudes.guardarDetallesAprobacionesSolicitud(this.solicitudes.modelDetalleAprobaciones).subscribe({
-            next: () => {             
+            next: () => {
 
               this.solicitudes.sendEmail(this.emailVariables).subscribe({
                 next: () => {
@@ -1415,21 +1415,21 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
         variables.urlTarea = {
           value: `${portalWorkFlow}solicitudes/revisar-solicitud/${this.idDeInstancia}/${this.id_solicitud_by_params}`
         };
-        variables.correoNotificacionRemuneracion = {
-          value: this.aprobadorSiguiente.aprobador.correo
-        };
-        variables.usuarioNotificacionRemuneracion = {
-          value: this.aprobadorSiguiente.aprobador.usuario
-        };
-        variables.nivelDireccionNotificacionRemuneracion = {
-          value: this.aprobadorSiguiente.aprobador.nivelDireccion
-        };
-        variables.descripcionPosicionNotificacionRemuneracion = {
-          value: this.aprobadorSiguiente.aprobador.descripcionPosicion
-        };
-        variables.subledgerNotificacionRemuneracion = {
-          value: this.aprobadorSiguiente.aprobador.subledger
-        };
+        // variables.correoNotificacionRemuneracion = {
+        //   value: this.aprobadorSiguiente.aprobador.correo
+        // };
+        // variables.usuarioNotificacionRemuneracion = {
+        //   value: this.aprobadorSiguiente.aprobador.usuario
+        // };
+        // variables.nivelDireccionNotificacionRemuneracion = {
+        //   value: this.aprobadorSiguiente.aprobador.nivelDireccion
+        // };
+        // variables.descripcionPosicionNotificacionRemuneracion = {
+        //   value: this.aprobadorSiguiente.aprobador.descripcionPosicion
+        // };
+        // variables.subledgerNotificacionRemuneracion = {
+        //   value: this.aprobadorSiguiente.aprobador.subledger
+        // };
 
         variables.atencionRevisionGerente = { value: this.buttonValue };
         variables.comentariosAtencionGerenteRRHH = { value: this.textareaContent };
@@ -1728,23 +1728,11 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
                 if (aprobacionesObj.hasOwnProperty(index)) {
                   const aprobacion = aprobacionesObj[index];
                   if (aprobacion.aprobador.nivelDireccion !== "") {
-                  // const aprobacionSiguiente = aprobacionesObj[String(Number(index) + 1)];
-                  // console.log(aprobacion);
-                  // console.log(aprobacionSiguiente);
 
-                  console.log(`Entro en elementos de aprobacion..`);
-                  console.log(`Elemento ${index}:`, aprobacion);
-                  // Aquí puedes acceder a las propiedades de cada objeto
-                  console.log("Nivel aprobacion", aprobacion.nivelAprobacionType.idNivelAprobacion);
-                  console.log("Nivel aprobacion ruta", aprobacion.nivelAprobacionType.idNivelAprobacionRuta);
-                  console.log("Descripcion de la posicion", aprobacion.aprobador.descripcionPosicion);
-                  console.log("Nivel direccion", aprobacion.aprobador.nivelDireccion);
-                  console.log("Usuario aprobador", aprobacion.aprobador.usuario);
-                  console.log("Actividad ", this.taskType_Activity);
                   if (aprobadoractual !== undefined) {
                     if (aprobacion.aprobador.nivelDireccion.trim() == aprobadoractual) {
                       this.aprobadorActual = aprobacionesObj[index];
-                      
+
                       const aprobacionSiguiente = aprobacionesObj[String(Number(index) + 1)];
                       if (aprobacionSiguiente.aprobador.nivelDireccion !== "") {
                       this.aprobadorSiguiente = aprobacionesObj[String(Number(index) + 1)];
@@ -1830,13 +1818,13 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
                       this.solicitudes.modelDetalleAprobaciones.tipoRuta = aprobacion.nivelAprobacionType.tipoRuta;
                       this.solicitudes.modelDetalleAprobaciones.ruta = aprobacion.nivelAprobacionType.ruta;
                       this.solicitudes.modelDetalleAprobaciones.accion = aprobacion.nivelAprobacionType.accion;
-                      this.solicitudes.modelDetalleAprobaciones.nivelDirecion = aprobacion.nivelAprobacionType.nivelDirecion;
+                      this.solicitudes.modelDetalleAprobaciones.nivelDirecion = aprobacion.aprobador.nivelDirecion;
                       this.solicitudes.modelDetalleAprobaciones.nivelAprobacionRuta = aprobacion.nivelAprobacionType.nivelAprobacionRuta;
                       this.solicitudes.modelDetalleAprobaciones.usuarioAprobador = aprobacion.aprobador.usuario;
                       this.solicitudes.modelDetalleAprobaciones.codigoPosicionAprobador = aprobacion.aprobador.codigoPosicion;
                       this.solicitudes.modelDetalleAprobaciones.descripcionPosicionAprobador = aprobacion.aprobador.descripcionPosicion;
                       this.solicitudes.modelDetalleAprobaciones.sudlegerAprobador = aprobacion.aprobador.subledger;
-                      this.solicitudes.modelDetalleAprobaciones.nivelDireccionAprobador = aprobacion.nivelAprobacionType.nivelDireccion;
+                      this.solicitudes.modelDetalleAprobaciones.nivelDireccionAprobador = aprobacion.aprobador.nivelDireccion;
                       this.solicitudes.modelDetalleAprobaciones.codigoPosicionReportaA = aprobacion.aprobador.codigoPosicionReportaA;
                       this.solicitudes.modelDetalleAprobaciones.estado = "A";
                       this.solicitudes.modelDetalleAprobaciones.correo = aprobacion.aprobador.correo;
@@ -1871,13 +1859,13 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
                       this.solicitudes.modelDetalleAprobaciones.tipoRuta = aprobacion.nivelAprobacionType.tipoRuta;
                       this.solicitudes.modelDetalleAprobaciones.ruta = aprobacion.nivelAprobacionType.ruta;
                       this.solicitudes.modelDetalleAprobaciones.accion = aprobacion.nivelAprobacionType.accion;
-                      this.solicitudes.modelDetalleAprobaciones.nivelDirecion = aprobacion.nivelAprobacionType.nivelDirecion;
+                      this.solicitudes.modelDetalleAprobaciones.nivelDirecion = aprobacion.aprobador.nivelDirecion;
                       this.solicitudes.modelDetalleAprobaciones.nivelAprobacionRuta = aprobacion.nivelAprobacionType.nivelAprobacionRuta;
                       this.solicitudes.modelDetalleAprobaciones.usuarioAprobador = aprobacion.aprobador.usuario;
                       this.solicitudes.modelDetalleAprobaciones.codigoPosicionAprobador = aprobacion.aprobador.codigoPosicion;
                       this.solicitudes.modelDetalleAprobaciones.descripcionPosicionAprobador = aprobacion.aprobador.descripcionPosicion;
                       this.solicitudes.modelDetalleAprobaciones.sudlegerAprobador = aprobacion.aprobador.subledger;
-                      this.solicitudes.modelDetalleAprobaciones.nivelDireccionAprobador = aprobacion.nivelAprobacionType.nivelDireccion;
+                      this.solicitudes.modelDetalleAprobaciones.nivelDireccionAprobador = aprobacion.aprobador.nivelDireccion;
                       this.solicitudes.modelDetalleAprobaciones.codigoPosicionReportaA = aprobacion.aprobador.codigoPosicionReportaA;
                       this.solicitudes.modelDetalleAprobaciones.estado = "A";
                       this.solicitudes.modelDetalleAprobaciones.correo = aprobacion.aprobador.correo;

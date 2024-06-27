@@ -20,6 +20,7 @@ export class SolicitudesService {
   private apiEmpleadoEvolutionUrl = environment.empleadoServiceEs;
   private apiHistoricaCamundaUrl = environment.historicaCamundaServiceEs;
   private apiDetalleAprobaciones = environment.detalleAprobacionesServiceES;
+  private apiUrlTareas = environment.tareasServiceES;
   private apiEmail = environment.senEmailService;
 
   public modelSolicitud = new Solicitud();
@@ -188,5 +189,9 @@ export class SolicitudesService {
     return this.http.get<any>(
       `${this.apiEmpleadoEvolutionUrl}/nivelaprobacion/${codigoPosicion}`
     );
+  }
+
+  public getTareaIdParam(idParam: string): Observable<any> {
+    return this.http.get<any>(`${this.apiUrlTareas}/${idParam}`);
   }
 }

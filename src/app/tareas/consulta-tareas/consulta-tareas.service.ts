@@ -40,11 +40,7 @@ export class ConsultaTareasService {
     return this.http.get<any>(`${this.apiUrlTareas}/consultartareasporsubleger/${idUsuario}`);
   }
 
-  public getTareaIdParam(
-    idParam: string
-  ): Observable<any> {
-    return this.http.get<any>(
-      `${this.apiUrlTareas}/${idParam}`
-    );
+  public getTareaIdParam(idParam: string): Observable<any> {
+    return this.http.get<any>(`${this.apiUrlTareas}/${idParam}`);
   }
 }

@@ -528,28 +528,25 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
         // id is parent process instance id. so handle it accordingly
         // we are looking for task id 'Registrar' in a recently started process instance 'id'
         this.idDeInstancia = params["id"];
-        this.camundaRestService
-          .getTask(environment.taskType_Registrar, params["id"])
-          .subscribe({
-            next: (result) => {
-              this.lookForError(result); // if error, then control gets redirected to err page
+        // this.camundaRestService.getTask(environment.taskType_Registrar, params["id"]).subscribe({
+        console.log(this.id_solicitud_by_params);
+        this.solicitudes.getTareaIdParam(this.id_solicitud_by_params).subscribe({
+          next: (result) => {
+            this.lookForError(result); // if error, then control gets redirected to err page
 
-              // if result is success - bingo, we got the task id
-              this.uniqueTaskId =
-                result[0].id; /* Es como la tarea que se crea en esa instancia */
-              this.taskId = params["id"]; /* Esta es la instancia */
-              this.getDetalleSolicitudById(this.id_solicitud_by_params);
-              this.getSolicitudById(this.id_solicitud_by_params);
-              this.date = result[0].created;
-              this.loadExistingVariables(
-                this.uniqueTaskId ? this.uniqueTaskId : "",
-                variableNames
-              );
-            },
-            error: (error) => {
-              console.error(error);
-            }
-          });
+            console.log(result.solicitudes[0].taskId);
+            // if result is success - bingo, we got the task id
+            this.uniqueTaskId = result.solicitudes[0].taskId; /* Es como la tarea que se crea en esa instancia */
+            this.taskId = params["id"]; /* Esta es la instancia */
+            this.getDetalleSolicitudById(this.id_solicitud_by_params);
+            this.getSolicitudById(this.id_solicitud_by_params);
+            this.date = result.solicitudes[0].startTime;
+            this.loadExistingVariables(this.uniqueTaskId ? this.uniqueTaskId : "", variableNames);
+          },
+          error: (error) => {
+            console.error(error);
+          }
+        });
       } else {
         // unique id is from the route params
         this.uniqueTaskId = params["id"];
@@ -728,7 +725,7 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
       sueldoSemestral: "",
       sueldoAnual: "",
       taskNivelAprobador: "",
-	  puestoJefeInmediato: "",
+      puestoJefeInmediato: "",
       jefeInmediatoSuperior: "",
       responsableRRHH: ""
     };
@@ -1538,7 +1535,7 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
       });
   }
 
-	override generateVariablesFromFormFields() {
+  override generateVariablesFromFormFields() {
     let variables: any = {};
 
     this.crearRegistradorSolicitud();

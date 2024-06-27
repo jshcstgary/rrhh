@@ -42,10 +42,7 @@ export class CamundaRestService {
   // task name from the BPMN process def
   // process instance id
   getTask(type: String, processInstanceId: String): Observable<Task[]> {
-    const endpoint =
-      `${this.engineRestUrl}task?sortBy=created&sortOrder=desc&maxResults=1` +
-      `&processInstanceId=` +
-      processInstanceId;
+    const endpoint = `${this.engineRestUrl}task?sortBy=created&sortOrder=desc&maxResults=1&processInstanceId=${processInstanceId}`;
 
     console.log('Aqui endpoint de getTask',endpoint)
     return this.http.get<any>(endpoint, httpOptions).pipe(

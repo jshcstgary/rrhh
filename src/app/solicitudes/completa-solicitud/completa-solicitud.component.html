@@ -909,8 +909,8 @@
               <div class="datepicker-container">
                 <mat-form-field appearance="outline">
                   <mat-label>Fecha</mat-label>
-                  <input matInput [matDatepicker]="picker2" name="fechaIngresoCandidato">
-                  <mat-datepicker-toggle matSuffix [for]="picker2" [(ngModel)]="selectedDateIn">
+                  <input matInput [matDatepicker]="picker2" [(ngModel)]="selectedDateIn" name="fechaIngresoCandidato">
+                  <mat-datepicker-toggle matSuffix [for]="picker2">
                   </mat-datepicker-toggle>
                   <mat-datepicker #picker2></mat-datepicker>
                 </mat-form-field>
