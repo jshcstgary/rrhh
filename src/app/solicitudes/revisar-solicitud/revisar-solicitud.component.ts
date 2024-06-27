@@ -1190,6 +1190,7 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
           subledgerCreador = aprobador.subledgerNotificacionCreador?.value;
           usuarioCreador = aprobador.usuarioNotificacionCreador?.value;
 
+        if(this.solicitud.estadoSolicitud==="4"){
           // debugger;
           if (aprobadoractual === undefined || aprobadoractual === null) {
             aprobadoractual = this.aprobadorSiguiente.aprobador.nivelDireccion;
@@ -1305,7 +1306,46 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
                 }
               });
          }
+        }if(this.solicitud.estadoSolicitud==="5" || this.solicitud.estadoSolicitud==="DV"){
+            if(this.solicitud.estadoSolicitud === "5"){
+            const htmlString = "<!DOCTYPE html>\r\n<html lang=\"es\">\r\n\r\n<head>\r\n  <meta charset=\"UTF-8\">\r\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n  <title>Document<\/title>\r\n<\/head>\r\n\r\n<body>\r\n  <h2>Estimado(a)<\/h2>\r\n  <h3>{NOMBRE_APROBADOR}<\/h3>\r\n\r\n  <P>Se le informa que ha sido rechazada la Solicitud {ID_SOLICITUD}<\/P>\r\n\r\n  <p>\r\n    <b>\r\n      Favor ingresar al siguiente enlace: <a href=\"{URL_APROBACION}\">{URL_APROBACION}<\/a>\r\n      <br>\r\n      <br>\r\n      Gracias por su atenci\u00F3n.\r\n    <\/b>\r\n  <\/p>\r\n<\/body>\r\n\r\n<\/html>";
+
+            const modifiedHtmlString = htmlString.replace("{NOMBRE_APROBADOR}", usuarioCreador).replace("{ID_SOLICITUD}", this.solicitud.idSolicitud).replace(new RegExp("{URL_APROBACION}", "g"), `${portalWorkFlow}starter?idUsuario=${subledgerCreador}`);
+
+            this.emailVariables = {
+                de: "solicitud.workflow@rbp.com",
+                para: correoCreador,
+                alias: "solicitud.workflow@rbp.com",
+                asunto: `Notificación por rechazo de Solicitud de ${this.solicitud.tipoSolicitud} ${this.solicitud.idSolicitud}`,
+                cuerpo: modifiedHtmlString,
+                password: "p4$$w0rd"
+              };
+
+            }if(this.solicitud.estadoSolicitud === "DV"){
+            const htmlString = "<!DOCTYPE html>\r\n<html lang=\"es\">\r\n\r\n<head>\r\n  <meta charset=\"UTF-8\">\r\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n  <title>Document<\/title>\r\n<\/head>\r\n\r\n<body>\r\n  <h2>Estimado(a)<\/h2>\r\n  <h3>{NOMBRE_APROBADOR}<\/h3>\r\n\r\n  <P>Se le informa que ha sido devuelta la Solicitud {ID_SOLICITUD}<\/P>\r\n\r\n  <p>\r\n    <b>\r\n      Favor ingresar al siguiente enlace: <a href=\"{URL_APROBACION}\">{URL_APROBACION}<\/a>\r\n      <br>\r\n      <br>\r\n      Gracias por su atenci\u00F3n.\r\n    <\/b>\r\n  <\/p>\r\n<\/body>\r\n\r\n<\/html>";
+
+            const modifiedHtmlString = htmlString.replace("{NOMBRE_APROBADOR}", usuarioCreador).replace("{ID_SOLICITUD}", this.solicitud.idSolicitud).replace(new RegExp("{URL_APROBACION}", "g"), `${portalWorkFlow}tareas/consulta-tareas?idUsuario=${subledgerCreador}`);
+
+            this.emailVariables = {
+                de: "solicitud.workflow@rbp.com",
+                para: correoCreador,
+                alias: "solicitud.workflow@rbp.com",
+                asunto: `Notificación por devolución de Solicitud de ${this.solicitud.tipoSolicitud} ${this.solicitud.idSolicitud}`,
+                cuerpo: modifiedHtmlString,
+                password: "p4$$w0rd"
+              };
+            }
+          }
+              this.solicitudes.sendEmail(this.emailVariables).subscribe({
+                next: () => {
+                },
+                error: (error) => {
+                  console.error(error);
+                }
+              });
+         }
         }
+       } 
       });
     });
   }
