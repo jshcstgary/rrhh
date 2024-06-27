@@ -14,6 +14,8 @@ export class StarterComponent implements AfterViewInit {
   ngAfterViewInit() {
     const idUsuario = this._route.snapshot.queryParamMap.get("idUsuario");
 
-    localStorage.setItem("idUsuario", idUsuario);
+    if (idUsuario !== undefined && idUsuario !== null) {
+      localStorage.setItem("idUsuario", idUsuario);
+    }
   }
 }

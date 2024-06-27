@@ -12,13 +12,13 @@
                   <label for="usuario" class="control-label col-form-label azul"
                     >Usuario</label
                   >
+                  <!-- [(ngModel)]="Session.Usuario" -->
                   <input
                     required
                     type="text"
-                    [(ngModel)]="Session.Usuario"
+                    [(ngModel)]="user"
                     class="form-control"
                     id="usuario"
-                    [attr.maxlength]="10"
                   />
                 </div>
               </div>
@@ -30,18 +30,19 @@
                     for="contrasena"
                     class="control-label col-form-label azul"
                     >Contraseña</label
-                  >
+                    >
+                  <!-- [(ngModel)]="Session.Usuario" -->
                   <input
                     required
                     type="password"
                     class="form-control"
+                    [(ngModel)]="password"
                     id="contrasena"
-                    [attr.maxlength]="20"
                   />
                 </div>
               </div>
             </div>
-            <div class="row">
+            <!-- <div class="row">
               <div class="col-sm-12 col-md-12">
                 <div class="form-group">
                   <label for="perfil" class="control-label col-form-label azul"
@@ -54,15 +55,16 @@
                   </ng-select>
                 </div>
               </div>
-            </div>
-            <div class="row mt-3">
+            </div> -->
+            <div class="row mt-5">
               <div class="col-sm-12 col-md-12">
                 <div class="form-group">
                   <button
                     class="btn btn-warning w-100 login-button"
                     (click)="login()"
+                    [disabled]="isLoading"
                   >
-                    Iniciar Sesión
+                    {{isLoading ? "Espere, por favor..." : "Iniciar Sesión"}}
                   </button>
                 </div>
               </div>

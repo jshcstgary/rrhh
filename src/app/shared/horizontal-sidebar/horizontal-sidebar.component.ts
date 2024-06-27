@@ -154,8 +154,7 @@ export class HorizontalSidebarComponent {
   };
   public dropdownButtonClasses: string[] =
     VerticalNavigationData.dropdownButtonClasses;
-  public userDropdownOptions: IDropdownOptions =
-    VerticalNavigationData.userDropdownOptions;
+  public userDropdownOptions: IDropdownOptions = VerticalNavigationData.userDropdownOptions;
 
   constructor(
     private menuServise: HorizontalSidebarService,
@@ -175,6 +174,14 @@ export class HorizontalSidebarComponent {
       this.addExpandClass(this.path);
     });
   }
+
+  // signOut(): string {
+  //   localStorage.removeItem("idUsuario");
+
+  //   this.router.navigate(["/login"]);
+
+  //   return "";
+  // }
 
   addExpandClass(element: any) {
     if (element === this.showMenu) {

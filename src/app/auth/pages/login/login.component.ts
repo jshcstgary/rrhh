@@ -8,6 +8,8 @@ import { FormsModule } from "@angular/forms";
 import { Subject, takeUntil } from "rxjs";
 // import { UtilService } from "../../../../modules/util/services/util.service";
 import { HttpErrorResponse } from "@angular/common/http";
+import { StarterService } from "src/app/starter/starter.service";
+import Swal from "sweetalert2";
 @Component({
   selector: "app-login",
   standalone: true,
@@ -16,10 +18,16 @@ import { HttpErrorResponse } from "@angular/common/http";
   styleUrls: ["./login.component.scss"],
 })
 export class LoginComponent {
+  public user: string = "";
+  public password: string = "";
+
+  public isLoading: boolean = false;
+
   Session: Session;
   private unsubscribeService = new Subject<void>();
   constructor(
     private router: Router,
+    private starterService: StarterService
     // private permisosService: PermisoService,
     // private utilService: UtilService
   ) {
@@ -41,6 +49,50 @@ export class LoginComponent {
   }
 
   public login() {
+    if (this.user === "" || this.password === "") {
+      Swal.fire({
+        text: "Ingrese las credenciales",
+        icon: "info",
+        confirmButtonColor: "rgb(227, 199, 22)",
+        confirmButtonText: "Ok",
+      });
+
+      return;
+    }
+
+    this.isLoading = true;
+
+    this.starterService.getUser(this.user).subscribe({
+      next: (res) => {
+        if (res.totalRegistros === 0) {
+          Swal.fire({
+            text: "No se encontró el usuario",
+            icon: "info",
+            confirmButtonColor: "rgb(227, 199, 22)",
+            confirmButtonText: "Ok",
+          });
+
+          this.isLoading = false;
+
+          return;
+        }
+
+        this.isLoading = false;
+
+        localStorage.setItem("idUsuario", this.user);
+
+        this.router.navigate(["/starter"]);
+      },
+      error: (err) => {
+        Swal.fire({
+          text: "No se encontró registro",
+          icon: "info",
+          confirmButtonColor: "rgb(227, 199, 22)",
+          confirmButtonText: "Sí",
+        });
+      }
+    });
+
     // this.permisosService
     //   .post(this.Session.Usuario)
     //   .pipe(takeUntil(this.unsubscribeService))
