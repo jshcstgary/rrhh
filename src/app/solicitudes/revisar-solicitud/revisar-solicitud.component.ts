@@ -1825,6 +1825,7 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
 
                     if (aprobacion.aprobador.nivelDireccion.trim().toUpperCase().indexOf('REMUNERA') > 0) {
                       this.aprobadorSiguiente = aprobacionesObj[index];
+                      this.aprobadorFijo = "SI";
 
                       this.solicitudes.modelDetalleAprobaciones.id_Solicitud = this.solicitud.idSolicitud;
                       this.solicitudes.modelDetalleAprobaciones.id_NivelAprobacion = aprobacion.nivelAprobacionType.idNivelAprobacion;
