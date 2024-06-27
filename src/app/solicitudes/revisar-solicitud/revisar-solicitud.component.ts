@@ -1164,7 +1164,7 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
   }
 
   consultarNextTaskAprobador(IdSolicitud: string) {
-    
+   if(this.solicitud.estadoSolicitud !== "5"){
     this.consultaTareasService.getTareaIdParam(IdSolicitud).subscribe((tarea) => {
       // debugger;
       this.uniqueTaskId = tarea.solicitudes[0].taskId;
@@ -1331,6 +1331,7 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
        }
       });
     });
+   }
   }
 
   recorrerArreglo() {
