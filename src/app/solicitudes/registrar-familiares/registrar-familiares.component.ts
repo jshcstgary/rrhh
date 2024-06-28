@@ -48,17 +48,17 @@ import {
   IRowTableAttributes,
   idActionType,
 } from "src/app/component/table/table.interface";
-import { DialogBuscarEmpleadosComponent } from "./buscar-empleados/buscar-empleados.component";
+import { DialogBuscarEmpleadosFamiliaresComponent } from "./dialog-buscar-empleados-familiares/dialog-buscar-empleados-familiares.component";
 import { DialogReasignarUsuarioComponent } from "src/app/shared/reasginar-usuario/reasignar-usuario.component";
 import { TableService } from "src/app/component/table/table.service";
 
 interface DialogComponents {
-  dialogBuscarEmpleados: Type<DialogBuscarEmpleadosComponent>;
+  dialogBuscarEmpleados: Type<DialogBuscarEmpleadosFamiliaresComponent>;
   dialogReasignarUsuario: Type<DialogReasignarUsuarioComponent>;
 }
 
 const dialogComponentList: DialogComponents = {
-  dialogBuscarEmpleados: DialogBuscarEmpleadosComponent,
+  dialogBuscarEmpleados: DialogBuscarEmpleadosFamiliaresComponent,
   dialogReasignarUsuario: DialogReasignarUsuarioComponent,
 };
 
@@ -78,7 +78,7 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
 
   public inputsEditRow: IInputsComponent = [
     {
-      id: "parentezco",
+      id: "parentesco",
       label: "parentezco",
       type: "string",
       required: true,
@@ -389,8 +389,8 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
         term.length < 1
           ? []
           : this.codigosPosicion
-              .filter((v) => v.toLowerCase().indexOf(term.toLowerCase()) > -1)
-              .slice(0, 10)
+            .filter((v) => v.toLowerCase().indexOf(term.toLowerCase()) > -1)
+            .slice(0, 10)
       )
     );
 
@@ -404,8 +404,8 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
         term.length < 1
           ? []
           : this.subledgers
-              .filter((v) => v.toLowerCase().indexOf(term.toLowerCase()) > -1)
-              .slice(0, 10)
+            .filter((v) => v.toLowerCase().indexOf(term.toLowerCase()) > -1)
+            .slice(0, 10)
       )
     );
 
@@ -419,8 +419,8 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
         term.length < 1
           ? []
           : this.nombresEmpleados
-              .filter((v) => v.toLowerCase().indexOf(term.toLowerCase()) > -1)
-              .slice(0, 10)
+            .filter((v) => v.toLowerCase().indexOf(term.toLowerCase()) > -1)
+            .slice(0, 10)
       )
     );
 
@@ -474,23 +474,17 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
         // id is parent process instance id. so handle it accordingly
         // we are looking for task id 'Registrar' in a recently started process instance 'id'
         this.idDeInstancia = params["id"];
-        this.camundaRestService
-          .getTask(environment.taskType_CF, params["id"])
+        // this.camundaRestService.getTask(environment.taskType_CF, params["id"])
+        this.solicitudes.getTareaIdParam(this.id_solicitud_by_params)
           .subscribe((result) => {
-            console.log("INGRESA AQUÍ (registrar): ", result);
-            console.log("environment.taskType_CF: ", environment.taskType_CF);
-            console.log("params['id']: ", params["id"]);
             this.lookForError(result); // if error, then control gets redirected to err page
 
             // if result is success - bingo, we got the task id
-            this.uniqueTaskId =
-              result[0].id; /* Es como la tarea que se crea en esa instancia */
+            this.uniqueTaskId = result.solicitudes[0].taskId; /* Es como la tarea que se crea en esa instancia */
             this.taskId = params["id"]; /* Esta es la instancia */
-            console.log("this.uniqueTaskId: ", this.uniqueTaskId);
-            console.log("this.taskId: ", this.taskId);
             this.getDetalleSolicitudById(this.id_solicitud_by_params);
             this.getSolicitudById(this.id_solicitud_by_params);
-            this.date = result[0].created;
+            this.date = result.solicitudes[0].startTime;
             this.loadExistingVariables(
               this.uniqueTaskId ? this.uniqueTaskId : "",
               variableNames
@@ -1018,18 +1012,16 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
 
   // Prueba servicio
   getSolicitudes() {
-    this.solicitudes.getSolicitudes().subscribe((data) => {});
+    this.solicitudes.getSolicitudes().subscribe((data) => { });
   }
 
-  obtenerServicioFamiliaresCandidatos({
-    idSolicitud,
-  }: {
-    idSolicitud: string;
-  }) {
+  obtenerServicioFamiliaresCandidatos({ idSolicitud }: { idSolicitud: string; }) {
     return this.mantenimientoService.getFamiliaresCandidato().subscribe({
       next: (response) => {
         const data = response?.familiaresCandidato || [];
+        console.log(data);
 
+        console.log(idSolicitud);
         this.dataTableDatosFamiliares = data.filter(
           (d) => d.idSolicitud === idSolicitud
         );
@@ -1203,14 +1195,14 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
 
         this.detalleSolicitud.misionCargo =
           this.model.misionCargo == "" ||
-          this.model.misionCargo == undefined ||
-          this.model.misionCargo == null
+            this.model.misionCargo == undefined ||
+            this.model.misionCargo == null
             ? ""
             : this.model.misionCargo;
         this.detalleSolicitud.justificacion =
           this.model.justificacionCargo == "" ||
-          this.model.justificacionCargo == undefined ||
-          this.model.justificacionCargo == null
+            this.model.justificacionCargo == undefined ||
+            this.model.justificacionCargo == null
             ? ""
             : this.model.justificacionCargo;
         this.detalleSolicitud.sueldo = this.model.sueldo;
@@ -1388,8 +1380,9 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
   override generateVariablesFromFormFields() {
     let variables: any = {};
 
+    console.log(this.tipo_solicitud_descripcion);
     if (this.tipo_solicitud_descripcion.toUpperCase().includes("REQUISICION") || this.solicitud.tipoSolicitud.toUpperCase().includes("REQUISICIÓN")) {
-      if(this.taskType_Activity==environment.taskType_Registrar){
+      if (this.taskType_Activity == environment.taskType_Registrar) {
         variables.codigoPosicion = { value: this.model.codigoPosicion };
         variables.misionCargo = { value: this.model.misionCargo };
         variables.justificacionCargo = { value: this.model.justificacionCargo };
@@ -1578,7 +1571,7 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
       .guardarDetallesAprobacionesSolicitud(
         this.solicitudes.modelDetalleAprobaciones
       )
-      .subscribe((res) => {});
+      .subscribe((res) => { });
   }
 
   indexedModal: Record<keyof DialogComponents, any> = {
@@ -1602,6 +1595,7 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
           }
 
           if (result?.data) {
+            console.log(result.data);
             const data: IEmpleadoData = result.data;
             const dtoFamiliares: FamiliaresCandidatos = {
               idSolicitud: this.id_solicitud_by_params,
@@ -1618,17 +1612,22 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
 
             this.mantenimientoService
               .guardarFamiliaresCandidato(dtoFamiliares)
-              .subscribe((response) => {
-                console.log(
-                  "guardarFamiliaresCandidato:",
-                  dtoFamiliares,
-                  response
-                );
-                this.addNewRow(dtoFamiliares);
-                this.utilService.modalResponse(
-                  "Familiar ingresado correctamente",
-                  "success"
-                );
+              .subscribe({
+                next: (response) => {
+                  console.log(
+                    "guardarFamiliaresCandidato:",
+                    dtoFamiliares,
+                    response
+                  );
+                  this.addNewRow(dtoFamiliares);
+                  this.utilService.modalResponse(
+                    "Familiar ingresado correctamente",
+                    "success"
+                  );
+                },
+                error: (err) => {
+                  console.error(err);
+                }
               });
           }
         },
@@ -1702,8 +1701,11 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
   }
 
   handleSaveRowData(row: any) {
-    // console.log('Save row data:', row);
-    this.updateRowData(row);
+    this.updateRowData({
+      ...row,
+      parentesco: row.parentezco,
+      estado: "A"
+    });
   }
 
   async handleActionClick(event: any) {
@@ -1712,9 +1714,11 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
 
     switch (action) {
       case "editOnTable":
+        console.log("EDITAR");
         this.startEditingRow(index);
         break;
       case "delete":
+        console.log("ELIMINAR");
         this.dataTableDatosFamiliares[index].estado = "I";
         await this.mantenimientoService
           .putFamiliaredCandidatos(this.dataTableDatosFamiliares[index])
@@ -1749,13 +1753,25 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
   }
 
   updateRowData(updatedRow: any) {
-    this.dataTableDatosFamiliares = this.dataTableDatosFamiliares.map((row) => {
-      console.log('Aqui row nueva', updatedRow);
-      console.log('Aqui row anterior', row)
-      if (row.id === updatedRow.id) {
-        return updatedRow;
+    this.mantenimientoService.putFamiliaredCandidatos(updatedRow).subscribe({
+      next: () => {
+        this.dataTableDatosFamiliares = this.dataTableDatosFamiliares.map((row) => {
+          if (row.id === updatedRow.id) {
+            return updatedRow;
+          }
+          return row;
+        });
+      },
+      error: (err) => {
+        console.error(err);
+
+        Swal.fire({
+          text: "No se pudo actualizar el registro",
+          icon: "warning",
+          confirmButtonColor: "rgb(227, 199, 22)",
+          confirmButtonText: "Ok"
+        });
       }
-      return row;
     });
   }
 }

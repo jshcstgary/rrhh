@@ -9,13 +9,13 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { RouterModule } from "@angular/router";
 import {
-	NgbAccordionModule,
-	NgbAlertModule,
-	NgbDatepickerModule,
-	NgbDropdownModule,
-	NgbModule,
-	NgbNavModule,
-	NgbTypeaheadModule,
+  NgbAccordionModule,
+  NgbAlertModule,
+  NgbDatepickerModule,
+  NgbDropdownModule,
+  NgbModule,
+  NgbNavModule,
+  NgbTypeaheadModule,
 } from "@ng-bootstrap/ng-bootstrap";
 import { NgSelectModule } from "@ng-select/ng-select";
 import { NgxChartsModule } from "@swimlane/ngx-charts";
@@ -40,7 +40,8 @@ import { RegistrarComentarioSalidaJefeComponent } from "./registrar-comentario-s
 import { RegistrarComentarioSalidaRRHHComponent } from "./registrar-comentario-salida-rrhh/registrar-comentario-salida-rrhh.component";
 import { RegistrarFamiliaresComponent } from './registrar-familiares/registrar-familiares.component';
 import { ReingresoPersonalComponent } from './reingreso-personal/reingreso-personal.component';
-
+import { DialogBuscarEmpleadosFamiliaresComponent } from "./registrar-familiares/dialog-buscar-empleados-familiares/dialog-buscar-empleados-familiares.component";
+import { DialogBuscarEmpleadosReingresoComponent } from "./reingreso-personal/dialog-buscar-empleados-reingreso/dialog-buscar-empleados-reingreso.component";
 
 @NgModule({
   declarations: [
@@ -56,7 +57,9 @@ import { ReingresoPersonalComponent } from './reingreso-personal/reingreso-perso
     RegistrarComentarioSalidaRRHHComponent,
     RegistrarComentarioReingresoComponent,
     RegistrarAccionPersonalComponent,
-    CompletarAccionPersonalComponent
+    CompletarAccionPersonalComponent,
+    DialogBuscarEmpleadosFamiliaresComponent,
+    DialogBuscarEmpleadosReingresoComponent
   ],
   imports: [
     RouterModule.forChild(SolicitudesRoutes),
@@ -90,4 +93,4 @@ import { ReingresoPersonalComponent } from './reingreso-personal/reingreso-perso
   ],
   providers: [TableService],
 })
-export class SolicitudesModule {}
+export class SolicitudesModule { }

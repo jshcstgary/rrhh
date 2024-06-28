@@ -217,6 +217,24 @@ export class CrearAprobadorFijoComponent implements OnInit {
   ];
   */
 
+  constructor(
+    private config: NgSelectConfig,
+    private router: Router,
+    private route: ActivatedRoute,
+    private mantenimientoService: MantenimientoService,
+    private utilService: UtilService,
+    private crearAprobadorFijoService: CrearAprobadorFijoService
+  ) {
+    this.config.notFoundText = "Custom not found";
+    this.config.appendTo = "body";
+    this.config.bindValue = "value";
+
+    this.route.queryParams.subscribe((params) => {
+      this.id_edit = params["id_edit"];
+      // Utiliza el id_edit obtenido
+    });
+  }
+
   clearModel() {
     this.modelo.iD_APROBADOR = 0;
     this.modelo.niveL_DIRECCION = "";
@@ -287,7 +305,7 @@ export class CrearAprobadorFijoComponent implements OnInit {
         this.modelo.correo = this.dataEmpleadoEvolution[0].correo
 
         if (tipo === "nombreEmpleado") {
-          this.nombresEmpleados = [ ...new Set(this.dataEmpleadoEvolution.map((empleado) => empleado.nombreCompleto)) ];
+          this.nombresEmpleados = [...new Set(this.dataEmpleadoEvolution.map((empleado) => empleado.nombreCompleto))];
 
           return;
         }
@@ -297,24 +315,6 @@ export class CrearAprobadorFijoComponent implements OnInit {
       error: (error: HttpErrorResponse) => {
         this.utilService.modalResponse(error.error, "error");
       },
-    });
-  }
-
-  constructor(
-    private config: NgSelectConfig,
-    private router: Router,
-    private route: ActivatedRoute,
-    private mantenimientoService: MantenimientoService,
-    private utilService: UtilService,
-    private crearAprobadorFijoService: CrearAprobadorFijoService
-  ) {
-    this.config.notFoundText = "Custom not found";
-    this.config.appendTo = "body";
-    this.config.bindValue = "value";
-
-    this.route.queryParams.subscribe((params) => {
-      this.id_edit = params["id_edit"];
-      // Utiliza el id_edit obtenido
     });
   }
 
@@ -337,20 +337,11 @@ export class CrearAprobadorFijoComponent implements OnInit {
   //     )
   //   );
 
-  searchNombreCompleto: OperatorFunction<string, readonly string[]> = (
-    text$: Observable<string>
-  ) =>
-    text$.pipe(
-      debounceTime(200),
-      distinctUntilChanged(),
-      map((term) =>
-        term.length < 1
-          ? []
-          : this.nombresEmpleados
-              .filter((v) => v.toLowerCase().indexOf(term.toLowerCase()) > -1)
-              .slice(0, 10)
-      )
-    );
+  searchNombreCompleto: OperatorFunction<string, readonly string[]> = (text$: Observable<string>) => text$.pipe(
+    debounceTime(200),
+    distinctUntilChanged(),
+    map((term) => term.length < 1 ? [] : this.nombresEmpleados.filter((v) => v.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10))
+  );
 
   // searchSubledger: OperatorFunction<string, readonly string[]> = (
   //   text$: Observable<string>

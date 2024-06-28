@@ -32,17 +32,18 @@ import {
   IEmpleadoData,
   IEmpleados,
 } from "src/app/services/mantenimiento/empleado.interface";
-import { DialogBuscarEmpleadosComponent } from "./buscar-empleados/buscar-empleados.component";
+// import { DialogBuscarEmpleadosComponent } from "./dialog-buscar-empleados-reingreso/dialog-buscar-empleados-reingreso.component";
 import { DialogReasignarUsuarioComponent } from "src/app/shared/reasginar-usuario/reasignar-usuario.component";
 import Swal from "sweetalert2";
+import { DialogBuscarEmpleadosReingresoComponent } from "./dialog-buscar-empleados-reingreso/dialog-buscar-empleados-reingreso.component";
 
 interface DialogComponents {
-  dialogBuscarEmpleados: Type<DialogBuscarEmpleadosComponent>;
+  dialogBuscarEmpleados: Type<DialogBuscarEmpleadosReingresoComponent>;
   dialogReasignarUsuario: Type<DialogReasignarUsuarioComponent>;
 }
 
 const dialogComponentList: DialogComponents = {
-  dialogBuscarEmpleados: DialogBuscarEmpleadosComponent,
+  dialogBuscarEmpleados: DialogBuscarEmpleadosReingresoComponent,
   dialogReasignarUsuario: DialogReasignarUsuarioComponent,
 };
 
@@ -614,23 +615,13 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
         // id is parent process instance id. so handle it accordingly
         // we are looking for task id 'Registrar' in a recently started process instance 'id'
         this.idDeInstancia = params["id"];
-        this.camundaRestService
-          .getTask(environment.taskType_CF, params["id"])
+        this.solicitudes.getTareaIdParam(this.id_solicitud_by_params)
           .subscribe((result) => {
-            console.log("INGRESA AQUÍ (registrar): ", result);
-            console.log(
-              "environment.taskType_Registrar: ",
-              environment.taskType_Registrar
-            );
-            console.log("params['id']: ", params["id"]);
             this.lookForError(result); // if error, then control gets redirected to err page
 
             // if result is success - bingo, we got the task id
-            this.uniqueTaskId =
-              result[0].id; /* Es como la tarea que se crea en esa instancia */
+            this.uniqueTaskId = result.solicitudes[0].taskId; /* Es como la tarea que se crea en esa instancia */
             this.taskId = params["id"]; /* Esta es la instancia */
-            console.log("this.uniqueTaskId: ", this.uniqueTaskId);
-            console.log("this.taskId: ", this.taskId);
             this.getDetalleSolicitudById(this.id_solicitud_by_params);
             this.getSolicitudById(this.id_solicitud_by_params);
             this.date = result[0].created;

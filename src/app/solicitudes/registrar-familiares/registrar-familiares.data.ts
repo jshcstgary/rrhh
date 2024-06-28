@@ -34,7 +34,7 @@ export const columnsDatosFamiliares: IConsultaTareasData = {
     },
     {
       title: "Parentesco",
-      dataIndex: "parentezco",
+      dataIndex: "parentesco",
       sortActive: true,
       isEditingRow: true,
     },
