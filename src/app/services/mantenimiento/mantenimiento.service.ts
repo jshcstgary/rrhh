@@ -25,7 +25,7 @@ export class MantenimientoService {
   // http://10.35.3.162:8053/v1/es/item-catalogo/codigo/RBPND
   // http://10.35.3.162:8053/v1/es/item-catalogo/codigo
   private apiCatalogoUrl = environment.CatalogoServiceES;
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   public getTipoSolicitud(): Observable<any[]> {
     return this.http.get<any[]>(this.apiSolicitudUrl);
@@ -150,6 +150,12 @@ export class MantenimientoService {
     );
   }
 
+  public getFamiliaresCandidatoBySolicitud(idSolicitud: string): Observable<FamiliaresCandidatosService> {
+    return this.http.get<FamiliaresCandidatosService>(
+      `${this.apiFamiliaresCandidato}/${idSolicitud}`
+    );
+  }
+
   public guardarFamiliaresCandidato(
     data: Partial<FamiliaresCandidatos>
   ): Observable<FamiliaresCandidatos> {
@@ -159,7 +165,7 @@ export class MantenimientoService {
     );
   }
 
-  public putFamiliaredCandidatos(data: Partial<FamiliaresCandidatos>): Observable<FamiliaresCandidatos>{
+  public putFamiliaresCandidatos(data: Partial<FamiliaresCandidatos>): Observable<FamiliaresCandidatos> {
     return this.http.put<FamiliaresCandidatos>(
       `${this.apiFamiliaresCandidato}`,
       data

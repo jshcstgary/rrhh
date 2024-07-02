@@ -489,12 +489,15 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
                 this.detalleSolicitud.idSolicitud = responseSolicitud.idSolicitud;
                 this.detalleSolicitud.estado = "A";
 
-                this.solicitudes.guardarDetalleSolicitud(this.detalleSolicitud).subscribe({
-                  next: () => {
-                    this.starterService.getUser(localStorage.getItem("idUsuario")!).subscribe({
-                      next: (res) => {
-                        this.fillData(res);
+                this.starterService.getUser(localStorage.getItem("idUsuario")!).subscribe({
+                  next: (res) => {
+                    this.fillData(res);
 
+                    this.solicitud.usuarioCreacion = res.evType[0].nombreCompleto;
+                    this.solicitud.usuarioActualizacion = res.evType[0].nombreCompleto;
+
+                    this.solicitudes.guardarDetalleSolicitud(this.detalleSolicitud).subscribe({
+                      next: () => {
                         this.solicitudes.guardarDetallesAprobacionesSolicitud(this.solicitudes.modelDetalleAprobaciones).subscribe({
                           next: () => {
                             setTimeout(() => {
@@ -543,8 +546,8 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
       // this.router.navigate(["/solicitudes/registrar-solicitud"]);
     }
 
-        //Fin Solicitud
-      // }
+    //Fin Solicitud
+    // }
 
 
 
@@ -729,7 +732,7 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
     let requestData: any;
     let variables: any = {};
 
-	variables.tipoSolicitud = { value: this.solicitud.tipoSolicitud };
+    variables.tipoSolicitud = { value: this.solicitud.tipoSolicitud };
 
     if (this.solicitud.idTipoSolicitud == this.typeSolicitudSelected) {
       variables.tipoAccion = { value: this.solicitud.tipoAccion };

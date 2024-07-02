@@ -1276,15 +1276,6 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
                 window.location.reload();
               });
             }, 1800);
-
-
-            /* setTimeout(() => {
-              this.router.navigate([
-               "/solicitudes/registrar-solicitud/" + this.solicitud.idInstancia +"/" +this.solicitud.idSolicitud,
-               ]);
-             }, 1800);*/
-
-
           });
       }); //aqui debe crear los aprobadores
     this.submitted = true;
@@ -1324,79 +1315,64 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
     });
   }
 
-  onCompletar() { //completar tarea mmunoz
+  onCompletar() {
     if (this.uniqueTaskId === null) {
-      //handle this as an error
-      this.errorMessage =
-        "Unique Task id is empty. Cannot initiate task complete.";
+      this.errorMessage = "Unique Task id is empty. Cannot initiate task complete.";
+
       return;
     }
-    this.utilService.openLoadingSpinner(
-      "Completando Tarea, espere por favor..."
-    );
+
+    this.utilService.openLoadingSpinner("Completando Tarea, espere por favor...");
 
     let variables = this.generateVariablesFromFormFields();
-    // return;
-
-    // this.crearRegistradorSolicitud();
 
     this.solicitudes.cargarDetalleAprobacionesArreglo(this.detalleNivelAprobacion).subscribe({
       next: (res) => {
-        this.camundaRestService
-          .postCompleteTask(this.uniqueTaskId, variables)
-          .subscribe({
-            next: (res) => {
-              //actualizo la solicitud a enviada
-              this.solicitud.empresa = this.model.compania;
-              this.solicitud.idEmpresa = this.model.compania;
+        this.camundaRestService.postCompleteTask(this.uniqueTaskId, variables).subscribe({
+          next: (res) => {
+            this.solicitud.empresa = this.model.compania;
+            this.solicitud.idEmpresa = this.model.compania;
+            this.solicitud.unidadNegocio = this.model.unidadNegocio;
+            this.solicitud.idUnidadNegocio = this.model.unidadNegocio;
 
-              this.solicitud.unidadNegocio = this.model.unidadNegocio;
-              this.solicitud.idUnidadNegocio = this.model.unidadNegocio;
+            this.solicitud.estadoSolicitud === "No" ? "4" : "AN";
 
-              if (this.selectedOption == "No") {
-                this.solicitud.estadoSolicitud = "4";
-              } else {
-                this.solicitud.estadoSolicitud = "AN";
-              }
+            this.solicitudes.actualizarSolicitud(this.solicitud).subscribe({
+              next: (responseSolicitud) => {
+                setTimeout(() => {
+                  this.consultarNextTaskAprobador(this.solicitud.idSolicitud);
 
-              this.solicitudes.actualizarSolicitud(this.solicitud).subscribe({
-                next: (responseSolicitud) => {
+                  this.solicitudes.sendEmail(this.emailVariables).subscribe({
+                    next: () => {
+                    },
+                    error: (error) => {
+                      console.error(error);
+                    }
+                  });
+
+                  this.utilService.closeLoadingSpinner();
+
+                  this.utilService.modalResponse(`Solicitud registrada correctamente [${this.solicitud.idSolicitud}]. Será redirigido en un momento...`, "success");
+
                   setTimeout(() => {
-                    this.consultarNextTaskAprobador(this.solicitud.idSolicitud);
-
-                    this.solicitudes.sendEmail(this.emailVariables).subscribe({
-                      next: () => {
-                      },
-                      error: (error) => {
-                        console.error(error);
-                      }
-                    });
-
-                    this.utilService.closeLoadingSpinner();
-                    //fin actualizo la solicitud a enviada
-                    this.utilService.modalResponse(
-                      `Solicitud registrada correctamente [${this.solicitud.idSolicitud}]. Será redirigido en un momento...`,
-                      "success"
-                    );
-                    setTimeout(() => {
-                      this.router.navigate([
-                        "/tareas/consulta-tareas",
-                      ]);
-                    }, 1800);
-                  }, 3000);
-                },
-                error: (error) => {
-                  console.error(error);
-                }
-              });
-            },
-            error: (error: HttpErrorResponse) => {
-              this.utilService.modalResponse(
-                error.error,
-                "error"
-              );
-            },
-          });
+                    this.router.navigate([
+                      "/tareas/consulta-tareas",
+                    ]);
+                  }, 1800);
+                }, 3000);
+              },
+              error: (error) => {
+                console.error(error);
+              }
+            });
+          },
+          error: (error: HttpErrorResponse) => {
+            this.utilService.modalResponse(
+              error.error,
+              "error"
+            );
+          },
+        });
       },
       error: (err) => {
         console.error(err);
@@ -1538,7 +1514,7 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
   override generateVariablesFromFormFields() {
     let variables: any = {};
 
-    this.crearRegistradorSolicitud();
+    // this.crearRegistradorSolicitud();
 
     if (this.taskType_Activity == environment.taskType_Registrar) {
       this.dataAprobacionesPorPosicionAPS.forEach((elemento, index) => {
@@ -1659,27 +1635,69 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
         }
       });
 
-      variables.codigoPosicion = { value: this.model.codigoPosicion };
-      variables.misionCargo = { value: this.model.misionCargo };
-      variables.justificacionCargo = { value: this.model.justificacionCargo };
-      variables.empresa = { value: this.model.compania };
-      variables.unidadNegocio = { value: this.model.unidadNegocio };
-      variables.descripcionPosicion = { value: this.model.descrPosicion };
-      variables.areaDepartamento = { value: this.model.departamento };
-      variables.localidadZona = { value: this.model.localidad };
-      variables.centroCosto = { value: this.model.nomCCosto };
-      variables.reportaa = { value: this.model.reportaA };
-      variables.nivelReportea = { value: this.model.nivelRepa };
-      variables.supervisa = { value: this.model.supervisaA };
-      variables.tipoContrato = { value: this.model.tipoContrato };
-      variables.sueldo = { value: this.model.sueldo }; //sueldoVariableMensual
-      variables.sueldoMensual = { value: this.model.sueldoMensual };
-      variables.sueldoTrimestral = { value: this.model.sueldoTrimestral };
-      variables.sueldoSemestral = { value: this.model.sueldoSemestral };
-      variables.sueldoAnual = { value: this.model.sueldoAnual };
-      variables.anularSolicitud = { value: this.selectedOption };
-      variables.comentariosAnulacion = { value: this.model.comentariosAnulacion };
-      variables.nivelDireccion = { value: this.model.nivelDir };
+      variables.codigoPosicion = {
+        value: this.model.codigoPosicion
+      };
+      variables.misionCargo = {
+        value: this.model.misionCargo
+      };
+      variables.justificacionCargo = {
+        value: this.model.justificacionCargo
+      };
+      variables.empresa = {
+        value: this.model.compania
+      };
+      variables.unidadNegocio = {
+        value: this.model.unidadNegocio
+      };
+      variables.descripcionPosicion = {
+        value: this.model.descrPosicion
+      };
+      variables.areaDepartamento = {
+        value: this.model.departamento
+      };
+      variables.localidadZona = {
+        value: this.model.localidad
+      };
+      variables.centroCosto = {
+        value: this.model.nomCCosto
+      };
+      variables.reportaa = {
+        value: this.model.reportaA
+      };
+      variables.nivelReportea = {
+        value: this.model.nivelRepa
+      };
+      variables.supervisa = {
+        value: this.model.supervisaA
+      };
+      variables.tipoContrato = {
+        value: this.model.tipoContrato
+      };
+      variables.sueldo = {
+        value: this.model.sueldo
+      };
+      variables.sueldoMensual = {
+        value: this.model.sueldoMensual
+      };
+      variables.sueldoTrimestral = {
+        value: this.model.sueldoTrimestral
+      };
+      variables.sueldoSemestral = {
+        value: this.model.sueldoSemestral
+      };
+      variables.sueldoAnual = {
+        value: this.model.sueldoAnual
+      };
+      variables.anularSolicitud = {
+        value: this.selectedOption
+      };
+      variables.comentariosAnulacion = {
+        value: this.model.comentariosAnulacion
+      };
+      variables.nivelDireccion = {
+        value: this.model.nivelDir
+      };
       variables.usuarioNotificacionCreador = {
         value: this.solicitudes.modelDetalleAprobaciones.usuarioAprobador
       };
@@ -1702,17 +1720,14 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
         value: `${portalWorkFlow}solicitudes/revisar-solicitud/${this.idDeInstancia}/${this.id_solicitud_by_params}`
       };
       variables.tipoRuta = {
-        //value: ["Unidades","Unidades", "Aprobadores Fijos", "Aprobadores Fijos"],
         value: this.dataTipoRuta,
         type: "String",
         valueInfo: {
           objectTypeName: "java.util.ArrayList",
           serializationDataFormat: "application/json"
         }
-
       };
       variables.ruta = {
-        // value : ["2doNivelAprobacion", "3erNivelAprobacion", "Remuneraciones"],
         value: this.dataRuta,
         type: "String",
         valueInfo: {
@@ -1720,7 +1735,7 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
           serializationDataFormat: "application/json"
         }
       };
-      variables.resultadoRutaAprobacion = { //value : "[\"Gerencia Media\", \"Gerencia de Unidad o Corporativa\"]",
+      variables.resultadoRutaAprobacion = {
         value: JSON.stringify(this.dataAprobadoresDinamicos),
         type: "Object",
         valueInfo: {
@@ -1729,16 +1744,6 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
         }
       };
     }
-
-
-    /*if(this.taskType_Activity==environment.taskType_CompletarRequisicion){
-
-      variables.atencionCompletarRequisicion = { value : "aprobar" };
-
-
-   }*/
-
-
 
     return { variables };
   }
@@ -1801,8 +1806,7 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
           next: (response) => {
             this.mapearDetallesAprobadores(response.nivelAprobacionPosicionType);
 
-            this.dataAprobacionesPorPosicion[this.keySelected] =
-              response.nivelAprobacionPosicionType;
+            this.dataAprobacionesPorPosicion[this.keySelected] = response.nivelAprobacionPosicionType;
           },
           error: (error: HttpErrorResponse) => {
             this.utilService.modalResponse(
@@ -1872,17 +1876,21 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
   }
 
   saveDetalleAprobaciones() {
-    this.solicitudes
-      .guardarDetallesAprobacionesSolicitud(this.solicitudes.modelDetalleAprobaciones)
-      .subscribe((res) => {
+    this.solicitudes.guardarDetallesAprobacionesSolicitud(this.solicitudes.modelDetalleAprobaciones).subscribe({
+      next: (res) => {
+        console.log(res);
         /*this.utilService.modalResponse(
           "Datos ingresados correctamente",
           "success"
         );
-         setTimeout(() => {
+          setTimeout(() => {
           this.router.navigate(["/solicitudes/completar-solicitudes"]);
         }, 1600);*/
-      });
+      },
+      error: (err) => {
+        console.error(err);
+      }
+    });
   }
 
   /*getNivelesAprobacion() {
