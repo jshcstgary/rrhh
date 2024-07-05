@@ -20,7 +20,40 @@ import Swal from "sweetalert2";
 export class DialogBuscarEmpleadosReingresoComponent {
   activeModal = inject(NgbActiveModal);
 
-  modelo: EvType;
+  // modelo: EvType;
+  modelo: EvType = {
+    codigo: "",
+    idEmpresa: "",
+    compania: "",
+    departamento: "",
+    nombreCargo: "",
+    nomCCosto: "",
+    codigoPosicion: "",
+    descrPosicion: "",
+    codigoPuesto: "",
+    descrPuesto: "",
+    fechaIngresogrupo: new Date(),
+    grupoPago: "",
+    reportaA: "",
+    localidad: "",
+    nivelDir: "",
+    descrNivelDir: "",
+    nivelRepa: "",
+    nombreCompleto: "",
+    subledger: "",
+    sucursal: "",
+    unidadNegocio: "",
+    tipoContrato: "",
+    descripContrato: "",
+    sueldo: "",
+    sueldoVariableMensual: "",
+    sueldoVariableTrimestral: "",
+    sueldoVariableSemestral: "",
+    sueldoVariableAnual: "",
+    codigoPosicionReportaA: "",
+    status: ""
+  };
+
 
   disableButton: boolean = true;
 
@@ -201,8 +234,8 @@ export class DialogBuscarEmpleadosReingresoComponent {
     return result;
   };
 
-  getDataEmpleadosEvolution(tipo: string) {
-    return this.mantenimientoService.getDataEmpleadosEvolutionPorId(this.searchInp).subscribe({
+  getDataEmpleadosEvolution() {
+    return this.mantenimientoService.getDataEmpleadosEvolutionPorId(this.searchInp, "E").subscribe({
       next: (response) => {
         if (response.evType.length === 0) {
           Swal.fire({
@@ -216,63 +249,8 @@ export class DialogBuscarEmpleadosReingresoComponent {
 
           return;
         }
-        console.log(response.evType);
 
         this.dataEmpleadoEvolution = response.evType;
-        console.log(this.dataEmpleadoEvolution);
-
-        // let fechaActual = new Date();
-        // let fechaEnFormatoISO = fechaActual.toISOString();
-
-        // this.modelo = {
-        //     codigo: response.evType.codigo,
-        //     idEmpresa: response.evType.idEmpresa,
-        //     compania: response.evType.compania,
-        //     departamento: response.evType.departamento,
-        //     nombreCargo: response.evType.nombreCargo,
-        //     nomCCosto: response.evType.nomCCosto,
-        //     codigoPosicion: response.evType.codigoPosicion,
-        //     descrPosicion: response.evType.descrPosicion,
-        //     codigoPuesto: response.evType.codigoPuesto,
-        //     descrPuesto: response.evType.descrPuesto,
-        //     fechaIngresogrupo: response.evType.fechaIngresogrupo,
-        //     grupoPago: response.evType.grupoPago,
-        //     reportaA: response.evType.reportaA,
-        //     localidad: response.evType.localidad,
-        //     nivelDir: response.evType.nivelDir,
-        //     descrNivelDir: response.evType.descrNivelDir,
-        //     nivelRepa: response.evType.nivelRepa,
-        //     nombreCompleto: response.evType.nombreCompleto,
-        //     subledger: response.evType.subledger,
-        //     sucursal: response.evType.sucursal,
-        //     unidadNegocio: response.evType.unidadNegocio,
-        //     tipoContrato: response.evType.tipoContrato,
-        //     descripContrato: response.evType.descripContrato,
-        //     sueldo: response.evType.sueldo,
-        //     sueldoVariableMensual: response.evType.sueldoVariableMensual,
-        //     sueldoVariableTrimestral: response.evType.sueldoVariableTrimestral,
-        //     sueldoVariableSemestral: response.evType.sueldoVariableSemestral,
-        //     sueldoVariableAnual: response.evType.sueldoVariableAnual,
-        //     codigoPosicionReportaA: response.evType.codigoPosicionReportaA,
-        //     status: response.evType.status,
-        // };
-
-        // this.modelo.iD_APROBADOR = 1;
-        // this.modelo.niveL_DIRECCION = "Gerente de RRHH Corporativo";
-        // this.modelo.codigO_POSICION = this.dataEmpleadoEvolution[0].codigoPosicion;
-        // this.modelo.subleger = this.dataEmpleadoEvolution[0].subledger;
-        // this.modelo.nombre = this.dataEmpleadoEvolution[0].nombreCompleto;
-        // this.modelo.codigO_POSICION_REPORTA_A = "N/A";
-        // this.modelo.reportA_A = this.dataEmpleadoEvolution[0].reportaA;
-        // this.modelo.estado = true;
-        // this.modelo.fechA_CREACION = fechaEnFormatoISO;
-        // this.modelo.fechA_MODIFICACION = fechaEnFormatoISO;
-        // this.modelo.usuariO_CREACION = fechaEnFormatoISO;
-        // this.modelo.usuariO_MODIFICACION = fechaEnFormatoISO;
-        // this.modelo.descripcioN_POSICION = this.dataEmpleadoEvolution[0].descrPosicion;
-        // this.modelo.supervisA_A = "N/A";
-        // this.modelo.niveL_REPORTE = this.dataEmpleadoEvolution[0].nivelReporte;
-        // this.modelo.correo = this.dataEmpleadoEvolution[0].correo
 
         this.nombresEmpleados = [...new Set(this.dataEmpleadoEvolution.map((empleado) => empleado.nombreCompleto))];
 

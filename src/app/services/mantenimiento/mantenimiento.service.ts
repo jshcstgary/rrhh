@@ -127,14 +127,16 @@ export class MantenimientoService {
     spyral: this.apiEmpleadoUrlSpyral
   };
 
-  public getDataEmpleadosEvolution(
-    type: "jaff" | "ev" | 'spyral' = "ev"
-  ): Observable<IEmpleados> {
+  public getDataEmpleadosEvolution(type: "jaff" | "ev" | 'spyral' = "ev"): Observable<IEmpleados> {
     return this.http.get<IEmpleados>(this.empleadosUrl[type]);
   }
 
-  public getDataEmpleadosEvolutionPorId(id: string): Observable<IEmpleados> {
-    return this.http.get<IEmpleados>(`${this.apiEmpleadoEvolutionUrl}/nombre/${id}`);
+  public getDataEmpleadosEvolutionPorId(id: string, estado: string = "A"): Observable<IEmpleados> {
+    return this.http.get<IEmpleados>(`${this.apiEmpleadoEvolutionUrl}/nombre/${id}`, {
+      headers: {
+        estado
+      }
+    });
   }
 
   public diagnostic(): Observable<any> {

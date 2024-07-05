@@ -1,4 +1,4 @@
-<form (ngSubmit)="onSubmit()" #SolicitudForm="ngForm" #solicitudForm="ngForm">
+<form>
   <div class="card">
     <div class="card-body text-start">
       <div class="row">
@@ -23,10 +23,9 @@
           </button>
           <button
             type="button"
-            type="submit"
             class="btn btn-info me-2 mt-1"
             aria-label="Close"
-            [disabled]="!solicitudForm.form.valid"
+            (click)="onSubmit()"
           >
             <i class="fas fa-save"></i> Guardar
           </button>
@@ -50,7 +49,7 @@
               name=""
               style="color: black; font-size: 14px"
               class="text-start"
-              >{{ this.solicitud.usuarioCreacion }}</span
+              >{{ solicitud.usuarioCreacion }}</span
             >
           </div>
         </div>
@@ -76,7 +75,7 @@
               name=""
               style="color: black; font-size: 14px"
               class="text-start"
-              >{{ this.solicitud.idSolicitud }}</span
+              >{{ solicitud.idSolicitud }}</span
             >
           </div>
         </div>
@@ -114,7 +113,7 @@
                   name="tipoSolicitud"
                   style="color: black; font-size: 14px"
                   class="text-start"
-                  >{{ solicitud.idSolicitud }}</span
+                  >{{ idSolicitudRP }}</span
                 >
               </div>
             </div>
@@ -132,7 +131,7 @@
                   name="tipoMotivo"
                   style="color: black; font-size: 14px"
                   class="text-start"
-                  >{{ model.nombreCompleto }}</span
+                  >{{ nombreCompletoCandidato }}</span
                 >
               </div>
             </div>
@@ -151,12 +150,8 @@
               <div class="input-group mb-3">
                 <textarea
                   name="descripcionposicion"
-                  style="
-                    color: black;
-                    font-size: 14px;
-                    width: 100%;
-                    resize: none;
-                  "
+                  style="color: black; font-size: 14px; width: 100%; resize: none;"
+                  [(ngModel)]="detalleSolicitudRG.justificacion"
                   class="form-control"
                   id="observaciones"
                   rows="3"
@@ -219,7 +214,7 @@
                     name="empleado"
                     style="color: black; font-size: 14px"
                     class="text-start"
-                    >{{ empleadoSearch }}</span
+                    >{{ modelRG.nombreCompleto }}</span
                   >
                 </div>
               </div>
@@ -265,7 +260,7 @@
                     name="tipoMotivo"
                     style="color: black; font-size: 14px"
                     class="text-start"
-                    >{{ this.comp }}</span
+                    >{{ modelRG.compania }}</span
                   >
                 </div>
               </div>
@@ -299,7 +294,7 @@
                     name="tipoMotivo"
                     style="color: black; font-size: 14px"
                     class="text-start"
-                    >{{ this.sueldo }}</span
+                    >{{ modelRG.sueldo }}</span
                   >
                 </div>
               </div>
@@ -343,7 +338,7 @@
                     name="tipoMotivo"
                     style="color: black; font-size: 14px"
                     class="text-start"
-                    >{{ this.mensual }}</span
+                    >{{ modelRG.sueldoMensual }}</span
                   >
                 </div>
               </div>
@@ -376,7 +371,7 @@
                     name="tipoMotivo"
                     style="color: black; font-size: 14px"
                     class="text-start"
-                    >{{ this.trimestral }}</span
+                    >{{ modelRG.sueldoTrimestral }}</span
                   >
                 </div>
               </div>
@@ -409,7 +404,7 @@
                     name="tipoMotivo"
                     style="color: black; font-size: 14px"
                     class="text-start"
-                    >{{ this.semestral }}</span
+                    >{{ modelRG.sueldoSemestral }}</span
                   >
                 </div>
               </div>
@@ -442,7 +437,7 @@
                     name="tipoMotivo"
                     style="color: black; font-size: 14px"
                     class="text-start"
-                    >{{ this.anual }}</span
+                    >{{ this.modelRG.sueldoAnual }}</span
                   >
                 </div>
               </div>
@@ -457,7 +452,7 @@
                     name="tipoMotivo"
                     style="color: black; font-size: 14px"
                     class="text-start"
-                    >{{ model.sueldoAnual }}</span
+                    >{{ modelRG.sueldoAnual }}</span
                   >
                 </div>
               </div>
@@ -475,7 +470,7 @@
                     name="tipoMotivo"
                     style="color: black; font-size: 14px"
                     class="text-start"
-                    >{{ this.remuneracion }}</span
+                    >{{ remuneracion }}</span
                   >
                 </div>
               </div>
@@ -508,7 +503,7 @@
                     name="tipoMotivo"
                     style="color: black; font-size: 14px"
                     class="text-start"
-                    >{{ this.puesto }}</span
+                    >{{ modelRG.descrPosicion }}</span
                   >
                 </div>
               </div>
@@ -541,7 +536,7 @@
                     name="tipoMotivo"
                     style="color: black; font-size: 14px"
                     class="text-start"
-                    >{{ this.unidadNegocio }}</span
+                    >{{ modelRG.unidadNegocio }}</span
                   >
                 </div>
               </div>
@@ -574,7 +569,7 @@
                     name="tipoMotivo"
                     style="color: black; font-size: 14px"
                     class="text-start"
-                    >{{ this.departamento }}</span
+                    >{{ modelRG.departamento }}</span
                   >
                 </div>
               </div>
@@ -607,7 +602,7 @@
                     name="tipoMotivo"
                     style="color: black; font-size: 14px"
                     class="text-start"
-                    >{{ this.localidad }}</span
+                    >{{ modelRG.localidad }}</span
                   >
                 </div>
               </div>
@@ -794,7 +789,7 @@
                     name="tipoMotivo"
                     style="color: black; font-size: 14px"
                     class="text-start"
-                    >{{ this.feIng }}</span
+                    >{{ this.modelRG.fechaIngreso }}</span
                   >
                 </div>
               </div>

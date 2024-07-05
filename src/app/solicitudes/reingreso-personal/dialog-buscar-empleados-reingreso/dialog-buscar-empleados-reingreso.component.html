@@ -14,7 +14,8 @@
             style="width: 100%" /> -->
           <input type="text" [(ngModel)]="searchInp" class="form-control" id="searchInp" [ngbTypeahead]="searchNombreCompleto" (selectItem)="onSelectItem('nombreCompleto', $event)" />
 
-          <button class="btn btn-light" type="button" (click)="getDataEmpleadosEvolution('nombreEmpleado')">
+          <!-- <button class="btn btn-light" type="button" (click)="getDataEmpleadosEvolution('nombreEmpleado')"> -->
+          <button class="btn btn-light" type="button" (click)="getDataEmpleadosEvolution()">
             <i class="ti-search"></i>
           </button>
         </div>

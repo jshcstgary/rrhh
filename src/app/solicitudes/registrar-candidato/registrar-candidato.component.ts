@@ -892,7 +892,7 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
       //await this.getDetalleSolicitudById(this.id_edit); //comentado mmunoz
       await this.getSolicitudById(this.id_edit);
       //} // comentado munoz
-      await this.getDataEmpleadosEvolution();
+      // await this.getDataEmpleadosEvolution();
       // await this.ObtenerServicioTipoProceso();
       await this.loadDataCamunda(); //comentado para prueba mmunoz
       //console.log("impreme arreglo de aprobadores: ");

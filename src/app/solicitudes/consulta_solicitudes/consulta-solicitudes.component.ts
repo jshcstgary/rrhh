@@ -480,21 +480,21 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
             this.solicitud.estado = "Creado"; //tveas TODO improve [Activo]
             this.solicitud.estadoSolicitud = "3"; // tveas TODO improve [Creado]
 
-            this.solicitudes.guardarSolicitud(this.solicitud).subscribe({
-              next: (responseSolicitud) => {
-                this.solicitud.idSolicitud = responseSolicitud.idSolicitud;
-                this.solicitud.fechaActualizacion = responseSolicitud.fechaActualizacion;
-                this.solicitud.fechaCreacion = responseSolicitud.fechaCreacion;
-                this.submitted = true;
-                this.detalleSolicitud.idSolicitud = responseSolicitud.idSolicitud;
-                this.detalleSolicitud.estado = "A";
+            this.starterService.getUser(localStorage.getItem("idUsuario")!).subscribe({
+              next: (res) => {
+                this.solicitud.usuarioCreacion = res.evType[0].nombreCompleto;
+                this.solicitud.usuarioActualizacion = res.evType[0].nombreCompleto;
 
-                this.starterService.getUser(localStorage.getItem("idUsuario")!).subscribe({
-                  next: (res) => {
+                this.solicitudes.guardarSolicitud(this.solicitud).subscribe({
+                  next: (responseSolicitud) => {
+                    this.solicitud.idSolicitud = responseSolicitud.idSolicitud;
+                    this.solicitud.fechaActualizacion = responseSolicitud.fechaActualizacion;
+                    this.solicitud.fechaCreacion = responseSolicitud.fechaCreacion;
+                    this.submitted = true;
+                    this.detalleSolicitud.idSolicitud = responseSolicitud.idSolicitud;
+                    this.detalleSolicitud.estado = "A";
+
                     this.fillData(res);
-
-                    this.solicitud.usuarioCreacion = res.evType[0].nombreCompleto;
-                    this.solicitud.usuarioActualizacion = res.evType[0].nombreCompleto;
 
                     this.solicitudes.guardarDetalleSolicitud(this.detalleSolicitud).subscribe({
                       next: () => {

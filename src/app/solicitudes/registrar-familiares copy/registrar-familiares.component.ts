@@ -1376,7 +1376,6 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
     console.log(this.detalleNivelAprobacion);
   }
 
-  //!Esta funcion para completar tarea no se puede completar debido a que al cargar los datos de camunda esta uniqueTaskId se queda en null debido a un error que surje gracias al servicio de camunda especificamente en el metodo getTask (No es que este malo el servicio sino el como se obtiene las tareas, debido a que me trae un array vacio)
   onCompletar() {
     if (this.uniqueTaskId === null) {
       this.errorMessage = "Unique Task id is empty. Cannot initiate task complete.";
