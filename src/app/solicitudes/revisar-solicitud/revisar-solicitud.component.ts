@@ -1734,6 +1734,7 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
                       this.aprobadorActual = aprobacionesObj[index];
 
                       const aprobacionSiguiente = aprobacionesObj[String(Number(index) + 1)];
+                      console.log(aprobacionSiguiente);
                       if (aprobacionSiguiente.aprobador.nivelDireccion !== "") {
                       this.aprobadorSiguiente = aprobacionesObj[String(Number(index) + 1)];
                       }else{

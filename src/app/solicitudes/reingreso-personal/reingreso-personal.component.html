@@ -75,7 +75,7 @@
               name=""
               style="color: black; font-size: 14px"
               class="text-start"
-              >{{ solicitud.idSolicitud }}</span
+              >{{ solicitudRG.idSolicitud }}</span
             >
           </div>
         </div>
@@ -214,7 +214,7 @@
                     name="empleado"
                     style="color: black; font-size: 14px"
                     class="text-start"
-                    >{{ modelRG.nombreCompleto }}</span
+                    >{{ detalleSolicitudRG.supervisaA === "N/A" ? "" : modelRG.nombreCompleto }}</span
                   >
                 </div>
               </div>
@@ -260,7 +260,7 @@
                     name="tipoMotivo"
                     style="color: black; font-size: 14px"
                     class="text-start"
-                    >{{ modelRG.compania }}</span
+                    >{{ detalleSolicitudRG.supervisaA === "N/A" ? "" : modelRG.compania }}</span
                   >
                 </div>
               </div>
@@ -294,7 +294,7 @@
                     name="tipoMotivo"
                     style="color: black; font-size: 14px"
                     class="text-start"
-                    >{{ modelRG.sueldo }}</span
+                    >{{ detalleSolicitudRG.supervisaA === "N/A" ? "" : modelRG.sueldo }}</span
                   >
                 </div>
               </div>
@@ -338,7 +338,7 @@
                     name="tipoMotivo"
                     style="color: black; font-size: 14px"
                     class="text-start"
-                    >{{ modelRG.sueldoMensual }}</span
+                    >{{ detalleSolicitudRG.supervisaA === "N/A" ? "" : modelRG.sueldoMensual }}</span
                   >
                 </div>
               </div>
@@ -371,7 +371,7 @@
                     name="tipoMotivo"
                     style="color: black; font-size: 14px"
                     class="text-start"
-                    >{{ modelRG.sueldoTrimestral }}</span
+                    >{{ detalleSolicitudRG.supervisaA === "N/A" ? "" : modelRG.sueldoTrimestral }}</span
                   >
                 </div>
               </div>
@@ -404,7 +404,7 @@
                     name="tipoMotivo"
                     style="color: black; font-size: 14px"
                     class="text-start"
-                    >{{ modelRG.sueldoSemestral }}</span
+                    >{{ detalleSolicitudRG.supervisaA === "N/A" ? "" : modelRG.sueldoSemestral }}</span
                   >
                 </div>
               </div>
@@ -437,7 +437,7 @@
                     name="tipoMotivo"
                     style="color: black; font-size: 14px"
                     class="text-start"
-                    >{{ this.modelRG.sueldoAnual }}</span
+                    >{{ detalleSolicitudRG.supervisaA === "N/A" ? "" : modelRG.sueldoAnual }}</span
                   >
                 </div>
               </div>
@@ -452,7 +452,7 @@
                     name="tipoMotivo"
                     style="color: black; font-size: 14px"
                     class="text-start"
-                    >{{ modelRG.sueldoAnual }}</span
+                    >{{ model.sueldoAnual }}</span
                   >
                 </div>
               </div>
@@ -470,7 +470,7 @@
                     name="tipoMotivo"
                     style="color: black; font-size: 14px"
                     class="text-start"
-                    >{{ remuneracion }}</span
+                    >{{ detalleSolicitudRG.supervisaA === "N/A" ? "" : remuneracion }}</span
                   >
                 </div>
               </div>
@@ -503,7 +503,7 @@
                     name="tipoMotivo"
                     style="color: black; font-size: 14px"
                     class="text-start"
-                    >{{ modelRG.descrPosicion }}</span
+                    >{{ detalleSolicitudRG.supervisaA === "N/A" ? "" : modelRG.descrPosicion }}</span
                   >
                 </div>
               </div>
@@ -536,7 +536,7 @@
                     name="tipoMotivo"
                     style="color: black; font-size: 14px"
                     class="text-start"
-                    >{{ modelRG.unidadNegocio }}</span
+                    >{{ detalleSolicitudRG.supervisaA === "N/A" ? "" : modelRG.unidadNegocio }}</span
                   >
                 </div>
               </div>
@@ -569,7 +569,7 @@
                     name="tipoMotivo"
                     style="color: black; font-size: 14px"
                     class="text-start"
-                    >{{ modelRG.departamento }}</span
+                    >{{ detalleSolicitudRG.supervisaA === "N/A" ? "" : modelRG.departamento }}</span
                   >
                 </div>
               </div>
@@ -602,7 +602,7 @@
                     name="tipoMotivo"
                     style="color: black; font-size: 14px"
                     class="text-start"
-                    >{{ modelRG.localidad }}</span
+                    >{{ detalleSolicitudRG.supervisaA === "N/A" ? "" : modelRG.localidad }}</span
                   >
                 </div>
               </div>
@@ -789,7 +789,7 @@
                     name="tipoMotivo"
                     style="color: black; font-size: 14px"
                     class="text-start"
-                    >{{ this.modelRG.fechaIngreso }}</span
+                    >{{ detalleSolicitudRG.supervisaA === "N/A" ? "" : modelRG.fechaIngreso }}</span
                   >
                 </div>
               </div>

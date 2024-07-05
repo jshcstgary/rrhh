@@ -1272,8 +1272,6 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
   consultarNextTaskAprobador(IdSolicitud: string) {
     this.consultaTareasService.getTareaIdParam(IdSolicitud)
       .subscribe((tarea) => {
-        console.log(tarea);
-        debugger;
         this.uniqueTaskId = tarea.solicitudes[0].taskId;
         this.taskType_Activity = tarea.solicitudes[0].tasK_DEF_KEY;
         this.nameTask = tarea.solicitudes[0].name;
@@ -1600,153 +1598,11 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
             password: "p4$$w0rd"
           };
         }
-
-        // if (elemento.aprobador.nivelDireccion === this.NIVEL_APROBACION_GERENCIA_MEDIA) {
-        //   variables.correoNotificacionGerenciaMedia = {
-        //     value: elemento.aprobador.correo
-        //   };
-        //   variables.usuarioNotificacionGerenciaMedia = {
-        //     value: elemento.aprobador.usuario
-        //   };
-        //   variables.nivelDireccionNotificacionGerenciaMedia = {
-        //     value: elemento.aprobador.nivelDireccion
-        //   };
-        //   variables.descripcionPosicionNotificacionGerenciaMedia = {
-        //     value: elemento.aprobador.descripcionPosicion
-        //   };
-        //   variables.subledgerNotificacionGerenciaMedia = {
-        //     value: elemento.aprobador.subledger
-        //   };
-        // } else if (elemento.aprobador.nivelDireccion === this.NIVEL_APROBACION_GERENCIA_UNIDAD) {
-        //   variables.correoNotificacionGerenciaUnidadCorporativa = {
-        //     value: elemento.aprobador.correo
-        //   };
-        //   variables.usuarioNotificacionGerenciaUnidadCorporativa = {
-        //     value: elemento.aprobador.usuario
-        //   };
-        //   variables.nivelDireccionNotificacionGerenciaUnidadCorporativa = {
-        //     value: elemento.aprobador.nivelDireccion
-        //   };
-        //   variables.descripcionPosicionNotificacionGerenciaUnidadCorporativa = {
-        //     value: elemento.aprobador.descripcionPosicion
-        //   };
-        //   variables.subledgerNotificacionGerenciaUnidadCorporativa = {
-        //     value: elemento.aprobador.subledger
-        //   };
-        // } else if (elemento.aprobador.nivelDireccion === this.NIVEL_APROBACION_JEFATURA) {
-        //   variables.correoNotificacionJefatura = {
-        //     value: elemento.aprobador.correo
-        //   };
-        //   variables.usuarioNotificacionJefatura = {
-        //     value: elemento.aprobador.usuario
-        //   };
-        //   variables.nivelDireccionNotificacionJefatura = {
-        //     value: elemento.aprobador.nivelDireccion
-        //   };
-        //   variables.descripcionPosicionNotificacionJefatura = {
-        //     value: elemento.aprobador.descripcionPosicion
-        //   };
-        //   variables.subledgerNotificacionJefatura = {
-        //     value: elemento.aprobador.subledger
-        //   };
-        // } else if (elemento.aprobador.nivelDireccion.toUpperCase().includes(this.NIVEL_APROBACION_VICEPRESIDENCIA)) {
-        //   variables.correoNotificacionVicepresidencia = {
-        //     value: elemento.aprobador.correo
-        //   };
-        //   variables.usuarioNotificacionVicepresidencia = {
-        //     value: elemento.aprobador.usuario
-        //   };
-        //   variables.nivelDireccionNotificacionVicepresidencia = {
-        //     value: elemento.aprobador.nivelDireccion
-        //   };
-        //   variables.descripcionPosicionNotificacionVicepresidencia = {
-        //     value: elemento.aprobador.descripcionPosicion
-        //   };
-        //   variables.subledgerNotificacionVicepresidencia = {
-        //     value: elemento.aprobador.subledger
-        //   };
-        // } else if (elemento.aprobador.nivelDireccion === this.NIVEL_APROBACION_RRHH) {
-        //   variables.correoNotificacionGerenteRRHH = {
-        //     value: elemento.aprobador.correo
-        //   };
-        //   variables.usuarioNotificacionGerenteRRHH = {
-        //     value: elemento.aprobador.usuario
-        //   };
-        //   variables.nivelDireccionNotificacionGerenteRRHH = {
-        //     value: elemento.aprobador.nivelDireccion
-        //   };
-        //   variables.descripcionPosicionNotificacionGerenteRRHH = {
-        //     value: elemento.aprobador.descripcionPosicion
-        //   };
-        //   variables.subledgerNotificacionGerenteRRHH = {
-        //     value: elemento.aprobador.subledger
-        //   };
-        // }
       });
 
-      // variables.codigoPosicion = {
-      //   value: this.model.codigoPosicion
-      // };
-      // variables.misionCargo = {
-      //   value: this.model.misionCargo
-      // };
-      // variables.justificacionCargo = {
-      //   value: this.model.justificacionCargo
-      // };
-      // variables.empresa = {
-      //   value: this.model.compania
-      // };
-      // variables.unidadNegocio = {
-      //   value: this.model.unidadNegocio
-      // };
-      // variables.descripcionPosicion = {
-      //   value: this.model.descrPosicion
-      // };
-      // variables.areaDepartamento = {
-      //   value: this.model.departamento
-      // };
-      // variables.localidadZona = {
-      //   value: this.model.localidad
-      // };
-      // variables.centroCosto = {
-      //   value: this.model.nomCCosto
-      // };
-      // variables.reportaa = {
-      //   value: this.model.reportaA
-      // };
-      // variables.nivelReportea = {
-      //   value: this.model.nivelRepa
-      // };
-      // variables.supervisa = {
-      //   value: this.model.supervisaA
-      // };
-      // variables.tipoContrato = {
-      //   value: this.model.tipoContrato
-      // };
-      // variables.sueldo = {
-      //   value: this.model.sueldo
-      // };
-      // variables.sueldoMensual = {
-      //   value: this.model.sueldoMensual
-      // };
-      // variables.sueldoTrimestral = {
-      //   value: this.model.sueldoTrimestral
-      // };
-      // variables.sueldoSemestral = {
-      //   value: this.model.sueldoSemestral
-      // };
-      // variables.sueldoAnual = {
-      //   value: this.model.sueldoAnual
-      // };
       variables.anularSolicitud = {
         value: this.selectedOption
       };
-      // variables.comentariosAnulacion = {
-      //   value: this.model.comentariosAnulacion
-      // };
-      // variables.nivelDireccion = {
-      //   value: this.model.nivelDir
-      // };
       variables.usuarioNotificacionCreador = {
         value: this.solicitudes.modelDetalleAprobaciones.usuarioAprobador
       };
@@ -1775,7 +1631,6 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
           objectTypeName: "java.util.ArrayList",
           serializationDataFormat: "application/json"
         }
-
       };
       variables.ruta = {
         value: this.dataRuta,
@@ -1838,34 +1693,21 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
   }
 
   getNivelesAprobacion() {
-    if (this.detalleSolicitud.codigoPosicion !== "" &&
-      this.detalleSolicitud.codigoPosicion !== undefined &&
-      this.detalleSolicitud.codigoPosicion != null) {
+    if (this.detalleSolicitud.codigoPosicion !== "" && this.detalleSolicitud.codigoPosicion !== undefined && this.detalleSolicitud.codigoPosicion != null) {
+      this.solicitudes.obtenerAprobacionesPorPosicion(this.solicitud.idTipoSolicitud, this.solicitud.idTipoMotivo, this.detalleSolicitud.codigoPosicion, this.detalleSolicitud.nivelDireccion, 'A').subscribe({
+        next: (response) => {
+          this.mapearDetallesAprobadores(response.nivelAprobacionPosicionType);
 
-
-      this.solicitudes
-        .obtenerAprobacionesPorPosicion(
-          this.solicitud.idTipoSolicitud,
-          this.solicitud.idTipoMotivo,
-          this.detalleSolicitud.codigoPosicion,
-          this.detalleSolicitud.nivelDireccion, 'A'
-        )
-        .subscribe({
-          next: (response) => {
-            this.mapearDetallesAprobadores(response.nivelAprobacionPosicionType);
-
-            this.dataAprobacionesPorPosicion[this.keySelected] = response.nivelAprobacionPosicionType;
-          },
-          error: (error: HttpErrorResponse) => {
-            this.utilService.modalResponse(
-              "No existen niveles de aprobación para este empleado",
-              "error"
-            );
-          },
-        });
-
+          this.dataAprobacionesPorPosicion[this.keySelected] = response.nivelAprobacionPosicionType;
+        },
+        error: (error: HttpErrorResponse) => {
+          this.utilService.modalResponse(
+            "No existen niveles de aprobación para este empleado",
+            "error"
+          );
+        },
+      });
     }
-
   }
 
   getDataNivelesAprobacionPorCodigoPosicion() {
