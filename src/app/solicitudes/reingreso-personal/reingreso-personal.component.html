@@ -630,7 +630,7 @@
                     >Jefe Inmediato Superior</label
                   >
                   &nbsp;
-                  <input-component
+                  <!-- <input-component
                     [id]="'searchInputFilter'"
                     [type]="'string'"
                     [buttonIcon]="'ti-search'"
@@ -639,8 +639,14 @@
                     [theValue]="jefeInmediato"
                     [contexto]="this"
                     style="width: 50%"
-                    [disabled]="isDisabledJI"
-                  ></input-component>
+                  ></input-component> -->
+
+                  <!-- <input type="text" [(ngModel)]="searchInp" class="form-control" id="searchInp" [ngbTypeahead]="searchNombreCompleto" (selectItem)="onSelectItem('nombreCompleto', $event)" /> -->
+                  <input name="jefe-superior" type="text" class="form-control" id="searchInp" [(ngModel)]="jefeInmediatoSuperiorQuery" [ngbTypeahead]="searchJefeInmediatoSuperior" />
+
+                  <button class="btn btn-light" type="button" (click)="getDataJefeInmediatoSuperior()">
+                    <i class="ti-search"></i>
+                  </button>
                 </div>
               </div>
               <div class="col">
@@ -672,7 +678,7 @@
                     name="tipoMotivo"
                     style="color: black; font-size: 14px"
                     class="text-start"
-                    >{{ this.puestoJefeInmediato }}</span
+                    >{{ puestoJefeInmediato }}</span
                   >
                 </div>
               </div>
@@ -718,11 +724,21 @@
               </div>
               <div class="col">
                 <div class="input-group mb-3">
+                  <!-- <label class="input-group label-estilo" for="tipoMotivo"
+                    >Responsable RRHH</label
+                  > -->
                   <label class="input-group label-estilo" for="tipoMotivo"
                     >Responsable RRHH</label
                   >
                   &nbsp;
-                  <input-component
+                  <span
+                    id="tipoMotivo"
+                    name="tipoMotivo"
+                    style="color: black; font-size: 14px"
+                    class="text-start"
+                    >{{ solicitud.usuarioCreacion }}</span
+                  >
+                  <!-- <input-component
                   [id]="'searchInputFilter'"
                   [type]="'string'"
                   [buttonIcon]="'ti-search'"
@@ -732,7 +748,7 @@
                   [contexto]="this"
                   style="width: 50%"
                   [disabled]="isDisabledRHac"
-                  ></input-component>
+                  ></input-component> -->
                 </div>
               </div>
             </div>
@@ -789,7 +805,7 @@
                     name="tipoMotivo"
                     style="color: black; font-size: 14px"
                     class="text-start"
-                    >{{ detalleSolicitudRG.supervisaA === "N/A" ? "" : modelRG.fechaIngreso }}</span
+                    >{{ detalleSolicitudRG.supervisaA === "N/A" ? "" : (modelRG.fechaIngreso | date:'dd/MM/yyyy') }}</span
                   >
                 </div>
               </div>

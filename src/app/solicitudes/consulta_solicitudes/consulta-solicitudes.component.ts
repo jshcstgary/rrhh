@@ -502,7 +502,7 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
                           next: () => {
                             setTimeout(() => {
                               this.router.navigate([
-                                "/solicitudes/registrar-solicitud",
+                                this.codigoTipoSolicitud === "AP" ? "/solicitudes/accion-personal/registrar-solicitud" : "/solicitudes/registrar-solicitud",
                                 this.solicitud.idInstancia,
                                 this.solicitud.idSolicitud,
                               ]);
@@ -539,137 +539,7 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
     });
 
     if (this.submitted) {
-      /*this.utilService.modalResponse(
-        "Datos ingresados correctamente",
-        "success"
-      );*/
-      // this.router.navigate(["/solicitudes/registrar-solicitud"]);
     }
-
-    //Fin Solicitud
-    // }
-
-
-
-
-
-
-
-    // Swal.fire({
-    //   text: "¿Desea crear la Solicitud?",
-    //   icon: "question",
-    //   showCancelButton: true,
-    //   confirmButtonColor: "rgb(227, 199, 22)",
-    //   cancelButtonColor: "#77797a",
-    //   confirmButtonText: "Sí",
-    //   cancelButtonText: "No",
-    // }).then((result) => {
-    //   this.codigoTipoSolicitud = this.dataTipoSolicitudes.filter((data) => data.id == this.solicitud.idTipoSolicitud)[0]?.codigoTipoSolicitud;
-
-    //   this.solicitud.tipoSolicitud = this.dataTipoSolicitudes.filter((data) => data.id == this.solicitud.idTipoSolicitud)[0]?.descripcion;
-
-    //   this.solicitud.tipoMotivo = this.dataTiposMotivosPorTipoSolicitud[this.solicitud.idTipoSolicitud].filter((data) => data.id == this.solicitud.idTipoMotivo)[0]?.tipoMotivo;
-
-    //   this.solicitud.tipoAccion = this.dataTiposAccionesPorTipoSolicitud[this.solicitud.idTipoSolicitud].filter((data) => data.id == this.solicitud.idTipoAccion)[0]?.tipoAccion;
-
-    //   if (result.isConfirmed) {
-    //     this.utilService.openLoadingSpinner("Creando solicitud, espere por favor.");
-    //     // Inicio de Solicitud
-    //     // Comentado tveas por error
-
-    //     this.route.params.subscribe({
-    //       next: (params) => {
-    //         //const processDefinitionKey ="process_modelo";
-    //         this.processDefinitionKey = "RequisicionPersonal";
-    //         if (this.codigoTipoSolicitud === "AP") {
-    //           this.processDefinitionKey = "AccionPersonal";
-    //         }
-
-    //         const variables = this.generatedVariablesFromFormFields();
-
-    //         this.camundaRestService.postProcessInstance(this.processDefinitionKey, variables).subscribe({
-    //           next: (instanceOutput) => {
-    //             this.lookForError(instanceOutput);
-    //             this.utilService.closeLoadingSpinner();
-    //             this.instanceCreated = new DatosInstanciaProceso(
-    //               instanceOutput.businessKey,
-    //               instanceOutput.definitionId,
-    //               instanceOutput.id,
-    //               instanceOutput.tenantId
-    //             );
-    //             this.solicitud.idInstancia = instanceOutput.id;
-    //             this.solicitud.estado = "Creado"; //tveas TODO improve [Activo]
-    //             this.solicitud.estadoSolicitud = "3"; // tveas TODO improve [Creado]
-
-    //             this.solicitudes.guardarSolicitud(this.solicitud).subscribe({
-    //               next: (responseSolicitud) => {
-    //                 this.solicitud.idSolicitud = responseSolicitud.idSolicitud;
-    //                 this.solicitud.fechaActualizacion =
-    //                   responseSolicitud.fechaActualizacion;
-    //                 this.solicitud.fechaCreacion =
-    //                   responseSolicitud.fechaCreacion;
-    //                 this.submitted = true;
-    //                 // console.log("IDDDDD INSTANCIA: ", this.solicitud.idInstancia);
-    //                 this.detalleSolicitud.idSolicitud = responseSolicitud.idSolicitud;
-    //                 this.detalleSolicitud.estado = "A";
-
-    //                 this.solicitudes.guardarDetalleSolicitud(this.detalleSolicitud).subscribe({
-    //                   next: (responseDetalle) => {
-    //                     this.starterService.getUser(localStorage.getItem("idUsuario")!).subscribe({
-    //                       next: (res) => {
-    //                         this.fillData(res);
-
-    //                         this.solicitudes.guardarDetallesAprobacionesSolicitud(this.solicitudes.modelDetalleAprobaciones).subscribe({
-    //                           next: () => {
-    //                             setTimeout(() => {
-    //                               this.router.navigate([
-    //                                 "/solicitudes/registrar-solicitud",
-    //                                 this.solicitud.idInstancia,
-    //                                 this.solicitud.idSolicitud,
-    //                               ]);
-    //                             }, 1800);//comentado mmunoz
-    //                           },
-    //                           error: (err) => {
-    //                             console.error(err);
-    //                           }
-    //                         });
-    //                       },
-    //                       error: (error) => {
-    //                         console.error(error);
-    //                       }
-    //                     });
-    //                   },
-    //                   error: (error) => {
-    //                     console.error(error);
-    //                   }
-    //                 });
-    //               },
-    //               error: (error) => {
-    //                 console.error(error);
-    //               }
-    //             });
-    //           },
-    //           error: (error) => {
-    //             console.error(error);
-    //           }
-    //         });
-    //       },
-    //       error: (error) => {
-    //         console.error(error);
-    //       }
-    //     });
-
-    //     if (this.submitted) {
-    //       /*this.utilService.modalResponse(
-    //         "Datos ingresados correctamente",
-    //         "success"
-    //       );*/
-    //       // this.router.navigate(["/solicitudes/registrar-solicitud"]);
-    //     }
-
-    //     //Fin Solicitud
-    //   }
-    // });
   }
 
   rutaPorIdTipoSolicitudIndexada = {
@@ -678,7 +548,7 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
       key: "RequisicionPersonal",
     },
     3: {
-      path: "/solicitudes/registrar-solicitud",
+      path: "/solicitudes/accion-personal/registrar-solicitud",
       key: "AccionPersonal",
     },
     // 5: {

@@ -1001,8 +1001,7 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
         this.detalleSolicitud.codigoPosicion = this.model.codigoPosicion;
         this.detalleSolicitud.compania = this.model.compania; //idEmpresa
         this.detalleSolicitud.departamento = this.model.departamento;
-        this.detalleSolicitud.descripcionPosicion =
-          this.model.descrPosicion;
+        this.detalleSolicitud.descripcionPosicion = this.model.descrPosicion;
 
         this.detalleSolicitud.justificacion = this.model.justificacionCargo;
         this.detalleSolicitud.localidad = this.model.localidad;

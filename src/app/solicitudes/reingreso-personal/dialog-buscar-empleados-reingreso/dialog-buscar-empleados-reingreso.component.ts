@@ -124,57 +124,6 @@ export class DialogBuscarEmpleadosReingresoComponent {
       let fechaEnFormatoISO = fechaActual.toISOString();
 
       this.modelo = datosEmpleado;
-      console.log(this.modelo);
-
-      // this.model = {
-      //   codigo
-      //   idEmpresa
-      //   compania
-      //   departamento
-      //   nombreCargo
-      //   nomCCosto
-      //   codigoPosicion
-      //   descrPosicion
-      //   codigoPuesto
-      //   descrPuesto
-      //   fechaIngresogrupo
-      //   grupoPago
-      //   reportaA
-      //   localidad
-      //   nivelDir
-      //   descrNivelDir
-      //   nivelRepa
-      //   nombreCompleto
-      //   subledger
-      //   sucursal
-      //   unidadNegocio
-      //   tipoContrato
-      //   descripContrato
-      //   sueldo
-      //   sueldoVariableMensual
-      //   sueldoVariableTrimestral
-      //   sueldoVariableSemestral
-      //   sueldoVariableAnual
-      //   codigoPosicionReportaA
-      //   status
-      // };
-
-      // this.modelo.iD_APROBADOR = 1;
-      // this.modelo.niveL_DIRECCION = "Gerente de RRHH Corporativo";
-      // this.modelo.codigO_POSICION = datosEmpleado.codigoPosicion;
-      // this.modelo.subleger = datosEmpleado.subledger;
-      // this.modelo.nombre = datosEmpleado.nombreCompleto;
-      // this.modelo.codigO_POSICION_REPORTA_A = "N/A";
-      // this.modelo.reportA_A = datosEmpleado.reportaA;
-      // this.modelo.estado = true;
-      // this.modelo.fechA_CREACION = fechaEnFormatoISO;
-      // this.modelo.fechA_MODIFICACION = fechaEnFormatoISO;
-      // this.modelo.usuariO_CREACION = fechaEnFormatoISO;
-      // this.modelo.usuariO_MODIFICACION = fechaEnFormatoISO;
-      // this.modelo.descripcioN_POSICION = datosEmpleado.descrPosicion;
-      // this.modelo.supervisA_A = "N/A";
-      // this.modelo.niveL_REPORTE = datosEmpleado.nivelReporte;
-      // this.modelo.correo = datosEmpleado.correo
     } else {
       // this.model.reset();
       let tempSearch = valor;

@@ -107,6 +107,8 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
 
   public solicitud = new Solicitud();
 
+  taskKey: string = "";
+
   public titulo: string = "Formulario De Registro";
 
   // Base model refers to the input at the beginning of BPMN
@@ -394,16 +396,16 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
     );
     console.log("this.id_solicitud_by_params: ", this.id_solicitud_by_params);
     try {
-      await this.ObtenerServicioTipoSolicitud();
-      await this.ObtenerServicioTipoMotivo();
-      await this.ObtenerServicioTipoAccion();
-      await this.ObtenerServicioNivelDireccion();
-      await this.getSolicitudes();
+      // await this.ObtenerServicioTipoSolicitud();
+      // await this.ObtenerServicioTipoMotivo();
+      // await this.ObtenerServicioTipoAccion();
+      // await this.ObtenerServicioNivelDireccion();
+      // await this.getSolicitudes();
       //if (this.id_edit !== undefined) { //comentado mmunoz
       //await this.getDetalleSolicitudById(this.id_edit); //comentado mmunoz
       await this.getSolicitudById(this.id_edit);
       //} // comentado munoz
-      await this.getDataEmpleadosEvolution();
+      // await this.getDataEmpleadosEvolution();
       await this.loadDataCamunda(); //comentado para prueba mmunoz
       //console.log("impreme arreglo de aprobadores: ");
       //await this.recorrerArreglo();
@@ -570,23 +572,7 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
     this.route.queryParams.subscribe((params: Solicitud) => {
       //this.solicitud = params;
       console.log("Mis params: ", params);
-      this.misParams = params;
-
-      /*this.solicitud.infoGeneral.idTipoSolicitud = this.dataTipoSolicitud.id;
-      this.solicitud.infoGeneral.tipoSolicitud =
-        this.dataTipoSolicitud.tipoSolicitud;
-      this.solicitud.request.idTipoSolicitud = this.dataTipoSolicitud.id;
-      this.solicitud.request.tipoSolicitud =
-        this.dataTipoSolicitud.tipoSolicitud;
-
-      this.solicitud.infoGeneral.idTipoMotivo = this.dataTipoMotivo.id;
-      this.solicitud.infoGeneral.tipoMotivo = this.dataTipoMotivo.tipoMotivo;
-      this.solicitud.request.idTipoMotivo = this.dataTipoMotivo.id;
-
-      this.solicitud.infoGeneral.idTipoAccion = this.dataTipoAccion.id;
-      this.solicitud.infoGeneral.tipoAccion = this.dataTipoAccion.tipoAccion;
-      this.solicitud.request.idTipoAccion = this.dataTipoAccion.id;
-      this.solicitud.request.tipoAccion = this.dataTipoAccion.tipoAccion;*/
+      this.misParams = params
     });
 
     this.route.queryParamMap.subscribe((qParams) => {
@@ -612,31 +598,48 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
         // id is parent process instance id. so handle it accordingly
         // we are looking for task id 'Registrar' in a recently started process instance 'id'
         this.idDeInstancia = params["id"];
-        this.camundaRestService
-          .getTask(environment.taskType_CF, params["id"])
-          .subscribe((result) => {
-            console.log("INGRESA AQUÍ (registrar): ", result);
-            console.log(
-              "environment.taskType_Registrar: ",
-              environment.taskType_Registrar
-            );
-            console.log("params['id']: ", params["id"]);
-            this.lookForError(result); // if error, then control gets redirected to err page
 
-            // if result is success - bingo, we got the task id
-            this.uniqueTaskId =
-              result[0].id; /* Es como la tarea que se crea en esa instancia */
-            this.taskId = params["id"]; /* Esta es la instancia */
-            console.log("this.uniqueTaskId: ", this.uniqueTaskId);
-            console.log("this.taskId: ", this.taskId);
-            this.getDetalleSolicitudById(this.id_solicitud_by_params);
-            this.getSolicitudById(this.id_solicitud_by_params);
-            this.date = result[0].created;
-            this.loadExistingVariables(
-              this.uniqueTaskId ? this.uniqueTaskId : "",
-              variableNames
-            );
-          });
+        this.solicitudes.getTareaIdParam(this.id_solicitud_by_params).subscribe((result) => {
+          this.taskKey = result.solicitudes[0].tasK_DEF_KEY;
+
+          this.lookForError(result);
+
+          this.uniqueTaskId = result.solicitudes[0].taskId;
+          this.taskId = params["id"];
+
+          this.date = result.solicitudes[0].startTime;
+          this.loadExistingVariables(
+            this.uniqueTaskId ? this.uniqueTaskId : "",
+            variableNames
+          );
+        });
+
+
+        // this.camundaRestService
+        //   .getTask(environment.taskType_CF, params["id"])
+        //   .subscribe((result) => {
+        //     console.log("INGRESA AQUÍ (registrar): ", result);
+        //     console.log(
+        //       "environment.taskType_Registrar: ",
+        //       environment.taskType_Registrar
+        //     );
+        //     console.log("params['id']: ", params["id"]);
+        //     this.lookForError(result); // if error, then control gets redirected to err page
+
+        //     // if result is success - bingo, we got the task id
+        //     this.uniqueTaskId =
+        //       result[0].id; /* Es como la tarea que se crea en esa instancia */
+        //     this.taskId = params["id"]; /* Esta es la instancia */
+        //     console.log("this.uniqueTaskId: ", this.uniqueTaskId);
+        //     console.log("this.taskId: ", this.taskId);
+        //     this.getDetalleSolicitudById(this.id_solicitud_by_params);
+        //     this.getSolicitudById(this.id_solicitud_by_params);
+        //     this.date = result[0].created;
+        //     this.loadExistingVariables(
+        //       this.uniqueTaskId ? this.uniqueTaskId : "",
+        //       variableNames
+        //     );
+        //   });
       } else {
         // unique id is from the route params
         this.uniqueTaskId = params["id"];

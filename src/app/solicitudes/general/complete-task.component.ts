@@ -30,6 +30,7 @@ export class CompleteTaskComponent {
       this.generateModelFromVariables(result);
     });
   }
+
   generateModelFromVariables(variables: { [x: string]: { value: any; }; }) {
     Object.keys(variables).forEach((variableName) => {
       this.model[variableName] = variables[variableName].value;

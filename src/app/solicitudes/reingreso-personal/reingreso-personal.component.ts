@@ -7,8 +7,8 @@ import {
 import { CamundaRestService } from "src/app/camunda-rest.service";
 import { Solicitud } from "src/app/eschemas/Solicitud";
 import { CompleteTaskComponent } from "../general/complete-task.component";
-import { Subject } from "rxjs";
-import { catchError, debounceTime, map } from "rxjs/operators";
+import { Observable, OperatorFunction, Subject } from "rxjs";
+import { catchError, debounceTime, distinctUntilChanged, map } from "rxjs/operators";
 import { RegistrarData } from "src/app/eschemas/RegistrarData";
 import { DatosProcesoInicio } from "src/app/eschemas/DatosProcesoInicio";
 import { UtilService } from "src/app/services/util/util.service";
@@ -122,8 +122,9 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
     ""
   );
 
-
-  // public solicitud = new Solicitud();
+  public jefeInmediatoSuperiorQuery: string = "";
+  public jefeReferenciaQuery: string = "";
+  public responsableRRHHQuery: string = "";
 
   private searchSubject = new Subject<{
     campo: string;
@@ -400,7 +401,9 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
   ];
   */
 
-  nombresEmpleados: string[] = [];
+  public nombresJefeInmediatoSuperior: any[] = [];
+  public nombresJefeReferencia: any[] = [];
+  public nombresResponsableRRHH: any[] = [];
 
   subledgers: string[] = [];
 
@@ -436,7 +439,6 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
     this.route.paramMap.subscribe((params) => {
       this.id_solicitud_by_params = params.get("idSolicitud");
       this.idDeInstancia = params.get("id");
-      console.log("this.idDeInstancia: ", this.idDeInstancia);
     });
   }
 
@@ -453,33 +455,17 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
       },
       error: (err) => {
         console.log(console.log(err));
-
-        // this.disabledSave = true;
       }
     });
   }
 
   async ngOnInit() {
-    this.utilService.openLoadingSpinner(
-      "Cargando información, espere por favor..."
-    );
+    this.utilService.openLoadingSpinner("Cargando información, espere por favor...");
+
     console.log("this.id_solicitud_by_params: ", this.id_solicitud_by_params);
     try {
-      await this.ObtenerServicioTipoSolicitud();
-      await this.ObtenerServicioTipoMotivo();
-      await this.ObtenerServicioTipoAccion();
-      // await this.ObtenerServicioNivelDireccion();
-      // await this.getSolicitudes();
-      //if (this.id_edit !== undefined) { //comentado mmunoz
-      //await this.getDetalleSolicitudById(this.id_edit); //comentado mmunoz
-      // await this.getSolicitudById(this.id_edit);
-      //} // comentado munoz
-      // await this.getDataEmpleadosEvolution();
-      await this.loadDataCamunda(); //comentado para prueba mmunoz
-      //console.log("impreme arreglo de aprobadores: ");
-      //await this.recorrerArreglo();
+      await this.loadDataCamunda();
 
-      // await this.getNivelesAprobacion();
       this.utilService.closeLoadingSpinner();
     } catch (error) {
       // Manejar errores aquí de manera centralizada
@@ -554,26 +540,8 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
           this.solicitudRG = response;
         }
 
-        //data de solicitudes
-
-        /* this.model.codigo=this.solicitud.idSolicitud ;
-         this.model.idEmpresa = this.solicitud.idEmpresa ;
-         this.model.compania=this.solicitud.empresa ;
-         this.model.unidadNegocio=this.solicitud.unidadNegocio;*/
-
         this.loadingComplete++;
         this.getDetalleSolicitudById(id);
-
-        // tveas, si incluye el id, debo mostrarlos (true)
-        /*this.mostrarTipoJustificacionYMision = this.restrictionsIds.includes(
-          this.solicitud.idTipoMotivo
-        );
-
-        this.mostrarSubledger = this.restrictionsSubledgerIds.includes(
-          this.solicitud.idTipoMotivo
-        );*/ // comentado mmunoz
-
-        //console.log("DATA SOLICITUD BY ID: ", this.solicitud);
       },
       error: (error: HttpErrorResponse) => {
         this.utilService.modalResponse(error.error, "error");
@@ -581,32 +549,74 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
     });
   }
 
-  getDataEmpleadosEvolution() {
-    return this.mantenimientoService.getDataEmpleadosEvolution().subscribe({
+  searchJefeInmediatoSuperior: OperatorFunction<string, readonly string[]> = (text$: Observable<string>) => text$.pipe(
+    debounceTime(200),
+    distinctUntilChanged(),
+    map((term) => term.length < 1 ? [] : this.nombresJefeInmediatoSuperior.filter(({ nombreCompleto }) => nombreCompleto.toLowerCase().includes(term.toLowerCase())).slice(0, 10).map(({ nombreCompleto }) => nombreCompleto))
+  );
+
+  searchJefeReferencia: OperatorFunction<string, readonly string[]> = (text$: Observable<string>) => text$.pipe(
+    debounceTime(200),
+    distinctUntilChanged(),
+    map((term) => term.length < 1 ? [] : this.nombresJefeReferencia.filter((v) => v.nombreCompleto.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10))
+  );
+
+  searchResponsableRRHH: OperatorFunction<string, readonly string[]> = (text$: Observable<string>) => text$.pipe(
+    debounceTime(200),
+    distinctUntilChanged(),
+    map((term) => term.length < 1 ? [] : this.nombresResponsableRRHH.filter((v) => v.nombreCompleto.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10))
+  );
+
+  getDataJefeInmediatoSuperior() {
+    console.log(this.jefeInmediatoSuperiorQuery);
+    this.getDataEmpleadosEvolution(this.jefeInmediatoSuperiorQuery, "nombresJefeInmediatoSuperior");
+    console.log(this.nombresJefeInmediatoSuperior);
+  }
+
+  getDataJefeReferencia() {
+    this.getDataEmpleadosEvolution(this.jefeReferenciaQuery, "nombresJefeReferencia");
+  }
+
+  getDataResponsableRRHH() {
+    this.getDataEmpleadosEvolution(this.responsableRRHHQuery, "nombresResponsableRRHH");
+  }
+
+  getDataEmpleadosEvolution(search: string, arrayToFill: string) {
+    // this.mantenimientoService.getDataEmpleadosEvolution().subscribe({
+    this.mantenimientoService.getDataEmpleadosEvolutionPorId(search).subscribe({
       next: (response) => {
         this.dataEmpleadoEvolution = response.evType;
 
-        this.nombresEmpleados = [
-          ...new Set(
-            this.dataEmpleadoEvolution.map(
-              (empleado) => empleado.nombreCompleto
-            )
-          ),
-        ];
+        if (arrayToFill === "nombresJefeInmediatoSuperior") {
+          console.log(this.dataEmpleadoEvolution);
+          this.nombresJefeInmediatoSuperior = [...new Set(this.dataEmpleadoEvolution.map((empleado) => empleado))];
+        } else if (arrayToFill === "nombresJefeReferencia") {
+          this.nombresJefeReferencia = [...new Set(this.dataEmpleadoEvolution.map((empleado) => empleado))];
+        } else {
+          this.nombresResponsableRRHH = [...new Set(this.dataEmpleadoEvolution.map((empleado) => empleado))];
+        }
 
-        this.subledgers = [
-          ...new Set(
-            this.dataEmpleadoEvolution.map((empleado) => empleado.subledger)
-          ),
-        ];
+        // this.nombresEmpleados = [
+        //   ...new Set(
+        //     this.dataEmpleadoEvolution.map(
+        //       (empleado) => empleado.nombreCompleto
+        //     )
+        //   ),
+        // ];
 
-        this.codigosPosicion = [
-          ...new Set(
-            this.dataEmpleadoEvolution.map(
-              (empleado) => empleado.codigoPosicion
-            )
-          ),
-        ];
+        // this.subledgers = [
+        //   ...new Set(
+        //     this.dataEmpleadoEvolution.map((empleado) => empleado.subledger)
+        //   ),
+        // ];
+
+        // this.codigosPosicion = [
+        //   ...new Set(
+        //     this.dataEmpleadoEvolution.map(
+        //       (empleado) => empleado.codigoPosicion
+        //     )
+        //   ),
+        // ];
       },
       error: (error: HttpErrorResponse) => {
         this.utilService.modalResponse(error.error, "error");
@@ -633,34 +643,14 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
       } else {
         this.solicitudDataInicial = this.solicitudes.modelSolicitud;
         this.detalleSolicitud = this.solicitudes.modelDetalleSolicitud;
-        this.detalleSolicitud.idSolicitud =
-          this.solicitudDataInicial.idSolicitud;
+        this.detalleSolicitud.idSolicitud = this.solicitudDataInicial.idSolicitud;
       }
-
-      // console.log("ID editar: ", this.id_edit);
-      // Utiliza el id_edit obtenido
     });
 
     this.route.queryParams.subscribe((params: Solicitud) => {
       //this.solicitud = params;
       console.log("Mis params: ", params);
       this.misParams = params;
-
-      /*this.solicitud.infoGeneral.idTipoSolicitud = this.dataTipoSolicitud.id;
-      this.solicitud.infoGeneral.tipoSolicitud =
-        this.dataTipoSolicitud.tipoSolicitud;
-      this.solicitud.request.idTipoSolicitud = this.dataTipoSolicitud.id;
-      this.solicitud.request.tipoSolicitud =
-        this.dataTipoSolicitud.tipoSolicitud;
-
-      this.solicitud.infoGeneral.idTipoMotivo = this.dataTipoMotivo.id;
-      this.solicitud.infoGeneral.tipoMotivo = this.dataTipoMotivo.tipoMotivo;
-      this.solicitud.request.idTipoMotivo = this.dataTipoMotivo.id;
-
-      this.solicitud.infoGeneral.idTipoAccion = this.dataTipoAccion.id;
-      this.solicitud.infoGeneral.tipoAccion = this.dataTipoAccion.tipoAccion;
-      this.solicitud.request.idTipoAccion = this.dataTipoAccion.id;
-      this.solicitud.request.tipoAccion = this.dataTipoAccion.tipoAccion;*/
     });
 
     this.route.queryParamMap.subscribe((qParams) => {
@@ -670,11 +660,6 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
         this.date = "";
       }
 
-      //
-      // Comentado por ahora
-      /*if (null !== qParams?.get("p")) {
-        this.parentIdFlag = qParams.get("p");
-      }*/
       this.parentIdFlag = "true";
     });
 
@@ -699,22 +684,15 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
             this.getCandidatoValues();
 
             this.date = result.solicitudes[0].startTime;
-            this.loadExistingVariables(
-              this.uniqueTaskId ? this.uniqueTaskId : "",
-              variableNames
-            );
+            // this.loadExistingVariables(this.uniqueTaskId ? this.uniqueTaskId : "", variableNames);
           });
       } else {
-        // unique id is from the route params
         this.uniqueTaskId = params["id"];
+
         this.taskId = params["id"];
-        this.loadExistingVariables(
-          this.uniqueTaskId ? this.uniqueTaskId : "",
-          variableNames
-        );
+
+        // this.loadExistingVariables(this.uniqueTaskId ? this.uniqueTaskId : "", variableNames);
       }
-      // console.log("Así es mi variablesNames: ", variableNames);
-      // ready to do the processing now
     });
   }
 
@@ -822,57 +800,22 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
             this.remuneracion = Number(this.modelRG.sueldoAnual) / 12 + Number(this.modelRG.sueldoSemestral) / 6 + Number(this.modelRG.sueldoTrimestral) / 3 + Number(this.modelRG.sueldoMensual);
 
             this.keySelected = this.solicitud.idTipoSolicitud + "_" + this.solicitud.idTipoMotivo + "_" + this.model.nivelDir;
+
             if (!this.dataAprobacionesPorPosicion[this.keySelected]) {
               this.getNivelesAprobacion();
+
               if (this.model.codigoPosicion.trim().length > 0) {
                 this.obtenerAprobacionesPorPosicionAPS();
                 this.obtenerAprobacionesPorPosicionAPD();
               }
-
-              console.log("aprobadores dinamicos", this.dataAprobadoresDinamicos);
-              // const jsonArrayString = JSON.stringify(this.dataAprobadoresDinamicos);
-              // console.log("conversion aprobadores dinamicos", jsonArrayString);
-              //console.log("Ruta", this.dataRuta);
-              // let variables = this.generateVariablesFromFormFields();
             }
           }
         }
-        /* this.detalleSolicitud.estado = response.estado;
-         this.detalleSolicitud.estado = response.estadoSolicitud;
-         this.detalleSolicitud.idSolicitud = response.idSolicitud;
-         this.detalleSolicitud.unidadNegocio = response.unidadNegocio;*/ //comentado mmunoz
-        //console.log("DATA DETALLE SOLICITUD BY ID: ", this.detalleSolicitud);
+
         this.loadingComplete++;
 
-        // tveas, si incluye el id, debo mostrarlos (true)
-        this.mostrarTipoJustificacionYMision = this.restrictionsIds.includes(
-          this.solicitud.idTipoMotivo
-        );
-
-        this.mostrarSubledger = this.restrictionsSubledgerIds.includes(
-          this.solicitud.idTipoMotivo
-        );
-
-
-        //console.log("aprobacion: ",aprobacion);
-        /* console.log(`Elemento en la posición Miguel1 ${this.keySelected}:`, this.dataAprobacionesPorPosicion[this.keySelected][0].nivelAprobacionType.idNivelAprobacion);
-
-         for (const key in this.dataAprobacionesPorPosicion[this.keySelected]) {
-           if (this.dataAprobacionesPorPosicion.hasOwnProperty(key)) {
-             console.log(`Clave: ${key}`);
-             const aprobacionesObj = this.dataAprobacionesPorPosicion[this.keySelected][key];
-             for (const index in aprobacionesObj) {
-               if (aprobacionesObj.hasOwnProperty(index)) {
-                 const aprobacion = aprobacionesObj[index];
-                 console.log(`Entro en elementos de aprobacion..`);
-                 console.log(`Elemento ${index}:`, aprobacion);
-                 // Aquí puedes acceder a las propiedades de cada objeto
-                 console.log(aprobacion.nivelAprobacionType.idNivelAprobacion);
-                 console.log(aprobacion.aprobador.usuario);
-               }
-             }
-           }
-         }*/
+        this.mostrarTipoJustificacionYMision = this.restrictionsIds.includes(this.solicitud.idTipoMotivo);
+        this.mostrarSubledger = this.restrictionsSubledgerIds.includes(this.solicitud.idTipoMotivo);
 
         this.consultarNextTask(id);
       },
@@ -901,44 +844,30 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
   }
 
   obtenerAprobacionesPorPosicionAPS() {
-    return this.solicitudes
-      .obtenerAprobacionesPorPosicion(
-        this.solicitudRG.idTipoSolicitud,
-        this.solicitudRG.idTipoMotivo,
-        this.modelRG.codigoPosicion,
-        this.modelRG.nivelDir,
-        "APS"
-      )
-      .subscribe({
-        next: (response) => {
-          this.dataTipoRuta.length = 0;
-          this.dataRuta.length = 0;
-          this.dataAprobacionesPorPosicionAPS = response.nivelAprobacionPosicionType || [];
+    return this.solicitudes.obtenerAprobacionesPorPosicion(this.solicitudRG.idTipoSolicitud, this.solicitudRG.idTipoMotivo, this.modelRG.codigoPosicion, this.modelRG.nivelDir, "APS").subscribe({
+      next: (response) => {
+        this.dataTipoRuta.length = 0;
+        this.dataRuta.length = 0;
+        this.dataAprobacionesPorPosicionAPS = response.nivelAprobacionPosicionType || [];
 
-          this.dataAprobacionesPorPosicionAPS.forEach((item) => {
-            this.dataTipoRuta.push(item.nivelAprobacionType.tipoRuta);
-            this.dataRuta.push(item.nivelAprobacionType.ruta);
-            console.log("Aprobaciones APS = ", item.nivelAprobacionType);
-          });
-        },
-        error: (error: HttpErrorResponse) => {
-          this.utilService.modalResponse(
-            "No existe aprobadores de solicitud para los datos ingresados",
-            "error"
-          );
-        },
-      });
+        this.dataAprobacionesPorPosicionAPS.forEach((item) => {
+          this.dataTipoRuta.push(item.nivelAprobacionType.tipoRuta);
+          this.dataRuta.push(item.nivelAprobacionType.ruta);
+          console.log("Aprobaciones APS = ", item.nivelAprobacionType);
+        });
+      },
+      error: (error: HttpErrorResponse) => {
+        this.utilService.modalResponse(
+          "No existe aprobadores de solicitud para los datos ingresados",
+          "error"
+        );
+      },
+    });
   }
 
   obtenerAprobacionesPorPosicionAPD() {
     return this.solicitudes
-      .obtenerAprobacionesPorPosicion(
-        this.solicitudRG.idTipoSolicitud,
-        this.solicitudRG.idTipoMotivo,
-        this.modelRG.codigoPosicion,
-        this.modelRG.nivelDir,
-        "APD"
-      )
+      .obtenerAprobacionesPorPosicion(this.solicitudRG.idTipoSolicitud, this.solicitudRG.idTipoMotivo, this.modelRG.codigoPosicion, this.modelRG.nivelDir, "APD")
       .subscribe({
         next: (response) => {
           this.dataAprobadoresDinamicos.length = 0;
@@ -1004,7 +933,7 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
     });
   }
 
-  public pageSolicitudes(): void {}
+  public pageSolicitudes(): void { }
 
   override generateVariablesFromFormFields() {
     let variables: any = {};
@@ -1027,54 +956,6 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
         }
       });
 
-      variables.anularSolicitud = {
-        value: this.selectedOption
-      };
-      variables.usuarioNotificacionCreador = {
-        value: this.solicitudes.modelDetalleAprobaciones.usuarioAprobador
-      };
-      variables.nivelDireccionNotificacionCreador = {
-        value: this.solicitudes.modelDetalleAprobaciones.nivelDireccionAprobador
-      };
-      variables.descripcionPosicionCreador = {
-        value: this.solicitudes.modelDetalleAprobaciones.descripcionPosicionAprobador
-      };
-      variables.subledgerNotificacionCreador = {
-        value: this.solicitudes.modelDetalleAprobaciones.sudlegerAprobador
-      };
-      variables.Id_Solicitud = {
-        value: this.solicitudRG.idSolicitud
-      };
-      variables.tipoSolicitud = {
-        value: this.solicitudRG.tipoSolicitud
-      };
-      variables.urlTarea = {
-        value: `${portalWorkFlow}solicitudes/revisar-solicitud/${this.idDeInstancia}/${this.id_solicitud_by_params}`
-      };
-      variables.tipoRuta = {
-        value: this.dataTipoRuta,
-        type: "String",
-        valueInfo: {
-          objectTypeName: "java.util.ArrayList",
-          serializationDataFormat: "application/json"
-        }
-      };
-      variables.ruta = {
-        value: this.dataRuta,
-        type: "String",
-        valueInfo: {
-          objectTypeName: "java.util.ArrayList",
-          serializationDataFormat: "application/json"
-        }
-      };
-      variables.resultadoRutaAprobacion = {
-        value: JSON.stringify(this.dataAprobadoresDinamicos),
-        type: "Object",
-        valueInfo: {
-          objectTypeName: "java.util.ArrayList",
-          serializationDataFormat: "application/json"
-        }
-      };
     }
 
     return { variables };
@@ -1181,8 +1062,6 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
         }));
       }
     });
-
-    console.log(this.detalleNivelAprobacion);
   }
 
   onCompletar() {
@@ -1196,7 +1075,6 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
 
     let variables = this.generateVariablesFromFormFields();
 
-    // this.solicitudes.cargarDetalleAprobacionesArreglo(this.detalleNivelAprobacion).subscribe({
     this.solicitudes.cargarDetalleAprobacionesArreglo(this.detalleNivelAprobacion).subscribe({
       next: (res) => {
         this.camundaRestService.postCompleteTask(this.uniqueTaskId, variables).subscribe({
@@ -1256,58 +1134,14 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
       }
     });
 
-    // this.utilService.openLoadingSpinner("Completando Tarea, espere por favor...");
-
-    // let variables = this.generateVariablesFromFormFields();
-
-    // this.camundaRestService
-    //   .postCompleteTask(this.uniqueTaskId, variables)
-    //   .subscribe({
-    //     next: (res) => {
-    //       console.log("Complete task notificar");
-    //       //actualizo la solicitud a enviada
-    //       this.solicitud.empresa = this.model.idEmpresa;
-    //       this.solicitud.idEmpresa = this.model.idEmpresa;
-
-    //       this.solicitud.unidadNegocio = this.model.unidadNegocio;
-    //       this.solicitud.idUnidadNegocio = this.model.unidadNegocio;
-    //       if (this.selectedOption == "No") {
-    //         this.solicitud.estadoSolicitud = "4";
-    //       } else {
-    //         this.solicitud.estadoSolicitud = "AN";
-    //       }
-
-    //       console.log("this.solicitud: ", this.solicitud);
-    //       this.solicitudes
-    //         .actualizarSolicitud(this.solicitud)
-    //         .subscribe((responseSolicitud) => {
-    //           console.log("responseSolicitud: ", responseSolicitud);
-    //         });
-
-    //       this.utilService.closeLoadingSpinner();
-    //       //fin actualizo la solicitud a enviada
-    //       this.utilService.modalResponse(
-    //         `Solicitud registrada correctamente [${this.idDeInstancia}]. Será redirigido en un momento...`,
-    //         "success"
-    //       );
-    //       setTimeout(() => {
-    //         this.router.navigate(["/tareas/consulta-tareas"]);
-    //       }, 1800);
-    //     },
-    //     error: (error: HttpErrorResponse) => {
-    //       this.utilService.modalResponse(error.error, "error");
-    //     },
-    //   });
-
     this.submitted = true;
   }
 
-  public onCancel(): void {}
+  public onCancel(): void { }
 
-  public onSelectItem(
-    codigoPosicion: string,
-    event: NgbTypeaheadSelectItemEvent<any>
-  ): void { }
+  public onSelectItem(event: NgbTypeaheadSelectItemEvent<any>): void {
+    console.log(event);
+  }
 
   indexedModal: Record<keyof DialogComponents, any> = {
     dialogBuscarEmpleados: () => this.openModalBuscarEmpleado(),
@@ -1393,6 +1227,12 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
             this.detalleSolicitud.correo = this.modelRG.correo;
 
             this.detalleSolicitud.fechaIngreso = this.modelRG.fechaIngreso;
+
+            this.detalleSolicitud.jefeInmediatoSuperior = this.jefeInmediato;
+            this.detalleSolicitud.puestoJefeInmediato = this.puestoJefeInmediato;
+            this.detalleSolicitud.responsableRRHH = this.responsableRRHHan;
+            this.detalleSolicitud.jefeReferencia = this.jefeReferencia;
+            this.detalleSolicitud.puesto = this.puestoJefeReferencia;
 
             this.solicitudes.actualizarDetalleSolicitud(this.detalleSolicitud).subscribe({
               next: (responseDetalle) => {
@@ -1517,9 +1357,7 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
   puestoJefeInmediato: string = '';
   isDisabledJI: boolean = false;
 
-
-
-  searchJefeReferencia = (value: string): void => {
+  searchJefeReferencia_old = (value: string): void => {
     this.searchEmpleado(value, (data) => {
       this.jefeReferencia = data.nombreCompleto;
       this.puestoJefeReferencia = data.descrPuesto;
@@ -1540,11 +1378,11 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
     })
   }
 
-  searchJefeInmediatoSuperior = (value: string): void => {
+  searchJefeInmediatoSuperior_old = (value: string): void => {
     this.searchEmpleado(value, (data) => {
-        this.jefeInmediato = data.nombreCompleto;
-        this.puestoJefeInmediato = data.descrPuesto;
-        this.isDisabledJI = true;
+      this.jefeInmediato = data.nombreCompleto;
+      this.puestoJefeInmediato = data.descrPuesto;
+      this.isDisabledJI = true;
     })
   }
 
@@ -1562,7 +1400,7 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
         catchError(error => {
           return this.mantenimientoService
             .getDataEmpleadosEvolution('spyral')
-            .pipe(map(this.buscarValor.bind(this,value,'spyralType')))
+            .pipe(map(this.buscarValor.bind(this, value, 'spyralType')))
         }),
       )
       .subscribe({

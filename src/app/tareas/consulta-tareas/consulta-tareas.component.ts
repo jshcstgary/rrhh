@@ -100,9 +100,8 @@ export class ConsultaTareasComponent implements OnInit {
   }
 
   getDataToTableFilter() {
-    this.utilService.openLoadingSpinner(
-      "Cargando información, espere por favor..."
-    );
+    this.utilService.openLoadingSpinner("Cargando información, espere por favor...");
+
     this.consultaTareasService
       .filterNivelesAprobaciones(
         this.dataFilterNivelesAprobacion.tipoSolicitud,
@@ -306,6 +305,39 @@ export class ConsultaTareasComponent implements OnInit {
                   "/solicitudes/reingreso-personal",
                   ids[1],
                   ids[0],
+                ]);
+              }
+
+              break;
+
+            case environment.taskType_RGC_RRHH:
+              if (tarea.solicitudes[0].tipoSolicitud.toUpperCase().includes("REINGRESO")) {
+                this.router.navigate([
+                  `/solicitudes/reingreso-personal/registro-comentarios`,
+                  ids[1],
+                  ids[0],
+                ]);
+              }
+
+              break;
+
+            case environment.taskType_RGC_ULTIMO_JEFE:
+              if (tarea.solicitudes[0].tipoSolicitud.toUpperCase().includes("REINGRESO")) {
+                this.router.navigate([
+                  `/solicitudes/reingreso-personal/registro-comentarios`,
+                  ids[1],
+                  ids[0]
+                ]);
+              }
+
+              break;
+
+            case environment.taskType_RG_Jefe_Solicitante:
+              if (tarea.solicitudes[0].tipoSolicitud.toUpperCase().includes("REINGRESO")) {
+                this.router.navigate([
+                  `/solicitudes/reingreso-personal/registro-comentarios`,
+                  ids[1],
+                  ids[0]
                 ]);
               }
 

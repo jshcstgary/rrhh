@@ -78,7 +78,7 @@ export const SolicitudesRoutes: Routes = [
         },
       },
       {
-        path: "reingreso-personal/registro-comentarios-jefe/:id/:idSolicitud",
+        path: "reingreso-personal/registro-comentarios/:id/:idSolicitud",
         component: RegistrarComentarioSalidaJefeComponent,
         data: {
           title: "Registro de Comentarios",
