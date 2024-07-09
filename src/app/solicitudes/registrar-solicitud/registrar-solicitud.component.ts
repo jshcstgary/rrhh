@@ -1346,8 +1346,6 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
   override generateVariablesFromFormFields() {
     let variables: any = {};
 
-    // this.crearRegistradorSolicitud();
-
     if (this.taskType_Activity == environment.taskType_Registrar) {
       this.dataAprobacionesPorPosicionAPS.forEach((elemento, index) => {
         if (index === 0) {

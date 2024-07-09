@@ -491,7 +491,6 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
             this.id_solicitud_by_params = tarea.solicitudes[0].idSolicitud;
             this.taskId = params["id"];
 
-            this.getDetalleSolicitudById(this.id_solicitud_by_params); // Si se comenta, causa problemas al abrir el Sweet Alert 2
             this.getSolicitudById(this.id_solicitud_by_params);
             this.date = tarea.solicitudes[0].fechaCreacion;
             this.loadExistingVariables(
@@ -751,8 +750,8 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
       next: (response: any) => {
         this.solicitud = response;
 
-        this.loadingComplete++;
-        this.getDetalleSolicitudById(this.id_edit);
+        this.loadingComplete += 2;
+        this.getDetalleSolicitudById(id);
       },
       error: (error: HttpErrorResponse) => {
         this.utilService.modalResponse(error.error, "error");

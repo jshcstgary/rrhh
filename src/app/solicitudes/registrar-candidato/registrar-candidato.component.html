@@ -12,35 +12,6 @@
           </div>
         </div>
 
-
-        <!--<div class="col-md-4 text-end">
-          <button
-            type="button"
-            (click)="reasignarSolicitud()"
-            class="btn btn-info me-2"
-            >
-            <i class="fas fa-redo"></i> Reasignar
-          </button>
-
-          <button
-            type="button"
-            type="submit"
-            class="btn btn-info me-2 mt-1"
-            aria-label="Close"
-          >
-            <i class="fas fa-save"></i> Guardar
-          </button>
-
-          <button
-            type="button"
-            (click)="onCompletar()"
-            class="btn btn-info me-2 mt-1"
-          >
-            <i class="fas fa-check-circle"></i> Completar Tarea
-          </button>
-
-        </div>-->
-
         <div class="col-md-4 text-end d-flex justify-content-end align-items-center">
           <button type="button" class="btn btn-info me-2 d-flex align-items-center justify-content-center button-custom"
             aria-label="Close" (click)="saveCandidato()"
@@ -53,11 +24,33 @@
             [disabled]="!isCheckedPerfil || !isCheckedBusquedaCandidato || !isCheckedFinContratacion || !isCheckedProcesoContratacion || !isCheckedCandidatoSeleccionado || !isCheckedTomaDecisiones || !isCheckedEntrevistaJefatura || !isCheckedEntregaJefe || !isCheckedElaboracionInforme || !isCheckedReferencias || !isCheckedPruebas || !isCheckedEntrevista || nombreCandidato === ''">
             <i class="fas fa-check-circle me-2 icon-size"></i> Completar Tarea
           </button>
-
         </div>
-
-
       </div>
+
+      <div class="row mt-4">
+        <div class="col-md-4">
+          <div class="input-group mb-3">
+            <label class="label-estilo" for="origin">Creado por:</label>
+            <span id="origin" name="" style="color: black; font-size: 14px" class="text-start">{{
+              solicitud.usuarioCreacion }}</span>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="input-group mb-3">
+            <label class="label-estilo" for="unidadnegocio">Fecha:</label>
+            <span id="date" name="" style="color: black; font-size: 14px" class="text-start">{{
+              this.solicitud.fechaCreacion | date : "yyyy/MM/dd" }}</span>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="input-group mb-3">
+            <label class="label-estilo" for="unidadnegocio">Nro. Solicitud:</label>
+            <span id="solicitud" name="" style="color: black; font-size: 14px" class="text-start">{{
+              solicitud.idSolicitud }}</span>
+          </div>
+        </div>
+      </div>
+
       <div class="row mt-4">
         <div class="col-md-3">
           <div class="mb-4">

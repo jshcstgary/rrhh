@@ -2,9 +2,6 @@
   <div class="card">
     <h2 class="card-body text-start">
       <div class="row">
-        <!--<div class="col-md-8">
-              <b style="color: rgb(227, 199, 22);font-size: 20px; margin: 20px;">Mantenimiento de rutas</b>
-          </div>-->
         <div class="col-md-8">
           <div class="mb-3">
             <a (click)="pageSolicitudes()">
@@ -16,93 +13,34 @@
         </div>
 
         <div class="col-md-4 text-end">
-          <!--<button style="margin: 10px;color: black;" type="button" (click)="modal.dismiss('Cross click')"
-                  class="mr-10 fz-14 btn btn-outline-secondary btn-icon-end">Cancelar
-              </button>-->
-
           <button class="btn btn-outline-info me-2">
             <i class="fas fa-file-pdf"></i> Exportar
           </button>
-
-
         </div>
       </div>
 
-      <!-- Inicia acordión principal  -->
-      <!-- <div ngbAccordion>
-        <div ngbAccordionItem [collapsed]="false">
-          <h2
-            ngbAccordionHeader
-            class="bg-white"
-            style="background-color: white !important"
-          >
-            <button ngbAccordionButton style="content: none">
-              Información general
-            </button>
-          </h2>
-          <div ngbAccordionCollapse>
-            <div ngbAccordionBody>
-              <ng-template>
-                Anim pariatur cliche reprehenderit, enim eiusmod high life
-                accusamus terry richardson ad squid. 3 wolf moon officia aute,
-                non cupidatat skateboard dolor brunch. Food truck quinoa
-                nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua
-                put a bird on it squid single-origin coffee nulla assumenda
-                shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore
-                wes anderson cred nesciunt sapiente ea proident. Ad vegan
-                excepteur butcher vice lomo. Leggings occaecat craft beer
-                farm-to-table, raw denim aesthetic synth nesciunt you probably
-                haven't heard of them accusamus labore sustainable VHS.
-              </ng-template>
-            </div>
+      <div class="row mt-4">
+        <div class="col-md-4">
+          <div class="input-group mb-3">
+            <label class="label-estilo" for="origin">Creado por:</label>
+            <span id="origin" name="" style="color: black; font-size: 14px" class="text-start">{{
+              solicitud.usuarioCreacion }}</span>
           </div>
         </div>
-        <div ngbAccordionItem>
-          <h2 ngbAccordionHeader>
-            <button ngbAccordionButton>
-              <span>&#9733; <b>Fancy</b> title &#9733;</span>
-            </button>
-          </h2>
-          <div ngbAccordionCollapse>
-            <div ngbAccordionBody>
-              <ng-template>
-                Anim pariatur cliche reprehenderit, enim eiusmod high life
-                accusamus terry richardson ad squid. 3 wolf moon officia aute,
-                non cupidatat skateboard dolor brunch. Food truck quinoa
-                nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua
-                put a bird on it squid single-origin coffee nulla assumenda
-                shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore
-                wes anderson cred nesciunt sapiente ea proident. Ad vegan
-                excepteur butcher vice lomo. Leggings occaecat craft beer
-                farm-to-table, raw denim aesthetic synth nesciunt you probably
-                haven't heard of them accusamus labore sustainable VHS.
-              </ng-template>
-            </div>
+        <div class="col-md-4">
+          <div class="input-group mb-3">
+            <label class="label-estilo" for="unidadnegocio">Fecha:</label>
+            <span id="date" name="" style="color: black; font-size: 14px" class="text-start">{{
+              this.solicitud.fechaCreacion | date : "yyyy/MM/dd" }}</span>
           </div>
         </div>
-        <div ngbAccordionItem [disabled]="true">
-          <h2 ngbAccordionHeader>
-            <button ngbAccordionButton>Disabled</button>
-          </h2>
-          <div ngbAccordionCollapse>
-            <div ngbAccordionBody>
-              <ng-template>
-                Anim pariatur cliche reprehenderit, enim eiusmod high life
-                accusamus terry richardson ad squid. 3 wolf moon officia aute,
-                non cupidatat skateboard dolor brunch. Food truck quinoa
-                nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua
-                put a bird on it squid single-origin coffee nulla assumenda
-                shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore
-                wes anderson cred nesciunt sapiente ea proident. Ad vegan
-                excepteur butcher vice lomo. Leggings occaecat craft beer
-                farm-to-table, raw denim aesthetic synth nesciunt you probably
-                haven't heard of them accusamus labore sustainable VHS.
-              </ng-template>
-            </div>
+        <div class="col-md-4">
+          <div class="input-group mb-3">
+            <label class="label-estilo" for="unidadnegocio">Nro. Solicitud:</label>
+            <span id="solicitud" name="" style="color: black; font-size: 14px" class="text-start">{{ solicitud.idSolicitud }}</span>
           </div>
         </div>
-      </div> -->
-      <!-- Finaliza acordión principal  -->
+      </div>
 
       <div class="row mt-4">
         <div class="col-md-3">

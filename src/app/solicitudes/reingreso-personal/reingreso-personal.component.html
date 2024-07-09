@@ -7,34 +7,21 @@
             <a (click)="pageSolicitudes()">
               <h2 class="sol-danger">
                 <i class="bi bi-arrow-left-circle azul"></i>
-                {{ solicitud.idSolicitud }}
+                {{ solicitudRG.idSolicitud }}
               </h2>
             </a>
           </div>
         </div>
 
         <div class="col-md-12 text-end">
-          <button
-            type="button"
-            (click)="openModalReasignar('dialogReasignarUsuario')"
-            class="btn btn-info me-2 mt-1"
-          >
+          <!-- <button type="button" (click)="openModalReasignar('dialogReasignarUsuario')" class="btn btn-info me-2 mt-1">
             <i class="fas fa-redo"></i> Reasignar
-          </button>
-          <button
-            type="button"
-            class="btn btn-info me-2 mt-1"
-            aria-label="Close"
-            (click)="onSubmit()"
-          >
+          </button> -->
+          <button type="button" class="btn btn-info me-2 mt-1" aria-label="Close" (click)="onSubmit()">
             <i class="fas fa-save"></i> Guardar
           </button>
 
-          <button
-            type="button"
-            (click)="onCompletar()"
-            class="btn btn-info me-2 mt-1"
-          >
+          <button type="button" (click)="onCompletar()" class="btn btn-info me-2 mt-1">
             <i class="fas fa-check-circle"></i> Completar Tarea
           </button>
         </div>
@@ -44,39 +31,22 @@
         <div class="col-md-4">
           <div class="input-group mb-3">
             <label class="label-estilo" for="origin">Creado por:</label>
-            <span
-              id="origin"
-              name=""
-              style="color: black; font-size: 14px"
-              class="text-start"
-              >{{ solicitud.usuarioCreacion }}</span
-            >
+            <span id="origin" name="" style="color: black; font-size: 14px" class="text-start">{{
+              solicitud.usuarioCreacion }}</span>
           </div>
         </div>
         <div class="col-md-4">
           <div class="input-group mb-3">
             <label class="label-estilo" for="unidadnegocio">Fecha:</label>
-            <span
-              id="date"
-              name=""
-              style="color: black; font-size: 14px"
-              class="text-start"
-              >{{ this.solicitud.fechaCreacion | date : "yyyy/MM/dd" }}</span
-            >
+            <span id="date" name="" style="color: black; font-size: 14px" class="text-start">{{
+              this.solicitud.fechaCreacion | date : "yyyy/MM/dd" }}</span>
           </div>
         </div>
         <div class="col-md-4">
           <div class="input-group mb-3">
-            <label class="label-estilo" for="unidadnegocio"
-              >Nro. Solicitud:</label
-            >
-            <span
-              id="solicitud"
-              name=""
-              style="color: black; font-size: 14px"
-              class="text-start"
-              >{{ solicitudRG.idSolicitud }}</span
-            >
+            <label class="label-estilo" for="unidadnegocio">Nro. Solicitud:</label>
+            <span id="solicitud" name="" style="color: black; font-size: 14px" class="text-start">{{
+              solicitudRG.idSolicitud }}</span>
           </div>
         </div>
       </div>
@@ -103,18 +73,10 @@
             <div class="col-md-1"></div>
             <div class="col-md-7">
               <div class="input-group mb-3">
-                <label class="input-group label-estilo" for="tipoSolicitud"
-                  >Nro Solicitud de Requisicion</label
-                >
+                <label class="input-group label-estilo" for="tipoSolicitud">Nro Solicitud de Requisicion</label>
                 &nbsp;
-                <span
-                  #mivar
-                  id="tipoSolicitud"
-                  name="tipoSolicitud"
-                  style="color: black; font-size: 14px"
-                  class="text-start"
-                  >{{ idSolicitudRP }}</span
-                >
+                <span #mivar id="tipoSolicitud" name="tipoSolicitud" style="color: black; font-size: 14px"
+                  class="text-start">{{ idSolicitudRP }}</span>
               </div>
             </div>
           </div>
@@ -122,17 +84,10 @@
             <div class="col-md-1"></div>
             <div class="col-md-7">
               <div class="input-group mb-3">
-                <label class="input-group label-estilo" for="tipoMotivo"
-                  >Apellidos y nombres completos</label
-                >
+                <label class="input-group label-estilo" for="tipoMotivo">Apellidos y nombres completos</label>
                 &nbsp;
-                <span
-                  id="tipoMotivo"
-                  name="tipoMotivo"
-                  style="color: black; font-size: 14px"
-                  class="text-start"
-                  >{{ nombreCompletoCandidato }}</span
-                >
+                <span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{
+                  nombreCompletoCandidato }}</span>
               </div>
             </div>
           </div>
@@ -140,23 +95,15 @@
             <div class="col-md-1"></div>
             <div class="col-md-3">
               <div class="input-group mb-3">
-                <label class="input-group label-estilo" for="observaciones"
-                  >Observaciones</label
-                >
+                <label class="input-group label-estilo" for="observaciones">Observaciones</label>
               </div>
             </div>
 
             <div class="col-md-7">
               <div class="input-group mb-3">
-                <textarea
-                  name="descripcionposicion"
-                  style="color: black; font-size: 14px; width: 100%; resize: none;"
-                  [(ngModel)]="detalleSolicitudRG.justificacion"
-                  class="form-control"
-                  id="observaciones"
-                  rows="3"
-                  required
-                ></textarea>
+                <textarea name="descripcionposicion" style="color: black; font-size: 14px; width: 100%; resize: none;"
+                  [(ngModel)]="detalleSolicitudRG.justificacion" class="form-control" id="observaciones" rows="3"
+                  required></textarea>
               </div>
             </div>
           </div>
@@ -185,64 +132,34 @@
               <div class="col-md-1"></div>
               <div class="col-md-5">
                 <div class="input-group mb-3">
-                  <label
-                    class="input-group label-estilo"
-                    for="searchInputFilter"
-                    >Buscar Empleado</label
-                  >
-                  <input-component
-                    [id]="'searchInputFilter'"
-                    [type]="'string'"
-                    [buttonIcon]="'ti-search'"
-                    buttonFunction="filterStringInTable"
-                    onChangeFunction="filterStringInTable"
-                    placeholder=""
-                    (click)="openModal('dialogBuscarEmpleados')"
-                    style="width: 50%"
-                  ></input-component>
+                  <label class="input-group label-estilo" for="searchInputFilter">Buscar Empleado</label>
+                  <input-component [id]="'searchInputFilter'" [type]="'string'" [buttonIcon]="'ti-search'"
+                    buttonFunction="filterStringInTable" onChangeFunction="filterStringInTable" placeholder=""
+                    (click)="openModal('dialogBuscarEmpleados')" style="width: 50%"></input-component>
                 </div>
               </div>
               <div class="col-md-1"></div>
               <div class="col-md-4">
                 <div class="input-group mb-3">
-                  <label class="input-group label-estilo" for="tipoMotivo"
-                    >Empleado</label
-                  >
+                  <label class="input-group label-estilo" for="tipoMotivo">Empleado</label>
                   &nbsp;
-                  <span
-                    id="empleado"
-                    name="empleado"
-                    style="color: black; font-size: 14px"
-                    class="text-start"
-                    >{{ detalleSolicitudRG.supervisaA === "N/A" ? "" : modelRG.nombreCompleto }}</span
-                  >
+                  <span id="empleado" name="empleado" style="color: black; font-size: 14px" class="text-start">{{
+                    detalleSolicitudRG.supervisaA === "N/A" ? "" : modelRG.nombreCompleto }}</span>
                 </div>
               </div>
             </div>
 
             <div class="row mt-4 mb-4">
-              <div
-                class="col d-flex justify-content-center align-items-center"
-              >
+              <div class="col d-flex justify-content-center align-items-center">
                 <div class="mb-3">
-                  <label
-                    class="input-group label-estilo"
-                    style="font-size: 20px; color: black"
-                    for="tipoMotivo"
-                    >Anterior</label
-                  >
+                  <label class="input-group label-estilo" style="font-size: 20px; color: black"
+                    for="tipoMotivo">Anterior</label>
                 </div>
               </div>
-              <div
-                class="col d-flex justify-content-center align-items-center"
-              >
+              <div class="col d-flex justify-content-center align-items-center">
                 <div class="mb-3">
-                  <label
-                    class="input-group label-estilo"
-                    style="font-size: 20px; color: black"
-                    for="tipoMotivo"
-                    >Actual</label
-                  >
+                  <label class="input-group label-estilo" style="font-size: 20px; color: black"
+                    for="tipoMotivo">Actual</label>
                 </div>
               </div>
             </div>
@@ -251,32 +168,18 @@
               <div class="col-md-1"></div>
               <div class="col">
                 <div class="input-group mb-3">
-                  <label class="input-group label-estilo" for="tipoMotivo"
-                    >Compañía</label
-                  >
+                  <label class="input-group label-estilo" for="tipoMotivo">Compañía</label>
                   &nbsp;
-                  <span
-                    id="tipoMotivo"
-                    name="tipoMotivo"
-                    style="color: black; font-size: 14px"
-                    class="text-start"
-                    >{{ detalleSolicitudRG.supervisaA === "N/A" ? "" : modelRG.compania }}</span
-                  >
+                  <span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{
+                    detalleSolicitudRG.supervisaA === "N/A" ? "" : modelRG.compania }}</span>
                 </div>
               </div>
               <div class="col">
                 <div class="input-group mb-3">
-                  <label class="input-group label-estilo" for="tipoMotivo"
-                    >Compañía</label
-                  >
+                  <label class="input-group label-estilo" for="tipoMotivo">Compañía</label>
                   &nbsp;
-                  <span
-                    id="tipoMotivo"
-                    name="tipoMotivo"
-                    style="color: black; font-size: 14px"
-                    class="text-start"
-                    >{{ model.compania }}</span
-                  >
+                  <span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{
+                    model.compania }}</span>
                 </div>
               </div>
             </div>
@@ -285,32 +188,18 @@
               <div class="col-md-1"></div>
               <div class="col">
                 <div class="input-group mb-3">
-                  <label class="input-group label-estilo" for="tipoMotivo"
-                    >Sueldo</label
-                  >
+                  <label class="input-group label-estilo" for="tipoMotivo">Sueldo</label>
                   &nbsp;
-                  <span
-                    id="tipoMotivo"
-                    name="tipoMotivo"
-                    style="color: black; font-size: 14px"
-                    class="text-start"
-                    >{{ detalleSolicitudRG.supervisaA === "N/A" ? "" : modelRG.sueldo }}</span
-                  >
+                  <span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{
+                    detalleSolicitudRG.supervisaA === "N/A" ? "" : modelRG.sueldo }}</span>
                 </div>
               </div>
               <div class="col">
                 <div class="input-group mb-3">
-                  <label class="input-group label-estilo" for="tipoMotivo"
-                    >Sueldo</label
-                  >
+                  <label class="input-group label-estilo" for="tipoMotivo">Sueldo</label>
                   &nbsp;
-                  <span
-                    id="tipoMotivo"
-                    name="tipoMotivo"
-                    style="color: black; font-size: 14px"
-                    class="text-start"
-                    >{{ model.sueldo }}</span
-                  >
+                  <span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{
+                    model.sueldo }}</span>
                 </div>
               </div>
             </div>
@@ -329,32 +218,18 @@
               <div class="col-md-1"></div>
               <div class="col">
                 <div class="input-group mb-3">
-                  <label class="input-group label-estilo" for="tipoMotivo"
-                    >Mensual</label
-                  >
+                  <label class="input-group label-estilo" for="tipoMotivo">Mensual</label>
                   &nbsp;
-                  <span
-                    id="tipoMotivo"
-                    name="tipoMotivo"
-                    style="color: black; font-size: 14px"
-                    class="text-start"
-                    >{{ detalleSolicitudRG.supervisaA === "N/A" ? "" : modelRG.sueldoMensual }}</span
-                  >
+                  <span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{
+                    detalleSolicitudRG.supervisaA === "N/A" ? "" : modelRG.sueldoMensual }}</span>
                 </div>
               </div>
               <div class="col">
                 <div class="input-group mb-3">
-                  <label class="input-group label-estilo" for="tipoMotivo"
-                    >Mensual</label
-                  >
+                  <label class="input-group label-estilo" for="tipoMotivo">Mensual</label>
                   &nbsp;
-                  <span
-                    id="tipoMotivo"
-                    name="tipoMotivo"
-                    style="color: black; font-size: 14px"
-                    class="text-start"
-                    >{{ model.sueldoMensual }}</span
-                  >
+                  <span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{
+                    model.sueldoMensual }}</span>
                 </div>
               </div>
             </div>
@@ -362,32 +237,18 @@
               <div class="col-md-1"></div>
               <div class="col">
                 <div class="input-group mb-3">
-                  <label class="input-group label-estilo" for="tipoMotivo"
-                    >Trimestral</label
-                  >
+                  <label class="input-group label-estilo" for="tipoMotivo">Trimestral</label>
                   &nbsp;
-                  <span
-                    id="tipoMotivo"
-                    name="tipoMotivo"
-                    style="color: black; font-size: 14px"
-                    class="text-start"
-                    >{{ detalleSolicitudRG.supervisaA === "N/A" ? "" : modelRG.sueldoTrimestral }}</span
-                  >
+                  <span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{
+                    detalleSolicitudRG.supervisaA === "N/A" ? "" : modelRG.sueldoTrimestral }}</span>
                 </div>
               </div>
               <div class="col">
                 <div class="input-group mb-3">
-                  <label class="input-group label-estilo" for="tipoMotivo"
-                    >Trimestral</label
-                  >
+                  <label class="input-group label-estilo" for="tipoMotivo">Trimestral</label>
                   &nbsp;
-                  <span
-                    id="tipoMotivo"
-                    name="tipoMotivo"
-                    style="color: black; font-size: 14px"
-                    class="text-start"
-                    >{{ model.sueldoTrimestral }}</span
-                  >
+                  <span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{
+                    model.sueldoTrimestral }}</span>
                 </div>
               </div>
             </div>
@@ -395,32 +256,18 @@
               <div class="col-md-1"></div>
               <div class="col">
                 <div class="input-group mb-3">
-                  <label class="input-group label-estilo" for="tipoMotivo"
-                    >Semestral</label
-                  >
+                  <label class="input-group label-estilo" for="tipoMotivo">Semestral</label>
                   &nbsp;
-                  <span
-                    id="tipoMotivo"
-                    name="tipoMotivo"
-                    style="color: black; font-size: 14px"
-                    class="text-start"
-                    >{{ detalleSolicitudRG.supervisaA === "N/A" ? "" : modelRG.sueldoSemestral }}</span
-                  >
+                  <span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{
+                    detalleSolicitudRG.supervisaA === "N/A" ? "" : modelRG.sueldoSemestral }}</span>
                 </div>
               </div>
               <div class="col">
                 <div class="input-group mb-3">
-                  <label class="input-group label-estilo" for="tipoMotivo"
-                    >Semestral</label
-                  >
+                  <label class="input-group label-estilo" for="tipoMotivo">Semestral</label>
                   &nbsp;
-                  <span
-                    id="tipoMotivo"
-                    name="tipoMotivo"
-                    style="color: black; font-size: 14px"
-                    class="text-start"
-                    >{{ model.sueldoSemestral }}</span
-                  >
+                  <span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{
+                    model.sueldoSemestral }}</span>
                 </div>
               </div>
             </div>
@@ -428,32 +275,18 @@
               <div class="col-md-1"></div>
               <div class="col">
                 <div class="input-group mb-3">
-                  <label class="input-group label-estilo" for="tipoMotivo"
-                    >Anual</label
-                  >
+                  <label class="input-group label-estilo" for="tipoMotivo">Anual</label>
                   &nbsp;
-                  <span
-                    id="tipoMotivo"
-                    name="tipoMotivo"
-                    style="color: black; font-size: 14px"
-                    class="text-start"
-                    >{{ detalleSolicitudRG.supervisaA === "N/A" ? "" : modelRG.sueldoAnual }}</span
-                  >
+                  <span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{
+                    detalleSolicitudRG.supervisaA === "N/A" ? "" : modelRG.sueldoAnual }}</span>
                 </div>
               </div>
               <div class="col">
                 <div class="input-group mb-3">
-                  <label class="input-group label-estilo" for="tipoMotivo"
-                    >Anual</label
-                  >
+                  <label class="input-group label-estilo" for="tipoMotivo">Anual</label>
                   &nbsp;
-                  <span
-                    id="tipoMotivo"
-                    name="tipoMotivo"
-                    style="color: black; font-size: 14px"
-                    class="text-start"
-                    >{{ model.sueldoAnual }}</span
-                  >
+                  <span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{
+                    model.sueldoAnual }}</span>
                 </div>
               </div>
             </div>
@@ -461,32 +294,18 @@
               <div class="col-md-1"></div>
               <div class="col">
                 <div class="input-group mb-3">
-                  <label class="input-group label-estilo" for="tipoMotivo"
-                    >Remuneracion mensual</label
-                  >
+                  <label class="input-group label-estilo" for="tipoMotivo">Remuneracion mensual</label>
                   &nbsp;
-                  <span
-                    id="tipoMotivo"
-                    name="tipoMotivo"
-                    style="color: black; font-size: 14px"
-                    class="text-start"
-                    >{{ detalleSolicitudRG.supervisaA === "N/A" ? "" : remuneracion }}</span
-                  >
+                  <span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{
+                    detalleSolicitudRG.supervisaA === "N/A" ? "" : remuneracion }}</span>
                 </div>
               </div>
               <div class="col">
                 <div class="input-group mb-3">
-                  <label class="input-group label-estilo" for="tipoMotivo"
-                    >Remuneracion mensual</label
-                  >
+                  <label class="input-group label-estilo" for="tipoMotivo">Remuneracion mensual</label>
                   &nbsp;
-                  <span
-                    id="tipoMotivo"
-                    name="tipoMotivo"
-                    style="color: black; font-size: 14px"
-                    class="text-start"
-                    >{{ modelRemuneracion }}</span
-                  >
+                  <span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{
+                    modelRemuneracion }}</span>
                 </div>
               </div>
             </div>
@@ -494,32 +313,18 @@
               <div class="col-md-1"></div>
               <div class="col">
                 <div class="input-group mb-3">
-                  <label class="input-group label-estilo" for="tipoMotivo"
-                    >Puesto</label
-                  >
+                  <label class="input-group label-estilo" for="tipoMotivo">Puesto</label>
                   &nbsp;
-                  <span
-                    id="tipoMotivo"
-                    name="tipoMotivo"
-                    style="color: black; font-size: 14px"
-                    class="text-start"
-                    >{{ detalleSolicitudRG.supervisaA === "N/A" ? "" : modelRG.descrPosicion }}</span
-                  >
+                  <span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{
+                    detalleSolicitudRG.supervisaA === "N/A" ? "" : modelRG.descrPosicion }}</span>
                 </div>
               </div>
               <div class="col">
                 <div class="input-group mb-3">
-                  <label class="input-group label-estilo" for="tipoMotivo"
-                    >Puesto</label
-                  >
+                  <label class="input-group label-estilo" for="tipoMotivo">Puesto</label>
                   &nbsp;
-                  <span
-                    id="tipoMotivo"
-                    name="tipoMotivo"
-                    style="color: black; font-size: 14px"
-                    class="text-start"
-                    >{{ model.descrPosicion }}</span
-                  >
+                  <span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{
+                    model.descrPosicion }}</span>
                 </div>
               </div>
             </div>
@@ -527,32 +332,18 @@
               <div class="col-md-1"></div>
               <div class="col">
                 <div class="input-group mb-3">
-                  <label class="input-group label-estilo" for="tipoMotivo"
-                    >Unidad de Negocio</label
-                  >
+                  <label class="input-group label-estilo" for="tipoMotivo">Unidad de Negocio</label>
                   &nbsp;
-                  <span
-                    id="tipoMotivo"
-                    name="tipoMotivo"
-                    style="color: black; font-size: 14px"
-                    class="text-start"
-                    >{{ detalleSolicitudRG.supervisaA === "N/A" ? "" : modelRG.unidadNegocio }}</span
-                  >
+                  <span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{
+                    detalleSolicitudRG.supervisaA === "N/A" ? "" : modelRG.unidadNegocio }}</span>
                 </div>
               </div>
               <div class="col">
                 <div class="input-group mb-3">
-                  <label class="input-group label-estilo" for="tipoMotivo"
-                    >Unidad de Negocio</label
-                  >
+                  <label class="input-group label-estilo" for="tipoMotivo">Unidad de Negocio</label>
                   &nbsp;
-                  <span
-                    id="tipoMotivo"
-                    name="tipoMotivo"
-                    style="color: black; font-size: 14px"
-                    class="text-start"
-                    >{{ model.unidadNegocio}}</span
-                  >
+                  <span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{
+                    model.unidadNegocio}}</span>
                 </div>
               </div>
             </div>
@@ -560,32 +351,18 @@
               <div class="col-md-1"></div>
               <div class="col">
                 <div class="input-group mb-3">
-                  <label class="input-group label-estilo" for="tipoMotivo"
-                    >Departamento</label
-                  >
+                  <label class="input-group label-estilo" for="tipoMotivo">Departamento</label>
                   &nbsp;
-                  <span
-                    id="tipoMotivo"
-                    name="tipoMotivo"
-                    style="color: black; font-size: 14px"
-                    class="text-start"
-                    >{{ detalleSolicitudRG.supervisaA === "N/A" ? "" : modelRG.departamento }}</span
-                  >
+                  <span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{
+                    detalleSolicitudRG.supervisaA === "N/A" ? "" : modelRG.departamento }}</span>
                 </div>
               </div>
               <div class="col">
                 <div class="input-group mb-3">
-                  <label class="input-group label-estilo" for="tipoMotivo"
-                    >Departamento</label
-                  >
+                  <label class="input-group label-estilo" for="tipoMotivo">Departamento</label>
                   &nbsp;
-                  <span
-                    id="tipoMotivo"
-                    name="tipoMotivo"
-                    style="color: black; font-size: 14px"
-                    class="text-start"
-                    >{{ model.departamento }}</span
-                  >
+                  <span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{
+                    model.departamento }}</span>
                 </div>
               </div>
             </div>
@@ -593,32 +370,18 @@
               <div class="col-md-1"></div>
               <div class="col">
                 <div class="input-group mb-3">
-                  <label class="input-group label-estilo" for="tipoMotivo"
-                    >Localidad</label
-                  >
+                  <label class="input-group label-estilo" for="tipoMotivo">Localidad</label>
                   &nbsp;
-                  <span
-                    id="tipoMotivo"
-                    name="tipoMotivo"
-                    style="color: black; font-size: 14px"
-                    class="text-start"
-                    >{{ detalleSolicitudRG.supervisaA === "N/A" ? "" : modelRG.localidad }}</span
-                  >
+                  <span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{
+                    detalleSolicitudRG.supervisaA === "N/A" ? "" : modelRG.localidad }}</span>
                 </div>
               </div>
               <div class="col">
                 <div class="input-group mb-3">
-                  <label class="input-group label-estilo" for="tipoMotivo"
-                    >Localidad</label
-                  >
+                  <label class="input-group label-estilo" for="tipoMotivo">Localidad</label>
                   &nbsp;
-                  <span
-                    id="tipoMotivo"
-                    name="tipoMotivo"
-                    style="color: black; font-size: 14px"
-                    class="text-start"
-                    >{{ model.localidad }}</span
-                  >
+                  <span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{
+                    model.localidad }}</span>
                 </div>
               </div>
             </div>
@@ -626,23 +389,11 @@
               <div class="col-md-1"></div>
               <div class="col">
                 <div class="input-group mb-3">
-                  <label class="input-group label-estilo" for="tipoMotivo"
-                    >Jefe Inmediato Superior</label
-                  >
+                  <label class="input-group label-estilo" for="tipoMotivo">Jefe Inmediato Superior</label>
                   &nbsp;
-                  <!-- <input-component
-                    [id]="'searchInputFilter'"
-                    [type]="'string'"
-                    [buttonIcon]="'ti-search'"
-                    buttonFunction="searchJefeInmediatoSuperior"
-                    placeholder="Buscar"
-                    [theValue]="jefeInmediato"
-                    [contexto]="this"
-                    style="width: 50%"
-                  ></input-component> -->
-
-                  <!-- <input type="text" [(ngModel)]="searchInp" class="form-control" id="searchInp" [ngbTypeahead]="searchNombreCompleto" (selectItem)="onSelectItem('nombreCompleto', $event)" /> -->
-                  <input name="jefe-superior" type="text" class="form-control" id="searchInp" [(ngModel)]="jefeInmediatoSuperiorQuery" [ngbTypeahead]="searchJefeInmediatoSuperior" [resultFormatter]="formatJefeInmediatoSuperior" />
+                  <input name="jefe-superior" type="text" class="form-control" id="searchInp"
+                    [(ngModel)]="jefeInmediatoSuperiorQuery" [ngbTypeahead]="searchJefeInmediatoSuperior"
+                    [resultFormatter]="formatOption" [inputFormatter]="formatOption" />
 
                   <button class="btn btn-light" type="button" (click)="getDataJefeInmediatoSuperior()">
                     <i class="ti-search"></i>
@@ -651,17 +402,10 @@
               </div>
               <div class="col">
                 <div class="input-group mb-3">
-                  <label class="input-group label-estilo" for="tipoMotivo"
-                    >Jefe Inmediato Superior</label
-                  >
+                  <label class="input-group label-estilo" for="tipoMotivo">Jefe Inmediato Superior</label>
                   &nbsp;
-                  <span
-                    id="tipoMotivo"
-                    name="tipoMotivo"
-                    style="color: black; font-size: 14px"
-                    class="text-start"
-                    >{{ model.jefeInmediatoSuperior }}</span
-                  >
+                  <span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{
+                    model.jefeInmediatoSuperior }}</span>
                 </div>
               </div>
             </div>
@@ -669,32 +413,18 @@
               <div class="col-md-1"></div>
               <div class="col">
                 <div class="input-group mb-3">
-                  <label class="input-group label-estilo" for="tipoMotivo"
-                    >Puesto Jefe Inmediato</label
-                  >
+                  <label class="input-group label-estilo" for="tipoMotivo">Puesto Jefe Inmediato</label>
                   &nbsp;
-                  <span
-                    id="tipoMotivo"
-                    name="tipoMotivo"
-                    style="color: black; font-size: 14px"
-                    class="text-start"
-                    >{{ puestoJefeInmediato }}</span
-                  >
+                  <span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{
+                    jefeInmediatoSuperiorQuery.descrPuesto }}</span>
                 </div>
               </div>
               <div class="col">
                 <div class="input-group mb-3">
-                  <label class="input-group label-estilo" for="tipoMotivo"
-                    >Puesto Jefe Inmediato</label
-                  >
+                  <label class="input-group label-estilo" for="tipoMotivo">Puesto Jefe Inmediato</label>
                   &nbsp;
-                  <span
-                    id="tipoMotivo"
-                    name="tipoMotivo"
-                    style="color: black; font-size: 14px"
-                    class="text-start"
-                    >{{ model.puestoJefeInmediato }}</span
-                  >
+                  <span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{
+                    model.puestoJefeInmediato }}</span>
                 </div>
               </div>
             </div>
@@ -702,24 +432,15 @@
               <div class="col-md-1"></div>
               <div class="col">
                 <div class="input-group mb-3">
-                  <label class="input-group label-estilo" for="tipoMotivo"
-                    >Jefe Referencia</label
-                  >
+                  <label class="input-group label-estilo" for="tipoMotivo">Jefe Referencia</label>
                   &nbsp;
+                  <input name="jefe-referencia" type="text" class="form-control" id="searchInp"
+                    [(ngModel)]="jefeReferenciaQuery" [ngbTypeahead]="searchJefeReferencia"
+                    [resultFormatter]="formatOption" [inputFormatter]="formatOption" />
 
-                    <input-component
-                      [id]="'searchInputFilter'"
-                      [type]="'string'"
-                      [buttonIcon]="'ti-search'"
-                      buttonFunction="searchJefeReferencia"
-                      placeholder="Buscar"
-                      [theValue]="jefeReferencia"
-                      [contexto]="this"
-                      style="width: 50%"
-                      [disabled]="isDisabledJR"
-                    ></input-component>
-
-
+                  <button class="btn btn-light" type="button" (click)="getDataJefeReferencia()">
+                    <i class="ti-search"></i>
+                  </button>
                 </div>
               </div>
               <div class="col">
@@ -727,28 +448,10 @@
                   <!-- <label class="input-group label-estilo" for="tipoMotivo"
                     >Responsable RRHH</label
                   > -->
-                  <label class="input-group label-estilo" for="tipoMotivo"
-                    >Responsable RRHH</label
-                  >
+                  <label class="input-group label-estilo" for="tipoMotivo">Responsable RRHH</label>
                   &nbsp;
-                  <span
-                    id="tipoMotivo"
-                    name="tipoMotivo"
-                    style="color: black; font-size: 14px"
-                    class="text-start"
-                    >{{ solicitud.usuarioCreacion }}</span
-                  >
-                  <!-- <input-component
-                  [id]="'searchInputFilter'"
-                  [type]="'string'"
-                  [buttonIcon]="'ti-search'"
-                  buttonFunction="searchResponsableRRHHac"
-                  placeholder="Buscar"
-                  [theValue]="responsableRRHHac"
-                  [contexto]="this"
-                  style="width: 50%"
-                  [disabled]="isDisabledRHac"
-                  ></input-component> -->
+                  <span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{
+                    solicitud.usuarioCreacion }}</span>
                 </div>
               </div>
             </div>
@@ -756,29 +459,17 @@
               <div class="col-md-1"></div>
               <div class="col">
                 <div class="input-group mb-3">
-                  <label class="input-group label-estilo" for="tipoMotivo"
-                    >Puesto Referencia</label
-                  >
+                  <label class="input-group label-estilo" for="tipoMotivo">Puesto Referencia</label>
                   &nbsp;
-                  <span
-                    id="tipoMotivo"
-                    name="tipoMotivo"
-                    style="color: black; font-size: 14px"
-                    class="text-start"
-                    >{{ this.puestoJefeReferencia }}</span
-                  >
+                  <span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{
+                    jefeReferenciaQuery.descrPuesto }}</span>
                 </div>
               </div>
               <div class="col mb-4">
                 <div class="input-group mb-3 h-100">
-                  <label class="input-group-text label-estilo" for="tipoMotivo"
-                    >Observaciones del comité de Remuneraciones</label
-                  >
-                  <textarea
-                    id="observaciones"
-                    name="observaciones"
-                    [value]="model.justificacionCargo"
-                    style="
+                  <label class="input-group-text label-estilo" for="tipoMotivo">Observaciones del comité de
+                    Remuneraciones</label>
+                  <textarea id="observaciones" name="observaciones" [value]="model.justificacionCargo" style="
                       color: black;
                       font-size: 14px;
                       height: 100px;
@@ -786,9 +477,7 @@
                       position: absolute;
                       top: 50px;
                       width: 96%;
-                    "
-                    disabled
-                  ></textarea>
+                    " disabled></textarea>
                 </div>
               </div>
             </div>
@@ -796,17 +485,10 @@
               <div class="col-md-1"></div>
               <div class="col-md-6">
                 <div class="input-group mb-3">
-                  <label class="input-group label-estilo" for="tipoMotivo"
-                    >Fecha de Ingreso</label
-                  >
+                  <label class="input-group label-estilo" for="tipoMotivo">Fecha de Ingreso</label>
                   &nbsp;
-                  <span
-                    id="tipoMotivo"
-                    name="tipoMotivo"
-                    style="color: black; font-size: 14px"
-                    class="text-start"
-                    >{{ detalleSolicitudRG.supervisaA === "N/A" ? "" : (modelRG.fechaIngreso | date:'dd/MM/yyyy') }}</span
-                  >
+                  <span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{
+                    detalleSolicitudRG.supervisaA === "N/A" ? "" : (modelRG.fechaIngreso | date:'dd/MM/yyyy') }}</span>
                 </div>
               </div>
             </div>
@@ -814,17 +496,10 @@
               <div class="col-md-1"></div>
               <div class="col-md-6">
                 <div class="input-group mb-3">
-                  <label class="input-group label-estilo" for="tipoMotivo"
-                    >Fecha de Salida</label
-                  >
+                  <label class="input-group label-estilo" for="tipoMotivo">Fecha de Salida</label>
                   &nbsp;
-                  <span
-                    id="tipoMotivo"
-                    name="tipoMotivo"
-                    style="color: black; font-size: 14px"
-                    class="text-start"
-                    >{{ "01/10/24" }}</span
-                  >
+                  <span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{
+                    "01/10/24" }}</span>
                 </div>
               </div>
             </div>
@@ -832,21 +507,15 @@
               <div class="col-md-1"></div>
               <div class="col-md-6">
                 <div class="input-group mb-3">
-                  <label class="input-group label-estilo" for="tipoMotivo"
-                    >Responsable RRHH</label
-                  >
+                  <label class="input-group label-estilo" for="tipoMotivo">Responsable RRHH</label>
                   &nbsp;
-                  <input-component
-                  [id]="'searchInputFilter'"
-                  [type]="'string'"
-                  [buttonIcon]="'ti-search'"
-                  buttonFunction="searchResponsableRRHHan"
-                  placeholder="Buscar"
-                  [theValue]="responsableRRHHan"
-                  [contexto]="this"
-                  style="width: 50%"
-                  [disabled]="isDisabledRHan"
-                  ></input-component>
+                  <input name="responsable-rrhh" type="text" class="form-control" id="searchInp"
+                    [(ngModel)]="responsableRRHHQuery" [ngbTypeahead]="searchResponsableRRHH"
+                    [resultFormatter]="formatOption" [inputFormatter]="formatOption" />
+
+                  <button class="btn btn-light" type="button" (click)="getDataResponsableRRHH()">
+                    <i class="ti-search"></i>
+                  </button>
                 </div>
               </div>
             </div>
@@ -866,38 +535,26 @@
             </div>
 
             <div class="accordion" id="accordionExample">
-              <div
-                *ngFor="
+              <div *ngFor="
                   let nivelItem of dataAprobacionesPorPosicion[keySelected];
                   let i = index
-                "
-                class="accordion-item"
-              >
+                " class="accordion-item">
                 <div class="accordion-header">
-                  <button
-                    class="accordion-button"
-                    type="button"
-                    data-bs-toggle="collapse"
-                    [attr.data-bs-target]="'#collapse' + i"
-                    aria-expanded="true"
-                    [attr.aria-controls]="'collapse' + i"
-                    style="display: block"
-                  >
-                    <div
-                      class="row"
-                      style="align-items: center; justify-content: space-around"
-                    >
+                  <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                    [attr.data-bs-target]="'#collapse' + i" aria-expanded="true" [attr.aria-controls]="'collapse' + i"
+                    style="display: block">
+                    <div class="row" style="align-items: center; justify-content: space-around">
                       <div class="col">
                         {{ nivelItem.nivelAprobacionType.ruta }}
                       </div>
 
                       <div class="col">
                         {{
-                          nivelItem.aprobador.usuario !== "" &&
-                          nivelItem.aprobador.usuario !== undefined &&
-                          nivelItem.aprobador.usuario != null
-                            ? nivelItem.aprobador.usuario
-                            : "No aplica"
+                        nivelItem.aprobador.usuario !== "" &&
+                        nivelItem.aprobador.usuario !== undefined &&
+                        nivelItem.aprobador.usuario != null
+                        ? nivelItem.aprobador.usuario
+                        : "No aplica"
                         }}
                       </div>
 
@@ -908,12 +565,8 @@
                   </button>
                 </div>
 
-                <div
-                  [id]="'collapse' + i"
-                  class="accordion-collapse collapse"
-                  [ngClass]="{ show: i === 0 }"
-                  data-bs-parent="#accordionExample"
-                >
+                <div [id]="'collapse' + i" class="accordion-collapse collapse" [ngClass]="{ show: i === 0 }"
+                  data-bs-parent="#accordionExample">
                   <div class="row">
                     <div class="col">
                       <div class="input-group">
@@ -923,18 +576,14 @@
 
                         &nbsp;
 
-                        <span
-                          id="lvl1descripcion"
-                          name=""
-                          style="color: black; font-size: 14px"
-                        >
+                        <span id="lvl1descripcion" name="" style="color: black; font-size: 14px">
                           {{
-                            nivelItem.aprobador.descripcionPosicion !== "" &&
-                            nivelItem.aprobador.descripcionPosicion !==
-                              undefined &&
-                            nivelItem.aprobador.descripcionPosicion != null
-                              ? nivelItem.aprobador.descripcionPosicion
-                              : "No aplica"
+                          nivelItem.aprobador.descripcionPosicion !== "" &&
+                          nivelItem.aprobador.descripcionPosicion !==
+                          undefined &&
+                          nivelItem.aprobador.descripcionPosicion != null
+                          ? nivelItem.aprobador.descripcionPosicion
+                          : "No aplica"
                           }}
                         </span>
                       </div>
