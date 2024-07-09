@@ -125,44 +125,16 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
       subledger: ""
     };
 
-  // Base model refers to the input at the beginning of BPMN
-  // that is, Start Event
   public modelBase: DatosProcesoInicio;
 
   public modelSolicitud: DatosSolicitud;
 
   public dataSolicitudModel: any;
 
-  // scenario-1: task id and date are handled via tasklist page.
   public taskId: string = "";
-  public date: any; // task date handled as query param
+  public date: any;
 
-  // scenario-2: User starts new process instance and directly comes to fill Registrar user task.
-  // This is a more likely scenario.
-  // In this case, parent flag is set to true. It requires additional handling to derive task id from process instance id.
-  public parentIdFlag: string | null = "false"; // set to true if the id is for the process instance, instead of task-id
-
-  /*
-  public dataTipoSolicitud: any = [
-    { id: 1, descripcion: "Requisición de Personal" },
-    { id: 2, descripcion: "Contratación de Familiares" },
-    { id: 3, descripcion: "Reingreso de personal" },
-    { id: 4, descripcion: "Acción de Personal" },
-  ];
-  public dataTipoMotivo: any = [
-    { id: 1, descripcion: "Nuevo" },
-    { id: 2, descripcion: "Eventual" },
-    { id: 3, descripcion: "Pasante" },
-    { id: 4, descripcion: "Reemplazo" },
-  ];
-
-  // public dataTipoAccion: any;
-
-  public dataTipoAccion: any = [
-    { id: 1, descripcion: "Motivo1" },
-    { id: 2, descripcion: "Motivo2" },
-  ];
-  */
+  public parentIdFlag: string | null = "false";
 
   public misParams: Solicitud;
 
@@ -171,11 +143,7 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
 
   private detalleNivelAprobacion: any[] = [];
 
-  // public dataTipoAccion: any;
-
   public dataTipoAccion: any = [];
-  // public dataAprobacionesPorPosicion: { [idTipoSolicitud: number, IdTipoMotivo: number, IdNivelDireccion: number]: any[] } =
-  // {};
 
   public dataNivelesDeAprobacion: { [key: string]: any[] } = {};
 
@@ -190,8 +158,6 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
 
   public dataNivelDireccion: any[] = [];
 
-
-  // getDataNivelesAprobacionPorCodigoPosicion
   public dataNivelesAprobacionPorCodigoPosicion: { [key: string]: any[] } = {};
 
   public dataNivelesAprobacion: any;
@@ -354,26 +320,6 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
 
   public loadingComplete = 0;
 
-  /*
-  nombresEmpleados: string[] = [
-    ...new Set(
-      this.dataEmpleadoEvolution.map((empleado) => empleado.nombreCompleto)
-    ),
-  ];
-
-  subledgers: string[] = [
-    ...new Set(
-      this.dataEmpleadoEvolution.map((empleado) => empleado.subledger)
-    ),
-  ];
-
-  codigosPosicion: string[] = [
-    ...new Set(
-      this.dataEmpleadoEvolution.map((empleado) => empleado.codigoPosicion)
-    ),
-  ];
-  */
-
   nombresEmpleados: string[] = [];
 
   subledgers: string[] = [];
@@ -413,34 +359,6 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
     console.log(this.selectedOption);
   }
 
-  // searchCodigoPosicion: OperatorFunction<string, readonly string[]> = (text$: Observable<string>) =>
-  //   text$.pipe(
-  //     debounceTime(200),
-  //     distinctUntilChanged(),
-  //     map((term) =>
-  //       term.length < 1
-  //         ? []
-  //         : this.codigosPosicion
-  //           .filter((v) => v.toLowerCase().indexOf(term.toLowerCase()) > -1)
-  //           .slice(0, 10)
-  //     )
-  //   );
-
-  // searchSubledger: OperatorFunction<string, readonly string[]> = (
-  //   text$: Observable<string>
-  // ) =>
-  //   text$.pipe(
-  //     debounceTime(200),
-  //     distinctUntilChanged(),
-  //     map((term) =>
-  //       term.length < 1
-  //         ? []
-  //         : this.subledgers
-  //           .filter((v) => v.toLowerCase().indexOf(term.toLowerCase()) > -1)
-  //           .slice(0, 10)
-  //     )
-  //   );
-
   searchNombreCompleto: OperatorFunction<string, readonly string[]> = (
     text$: Observable<string>
   ) =>
@@ -475,34 +393,13 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
       } else {
         this.solicitudDataInicial = this.solicitudes.modelSolicitud;
         this.detalleSolicitud = this.solicitudes.modelDetalleSolicitud;
-        this.detalleSolicitud.idSolicitud =
-          this.solicitudDataInicial.idSolicitud;
+        this.detalleSolicitud.idSolicitud = this.solicitudDataInicial.idSolicitud;
       }
-
-      // console.log("ID editar: ", this.id_edit);
-      // Utiliza el id_edit obtenido
     });
 
     this.route.queryParams.subscribe((params: Solicitud) => {
-      //this.solicitud = params;
       this.misParams = params;
 
-
-      /*this.solicitud.infoGeneral.idTipoSolicitud = this.dataTipoSolicitud.id;
-      this.solicitud.infoGeneral.tipoSolicitud =
-        this.dataTipoSolicitud.tipoSolicitud;
-      this.solicitud.request.idTipoSolicitud = this.dataTipoSolicitud.id;
-      this.solicitud.request.tipoSolicitud =
-        this.dataTipoSolicitud.tipoSolicitud;
-
-      this.solicitud.infoGeneral.idTipoMotivo = this.dataTipoMotivo.id;
-      this.solicitud.infoGeneral.tipoMotivo = this.dataTipoMotivo.tipoMotivo;
-      this.solicitud.request.idTipoMotivo = this.dataTipoMotivo.id;
-
-      this.solicitud.infoGeneral.idTipoAccion = this.dataTipoAccion.id;
-      this.solicitud.infoGeneral.tipoAccion = this.dataTipoAccion.tipoAccion;
-      this.solicitud.request.idTipoAccion = this.dataTipoAccion.id;
-      this.solicitud.request.tipoAccion = this.dataTipoAccion.tipoAccion;*/
     });
 
     this.route.queryParamMap.subscribe((qParams) => {
@@ -512,33 +409,22 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
         this.date = "";
       }
 
-      //
-      // Comentado por ahora
-      /*if (null !== qParams?.get("p")) {
-        this.parentIdFlag = qParams.get("p");
-      }*/
       this.parentIdFlag = "true";
     });
 
     this.route.params.subscribe((params) => {
-      // const variableNames = Object.keys(this.model).join(",");
       const variableNames = Object.keys(this.model).join(",");
 
       if ("true" === this.parentIdFlag) {
-        // id is parent process instance id. so handle it accordingly
-        // we are looking for task id 'Registrar' in a recently started process instance 'id'
         this.idDeInstancia = params["id"];
-        // this.camundaRestService.getTask(environment.taskType_Registrar, params["id"]).subscribe({
-        console.log(this.id_solicitud_by_params);
+
         this.solicitudes.getTareaIdParam(this.id_solicitud_by_params).subscribe({
           next: (result) => {
-            this.lookForError(result); // if error, then control gets redirected to err page
+            this.lookForError(result);
 
-            console.log(result.solicitudes[0].taskId);
-            // if result is success - bingo, we got the task id
-            this.uniqueTaskId = result.solicitudes[0].taskId; /* Es como la tarea que se crea en esa instancia */
-            this.taskId = params["id"]; /* Esta es la instancia */
-            this.getDetalleSolicitudById(this.id_solicitud_by_params);
+            this.uniqueTaskId = result.solicitudes[0].taskId;
+            this.taskId = params["id"];
+            // this.getDetalleSolicitudById(this.id_solicitud_by_params); // Si se comenta, causa problemas al abrir el Sweet Alert 2
             this.getSolicitudById(this.id_solicitud_by_params);
             this.date = result.solicitudes[0].startTime;
             this.loadExistingVariables(this.uniqueTaskId ? this.uniqueTaskId : "", variableNames);
@@ -548,16 +434,10 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
           }
         });
       } else {
-        // unique id is from the route params
         this.uniqueTaskId = params["id"];
         this.taskId = params["id"];
-        this.loadExistingVariables(
-          this.uniqueTaskId ? this.uniqueTaskId : "",
-          variableNames
-        );
+        this.loadExistingVariables(this.uniqueTaskId ? this.uniqueTaskId : "", variableNames);
       }
-      // console.log("Así es mi variablesNames: ", variableNames);
-      // ready to do the processing now
     });
   }
 
@@ -912,25 +792,15 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
       "Cargando información, espere por favor..."
     );
     try {
-      await this.ObtenerServicioTipoSolicitud();
-      await this.ObtenerServicioTipoMotivo();
-      await this.ObtenerServicioTipoAccion();
-      await this.getSolicitudes();
-      //if (this.id_edit !== undefined) { //comentado mmunoz
-      //await this.getDetalleSolicitudById(this.id_edit); //comentado mmunoz
-      await this.getSolicitudById(this.id_edit);
-      //} // comentado munoz
-      // await this.getDataEmpleadosEvolution();
-      await this.loadDataCamunda(); //comentado para prueba mmunoz
-      //console.log("impreme arreglo de aprobadores: ");
-      //await this.recorrerArreglo();
+      // await this.ObtenerServicioTipoSolicitud();
+      // await this.ObtenerServicioTipoMotivo();
+      // await this.ObtenerServicioTipoAccion();
+      // await this.getSolicitudes();
+      // await this.getSolicitudById(this.id_edit);
+      await this.loadDataCamunda();
 
-      // await this.getNivelesAprobacion();
       this.utilService.closeLoadingSpinner();
-
-      // this.starterService.getUser("60063916");
     } catch (error) {
-      // Manejar errores aquí de manera centralizada
       this.utilService.modalResponse(error.error, "error");
     }
 
@@ -964,27 +834,8 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
       next: (response: any) => {
         this.solicitud = response;
 
-        //data de solicitudes
-
-        /* this.model.codigo=this.solicitud.idSolicitud ;
-         this.model.idEmpresa = this.solicitud.idEmpresa ;
-         this.model.compania=this.solicitud.empresa ;
-         this.model.unidadNegocio=this.solicitud.unidadNegocio;*/
-
-
-        this.loadingComplete++;
-        this.getDetalleSolicitudById(this.id_edit);
-
-        // tveas, si incluye el id, debo mostrarlos (true)
-        /*this.mostrarTipoJustificacionYMision = this.restrictionsIds.includes(
-          this.solicitud.idTipoMotivo
-        );
-
-        this.mostrarSubledger = this.restrictionsSubledgerIds.includes(
-          this.solicitud.idTipoMotivo
-        );*/ // comentado mmunoz
-
-        //console.log("DATA SOLICITUD BY ID: ", this.solicitud);
+        this.loadingComplete += 2;
+        this.getDetalleSolicitudById(id);
       },
       error: (error: HttpErrorResponse) => {
         this.utilService.modalResponse(error.error, "error");
@@ -1024,47 +875,28 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
           this.model.sueldoAnual = this.detalleSolicitud.sueldoVariableAnual
           this.model.correo = this.detalleSolicitud.correo;
           this.model.fechaIngreso = this.detalleSolicitud.fechaIngreso;
-
-
         }
-        /* this.detalleSolicitud.estado = response.estado;
-         this.detalleSolicitud.estado = response.estadoSolicitud;
-         this.detalleSolicitud.idSolicitud = response.idSolicitud;
-         this.detalleSolicitud.unidadNegocio = response.unidadNegocio;*/ //comentado mmunoz
-        //console.log("DATA DETALLE SOLICITUD BY ID: ", this.detalleSolicitud);
+
         this.loadingComplete++;
 
-        // tveas, si incluye el id, debo mostrarlos (true)
-        this.mostrarTipoJustificacionYMision = this.restrictionsIds.includes(
-          this.solicitud.idTipoMotivo
-        );
+        this.mostrarTipoJustificacionYMision = this.restrictionsIds.includes(this.solicitud.idTipoMotivo);
 
-        this.mostrarSubledger = this.restrictionsSubledgerIds.includes(
-          this.solicitud.idTipoMotivo
-        );
+        this.mostrarSubledger = this.restrictionsSubledgerIds.includes(this.solicitud.idTipoMotivo);
 
-        this.keySelected =
-          this.solicitud.idTipoSolicitud +
-          "_" +
-          this.solicitud.idTipoMotivo +
-          "_" +
-          this.model.nivelDir;
+        this.keySelected = this.solicitud.idTipoSolicitud + "_" + this.solicitud.idTipoMotivo + "_" + this.model.nivelDir;
+
         if (!this.dataAprobacionesPorPosicion[this.keySelected]) {
           this.getNivelesAprobacion();
+
           if (this.model.codigoPosicion.trim().length > 0) {
             this.obtenerAprobacionesPorPosicionAPS();
             this.obtenerAprobacionesPorPosicionAPD();
           }
 
-
-          // const jsonArrayString = JSON.stringify(this.dataAprobadoresDinamicos);
-          // console.log("conversion aprobadores dinamicos", jsonArrayString);
-          //console.log("Ruta", this.dataRuta);
           let variables = this.generateVariablesFromFormFields();
         }
 
         this.consultarNextTask(id);
-
       },
       error: (error: HttpErrorResponse) => {
         this.utilService.modalResponse(error.error, "error");
@@ -1790,18 +1622,8 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
   }
 
   getNivelesAprobacion() {
-    if (this.detalleSolicitud.codigoPosicion !== "" &&
-      this.detalleSolicitud.codigoPosicion !== undefined &&
-      this.detalleSolicitud.codigoPosicion != null) {
-
-
-      this.solicitudes
-        .obtenerAprobacionesPorPosicion(
-          this.solicitud.idTipoSolicitud,
-          this.solicitud.idTipoMotivo,
-          this.detalleSolicitud.codigoPosicion,
-          this.detalleSolicitud.nivelDireccion, 'A'
-        )
+    if (this.detalleSolicitud.codigoPosicion !== "" && this.detalleSolicitud.codigoPosicion !== undefined && this.detalleSolicitud.codigoPosicion != null) {
+      this.solicitudes.obtenerAprobacionesPorPosicion(this.solicitud.idTipoSolicitud, this.solicitud.idTipoMotivo, this.detalleSolicitud.codigoPosicion, this.detalleSolicitud.nivelDireccion, 'A')
         .subscribe({
           next: (response) => {
             this.mapearDetallesAprobadores(response.nivelAprobacionPosicionType);

@@ -642,7 +642,7 @@
                   ></input-component> -->
 
                   <!-- <input type="text" [(ngModel)]="searchInp" class="form-control" id="searchInp" [ngbTypeahead]="searchNombreCompleto" (selectItem)="onSelectItem('nombreCompleto', $event)" /> -->
-                  <input name="jefe-superior" type="text" class="form-control" id="searchInp" [(ngModel)]="jefeInmediatoSuperiorQuery" [ngbTypeahead]="searchJefeInmediatoSuperior" />
+                  <input name="jefe-superior" type="text" class="form-control" id="searchInp" [(ngModel)]="jefeInmediatoSuperiorQuery" [ngbTypeahead]="searchJefeInmediatoSuperior" [resultFormatter]="formatJefeInmediatoSuperior" />
 
                   <button class="btn btn-light" type="button" (click)="getDataJefeInmediatoSuperior()">
                     <i class="ti-search"></i>

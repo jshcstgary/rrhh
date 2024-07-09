@@ -401,9 +401,9 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
   ];
   */
 
-  public nombresJefeInmediatoSuperior: any[] = [];
-  public nombresJefeReferencia: any[] = [];
-  public nombresResponsableRRHH: any[] = [];
+  public jefesInmediatoSuperior: any[] = [];
+  public jefesReferencia: any[] = [];
+  public responsablesRRHH: any[] = [];
 
   subledgers: string[] = [];
 
@@ -462,7 +462,6 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
   async ngOnInit() {
     this.utilService.openLoadingSpinner("Cargando información, espere por favor...");
 
-    console.log("this.id_solicitud_by_params: ", this.id_solicitud_by_params);
     try {
       await this.loadDataCamunda();
 
@@ -549,28 +548,36 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
     });
   }
 
-  searchJefeInmediatoSuperior: OperatorFunction<string, readonly string[]> = (text$: Observable<string>) => text$.pipe(
+  searchJefeInmediatoSuperior: OperatorFunction<any, readonly any[]> = (text$: Observable<string>) => text$.pipe(
     debounceTime(200),
     distinctUntilChanged(),
-    map((term) => term.length < 1 ? [] : this.nombresJefeInmediatoSuperior.filter(({ nombreCompleto }) => nombreCompleto.toLowerCase().includes(term.toLowerCase())).slice(0, 10).map(({ nombreCompleto }) => nombreCompleto))
+    map((term) => {
+      if (term.length < 1) {
+        return [];
+      } else {
+        return this.jefesInmediatoSuperior.filter(({ nombreCompleto }) => nombreCompleto.toLowerCase().includes(term.toLowerCase())).slice(0, 10);
+      }
+    })
   );
+
+  formatJefeInmediatoSuperior = (value: { nombreCompleto: string }) => value.nombreCompleto;
 
   searchJefeReferencia: OperatorFunction<string, readonly string[]> = (text$: Observable<string>) => text$.pipe(
     debounceTime(200),
     distinctUntilChanged(),
-    map((term) => term.length < 1 ? [] : this.nombresJefeReferencia.filter((v) => v.nombreCompleto.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10))
+    map((term) => term.length < 1 ? [] : this.jefesReferencia.filter((v) => v.nombreCompleto.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10))
   );
 
   searchResponsableRRHH: OperatorFunction<string, readonly string[]> = (text$: Observable<string>) => text$.pipe(
     debounceTime(200),
     distinctUntilChanged(),
-    map((term) => term.length < 1 ? [] : this.nombresResponsableRRHH.filter((v) => v.nombreCompleto.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10))
+    map((term) => term.length < 1 ? [] : this.responsablesRRHH.filter((v) => v.nombreCompleto.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10))
   );
 
   getDataJefeInmediatoSuperior() {
     console.log(this.jefeInmediatoSuperiorQuery);
     this.getDataEmpleadosEvolution(this.jefeInmediatoSuperiorQuery, "nombresJefeInmediatoSuperior");
-    console.log(this.nombresJefeInmediatoSuperior);
+    console.log(this.jefesInmediatoSuperior);
   }
 
   getDataJefeReferencia() {
@@ -589,11 +596,11 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
 
         if (arrayToFill === "nombresJefeInmediatoSuperior") {
           console.log(this.dataEmpleadoEvolution);
-          this.nombresJefeInmediatoSuperior = [...new Set(this.dataEmpleadoEvolution.map((empleado) => empleado))];
+          this.jefesInmediatoSuperior = [...new Set(this.dataEmpleadoEvolution.map((empleado) => empleado))];
         } else if (arrayToFill === "nombresJefeReferencia") {
-          this.nombresJefeReferencia = [...new Set(this.dataEmpleadoEvolution.map((empleado) => empleado))];
+          this.jefesReferencia = [...new Set(this.dataEmpleadoEvolution.map((empleado) => empleado))];
         } else {
-          this.nombresResponsableRRHH = [...new Set(this.dataEmpleadoEvolution.map((empleado) => empleado))];
+          this.responsablesRRHH = [...new Set(this.dataEmpleadoEvolution.map((empleado) => empleado))];
         }
 
         // this.nombresEmpleados = [

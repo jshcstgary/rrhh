@@ -457,16 +457,11 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
       } else {
         this.solicitudDataInicial = this.solicitudes.modelSolicitud;
         this.detalleSolicitud = this.solicitudes.modelDetalleSolicitud;
-        this.detalleSolicitud.idSolicitud =
-          this.solicitudDataInicial.idSolicitud;
+        this.detalleSolicitud.idSolicitud = this.solicitudDataInicial.idSolicitud;
       }
-
-      // console.log("ID editar: ", this.id_edit);
-      // Utiliza el id_edit obtenido
     });
 
     this.route.queryParams.subscribe((params: Solicitud) => {
-      //this.solicitud = params;
       this.misParams = params;
 
     });
@@ -478,22 +473,15 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
         this.date = "";
       }
 
-      //
-      // Comentado por ahora
-      /*if (null !== qParams?.get("p")) {
-        this.parentIdFlag = qParams.get("p");
-      }*/
       this.parentIdFlag = "true";
     });
 
     this.route.params.subscribe((params) => {
-      // const variableNames = Object.keys(this.model).join(",");
       const variableNames = Object.keys(this.model).join(",");
 
       if ("true" === this.parentIdFlag) {
-        // id is parent process instance id. so handle it accordingly
-        // we are looking for task id 'Registrar' in a recently started process instance 'id'
         this.idDeInstancia = params["id"];
+
         this.consultaTareasService.getTareaIdParam(this.id_solicitud_by_params)
           .subscribe((tarea) => {
 
@@ -503,7 +491,7 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
             this.id_solicitud_by_params = tarea.solicitudes[0].idSolicitud;
             this.taskId = params["id"];
 
-            this.getDetalleSolicitudById(this.id_solicitud_by_params);
+            this.getDetalleSolicitudById(this.id_solicitud_by_params); // Si se comenta, causa problemas al abrir el Sweet Alert 2
             this.getSolicitudById(this.id_solicitud_by_params);
             this.date = tarea.solicitudes[0].fechaCreacion;
             this.loadExistingVariables(
@@ -727,24 +715,10 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
       "Cargando información, espere por favor..."
     );
     try {
-      await this.ObtenerServicioTipoSolicitud();
-      await this.ObtenerServicioTipoMotivo();
-      await this.ObtenerServicioTipoAccion();
-      //await this.ObtenerServicioNivelDireccion();
-      //await this.getSolicitudes();
-      //if (this.id_edit !== undefined) { //comentado mmunoz
-      //await this.getDetalleSolicitudById(this.id_edit); //comentado mmunoz
-      await this.getSolicitudById(this.id_edit);
-      //} // comentado munoz
-      await this.getDataEmpleadosEvolution();
-      await this.loadDataCamunda(); //comentado para prueba mmunoz
-      //console.log("impreme arreglo de aprobadores: ");
-      //await this.recorrerArreglo();
+      await this.loadDataCamunda();
 
-      // await this.getNivelesAprobacion();
       this.utilService.closeLoadingSpinner();
     } catch (error) {
-      // Manejar errores aquí de manera centralizada
       this.utilService.modalResponse(error.error, "error");
     }
 
@@ -756,9 +730,8 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
 
   ObtenerServicioNivelDireccion() {
     return this.mantenimientoService.getCatalogo("RBPND").subscribe({
-      // return this.mantenimientoService.getCatalogoRBPND().subscribe({
       next: (response) => {
-        this.dataNivelDireccion = response.itemCatalogoTypes; //verificar la estructura mmunoz
+        this.dataNivelDireccion = response.itemCatalogoTypes;
 
         this.detalleSolicitud.nivelDireccion =
           response.itemCatalogoTypes.filter(
@@ -780,8 +753,6 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
 
         this.loadingComplete++;
         this.getDetalleSolicitudById(this.id_edit);
-
-
       },
       error: (error: HttpErrorResponse) => {
         this.utilService.modalResponse(error.error, "error");
@@ -822,21 +793,12 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
 
         this.loadingComplete++;
 
-        // tveas, si incluye el id, debo mostrarlos (true)
-        this.mostrarTipoJustificacionYMision = this.restrictionsIds.includes(
-          this.solicitud.idTipoMotivo
-        );
+        this.mostrarTipoJustificacionYMision = this.restrictionsIds.includes(this.solicitud.idTipoMotivo);
 
-        this.mostrarSubledger = this.restrictionsSubledgerIds.includes(
-          this.solicitud.idTipoMotivo
-        );
+        this.mostrarSubledger = this.restrictionsSubledgerIds.includes(this.solicitud.idTipoMotivo);
 
-        this.keySelected =
-          this.solicitud.idTipoSolicitud +
-          "_" +
-          this.solicitud.idTipoMotivo +
-          "_" +
-          this.model.nivelDir;
+        this.keySelected = this.solicitud.idTipoSolicitud + "_" + this.solicitud.idTipoMotivo + "_" + this.model.nivelDir;
+
         if (!this.dataAprobacionesPorPosicion[this.keySelected]) {
           this.getNivelesAprobacion();
 
@@ -1377,7 +1339,6 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
   consultarNextTask(IdSolicitud: string) {
     this.consultaTareasService.getTareaIdParam(IdSolicitud)
       .subscribe((tarea) => {
-
         this.uniqueTaskId = tarea.solicitudes[0].taskId;
         this.taskType_Activity = tarea.solicitudes[0].tasK_DEF_KEY;
         this.nameTask = tarea.solicitudes[0].name;
@@ -1414,22 +1375,6 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
         variables.urlTarea = {
           value: `${portalWorkFlow}solicitudes/revisar-solicitud/${this.idDeInstancia}/${this.id_solicitud_by_params}`
         };
-        // variables.correoNotificacionRemuneracion = {
-        //   value: this.aprobadorSiguiente.aprobador.correo
-        // };
-        // variables.usuarioNotificacionRemuneracion = {
-        //   value: this.aprobadorSiguiente.aprobador.usuario
-        // };
-        // variables.nivelDireccionNotificacionRemuneracion = {
-        //   value: this.aprobadorSiguiente.aprobador.nivelDireccion
-        // };
-        // variables.descripcionPosicionNotificacionRemuneracion = {
-        //   value: this.aprobadorSiguiente.aprobador.descripcionPosicion
-        // };
-        // variables.subledgerNotificacionRemuneracion = {
-        //   value: this.aprobadorSiguiente.aprobador.subledger
-        // };
-
         variables.atencionRevisionGerente = { value: this.buttonValue };
         variables.comentariosAtencionGerenteRRHH = { value: this.textareaContent };
 
@@ -1517,159 +1462,23 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
   }
 
   getNivelesAprobacion() {
-    // if (this.detalleSolicitud.codigoPosicion !== "" &&
-    //   this.detalleSolicitud.codigoPosicion !== undefined &&
-    //   this.detalleSolicitud.codigoPosicion != null &&
-    //   this.solicitud.idTipoSolicitud !== 0 &&
-    //   this.solicitud.idTipoSolicitud !== undefined &&
-    //   this.solicitud.idTipoSolicitud !== null &&
-    //   this.solicitud.idTipoMotivo !== 0 &&
-    //   this.solicitud.idTipoMotivo !== undefined &&
-    //   this.solicitud.idTipoMotivo !== null) {
     if (this.solicitud !== null) {
-
       this.solicitudes
-        // .obtenerAprobacionesPorPosicion(
-        //   this.solicitud.idTipoSolicitud,
-        //   this.solicitud.idTipoMotivo,
-        //   this.detalleSolicitud.codigoPosicion,
-        //   this.detalleSolicitud.nivelDireccion, 'A'
-        // )
         .obtenerNivelesAprobacionRegistrados(this.solicitud.idSolicitud)
         .subscribe({
           next: (response) => {
-            // this.mapearDetallesAprobadores(response);
-
             this.dataAprobacionesPorPosicion = {
               [this.keySelected]: response.nivelAprobacionPosicionType
             }
           },
           error: (error: HttpErrorResponse) => {
-            this.utilService.modalResponse(
-              "No existen niveles de aprobación para este empleado",
-              "error"
-            );
+            this.utilService.modalResponse("No existen niveles de aprobación para este empleado", "error");
           },
         });
 
     }
 
   }
-
-  // mapearDetallesAprobadores(nivelAprobacionPosicionType: any) {
-  //   const arrayAprobadores = nivelAprobacionPosicionType.detalleAprobadorSolicitud.map((detalleAprobador) => ({
-  //     nivelAprobacionType: {
-  //       idNivelAprobacion: detalleAprobador.id_NivelAprobacion,
-  //       idNivelAprobacionRuta: detalleAprobador.nivelAprobacionRuta,
-  //       nivelAprobacionRuta: detalleAprobador.nivelAprobacionRuta,
-  //       idTipoSolicitud: Number(detalleAprobador.id_TipoSolicitud),
-  //       tipoSolicitud: detalleAprobador.tipoSolicitud,
-  //       idAccion: detalleAprobador.id_Accion,
-  //       accion: detalleAprobador.accion,
-  //       idNivelDireccion: detalleAprobador.nivelDireccion,
-  //       nivelDireccion: detalleAprobador.nivelDireccion,
-  //       idRuta: detalleAprobador.id_Ruta,
-  //       ruta: detalleAprobador.ruta,
-  //       idTipoMotivo: detalleAprobador.id_TipoMotivo,
-  //       tipoMotivo: detalleAprobador.motivo,
-  //       idTipoRuta: detalleAprobador.id_TipoRuta,
-  //       tipoRuta: detalleAprobador.tipoRuta,
-  //       correo: "",
-  //       fechaActualizacion: detalleAprobador.fechaModificacion,
-  //       fechaCreacion: detalleAprobador.fechaCreacion,
-  //       usuarioCreacion: "",
-  //       usuarioActualizacion: "",
-  //       estado: detalleAprobador.estado
-  //     },
-  //     aprobador: {
-  //       detalleAprobadorSolicitud: detalleAprobador.detalleAprobadorSolicitud,
-  //       descripcionPosicion: detalleAprobador.descripcionPosicionAprobador,
-  //       usuario: detalleAprobador.usuarioAprobador,
-  //       nivelDireccion: detalleAprobador.nivelDireccionAprobador,
-  //       codigoPosicionReportaA: detalleAprobador.codigoPosicionReportaA,
-  //       reportaA: "",
-  //       supervisaA: "",
-  //       nivelReporte: "",
-  //       subledger: detalleAprobador.sudlegerAprobador,
-  //       correo: detalleAprobador.correo
-  //     }
-  //   }));
-
-  //   this.dataAprobacionesPorPosicion = {
-  //     [this.keySelected]: arrayAprobadores
-  //   }
-
-  //   // console.log(this.detalleAprobacionesPorPosicion);
-  //   console.log(this.dataAprobacionesPorPosicion);
-  // }
-
-  // obtenerNivelesAprobacionRegistrados() {
-  //   this.solicitudes.obtenerNivelesAprobacionRegistrados().subscribe({
-  //     next: (res) => {
-  //       this.mapearDetallesAprobadores(res);
-
-  //       // this.dataAprobacionesPorPosicion = res.nivelAprobacionPosicionType;
-  //     },
-  //     error: (err) => {
-  //       console.error(err);
-  //     }
-  //   });
-  // }
-
-  // getDataNivelesAprobacionPorCodigoPosicion() {
-
-  //   if (this.detalleSolicitud.codigoPosicion !== "" &&
-  //     this.detalleSolicitud.codigoPosicion !== undefined &&
-  //     this.detalleSolicitud.codigoPosicion != null) {
-
-  //     this.solicitudes
-  //       .getDataNivelesAprobacionPorCodigoPosicion(
-  //         this.detalleSolicitud.codigoPosicion
-  //       )
-  //       .subscribe({
-  //         next: (response) => {
-  //           this.dataNivelesAprobacionPorCodigoPosicion[
-  //             this.model.codigoPosicion
-  //           ] = response.evType;
-
-  //           for (let key1 of Object.keys(this.dataAprobacionesPorPosicion)) {
-  //             let eachDataNivelesDeAprobacion =
-  //               this.dataAprobacionesPorPosicion[key1];
-
-  //             for (let eachData of eachDataNivelesDeAprobacion) {
-  //               for (let key2 of Object.keys(
-  //                 this.dataNivelesAprobacionPorCodigoPosicion
-  //               )) {
-  //                 let eachDataNivelPorCodigoPosicion =
-  //                   this.dataNivelesAprobacionPorCodigoPosicion[key2];
-
-  //                 for (let eachDataNivelPorCodigo of eachDataNivelPorCodigoPosicion) {
-  //                   if (
-  //                     eachData.nivelDireccion ==
-  //                     eachDataNivelPorCodigo.nivelDireccion
-  //                   ) {
-  //                     eachData["usuario"] = eachDataNivelPorCodigo.usuario;
-  //                     eachData["descripcionPosicion"] =
-  //                       eachDataNivelPorCodigo.descripcionPosicion;
-  //                     break;
-  //                   }
-  //                 }
-
-  //                 console.log(`Elemento en la posición`, eachData);
-  //               }
-  //             }
-  //           }
-  //         },
-  //         error: (error: HttpErrorResponse) => {
-  //           this.utilService.modalResponse(
-  //             "No existen niveles de aprobación para este empleado",
-  //             "error"
-  //           );
-  //         },
-  //       });
-
-  //   }
-  // }
 
   saveDetalleAprobaciones() {
     this.solicitudes.modelDetalleAprobaciones.estadoAprobacion = this.buttonValue;
@@ -1702,19 +1511,12 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
   }
 
   ObtenerNivelAprobadorTask() {
-
-
-    let aprobadoractual = '';//aprobador.nivelAprobacion.value;
-    let aprobadoractual2 = '';//aprobador.nivelAprobacion.value;
+    let aprobadoractual = '';
+    let aprobadoractual2 = '';
     this.camundaRestService
       .getVariablesForTaskLevelAprove(this.uniqueTaskId).subscribe({
         next: (aprobador) => {
-          aprobadoractual = aprobador.nivelAprobacion?.value;;//aprobador.nivelAprobacion.value;
-          //aprobadoractual2=aprobador.nivelAprobacion?.value;
-
-          //console.log('aprobador actual2',aprobadoractual2);
-
-
+          aprobadoractual = aprobador.nivelAprobacion?.value;;
 
           console.log("Inicio recorrer Aprobaciones por posicion: ");
           console.log(`Elemento en la posición Miguel1 ${this.keySelected}:`, this.dataAprobacionesPorPosicion);

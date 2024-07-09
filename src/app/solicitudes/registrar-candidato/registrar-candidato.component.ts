@@ -660,7 +660,7 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
             this.rootProces = tarea.solicitudes[0].rootProcInstId;
             this.taskId = params["id"];
 
-            this.getDetalleSolicitudById(this.id_solicitud_by_params);
+            // this.getDetalleSolicitudById(this.id_solicitud_by_params);
             this.getSolicitudById(this.id_solicitud_by_params);
             this.date = tarea.solicitudes[0].fechaCreacion;
             this.loadExistingVariables(
@@ -883,25 +883,10 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
       "Cargando información, espere por favor..."
     );
     try {
-      await this.ObtenerServicioTipoSolicitud();
-      await this.ObtenerServicioTipoMotivo();
-      await this.ObtenerServicioTipoAccion();
-      //await this.ObtenerServicioNivelDireccion();
-      //await this.getSolicitudes();
-      //if (this.id_edit !== undefined) { //comentado mmunoz
-      //await this.getDetalleSolicitudById(this.id_edit); //comentado mmunoz
-      await this.getSolicitudById(this.id_edit);
-      //} // comentado munoz
-      // await this.getDataEmpleadosEvolution();
-      // await this.ObtenerServicioTipoProceso();
-      await this.loadDataCamunda(); //comentado para prueba mmunoz
-      //console.log("impreme arreglo de aprobadores: ");
-      //await this.recorrerArreglo();
+      await this.loadDataCamunda();
 
-      // await this.getNivelesAprobacion();
       this.utilService.closeLoadingSpinner();
     } catch (error) {
-      // Manejar errores aquí de manera centralizada
       this.utilService.modalResponse(error.error, "error");
     }
 
@@ -951,7 +936,7 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
 
         await this.ObtenerServicioTipoProceso();
 
-        this.loadingComplete++;
+        this.loadingComplete += 2;
         this.getDetalleSolicitudById(this.id_edit);
       },
       error: (error: HttpErrorResponse) => {
@@ -965,7 +950,6 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
       next: (response: any) => {
         this.detalleSolicitud = response.detalleSolicitudType[0];
         if (this.detalleSolicitud.codigoPosicion.length > 0) {
-
           this.model.codigoPosicion = this.detalleSolicitud.codigoPosicion;
           this.model.descrPosicion = this.detalleSolicitud.descripcionPosicion;
           this.model.subledger = this.detalleSolicitud.subledger;
@@ -990,8 +974,6 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
           this.model.sueldoAnual = this.detalleSolicitud.sueldoVariableAnual
           this.model.correo = this.detalleSolicitud.correo;
           this.model.fechaIngreso = this.detalleSolicitud.fechaIngreso;
-
-
         }
 
         this.loadingComplete++;
@@ -1015,11 +997,9 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
           this.getNivelesAprobacion();
 
           this.obtenerComentariosAtencionPorInstanciaRaiz();
-
         }
 
         this.consultarNextTask(id);
-
       },
       error: (error: HttpErrorResponse) => {
         this.utilService.modalResponse(error.error, "error");

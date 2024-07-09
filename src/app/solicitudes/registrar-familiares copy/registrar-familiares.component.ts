@@ -484,8 +484,6 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
       const variableNames = Object.keys(this.model).join(",");
 
       if ("true" === this.parentIdFlag) {
-        // id is parent process instance id. so handle it accordingly
-        // we are looking for task id 'Registrar' in a recently started process instance 'id'
         this.idDeInstancia = params["id"];
         // this.camundaRestService.getTask(environment.taskType_CF, params["id"])
         this.solicitudes.getTareaIdParam(this.id_solicitud_by_params)
@@ -495,7 +493,6 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
             // if result is success - bingo, we got the task id
             this.uniqueTaskId = result.solicitudes[0].taskId; /* Es como la tarea que se crea en esa instancia */
             this.taskId = params["id"]; /* Esta es la instancia */
-            this.getDetalleSolicitudById(this.id_solicitud_by_params);
             this.getSolicitudById(this.id_solicitud_by_params);
             this.date = result.solicitudes[0].startTime;
             this.loadExistingVariables(
@@ -801,29 +798,15 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
     this.utilService.openLoadingSpinner(
       "Cargando información, espere por favor..."
     );
-    console.log("this.id_solicitud_by_params: ", this.id_solicitud_by_params);
     try {
-      await this.ObtenerServicioTipoSolicitud();
-      await this.ObtenerServicioTipoMotivo();
-      await this.ObtenerServicioTipoAccion();
-      // await this.ObtenerServicioNivelDireccion();
-      // await this.getSolicitudes();
-      //if (this.id_edit !== undefined) { //comentado mmunoz
-      //await this.getDetalleSolicitudById(this.id_edit); //comentado mmunoz
-      await this.getSolicitudById(this.id_edit);
-      //} // comentado munoz
-      await this.getDataEmpleadosEvolution();
-      await this.loadDataCamunda(); //comentado para prueba mmunoz
+      await this.loadDataCamunda();
+
       await this.obtenerServicioFamiliaresCandidatos({
         idSolicitud: this.id_solicitud_by_params,
       });
-      //console.log("impreme arreglo de aprobadores: ");
-      //await this.recorrerArreglo();
 
-      // await this.getNivelesAprobacion();
       this.utilService.closeLoadingSpinner();
     } catch (error) {
-      // Manejar errores aquí de manera centralizada
       this.utilService.modalResponse(error.error, "error");
     }
   }
@@ -854,18 +837,9 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
   getSolicitudById(id: any) {
     return this.solicitudes.getSolicitudById(id).subscribe({
       next: (response: any) => {
-        console.log("Solicitud por id: ", response);
         this.solicitud = response;
-        console.log(this.solicitud);
 
-        //data de solicitudes
-
-        /* this.model.codigo=this.solicitud.idSolicitud ;
-        this.model.idEmpresa = this.solicitud.idEmpresa ;
-        this.model.compania=this.solicitud.empresa ;
-        this.model.unidadNegocio=this.solicitud.unidadNegocio;*/
-
-        this.loadingComplete++;
+        this.loadingComplete += 2;
         this.getDetalleSolicitudById(this.id_edit);
 
         // tveas, si incluye el id, debo mostrarlos (true)
@@ -918,14 +892,9 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
           this.model.correo = this.detalleSolicitud.correo;
           this.model.fechaIngreso = this.detalleSolicitud.fechaIngreso;
         }
-        /* this.detalleSolicitud.estado = response.estado;
-        this.detalleSolicitud.estado = response.estadoSolicitud;
-        this.detalleSolicitud.idSolicitud = response.idSolicitud;
-        this.detalleSolicitud.unidadNegocio = response.unidadNegocio;*/ //comentado mmunoz
-        //console.log("DATA DETALLE SOLICITUD BY ID: ", this.detalleSolicitud);
+
         this.loadingComplete++;
 
-        // tveas, si incluye el id, debo mostrarlos (true)
         this.mostrarTipoJustificacionYMision = this.restrictionsIds.includes(
           this.solicitud.idTipoMotivo
         );
@@ -947,33 +916,8 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
             this.obtenerAprobacionesPorPosicionAPD();
           }
 
-          console.log("aprobadores dinamicos", this.dataAprobadoresDinamicos);
-          // const jsonArrayString = JSON.stringify(this.dataAprobadoresDinamicos);
-          // console.log("conversion aprobadores dinamicos", jsonArrayString);
-          //console.log("Ruta", this.dataRuta);
           let variables = this.generateVariablesFromFormFields();
-          console.log("variables prueba ruta", variables);
         }
-
-        //console.log("aprobacion: ",aprobacion);
-        /* console.log(`Elemento en la posición Miguel1 ${this.keySelected}:`, this.dataAprobacionesPorPosicion[this.keySelected][0].nivelAprobacionType.idNivelAprobacion);
-
-        for (const key in this.dataAprobacionesPorPosicion[this.keySelected]) {
-          if (this.dataAprobacionesPorPosicion.hasOwnProperty(key)) {
-            console.log(`Clave: ${key}`);
-            const aprobacionesObj = this.dataAprobacionesPorPosicion[this.keySelected][key];
-            for (const index in aprobacionesObj) {
-              if (aprobacionesObj.hasOwnProperty(index)) {
-                const aprobacion = aprobacionesObj[index];
-                console.log(`Entro en elementos de aprobacion..`);
-                console.log(`Elemento ${index}:`, aprobacion);
-                // Aquí puedes acceder a las propiedades de cada objeto
-                console.log(aprobacion.nivelAprobacionType.idNivelAprobacion);
-                console.log(aprobacion.aprobador.usuario);
-              }
-            }
-          }
-        }*/
 
         this.consultarNextTask(id);
       },
