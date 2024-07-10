@@ -14,4 +14,8 @@ export class ComentarioSalidaJefeService {
   public registrarComentario(comentario: any): Observable<any> {
     return this.http.post<any>(this.comentarioUrl, comentario);
   }
+
+  public obtenerComentarios(id: string): Observable<any> {
+    return this.http.get<any>(`${this.comentarioUrl}/${id}`);
+  }
 }

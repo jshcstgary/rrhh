@@ -184,9 +184,9 @@ export class DialogBuscarEmpleadosReingresoComponent {
   };
 
   getDataEmpleadosEvolution() {
-    return this.mantenimientoService.getDataEmpleadosEvolutionPorId(this.searchInp, "E").subscribe({
+    return this.mantenimientoService.getDataExEmpleadosEvolution(this.searchInp, "E").subscribe({
       next: (response) => {
-        if (response.evType.length === 0) {
+        if (response.empleadosRBP.length === 0) {
           Swal.fire({
             text: "No se encontró registro",
             icon: "info",
@@ -199,7 +199,8 @@ export class DialogBuscarEmpleadosReingresoComponent {
           return;
         }
 
-        this.dataEmpleadoEvolution = response.evType;
+        // this.dataEmpleadoEvolution = response.evType;
+        this.dataEmpleadoEvolution = response.empleadosRBP;
 
         this.nombresEmpleados = [...new Set(this.dataEmpleadoEvolution.map((empleado) => empleado.nombreCompleto))];
 

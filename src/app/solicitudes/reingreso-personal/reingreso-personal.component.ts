@@ -62,6 +62,8 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
   dataTableAprobadores = dataTableAprobadores;
   empleadoSearch: string = "";
 
+  public fechaSalida: string = "";
+
   override model: RegistrarData = new RegistrarData(
     "",
     "",
@@ -818,6 +820,7 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
             this.modelRG.sueldoAnual = this.detalleSolicitudRG.sueldoVariableAnual;
             this.modelRG.correo = this.detalleSolicitudRG.correo;
             this.modelRG.fechaIngreso = (this.detalleSolicitudRG.fechaIngreso as string).split("T")[0];
+            this.fechaSalida = this.detalleSolicitudRG.fechaSalida as string;
             this.remuneracion = Number(this.modelRG.sueldoAnual) / 12 + Number(this.modelRG.sueldoSemestral) / 6 + Number(this.modelRG.sueldoTrimestral) / 3 + Number(this.modelRG.sueldoMensual);
 
             this.keySelected = this.solicitud.idTipoSolicitud + "_" + this.solicitud.idTipoMotivo + "_" + this.model.nivelDir;
@@ -1108,7 +1111,6 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
 
             this.solicitudRG.estadoSolicitud === "No" ? "4" : "AN";
 
-            console.log("this.solicitud: ", this.solicitudRG);
             this.solicitudes.actualizarSolicitud(this.solicitudRG).subscribe({
               next: (responseSolicitud) => {
                 // setTimeout(() => {
@@ -1305,6 +1307,7 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
                 this.detalleSolicitud.puesto = this.jefeReferenciaQuery.descrPuesto;
                 this.detalleSolicitud.responsableRRHH = this.responsableRRHHQuery.nombreCompleto;
                 this.detalleSolicitud.jefeSolicitante = this.solicitud.usuarioCreacion;
+                this.detalleSolicitud.fechaSalida = this.fechaSalida.split("T")[0];
 
                 this.solicitudes.actualizarDetalleSolicitud(this.detalleSolicitud).subscribe({
                   next: (responseDetalle) => {
@@ -1378,8 +1381,9 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
           }
 
           if (result?.data) {
-            const data: IEmpleadoData = result.data;
+            const data: any = result.data;
             console.log("AQUIIIII PRUEBA", data);
+            this.fechaSalida = data.fechaSalida;
             this.modelRG.nombreCompleto = data.nombreCompleto;
             this.modelRG.subledger = data.subledger;
             this.modelRG.compania = data.compania;

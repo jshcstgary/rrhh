@@ -267,7 +267,6 @@ export class ConsultaTareasComponent implements OnInit {
 
               break;
 
-
             case environment.taskType_RegistrarCandidato:
 
               this.router.navigate([
@@ -336,6 +335,72 @@ export class ConsultaTareasComponent implements OnInit {
               if (tarea.solicitudes[0].tipoSolicitud.toUpperCase().includes("REINGRESO")) {
                 this.router.navigate([
                   `/solicitudes/reingreso-personal/registro-comentarios`,
+                  ids[1],
+                  ids[0]
+                ]);
+              }
+
+              break;
+
+            case environment.taskType_RG_RRHH:
+              if (tarea.solicitudes[0].tipoSolicitud.toUpperCase().includes("REINGRESO")) {
+                this.router.navigate([
+                  `/solicitudes/revisar-solicitud`,
+                  ids[1],
+                  ids[0]
+                ]);
+              }
+
+              break;
+
+            case environment.taskType_RG_Remuneraciones:
+              if (tarea.solicitudes[0].tipoSolicitud.toUpperCase().includes("REINGRESO")) {
+                this.router.navigate([
+                  `/solicitudes/revisar-solicitud`,
+                  ids[1],
+                  ids[0]
+                ]);
+              }
+
+              break;
+
+            case environment.taskType_CF_Remuneraciones:
+              if (tarea.solicitudes[0].tipoSolicitud.toUpperCase().includes("FAMILIA")) {
+                this.router.navigate([
+                  `/solicitudes/revisar-solicitud`,
+                  ids[1],
+                  ids[0]
+                ]);
+              }
+
+              break;
+
+            case environment.taskType_CF_RRHH:
+              if (tarea.solicitudes[0].tipoSolicitud.toUpperCase().includes("FAMILIA")) {
+                this.router.navigate([
+                  `/solicitudes/revisar-solicitud`,
+                  ids[1],
+                  ids[0]
+                ]);
+              }
+
+              break;
+
+            case environment.taskType_AP_Remuneraciones:
+              if (tarea.solicitudes[0].tipoSolicitud.toUpperCase().includes("PERSONAL")) {
+                this.router.navigate([
+                  `/solicitudes/revisar-solicitud`,
+                  ids[1],
+                  ids[0]
+                ]);
+              }
+
+              break;
+
+            case environment.taskType_AP_RRHH:
+              if (tarea.solicitudes[0].tipoSolicitud.toUpperCase().includes("PERSONAL")) {
+                this.router.navigate([
+                  `/solicitudes/revisar-solicitud`,
                   ids[1],
                   ids[0]
                 ]);

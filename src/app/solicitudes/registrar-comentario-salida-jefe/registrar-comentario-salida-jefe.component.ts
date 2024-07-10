@@ -36,6 +36,8 @@ export class RegistrarComentarioSalidaJefeComponent extends CompleteTaskComponen
   columnsAprobadores = columnsAprobadores.columns;
   dataTableAprobadores = dataTableAprobadores;
 
+  currentDate: Date = new Date();
+
   override model: RegistrarData = new RegistrarData(
     "",
     "",
@@ -211,6 +213,10 @@ export class RegistrarComentarioSalidaJefeComponent extends CompleteTaskComponen
   public restrictionsSubledgerIds: any[] = ["4", 4];
 
   public mostrarSubledger = false;
+
+  public comentariosJefeInmediato: any = {};
+
+  public comentariosRRHH: any = {};
 
   public dataEmpleadoEvolution: any[] = [
     {
@@ -502,6 +508,8 @@ export class RegistrarComentarioSalidaJefeComponent extends CompleteTaskComponen
           this.solicitud = response;
         } else if (id.toUpperCase().includes("RG")) {
           this.solicitudRG = response;
+
+          this.getComentarios();
         }
 
         this.loadingComplete++;
@@ -510,6 +518,20 @@ export class RegistrarComentarioSalidaJefeComponent extends CompleteTaskComponen
       error: (error: HttpErrorResponse) => {
         this.utilService.modalResponse(error.error, "error");
       },
+    });
+  }
+
+  getComentarios() {
+    this.comentarioSalidaJefeService.obtenerComentarios(this.solicitudRG.idSolicitud).subscribe({
+      next: ({ comentarios }) => {
+        comentarios.forEach(comentario => {
+          if (comentario.tipo_Solicitud === "Comentario_Salida_Jefe") {
+            this.comentariosJefeInmediato = comentario;
+          } else {
+            this.comentariosRRHH = comentario;
+          }
+        })
+      }
     });
   }
 
@@ -589,7 +611,6 @@ export class RegistrarComentarioSalidaJefeComponent extends CompleteTaskComponen
     });
 
     this.route.queryParams.subscribe((params: Solicitud) => {
-      console.log("Mis params: ", params);
       this.misParams = params;
     });
 
@@ -636,13 +657,6 @@ export class RegistrarComentarioSalidaJefeComponent extends CompleteTaskComponen
 
   filtrarDatos(campo: string, valor: string) {
     const datosEmpleado = this.dataEmpleadoEvolution.find((empleado) => {
-      console.log("Empleado iterando: ", empleado);
-      console.log(
-        "empleado[campo]: " + empleado[campo] + ", valor: ",
-        valor + ", campo: ",
-        campo
-      );
-      console.log("\n");
       return empleado[campo] === valor;
     });
     console.log("Valor de datosEmpleado: ", datosEmpleado);

@@ -21,6 +21,7 @@ export class MantenimientoService {
   private apiEmpleadoEvolutionUrl = environment.empleadoServiceEs;
   private apiEmpleadoUrlJaff = environment.exempleadoServiceEsJaff;
   private apiEmpleadoUrlSpyral = environment.exempleadoServiceEsSpyral;
+  private apiExEmpleado = environment.exempleadoService;
   private apiFamiliaresCandidato = environment.familiaresCandidatoServiceES;
   // http://10.35.3.162:8053/v1/es/item-catalogo/codigo/RBPND
   // http://10.35.3.162:8053/v1/es/item-catalogo/codigo
@@ -133,6 +134,14 @@ export class MantenimientoService {
 
   public getDataEmpleadosEvolutionPorId(id: string, estado: string = "A"): Observable<IEmpleados> {
     return this.http.get<IEmpleados>(`${this.apiEmpleadoEvolutionUrl}/nombre/${id}`, {
+      headers: {
+        estado
+      }
+    });
+  }
+
+  public getDataExEmpleadosEvolution(id: string, estado: string = "A"): Observable<any> {
+    return this.http.get<any>(`${this.apiExEmpleado}/nombre/${id}`, {
       headers: {
         estado
       }
