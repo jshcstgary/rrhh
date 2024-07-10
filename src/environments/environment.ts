@@ -142,7 +142,7 @@ export const environment = {
 
   // comentarioServiceES: `${base}:8088/v1/es/comentarios`,
   // comentarioServiceES: `${baseG}/v1/es/comentarios`,
-  comentarioServiceES: `${baseRBP}:8285/v1/es/comentarios`,
+  comentarioServiceES: `${baseRBP}:8288/v1/es/comentarios`,
 
   /*
 

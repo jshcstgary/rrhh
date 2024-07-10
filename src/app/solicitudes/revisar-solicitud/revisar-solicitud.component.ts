@@ -1521,9 +1521,6 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
         next: (aprobador) => {
           aprobadoractual = aprobador.nivelAprobacion?.value;;
 
-          console.log("Inicio recorrer Aprobaciones por posicion: ");
-          console.log(`Elemento en la posición Miguel1 ${this.keySelected}:`, this.dataAprobacionesPorPosicion);
-
           for (const key in this.dataAprobacionesPorPosicion) {
             if (this.dataAprobacionesPorPosicion.hasOwnProperty(key)) {
               console.log(`Clave: ${key}`);

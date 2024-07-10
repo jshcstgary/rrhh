@@ -767,22 +767,39 @@ export class RegistrarComentarioSalidaJefeComponent extends CompleteTaskComponen
   }
 
   getNivelesAprobacion() {
-    if (this.detalleSolicitudRG.codigoPosicion !== "" && this.detalleSolicitudRG.codigoPosicion !== undefined && this.detalleSolicitudRG.codigoPosicion != null) {
-      this.solicitudes.obtenerAprobacionesPorPosicion(this.solicitudRG.idTipoSolicitud, this.solicitudRG.idTipoMotivo, this.detalleSolicitudRG.codigoPosicion, this.detalleSolicitudRG.nivelDireccion, 'A').subscribe({
-        next: (response) => {
-          this.mapearDetallesAprobadores(response.nivelAprobacionPosicionType);
-
-          this.dataAprobacionesPorPosicion[this.keySelected] = response.nivelAprobacionPosicionType;
-        },
-        error: (error: HttpErrorResponse) => {
-          this.utilService.modalResponse(
-            "No existen niveles de aprobación para este empleado",
-            "error"
-          );
-        },
-      });
+    if (this.solicitudRG !== null) {
+      this.solicitudes
+        .obtenerNivelesAprobacionRegistrados(this.solicitudRG.idSolicitud)
+        .subscribe({
+          next: (response) => {
+            this.dataAprobacionesPorPosicion = {
+              [this.keySelected]: response.nivelAprobacionPosicionType
+            }
+          },
+          error: (error: HttpErrorResponse) => {
+            this.utilService.modalResponse("No existen niveles de aprobación para este empleado", "error");
+          },
+        });
     }
   }
+
+  // getNivelesAprobacion() {
+  //   if (this.detalleSolicitudRG.codigoPosicion !== "" && this.detalleSolicitudRG.codigoPosicion !== undefined && this.detalleSolicitudRG.codigoPosicion != null) {
+  //     this.solicitudes.obtenerAprobacionesPorPosicion(this.solicitudRG.idTipoSolicitud, this.solicitudRG.idTipoMotivo, this.detalleSolicitudRG.codigoPosicion, this.detalleSolicitudRG.nivelDireccion, 'A').subscribe({
+  //       next: (response) => {
+  //         this.mapearDetallesAprobadores(response.nivelAprobacionPosicionType);
+
+  //         this.dataAprobacionesPorPosicion[this.keySelected] = response.nivelAprobacionPosicionType;
+  //       },
+  //       error: (error: HttpErrorResponse) => {
+  //         this.utilService.modalResponse(
+  //           "No existen niveles de aprobación para este empleado",
+  //           "error"
+  //         );
+  //       },
+  //     });
+  //   }
+  // }
 
   mapearDetallesAprobadores(nivelAprobacionPosicionType: any[]) {
     this.starterService.getUser(localStorage.getItem("idUsuario")).subscribe({
@@ -976,6 +993,34 @@ export class RegistrarComentarioSalidaJefeComponent extends CompleteTaskComponen
             cuerpo: modifiedHtmlString,
             password: "p4$$w0rd"
           };
+
+          this.solicitudes.modelDetalleAprobaciones.id_Solicitud = this.solicitudRG.idSolicitud;
+          this.solicitudes.modelDetalleAprobaciones.id_NivelAprobacion = elemento.nivelAprobacionType.idNivelAprobacion;
+          this.solicitudes.modelDetalleAprobaciones.id_TipoSolicitud = elemento.nivelAprobacionType.idTipoSolicitud.toString();
+          this.solicitudes.modelDetalleAprobaciones.id_Accion = elemento.nivelAprobacionType.idAccion;
+          this.solicitudes.modelDetalleAprobaciones.id_TipoMotivo = elemento.nivelAprobacionType.idTipoMotivo;
+          this.solicitudes.modelDetalleAprobaciones.id_TipoRuta = elemento.nivelAprobacionType.idTipoRuta;
+          this.solicitudes.modelDetalleAprobaciones.id_Ruta = elemento.nivelAprobacionType.idRuta;
+          this.solicitudes.modelDetalleAprobaciones.tipoSolicitud = elemento.nivelAprobacionType.tipoSolicitud;
+          this.solicitudes.modelDetalleAprobaciones.motivo = elemento.nivelAprobacionType.tipoMotivo;
+          this.solicitudes.modelDetalleAprobaciones.tipoRuta = elemento.nivelAprobacionType.tipoRuta;
+          this.solicitudes.modelDetalleAprobaciones.ruta = elemento.nivelAprobacionType.ruta;
+          this.solicitudes.modelDetalleAprobaciones.accion = elemento.nivelAprobacionType.accion;
+          this.solicitudes.modelDetalleAprobaciones.nivelDirecion = elemento.nivelAprobacionType.nivelDireccion;
+          this.solicitudes.modelDetalleAprobaciones.nivelAprobacionRuta = elemento.nivelAprobacionType.nivelAprobacionRuta;
+          this.solicitudes.modelDetalleAprobaciones.usuarioAprobador = elemento.aprobador.usuario;
+          this.solicitudes.modelDetalleAprobaciones.codigoPosicionAprobador = elemento.aprobador.codigoPosicion;
+          this.solicitudes.modelDetalleAprobaciones.descripcionPosicionAprobador = elemento.aprobador.descripcionPosicion;
+          this.solicitudes.modelDetalleAprobaciones.sudlegerAprobador = elemento.aprobador.subledger;
+          this.solicitudes.modelDetalleAprobaciones.nivelDireccionAprobador = elemento.aprobador.nivelDireccion;
+          this.solicitudes.modelDetalleAprobaciones.codigoPosicionReportaA = elemento.aprobador.codigoPosicionReportaA;
+          this.solicitudes.modelDetalleAprobaciones.estado = "A";
+          this.solicitudes.modelDetalleAprobaciones.estadoAprobacion = "PorRevisar";
+          this.solicitudes.modelDetalleAprobaciones.correo = elemento.aprobador.correo;
+          this.solicitudes.modelDetalleAprobaciones.usuarioCreacion = elemento.aprobador.usuario;
+          this.solicitudes.modelDetalleAprobaciones.usuarioModificacion = elemento.aprobador.usuario;
+          this.solicitudes.modelDetalleAprobaciones.fechaCreacion = new Date().toISOString();
+          this.solicitudes.modelDetalleAprobaciones.fechaModificacion = new Date().toISOString();
         }
       });
 
@@ -1041,11 +1086,26 @@ export class RegistrarComentarioSalidaJefeComponent extends CompleteTaskComponen
 
     let variables = this.generateVariablesFromFormFields();
 
+    this.utilService.openLoadingSpinner("Completando Tarea, espere por favor...");
+
     if (this.taskKey === this.taskKeySolicitante) {
       variables = this.generateVariablesFromFormFieldsJefeSolicitante();
-    }
 
-    this.utilService.openLoadingSpinner("Completando Tarea, espere por favor...");
+      this.solicitudes.guardarDetallesAprobacionesSolicitud(this.solicitudes.modelDetalleAprobaciones).subscribe({
+        next: () => {
+          this.solicitudes.sendEmail(this.emailVariables).subscribe({
+            next: () => {
+            },
+            error: (error) => {
+              console.error(error);
+            }
+          });
+        },
+        error: (err) => {
+          console.error(err);
+        }
+      });
+    }
 
     this.camundaRestService.postCompleteTask(this.uniqueTaskId, variables).subscribe({
       next: () => {
