@@ -1375,7 +1375,8 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
           this.emailVariables = {
             de: this.solicitudes.modelDetalleAprobaciones.correo,
             para: elemento.aprobador.correo,
-            alias: this.solicitudes.modelDetalleAprobaciones.correo,
+            // alias: this.solicitudes.modelDetalleAprobaciones.correo,
+            alias: "Notificación 1",
             asunto: variables.asunto_revision_solicitud.value,
             cuerpo: modifiedHtmlString,
             password: variables.password.value

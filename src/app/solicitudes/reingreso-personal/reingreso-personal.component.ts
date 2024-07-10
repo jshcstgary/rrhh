@@ -969,7 +969,8 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
           this.emailVariables = {
             de: this.solicitudes.modelDetalleAprobaciones.correo,
             para: elemento.aprobador.correo,
-            alias: this.solicitudes.modelDetalleAprobaciones.correo,
+            // alias: this.solicitudes.modelDetalleAprobaciones.correo,
+            alias: "Notificación 1",
             asunto: `Autorización de Solicitud de ${this.solicitudRG.tipoSolicitud} ${this.solicitudRG.idSolicitud}`,
             cuerpo: modifiedHtmlString,
             password: "p4$$w0rd"

@@ -1168,7 +1168,8 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
               this.emailVariables = {
                 de: "solicitud.workflow@rbp.com",
                 para: elemento.aprobador.correo,
-                alias: "solicitud.workflow@rbp.com",
+                // alias: "solicitud.workflow@rbp.com",
+                alias: "Notificación 1",
                 asunto: `Autorización de Solicitud de ${this.solicitud.tipoSolicitud} ${this.solicitud.idSolicitud}`,
                 cuerpo: modifiedHtmlString,
                 password: "p4$$w0rd"
@@ -1239,7 +1240,8 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
               this.emailVariables = {
                 de: "solicitud.workflow@rbp.com",
                 para: correoCreador,
-                alias: "solicitud.workflow@rbp.com",
+                // alias: "solicitud.workflow@rbp.com",
+                alias: "Notificación 1",
                 asunto: "Notificación Iniciador",
                 cuerpo: modifiedHtmlString,
                 password: "p4$$w0rd"
@@ -1253,7 +1255,8 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
               this.emailVariables = {
                 de: "solicitud.workflow@rbp.com",
                 para: correoCreador,
-                alias: "solicitud.workflow@rbp.com",
+                // alias: "solicitud.workflow@rbp.com",
+                alias: "Notificación 1",
                 asunto: "Notificación Iniciador",
                 cuerpo: modifiedHtmlString,
                 password: "p4$$w0rd"
@@ -1275,7 +1278,8 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
             this.emailVariables = {
                 de: "solicitud.workflow@rbp.com",
                 para: correoCreador,
-                alias: "solicitud.workflow@rbp.com",
+                // alias: "solicitud.workflow@rbp.com",
+                alias: "Notificación 1",
                 asunto: `Notificación por devolución de Solicitud de ${this.solicitud.tipoSolicitud} ${this.solicitud.idSolicitud}`,
                 cuerpo: modifiedHtmlString,
                 password: "p4$$w0rd"
