@@ -30,6 +30,7 @@ import {
 } from "rxjs/operators";
 import { ConsultaTareasService } from "src/app/tareas/consulta-tareas/consulta-tareas.service";
 import { StarterService } from "src/app/starter/starter.service";
+import { CornerDownLeft } from "angular-feather/icons";
 
 @Component({
   selector: "registrarSolicitud",
@@ -173,6 +174,8 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
   public mostrarSubledger = false;
 
   public IsCodigoPosicion = false;
+
+  public models: any[] = [];
 
   public dataEmpleadoEvolution: any[] = [
     {
@@ -618,8 +621,12 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
     console.log(valor);
 
     const datosEmpleado = this.dataEmpleadoEvolution.find((empleado) => {
-      return empleado[campo] === valor;
+      console.log(campo);
+      console.log(empleado);
+
+      return empleado[campo] === valor[campo];
     });
+    console.log(datosEmpleado);
 
     if (datosEmpleado) {
       this.model = Object.assign(
@@ -659,8 +666,21 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
     }
   }
 
+  searchCodigoPosicion: OperatorFunction<any, readonly any[]> = (text$: Observable<string>) => text$.pipe(
+    debounceTime(200),
+    distinctUntilChanged(),
+    map((term) => {
+      if (term.length < 1) {
+        return [];
+      } else {
+        return this.models.filter(({ codigoPosicion }) => codigoPosicion.toLowerCase().includes(term.toLowerCase())).slice(0, 10);
+      }
+    })
+  );
+
+  formatOption = (value: { codigoPosicion: string }) => value.codigoPosicion;
+
   getDataEmpleadosEvolution(tipo: string) {
-    // return this.mantenimientoService.getDataEmpleadosEvolution().subscribe({
     let tipoValue: string = "";
 
     if (tipo === "codigoPosicion") {
@@ -690,27 +710,29 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
 
         this.dataEmpleadoEvolution = response.evType;
 
-        this.model = Object.assign(
-          {},
-          {
-            ...this.dataEmpleadoEvolution[0],
-            sueldo: this.dataEmpleadoEvolution[0].sueldo,
-            sueldoMensual: this.dataEmpleadoEvolution[0].sueldoVariableMensual,
-            sueldoTrimestral: this.dataEmpleadoEvolution[0].sueldoVariableTrimestral,
-            sueldoSemestral: this.dataEmpleadoEvolution[0].sueldoVariableSemestral,
-            sueldoAnual: this.dataEmpleadoEvolution[0].sueldoVariableAnual,
-          }
-        );
+        this.models = [...new Set(this.dataEmpleadoEvolution.map((empleado) => empleado))];
 
-        this.keySelected = `${this.solicitud.idTipoSolicitud}_${this.solicitud.idTipoMotivo}_${this.model.codigoPosicion}_${this.model.nivelDir}`;
+        // this.model = Object.assign(
+        //   {},
+        //   {
+        //     ...this.dataEmpleadoEvolution[0],
+        //     sueldo: this.dataEmpleadoEvolution[0].sueldo,
+        //     sueldoMensual: this.dataEmpleadoEvolution[0].sueldoVariableMensual,
+        //     sueldoTrimestral: this.dataEmpleadoEvolution[0].sueldoVariableTrimestral,
+        //     sueldoSemestral: this.dataEmpleadoEvolution[0].sueldoVariableSemestral,
+        //     sueldoAnual: this.dataEmpleadoEvolution[0].sueldoVariableAnual,
+        //   }
+        // );
 
-        if (tipo === "nombreCompleto") {
-          this.nombresEmpleados = [...new Set(this.dataEmpleadoEvolution.map((empleado) => empleado.nombreCompleto))];
-        }
+        // this.keySelected = `${this.solicitud.idTipoSolicitud}_${this.solicitud.idTipoMotivo}_${this.model.codigoPosicion}_${this.model.nivelDir}`;
 
-        if (!this.dataAprobacionesPorPosicion[this.keySelected]) {
-          this.obtenerAprobacionesPorPosicion();
-        }
+        // if (tipo === "nombreCompleto") {
+        //   this.nombresEmpleados = [...new Set(this.dataEmpleadoEvolution.map((empleado) => empleado.nombreCompleto))];
+        // }
+
+        // if (!this.dataAprobacionesPorPosicion[this.keySelected]) {
+        //   this.obtenerAprobacionesPorPosicion();
+        // }
       },
       error: (error: HttpErrorResponse) => {
         this.utilService.modalResponse(error.error, "error");

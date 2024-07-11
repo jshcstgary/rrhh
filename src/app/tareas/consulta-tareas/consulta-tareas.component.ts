@@ -278,12 +278,20 @@ export class ConsultaTareasComponent implements OnInit {
               break;
 
             case environment.taskType_CompletarRequisicion:
-
-              this.router.navigate([
-                "/solicitudes/completa-solicitud",
-                ids[1],
-                ids[0],
-              ]);
+              if (tarea.solicitudes[0].tipoSolicitud.toUpperCase().includes("REQUISI")) {
+                this.router.navigate([
+                  "/solicitudes/completa-solicitud",
+                  ids[1],
+                  ids[0],
+                ]);
+              } else {
+                Swal.fire({
+                  text: "Completa la solicitud de Requisición de Personal",
+                  icon: "info",
+                  confirmButtonColor: "rgb(227, 199, 22)",
+                  confirmButtonText: "Ok",
+                });
+              }
 
               break;
 
@@ -294,6 +302,13 @@ export class ConsultaTareasComponent implements OnInit {
                   ids[1],
                   ids[0],
                 ]);
+              } else {
+                Swal.fire({
+                  text: "Completa la solicitud de Contratación de Familiares",
+                  icon: "info",
+                  confirmButtonColor: "rgb(227, 199, 22)",
+                  confirmButtonText: "Ok",
+                });
               }
 
               break;
@@ -305,6 +320,13 @@ export class ConsultaTareasComponent implements OnInit {
                   ids[1],
                   ids[0],
                 ]);
+              } else {
+                Swal.fire({
+                  text: "Completa la solicitud de Reingreso de Personal",
+                  icon: "info",
+                  confirmButtonColor: "rgb(227, 199, 22)",
+                  confirmButtonText: "Ok",
+                });
               }
 
               break;
@@ -316,6 +338,13 @@ export class ConsultaTareasComponent implements OnInit {
                   ids[1],
                   ids[0],
                 ]);
+              } else {
+                Swal.fire({
+                  text: "Completa la solicitud de Reingreso de Personal",
+                  icon: "info",
+                  confirmButtonColor: "rgb(227, 199, 22)",
+                  confirmButtonText: "Ok",
+                });
               }
 
               break;
@@ -327,6 +356,13 @@ export class ConsultaTareasComponent implements OnInit {
                   ids[1],
                   ids[0]
                 ]);
+              } else {
+                Swal.fire({
+                  text: "Completa la solicitud de Reingreso de Personal",
+                  icon: "info",
+                  confirmButtonColor: "rgb(227, 199, 22)",
+                  confirmButtonText: "Ok",
+                });
               }
 
               break;
@@ -338,6 +374,13 @@ export class ConsultaTareasComponent implements OnInit {
                   ids[1],
                   ids[0]
                 ]);
+              } else {
+                Swal.fire({
+                  text: "Completa la solicitud de Reingreso de Personal",
+                  icon: "info",
+                  confirmButtonColor: "rgb(227, 199, 22)",
+                  confirmButtonText: "Ok",
+                });
               }
 
               break;

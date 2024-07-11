@@ -26,7 +26,7 @@
             (click)="onSubmit()"
             class="btn btn-info me-2 mt-1"
             aria-label="Close"
-            [disabled]="!solicitudForm.form.valid"
+            [disabled]="justificacionCF === '' || (dataTableDatosFamiliares.length === 0 && faltaParentezco())"
           >
             <i class="fas fa-save"></i> Guardar
           </button>
@@ -34,6 +34,7 @@
             type="button"
             (click)="onCompletar()"
             class="btn btn-info me-2 mt-1"
+            [disabled]="justificacionCF === '' || (dataTableDatosFamiliares.length === 0 && faltaParentezco())"
           >
             <i class="fas fa-check-circle"></i> Completar Tarea
           </button>
@@ -114,7 +115,7 @@
               name="idTipoSolicitud"
               style="color: black; font-size: 14px"
               class="text-start"
-              >{{ "Numero 3" }}</span
+              >{{ idSolicitudRP }}</span
             >
           </div>
         </div>
@@ -132,7 +133,7 @@
           <div class="input-group mb-3">
             <textarea
               name="descripcionposicion"
-              [(ngModel)]="model.descrPosicion"
+              [(ngModel)]="justificacionCF"
               style="color: black; font-size: 14px; width: 100%; resize: none"
               class="form-control"
               id="descripcionposicion"
@@ -160,7 +161,7 @@
               name="idTipoSolicitud"
               style="color: black; font-size: 14px"
               class="text-start"
-              >{{ solicitud.tipoSolicitud }}</span
+              >{{ nombreCompletoCandidato }}</span
             >
           </div>
         </div>

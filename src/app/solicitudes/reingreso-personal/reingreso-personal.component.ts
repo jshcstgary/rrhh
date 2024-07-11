@@ -597,35 +597,12 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
         this.dataEmpleadoEvolution = response.evType;
 
         if (arrayToFill === "nombresJefeInmediatoSuperior") {
-          console.log(this.dataEmpleadoEvolution);
           this.jefesInmediatoSuperior = [...new Set(this.dataEmpleadoEvolution.map((empleado) => empleado))];
         } else if (arrayToFill === "nombresJefeReferencia") {
           this.jefesReferencia = [...new Set(this.dataEmpleadoEvolution.map((empleado) => empleado))];
         } else {
           this.responsablesRRHH = [...new Set(this.dataEmpleadoEvolution.map((empleado) => empleado))];
         }
-
-        // this.nombresEmpleados = [
-        //   ...new Set(
-        //     this.dataEmpleadoEvolution.map(
-        //       (empleado) => empleado.nombreCompleto
-        //     )
-        //   ),
-        // ];
-
-        // this.subledgers = [
-        //   ...new Set(
-        //     this.dataEmpleadoEvolution.map((empleado) => empleado.subledger)
-        //   ),
-        // ];
-
-        // this.codigosPosicion = [
-        //   ...new Set(
-        //     this.dataEmpleadoEvolution.map(
-        //       (empleado) => empleado.codigoPosicion
-        //     )
-        //   ),
-        // ];
       },
       error: (error: HttpErrorResponse) => {
         this.utilService.modalResponse(error.error, "error");

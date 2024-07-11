@@ -1126,7 +1126,6 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
   consultarNextTaskAprobador(IdSolicitud: string) {
    if(this.solicitud.estadoSolicitud !== "5"){
     this.consultaTareasService.getTareaIdParam(IdSolicitud).subscribe((tarea) => {
-      // debugger;
       this.uniqueTaskId = tarea.solicitudes[0].taskId;
       this.taskType_Activity = tarea.solicitudes[0].tasK_DEF_KEY;
       this.nameTask = tarea.solicitudes[0].name;
@@ -1152,7 +1151,6 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
           usuarioCreador = aprobador.usuarioNotificacionCreador?.value;
 
         if(this.solicitud.estadoSolicitud==="4"){
-          // debugger;
           if (aprobadoractual === undefined || aprobadoractual === null) {
             aprobadoractual = this.aprobadorSiguiente.aprobador.nivelDireccion;
             aprobadoractualModel = this.aprobadorActual.aprobador.nivelDireccion;

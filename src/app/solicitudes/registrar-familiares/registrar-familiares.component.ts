@@ -52,6 +52,7 @@ import { DialogBuscarEmpleadosFamiliaresComponent } from "./dialog-buscar-emplea
 import { DialogReasignarUsuarioComponent } from "src/app/shared/reasginar-usuario/reasignar-usuario.component";
 import { TableService } from "src/app/component/table/table.service";
 import { StarterService } from "src/app/starter/starter.service";
+import { RegistrarCandidatoService } from "../registrar-candidato/registrar-candidato.service";
 
 interface DialogComponents {
   dialogBuscarEmpleados: Type<DialogBuscarEmpleadosFamiliaresComponent>;
@@ -170,6 +171,8 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
 
   public dataTipoSolicitud: any = [];
   public dataTipoMotivo: any = [];
+
+  public justificacionCF: string = "";
 
   // public dataTipoAccion: any;
 
@@ -357,6 +360,9 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
   codigosPosicion: string[] = [];
   jsonResult: string;
 
+  nombreCompletoCandidato: string = "";
+  idSolicitudRP: string = "";
+
   constructor(
     route: ActivatedRoute,
     router: Router,
@@ -367,6 +373,7 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
     private consultaTareasService: ConsultaTareasService,
     private modalService: NgbModal,
     private tableService: TableService,
+    private seleccionCandidatoService: RegistrarCandidatoService,
     private starterService: StarterService
   ) {
     super(route, router, camundaRestService);
@@ -493,15 +500,18 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
             this.lookForError(result); // if error, then control gets redirected to err page
 
             // if result is success - bingo, we got the task id
-            this.uniqueTaskId = result.solicitudes[0].taskId; /* Es como la tarea que se crea en esa instancia */
-            this.taskId = params["id"]; /* Esta es la instancia */
-            this.getDetalleSolicitudById(this.id_solicitud_by_params);
-            this.getSolicitudById(this.id_solicitud_by_params);
-            this.date = result.solicitudes[0].startTime;
-            this.loadExistingVariables(
-              this.uniqueTaskId ? this.uniqueTaskId : "",
-              variableNames
-            );
+            // this.uniqueTaskId = result.solicitudes[0].taskId; /* Es como la tarea que se crea en esa instancia */
+            // this.taskId = params["id"]; /* Esta es la instancia */
+            // this.getDetalleSolicitudById(this.id_solicitud_by_params);
+
+            this.getCandidatoValues();
+
+            // this.getSolicitudById(this.id_solicitud_by_params);
+            // this.date = result.solicitudes[0].startTime;
+            // this.loadExistingVariables(
+            //   this.uniqueTaskId ? this.uniqueTaskId : "",
+            //   variableNames
+            // );
           });
       } else {
         // unique id is from the route params
@@ -801,26 +811,14 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
     this.utilService.openLoadingSpinner(
       "Cargando información, espere por favor..."
     );
-    console.log("this.id_solicitud_by_params: ", this.id_solicitud_by_params);
+
     try {
-      await this.ObtenerServicioTipoSolicitud();
-      await this.ObtenerServicioTipoMotivo();
-      await this.ObtenerServicioTipoAccion();
-      // await this.ObtenerServicioNivelDireccion();
-      // await this.getSolicitudes();
-      //if (this.id_edit !== undefined) { //comentado mmunoz
-      //await this.getDetalleSolicitudById(this.id_edit); //comentado mmunoz
-      await this.getSolicitudById(this.id_edit);
-      //} // comentado munoz
-      await this.getDataEmpleadosEvolution();
       await this.loadDataCamunda(); //comentado para prueba mmunoz
+
       await this.obtenerServicioFamiliaresCandidatos({
         idSolicitud: this.id_solicitud_by_params,
       });
-      //console.log("impreme arreglo de aprobadores: ");
-      //await this.recorrerArreglo();
 
-      // await this.getNivelesAprobacion();
       this.utilService.closeLoadingSpinner();
     } catch (error) {
       // Manejar errores aquí de manera centralizada
@@ -865,7 +863,7 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
         this.model.compania=this.solicitud.empresa ;
         this.model.unidadNegocio=this.solicitud.unidadNegocio;*/
 
-        this.loadingComplete++;
+        this.loadingComplete += 2;
         this.getDetalleSolicitudById(this.id_edit);
 
         // tveas, si incluye el id, debo mostrarlos (true)
@@ -882,6 +880,22 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
       error: (error: HttpErrorResponse) => {
         this.utilService.modalResponse(error.error, "error");
       },
+    });
+  }
+
+  getCandidatoValues() {
+    this.seleccionCandidatoService.getCandidatoById(this.id_edit).subscribe({
+      next: (res) => {
+        const candidatoValues = res.seleccionCandidatoType[0];
+
+        this.nombreCompletoCandidato = res.seleccionCandidatoType[0].candidato;
+        this.idSolicitudRP = res.seleccionCandidatoType[0].iD_SOLICITUD;
+
+        this.getSolicitudById(this.id_solicitud_by_params);
+      },
+      error: (err) => {
+        console.log(console.log(err));
+      }
     });
   }
 
@@ -917,6 +931,7 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
           this.model.sueldoAnual = this.detalleSolicitud.sueldoVariableAnual;
           this.model.correo = this.detalleSolicitud.correo;
           this.model.fechaIngreso = this.detalleSolicitud.fechaIngreso;
+          this.justificacionCF = this.detalleSolicitud.justificacion;
         }
         /* this.detalleSolicitud.estado = response.estado;
         this.detalleSolicitud.estado = response.estadoSolicitud;
@@ -1028,6 +1043,14 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
     this.solicitudes.getSolicitudes().subscribe((data) => { });
   }
 
+  faltaParentezco(): boolean {
+    if (this.dataTableDatosFamiliares.length === 0) {
+      return true;
+    }
+
+    return this.dataTableDatosFamiliares.some(({ parentesco }) => parentesco === "");
+  }
+
   obtenerServicioFamiliaresCandidatos({ idSolicitud }: { idSolicitud: string; }) {
     return this.mantenimientoService.getFamiliaresCandidatoBySolicitud(this.id_solicitud_by_params).subscribe({
       next: (response) => {
@@ -1124,7 +1147,7 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
   onSubmit() {
 
     Swal.fire({
-      text: "¿Desea crear la Solicitud?",
+      text: "¿Desea guardar la Solicitud?",
       icon: "question",
       showCancelButton: true,
       confirmButtonColor: "rgb(227, 199, 22)",
@@ -1185,7 +1208,7 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
         this.detalleSolicitud.cargo = this.model.nombreCargo;
         this.detalleSolicitud.centroCosto = this.model.nomCCosto;
         this.detalleSolicitud.codigoPosicion = this.model.codigoPosicion;
-        this.detalleSolicitud.compania = this.model.compania; //idEmpresa
+        this.detalleSolicitud.compania = this.model.compania;
         this.detalleSolicitud.departamento = this.model.departamento;
         this.detalleSolicitud.descripcionPosicion = this.model.descrPosicion;
 
@@ -1212,12 +1235,9 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
             this.model.misionCargo == null
             ? ""
             : this.model.misionCargo;
-        this.detalleSolicitud.justificacion =
-          this.model.justificacionCargo == "" ||
-            this.model.justificacionCargo == undefined ||
-            this.model.justificacionCargo == null
-            ? ""
-            : this.model.justificacionCargo;
+
+        this.detalleSolicitud.justificacion = this.justificacionCF;
+
         this.detalleSolicitud.sueldo = this.model.sueldo;
         this.detalleSolicitud.sueldoVariableMensual = this.model.sueldoMensual;
         this.detalleSolicitud.sueldoVariableTrimestral =
@@ -1272,8 +1292,6 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
   consultarNextTaskAprobador(IdSolicitud: string) {
     this.consultaTareasService.getTareaIdParam(IdSolicitud)
       .subscribe((tarea) => {
-        console.log(tarea);
-        debugger;
         this.uniqueTaskId = tarea.solicitudes[0].taskId;
         this.taskType_Activity = tarea.solicitudes[0].tasK_DEF_KEY;
         this.nameTask = tarea.solicitudes[0].name;
@@ -1514,74 +1532,6 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
       });
   }
 
-  // override generateVariablesFromFormFields() {
-  //   let variables: any = {};
-
-  //   this.crearRegistradorSolicitud();
-
-  //   if (this.tipo_solicitud_descripcion.toUpperCase().includes("REQUISICION") || this.solicitud.tipoSolicitud.toUpperCase().includes("REQUISICIÓN")) {
-  //     if (this.taskType_Activity == environment.taskType_CF) {
-  //       variables.codigoPosicion = { value: this.model.codigoPosicion };
-  //       variables.misionCargo = { value: this.model.misionCargo };
-  //       variables.justificacionCargo = { value: this.model.justificacionCargo };
-  //       variables.empresa = { value: this.model.compania };
-  //       variables.unidadNegocio = { value: this.model.unidadNegocio };
-  //       variables.descripcionPosicion = { value: this.model.descrPosicion };
-  //       variables.areaDepartamento = { value: this.model.departamento };
-  //       variables.localidadZona = { value: this.model.localidad };
-  //       variables.centroCosto = { value: this.model.nomCCosto };
-  //       variables.reportaa = { value: this.model.reportaA };
-  //       variables.nivelReportea = { value: this.model.nivelRepa };
-  //       variables.supervisa = { value: this.model.supervisaA };
-  //       variables.tipoContrato = { value: this.model.tipoContrato };
-  //       variables.sueldo = { value: this.model.sueldo };
-  //       variables.sueldoMensual = { value: this.model.sueldoMensual };
-  //       variables.sueldoTrimestral = { value: this.model.sueldoTrimestral };
-  //       variables.sueldoSemestral = { value: this.model.sueldoSemestral };
-  //       variables.sueldoAnual = { value: this.model.sueldoAnual };
-  //       variables.anularSolicitud = { value: this.selectedOption };
-  //       variables.comentariosAnulacion = {
-  //         value: this.model.comentariosAnulacion,
-  //       };
-  //       variables.nivelDireccion = { value: this.model.nivelDir };
-  //       variables.tipoRuta = {
-  //         //value: ["Unidades","Unidades", "Aprobadores Fijos", "Aprobadores Fijos"],
-  //         value: this.dataTipoRuta,
-  //         type: "String",
-  //         valueInfo: {
-  //           objectTypeName: "java.util.ArrayList",
-  //           serializationDataFormat: "application/json",
-  //         },
-  //       };
-  //       variables.ruta = {
-  //         // value : ["2doNivelAprobacion", "3erNivelAprobacion", "Remuneraciones"],
-  //         value: this.dataRuta,
-  //         type: "String",
-  //         valueInfo: {
-  //           objectTypeName: "java.util.ArrayList",
-  //           serializationDataFormat: "application/json",
-  //         },
-  //       };
-
-  //       variables.resultadoRutaAprobacion = {
-  //         //value : "[\"Gerencia Media\", \"Gerencia de Unidad o Corporativa\"]",
-  //         value: JSON.stringify(this.dataAprobadoresDinamicos),
-  //         type: "Object",
-  //         valueInfo: {
-  //           objectTypeName: "java.util.ArrayList",
-  //           serializationDataFormat: "application/json",
-  //         },
-  //       };
-  //     }
-
-  //     if (this.taskType_Activity == environment.taskType_CompletarRequisicion) {
-  //       variables.atencionCompletarRequisicion = { value: "aprobar" };
-  //     }
-  //   }
-
-  //   return { variables };
-  // }
-
   override generateVariablesFromFormFields() {
     let variables: any = {};
 
@@ -1602,153 +1552,12 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
             password: "p4$$w0rd"
           };
         }
-
-        // if (elemento.aprobador.nivelDireccion === this.NIVEL_APROBACION_GERENCIA_MEDIA) {
-        //   variables.correoNotificacionGerenciaMedia = {
-        //     value: elemento.aprobador.correo
-        //   };
-        //   variables.usuarioNotificacionGerenciaMedia = {
-        //     value: elemento.aprobador.usuario
-        //   };
-        //   variables.nivelDireccionNotificacionGerenciaMedia = {
-        //     value: elemento.aprobador.nivelDireccion
-        //   };
-        //   variables.descripcionPosicionNotificacionGerenciaMedia = {
-        //     value: elemento.aprobador.descripcionPosicion
-        //   };
-        //   variables.subledgerNotificacionGerenciaMedia = {
-        //     value: elemento.aprobador.subledger
-        //   };
-        // } else if (elemento.aprobador.nivelDireccion === this.NIVEL_APROBACION_GERENCIA_UNIDAD) {
-        //   variables.correoNotificacionGerenciaUnidadCorporativa = {
-        //     value: elemento.aprobador.correo
-        //   };
-        //   variables.usuarioNotificacionGerenciaUnidadCorporativa = {
-        //     value: elemento.aprobador.usuario
-        //   };
-        //   variables.nivelDireccionNotificacionGerenciaUnidadCorporativa = {
-        //     value: elemento.aprobador.nivelDireccion
-        //   };
-        //   variables.descripcionPosicionNotificacionGerenciaUnidadCorporativa = {
-        //     value: elemento.aprobador.descripcionPosicion
-        //   };
-        //   variables.subledgerNotificacionGerenciaUnidadCorporativa = {
-        //     value: elemento.aprobador.subledger
-        //   };
-        // } else if (elemento.aprobador.nivelDireccion === this.NIVEL_APROBACION_JEFATURA) {
-        //   variables.correoNotificacionJefatura = {
-        //     value: elemento.aprobador.correo
-        //   };
-        //   variables.usuarioNotificacionJefatura = {
-        //     value: elemento.aprobador.usuario
-        //   };
-        //   variables.nivelDireccionNotificacionJefatura = {
-        //     value: elemento.aprobador.nivelDireccion
-        //   };
-        //   variables.descripcionPosicionNotificacionJefatura = {
-        //     value: elemento.aprobador.descripcionPosicion
-        //   };
-        //   variables.subledgerNotificacionJefatura = {
-        //     value: elemento.aprobador.subledger
-        //   };
-        // } else if (elemento.aprobador.nivelDireccion.toUpperCase().includes(this.NIVEL_APROBACION_VICEPRESIDENCIA)) {
-        //   variables.correoNotificacionVicepresidencia = {
-        //     value: elemento.aprobador.correo
-        //   };
-        //   variables.usuarioNotificacionVicepresidencia = {
-        //     value: elemento.aprobador.usuario
-        //   };
-        //   variables.nivelDireccionNotificacionVicepresidencia = {
-        //     value: elemento.aprobador.nivelDireccion
-        //   };
-        //   variables.descripcionPosicionNotificacionVicepresidencia = {
-        //     value: elemento.aprobador.descripcionPosicion
-        //   };
-        //   variables.subledgerNotificacionVicepresidencia = {
-        //     value: elemento.aprobador.subledger
-        //   };
-        // } else if (elemento.aprobador.nivelDireccion === this.NIVEL_APROBACION_RRHH) {
-        //   variables.correoNotificacionGerenteRRHH = {
-        //     value: elemento.aprobador.correo
-        //   };
-        //   variables.usuarioNotificacionGerenteRRHH = {
-        //     value: elemento.aprobador.usuario
-        //   };
-        //   variables.nivelDireccionNotificacionGerenteRRHH = {
-        //     value: elemento.aprobador.nivelDireccion
-        //   };
-        //   variables.descripcionPosicionNotificacionGerenteRRHH = {
-        //     value: elemento.aprobador.descripcionPosicion
-        //   };
-        //   variables.subledgerNotificacionGerenteRRHH = {
-        //     value: elemento.aprobador.subledger
-        //   };
-        // }
       });
 
-      // variables.codigoPosicion = {
-      //   value: this.model.codigoPosicion
-      // };
-      // variables.misionCargo = {
-      //   value: this.model.misionCargo
-      // };
-      // variables.justificacionCargo = {
-      //   value: this.model.justificacionCargo
-      // };
-      // variables.empresa = {
-      //   value: this.model.compania
-      // };
-      // variables.unidadNegocio = {
-      //   value: this.model.unidadNegocio
-      // };
-      // variables.descripcionPosicion = {
-      //   value: this.model.descrPosicion
-      // };
-      // variables.areaDepartamento = {
-      //   value: this.model.departamento
-      // };
-      // variables.localidadZona = {
-      //   value: this.model.localidad
-      // };
-      // variables.centroCosto = {
-      //   value: this.model.nomCCosto
-      // };
-      // variables.reportaa = {
-      //   value: this.model.reportaA
-      // };
-      // variables.nivelReportea = {
-      //   value: this.model.nivelRepa
-      // };
-      // variables.supervisa = {
-      //   value: this.model.supervisaA
-      // };
-      // variables.tipoContrato = {
-      //   value: this.model.tipoContrato
-      // };
-      // variables.sueldo = {
-      //   value: this.model.sueldo
-      // };
-      // variables.sueldoMensual = {
-      //   value: this.model.sueldoMensual
-      // };
-      // variables.sueldoTrimestral = {
-      //   value: this.model.sueldoTrimestral
-      // };
-      // variables.sueldoSemestral = {
-      //   value: this.model.sueldoSemestral
-      // };
-      // variables.sueldoAnual = {
-      //   value: this.model.sueldoAnual
-      // };
       variables.anularSolicitud = {
         value: this.selectedOption
       };
-      // variables.comentariosAnulacion = {
-      //   value: this.model.comentariosAnulacion
-      // };
-      // variables.nivelDireccion = {
-      //   value: this.model.nivelDir
-      // };
+
       variables.usuarioNotificacionCreador = {
         value: this.solicitudes.modelDetalleAprobaciones.usuarioAprobador
       };
