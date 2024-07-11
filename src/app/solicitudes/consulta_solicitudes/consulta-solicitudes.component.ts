@@ -691,12 +691,25 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
   ObtenerServicioTipoSolicitud() {
     return this.mantenimientoService.getTipoSolicitud().subscribe({
       next: (response: any) => {
-        this.dataTipoSolicitudes = response.tipoSolicitudType.map((r) => ({
+        this.dataTipoSolicitudes = response.tipoSolicitudType.filter((r) => r.estado === "A" && (r.codigoTipoSolicitud === "RP" || r.codigoTipoSolicitud === "AP" || r.codigoTipoSolicitud === "DP")).map((r) => ({
           id: r.id,
           descripcion: r.tipoSolicitud,
           codigoTipoSolicitud: r.codigoTipoSolicitud,
           estado: r.estado
-        })); //verificar la estructura mmunoz
+        }));
+
+        // this.dataTipoSolicitudes = response.tipoSolicitudType.map((r) => {
+        //   if (r.estado === "A" && (r.codigoTipoSolicitud === "RP" || r.codigoTipoSolicitud === "AP")) {
+        //     return {
+        //       id: r.id,
+        //       descripcion: r.tipoSolicitud,
+        //       codigoTipoSolicitud: r.codigoTipoSolicitud,
+        //       estado: r.estado
+        //     }
+        //   }
+
+        //   return;
+        // }); //verificar la estructura mmunoz
       },
       error: (error: HttpErrorResponse) => {
         this.utilService.modalResponse(error.error, "error");

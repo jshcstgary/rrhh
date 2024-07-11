@@ -51,7 +51,7 @@ export class HorizontalSidebarComponent {
     "background-position": "center"
   };
   //public pagesToSearch: ISelectOptions = [];
-  public userName: string = "Vcastro";
+  public userName: string = localStorage.getItem("idUsuario");
   public profile: string = "Supervisor";
   public profiles: IDropdownOptions = [
     { id: "administracion", name: "Administracion" },

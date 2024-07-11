@@ -81,7 +81,7 @@ export class LoginComponent {
 
         localStorage.setItem("idUsuario", this.user);
 
-        this.router.navigate(["/starter"]);
+        this.router.navigate(["/tareas/consulta-tareas"]);
       },
       error: (err) => {
         Swal.fire({

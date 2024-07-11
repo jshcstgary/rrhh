@@ -323,7 +323,7 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
 
   public loadingComplete = 0;
 
-  nombresEmpleados: string[] = [];
+  nombres: string[] = [];
 
   subledgers: string[] = [];
 
@@ -362,20 +362,20 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
     console.log(this.selectedOption);
   }
 
-  searchNombreCompleto: OperatorFunction<string, readonly string[]> = (
-    text$: Observable<string>
-  ) =>
-    text$.pipe(
-      debounceTime(200),
-      distinctUntilChanged(),
-      map((term) =>
-        term.length < 1
-          ? []
-          : this.nombresEmpleados
-            .filter((v) => v.toLowerCase().indexOf(term.toLowerCase()) > -1)
-            .slice(0, 10)
-      )
-    );
+  // searchNombreCompleto: OperatorFunction<string, readonly string[]> = (
+  //   text$: Observable<string>
+  // ) =>
+  //   text$.pipe(
+  //     debounceTime(200),
+  //     distinctUntilChanged(),
+  //     map((term) =>
+  //       term.length < 1
+  //         ? []
+  //         : this.nombresEmpleados
+  //           .filter((v) => v.toLowerCase().indexOf(term.toLowerCase()) > -1)
+  //           .slice(0, 10)
+  //     )
+  //   );
 
   loadDataCamunda() {
     this.route.queryParamMap.subscribe((qParams) => {
@@ -615,18 +615,11 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
   }
 
   onSelectItem(campo: string, event) {
-    console.log(this.dataEmpleadoEvolution);
-    console.log(campo);
-    let valor = event.item;
-    console.log(valor);
+    const valor = event.item;
 
     const datosEmpleado = this.dataEmpleadoEvolution.find((empleado) => {
-      console.log(campo);
-      console.log(empleado);
-
-      return empleado[campo] === valor[campo];
+      return empleado[campo] === valor;
     });
-    console.log(datosEmpleado);
 
     if (datosEmpleado) {
       this.model = Object.assign(
@@ -640,7 +633,6 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
           sueldoAnual: datosEmpleado.sueldoVariableAnual,
         }
       );
-      console.log(this.model);
 
       this.keySelected = `${this.solicitud.idTipoSolicitud}_${this.solicitud.idTipoMotivo}_${this.model.codigoPosicion}_${this.model.nivelDir}`;
 
@@ -673,12 +665,34 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
       if (term.length < 1) {
         return [];
       } else {
-        return this.models.filter(({ codigoPosicion }) => codigoPosicion.toLowerCase().includes(term.toLowerCase())).slice(0, 10);
+        return this.codigosPosicion.filter((codigoPosicion) => codigoPosicion.toLowerCase().includes(term.toLowerCase())).slice(0, 10);
       }
     })
   );
 
-  formatOption = (value: { codigoPosicion: string }) => value.codigoPosicion;
+  searchSubledger: OperatorFunction<any, readonly any[]> = (text$: Observable<string>) => text$.pipe(
+    debounceTime(200),
+    distinctUntilChanged(),
+    map((term) => {
+      if (term.length < 1) {
+        return [];
+      } else {
+        return this.subledgers.filter((subledger) => subledger.toLowerCase().includes(term.toLowerCase())).slice(0, 10);
+      }
+    })
+  );
+
+  searchNombre: OperatorFunction<any, readonly any[]> = (text$: Observable<string>) => text$.pipe(
+    debounceTime(200),
+    distinctUntilChanged(),
+    map((term) => {
+      if (term.length < 1) {
+        return [];
+      } else {
+        return this.nombres.filter((nombreCompleto) => nombreCompleto.toLowerCase().includes(term.toLowerCase())).slice(0, 10);
+      }
+    })
+  );
 
   getDataEmpleadosEvolution(tipo: string) {
     let tipoValue: string = "";
@@ -710,7 +724,13 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
 
         this.dataEmpleadoEvolution = response.evType;
 
-        this.models = [...new Set(this.dataEmpleadoEvolution.map((empleado) => empleado))];
+        if (tipo === "codigoPosicion") {
+          this.codigosPosicion = [...new Set(this.dataEmpleadoEvolution.map((empleado) => empleado.codigoPosicion))];
+        } else if (tipo === "subledger") {
+          this.subledgers = [...new Set(this.dataEmpleadoEvolution.map((empleado) => empleado.subledger))];
+        } else if (tipo === "nombreCompleto") {
+          this.nombres = [...new Set(this.dataEmpleadoEvolution.map((empleado) => empleado.nombreCompleto))];
+        }
 
         // this.model = Object.assign(
         //   {},
