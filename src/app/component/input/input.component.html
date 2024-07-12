@@ -26,7 +26,6 @@
         (keyup)="onChangeInput($event)"
         (keyup.enter)="onEnterKey()"
         [defaultValue]="defaultValue"
-        [value]="theValue"
         [attr.maxlength]="maxLength"
         (blur)="onBlurInput($event)"
         [disabled]="disabled"
@@ -78,7 +77,6 @@
         [defaultValue]="defaultValue"
         [attr.maxlength]="maxLength"
         (blur)="onBlurInput($event)"
-        [value]="theValue"
         [disabled]="disabled"
         [ngClass]="{ 'input-text-error': InputHasAnError }"
         (keypress)="keypress($event)"
@@ -112,7 +110,6 @@
         [cpColorMode]="'presets'"
         (colorPickerChange)="onChangeInput($event)"
         [cpPresetLabel]="'Colores por defecto'"
-        [value]="theValue"
         [cpPresetColors]="[
           '#00FF00',
           '#0000FF',
@@ -194,7 +191,6 @@
         [disabled]="disabled"
         (change)="onChangeInput($event)"
         [defaultChecked]="defaultValue"
-        [value]="theValue"
       />
     </div>
   </div>
@@ -227,7 +223,6 @@
         (keyup.enter)="onEnterKey()"
         [defaultValue]="defaultValue"
         [attr.maxlength]="maxLength"
-        [value]="theValue"
         (blur)="onBlurInput($event)"
         [disabled]="disabled"
         [ngClass]="{ 'input-text-error': InputHasAnError }"
@@ -255,7 +250,6 @@
       class="form-check-input"
       type="checkbox"
       (change)="onChangeInput($event)"
-      [value]="theValue"
       [defaultChecked]="defaultValue"
       [disabled]="disabled"
     />
@@ -289,7 +283,6 @@
         (keyup.enter)="onEnterKey()"
         [defaultValue]="defaultValue"
         (blur)="onBlurInput($event)"
-        [value]="theValue"
         [disabled]="disabled"
         [ngClass]="{ 'input-text-error': InputHasAnError }"
         (keypress)="keypress($event)"
@@ -333,7 +326,6 @@
         (keyup.enter)="onEnterKey()"
         (change)="onChangeInput($event)"
         [value]="defaultValue"
-        [value]="theValue"
         (blur)="onBlurInput($event)"
         [disabled]="disabled"
         [ngClass]="{ 'input-text-error': InputHasAnError }"
