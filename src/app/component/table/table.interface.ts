@@ -9,7 +9,7 @@ export interface IColumnTable {
   sortTypeOrder?: sortColOrderType;
   colType?: colTypeTable;
   width?: string;
-  isEditingRow?: boolean
+  isEditingRow?: boolean;
 }
 export interface ISelectOptionsTable {
   type: selectOptionType;
