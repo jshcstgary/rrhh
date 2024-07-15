@@ -37,11 +37,17 @@ export const ConsultaSolicitudesData: IConsultaNivelesAprobacionData = {
       type: "actions",
       width: "100px",
       actions: [
-        { materialIcon: "edit", id: "editOnTable", tooltip: "Editar" },
+        {
+          materialIcon: "edit",
+          id: "editOnTable",
+          tooltip: "Editar",
+          showed: true
+        },
         {
           materialIcon: "content_copy",
           id: "cloneOnTable",
           tooltip: "Duplicar",
+          showed: true
         },
       ],
     },

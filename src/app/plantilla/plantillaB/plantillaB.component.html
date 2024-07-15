@@ -12,10 +12,11 @@
   </form-component>
 
   <div class="row">
-    <div class="col-md-3">
+    <div *ngIf="showFilterTipoSolicitud" class="col-md-3">
       <div class="mb-3">
         <label class="azul">Tipo de Solicitud</label>
         <ng-select
+          [disabled]="disabledFilterTipoSolicitud"
           #inputSelectLabor
           [(ngModel)]="dataFilterNivelesAprobacion.tipoSolicitud"
           name="id_tipo_labor"
@@ -29,11 +30,12 @@
       </div>
     </div>
     <!--Tipo-->
-    <div class="col-md-3">
+    <div *ngIf="showFilterTipoMotivo" class="col-md-3">
       <div class="mb-3">
         <label class="azul">Tipo Motivo</label>
         <ng-select
           #inputSelectProducto
+          [disabled]="disabledFilterTipoMotivo"
           [(ngModel)]="dataFilterNivelesAprobacion.tipoMotivo"
           name="id_producto"
           placeholder="Seleccione"
@@ -46,11 +48,12 @@
       </div>
     </div>
     <!--Nivel de direccion-->
-    <div class="col-md-3">
+    <div *ngIf="showFilterNivelDireccion" class="col-md-3">
       <div class="mb-3">
         <label class="azul">Nivel de Direccion</label>
         <ng-select
           #inputSelectTrabajador
+          [disabled]="disabledFilterNivelDireccion"
           [(ngModel)]="dataFilterNivelesAprobacion.nivelDireccion"
           name="id_trabajador"
           placeholder="Seleccione"
@@ -63,7 +66,7 @@
       </div>
     </div>
 
-    <div class="col-md-3">
+    <div *ngIf="showButtonBuscar" class="col-md-3">
       <div class="mb-3 text-end">
         <button
           (click)="filterDataTable()"
@@ -81,6 +84,7 @@
         <div class="mb-3">
           <div class="text-end">
             <button
+              *ngIf="showCreateButton"
               type="button"
               (click)="pageCrear()"
               class="btn btn-info me-2"
@@ -88,7 +92,7 @@
               <i class="fas fa-plus"></i> Agregar
             </button>
 
-            <button type="submit" class="btn btn-outline-info me-2">
+            <button *ngIf="showButtonExportar" type="submit" class="btn btn-outline-info me-2">
               <i class="fas fa-file-excel"></i> Exportar
             </button>
           </div>

@@ -18,6 +18,7 @@ import { NgScrollbarModule } from "ngx-scrollbar";
 // import { EventEmitter } from "stream";
 import { MatIconModule } from "@angular/material/icon";
 import { ScrollingModule } from "@angular/cdk/scrolling";
+import { Permission } from "../../types/permiso.type";
 
 @Component({
   selector: "app-horizontal-sidebar",
@@ -48,8 +49,11 @@ export class HorizontalSidebarComponent {
     "background-image": "url(../../../assets/images/background/navbar-bg.png)",
     "background-repeat": "no-repeat",
     "background-size": "cover",
-    "background-position": "center"
+    "background-position": "center",
+    "height": "100%"
   };
+
+  public permisos: Permission[] = JSON.parse(localStorage.getItem("permisos")) || [];
   //public pagesToSearch: ISelectOptions = [];
   public userName: string = localStorage.getItem("idUsuario");
   public profile: string = "Supervisor";
@@ -161,8 +165,14 @@ export class HorizontalSidebarComponent {
     private router: Router
   ) {
     this.menuServise.items.subscribe((menuItems) => {
-		// ? FILTRAR ESTE ARREGLO
-      this.sidebarnavItems = menuItems;
+      // ? FILTRAR ESTE ARREGLO
+      this.sidebarnavItems = menuItems.filter(menuItem => this.permisos.some(permiso => menuItem.codigo === permiso.codigo));
+
+      this.sidebarnavItems = this.sidebarnavItems.map(menuItem => {
+        menuItem.submenu = menuItem.submenu.filter(sub => this.permisos.some(permiso => sub.codigo === permiso.codigo));
+
+        return menuItem;
+      })
 
       // Active menu
       this.sidebarnavItems.filter((m) =>

@@ -1,24 +1,20 @@
 import { Component, OnInit } from "@angular/core";
 import { IColumnsTable } from "src/app/component/table/table.interface";
 import { ConsultaSolicitudesData } from "./niveles-aprobacion.data";
-import {
-  IConsultaNivelesAprobacion,
-  IConsultaNivelesAprobacionTable,
-} from "./niveles-aprobacion.interface";
-import Swal from "sweetalert2";
 import { HttpErrorResponse } from "@angular/common/http";
-import { IInputsComponent } from "src/app/component/input/input.interface";
 import { reportCodeEnum } from "src/app/services/util/util.interface";
 import { TableService } from "src/app/component/table/table.service";
 import { ValidationsService } from "src/app/services/validations/validations.service";
-import { environment } from "src/environments/environment";
 import { UtilService } from "src/app/services/util/util.service";
-import { UtilData } from "src/app/services/util/util.data";
 import { NivelesAprobacionService } from "./niveles-aprobacion.service";
 import { DataFilterNivelesAprobacion } from "src/app/eschemas/DataFilterNivelesAprobacion";
 import { MantenimientoService } from "src/app/services/mantenimiento/mantenimiento.service";
 import { Router } from "@angular/router";
-import { DataFilterSolicitudes } from "src/app/eschemas/DataFilterSolicitudes";
+import { PageCodes } from "src/app/enums/codes.enum";
+import { NivelAprobacionPageControlPermission } from "src/app/enums/page-control-permisions.enum";
+import { PageControlPermiso } from "src/app/types/page-control-permiso.type";
+import { PermisoService } from "src/app/services/permiso/permiso.service";
+import { Control } from "src/app/types/permiso.type";
 
 @Component({
   selector: "app-niveles-aprobacion",
@@ -26,6 +22,60 @@ import { DataFilterSolicitudes } from "src/app/eschemas/DataFilterSolicitudes";
   styleUrls: ["./niveles-aprobacion.component.scss"],
 })
 export class NivelesAprobacionComponent implements OnInit {
+  private pageCode: string = PageCodes.NivelesAprobacion;
+  public pageControlPermission: typeof NivelAprobacionPageControlPermission = NivelAprobacionPageControlPermission;
+
+  public controlsPermissions: PageControlPermiso = {
+    [NivelAprobacionPageControlPermission.FiltroTipoSolicitud]: {
+      "codigo_Control": "",
+      "habilitar": false,
+      "modificar": false,
+      "visualizar": false
+    },
+    [NivelAprobacionPageControlPermission.FiltroTipoMotivo]: {
+      "codigo_Control": "",
+      "habilitar": false,
+      "modificar": false,
+      "visualizar": false
+    },
+    [NivelAprobacionPageControlPermission.FiltroNivelDireccion]: {
+      "codigo_Control": "",
+      "habilitar": false,
+      "modificar": false,
+      "visualizar": false
+    },
+    [NivelAprobacionPageControlPermission.ButtonBuscar]: {
+      "codigo_Control": "",
+      "habilitar": false,
+      "modificar": false,
+      "visualizar": false
+    },
+    [NivelAprobacionPageControlPermission.ButtonAgregar]: {
+      "codigo_Control": "",
+      "habilitar": false,
+      "modificar": false,
+      "visualizar": false
+    },
+    [NivelAprobacionPageControlPermission.ButtonExportar]: {
+      "codigo_Control": "",
+      "habilitar": false,
+      "modificar": false,
+      "visualizar": false
+    },
+    [NivelAprobacionPageControlPermission.ButtonEditar]: {
+      "codigo_Control": "",
+      "habilitar": false,
+      "modificar": false,
+      "visualizar": false
+    },
+    [NivelAprobacionPageControlPermission.ButtonDuplicar]: {
+      "codigo_Control": "",
+      "habilitar": false,
+      "modificar": false,
+      "visualizar": false
+    }
+  };
+
   public columnsTable: IColumnsTable = ConsultaSolicitudesData.columns;
   public dataTable: any[] = [];
   // public tableInputsEditRow: IInputsComponent = ConsultaSolicitudesData.tableInputsEditRow;
@@ -45,14 +95,50 @@ export class NivelesAprobacionComponent implements OnInit {
     private validationsService: ValidationsService,
     private utilService: UtilService,
     private mantenimientoService: MantenimientoService,
-    private router: Router
-  ) { }
+    private router: Router,
+    private permissionService: PermisoService
+  ) {
+    this.getPermissions();
+  }
 
   ngOnInit(): void {
+    this.columnsTable[this.columnsTable.length - 1].actions.forEach(action => {
+      if (action.id === "editOnTable") {
+        action.showed = this.controlsPermissions[NivelAprobacionPageControlPermission.ButtonEditar].visualizar
+      } else if (action.id === "cloneOnTable") {
+        action.showed = this.controlsPermissions[NivelAprobacionPageControlPermission.ButtonDuplicar].visualizar
+      }
+    });
+    console.log(this.columnsTable[this.columnsTable.length - 1]);
+
     this.ObtenerServicioTipoSolicitud();
     this.ObtenerServicioNivelDireccion();
     this.ObtenerServicioTipoMotivo();
     this.getDataToTable();
+  }
+
+  private getPermissions(): void {
+    const controlsPermission: Control[] = this.permissionService.getPagePermission(this.pageCode);
+
+    controlsPermission.forEach(controlPermission => {
+      if (controlPermission.codigo_Control === "01") {
+        this.controlsPermissions[NivelAprobacionPageControlPermission.FiltroTipoSolicitud] = controlPermission;
+      } else if (controlPermission.codigo_Control === "02") {
+        this.controlsPermissions[NivelAprobacionPageControlPermission.FiltroTipoMotivo] = controlPermission;
+      } else if (controlPermission.codigo_Control === "03") {
+        this.controlsPermissions[NivelAprobacionPageControlPermission.FiltroNivelDireccion] = controlPermission;
+      } else if (controlPermission.codigo_Control === "04") {
+        this.controlsPermissions[NivelAprobacionPageControlPermission.ButtonBuscar] = controlPermission;
+      } else if (controlPermission.codigo_Control === "05") {
+        this.controlsPermissions[NivelAprobacionPageControlPermission.ButtonAgregar] = controlPermission;
+      } else if (controlPermission.codigo_Control === "06") {
+        this.controlsPermissions[NivelAprobacionPageControlPermission.ButtonExportar] = controlPermission;
+      } else if (controlPermission.codigo_Control === "07") {
+        this.controlsPermissions[NivelAprobacionPageControlPermission.ButtonEditar] = controlPermission;
+      } else if (controlPermission.codigo_Control === "08") {
+        this.controlsPermissions[NivelAprobacionPageControlPermission.ButtonDuplicar] = controlPermission;
+      }
+    });
   }
 
   filterDataTable() {

@@ -66,6 +66,11 @@ import { ConsultaSolicitudesService } from "./consulta-solicitudes.service";
 import { DetalleSolicitud } from "src/app/eschemas/DetalleSolicitud";
 import { single } from "src/app/charts/ngx-charts/chartData";
 import { StarterService } from "src/app/starter/starter.service";
+import { PageCodes } from "src/app/enums/codes.enum";
+import { PageControlPermiso } from "src/app/types/page-control-permiso.type";
+import { PermisoService } from "src/app/services/permiso/permiso.service";
+import { Control } from "src/app/types/permiso.type";
+import { ConsultaSolicitudPageControlPermission } from "src/app/enums/page-control-permisions.enum";
 //import { StarterService } from "src/app/starter/starter.service";
 
 
@@ -78,7 +83,71 @@ const data: any = require("./company.json");
   styleUrls: ["./consulta-solicitudes.component.scss"],
 })
 export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
-  // public dataTable: IConsultaSolicitudesTable = [];
+  private pageCode: string = PageCodes.ConsultaSolicitudes;
+  public pageControlPermission: typeof ConsultaSolicitudPageControlPermission = ConsultaSolicitudPageControlPermission;
+
+  public controlsPermissions: PageControlPermiso = {
+    [ConsultaSolicitudPageControlPermission.FiltroEmpresa]: {
+      "codigo_Control": "",
+      "habilitar": false,
+      "modificar": false,
+      "visualizar": false
+    },
+    [ConsultaSolicitudPageControlPermission.FiltroUnidadNegocio]: {
+      "codigo_Control": "",
+      "habilitar": false,
+      "modificar": false,
+      "visualizar": false
+    },
+    [ConsultaSolicitudPageControlPermission.FiltroFechaDesde]: {
+      "codigo_Control": "",
+      "habilitar": false,
+      "modificar": false,
+      "visualizar": false
+    },
+    [ConsultaSolicitudPageControlPermission.FiltroFechaHasta]: {
+      "codigo_Control": "",
+      "habilitar": false,
+      "modificar": false,
+      "visualizar": false
+    },
+    [ConsultaSolicitudPageControlPermission.FiltroTipoSolicitud]: {
+      "codigo_Control": "",
+      "habilitar": false,
+      "modificar": false,
+      "visualizar": false
+    },
+    [ConsultaSolicitudPageControlPermission.FiltroEstado]: {
+      "codigo_Control": "",
+      "habilitar": false,
+      "modificar": false,
+      "visualizar": false
+    },
+    [ConsultaSolicitudPageControlPermission.ButtonBuscar]: {
+      "codigo_Control": "",
+      "habilitar": false,
+      "modificar": false,
+      "visualizar": false
+    },
+    [ConsultaSolicitudPageControlPermission.ButtonAgregar]: {
+      "codigo_Control": "",
+      "habilitar": false,
+      "modificar": false,
+      "visualizar": false
+    },
+    [ConsultaSolicitudPageControlPermission.ButtonReasignar]: {
+      "codigo_Control": "",
+      "habilitar": false,
+      "modificar": false,
+      "visualizar": false
+    },
+    [ConsultaSolicitudPageControlPermission.ButtonExportar]: {
+      "codigo_Control": "",
+      "habilitar": false,
+      "modificar": false,
+      "visualizar": false
+    }
+  };
 
   public dataTable: IConsultaSolicitudesTable = [
     {
@@ -334,9 +403,11 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
     private calendar: NgbCalendar,
     private camundaRestService: CamundaRestService,
     private modalService: NgbModal,
-    private starterService: StarterService
-
+    private starterService: StarterService,
+    private permissionService: PermisoService
   ) {
+    this.getPermissions();
+
     this.model = calendar.getToday();
     Object.assign(this, { single });
 
@@ -359,6 +430,34 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 
   ngOnDestroy(): void {
     this.modalService.dismissAll();
+  }
+
+  private getPermissions(): void {
+    const controlsPermission: Control[] = this.permissionService.getPagePermission(this.pageCode);
+
+    controlsPermission.forEach(controlPermission => {
+      if (controlPermission.codigo_Control === "02") {
+        this.controlsPermissions[ConsultaSolicitudPageControlPermission.FiltroEmpresa] = controlPermission;
+      } else if (controlPermission.codigo_Control === "03") {
+        this.controlsPermissions[ConsultaSolicitudPageControlPermission.FiltroUnidadNegocio] = controlPermission;
+      } else if (controlPermission.codigo_Control === "04") {
+        this.controlsPermissions[ConsultaSolicitudPageControlPermission.FiltroFechaDesde] = controlPermission;
+      } else if (controlPermission.codigo_Control === "05") {
+        this.controlsPermissions[ConsultaSolicitudPageControlPermission.FiltroFechaHasta] = controlPermission;
+      } else if (controlPermission.codigo_Control === "06") {
+        this.controlsPermissions[ConsultaSolicitudPageControlPermission.FiltroTipoSolicitud] = controlPermission;
+      } else if (controlPermission.codigo_Control === "07") {
+        this.controlsPermissions[ConsultaSolicitudPageControlPermission.FiltroEstado] = controlPermission;
+      } else if (controlPermission.codigo_Control === "08") {
+        this.controlsPermissions[ConsultaSolicitudPageControlPermission.ButtonBuscar] = controlPermission;
+      } else if (controlPermission.codigo_Control === "09") {
+        this.controlsPermissions[ConsultaSolicitudPageControlPermission.ButtonAgregar] = controlPermission;
+      } else if (controlPermission.codigo_Control === "10") {
+        this.controlsPermissions[ConsultaSolicitudPageControlPermission.ButtonReasignar] = controlPermission;
+      } else if (controlPermission.codigo_Control === "11") {
+        this.controlsPermissions[ConsultaSolicitudPageControlPermission.ButtonExportar] = controlPermission;
+      }
+    });
   }
 
   updateFilter(event: any) {
@@ -750,9 +849,6 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
   }
 
   filterDataTable() {
-    console.log(this.dataFilterSolicitudes.idTipoSolicitud);
-    console.log(this.dataFilterSolicitudes);
-
     if (
       this.dataFilterSolicitudes.idTipoSolicitud === undefined ||
       this.dataFilterSolicitudes.idTipoSolicitud === null

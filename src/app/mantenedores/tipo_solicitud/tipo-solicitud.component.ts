@@ -15,11 +15,52 @@ import { environment } from "src/environments/environment";
 import { UtilService } from "src/app/services/util/util.service";
 import { TipoSolicitudService } from "./tipo-solicitud.service";
 import { UtilData } from "src/app/services/util/util.data";
+import { PageCodes } from "src/app/enums/codes.enum";
+import { TipoSolicitudPageControlPermission } from "src/app/enums/page-control-permisions.enum";
+import { PageControlPermiso } from "src/app/types/page-control-permiso.type";
+import { PermisoService } from "src/app/services/permiso/permiso.service";
+import { Control } from "src/app/types/permiso.type";
 
 @Component({
   templateUrl: "./tipo-solicitud.component.html",
 })
 export class TipoSolicitudComponent implements OnInit {
+  private pageCode: string = PageCodes.TipoSolicitud;
+  public pageControlPermission: typeof TipoSolicitudPageControlPermission = TipoSolicitudPageControlPermission;
+
+  public controlsPermissions: PageControlPermiso = {
+    [TipoSolicitudPageControlPermission.FiltroTipoSolicitud]: {
+      "codigo_Control": "",
+      "habilitar": false,
+      "modificar": false,
+      "visualizar": false
+    },
+    [TipoSolicitudPageControlPermission.ButtonAgregar]: {
+      "codigo_Control": "",
+      "habilitar": false,
+      "modificar": false,
+      "visualizar": false
+    },
+    [TipoSolicitudPageControlPermission.ButtonExportar]: {
+      "codigo_Control": "",
+      "habilitar": false,
+      "modificar": false,
+      "visualizar": false
+    },
+    [TipoSolicitudPageControlPermission.ButtonEditar]: {
+      "codigo_Control": "",
+      "habilitar": false,
+      "modificar": false,
+      "visualizar": false
+    },
+    [TipoSolicitudPageControlPermission.ButtonDuplicar]: {
+      "codigo_Control": "",
+      "habilitar": false,
+      "modificar": false,
+      "visualizar": false
+    }
+  };
+
   public columnsTable: IColumnsTable = TiposolicitudData.columns;
   public dataTable: any[] = [];
   public tableInputsEditRow: IInputsComponent =
@@ -34,14 +75,35 @@ export class TipoSolicitudComponent implements OnInit {
     private tiposolicitudesService: TipoSolicitudService,
     private tableService: TableService,
     private validationsService: ValidationsService,
-    private utilService: UtilService
-  ) {}
+    private utilService: UtilService,
+    private permissionService: PermisoService
+  ) {
+    this.getPermissions();
+  }
 
   ngOnInit(): void {
     /*this.utilService.openLoadingSpinner(
       "Cargando información, espere por favor..."
     );*/
     this.getDataToTable();
+  }
+
+  private getPermissions(): void {
+    const controlsPermission: Control[] = this.permissionService.getPagePermission(this.pageCode);
+
+    controlsPermission.forEach(controlPermission => {
+      if (controlPermission.codigo_Control === "01") {
+        this.controlsPermissions[TipoSolicitudPageControlPermission.FiltroTipoSolicitud] = controlPermission;
+      } else if (controlPermission.codigo_Control === "02") {
+        this.controlsPermissions[TipoSolicitudPageControlPermission.ButtonAgregar] = controlPermission;
+      } else if (controlPermission.codigo_Control === "03") {
+        this.controlsPermissions[TipoSolicitudPageControlPermission.ButtonExportar] = controlPermission;
+      } else if (controlPermission.codigo_Control === "04") {
+        this.controlsPermissions[TipoSolicitudPageControlPermission.ButtonEditar] = controlPermission;
+      } else if (controlPermission.codigo_Control === "05") {
+        this.controlsPermissions[TipoSolicitudPageControlPermission.ButtonDuplicar] = controlPermission;
+      }
+    });
   }
 
   private getDataToTable() {

@@ -17,8 +17,8 @@
 
     <!-- ============================================================== -->
     <!-- First level menu -->
-    <li class="sidebar-item first-level" [ngClass]="[sidebarnavItem.ddclass]" [class.active]="showMenu === sidebarnavItem.title"
-      *ngFor="let sidebarnavItem of sidebarnavItems"
+    <li class="sidebar-item first-level" [ngClass]="[sidebarnavItem.ddclass]"
+      [class.active]="showMenu === sidebarnavItem.title" *ngFor="let sidebarnavItem of sidebarnavItems"
       [routerLinkActive]="sidebarnavItem.submenu.length != 0 ? '' : 'active'">
       <div class="nav-small-cap" *ngIf="sidebarnavItem.extralink === true">
         {{ sidebarnavItem.title | translate }}

@@ -1,25 +1,24 @@
 import { Component, OnInit } from "@angular/core";
 import { IColumnsTable } from "src/app/component/table/table.interface";
 import { ConsultaTareasData } from "./consulta-tareas.data";
-import {
-  IConsultaTarea,
-  IConsultaTareaTable,
-} from "./consulta-tareas.interface";
 import Swal from "sweetalert2";
-import { HttpErrorResponse } from "@angular/common/http";
-import { IInputsComponent } from "src/app/component/input/input.interface";
+import { HttpErrorResponse } from "@angular/common/http"
 import { reportCodeEnum } from "src/app/services/util/util.interface";
 import { TableService } from "src/app/component/table/table.service";
 import { ValidationsService } from "src/app/services/validations/validations.service";
 import { environment } from "src/environments/environment";
 import { UtilService } from "src/app/services/util/util.service";
-import { UtilData } from "src/app/services/util/util.data";
 import { ConsultaTareasService } from "./consulta-tareas.service";
 import { DataFilterNivelesAprobacion } from "src/app/eschemas/DataFilterNivelesAprobacion";
 import { MantenimientoService } from "src/app/services/mantenimiento/mantenimiento.service";
 import { ActivatedRoute, Router } from "@angular/router";
 import { SolicitudesService } from "src/app/solicitudes/registrar-solicitud/solicitudes.service";
 import { StarterService } from "src/app/starter/starter.service";
+import { PageCodes } from "src/app/enums/codes.enum";
+import { ConsultaTareasPageControlPermission } from "src/app/enums/page-control-permisions.enum";
+import { PageControlPermiso } from "src/app/types/page-control-permiso.type";
+import { PermisoService } from "src/app/services/permiso/permiso.service";
+import { Control } from "src/app/types/permiso.type";
 
 @Component({
   selector: "app-consulta-tareas",
@@ -27,6 +26,30 @@ import { StarterService } from "src/app/starter/starter.service";
   styleUrls: ["./consulta-tareas.component.scss"],
 })
 export class ConsultaTareasComponent implements OnInit {
+  private pageCode: string = PageCodes.ConsultaTareas;
+  public pageControlPermission: typeof ConsultaTareasPageControlPermission = ConsultaTareasPageControlPermission;
+
+  public controlsPermissions: PageControlPermiso = {
+    [ConsultaTareasPageControlPermission.FiltroSolicitudTarea]: {
+      "codigo_Control": "",
+      "habilitar": false,
+      "modificar": false,
+      "visualizar": false
+    },
+    [ConsultaTareasPageControlPermission.ButtonExportar]: {
+      "codigo_Control": "",
+      "habilitar": false,
+      "modificar": false,
+      "visualizar": false
+    },
+    [ConsultaTareasPageControlPermission.ButtonInfo]: {
+      "codigo_Control": "",
+      "habilitar": false,
+      "modificar": false,
+      "visualizar": false
+    }
+  };
+
   public columnsTable: IColumnsTable = ConsultaTareasData.columns;
   fecha = new Date();
   fechaFormateada = this.fecha.toLocaleDateString("es-MX", {
@@ -63,8 +86,25 @@ export class ConsultaTareasComponent implements OnInit {
     private router: Router,
     private solicitudes: SolicitudesService,
     private starterService: StarterService,
-    private _route: ActivatedRoute
-  ) { }
+    private _route: ActivatedRoute,
+    private permissionService: PermisoService
+  ) {
+    this.getPermissions();
+  }
+
+  private getPermissions(): void {
+    const controlsPermission: Control[] = this.permissionService.getPagePermission(this.pageCode);
+
+    controlsPermission.forEach(controlPermission => {
+      if (controlPermission.codigo_Control === "01") {
+        this.controlsPermissions[ConsultaTareasPageControlPermission.FiltroSolicitudTarea] = controlPermission;
+      } else if (controlPermission.codigo_Control === "02") {
+        this.controlsPermissions[ConsultaTareasPageControlPermission.ButtonExportar] = controlPermission;
+      } else if (controlPermission.codigo_Control === "03") {
+        this.controlsPermissions[ConsultaTareasPageControlPermission.ButtonInfo] = controlPermission;
+      }
+    });
+  }
 
   async ngOnInit(): Promise<void> {
     const idUsuario = await this._route.snapshot.queryParamMap.get("idUsuario");

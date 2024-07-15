@@ -25,6 +25,7 @@ interface IActionTable {
   materialIcon?: string;
   tooltip?: string;
   id: idActionType;
+  showed?: boolean;
 }
 
 type alignColType = "center";

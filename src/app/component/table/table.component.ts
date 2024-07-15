@@ -26,7 +26,7 @@ export class TableComponent implements OnInit, OnChanges {
   @Input({ required: false }) public tableName: string;
   @Input({ required: false }) public onChangeEditRowFunction: string;
   @Input() public contexto: any;
-  @Input() public columns: IColumnsTable;
+  @Input() public columns: IColumnsTable = [];
   @Input() public dataTable: any[] = [];
   @Input() public selectOptionsTable: ISelectOptionsTable = null;
   @Input() public onSaveRowTable: string;
@@ -43,6 +43,7 @@ export class TableComponent implements OnInit, OnChanges {
   @Input() public rowsPerPageValue: number =
     TableComponentData.defaultRowPerPage;
   @Input() public page: number = 1;
+  public showActionColumn: boolean = true;
   public isTableEmpty: boolean = false;
   public data: any[] = [];
   private rowDataModified: any = {};
@@ -59,11 +60,13 @@ export class TableComponent implements OnInit, OnChanges {
   constructor(
     public tableService: TableService,
     public utilService: UtilService
-  ) {}
+  ) { }
 
   public ngOnInit(): void {
     this.ValidateInitDataTable();
     this.tableService.onCheckTable(this.tableName, []);
+    this.showActionColumn = this.columns[this.columns.length - 1].actions.some(action => action.showed);
+    console.log(this.columns);
   }
   public ngOnChanges(changes: SimpleChanges): void {
     this.ValidateInitDataTable();

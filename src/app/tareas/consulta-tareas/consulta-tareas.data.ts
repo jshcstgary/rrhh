@@ -30,12 +30,11 @@ export const ConsultaTareasData: IConsultaTareasData = {
       type: "actions",
       width: "100px",
       actions: [
-        { materialIcon: "info", id: "editOnTable", tooltip: "Acciones" },
-        // {
-        //   materialIcon: "content_copy",
-        //   id: "cloneOnTable",
-        //   tooltip: "Duplicar",
-        // },
+        {
+          materialIcon: "info",
+          id: "editOnTable",
+          tooltip: "Acciones"
+        }
       ],
     },
   ],

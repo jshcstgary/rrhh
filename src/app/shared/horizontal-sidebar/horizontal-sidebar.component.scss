@@ -1,12 +1,13 @@
 .sidebar-item__logo {
   // border: 1px solid black;
-  margin-top: -7px;
+  // margin-top: -7px;
   margin-left: 10px;
   margin-right: 100px;
+  height: 100%;
 }
 
 .logo {
-  height: 55px;
+  height: 100%;
   // width: auto;
 }
 
@@ -14,6 +15,10 @@
   width: 36px;
   height: 36px;
   border-radius: 36px;
+}
+
+.sidebar-nav {
+  height: 5.7vh;
 }
 
 @media (max-width: 1023px) {
