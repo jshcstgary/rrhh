@@ -6,5 +6,6 @@ export interface RouteInfo {
   class: string;
   ddclass: string;
   extralink: boolean;
+  objeto: string;
   submenu: RouteInfo[];
 }

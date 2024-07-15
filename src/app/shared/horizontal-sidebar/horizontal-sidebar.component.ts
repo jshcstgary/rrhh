@@ -161,6 +161,7 @@ export class HorizontalSidebarComponent {
     private router: Router
   ) {
     this.menuServise.items.subscribe((menuItems) => {
+		// ? FILTRAR ESTE ARREGLO
       this.sidebarnavItems = menuItems;
 
       // Active menu

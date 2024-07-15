@@ -72,6 +72,8 @@ export class LoginComponent {
             confirmButtonText: "Ok",
           });
 
+		  localStorage.removeItem("idUsuario");
+
           this.isLoading = false;
 
           return;

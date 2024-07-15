@@ -323,7 +323,9 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
 
   public loadingComplete = 0;
 
-  nombres: string[] = [];
+	nombres: string[] = [];
+
+	descripcionPosiciones: string[] = [];
 
   subledgers: string[] = [];
 
@@ -682,6 +684,18 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
     })
   );
 
+  searchDescripcionPosicion: OperatorFunction<any, readonly any[]> = (text$: Observable<string>) => text$.pipe(
+    debounceTime(200),
+    distinctUntilChanged(),
+    map((term) => {
+      if (term.length < 1) {
+        return [];
+      } else {
+        return this.descripcionPosiciones.filter((descrPosicion) => descrPosicion.toLowerCase().includes(term.toLowerCase())).slice(0, 10);
+      }
+    })
+  );
+
   searchNombre: OperatorFunction<any, readonly any[]> = (text$: Observable<string>) => text$.pipe(
     debounceTime(200),
     distinctUntilChanged(),
@@ -698,12 +712,15 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
     let tipoValue: string = "";
 
     if (tipo === "codigoPosicion") {
-      tipoValue = this.model.codigoPosicion;
+		tipoValue = this.model.codigoPosicion;
     } else if (tipo === "subledger") {
-      tipoValue = this.model.subledger;
+		tipoValue = this.model.subledger;
     } else if (tipo === "nombreCompleto") {
-      tipoValue = this.model.nombreCompleto;
-    }
+		tipoValue = this.model.nombreCompleto;
+    } else {
+		tipoValue = this.model.descrPosicion;
+	}
+	console.log(tipoValue);
 
     this.mantenimientoService.getDataEmpleadosEvolutionPorId(tipoValue).subscribe({
       next: (response) => {
@@ -730,7 +747,9 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
           this.subledgers = [...new Set(this.dataEmpleadoEvolution.map((empleado) => empleado.subledger))];
         } else if (tipo === "nombreCompleto") {
           this.nombres = [...new Set(this.dataEmpleadoEvolution.map((empleado) => empleado.nombreCompleto))];
-        }
+        } else {
+          this.descripcionPosiciones = [...new Set(this.dataEmpleadoEvolution.map((empleado) => empleado.descrPosicion))];
+		}
 
         // this.model = Object.assign(
         //   {},

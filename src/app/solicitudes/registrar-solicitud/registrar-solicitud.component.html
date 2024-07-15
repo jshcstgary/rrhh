@@ -105,8 +105,16 @@
           <div class="input-group mb-3">
             <label class="input-group-text label-estilo" for="descripcionposicion">Descripción de posición</label>
             &nbsp;
-            <span id="descripcionposicion" name="descripcionposicion" style="color: black; font-size: 14px;"
-              class="text-start">{{ model.descrPosicion }}</span>
+            <!-- <span id="descripcionposicion" name="descripcionposicion" style="color: black; font-size: 14px;"
+              class="text-start">{{ model.descrPosicion }}</span> -->
+			<input type="text" name="descripcion-posicion" [(ngModel)]="model.descrPosicion"
+              style="color: black; font-size: 14px; width: 30%" class="form-control text-start" id="descripcionPosicion"
+              aria-describedby="inputGroupPrepend" required #descripcionPosicion="ngModel" placeholder="Ingrese descripcion posicion"
+              [ngbTypeahead]="searchDescripcionPosicion" (selectItem)="onSelectItem('descrPosicion', $event)" />
+
+			  <button class="btn btn-light" type="button" (click)="getDataEmpleadosEvolution('descrPosicion')">
+			    <i class="ti-search"></i>
+			  </button>
           </div>
         </div>
       </div>
@@ -117,8 +125,6 @@
               Subledger
             </label>
             &nbsp;
-            <!-- [ngbTypeahead]="searchSubledger"
-            (selectItem)="onSelectItem('subledger', $event)" -->
             <input type="text" name="subledger" [(ngModel)]="model.subledger"
               style="color: black; font-size: 14px; width: 30%" class="form-control text-start" id="subledger"
               aria-describedby="inputGroupPrepend" required #subledger="ngModel" placeholder="Ingrese subledger"
@@ -136,8 +142,6 @@
               Empleado
             </label>
             &nbsp;
-            <!-- [ngbTypeahead]="searchNombreCompleto"
-          (selectItem)="onSelectItem('nombreCompleto', $event)" -->
             <input type="text" name="nombreCompleto" [(ngModel)]="model.nombreCompleto"
               style="color: black; font-size: 14px; width: 30%" class="form-control text-start" id="nombreCompleto"
               [ngbTypeahead]="searchNombre" (selectItem)="onSelectItem('nombreCompleto', $event)"

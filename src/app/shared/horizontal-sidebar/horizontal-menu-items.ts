@@ -8,6 +8,7 @@ export const ROUTES: RouteInfo[] = [
     class: "has-arrow icon-size",
     ddclass: "",
     extralink: false,
+	objeto: "wf_solicitudes",
     submenu: [
       {
         path: "/solicitudes/consulta-solicitudes",
@@ -16,11 +17,11 @@ export const ROUTES: RouteInfo[] = [
         class: "",
         ddclass: "",
         extralink: false,
+		objeto: "wf_consulta_solicitudes",
         submenu: [],
       },
     ],
   },
-
   {
     path: "",
     title: "Tareas",
@@ -28,6 +29,7 @@ export const ROUTES: RouteInfo[] = [
     class: "has-arrow",
     ddclass: "",
     extralink: false,
+	objeto: "wf_",
     submenu: [
       {
         path: "/tareas/consulta-tareas",
@@ -36,13 +38,11 @@ export const ROUTES: RouteInfo[] = [
         class: "",
         ddclass: "",
         extralink: false,
+		objeto: "wf_",
         submenu: [],
       },
     ],
   },
-
-
-
   {
     path: "",
     title: "Mantenimiento",
@@ -50,6 +50,7 @@ export const ROUTES: RouteInfo[] = [
     class: "has-arrow",
     ddclass: "",
     extralink: false,
+	objeto: "wf_mantenimiento",
     submenu: [
       {
         path: "/mantenedores/niveles-aprobacion",
@@ -58,6 +59,7 @@ export const ROUTES: RouteInfo[] = [
         class: "",
         ddclass: "",
         extralink: false,
+		objeto: "wf_niveles_aprobacion",
         submenu: [],
       },
       {
@@ -67,6 +69,7 @@ export const ROUTES: RouteInfo[] = [
         class: "",
         ddclass: "",
         extralink: false,
+		objeto: "wf_tipo_solicitudes",
         submenu: [],
       },
       {
@@ -76,6 +79,7 @@ export const ROUTES: RouteInfo[] = [
         class: "",
         ddclass: "",
         extralink: false,
+		objeto: "wf_tipo_motivo",
         submenu: [],
       },
       {
@@ -85,6 +89,7 @@ export const ROUTES: RouteInfo[] = [
         class: "",
         ddclass: "",
         extralink: false,
+		objeto: "wf_tipo_accion",
         submenu: [],
       },
       {
@@ -94,6 +99,7 @@ export const ROUTES: RouteInfo[] = [
         class: "",
         ddclass: "",
         extralink: false,
+		objeto: "wf_tipo_proceso",
         submenu: [],
       },
       {
@@ -103,15 +109,17 @@ export const ROUTES: RouteInfo[] = [
         class: "",
         ddclass: "",
         extralink: false,
+		objeto: "wf_tipo_ruta",
         submenu: [],
       },
       {
         path: "/mantenedores/ruta",
         title: "Ruta",
-        icon: "", //mdi mdi-adjust
+        icon: "",
         class: "",
         ddclass: "",
         extralink: false,
+		objeto: "wf_ruta",
         submenu: [],
       },
       {
@@ -121,17 +129,9 @@ export const ROUTES: RouteInfo[] = [
         class: "",
         ddclass: "",
         extralink: false,
+		objeto: "wf_accion",
         submenu: [],
       },
-      // {
-      //   path: "/mantenedores/estados-solicitud",
-      //   title: "Estados Solicitud",
-      //   icon: "",
-      //   class: "",
-      //   ddclass: "",
-      //   extralink: false,
-      //   submenu: [],
-      // },
       {
         path: "/mantenedores/aprobadores-fijos",
         title: "Aprobadores Fijos",
@@ -139,9 +139,9 @@ export const ROUTES: RouteInfo[] = [
         class: "",
         ddclass: "",
         extralink: false,
+		objeto: "wf_aprobadores_fijos",
         submenu: [],
       },
     ],
   },
-
 ];
