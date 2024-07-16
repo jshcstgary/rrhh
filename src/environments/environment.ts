@@ -76,6 +76,7 @@ export const environment = {
   // exempleadoServiceEsSpyral: `${baseG}/v1/us/exempleadosp`,
   // exempleadoServiceEsSpyral: `${baseRBP}:8079/v1/us/exempleadosp`,
 
+
   exempleadoService: `${base}:8089/v1/us/exempleados_rbp`,
   // exempleadoService: `${baseG}/v1/us/exempleados_rbp`,
   // exempleadoService: `${baseRBP}:8089/v1/us/exempleados_rbp`,
