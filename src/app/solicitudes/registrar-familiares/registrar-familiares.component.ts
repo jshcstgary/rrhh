@@ -53,6 +53,7 @@ import { DialogReasignarUsuarioComponent } from "src/app/shared/reasginar-usuari
 import { TableService } from "src/app/component/table/table.service";
 import { StarterService } from "src/app/starter/starter.service";
 import { RegistrarCandidatoService } from "../registrar-candidato/registrar-candidato.service";
+import { LocalStorageKeys } from "src/app/enums/local-storage-keys.enum";
 
 interface DialogComponents {
   dialogBuscarEmpleados: Type<DialogBuscarEmpleadosFamiliaresComponent>;
@@ -1356,7 +1357,7 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
   }
 
   mapearDetallesAprobadores(nivelAprobacionPosicionType: any[]) {
-    this.starterService.getUser(localStorage.getItem("idUsuario")).subscribe({
+    this.starterService.getUser(localStorage.getItem(LocalStorageKeys.IdUsuario)).subscribe({
       next: (res) => {
         this.detalleNivelAprobacion = nivelAprobacionPosicionType.map(({ nivelAprobacionType, aprobador }) => ({
           id_Solicitud: this.solicitud.idSolicitud,

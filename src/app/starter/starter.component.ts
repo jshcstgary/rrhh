@@ -1,6 +1,7 @@
 import { Component, AfterViewInit } from '@angular/core';
 import { StarterService } from './starter.service';
 import { ActivatedRoute } from '@angular/router';
+import { LocalStorageKeys } from '../enums/local-storage-keys.enum';
 @Component({
   templateUrl: './starter.component.html'
 })
@@ -15,7 +16,7 @@ export class StarterComponent implements AfterViewInit {
     const idUsuario = this._route.snapshot.queryParamMap.get("idUsuario");
 
     if (idUsuario !== undefined && idUsuario !== null) {
-      localStorage.setItem("idUsuario", idUsuario);
+      localStorage.setItem(LocalStorageKeys.IdUsuario, idUsuario);
     }
   }
 }

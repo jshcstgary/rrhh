@@ -38,6 +38,7 @@ import Swal from "sweetalert2";
 import { DialogBuscarEmpleadosReingresoComponent } from "./dialog-buscar-empleados-reingreso/dialog-buscar-empleados-reingreso.component";
 import { RegistrarCandidatoService } from "../registrar-candidato/registrar-candidato.service";
 import { StarterService } from "src/app/starter/starter.service";
+import { LocalStorageKeys } from "src/app/enums/local-storage-keys.enum";
 
 interface DialogComponents {
   dialogBuscarEmpleados: Type<DialogBuscarEmpleadosReingresoComponent>;
@@ -1030,7 +1031,7 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
   }
 
   mapearDetallesAprobadores(nivelAprobacionPosicionType: any[]) {
-    this.starterService.getUser(localStorage.getItem("idUsuario")).subscribe({
+    this.starterService.getUser(localStorage.getItem(LocalStorageKeys.IdUsuario)).subscribe({
       next: (res) => {
         this.detalleNivelAprobacion = nivelAprobacionPosicionType.map(({ nivelAprobacionType, aprobador }) => ({
           id_Solicitud: this.solicitudRG.idSolicitud,

@@ -4,45 +4,37 @@ import { Routes, RouterModule } from '@angular/router';
 import { FullComponent } from './layouts/full/full.component';
 import { BlankComponent } from './layouts/blank/blank.component';
 import { LoginComponent } from './auth/pages/login/login.component';
+import { authGuardActivate } from './guards/auth.guard';
 
 export const Approutes: Routes = [
   {
     path: '',
     component: FullComponent,
     children: [
-      /*{ path: '', redirectTo: '/dashboard/dashboard1', pathMatch: 'full' },
       {
-        path: 'dashboard',
-        loadChildren: () =>
-          import('./dashboards/dashboard.module').then(
-            (m) => m.DashboardModule
-          ),
-      },*/
-      { path: '', redirectTo: '/starter', pathMatch: 'full' },
+        path: '',
+        redirectTo: '/starter',
+        pathMatch: 'full'
+      },
       {
         path: 'starter',
+        canActivate: [authGuardActivate],
         loadChildren: () => import('./starter/starter.module').then(m => m.StarterModule)
       },
       {
         path: 'solicitudes',
-        loadChildren: () =>
-          import('./solicitudes/solicitudes.module').then(
-            m => m.SolicitudesModule
-          ),
+        canActivate: [authGuardActivate],
+        loadChildren: () => import('./solicitudes/solicitudes.module').then(m => m.SolicitudesModule),
       },
       {
         path: 'tareas',
-        loadChildren: () =>
-          import('./tareas/tareas.module').then(
-            m => m.TareasModule
-          ),
+        canActivate: [authGuardActivate],
+        loadChildren: () => import('./tareas/tareas.module').then(m => m.TareasModule),
       },
       {
         path: 'mantenedores',
-        loadChildren: () =>
-          import('./mantenedores/mantenedores.module').then(
-            m => m.MantenedoresModule
-          ),
+        canActivate: [authGuardActivate],
+        loadChildren: () => import('./mantenedores/mantenedores.module').then(m => m.MantenedoresModule),
       },
     ],
   },
@@ -52,10 +44,8 @@ export const Approutes: Routes = [
     children: [
       {
         path: 'login',
-        loadChildren: () =>
-          import('./auth/auth.module').then(
-            (m) => m.AuthModule
-          ),
+        canActivate: [authGuardActivate],
+        loadChildren: () => import('./auth/auth.module').then((m) => m.AuthModule),
       },
     ],
   },
@@ -65,10 +55,7 @@ export const Approutes: Routes = [
     children: [
       {
         path: 'authentication',
-        loadChildren: () =>
-          import('./authentication/authentication.module').then(
-            (m) => m.AuthenticationModule
-          ),
+        loadChildren: () => import('./authentication/authentication.module').then((m) => m.AuthenticationModule),
       },
     ],
   },

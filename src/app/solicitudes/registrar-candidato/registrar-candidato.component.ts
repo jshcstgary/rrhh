@@ -31,6 +31,7 @@ import { SolicitudesService } from "../registrar-solicitud/solicitudes.service";
 import { RegistrarCandidatoService } from "./registrar-candidato.service";
 import { TipoSolicitudService } from "src/app/mantenedores/tipo_solicitud/tipo-solicitud.service";
 import { StarterService } from "src/app/starter/starter.service";
+import { LocalStorageKeys } from "src/app/enums/local-storage-keys.enum";
 
 @Component({
   selector: 'app-registrar-candidato',
@@ -1201,7 +1202,7 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
     this.solicitud.idUnidadNegocio = this.model.unidadNegocio;
     this.solicitud.estadoSolicitud = "2";
 
-    this.starterService.getUser(localStorage.getItem("idUsuario")!).subscribe({
+    this.starterService.getUser(localStorage.getItem(LocalStorageKeys.IdUsuario)!).subscribe({
       next: (res) => {
         this.llenarModelDetalleAprobaciones(res);
 
@@ -1333,7 +1334,7 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
 
     this.seleccionCandidatoService.saveCandidato(request).subscribe({
       next: () => {
-        this.starterService.getUser(localStorage.getItem("idUsuario")!).subscribe({
+        this.starterService.getUser(localStorage.getItem(LocalStorageKeys.IdUsuario)!).subscribe({
           next: (res) => {
             this.llenarModelDetalleAprobaciones(res);
 
@@ -1472,7 +1473,7 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
                               next: () => {
                                 this.solicitudes.guardarDetalleSolicitud(detalle).subscribe({
                                   next: () => {
-                                    this.starterService.getUser(localStorage.getItem("idUsuario")!).subscribe({
+                                    this.starterService.getUser(localStorage.getItem(LocalStorageKeys.IdUsuario)!).subscribe({
                                       next: (user) => {
                                         this.llenarModelDetalleAprobacionesCF_RG(user, resSolicitud.idSolicitud, idTipoSolicitud, descripcionTipoSolicitud);
 

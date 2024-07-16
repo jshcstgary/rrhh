@@ -141,6 +141,56 @@
     ]
   },
   {
+    "codigo": "wf_tareas",
+    "nombre": "Tareas",
+    "visualizar": true,
+    "nuevo": false,
+    "modificar": false,
+    "eliminar": false,
+    "exportar": false,
+    "procesar": false,
+    "consulta": true,
+    "controles": [
+      {
+        "codigo_Control": "",
+        "habilitar": false,
+        "modificar": false,
+        "visualizar": false
+      }
+    ]
+  },
+  {
+    "codigo": "wf_mis_tareas",
+    "nombre": "Tareas",
+    "visualizar": true,
+    "nuevo": false,
+    "modificar": false,
+    "eliminar": false,
+    "exportar": false,
+    "procesar": false,
+    "consulta": true,
+    "controles": [
+      {
+        "codigo_Control": "01",
+        "habilitar": true,
+        "modificar": true,
+        "visualizar": true
+      },
+      {
+        "codigo_Control": "02",
+        "habilitar": true,
+        "modificar": false,
+        "visualizar": true
+      },
+      {
+        "codigo_Control": "03",
+        "habilitar": true,
+        "modificar": false,
+        "visualizar": true
+      }
+    ]
+  },
+  {
     "codigo": "wf_mantenimiento",
     "nombre": "Mantenimiento",
     "visualizar": true,
@@ -314,7 +364,7 @@
         "codigo_Control": "02",
         "habilitar": true,
         "modificar": false,
-        "visualizar": true
+        "visualizar": false
       },
       {
         "codigo_Control": "03",

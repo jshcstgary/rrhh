@@ -21,5 +21,9 @@
   titleReport="Tareas"
   [codigoReport]="codigoReporte"
   [showAddButton]="false"
+  [showFilterSolicitudTarea]="this.controlsPermissions[pageControlPermission.FiltroSolicitudTarea].visualizar"
+  [disabledSolicitudTareaFilter]="!this.controlsPermissions[pageControlPermission.FiltroSolicitudTarea].habilitar"
+  [showButtonExportar]="this.controlsPermissions[pageControlPermission.ButtonExportar].visualizar"
+  [showButtonInfo]="this.controlsPermissions[pageControlPermission.ButtonInfo].visualizar"
 >
 </plantilla-d-component>

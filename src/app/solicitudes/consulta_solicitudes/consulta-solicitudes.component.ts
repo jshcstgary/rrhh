@@ -71,6 +71,7 @@ import { PageControlPermiso } from "src/app/types/page-control-permiso.type";
 import { PermisoService } from "src/app/services/permiso/permiso.service";
 import { Control } from "src/app/types/permiso.type";
 import { ConsultaSolicitudPageControlPermission } from "src/app/enums/page-control-permisions.enum";
+import { LocalStorageKeys } from "src/app/enums/local-storage-keys.enum";
 //import { StarterService } from "src/app/starter/starter.service";
 
 
@@ -579,7 +580,7 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
             this.solicitud.estado = "Creado"; //tveas TODO improve [Activo]
             this.solicitud.estadoSolicitud = "3"; // tveas TODO improve [Creado]
 
-            this.starterService.getUser(localStorage.getItem("idUsuario")!).subscribe({
+            this.starterService.getUser(localStorage.getItem(LocalStorageKeys.IdUsuario)!).subscribe({
               next: (res) => {
                 this.solicitud.usuarioCreacion = res.evType[0].nombreCompleto;
                 this.solicitud.usuarioActualizacion = res.evType[0].nombreCompleto;

@@ -23,6 +23,7 @@ import { RegistrarCandidatoService } from '../registrar-candidato/registrar-cand
 import { StarterService } from 'src/app/starter/starter.service';
 import { ComentarioSalidaJefeService } from './comentario-salida-jefe.service';
 import Swal from 'sweetalert2';
+import { LocalStorageKeys } from 'src/app/enums/local-storage-keys.enum';
 
 @Component({
   selector: 'app-registrar-comentario-salida-jefe',
@@ -816,7 +817,7 @@ export class RegistrarComentarioSalidaJefeComponent extends CompleteTaskComponen
   // }
 
   mapearDetallesAprobadores(nivelAprobacionPosicionType: any[]) {
-    this.starterService.getUser(localStorage.getItem("idUsuario")).subscribe({
+    this.starterService.getUser(localStorage.getItem(LocalStorageKeys.IdUsuario)).subscribe({
       next: (res) => {
         this.detalleNivelAprobacion = nivelAprobacionPosicionType.map(({ nivelAprobacionType, aprobador }) => ({
           id_Solicitud: this.solicitudRG.idSolicitud,

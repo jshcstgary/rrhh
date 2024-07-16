@@ -52,7 +52,7 @@
                   [disabled]="row.isEditingRow" />
               </div>
               <div *ngSwitchCase="'actions'">
-                <div class="d-flex justify-content-between border" *ngIf="!row.isEditingRow; else iconEditingRow">
+                <div class="d-flex border" [ngClass]="{'justify-content-beyween': head.actions.length > 1, 'justify-content-center': head.actions.length === 1}" *ngIf="!row.isEditingRow; else iconEditingRow">
                   <div *ngFor="let action of head.actions">
                     <tooltip-component *ngIf="action.showed" [text]="action.tooltip">
                       <i *ngIf="action.icon" tabindex="0" class="text-info cursor-pointer action-icon"

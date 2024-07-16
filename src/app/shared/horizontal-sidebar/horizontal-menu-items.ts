@@ -29,7 +29,7 @@ export const ROUTES: RouteInfo[] = [
     class: "has-arrow",
     ddclass: "",
     extralink: false,
-    codigo: "wf_tarea",
+    codigo: "wf_tareas",
     submenu: [
       {
         path: "/tareas/consulta-tareas",
@@ -38,7 +38,7 @@ export const ROUTES: RouteInfo[] = [
         class: "",
         ddclass: "",
         extralink: false,
-        codigo: "wf_consulta_tareas",
+        codigo: "wf_mis_tareas",
         submenu: [],
       },
     ],

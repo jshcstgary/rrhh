@@ -33,7 +33,8 @@ export const ConsultaTareasData: IConsultaTareasData = {
         {
           materialIcon: "info",
           id: "editOnTable",
-          tooltip: "Acciones"
+          tooltip: "Acciones",
+          showed: true
         }
       ],
     },

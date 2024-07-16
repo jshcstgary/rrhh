@@ -31,6 +31,7 @@ import {
 import { ConsultaTareasService } from "src/app/tareas/consulta-tareas/consulta-tareas.service";
 import { StarterService } from "src/app/starter/starter.service";
 import { CornerDownLeft } from "angular-feather/icons";
+import { LocalStorageKeys } from "src/app/enums/local-storage-keys.enum";
 
 @Component({
   selector: "registrarSolicitud",
@@ -464,7 +465,7 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
   }
 
   mapearDetallesAprobadores(nivelAprobacionPosicionType: any[]) {
-    this.starterService.getUser(localStorage.getItem("idUsuario")).subscribe({
+    this.starterService.getUser(localStorage.getItem(LocalStorageKeys.IdUsuario)).subscribe({
       next: (res) => {
         this.detalleNivelAprobacion = nivelAprobacionPosicionType.map(({ nivelAprobacionType, aprobador }) => ({
           id_Solicitud: this.solicitud.idSolicitud,
@@ -1175,7 +1176,7 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
   }
 
   crearRegistradorSolicitud() {
-    this.starterService.getUser(localStorage.getItem("idUsuario")!).subscribe({
+    this.starterService.getUser(localStorage.getItem(LocalStorageKeys.IdUsuario)!).subscribe({
       next: (res) => {
         this.solicitudes.modelDetalleAprobaciones.id_Solicitud = this.solicitud.idSolicitud;
         this.solicitudes.modelDetalleAprobaciones.id_NivelAprobacion = 100000;

@@ -31,6 +31,7 @@ import { SolicitudesService } from "../registrar-solicitud/solicitudes.service";
 import { toDate } from "date-fns/esm";
 import { StarterService } from "src/app/starter/starter.service";
 import { RegistrarCandidatoService } from "../registrar-candidato/registrar-candidato.service";
+import { LocalStorageKeys } from "src/app/enums/local-storage-keys.enum";
 
 @Component({
   selector: 'completaSolicitud',
@@ -1385,7 +1386,7 @@ export class CompletaSolicitudComponent extends CompleteTaskComponent {
   }
 
   crearRegistradorSolicitud() {
-    this.starterService.getUser(localStorage.getItem("idUsuario")!).subscribe({
+    this.starterService.getUser(localStorage.getItem(LocalStorageKeys.IdUsuario)!).subscribe({
       next: (res) => {
         this.solicitudes.modelDetalleAprobaciones.id_Solicitud = this.solicitud.idSolicitud;
         this.solicitudes.modelDetalleAprobaciones.id_NivelAprobacion = 200000;

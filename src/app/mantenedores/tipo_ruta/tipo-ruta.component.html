@@ -11,9 +11,9 @@
   colIdToDisable="id"
   titleReport="TIPO DE RUTAS"
   [codigoReport]="codigoReporte"
+  [showCreateButton]="this.controlsPermissions[pageControlPermission.ButtonAgregar].visualizar"
   [showFilterTipoSolicitud]="this.controlsPermissions[pageControlPermission.FiltroTipoSolicitud].visualizar"
   [disabledFilterTipoSolicitud]="!this.controlsPermissions[pageControlPermission.FiltroTipoSolicitud].habilitar"
-  [showCreateButton]="this.controlsPermissions[pageControlPermission.ButtonAgregar].visualizar"
   [showButtonExportar]="this.controlsPermissions[pageControlPermission.ButtonExportar].visualizar"
 >
 </plantilla-a-component>

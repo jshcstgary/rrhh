@@ -19,6 +19,7 @@ import { ConsultaTareasPageControlPermission } from "src/app/enums/page-control-
 import { PageControlPermiso } from "src/app/types/page-control-permiso.type";
 import { PermisoService } from "src/app/services/permiso/permiso.service";
 import { Control } from "src/app/types/permiso.type";
+import { LocalStorageKeys } from "src/app/enums/local-storage-keys.enum";
 
 @Component({
   selector: "app-consulta-tareas",
@@ -107,10 +108,16 @@ export class ConsultaTareasComponent implements OnInit {
   }
 
   async ngOnInit(): Promise<void> {
+    this.columnsTable[this.columnsTable.length - 1].actions.forEach(action => {
+      if (action.id === "editOnTable") {
+        action.showed = this.controlsPermissions[ConsultaTareasPageControlPermission.ButtonInfo].visualizar
+      }
+    });
+
     const idUsuario = await this._route.snapshot.queryParamMap.get("idUsuario");
 
     if (idUsuario !== null && idUsuario !== undefined) {
-      localStorage.setItem("idUsuario", idUsuario);
+      localStorage.setItem(LocalStorageKeys.IdUsuario, idUsuario);
     }
 
     this.getDataToTable();
@@ -173,7 +180,7 @@ export class ConsultaTareasComponent implements OnInit {
       "Cargando información. Espere por favor..."
     );
 
-    this.starterService.getUser(localStorage.getItem("idUsuario")!).subscribe({
+    this.starterService.getUser(localStorage.getItem(LocalStorageKeys.IdUsuario)!).subscribe({
       next: (res) => {
         return this.consultaTareasService.getTareasUsuario(res.evType[0].subledger).subscribe({
           next: (response) => {
@@ -203,7 +210,7 @@ export class ConsultaTareasComponent implements OnInit {
         });
       }
     });
-    console.log(localStorage.getItem("idUsuario")!);
+    console.log(localStorage.getItem(LocalStorageKeys.IdUsuario)!);
   }
 
   //LLenar combo Tipo Solicitud

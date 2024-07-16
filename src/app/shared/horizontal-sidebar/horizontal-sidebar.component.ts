@@ -186,14 +186,6 @@ export class HorizontalSidebarComponent {
     });
   }
 
-  // signOut(): string {
-  //   localStorage.removeItem("idUsuario");
-
-  //   this.router.navigate(["/login"]);
-
-  //   return "";
-  // }
-
   addExpandClass(element: any) {
     if (element === this.showMenu) {
       this.showMenu = element;
