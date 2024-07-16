@@ -14,11 +14,12 @@ import { environment, portalWorkFlow } from "../../../environments/environment";
 import { RegistrarData } from "src/app/eschemas/RegistrarData";
 import { DatosProcesoInicio } from "src/app/eschemas/DatosProcesoInicio";
 import { DatosSolicitud } from "src/app/eschemas/DatosSolicitud";
-import { MantenimientoService } from "src/app/services/mantenimiento/mantenimiento.service";
+import { FamiliaresCandidatos, MantenimientoService } from "src/app/services/mantenimiento/mantenimiento.service";
 import { UtilService } from "src/app/services/util/util.service";
 import Swal from "sweetalert2";
 import { Solicitud } from "src/app/eschemas/Solicitud";
 import { DetalleSolicitud } from "src/app/eschemas/DetalleSolicitud";
+import { ComentarioSalidaJefeService } from './comentario-salida-jefe.service';
 import { Subject, Observable, OperatorFunction } from "rxjs";
 import {
   debounceTime,
@@ -30,6 +31,8 @@ import { ConsultaTareasService } from "src/app/tareas/consulta-tareas/consulta-t
 import { SolicitudesService } from "../registrar-solicitud/solicitudes.service";
 import { toDate } from "date-fns/esm";
 import { DatosAprobadores } from "src/app/eschemas/DatosAprobadores";
+import { columnsDatosFamiliares } from "./registrar-familiares.data";
+import { RegistrarCandidatoService } from "../registrar-candidato/registrar-candidato.service";
 
 @Component({
   selector: 'revisarSolicitud',
@@ -55,6 +58,11 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
   //buttonValue: string = '';
 
   buttonValue: string | null = 'aprobar';
+  columnsDatosFamiliares = columnsDatosFamiliares.columns;
+  dataTableDatosFamiliares: FamiliaresCandidatos[] = [];
+  currentDate: Date = new Date();
+
+
 
   emailVariables = {
     de: "",
@@ -67,6 +75,7 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
 
   private aprobadorSiguiente: any = {};
   private aprobadorActual: any = {};
+  private comentarioSalidaJefeService: ComentarioSalidaJefeService
 
   process(action: string) {
     this.buttonValue = action;
@@ -114,7 +123,41 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
     return this.buttonValue === action;
   }
 
+  checkTipoSolicitud(): void {
+    console.log("checkTipoSolicitud");
+    console.log("this.solicitud.tipoSolicitud : "+this.solicitud.tipoSolicitud);
+  }
+
   override model: RegistrarData = new RegistrarData(
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    ""
+  );
+  modelRG: RegistrarData = new RegistrarData(
     "",
     "",
     "",
@@ -152,15 +195,27 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
   }>();
 
   // private
-
+  
   public solicitudDataInicial = new Solicitud();
   public tipo_solicitud_descripcion: string;
   public tipo_motivo_descripcion: string;
   public tipo_accion_descripcion: string;
-
+  public justificacionCF: string = "";
+  public mostrarFormularioFamiliares: boolean = false;
+  public mostrarFormularioReingreso: boolean = false;
   public keySelected: any;
-
+  public detalleSolicitudRG = new DetalleSolicitud();
+  public remuneracion: number;
+  public dataAprobadoresDinamicos: any[] = [];
+  public dataAprobacionesPorPosicionAPS: any = [];
+  public dataRuta: any[] = [];
+  public dataTipoRuta: any[] = [];
   public detalleSolicitud = new DetalleSolicitud();
+  public comentariosJefeInmediato: any = {};
+  public comentarios: string = "";
+  public comentariosRRHH: any = {};
+  public solicitudRG: any;
+
 
   public solicitud = new Solicitud();
 
@@ -365,6 +420,9 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
   subledgers: string[] = [];
 
   codigosPosicion: string[] = [];
+  nombreCompletoCandidato: string = "";
+  idSolicitudRP: string = "";
+
 
   constructor(
     route: ActivatedRoute,
@@ -373,7 +431,8 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
     private mantenimientoService: MantenimientoService,
     private solicitudes: SolicitudesService,
     private utilService: UtilService,
-    private consultaTareasService: ConsultaTareasService
+    private consultaTareasService: ConsultaTareasService,
+    private seleccionCandidatoService: RegistrarCandidatoService,
   ) {
     super(route, router, camundaRestService);
 
@@ -386,10 +445,45 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
     });
 
     this.modelBase = new DatosProcesoInicio();
+    this.getCandidatoValues();
 
     this.route.paramMap.subscribe((params) => {
       this.id_solicitud_by_params = params.get("idSolicitud");
       this.idDeInstancia = params.get("id");
+    });
+  }
+
+  getCandidatoValues() {
+    this.seleccionCandidatoService.getCandidatoById(this.id_edit).subscribe({
+      next: (res) => {
+        const candidatoValues = res.seleccionCandidatoType[0];
+
+        this.nombreCompletoCandidato = res.seleccionCandidatoType[0].candidato;
+        this.idSolicitudRP = res.seleccionCandidatoType[0].iD_SOLICITUD;
+
+        this.getSolicitudById(this.id_solicitud_by_params);
+      },
+      error: (err) => {
+        console.log(console.log(err));
+      }
+    });
+  }
+
+
+  obtenerServicioFamiliaresCandidatos({ idSolicitud }: { idSolicitud: string; }) {
+    return this.mantenimientoService.getFamiliaresCandidatoBySolicitud(this.id_solicitud_by_params).subscribe({
+      next: (response) => {
+        const data = response?.familiaresCandidato || [];
+        console.log(data);
+
+        console.log(idSolicitud);
+        this.dataTableDatosFamiliares = data.filter(
+          (d) => d.idSolicitud === idSolicitud
+        );
+      },
+      error: (error: HttpErrorResponse) => {
+        this.utilService.modalResponse(error.error, "error");
+      },
     });
   }
 
@@ -603,6 +697,8 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
       );*/
     }
   }
+  modelRemuneracion: number = 0;
+
 
   getDataEmpleadosEvolution() {
     return this.mantenimientoService.getDataEmpleadosEvolution().subscribe({
@@ -715,8 +811,12 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
     );
     try {
       await this.loadDataCamunda();
+      await this.obtenerServicioFamiliaresCandidatos({
+        idSolicitud: this.id_solicitud_by_params,
+      });
 
       this.utilService.closeLoadingSpinner();
+      this.checkTipoSolicitud();
     } catch (error) {
       this.utilService.modalResponse(error.error, "error");
     }
@@ -749,13 +849,30 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
     return this.solicitudes.getSolicitudById(id).subscribe({
       next: (response: any) => {
         this.solicitud = response;
-
+        this.mostrarFormularioFamiliares = this.solicitud.tipoSolicitud === "Contratación de Familiares";
+        this.mostrarFormularioReingreso = this.solicitud.tipoSolicitud === "Reingreso de Personal";
         this.loadingComplete += 2;
         this.getDetalleSolicitudById(id);
       },
       error: (error: HttpErrorResponse) => {
         this.utilService.modalResponse(error.error, "error");
       },
+    });
+  }
+  
+  
+
+  getComentarios() {
+    this.comentarioSalidaJefeService.obtenerComentarios(this.solicitudRG.idSolicitud).subscribe({
+      next: ({ comentarios }) => {
+        comentarios.forEach(comentario => {
+          if (comentario.tipo_Solicitud === "Comentario_Salida_Jefe") {
+            this.comentariosJefeInmediato = comentario;
+          } else {
+            this.comentariosRRHH = comentario;
+          }
+        })
+      }
     });
   }
 
@@ -788,6 +905,47 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
           this.model.sueldoAnual = this.detalleSolicitud.sueldoVariableAnual
           this.model.correo = this.detalleSolicitud.correo;
           this.model.fechaIngreso = this.detalleSolicitud.fechaIngreso;
+        }else if (id.toUpperCase().includes("RG")) {
+          if (this.detalleSolicitudRG.codigoPosicion.length > 0) {
+            this.modelRG.codigoPosicion = this.detalleSolicitudRG.codigoPosicion;
+            this.modelRG.puestoJefeInmediato = this.detalleSolicitudRG.puestoJefeInmediato;
+            this.modelRG.jefeInmediatoSuperior = this.detalleSolicitudRG.jefeInmediatoSuperior;
+            this.modelRG.descrPosicion = this.detalleSolicitudRG.descripcionPosicion;
+            this.modelRG.subledger = this.detalleSolicitudRG.subledger;
+            this.modelRG.nombreCompleto = this.detalleSolicitudRG.nombreEmpleado;
+            this.modelRG.compania = this.detalleSolicitudRG.compania;
+            this.modelRG.unidadNegocio = this.detalleSolicitudRG.unidadNegocio;
+            this.modelRG.departamento = this.detalleSolicitudRG.departamento;
+            this.modelRG.nombreCargo = this.detalleSolicitudRG.cargo;
+            this.modelRG.localidad = this.detalleSolicitudRG.localidad;
+            this.modelRG.nivelDir = this.detalleSolicitudRG.nivelDireccion;
+            this.modelRG.nomCCosto = this.detalleSolicitudRG.centroCosto;
+            this.modelRG.misionCargo = this.detalleSolicitudRG.misionCargo;
+            this.modelRG.justificacionCargo = this.detalleSolicitudRG.justificacion;
+            this.modelRG.reportaA = this.detalleSolicitudRG.reportaA;
+            this.modelRG.supervisaA = this.detalleSolicitudRG.supervisaA;
+            this.modelRG.tipoContrato = this.detalleSolicitudRG.tipoContrato;
+            this.modelRG.nivelRepa = this.detalleSolicitudRG.nivelReporteA;
+            this.modelRG.sueldo = this.detalleSolicitudRG.sueldo;
+            this.modelRG.sueldoMensual = this.detalleSolicitudRG.sueldoVariableMensual;
+            this.modelRG.sueldoTrimestral = this.detalleSolicitudRG.sueldoVariableTrimestral;
+            this.modelRG.sueldoSemestral = this.detalleSolicitudRG.sueldoVariableSemestral;
+            this.modelRG.sueldoAnual = this.detalleSolicitudRG.sueldoVariableAnual;
+            this.modelRG.correo = this.detalleSolicitudRG.correo;
+            this.modelRG.fechaIngreso = (this.detalleSolicitudRG.fechaIngreso as string).split("T")[0];
+            this.remuneracion = Number(this.modelRG.sueldoAnual) / 12 + Number(this.modelRG.sueldoSemestral) / 6 + Number(this.modelRG.sueldoTrimestral) / 3 + Number(this.modelRG.sueldoMensual);
+
+            this.keySelected = this.solicitud.idTipoSolicitud + "_" + this.solicitud.idTipoMotivo + "_" + this.model.nivelDir;
+
+            if (!this.dataAprobacionesPorPosicion[this.keySelected]) {
+              this.getNivelesAprobacion();
+
+              if (this.model.codigoPosicion.trim().length > 0) {
+                this.obtenerAprobacionesPorPosicionAPS();
+                this.obtenerAprobacionesPorPosicionAPD();
+              }
+            }
+          }
         }
 
         this.loadingComplete++;
@@ -814,6 +972,45 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
       },
     });
   }
+  obtenerAprobacionesPorPosicionAPS() {
+    return this.solicitudes
+      .obtenerAprobacionesPorPosicion(this.solicitudRG.idTipoSolicitud, this.solicitudRG.idTipoMotivo, this.modelRG.codigoPosicion, this.modelRG.nivelDir, 'APS')
+      .subscribe({
+        next: (response) => {
+          this.dataTipoRuta.length = 0;
+          this.dataRuta.length = 0;
+          this.dataAprobacionesPorPosicionAPS = response.nivelAprobacionPosicionType || [];
+
+          this.dataAprobacionesPorPosicionAPS.forEach(item => {
+            this.dataTipoRuta.push(item.nivelAprobacionType.tipoRuta);
+            this.dataRuta.push(item.nivelAprobacionType.ruta);
+            console.log("Aprobaciones APS = ", item.nivelAprobacionType);
+          });
+        },
+        error: (error: HttpErrorResponse) => {
+          this.utilService.modalResponse("No existe aprobadores de solicitud para los datos ingresados", "error");
+        },
+      });
+  }
+
+  obtenerAprobacionesPorPosicionAPD() {
+    return this.solicitudes
+      .obtenerAprobacionesPorPosicion(this.solicitudRG.idTipoSolicitud, this.solicitudRG.idTipoMotivo, this.modelRG.codigoPosicion, this.modelRG.nivelDir, 'APD')
+      .subscribe({
+        next: (response) => {
+          this.dataAprobadoresDinamicos.length = 0;
+          this.dataAprobacionesPorPosicionAPS = response.nivelAprobacionPosicionType;
+          this.dataAprobacionesPorPosicionAPS.forEach(item => {
+            this.dataAprobadoresDinamicos.push(item.aprobador.nivelDireccion);
+            console.log("Aprobaciones APD = ", item.aprobador);
+          });
+        },
+        error: (error: HttpErrorResponse) => {
+          this.utilService.modalResponse("No existe aprobadores de solicitud para los datos ingresados", "error");
+        },
+      });
+  }
+
 
   ngDoCheck(): void {
     if (this.loadingComplete === 2) {
