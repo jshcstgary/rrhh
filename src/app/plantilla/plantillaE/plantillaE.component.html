@@ -11,102 +11,18 @@
   >
   </form-component>
 
-  <!-- <div class="row">
-    <div class="col-md-3">
-      <div class="mb-3">
-        <label class="azul">Tipo de Solicitud</label>
-        <ng-select
-          #inputSelectLabor
-          [(ngModel)]="dataFilterNivelesAprobacion.tipoSolicitud"
-          name="id_tipo_labor"
-          placeholder="Seleccione"
-        >
-          <ng-option *ngFor="let car of dataTipoSolicitudes" [value]="car.id"
-            >{{ car.id }} - {{ car.descripcion }}</ng-option
-          >
-        </ng-select>
-        {{ selected_tipo_solicitud }}
-      </div>
-    </div>
-
-    <div class="col-md-3">
-      <div class="mb-3">
-        <label class="azul">Tipo Motivo</label>
-        <ng-select
-          #inputSelectProducto
-          [(ngModel)]="dataFilterNivelesAprobacion.tipoMotivo"
-          name="id_producto"
-          placeholder="Seleccione"
-        >
-          <ng-option *ngFor="let car of dataTipoMotivo" [value]="car.id"
-            >{{ car.id }} - {{ car.descripcion }}</ng-option
-          >
-        </ng-select>
-        {{ selected_tipo_motivo }}
-      </div>
-    </div>
-
-    <div class="col-md-3">
-      <div class="mb-3">
-        <label class="azul">Nivel de Direccion</label>
-        <ng-select
-          #inputSelectTrabajador
-          [(ngModel)]="dataFilterNivelesAprobacion.nivelDireccion"
-          name="id_trabajador"
-          placeholder="Seleccione"
-        >
-          <ng-option *ngFor="let data of dataNivelDireccion" [value]="data">{{
-            data
-          }}</ng-option>
-        </ng-select>
-        {{ selected_niveldireccion }}
-      </div>
-    </div>
-
-    <div class="col-md-3">
-      <div class="mb-3 text-end">
-        <button
-          (click)="filterDataTable()"
-          type="button"
-          class="btn btn-info me-2"
-        >
-          <i class="fas fa-filter"></i> Buscar
-        </button>
-      </div>
-    </div>
-  </div> -->
-  <!-- <form>
-    <div class="row">
-      <div class="col-md-12">
-        <div class="mb-3">
-          <div class="text-end">
-            <button
-              type="button"
-              (click)="pageCrear()"
-              class="btn btn-info me-2"
-            >
-              <i class="fas fa-plus"></i> Agregar
-            </button>
-
-            <button type="submit" class="btn btn-outline-info me-2">
-              <i class="fas fa-file-excel"></i> Exportar
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </form> -->
-
   <div class="row">
     <div class="col-md-6">
       <input-component
         [id]="'searchInputFilter'"
+        [showfilterInput]="showFilterTipoSolicitud"
         [type]="'string'"
         [placeholder]="placeholderHeaderInputText"
         [buttonIcon]="'ti-search'"
         buttonFunction="filterStringInTable"
         onChangeFunction="filterStringInTable"
         [contexto]="this"
+        [disabled]="disabledFilterTipoSolicitud"
       ></input-component>
     </div>
     <div class="col-md-4 text-end" *ngIf="showCreateButton">

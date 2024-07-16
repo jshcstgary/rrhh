@@ -15,11 +15,52 @@ import { UtilData } from "src/app/services/util/util.data";
 import { InputService } from "src/app/component/input/input.service";
 import { FormService } from "src/app/component/form/form.service";
 import { MantenimientoService } from "src/app/services/mantenimiento/mantenimiento.service";
+import { PageCodes } from "src/app/enums/codes.enum";
+import { TipoProcesoPageControlPermission } from "src/app/enums/page-control-permisions.enum";
+import { PageControlPermiso } from "src/app/types/page-control-permiso.type";
+import { PermisoService } from "src/app/services/permiso/permiso.service";
+import { Control } from "src/app/types/permiso.type";
 
 @Component({
   templateUrl: "./tipo-proceso.component.html",
 })
 export class TipoProcesoComponent implements OnInit {
+  private pageCode: string = PageCodes.TipoProceso;
+  public pageControlPermission: typeof TipoProcesoPageControlPermission = TipoProcesoPageControlPermission;
+
+  public controlsPermissions: PageControlPermiso = {
+    [TipoProcesoPageControlPermission.FiltroTipoSolicitud]: {
+      "codigo_Control": "",
+      "habilitar": false,
+      "modificar": false,
+      "visualizar": false
+    },
+    [TipoProcesoPageControlPermission.ButtonAgregar]: {
+      "codigo_Control": "",
+      "habilitar": false,
+      "modificar": false,
+      "visualizar": false
+    },
+    [TipoProcesoPageControlPermission.ButtonExportar]: {
+      "codigo_Control": "",
+      "habilitar": false,
+      "modificar": false,
+      "visualizar": false
+    },
+    [TipoProcesoPageControlPermission.ButtonEditar]: {
+      "codigo_Control": "",
+      "habilitar": false,
+      "modificar": false,
+      "visualizar": false
+    },
+    [TipoProcesoPageControlPermission.ButtonDuplicar]: {
+      "codigo_Control": "",
+      "habilitar": false,
+      "modificar": false,
+      "visualizar": false
+    }
+  };
+
   public columnsTable: IColumnsTable = TipoprocesoData.columns;
   public dataTable: any[] = [];
   public tableInputsEditRow: IInputsComponent =
@@ -38,15 +79,40 @@ export class TipoProcesoComponent implements OnInit {
     private utilService: UtilService,
     private formService: FormService,
     private inputService: InputService,
-    private mantenimientoService: MantenimientoService
-  ) {}
+    private mantenimientoService: MantenimientoService,
+    private permissionService: PermisoService
+  ) {
+    this.getPermissions();
+  }
 
   ngOnInit(): void {
-   /* this.utilService.openLoadingSpinner(
-      "Cargando información, espere por favor..."
-    );*/
+    this.columnsTable[this.columnsTable.length - 1].actions.forEach(action => {
+      if (action.id === "editOnTable") {
+        action.showed = this.controlsPermissions[TipoProcesoPageControlPermission.ButtonEditar].visualizar
+      } else if (action.id === "cloneOnTable") {
+        action.showed = this.controlsPermissions[TipoProcesoPageControlPermission.ButtonDuplicar].visualizar
+      }
+    });
+
     this.getDataToCombo();
-    // this.getDataToTable();
+  }
+
+  private getPermissions(): void {
+    const controlsPermission: Control[] = this.permissionService.getPagePermission(this.pageCode);
+
+    controlsPermission.forEach(controlPermission => {
+      if (controlPermission.codigo_Control === "01") {
+        this.controlsPermissions[TipoProcesoPageControlPermission.FiltroTipoSolicitud] = controlPermission;
+      } else if (controlPermission.codigo_Control === "02") {
+        this.controlsPermissions[TipoProcesoPageControlPermission.ButtonAgregar] = controlPermission;
+      } else if (controlPermission.codigo_Control === "03") {
+        this.controlsPermissions[TipoProcesoPageControlPermission.ButtonExportar] = controlPermission;
+      } else if (controlPermission.codigo_Control === "04") {
+        this.controlsPermissions[TipoProcesoPageControlPermission.ButtonEditar] = controlPermission;
+      } else if (controlPermission.codigo_Control === "05") {
+        this.controlsPermissions[TipoProcesoPageControlPermission.ButtonDuplicar] = controlPermission;
+      }
+    });
   }
 
   private getDataToCombo() {

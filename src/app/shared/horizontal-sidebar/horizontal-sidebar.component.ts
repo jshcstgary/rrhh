@@ -55,7 +55,7 @@ export class HorizontalSidebarComponent {
 
   public permisos: Permission[] = JSON.parse(localStorage.getItem("permisos")) || [];
   //public pagesToSearch: ISelectOptions = [];
-  public userName: string = localStorage.getItem("idUsuario");
+  public userName: string = localStorage.getItem("idLogin");
   public profile: string = "Supervisor";
   public profiles: IDropdownOptions = [
     { id: "administracion", name: "Administracion" },

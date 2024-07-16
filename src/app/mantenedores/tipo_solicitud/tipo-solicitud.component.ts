@@ -82,9 +82,14 @@ export class TipoSolicitudComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    /*this.utilService.openLoadingSpinner(
-      "Cargando información, espere por favor..."
-    );*/
+    this.columnsTable[this.columnsTable.length - 1].actions.forEach(action => {
+      if (action.id === "editOnTable") {
+        action.showed = this.controlsPermissions[TipoSolicitudPageControlPermission.ButtonEditar].visualizar
+      } else if (action.id === "cloneOnTable") {
+        action.showed = this.controlsPermissions[TipoSolicitudPageControlPermission.ButtonDuplicar].visualizar
+      }
+    });
+
     this.getDataToTable();
   }
 

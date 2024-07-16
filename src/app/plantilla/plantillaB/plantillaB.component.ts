@@ -44,9 +44,7 @@ export class PlantillaBComponent implements AfterViewInit, OnInit, OnChanges {
   @Input({ required: false }) public showFilterNivelDireccion: boolean = true;
   @Input({ required: false }) public disabledFilterNivelDireccion: boolean = false;
   @Input({ required: false }) public showButtonBuscar: boolean = true;
-  @Input({ required: false }) public showButtonExportar: boolean = true;
-  @Input({ required: false }) public showButtonEditar: boolean = true;
-  @Input({ required: false }) public showButtonDuplicar: boolean = true;
+  @Input({ required: false }) public showButtonExportar: boolean = true
 
   @Input({ required: false }) public colIdToDisable: string | string[] = "";
   @Input({ required: false }) public keyNameTable: string = "";

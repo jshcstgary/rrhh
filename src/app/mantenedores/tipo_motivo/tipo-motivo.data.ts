@@ -37,8 +37,17 @@ export const TipomotivoData: ITipomotivoData = {
       type: "actions",
       width: "100px",
       actions: [
-        { materialIcon: "edit", id: "editOnTable", tooltip: "Editar" },
-        { materialIcon: "content_copy", id: "cloneOnTable", tooltip: "Duplicar",
+        {
+          materialIcon: "edit",
+          id: "editOnTable",
+          tooltip: "Editar",
+          showed: true
+        },
+        {
+          materialIcon: "content_copy",
+          id: "cloneOnTable",
+          tooltip: "Duplicar",
+          showed: true
         },
       ],
     },
@@ -65,7 +74,7 @@ export const TipomotivoData: ITipomotivoData = {
       id: "tipoSolicitudId",
       type: "select",
       required: true,
-      disabled:true,
+      disabled: true,
       placeholder: "Seleccione",
       inputMessageError: "Seleccione",
       options: [],
@@ -76,11 +85,11 @@ export const TipomotivoData: ITipomotivoData = {
     },
   ],
   colsToFilterByText: ["id",
-                      "tipoMotivo",
-                      "tipoSolicitudFormatted",],
+    "tipoMotivo",
+    "tipoSolicitudFormatted",],
 };
 
-interface ITipomotivoData{
+interface ITipomotivoData {
   columns: IColumnsTable;
   defaultEmptyRowTable: ITipomotivoTable;
   tableInputsEditRow: IInputsComponent;

@@ -14,6 +14,8 @@
     <div class="col-md-6">
       <input-component
         [id]="'searchInputFilter'"
+        [showfilterInput]="showFilterTipoSolicitud"
+        [disabled]="disabledFilterTipoSolicitud"
         [type]="'string'"
         [placeholder]="placeholderHeaderInputText"
         [buttonIcon]="'ti-search'"
@@ -22,12 +24,12 @@
         [contexto]="this"
       ></input-component>
     </div>
-    <div class="col-md-4 text-end" *ngIf="showCreateButton">
+    <div class="text-end" [ngClass]="{'col-md-4': showButtonExportar, 'col-md-6': !showButtonExportar}" *ngIf="showCreateButton">
       <button type="button" class="btn btn-info" (click)="onCreateRow()">
         <i class="fas fa-plus"></i> Agregar
       </button>
     </div>
-    <div class="col-md-2">
+    <div class="col-md-2 text-end" *ngIf="showButtonExportar" [ngClass]="{'col-md-2': showCreateButton, 'col-md-6': !showCreateButton}">
       <dropdown-component
         [options]="dropdownOptionsExport"
         [textButton]="textButtonDropdowm"

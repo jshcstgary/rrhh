@@ -37,8 +37,18 @@ export const TipoprocesoData: ITipoprocesoData = {
       type: "actions",
       width: "100px",
       actions: [
-        { materialIcon: "edit", id: "editOnTable", tooltip: "Editar" },
-        { materialIcon: "content_copy", id: "cloneOnTable", tooltip: "Duplicar",
+        {
+          materialIcon: "edit",
+          id: "editOnTable",
+          tooltip: "Editar",
+          showed: true
+
+        },
+        {
+          materialIcon: "content_copy",
+          id: "cloneOnTable",
+          tooltip: "Duplicar",
+          showed: true
         },
       ],
     },

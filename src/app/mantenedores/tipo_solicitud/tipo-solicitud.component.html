@@ -11,5 +11,9 @@
   colIdToDisable="id"
   titleReport="TIPO DE SOLICITUDES"
   [codigoReport]="codigoReporte"
+  [showFilterTipoSolicitud]="this.controlsPermissions[pageControlPermission.FiltroTipoSolicitud].visualizar"
+  [disabledFilterTipoSolicitud]="!this.controlsPermissions[pageControlPermission.FiltroTipoSolicitud].habilitar"
+  [showCreateButton]="this.controlsPermissions[pageControlPermission.ButtonAgregar].visualizar"
+  [showButtonExportar]="this.controlsPermissions[pageControlPermission.ButtonExportar].visualizar"
 >
 </plantilla-a-component>

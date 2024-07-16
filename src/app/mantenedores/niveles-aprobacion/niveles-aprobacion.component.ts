@@ -109,7 +109,6 @@ export class NivelesAprobacionComponent implements OnInit {
         action.showed = this.controlsPermissions[NivelAprobacionPageControlPermission.ButtonDuplicar].visualizar
       }
     });
-    console.log(this.columnsTable[this.columnsTable.length - 1]);
 
     this.ObtenerServicioTipoSolicitud();
     this.ObtenerServicioNivelDireccion();

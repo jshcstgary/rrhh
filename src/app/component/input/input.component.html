@@ -17,7 +17,7 @@
       style="font-weight: 500"
       >{{ label }}</label
     >
-    <div class="input-group">
+    <div class="input-group" *ngIf="showfilterInput">
       <input
         [id]="id"
         type="text"
@@ -33,6 +33,7 @@
         (keypress)="keypress($event)"
       />
       <button
+        [disabled]="disabled"
         class="btn btn-outline-info"
         type="button"
         *ngIf="containsButton"

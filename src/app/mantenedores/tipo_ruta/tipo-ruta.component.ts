@@ -12,11 +12,52 @@ import { environment } from "src/environments/environment";
 import { UtilService } from "src/app/services/util/util.service";
 import { TipoRutaService } from "./tipo-ruta.service";
 import { UtilData } from "src/app/services/util/util.data";
+import { PageCodes } from "src/app/enums/codes.enum";
+import { TipoRutaPageControlPermission } from "src/app/enums/page-control-permisions.enum";
+import { PageControlPermiso } from "src/app/types/page-control-permiso.type";
+import { PermisoService } from "src/app/services/permiso/permiso.service";
+import { Control } from "src/app/types/permiso.type";
 
 @Component({
   templateUrl: "./tipo-ruta.component.html",
 })
 export class TipoRutaComponent implements OnInit {
+  private pageCode: string = PageCodes.TipoRuta;
+  public pageControlPermission: typeof TipoRutaPageControlPermission = TipoRutaPageControlPermission;
+
+  public controlsPermissions: PageControlPermiso = {
+    [TipoRutaPageControlPermission.FiltroTipoSolicitud]: {
+      "codigo_Control": "",
+      "habilitar": false,
+      "modificar": false,
+      "visualizar": false
+    },
+    [TipoRutaPageControlPermission.ButtonAgregar]: {
+      "codigo_Control": "",
+      "habilitar": false,
+      "modificar": false,
+      "visualizar": false
+    },
+    [TipoRutaPageControlPermission.ButtonExportar]: {
+      "codigo_Control": "",
+      "habilitar": false,
+      "modificar": false,
+      "visualizar": false
+    },
+    [TipoRutaPageControlPermission.ButtonEditar]: {
+      "codigo_Control": "",
+      "habilitar": false,
+      "modificar": false,
+      "visualizar": false
+    },
+    [TipoRutaPageControlPermission.ButtonDuplicar]: {
+      "codigo_Control": "",
+      "habilitar": false,
+      "modificar": false,
+      "visualizar": false
+    }
+  };
+
   public columnsTable: IColumnsTable = TiporutaData.columns;
   public dataTable: any[] = [];
   public tableInputsEditRow: IInputsComponent = TiporutaData.tableInputsEditRow;
@@ -29,14 +70,40 @@ export class TipoRutaComponent implements OnInit {
     private tiporutaesService: TipoRutaService,
     private tableService: TableService,
     private validationsService: ValidationsService,
-    private utilService: UtilService
-  ) {}
+    private utilService: UtilService,
+    private permissionService: PermisoService
+  ) {
+    this.getPermissions();
+  }
 
   ngOnInit(): void {
-   /* this.utilService.openLoadingSpinner(
-      "Cargando información, espere por favor..."
-    );*/
+    this.columnsTable[this.columnsTable.length - 1].actions.forEach(action => {
+      if (action.id === "editOnTable") {
+        action.showed = this.controlsPermissions[TipoRutaPageControlPermission.ButtonEditar].visualizar
+      } else if (action.id === "cloneOnTable") {
+        action.showed = this.controlsPermissions[TipoRutaPageControlPermission.ButtonDuplicar].visualizar
+      }
+    });
+
     this.getDataToTable();
+  }
+
+  private getPermissions(): void {
+    const controlsPermission: Control[] = this.permissionService.getPagePermission(this.pageCode);
+
+    controlsPermission.forEach(controlPermission => {
+      if (controlPermission.codigo_Control === "01") {
+        this.controlsPermissions[TipoRutaPageControlPermission.FiltroTipoSolicitud] = controlPermission;
+      } else if (controlPermission.codigo_Control === "02") {
+        this.controlsPermissions[TipoRutaPageControlPermission.ButtonAgregar] = controlPermission;
+      } else if (controlPermission.codigo_Control === "03") {
+        this.controlsPermissions[TipoRutaPageControlPermission.ButtonExportar] = controlPermission;
+      } else if (controlPermission.codigo_Control === "04") {
+        this.controlsPermissions[TipoRutaPageControlPermission.ButtonEditar] = controlPermission;
+      } else if (controlPermission.codigo_Control === "05") {
+        this.controlsPermissions[TipoRutaPageControlPermission.ButtonDuplicar] = controlPermission;
+      }
+    });
   }
 
   private getDataToTable() {

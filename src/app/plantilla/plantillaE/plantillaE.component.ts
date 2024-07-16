@@ -37,6 +37,11 @@ import { DataFilterNivelesAprobacion } from "src/app/eschemas/DataFilterNivelesA
   styleUrls: ["./plantillaE.component.scss"],
 })
 export class PlantillaEComponent implements AfterViewInit, OnInit, OnChanges {
+  @Input({ required: false }) public showFilterTipoSolicitud: boolean = true;
+  @Input({ required: false }) public disabledFilterTipoSolicitud: boolean = false;
+  @Input({ required: false }) public showButtonExportar: boolean = true
+  @Input({ required: false }) public showCreateButton: boolean = true;
+
   @Input({ required: false }) public colIdToDisable: string | string[] = "";
   @Input({ required: false }) public keyNameTable: string = "";
   @Input({ required: false }) public dataFilterNivelesAprobacion =
@@ -70,7 +75,6 @@ export class PlantillaEComponent implements AfterViewInit, OnInit, OnChanges {
   @Input() public onDeleteFunction: string = "onDelete";
   @Input({ required: false }) public IdRowToClone: string = null;
   @Input({ required: false }) public onCreateFunction: string = null;
-  @Input({ required: false }) public showCreateButton: boolean = true;
   @Input({ required: false }) public allowCloneButtonOnTable: boolean = true;
   @Input() public titleReport: string = "";
   @Input({ required: false }) public codigoReport: reportCodeEnum;

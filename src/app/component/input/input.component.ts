@@ -32,7 +32,12 @@ export class InputComponent implements OnInit {
   @Input() public allowedKeys: allowedKeysType = [];
   @Input() public decimals: number = 2;
 
-  @Input() public theValue: string = ""; 
+  @Input() public theValue: string = "";
+
+  @Input({
+    required: false
+  })
+  public showfilterInput: boolean = true;
 
   public containsButton: boolean = false;
   public containsLabel: boolean = false;

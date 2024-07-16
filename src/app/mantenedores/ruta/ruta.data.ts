@@ -1,7 +1,6 @@
 import { IColumnsTable } from "src/app/component/table/table.interface";
 import { IRutaTable } from "./ruta.interface";
 import { IInputsComponent } from "src/app/component/input/input.interface";
-import { PlantillaAData } from "src/app/plantilla/plantillaA/plantillaA.data";
 
 export const TiporutaData: IRutaData = {
   columns: [
@@ -37,11 +36,17 @@ export const TiporutaData: IRutaData = {
       type: "actions",
       width: "100px",
       actions: [
-        { materialIcon: "edit", id: "editOnTable", tooltip: "Editar" },
+        {
+          materialIcon: "edit",
+          id: "editOnTable",
+          tooltip: "Editar",
+          showed: true
+        },
         {
           materialIcon: "content_copy",
           id: "cloneOnTable",
           tooltip: "Duplicar",
+          showed: true
         },
       ],
     },
