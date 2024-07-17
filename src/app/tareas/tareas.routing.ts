@@ -10,7 +10,14 @@ export const TareasRoutes: Routes = [
         component: ConsultaTareasComponent,
         data: {
           title: "Mis tareas",
-          urls: [{ title: "Tareas" }, { title: "Consulta Tarea" }],
+          urls: [
+            {
+              title: "Tareas"
+            },
+            {
+              title: "Consulta Tarea"
+            }
+          ],
         },
       },
     ],
