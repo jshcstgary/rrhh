@@ -1,4 +1,3 @@
-import { NgIf, CommonModule, NgFor } from "@angular/common";
 import {
   Component,
   ViewChild,

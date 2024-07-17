@@ -13,7 +13,7 @@ import { EstadosComponent } from "./estados/estados.component";
 import { AprobadoresFijosComponent } from "./aprobadores-fijos/aprobadores-fijos.component";
 import { CrearAprobadorFijoComponent } from "./crear-aprobador-fijo/crear-aprobador-fijo.component";
 import { EditarAprobadorFijoComponent } from "./editar-aprobador-fijo/editar-aprobador-fijo.component";
-import { mantenedoresGuard } from "../guards/mantenedores.guard";
+import { routeAccessGuard } from "../guards/route-access.guard";
 import { PageCodes } from "../enums/codes.enum";
 
 export const MantenedoresRoutes: Routes = [
@@ -22,9 +22,10 @@ export const MantenedoresRoutes: Routes = [
     children: [
       {
         path: "niveles-aprobacion",
-        canActivate: [mantenedoresGuard(PageCodes.NivelesAprobacion)],
+        canActivate: [routeAccessGuard],
         component: NivelesAprobacionComponent,
         data: {
+          code: PageCodes.NivelesAprobacion,
           title: "Niveles de Aprobación",
           urls: [
             {
@@ -38,8 +39,10 @@ export const MantenedoresRoutes: Routes = [
       },
       {
         path: "crear-niveles-aprobacion",
+        canActivate: [routeAccessGuard],
         component: CrearNivelesAprobacionComponent,
         data: {
+          code: PageCodes.CrearNivelesAprobacion,
           title: "Crear Niveles de Aprobación",
           urls: [
             {
@@ -53,8 +56,10 @@ export const MantenedoresRoutes: Routes = [
       },
       {
         path: "tipo-solicitud",
+        canActivate: [routeAccessGuard],
         component: TipoSolicitudComponent,
         data: {
+          code: PageCodes.TipoSolicitud,
           title: "Tipo de Solicitudes",
           urls: [
             {
@@ -68,8 +73,10 @@ export const MantenedoresRoutes: Routes = [
       },
       {
         path: "tipo-motivo",
+        canActivate: [routeAccessGuard],
         component: TipoMotivoComponent,
         data: {
+          code: PageCodes.TipoMotivo,
           title: "Tipo motivo",
           urls: [
             {
@@ -83,8 +90,10 @@ export const MantenedoresRoutes: Routes = [
       },
       {
         path: "tipo-accion",
+        canActivate: [routeAccessGuard],
         component: TipoAccionComponent,
         data: {
+          code: PageCodes.TipoAccion,
           title: "Tipo acción",
           urls: [
             {
@@ -98,8 +107,10 @@ export const MantenedoresRoutes: Routes = [
       },
       {
         path: "tipo-proceso",
+        canActivate: [routeAccessGuard],
         component: TipoProcesoComponent,
         data: {
+          code: PageCodes.TipoProceso,
           title: "Tipo proceso",
           urls: [
             {
@@ -113,8 +124,10 @@ export const MantenedoresRoutes: Routes = [
       },
       {
         path: "tipo-ruta",
+        canActivate: [routeAccessGuard],
         component: TipoRutaComponent,
         data: {
+          code: PageCodes.TipoRuta,
           title: "Tipo ruta",
           urls: [
             {
@@ -128,8 +141,10 @@ export const MantenedoresRoutes: Routes = [
       },
       {
         path: "ruta",
+        canActivate: [routeAccessGuard],
         component: RutaComponent,
         data: {
+          code: PageCodes.Ruta,
           title: "Ruta",
           urls: [
             {
@@ -143,8 +158,10 @@ export const MantenedoresRoutes: Routes = [
       },
       {
         path: "accion",
+        canActivate: [routeAccessGuard],
         component: AccionComponent,
         data: {
+          code: PageCodes.Accion,
           title: "Acción",
           urls: [
             {
@@ -158,6 +175,7 @@ export const MantenedoresRoutes: Routes = [
       },
       {
         path: "estados-solicitud",
+        canActivate: [routeAccessGuard],
         component: EstadosComponent,
         data: {
           title: "Estados Solicitud",
@@ -173,8 +191,10 @@ export const MantenedoresRoutes: Routes = [
       },
       {
         path: "aprobadores-fijos",
+        canActivate: [routeAccessGuard],
         component: AprobadoresFijosComponent,
         data: {
+          code: PageCodes.AprobadorFijo,
           title: "Aprobadores Fijos",
           urls: [
             {
@@ -188,6 +208,7 @@ export const MantenedoresRoutes: Routes = [
       },
       {
         path: "crear-aprobador-fijo",
+        canActivate: [routeAccessGuard],
         component: CrearAprobadorFijoComponent,
         data: {
           title: "Crear Aprobador Fijo",
@@ -203,6 +224,7 @@ export const MantenedoresRoutes: Routes = [
       },
       {
         path: "editar-aprobador-fijo/:id",
+        canActivate: [routeAccessGuard],
         component: EditarAprobadorFijoComponent,
         data: {
           title: "Editar Aprobador Fijo",

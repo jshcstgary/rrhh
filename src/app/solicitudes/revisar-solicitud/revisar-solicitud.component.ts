@@ -33,6 +33,8 @@ import { toDate } from "date-fns/esm";
 import { DatosAprobadores } from "src/app/eschemas/DatosAprobadores";
 import { columnsDatosFamiliares } from "src/app/solicitudes/revisar-solicitud/registrar-familiares.data";
 import { RegistrarCandidatoService } from "../registrar-candidato/registrar-candidato.service";
+import { LocalStorageKeys } from "src/app/enums/local-storage-keys.enum";
+import { StarterService } from "src/app/starter/starter.service";
 
 @Component({
   selector: 'revisarSolicitud',
@@ -434,8 +436,8 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
     private utilService: UtilService,
     private consultaTareasService: ConsultaTareasService,
     private seleccionCandidatoService: RegistrarCandidatoService,
-    private comentarioSalidaJefeService: ComentarioSalidaJefeService
-
+    private comentarioSalidaJefeService: ComentarioSalidaJefeService,
+    private starterService: StarterService
   ) {
     super(route, router, camundaRestService);
 
@@ -448,12 +450,57 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
     });
 
     this.modelBase = new DatosProcesoInicio();
-    //this.getCandidatoValues();
 
     this.route.paramMap.subscribe((params) => {
       this.id_solicitud_by_params = params.get("idSolicitud");
       this.idDeInstancia = params.get("id");
     });
+
+    this.verifyData();
+  }
+
+  private verifyData(): void {
+    this.utilService.openLoadingSpinner("Cargando información, espere por favor...");
+
+    try {
+      this.starterService.getUser(localStorage.getItem(LocalStorageKeys.IdUsuario)!).subscribe({
+        next: (res) => {
+          return this.consultaTareasService.getTareasUsuario(res.evType[0].subledger).subscribe({
+            next: async (response) => {
+              const existe = response.solicitudes.some(({ idSolicitud, rootProcInstId}) => idSolicitud === this.id_solicitud_by_params && rootProcInstId === this.idDeInstancia);
+              console.log(existe);
+
+              if (existe) {
+                await this.loadDataCamunda();
+                await this.obtenerServicioFamiliaresCandidatos({
+                  idSolicitud: this.id_solicitud_by_params,
+                });
+
+                this.utilService.closeLoadingSpinner();
+                this.checkTipoSolicitud();
+              } else {
+                this.utilService.closeLoadingSpinner();
+                
+                await Swal.fire({
+                  text: "Usuario no asignado",
+                  icon: "info",
+                  confirmButtonColor: "rgb(227, 199, 22)"
+                });
+
+                this.router.navigate(["/solicitudes/consulta-solicitudes"]);
+              }
+            },
+            error: (error: HttpErrorResponse) => {
+              this.utilService.closeLoadingSpinner();
+              
+              this.utilService.modalResponse(error.error, "error");
+            },
+          });
+        }
+      });
+    } catch (error) {
+      this.utilService.modalResponse(error.error, "error");
+    }
   }
 
   getCandidatoValues() {
@@ -815,21 +862,19 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
   }
 
   async ngOnInit() {
-    this.utilService.openLoadingSpinner(
-      "Cargando información, espere por favor..."
-    );
-    try {
-      await this.loadDataCamunda();
-      await this.obtenerServicioFamiliaresCandidatos({
-        idSolicitud: this.id_solicitud_by_params,
-      });
+    // this.utilService.openLoadingSpinner("Cargando información, espere por favor...");
 
-      this.utilService.closeLoadingSpinner();
-      this.checkTipoSolicitud();
-    } catch (error) {
-      this.utilService.modalResponse(error.error, "error");
-    }
+    // try {
+    //   await this.loadDataCamunda();
+    //   await this.obtenerServicioFamiliaresCandidatos({
+    //     idSolicitud: this.id_solicitud_by_params,
+    //   });
 
+    //   this.utilService.closeLoadingSpinner();
+    //   this.checkTipoSolicitud();
+    // } catch (error) {
+    //   this.utilService.modalResponse(error.error, "error");
+    // }
   }
 
   pageSolicitudes() {

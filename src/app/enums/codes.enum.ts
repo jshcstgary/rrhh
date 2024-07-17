@@ -3,6 +3,7 @@ export enum PageCodes {
   Tareas = "wf_tareas",
   ConsultaTareas = "wf_mis_tareas",
   NivelesAprobacion = "wf_niveles_aprobacion",
+  CrearNivelesAprobacion = "wf_crear_niveles_aprobacion",
   TipoSolicitud = "wf_tipo_solicitudes",
   TipoMotivo = "wf_tipo_motivo",
   TipoAccion = "wf_tipo_accion",

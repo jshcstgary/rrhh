@@ -1,5 +1,4 @@
 import {
-  ChangeDetectorRef,
   Component,
   SimpleChange,
   Type,
@@ -9,10 +8,7 @@ import { CamundaRestService } from "../../camunda-rest.service";
 import { CompleteTaskComponent } from "../general/complete-task.component";
 import {
   HttpClientModule,
-  HttpErrorResponse,
-  HttpEvent,
-  HttpHandler,
-  HttpRequest,
+  HttpErrorResponse
 } from "@angular/common/http";
 import { NgForm } from "@angular/forms";
 import { environment, portalWorkFlow } from "../../../environments/environment";
@@ -32,22 +28,15 @@ import { Subject, Observable, OperatorFunction } from "rxjs";
 import {
   debounceTime,
   distinctUntilChanged,
-  isEmpty,
-  map,
-  switchMap,
+  map
 } from "rxjs/operators";
 import { ConsultaTareasService } from "src/app/tareas/consulta-tareas/consulta-tareas.service";
 import { SolicitudesService } from "../registrar-solicitud/solicitudes.service";
 import {
-  columnsDatosFamiliares,
-  dataTableAprobadores,
+  columnsDatosFamiliares
 } from "./registrar-familiares.data";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { IEmpleadoData } from "src/app/services/mantenimiento/empleado.interface";
-import {
-  IRowTableAttributes,
-  idActionType,
-} from "src/app/component/table/table.interface";
 import { DialogBuscarEmpleadosFamiliaresComponent } from "./dialog-buscar-empleados-familiares/dialog-buscar-empleados-familiares.component";
 import { DialogReasignarUsuarioComponent } from "src/app/shared/reasginar-usuario/reasignar-usuario.component";
 import { TableService } from "src/app/component/table/table.service";
@@ -394,6 +383,55 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
       this.idDeInstancia = params.get("id");
       console.log("this.idDeInstancia: ", this.idDeInstancia);
     });
+
+    this.verifyData();
+  }
+
+  private verifyData(): void {
+    this.utilService.openLoadingSpinner("Cargando información, espere por favor...");
+
+    try {
+      this.starterService.getUser(localStorage.getItem(LocalStorageKeys.IdUsuario)!).subscribe({
+        next: (res) => {
+          return this.consultaTareasService.getTareasUsuario(res.evType[0].subledger).subscribe({
+            next: async (response) => {
+              const existe = response.solicitudes.some(({ idSolicitud, rootProcInstId}) => idSolicitud === this.id_solicitud_by_params && rootProcInstId === this.idDeInstancia);
+
+              if (existe) {
+                try {
+                  await this.loadDataCamunda(); //comentado para prueba mmunoz
+            
+                  await this.obtenerServicioFamiliaresCandidatos({
+                    idSolicitud: this.id_solicitud_by_params,
+                  });
+            
+                  this.utilService.closeLoadingSpinner();
+                } catch (error) {
+                  this.utilService.modalResponse(error.error, "error");
+                }
+              } else {
+                this.utilService.closeLoadingSpinner();
+                
+                await Swal.fire({
+                  text: "Usuario no asignado",
+                  icon: "info",
+                  confirmButtonColor: "rgb(227, 199, 22)"
+                });
+
+                this.router.navigate(["/solicitudes/consulta-solicitudes"]);
+              }
+            },
+            error: (error: HttpErrorResponse) => {
+              this.utilService.modalResponse(error.error, "error");
+              
+              this.utilService.closeLoadingSpinner();
+            },
+          });
+        }
+      });
+    } catch (error) {
+      this.utilService.modalResponse(error.error, "error");
+    }
   }
 
   onSelectionChange() {
@@ -808,22 +846,20 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
   }
 
   async ngOnInit() {
-    this.utilService.openLoadingSpinner(
-      "Cargando información, espere por favor..."
-    );
+    // this.utilService.openLoadingSpinner("Cargando información, espere por favor...");
 
-    try {
-      await this.loadDataCamunda(); //comentado para prueba mmunoz
+    // try {
+    //   await this.loadDataCamunda(); //comentado para prueba mmunoz
 
-      await this.obtenerServicioFamiliaresCandidatos({
-        idSolicitud: this.id_solicitud_by_params,
-      });
+    //   await this.obtenerServicioFamiliaresCandidatos({
+    //     idSolicitud: this.id_solicitud_by_params,
+    //   });
 
-      this.utilService.closeLoadingSpinner();
-    } catch (error) {
-      // Manejar errores aquí de manera centralizada
-      this.utilService.modalResponse(error.error, "error");
-    }
+    //   this.utilService.closeLoadingSpinner();
+    // } catch (error) {
+    //   // Manejar errores aquí de manera centralizada
+    //   this.utilService.modalResponse(error.error, "error");
+    // }
   }
 
   pageSolicitudes() {

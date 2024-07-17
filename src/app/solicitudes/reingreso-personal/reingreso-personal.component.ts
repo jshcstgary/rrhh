@@ -1,4 +1,4 @@
-import { Component, Output, TemplateRef, Type, ViewChild } from "@angular/core";
+import { Component, Type } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import {
   NgbModal,
@@ -8,7 +8,7 @@ import { CamundaRestService } from "src/app/camunda-rest.service";
 import { Solicitud } from "src/app/eschemas/Solicitud";
 import { CompleteTaskComponent } from "../general/complete-task.component";
 import { Observable, OperatorFunction, Subject } from "rxjs";
-import { catchError, debounceTime, distinctUntilChanged, map } from "rxjs/operators";
+import { debounceTime, distinctUntilChanged, map } from "rxjs/operators";
 import { RegistrarData } from "src/app/eschemas/RegistrarData";
 import { DatosProcesoInicio } from "src/app/eschemas/DatosProcesoInicio";
 import { UtilService } from "src/app/services/util/util.service";
@@ -24,15 +24,6 @@ import {
   columnsAprobadores,
   dataTableAprobadores,
 } from "./reingreso-personal.data";
-// import {
-//   DialogComponents,
-//   dialogComponentList,
-// } from "src/app/shared/dialogComponents/dialog.components";
-import {
-  IEmpleadoData,
-  IEmpleados,
-} from "src/app/services/mantenimiento/empleado.interface";
-// import { DialogBuscarEmpleadosComponent } from "./dialog-buscar-empleados-reingreso/dialog-buscar-empleados-reingreso.component";
 import { DialogReasignarUsuarioComponent } from "src/app/shared/reasginar-usuario/reasignar-usuario.component";
 import Swal from "sweetalert2";
 import { DialogBuscarEmpleadosReingresoComponent } from "./dialog-buscar-empleados-reingreso/dialog-buscar-empleados-reingreso.component";
@@ -447,6 +438,51 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
       this.id_solicitud_by_params = params.get("idSolicitud");
       this.idDeInstancia = params.get("id");
     });
+
+    this.verifyData();
+  }
+
+  private verifyData(): void {
+    this.utilService.openLoadingSpinner("Cargando información, espere por favor...");
+
+    try {
+      this.starterService.getUser(localStorage.getItem(LocalStorageKeys.IdUsuario)!).subscribe({
+        next: (res) => {
+          return this.consultaTareasService.getTareasUsuario(res.evType[0].subledger).subscribe({
+            next: async (response) => {
+              const existe = response.solicitudes.some(({ idSolicitud, rootProcInstId}) => idSolicitud === this.id_solicitud_by_params && rootProcInstId === this.idDeInstancia);
+
+              if (existe) {
+                try {
+                  await this.loadDataCamunda();
+            
+                  this.utilService.closeLoadingSpinner();
+                } catch (error) {
+                  this.utilService.modalResponse(error.error, "error");
+                }
+              } else {
+                this.utilService.closeLoadingSpinner();
+                
+                await Swal.fire({
+                  text: "Usuario no asignado",
+                  icon: "info",
+                  confirmButtonColor: "rgb(227, 199, 22)"
+                });
+
+                this.router.navigate(["/solicitudes/consulta-solicitudes"]);
+              }
+            },
+            error: (error: HttpErrorResponse) => {
+              this.utilService.modalResponse(error.error, "error");
+              
+              this.utilService.closeLoadingSpinner();
+            },
+          });
+        }
+      });
+    } catch (error) {
+      this.utilService.modalResponse(error.error, "error");
+    }
   }
 
   getCandidatoValues() {
@@ -467,16 +503,15 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
   }
 
   async ngOnInit() {
-    this.utilService.openLoadingSpinner("Cargando información, espere por favor...");
+    // this.utilService.openLoadingSpinner("Cargando información, espere por favor...");
 
-    try {
-      await this.loadDataCamunda();
+    // try {
+    //   await this.loadDataCamunda();
 
-      this.utilService.closeLoadingSpinner();
-    } catch (error) {
-      // Manejar errores aquí de manera centralizada
-      this.utilService.modalResponse(error.error, "error");
-    }
+    //   this.utilService.closeLoadingSpinner();
+    // } catch (error) {
+    //   this.utilService.modalResponse(error.error, "error");
+    // }
   }
 
   ObtenerServicioTipoSolicitud() {

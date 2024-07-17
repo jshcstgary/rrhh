@@ -1,6 +1,6 @@
 import { Routes } from "@angular/router";
 import { ConsultaTareasComponent } from "./consulta-tareas/consulta-tareas.component";
-import { tareasGuard } from "../guards/tareas.guard";
+import { routeAccessGuard } from "../guards/route-access.guard";
 
 export const TareasRoutes: Routes = [
   {
@@ -8,10 +8,11 @@ export const TareasRoutes: Routes = [
     children: [
       {
         path: "consulta-tareas",
-        canActivate: [tareasGuard],
+        canActivate: [routeAccessGuard],
         component: ConsultaTareasComponent,
         data: {
           title: "Mis tareas",
+          code: "wf_mis_tareas",
           urls: [
             {
               title: "Tareas"

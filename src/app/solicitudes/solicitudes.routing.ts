@@ -15,8 +15,6 @@ import { RegistrarComentarioSalidaRRHHComponent } from "./registrar-comentario-s
 import { RegistrarComentarioReingresoComponent } from "./registrar-comentario-reingreso/registrar-comentario-reingreso.component";
 import { RegistrarAccionPersonalComponent } from "./registrar-accion-personal/registrar-accion-personal.component";
 import { CompletarAccionPersonalComponent } from "./completar-accion-personal/completar-accion-personal.component";
-import { authGuardActivate } from "../guards/auth.guard";
-
 
 export const SolicitudesRoutes: Routes = [
   {
@@ -24,11 +22,18 @@ export const SolicitudesRoutes: Routes = [
     children: [
       {
         path: "consulta-solicitudes",
-        canActivate: [authGuardActivate],
         component: ConsultaSolicitudesComponent,
         data: {
+          code: "wf_consulta_solicitudes",
           title: "Solicitudes",
-          urls: [{ title: "Solicitudes" }, { title: "Consulta Solicitudes" }],
+          urls: [
+            {
+              title: "Solicitudes"
+            },
+            {
+              title: "Consulta Solicitudes"
+            }
+          ],
         },
       },
       {
@@ -36,16 +41,31 @@ export const SolicitudesRoutes: Routes = [
         component: RegistrarSolicitudComponent,
         data: {
           title: "Registrar Solicitud",
-          urls: [{ title: "Solicitudes" }, { title: "Registrar Solicitud" }],
+          code: "wf_registrar_solicitudes",
+          urls: [
+            {
+              title: "Solicitudes"
+            },
+            {
+              title: "Registrar Solicitud"
+            }
+          ],
         },
       },
-
       {
         path: "detalle-solicitud/:id",
         component: DetalleSolicitudComponent,
         data: {
           title: "Solicitud",
-          urls: [{ title: "Solicitudes" }, { title: "Solicitud" }],
+          code: "wf_registrar_solicitudes",
+          urls: [
+            {
+              title: "Solicitudes"
+            },
+            {
+              title: "Solicitud"
+            }
+          ],
         },
       },
       {
@@ -53,7 +73,14 @@ export const SolicitudesRoutes: Routes = [
         component: RevisarSolicitudComponent,
         data: {
           title: "Revisión de Solicitud",
-          urls: [{ title: "Solicitudes" }, { title: "Revisión de Solicitud" }],
+          urls: [
+            {
+              title: "Solicitudes"
+            },
+            {
+              title: "Revisión de Solicitud"
+            }
+          ],
         },
       },
       {
@@ -61,7 +88,14 @@ export const SolicitudesRoutes: Routes = [
         component: RegistrarFamiliaresComponent,
         data: {
           title: "Completar Solicitud",
-          urls: [{ title: "Solicitudes" }, { title: "Contratación de Familiares" }],
+          urls: [
+            {
+              title: "Solicitudes"
+            },
+            {
+              title: "Contratación de Familiares"
+            }
+          ],
         },
       },
       {
@@ -129,7 +163,14 @@ export const SolicitudesRoutes: Routes = [
         component: RegistrarCandidatoComponent,
         data: {
           title: "Seleccion de Candidato",
-          urls: [{ title: "Solicitudes" }, { title: "Seleccion de Candidato" }],
+          urls: [
+            {
+              title: "Solicitudes"
+            },
+            {
+              title: "Seleccion de Candidato"
+            }
+          ],
         },
       },
       {
@@ -167,7 +208,14 @@ export const SolicitudesRoutes: Routes = [
         component: CompletaSolicitudComponent,
         data: {
           title: "Completar Solicitud",
-          urls: [{ title: "Solicitudes" }, { title: "Completar Solicitud" }],
+          urls: [
+            {
+              title: "Solicitudes"
+            },
+            {
+              title: "Completar Solicitud"
+            }
+          ],
         },
       },
     ],

@@ -1,13 +1,10 @@
 import { Component } from "@angular/core";
-import { ActivatedRoute, ParamMap, Router } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { CamundaRestService } from "../../camunda-rest.service";
 import { CompleteTaskComponent } from "../general/complete-task.component";
 import {
   HttpClientModule,
-  HttpErrorResponse,
-  HttpEvent,
-  HttpHandler,
-  HttpRequest,
+  HttpErrorResponse
 } from "@angular/common/http";
 import { NgForm } from "@angular/forms";
 import { environment } from "../../../environments/environment";
@@ -23,8 +20,7 @@ import { Subject, Observable, OperatorFunction } from "rxjs";
 import {
   debounceTime,
   distinctUntilChanged,
-  map,
-  switchMap,
+  map
 } from "rxjs/operators";
 import { ConsultaTareasService } from "src/app/tareas/consulta-tareas/consulta-tareas.service";
 import { SolicitudesService } from "../registrar-solicitud/solicitudes.service";
@@ -435,6 +431,8 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
       this.id_solicitud_by_params = params.get("idSolicitud");
       this.idDeInstancia = params.get("id");
     });
+
+    this.verifyData();
 
     this.selectedOption = this.options[0].descripcion;
 
@@ -880,17 +878,58 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
   }
 
   async ngOnInit() {
-    this.utilService.openLoadingSpinner(
-      "Cargando información, espere por favor..."
-    );
-    try {
-      await this.loadDataCamunda();
+    // this.utilService.openLoadingSpinner("Cargando información, espere por favor...");
 
-      this.utilService.closeLoadingSpinner();
+    // try {
+    //   await this.loadDataCamunda();
+
+    //   this.utilService.closeLoadingSpinner();
+    // } catch (error) {
+    //   this.utilService.modalResponse(error.error, "error");
+    // }
+  }
+
+  private verifyData(): void {
+    this.utilService.openLoadingSpinner("Cargando información, espere por favor...");
+
+    try {
+      this.starterService.getUser(localStorage.getItem(LocalStorageKeys.IdUsuario)!).subscribe({
+        next: (res) => {
+          return this.consultaTareasService.getTareasUsuario(res.evType[0].subledger).subscribe({
+            next: async (response) => {
+              const existe = response.solicitudes.some(({ idSolicitud, rootProcInstId}) => idSolicitud === this.id_solicitud_by_params && rootProcInstId === this.idDeInstancia);
+
+              if (existe) {
+                try {
+                  await this.loadDataCamunda();
+            
+                  this.utilService.closeLoadingSpinner();
+                } catch (error) {
+                  this.utilService.modalResponse(error.error, "error");
+                }
+              } else {
+                this.utilService.closeLoadingSpinner();
+                
+                await Swal.fire({
+                  text: "Usuario no asignado",
+                  icon: "info",
+                  confirmButtonColor: "rgb(227, 199, 22)"
+                });
+
+                this.router.navigate(["/solicitudes/consulta-solicitudes"]);
+              }
+            },
+            error: (error: HttpErrorResponse) => {
+              this.utilService.modalResponse(error.error, "error");
+              
+              this.utilService.closeLoadingSpinner();
+            },
+          });
+        }
+      });
     } catch (error) {
       this.utilService.modalResponse(error.error, "error");
     }
-
   }
 
   pageSolicitudes() {
@@ -988,12 +1027,7 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
           this.solicitud.idTipoMotivo
         );
 
-        this.keySelected =
-          this.solicitud.idTipoSolicitud +
-          "_" +
-          this.solicitud.idTipoMotivo +
-          "_" +
-          this.model.nivelDir;
+        this.keySelected = `${this.solicitud.idTipoSolicitud}_${this.solicitud.idTipoMotivo}_${this.model.nivelDir}`;
         if (!this.dataAprobacionesPorPosicion[this.keySelected]) {
           this.getNivelesAprobacion();
 
@@ -1477,7 +1511,7 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
                                       next: (user) => {
                                         this.llenarModelDetalleAprobacionesCF_RG(user, resSolicitud.idSolicitud, idTipoSolicitud, descripcionTipoSolicitud);
 
-                                        this.solicitudes.guardarDetallesAprobacionesSolicitud(this.solicitudes.modelDetalleAprobaciones).subscribe((res) => {});
+                                        this.solicitudes.guardarDetallesAprobacionesSolicitud(this.solicitudes.modelDetalleAprobaciones).subscribe((res) => { });
                                       }
                                     });
                                   }

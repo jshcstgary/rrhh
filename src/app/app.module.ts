@@ -17,13 +17,10 @@ import { SpinnerComponent } from "./shared/spinner.component";
 import { TranslateLoader, TranslateModule } from "@ngx-translate/core";
 import { TranslateHttpLoader } from "@ngx-translate/http-loader";
 import { HttpClient } from "@angular/common/http";
-import { RegistrarSolicitudComponent } from "./solicitudes/registrar-solicitud/registrar-solicitud.component";
-import { SolicitudesModule } from "./solicitudes/solicitudes.module";
 import { FormsModule } from "@angular/forms";
 import { NgScrollbarModule } from "ngx-scrollbar";
 import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
-import { RevisarSolicitudComponent } from "./solicitudes/revisar-solicitud/revisar-solicitud.component";
 import { LocalStorageKeys } from "./enums/local-storage-keys.enum";
 
 export function HttpLoaderFactory(http: HttpClient) {

@@ -19,6 +19,7 @@ import { NgScrollbarModule } from "ngx-scrollbar";
 import { MatIconModule } from "@angular/material/icon";
 import { ScrollingModule } from "@angular/cdk/scrolling";
 import { Permission } from "../../types/permiso.type";
+import { LocalStorageKeys } from "src/app/enums/local-storage-keys.enum";
 
 @Component({
   selector: "app-horizontal-sidebar",
@@ -53,9 +54,9 @@ export class HorizontalSidebarComponent {
     "height": "100%"
   };
 
-  public permisos: Permission[] = JSON.parse(localStorage.getItem("permisos")) || [];
+  public permisos: Permission[] = JSON.parse(localStorage.getItem(LocalStorageKeys.Permisos)) || [];
   //public pagesToSearch: ISelectOptions = [];
-  public userName: string = localStorage.getItem("idLogin");
+  public userName: string = localStorage.getItem(LocalStorageKeys.IdLogin);
   public profile: string = "Supervisor";
   public profiles: IDropdownOptions = [
     { id: "administracion", name: "Administracion" },

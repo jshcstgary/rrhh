@@ -1,14 +1,11 @@
 import { SolicitudesService } from "./solicitudes.service";
 import { Component } from "@angular/core";
-import { ActivatedRoute, ParamMap, Router } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { CamundaRestService } from "../../camunda-rest.service";
 import { CompleteTaskComponent } from "../general/complete-task.component";
 import {
   HttpClientModule,
-  HttpErrorResponse,
-  HttpEvent,
-  HttpHandler,
-  HttpRequest,
+  HttpErrorResponse
 } from "@angular/common/http";
 import { NgForm } from "@angular/forms";
 import { environment, portalWorkFlow } from "../../../environments/environment";
@@ -24,13 +21,10 @@ import { Subject, Observable, OperatorFunction } from "rxjs";
 import {
   debounceTime,
   distinctUntilChanged,
-  isEmpty,
-  map,
-  switchMap,
+  map
 } from "rxjs/operators";
 import { ConsultaTareasService } from "src/app/tareas/consulta-tareas/consulta-tareas.service";
 import { StarterService } from "src/app/starter/starter.service";
-import { CornerDownLeft } from "angular-feather/icons";
 import { LocalStorageKeys } from "src/app/enums/local-storage-keys.enum";
 
 @Component({
@@ -344,23 +338,25 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
     private starterService: StarterService
   ) {
     super(route, router, camundaRestService);
-
+    
     this.searchSubject.pipe(debounceTime(0)).subscribe(({ campo, valor }) => {
       this.filtrarDatos(campo, valor);
     });
-
+    
     this.route.paramMap.subscribe((params) => {
       this.id_edit = params.get("idSolicitud");
     });
-
+    
     this.modelBase = new DatosProcesoInicio();
-
+    
     this.route.paramMap.subscribe((params) => {
       this.id_solicitud_by_params = params.get("idSolicitud");
       this.idDeInstancia = params.get("id");
     });
-  }
 
+    this.verifyData();
+  }
+  
   onSelectionChange() {
     console.log(this.selectedOption);
   }
@@ -405,7 +401,6 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
 
     this.route.queryParams.subscribe((params: Solicitud) => {
       this.misParams = params;
-
     });
 
     this.route.queryParamMap.subscribe((qParams) => {
@@ -855,23 +850,47 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
     });
   }
 
-  async ngOnInit() {
-    this.utilService.openLoadingSpinner(
-      "Cargando información, espere por favor..."
-    );
-    try {
-      // await this.ObtenerServicioTipoSolicitud();
-      // await this.ObtenerServicioTipoMotivo();
-      // await this.ObtenerServicioTipoAccion();
-      // await this.getSolicitudes();
-      // await this.getSolicitudById(this.id_edit);
-      await this.loadDataCamunda();
+  private verifyData(): void {
+    this.utilService.openLoadingSpinner("Cargando información, espere por favor...");
 
-      this.utilService.closeLoadingSpinner();
+    try {
+      this.starterService.getUser(localStorage.getItem(LocalStorageKeys.IdUsuario)!).subscribe({
+        next: (res) => {
+          return this.consultaTareasService.getTareasUsuario(res.evType[0].subledger).subscribe({
+            next: async (response) => {
+              const existe = response.solicitudes.some(({ idSolicitud, rootProcInstId}) => idSolicitud === this.id_solicitud_by_params && rootProcInstId === this.idDeInstancia);
+
+              if (existe) {
+                this.loadDataCamunda();
+
+                this.utilService.closeLoadingSpinner();
+              } else {
+                this.utilService.closeLoadingSpinner();
+                
+                await Swal.fire({
+                  text: "Usuario no asignado",
+                  icon: "info",
+                  confirmButtonColor: "rgb(227, 199, 22)"
+                });
+
+                this.router.navigate(["/solicitudes/consulta-solicitudes"]);
+              }
+            },
+            error: (error: HttpErrorResponse) => {
+              this.utilService.modalResponse(error.error, "error");
+              
+              this.utilService.closeLoadingSpinner();
+            },
+          });
+        }
+      });
     } catch (error) {
       this.utilService.modalResponse(error.error, "error");
     }
+  }
 
+  async ngOnInit() {
+    
   }
 
   pageSolicitudes() {
@@ -951,7 +970,7 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
 
         this.mostrarSubledger = this.restrictionsSubledgerIds.includes(this.solicitud.idTipoMotivo);
 
-        this.keySelected = this.solicitud.idTipoSolicitud + "_" + this.solicitud.idTipoMotivo + "_" + this.model.nivelDir;
+        this.keySelected = `${this.solicitud.idTipoSolicitud}_${this.solicitud.idTipoMotivo}_${this.model.nivelDir}`;
 
         if (!this.dataAprobacionesPorPosicion[this.keySelected]) {
           this.getNivelesAprobacion();

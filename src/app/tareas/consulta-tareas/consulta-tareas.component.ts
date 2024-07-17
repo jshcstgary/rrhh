@@ -189,18 +189,7 @@ export class ConsultaTareasComponent implements OnInit {
               startTime: item.startTime,
               name: item.name,
               tipoSolicitud: item.tipoSolicitud,
-            })
-            );
-
-            // this.consultaTareasService.
-            /*  this.consultaTareasService.obtenerDetallesAprobacionesSolicitudes(this.starterService.userIniciador.subledger).subscribe({
-                next: (response) => {
-                  console.log(response);
-                },
-                error: (err) => {
-                  console.error(err);
-                }
-              });*/
+            }));
 
             this.utilService.closeLoadingSpinner();
           },
@@ -210,7 +199,6 @@ export class ConsultaTareasComponent implements OnInit {
         });
       }
     });
-    console.log(localStorage.getItem(LocalStorageKeys.IdUsuario)!);
   }
 
   //LLenar combo Tipo Solicitud
