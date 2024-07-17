@@ -818,7 +818,6 @@ export class RegistrarComentarioReingresoComponent extends CompleteTaskComponent
           this.dataAprobacionesPorPosicionAPS.forEach(item => {
             this.dataTipoRuta.push(item.nivelAprobacionType.tipoRuta);
             this.dataRuta.push(item.nivelAprobacionType.ruta);
-            console.log("Aprobaciones APS = ", item.nivelAprobacionType);
           });
         },
         error: (error: HttpErrorResponse) => {
@@ -844,7 +843,6 @@ export class RegistrarComentarioReingresoComponent extends CompleteTaskComponent
           this.dataAprobacionesPorPosicionAPS=response.nivelAprobacionPosicionType;
           this.dataAprobacionesPorPosicionAPS.forEach(item => {
             this.dataAprobadoresDinamicos.push(item.aprobador.nivelDireccion);
-            console.log("Aprobaciones APD = ", item.aprobador);
           });
         },
         error: (error: HttpErrorResponse) => {

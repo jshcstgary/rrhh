@@ -103,20 +103,15 @@
           </div>
         </div>
       </div>
-      <div class="row" *ngIf="mostrarSubledger">
+      <div class="row">
         <div class="col-md-6">
           <div class="input-group mb-3">
             <label class="input-group-text label-estilo" for="subledger">
               Subledger
             </label>
             &nbsp;
-            <input type="text" name="subledger" [(ngModel)]="model.subledger"
-              style="color: black; font-size: 14px; width: 30%" [ngbTypeahead]="searchSubledger"
-              (selectItem)="onSelectItem('subledger', $event)" class="form-control" id="subledger"
-              aria-describedby="inputGroupPrepend" required #subledger="ngModel" />
-            <button class="btn btn-light" type="button" disabled>
-              <i class="ti-search"></i>
-            </button>
+            <span id="subledger" name="subledger" style="color: black; font-size: 14px; "
+            class="text-start">{{ model.subledger }}</span>
           </div>
         </div>
 
@@ -126,13 +121,8 @@
               Empleado
             </label>
             &nbsp;
-            <input type="text" name="nombreempleado" [(ngModel)]="model.nombreCompleto"
-              style="color: black; font-size: 14px; width: 30%" [ngbTypeahead]="searchNombreCompleto"
-              (selectItem)="onSelectItem('nombreCompleto', $event)" class="form-control" id="nombreempleado"
-              aria-describedby="inputGroupPrepend" #nombreCompleto="ngModel" required />
-            <button class="btn btn-light" type="button" disabled>
-              <i class="ti-search"></i>
-            </button>
+            <span id="nombreempleado" name="nombreempleado" style="color: black; font-size: 14px; "
+            class="text-start">{{ model.nombreCompleto }}</span>
           </div>
         </div>
       </div>
@@ -520,7 +510,7 @@
         <div class="col-md-4 d-flex align-items-center">
           <input id="input3" type="checkbox" [(ngModel)]="isCheckedEntrevista"
             (change)="onCheckboxChangeCandidato($event)" name="checkEntrevista" [disabled]="disabledFechas.entrevista">
-          <label for="input3" class="input-group-text adjustable-label">Entrevista</label>
+          <label for="input3" class="input-group-text adjustable-label">Entrevista de RR.HH.</label>
           <input type="text" class="form-control" [value]="fechas.entrevista" readonly>
         </div>
       </div>

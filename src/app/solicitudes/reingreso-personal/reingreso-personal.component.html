@@ -466,7 +466,7 @@
                 <div class="input-group mb-3 h-100">
                   <label class="input-group-text label-estilo" for="tipoMotivo">Observaciones del comité de
                     Remuneraciones</label>
-                  <textarea id="observaciones" name="observaciones" [value]="model.justificacionCargo" style="
+                  <textarea id="observaciones" name="observaciones" [value]="observacionRemuneraciones" style="
                       color: black;
                       font-size: 14px;
                       height: 100px;
@@ -496,7 +496,7 @@
                   <label class="input-group label-estilo" for="tipoMotivo">Fecha de Salida</label>
                   &nbsp;
                   <span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{
-                    fechaSalida.split('T')[0] }}</span>
+                    fechaSalida | date:'dd/mm/yyyy'}}</span>
                 </div>
               </div>
             </div>

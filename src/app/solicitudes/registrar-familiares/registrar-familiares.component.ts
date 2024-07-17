@@ -587,7 +587,6 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
           this.dataAprobacionesPorPosicionAPS.forEach((item) => {
             this.dataTipoRuta.push(item.nivelAprobacionType.tipoRuta);
             this.dataRuta.push(item.nivelAprobacionType.ruta);
-            console.log("Aprobaciones APS = ", item.nivelAprobacionType);
           });
         },
         error: (error: HttpErrorResponse) => {
@@ -1283,7 +1282,7 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
             console.log("AQUI HAY UN IDDEINSTANCIA?: ", this.idDeInstancia);
 
             setTimeout(() => {
-              this.router.navigate(["/tareas/consulta-tareas"]);
+              window.location.reload();
             }, 1800);
           });
       }); //aqui debe crear los aprobadores

@@ -31,7 +31,7 @@ import { ConsultaTareasService } from "src/app/tareas/consulta-tareas/consulta-t
 import { SolicitudesService } from "../registrar-solicitud/solicitudes.service";
 import { toDate } from "date-fns/esm";
 import { DatosAprobadores } from "src/app/eschemas/DatosAprobadores";
-import { columnsDatosFamiliares } from "./registrar-familiares.data";
+import { columnsDatosFamiliares } from "src/app/solicitudes/revisar-solicitud/registrar-familiares.data";
 import { RegistrarCandidatoService } from "../registrar-candidato/registrar-candidato.service";
 
 @Component({
@@ -75,7 +75,6 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
 
   private aprobadorSiguiente: any = {};
   private aprobadorActual: any = {};
-  private comentarioSalidaJefeService: ComentarioSalidaJefeService
 
   process(action: string) {
     this.buttonValue = action;
@@ -214,6 +213,8 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
   public comentariosJefeInmediato: any = {};
   public comentarios: string = "";
   public comentariosRRHH: any = {};
+  public Comentario_Jefe_Solicitante: any = {};
+
   public solicitudRG: any;
 
 
@@ -422,7 +423,7 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
   codigosPosicion: string[] = [];
   nombreCompletoCandidato: string = "";
   idSolicitudRP: string = "";
-
+  causaSalida: string = "";
 
   constructor(
     route: ActivatedRoute,
@@ -433,6 +434,8 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
     private utilService: UtilService,
     private consultaTareasService: ConsultaTareasService,
     private seleccionCandidatoService: RegistrarCandidatoService,
+    private comentarioSalidaJefeService: ComentarioSalidaJefeService
+
   ) {
     super(route, router, camundaRestService);
 
@@ -445,7 +448,7 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
     });
 
     this.modelBase = new DatosProcesoInicio();
-    this.getCandidatoValues();
+    //this.getCandidatoValues();
 
     this.route.paramMap.subscribe((params) => {
       this.id_solicitud_by_params = params.get("idSolicitud");
@@ -454,13 +457,14 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
   }
 
   getCandidatoValues() {
-    this.seleccionCandidatoService.getCandidatoById(this.id_edit).subscribe({
+    this.seleccionCandidatoService.getCandidatoById(this.id_solicitud_by_params).subscribe({
       next: (res) => {
         const candidatoValues = res.seleccionCandidatoType[0];
 
         this.nombreCompletoCandidato = res.seleccionCandidatoType[0].candidato;
         this.idSolicitudRP = res.seleccionCandidatoType[0].iD_SOLICITUD;
 
+        this.getSolicitudById(this.idSolicitudRP);
         this.getSolicitudById(this.id_solicitud_by_params);
       },
       error: (err) => {
@@ -584,8 +588,13 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
             this.nameTask = tarea.solicitudes[0].name;
             this.id_solicitud_by_params = tarea.solicitudes[0].idSolicitud;
             this.taskId = params["id"];
-
+            
+          if (this.id_solicitud_by_params.toUpperCase().includes("RG")||this.id_solicitud_by_params.toUpperCase().includes("CF")) {
+            this.getCandidatoValues();
+          }else{
             this.getSolicitudById(this.id_solicitud_by_params);
+          }
+
             this.date = tarea.solicitudes[0].fechaCreacion;
             this.loadExistingVariables(
               this.uniqueTaskId ? this.uniqueTaskId : "",
@@ -863,12 +872,14 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
   
 
   getComentarios() {
-    this.comentarioSalidaJefeService.obtenerComentarios(this.solicitudRG.idSolicitud).subscribe({
+    this.comentarioSalidaJefeService.obtenerComentarios(this.detalleSolicitudRG.idSolicitud).subscribe({
       next: ({ comentarios }) => {
         comentarios.forEach(comentario => {
           if (comentario.tipo_Solicitud === "Comentario_Salida_Jefe") {
             this.comentariosJefeInmediato = comentario;
-          } else {
+          }if (comentario.tipo_Solicitud === "Comentario_Jefe_Solicitante") {
+            this.Comentario_Jefe_Solicitante = comentario;
+          }if (comentario.tipo_Solicitud === "Comentario_RRHH") {
             this.comentariosRRHH = comentario;
           }
         })
@@ -880,7 +891,8 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
     return this.solicitudes.getDetalleSolicitudById(id).subscribe({
       next: (response: any) => {
         this.detalleSolicitud = response.detalleSolicitudType[0];
-        if (this.detalleSolicitud.codigoPosicion.length > 0) {
+        this.detalleSolicitudRG = response.detalleSolicitudType[0];
+        if (!(id.toUpperCase().includes("RG")) && this.detalleSolicitud.codigoPosicion.length > 0) {
           this.model.codigoPosicion = this.detalleSolicitud.codigoPosicion;
           this.model.descrPosicion = this.detalleSolicitud.descripcionPosicion;
           this.model.subledger = this.detalleSolicitud.subledger;
@@ -932,19 +944,13 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
             this.modelRG.sueldoSemestral = this.detalleSolicitudRG.sueldoVariableSemestral;
             this.modelRG.sueldoAnual = this.detalleSolicitudRG.sueldoVariableAnual;
             this.modelRG.correo = this.detalleSolicitudRG.correo;
+            this.modelRG.correo = this.detalleSolicitudRG.correo;
+            this.causaSalida = this.detalleSolicitudRG.causaSalida;  
             this.modelRG.fechaIngreso = (this.detalleSolicitudRG.fechaIngreso as string).split("T")[0];
             this.remuneracion = Number(this.modelRG.sueldoAnual) / 12 + Number(this.modelRG.sueldoSemestral) / 6 + Number(this.modelRG.sueldoTrimestral) / 3 + Number(this.modelRG.sueldoMensual);
 
-            this.keySelected = this.solicitud.idTipoSolicitud + "_" + this.solicitud.idTipoMotivo + "_" + this.model.nivelDir;
-
-            if (!this.dataAprobacionesPorPosicion[this.keySelected]) {
-              this.getNivelesAprobacion();
-
-              if (this.model.codigoPosicion.trim().length > 0) {
-                this.obtenerAprobacionesPorPosicionAPS();
-                this.obtenerAprobacionesPorPosicionAPD();
-              }
-            }
+            this.keySelected = this.solicitud.idTipoSolicitud + "_" + this.solicitud.idTipoMotivo + "_" + this.model.nivelDir;        
+            this.getComentarios();
           }
         }
 
@@ -1685,6 +1691,16 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
     console.log(this.solicitudes.modelDetalleAprobaciones);
     // return;
 
+    if(this.taskType_Activity == environment.taskType_CREM){
+      this.detalleSolicitud.valor = this.textareaContent;
+      this.detalleSolicitud.unidad = this.detalleSolicitud.unidadNegocio;
+
+      this.solicitudes
+        .actualizarDetalleSolicitud(this.detalleSolicitud).subscribe({
+          next: (response) => {
+           }
+        });
+    }
     this.solicitudes
       .guardarDetallesAprobacionesSolicitud(this.solicitudes.modelDetalleAprobaciones)
       .subscribe({

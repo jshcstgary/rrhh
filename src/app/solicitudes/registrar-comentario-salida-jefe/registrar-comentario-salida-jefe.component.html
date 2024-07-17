@@ -102,7 +102,7 @@
         <div class="col-md-7">
           <div class="input-group mb-3">
             <span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px;"
-              class="text-start">{{detalleSolicitud.justificacion}}</span>
+              class="text-start">{{detalleSolicitudRG.justificacion}}</span>
           </div>
         </div>
 
@@ -452,7 +452,7 @@
           <div class="input-group mb-3 h-100">
             <label class="input-group-text label-estilo" for="tipoMotivo">Observaciones del comité de
               Remuneraciones</label>
-            <textarea [value]="model.justificacionCargo" id="observaciones" name="observaciones"
+            <textarea [value]="observacionRemuneraciones" id="observaciones" name="observaciones"
               style="color: black; font-size: 14px; height: 100px; resize: none; position: absolute; top: 50px; width: 100%;"
               disabled></textarea>
           </div>
@@ -664,7 +664,7 @@
               <label class="input-group label-estilo" for="tipoMotivo">Causa real de salida</label>
               &nbsp;
               <span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px;"
-                class="text-start">{{ 'Causa' }}</span>
+                class="text-start">{{ causaSalida }}</span>
             </div>
           </div>
         </div>

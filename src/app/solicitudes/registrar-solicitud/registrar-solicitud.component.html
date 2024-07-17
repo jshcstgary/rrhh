@@ -93,7 +93,7 @@
               <input type="text" name="codigoposicion" [(ngModel)]="model.codigoPosicion"
                 style="color: black; font-size: 14px; width: 30%" class="form-control" id="codigoposicion"
                 aria-describedby="inputGroupPrepend" required #codigoposicion="ngModel" placeholder="Ingrese código"
-                [ngbTypeahead]="searchCodigoPosicion" (selectItem)="onSelectItem('codigoPosicion', $event)" />
+                [ngbTypeahead]="searchDescripcionPosicion" [ngbTypeahead]="searchCodigoPosicion" (selectItem)="onSelectItem('codigoPosicion', $event)" />
 
               <button class="btn btn-light" type="button" (click)="getDataEmpleadosEvolution('codigoPosicion')">
                 <i class="ti-search"></i>
@@ -105,16 +105,23 @@
           <div class="input-group mb-3">
             <label class="input-group-text label-estilo" for="descripcionposicion">Descripción de posición</label>
             &nbsp;
+            <span *ngIf="solicitud.tipoMotivo === 'Reemplazo'; else editableDescPosition" id="descripcionposicion"
+            name="descripcionposicion" style="color: black; font-size: 14px;" class="text-start">{{
+            model.descrPosicion }}</span>
+
+          <ng-template #editableDescPosition>
             <!-- <span id="descripcionposicion" name="descripcionposicion" style="color: black; font-size: 14px;"
               class="text-start">{{ model.descrPosicion }}</span> -->
-			<input type="text" name="descripcion-posicion" [(ngModel)]="model.descrPosicion"
+			    <input type="text" name="descripcion-posicion" [(ngModel)]="model.descrPosicion"
               style="color: black; font-size: 14px; width: 30%" class="form-control text-start" id="descripcionPosicion"
               aria-describedby="inputGroupPrepend" required #descripcionPosicion="ngModel" placeholder="Ingrese descripcion posicion"
-              [ngbTypeahead]="searchDescripcionPosicion" (selectItem)="onSelectItem('descrPosicion', $event)" />
+              [ngbTypeahead]="searchCodigoPosicion" [ngbTypeahead]="searchDescripcionPosicion" (selectItem)="onSelectItem('descrPosicion', $event)" />
 
 			  <button class="btn btn-light" type="button" (click)="getDataEmpleadosEvolution('descrPosicion')">
 			    <i class="ti-search"></i>
 			  </button>
+      </ng-template>
+
           </div>
         </div>
       </div>
@@ -128,7 +135,7 @@
             <input type="text" name="subledger" [(ngModel)]="model.subledger"
               style="color: black; font-size: 14px; width: 30%" class="form-control text-start" id="subledger"
               aria-describedby="inputGroupPrepend" required #subledger="ngModel" placeholder="Ingrese subledger"
-              [ngbTypeahead]="searchSubledger" (selectItem)="onSelectItem('subledger', $event)" />
+              [ngbTypeahead]="searchNombre" [ngbTypeahead]="searchSubledger" (selectItem)="onSelectItem('subledger', $event)" />
 
             <button class="btn btn-light" type="button" (click)="getDataEmpleadosEvolution('subledger')">
               <i class="ti-search"></i>
@@ -144,7 +151,7 @@
             &nbsp;
             <input type="text" name="nombreCompleto" [(ngModel)]="model.nombreCompleto"
               style="color: black; font-size: 14px; width: 30%" class="form-control text-start" id="nombreCompleto"
-              [ngbTypeahead]="searchNombre" (selectItem)="onSelectItem('nombreCompleto', $event)"
+              [ngbTypeahead]="searchSubledger" [ngbTypeahead]="searchNombre" (selectItem)="onSelectItem('nombreCompleto', $event)"
               aria-describedby="inputGroupPrepend" #nombreCompleto="ngModel" placeholder="Ingrese nombre" required />
 
             <button class="btn btn-light" type="button" (click)="getDataEmpleadosEvolution('nombreCompleto')">

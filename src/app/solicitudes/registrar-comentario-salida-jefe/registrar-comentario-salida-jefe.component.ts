@@ -36,6 +36,9 @@ export class RegistrarComentarioSalidaJefeComponent extends CompleteTaskComponen
   selectedOption: string = 'No';
   columnsAprobadores = columnsAprobadores.columns;
   dataTableAprobadores = dataTableAprobadores;
+  causaSalida: string = "";
+  observacionRemuneraciones: string = "";
+
 
   currentDate: Date = new Date();
 
@@ -721,6 +724,7 @@ export class RegistrarComentarioSalidaJefeComponent extends CompleteTaskComponen
             this.model.sueldoAnual = this.detalleSolicitud.sueldoVariableAnual;
             this.model.correo = this.detalleSolicitud.correo;
             this.model.fechaIngreso = this.detalleSolicitud.fechaIngreso;
+            this.observacionRemuneraciones = this.detalleSolicitud.valor;
             this.modelRemuneracion = +this.model.sueldoAnual / 12 + +this.model.sueldoSemestral / 6 + +this.model.sueldoTrimestral / 3 + +this.model.sueldoMensual;
 
             console.log(response.detalleSolicitudType[0]);
@@ -752,6 +756,7 @@ export class RegistrarComentarioSalidaJefeComponent extends CompleteTaskComponen
             this.modelRG.sueldoSemestral = this.detalleSolicitudRG.sueldoVariableSemestral;
             this.modelRG.sueldoAnual = this.detalleSolicitudRG.sueldoVariableAnual;
             this.modelRG.correo = this.detalleSolicitudRG.correo;
+            this.causaSalida = this.detalleSolicitudRG.causaSalida;
             this.modelRG.fechaIngreso = (this.detalleSolicitudRG.fechaIngreso as string).split("T")[0];
             this.remuneracion = Number(this.modelRG.sueldoAnual) / 12 + Number(this.modelRG.sueldoSemestral) / 6 + Number(this.modelRG.sueldoTrimestral) / 3 + Number(this.modelRG.sueldoMensual);
 
@@ -895,7 +900,6 @@ export class RegistrarComentarioSalidaJefeComponent extends CompleteTaskComponen
           this.dataAprobacionesPorPosicionAPS.forEach(item => {
             this.dataTipoRuta.push(item.nivelAprobacionType.tipoRuta);
             this.dataRuta.push(item.nivelAprobacionType.ruta);
-            console.log("Aprobaciones APS = ", item.nivelAprobacionType);
           });
         },
         error: (error: HttpErrorResponse) => {
@@ -913,7 +917,6 @@ export class RegistrarComentarioSalidaJefeComponent extends CompleteTaskComponen
           this.dataAprobacionesPorPosicionAPS = response.nivelAprobacionPosicionType;
           this.dataAprobacionesPorPosicionAPS.forEach(item => {
             this.dataAprobadoresDinamicos.push(item.aprobador.nivelDireccion);
-            console.log("Aprobaciones APD = ", item.aprobador);
           });
         },
         error: (error: HttpErrorResponse) => {
