@@ -81,7 +81,7 @@
           </div>
           <div class="col-md-7">
             <div class="input-group mb-3">
-              <textarea name="descripcionposicion" [(ngModel)]="justificacionCF" style="color: black; font-size: 14px; width: 100%; resize: none" class="form-control" id="descripcionposicion" rows="3" required readonly></textarea>
+              <textarea name="descripcionposicion" [(ngModel)]="model.justificacionCargo" style="color: black; font-size: 14px; width: 100%; resize: none" class="form-control" id="descripcionposicion" rows="3" required readonly></textarea>
             </div>
           </div>
         </div>
@@ -272,6 +272,97 @@
         </div>
       </div>
       </div>
+      <div class="row mt-4">
+        <div class="col-md-4">
+          <div class="mb-4">
+            <a>
+              <h3 class="sol-danger">Atención de Solicitud</h3>
+            </a>
+          </div>
+        </div>
+        <div class="col-md-8">
+          <hr />
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6">
+          <div class="input-group mb-3" style="display: flex; align-items: center; flex-wrap: nowrap;">
+            <label class="input-group-text label-estilo" for="nivelaprobacion"
+              style="margin-right: 10px; white-space: nowrap;">
+              Nivel de aprobación
+            </label>
+            <span id="nivelaprobacion" name="nivelaprobacion"
+              style="color: black; font-size: 14px; margin-right: 10px; white-space: nowrap;">
+              {{ datosAprobadores.idNivelAprobacion }}
+            </span>
+            <span id="descripcionPosicion" name="descripcionPosicion"
+              style="color: #0056B3; font-size: 14px; margin-right: 10px; white-space: nowrap;">
+              {{ datosAprobadores.descripcionPosicion }}
+            </span>
+            <span id="usuarioaprueba" name="usuarioaprueba" style="color: black; font-size: 14px; white-space: nowrap;">
+              {{ datosAprobadores.usuario }}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col">
+          <div class="input-group mb-3 contenedor">
+            <label class="input-group-text label-estilo2" for="desicion">Decisión a tomar
+            </label>
+
+            <div class="btn-group" role="group" aria-label="Basic example" id="desicion">
+              <button type="button" class="btn"
+                [ngClass]="{'btn-primary': !isSelected('aprobar'), 'btn-success': isSelected('aprobar')}"
+                (click)="process('aprobar')" value="aprobar">Aprobar</button>
+              <button type="button" class="btn"
+                [ngClass]="{'btn-primary': !isSelected('devolver'), 'btn-success': isSelected('devolver')}"
+                (click)="process('devolver')" value="devolver">Devolver</button>
+              <button type="button" class="btn"
+                [ngClass]="{'btn-primary': !isSelected('rechazar'), 'btn-success': isSelected('rechazar')}"
+                (click)="process('rechazar')" value="rechazar">Cancelar</button>
+              <button type="button" class="btn"
+                [ngClass]="{'btn-primary': !isSelected('esperar'), 'btn-success': isSelected('esperar')}"
+                (click)="process('esperar')" value="esperar">En espera</button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+
+      <div class="row">
+        <div class="col">
+          <div class="input-group mb-3 contenedor">
+            <label class="input-group-text label-estilo2" for="observacion">{{observaciontexto}}
+            </label>
+            &nbsp;
+            <textarea [(ngModel)]="textareaContent" id="observacion" name="observacion" #observacion="ngModel"
+              [required]="isRequired" style="color: black; font-size: 14px" [placeholder]="campoObligatorio"></textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+      <div class="row" *ngIf="isFechaMaximaVisible">
+        <div class="col">
+          <div class="input-group mb-3 contenedor">
+
+            <label class="input-group-text label-estilo2" for="aprobar">Fecha máxima de espera
+            </label>
+
+            <div class="datepicker-container">
+              <mat-form-field appearance="outline">
+                <mat-label>Fecha</mat-label>
+                <input matInput [matDatepicker]="picker" [(ngModel)]="selectedDate" name="espera-maxima">
+                <mat-datepicker-toggle matSuffix [for]="picker">
+                </mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
     </div>
 
     <!-- Aqui empieza la condición Formulario Reingreso-->
@@ -307,7 +398,7 @@
           <label class="input-group label-estilo" for="tipoMotivo">Apellidos y nombres completos</label>
           &nbsp;
           <span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px;"
-            class="text-start">{{this.model.nombreCompleto}}</span>
+            class="text-start">{{this.nombreCompletoCandidato}}</span>
         </div>
       </div>
     </div>
@@ -323,7 +414,7 @@
       <div class="col-md-7">
         <div class="input-group mb-3">
           <span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px;"
-            class="text-start">{{detalleSolicitud.justificacion}}</span>
+            class="text-start">{{detalleSolicitudRG.justificacion}}</span>
         </div>
       </div>
 
@@ -361,13 +452,13 @@
       <div class="col d-flex justify-content-center align-items-center">
         <div class="mb-3">
           <label class="input-group label-estilo" style="font-size: 20px; color: black;"
-            for="tipoMotivo">Actual</label>
+            for="tipoMotivo">Anterior</label>
         </div>
       </div>
       <div class="col d-flex justify-content-center align-items-center">
         <div class="mb-3">
           <label class="input-group label-estilo" style="font-size: 20px;color: black;"
-            for="tipoMotivo">Anterior</label>
+            for="tipoMotivo">Actual</label>
         </div>
       </div>
     </div>
@@ -673,7 +764,7 @@
         <div class="input-group mb-3 h-100">
           <label class="input-group-text label-estilo" for="tipoMotivo">Observaciones del comité de
             Remuneraciones</label>
-          <textarea [value]="model.justificacionCargo" id="observaciones" name="observaciones"
+          <textarea [value]="detalleSolicitudRG.valor" id="observaciones" name="observaciones"
             style="color: black; font-size: 14px; height: 100px; resize: none; position: absolute; top: 50px; width: 100%;"
             disabled></textarea>
         </div>
@@ -831,9 +922,7 @@
           <label for="comments" class="label-estilo">
             Comentarios (Cómo fue el desempeño en el Área)
           </label>
-          <textarea *ngIf="mostrarFormularioReingreso"  name="descripcionposicion"
-            style="color: black;width: 70%;margin-left: -2.8em; font-size: 14px; resize: none;" class="form-control"
-            id="comments" rows="3" [(ngModel)]="comentarios" required></textarea>
+          
           <span *ngIf="mostrarFormularioReingreso"  #mivar id="tipoSolicitud" name="tipoSolicitud" style="color: black; font-size: 14px;"
             class="text-start">{{ comentariosJefeInmediato.comentario }}</span>
         </div>
@@ -872,8 +961,7 @@
           <div class="input-group mb-3">
             <label class="input-group label-estilo" for="tipoSolicitud">Forma de Salida</label>
             &nbsp;
-            <input *ngIf="mostrarFormularioReingreso"  type="text" [(ngModel)]="comentarios" type="text" name="comentario" placeholder="Campo obligatorio"
-              style="border: 1px solid blue; border-radius: 7px; width:50%;">
+
             <span *ngIf="mostrarFormularioReingreso"  #mivar id="tipoSolicitud" name="tipoSolicitud" style="color: black; font-size: 14px;"
               class="text-start">{{ comentariosRRHH.comentario }}</span>
           </div>
@@ -885,7 +973,7 @@
             <label class="input-group label-estilo" for="tipoMotivo">Causa real de salida</label>
             &nbsp;
             <span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px;"
-              class="text-start">{{ 'Causa' }}</span>
+              class="text-start">{{ this.causaSalida }}</span>
           </div>
         </div>
       </div>
@@ -934,14 +1022,11 @@
           </div>
         </div>
       </div>
-      <div class="row mt-3">
-        <div class="col-md-12 d-flex align-items-center">
-          <label for="comments2" class="label-estilo me-2">
-            Comentarios (por qué considera el reingreso)*
-          </label>
-          <textarea name="descripcionposicion"
-            style="color: black;width: 70%;margin-left: -2.8em; font-size: 14px; resize: none;" class="form-control"
-            id="comments2" rows="3" [(ngModel)]="comentarios" required></textarea>
+      <div class="col-md-10">
+        <div class="input-group mb-3">
+          <label class="input-group label-estilo" for="tipoSolicitud">Comentarios (por qué considera el reingreso)*</label>
+          <span *ngIf="mostrarFormularioReingreso"  #mivar id="tipoSolicitud" name="tipoSolicitud" style="color: black; font-size: 14px;"
+          class="text-start">{{ Comentario_Jefe_Solicitante.comentario }}</span>
         </div>
       </div>
       <div class="row mt-3">
@@ -952,6 +1037,78 @@
             <span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px;"
               class="text-start">{{ currentDate | date:'dd/MM/yyyy' }}</span>
           </div>
+        </div>
+      </div>
+    </div>
+    <div class="row mt-4">
+      <div class="col-md-4">
+        <div class="mb-4">
+          <a>
+            <h3 class="sol-danger">Atención de Solicitud</h3>
+          </a>
+        </div>
+      </div>
+      <div class="col-md-8">
+        <hr />
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
+        <div class="input-group mb-3" style="display: flex; align-items: center; flex-wrap: nowrap;">
+          <label class="input-group-text label-estilo" for="nivelaprobacion"
+            style="margin-right: 10px; white-space: nowrap;">
+            Nivel de aprobación
+          </label>
+          <span id="nivelaprobacion" name="nivelaprobacion"
+            style="color: black; font-size: 14px; margin-right: 10px; white-space: nowrap;">
+            {{ datosAprobadores.idNivelAprobacion }}
+          </span>
+          <span id="descripcionPosicion" name="descripcionPosicion"
+            style="color: #0056B3; font-size: 14px; margin-right: 10px; white-space: nowrap;">
+            {{ datosAprobadores.descripcionPosicion }}
+          </span>
+          <span id="usuarioaprueba" name="usuarioaprueba" style="color: black; font-size: 14px; white-space: nowrap;">
+            {{ datosAprobadores.usuario }}
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col">
+        <div class="input-group mb-3 contenedor">
+          <label class="input-group-text label-estilo2" for="desicion">Decisión a tomar
+          </label>
+
+          <div class="btn-group" role="group" aria-label="Basic example" id="desicion">
+            <button type="button" class="btn"
+              [ngClass]="{'btn-primary': !isSelected('aprobar'), 'btn-success': isSelected('aprobar')}"
+              (click)="process('aprobar')" value="aprobar">Aprobar</button>
+            <button type="button" class="btn"
+              [ngClass]="{'btn-primary': !isSelected('devolver'), 'btn-success': isSelected('devolver')}"
+              (click)="process('devolver')" value="devolver">Devolver</button>
+            <button type="button" class="btn"
+              [ngClass]="{'btn-primary': !isSelected('rechazar'), 'btn-success': isSelected('rechazar')}"
+              (click)="process('rechazar')" value="rechazar">Cancelar</button>
+            <button type="button" class="btn"
+              [ngClass]="{'btn-primary': !isSelected('esperar'), 'btn-success': isSelected('esperar')}"
+              (click)="process('esperar')" value="esperar">En espera</button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+
+    <div class="row">
+      <div class="col">
+        <div class="input-group mb-3 contenedor">
+          <label class="input-group-text label-estilo2" for="observacion">{{observaciontexto}}
+          </label>
+          &nbsp;
+          <textarea [(ngModel)]="textareaContent" id="observacion" name="observacion" #observacion="ngModel"
+            [required]="isRequired" style="color: black; font-size: 14px" [placeholder]="campoObligatorio"></textarea>
         </div>
       </div>
     </div>
@@ -1009,20 +1166,15 @@
           </div>
         </div>
       </div>
-      <div class="row" *ngIf="mostrarSubledger">
+      <div class="row">
         <div class="col-md-6">
           <div class="input-group mb-3">
             <label class="input-group-text label-estilo" for="subledger">
               Subledger
             </label>
             &nbsp;
-            <input type="text" name="subledger" [(ngModel)]="model.subledger"
-              style="color: black; font-size: 14px; width: 30%" [ngbTypeahead]="searchSubledger"
-              (selectItem)="onSelectItem('subledger', $event)" class="form-control" id="subledger"
-              aria-describedby="inputGroupPrepend" required #subledger="ngModel" />
-            <button class="btn btn-light" type="button" disabled>
-              <i class="ti-search"></i>
-            </button>
+            <span id="subledger" name="subledger" style="color: black; font-size: 14px; "
+            class="text-start">{{ model.subledger }}</span>
           </div>
         </div>
 
@@ -1032,13 +1184,8 @@
               Empleado
             </label>
             &nbsp;
-            <input type="text" name="nombreempleado" [(ngModel)]="model.nombreCompleto"
-              style="color: black; font-size: 14px; width: 30%" [ngbTypeahead]="searchNombreCompleto"
-              (selectItem)="onSelectItem('nombreCompleto', $event)" class="form-control" id="nombreempleado"
-              aria-describedby="inputGroupPrepend" #nombreCompleto="ngModel" required />
-            <button class="btn btn-light" type="button" disabled>
-              <i class="ti-search"></i>
-            </button>
+            <span id="nombreempleado" name="nombreempleado" style="color: black; font-size: 14px; "
+            class="text-start">{{ model.nombreCompleto }}</span>
           </div>
         </div>
       </div>

@@ -8,8 +8,8 @@ export class AuthGuardsService {
   constructor() { }
 
   public isAuthenticated(): boolean {
-    const localStorageValues: (string | undefined)[] = [localStorage.getItem(LocalStorageKeys.IdUsuario), localStorage.getItem(LocalStorageKeys.IdLogin), localStorage.getItem(LocalStorageKeys.Permisos)];
-
-    return localStorageValues.every((localStorageValue: string | undefined): boolean => localStorageValue !== undefined && localStorageValue !== "");
+    const localStorageValues: (string | undefined | null)[] = [localStorage.getItem(LocalStorageKeys.IdUsuario), localStorage.getItem(LocalStorageKeys.IdLogin), localStorage.getItem(LocalStorageKeys.Permisos)];
+   
+    return localStorageValues.every((localStorageValue: string | undefined): boolean => localStorageValue !== undefined && localStorageValue !== null && localStorageValue !== "");
   }
 }

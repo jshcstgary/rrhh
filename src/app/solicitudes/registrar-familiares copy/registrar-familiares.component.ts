@@ -574,7 +574,6 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
           this.dataAprobacionesPorPosicionAPS.forEach((item) => {
             this.dataTipoRuta.push(item.nivelAprobacionType.tipoRuta);
             this.dataRuta.push(item.nivelAprobacionType.ruta);
-            console.log("Aprobaciones APS = ", item.nivelAprobacionType);
           });
         },
         error: (error: HttpErrorResponse) => {

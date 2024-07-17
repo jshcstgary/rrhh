@@ -62,8 +62,10 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
   columnsAprobadores = columnsAprobadores.columns;
   dataTableAprobadores = dataTableAprobadores;
   empleadoSearch: string = "";
+  causaSalida: string = "";
 
-  public fechaSalida: string = "";
+
+  public fechaSalida: Date = new Date();
 
   override model: RegistrarData = new RegistrarData(
     "",
@@ -717,6 +719,7 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
   }
   modelRemuneracion: number = 0;
   modelRemuneracionRG: number = 0;
+  observacionRemuneraciones: string = "";
   getDetalleSolicitudById(id: any) {
     return this.solicitudes.getDetalleSolicitudById(id).subscribe({
       next: (response: any) => {
@@ -768,6 +771,7 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
             this.model.sueldoAnual = this.detalleSolicitud.sueldoVariableAnual;
             this.model.correo = this.detalleSolicitud.correo;
             this.model.fechaIngreso = this.detalleSolicitud.fechaIngreso;
+            this.observacionRemuneraciones = this.detalleSolicitud.valor;
             this.modelRemuneracion = +this.model.sueldoAnual / 12 + +this.model.sueldoSemestral / 6 + +this.model.sueldoTrimestral / 3 + +this.model.sueldoMensual;
           }
         } else if (id.toUpperCase().includes("RG")) {
@@ -797,8 +801,9 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
             this.modelRG.sueldoSemestral = this.detalleSolicitudRG.sueldoVariableSemestral;
             this.modelRG.sueldoAnual = this.detalleSolicitudRG.sueldoVariableAnual;
             this.modelRG.correo = this.detalleSolicitudRG.correo;
+            this.causaSalida = this.detalleSolicitudRG.causaSalida;
             this.modelRG.fechaIngreso = (this.detalleSolicitudRG.fechaIngreso as string).split("T")[0];
-            this.fechaSalida = this.detalleSolicitudRG.fechaSalida as string;
+            this.fechaSalida = this.detalleSolicitudRG.fechaSalida as Date;
             this.remuneracion = Number(this.modelRG.sueldoAnual) / 12 + Number(this.modelRG.sueldoSemestral) / 6 + Number(this.modelRG.sueldoTrimestral) / 3 + Number(this.modelRG.sueldoMensual);
 
             this.keySelected = this.solicitud.idTipoSolicitud + "_" + this.solicitud.idTipoMotivo + "_" + this.model.nivelDir;
@@ -855,7 +860,6 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
         this.dataAprobacionesPorPosicionAPS.forEach((item) => {
           this.dataTipoRuta.push(item.nivelAprobacionType.tipoRuta);
           this.dataRuta.push(item.nivelAprobacionType.ruta);
-          console.log("Aprobaciones APS = ", item.nivelAprobacionType);
         });
       },
       error: (error: HttpErrorResponse) => {
@@ -877,7 +881,6 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
           console.log(this.dataAprobacionesPorPosicionAPS);
           this.dataAprobacionesPorPosicionAPS.forEach((item) => {
             this.dataAprobadoresDinamicos.push(item.aprobador.nivelDireccion);
-            console.log("Aprobaciones APD = ", item.aprobador);
           });
         },
         error: (error: HttpErrorResponse) => {
@@ -1221,11 +1224,11 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
         };
 
         this.solicitud.idSolicitud = this.id_solicitud_by_params;
-        this.solicitud.empresa = this.modelRG.compania;
-        this.solicitud.idEmpresa = this.modelRG.compania;
+        this.solicitud.empresa = this.model.compania;
+        this.solicitud.idEmpresa = this.model.compania;
 
-        this.solicitud.unidadNegocio = this.modelRG.unidadNegocio;
-        this.solicitud.idUnidadNegocio = this.modelRG.unidadNegocio;
+        this.solicitud.unidadNegocio = this.model.unidadNegocio;
+        this.solicitud.idUnidadNegocio = this.model.unidadNegocio;
         this.solicitud.estadoSolicitud = "2";
         this.solicitud.idTipoMotivo = 0;
         this.solicitud.idTipoAccion = 0;
@@ -1240,12 +1243,12 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
 
                 this.detalleSolicitud.areaDepartamento = this.modelRG.departamento;
                 this.detalleSolicitud.justificacion = this.detalleSolicitudRG.justificacion;
-                this.detalleSolicitud.cargo = this.modelRG.descrPosicion;
+                this.detalleSolicitud.cargo = this.model.descrPosicion;
                 this.detalleSolicitud.centroCosto = this.modelRG.nomCCosto;
-                this.detalleSolicitud.codigoPosicion = this.modelRG.codigoPosicion;
-                this.detalleSolicitud.compania = this.modelRG.compania;
+                this.detalleSolicitud.codigoPosicion = this.model.codigoPosicion;
+                this.detalleSolicitud.compania = this.model.compania;
                 this.detalleSolicitud.departamento = this.modelRG.departamento;
-                this.detalleSolicitud.descripcionPosicion = this.modelRG.descrPosicion;
+                this.detalleSolicitud.descripcionPosicion = this.model.descrPosicion;
 
                 this.detalleSolicitud.localidad = this.modelRG.localidad;
                 this.detalleSolicitud.localidadZona = this.modelRG.localidad;
@@ -1273,7 +1276,7 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
                 this.detalleSolicitud.sueldoVariableSemestral = this.modelRG.sueldoSemestral;
                 this.detalleSolicitud.sueldoVariableAnual = this.modelRG.sueldoAnual;
                 this.detalleSolicitud.tipoContrato = this.modelRG.tipoContrato;
-                this.detalleSolicitud.unidadNegocio = this.modelRG.unidadNegocio;
+                this.detalleSolicitud.unidadNegocio = this.model.unidadNegocio;
 
                 this.detalleSolicitud.correo = this.modelRG.correo;
 
@@ -1285,7 +1288,8 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
                 this.detalleSolicitud.puesto = this.jefeReferenciaQuery.descrPuesto;
                 this.detalleSolicitud.responsableRRHH = this.responsableRRHHQuery.nombreCompleto;
                 this.detalleSolicitud.jefeSolicitante = this.solicitud.usuarioCreacion;
-                this.detalleSolicitud.fechaSalida = this.fechaSalida.split("T")[0];
+                this.detalleSolicitud.fechaSalida = this.fechaSalida;
+                this.detalleSolicitud.causaSalida = this.causaSalida;
 
                 this.solicitudes.actualizarDetalleSolicitud(this.detalleSolicitud).subscribe({
                   next: (responseDetalle) => {
@@ -1361,20 +1365,22 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
           if (result?.data) {
             const data: any = result.data;
             console.log("AQUIIIII PRUEBA", data);
-            this.fechaSalida = data.fechaSalida;
+            this.fechaSalida = data.fechaSalida ?? new Date();
+            console.log(this.fechaSalida);
             this.modelRG.nombreCompleto = data.nombreCompleto;
-            this.modelRG.subledger = data.subledger;
-            this.modelRG.compania = data.compania;
+            this.modelRG.subledger = data.subledger ?? "0";
+            this.causaSalida = data.descr_CausaSalida ?? "";
+            this.modelRG.compania = data.nombreCompania ?? data.compania;
             this.modelRG.sueldo = data.sueldo;
             this.modelRG.sueldoMensual = data.sueldoVariableMensual;
             this.modelRG.sueldoAnual = data.sueldoVariableAnual;
             this.modelRG.sueldoTrimestral = data.sueldoVariableTrimestral;
             this.modelRG.sueldoSemestral = data.sueldoVariableSemestral;
-            this.modelRG.descrPuesto = data.descrPuesto;
+            this.modelRG.descrPuesto = data.descrPuesto ?? data.descrCargo;
             this.modelRG.unidadNegocio = data.unidadNegocio;
             this.modelRG.localidad = data.localidad;
             this.modelRG.departamento = data.departamento;
-            this.modelRG.fechaIngreso = new Date(data.fechaIngresogrupo).toISOString().split("T")[0];
+            this.modelRG.fechaIngreso = data.fechaIngresogrupo === null ? new Date().toISOString().split("T")[0] : new Date(data.fechaIngresogrupo).toISOString().split("T")[0];
             this.remuneracion = Number(this.modelRG.sueldoAnual) / 12 + Number(this.modelRG.sueldoSemestral) / 6 + Number(this.modelRG.sueldoTrimestral) / 3 + Number(this.modelRG.sueldoMensual);
 
             this.detalleSolicitudRG.supervisaA = "N-A";

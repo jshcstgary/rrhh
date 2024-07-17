@@ -403,7 +403,7 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
       // await this.getSolicitudes();
       //if (this.id_edit !== undefined) { //comentado mmunoz
       //await this.getDetalleSolicitudById(this.id_edit); //comentado mmunoz
-      await this.getSolicitudById(this.id_edit);
+      //await this.getSolicitudById(this.id_edit);
       //} // comentado munoz
       // await this.getDataEmpleadosEvolution();
       await this.loadDataCamunda(); //comentado para prueba mmunoz
@@ -484,12 +484,12 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
 
         //data de solicitudes
 
-        /* this.model.codigo=this.solicitud.idSolicitud ;
+         this.model.codigo=this.solicitud.idSolicitud ;
          this.model.idEmpresa = this.solicitud.idEmpresa ;
          this.model.compania=this.solicitud.empresa ;
-         this.model.unidadNegocio=this.solicitud.unidadNegocio;*/
+         this.model.unidadNegocio=this.solicitud.unidadNegocio;
 
-        this.loadingComplete++;
+        this.loadingComplete+=2;
         this.getDetalleSolicitudById(this.id_edit);
 
         // tveas, si incluye el id, debo mostrarlos (true)
@@ -608,10 +608,7 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
           this.taskId = params["id"];
 
           this.date = result.solicitudes[0].startTime;
-          this.loadExistingVariables(
-            this.uniqueTaskId ? this.uniqueTaskId : "",
-            variableNames
-          );
+          
         });
 
 
@@ -633,7 +630,7 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
         //     console.log("this.uniqueTaskId: ", this.uniqueTaskId);
         //     console.log("this.taskId: ", this.taskId);
         //     this.getDetalleSolicitudById(this.id_solicitud_by_params);
-        //     this.getSolicitudById(this.id_solicitud_by_params);
+             this.getSolicitudById(this.id_solicitud_by_params);
         //     this.date = result[0].created;
         //     this.loadExistingVariables(
         //       this.uniqueTaskId ? this.uniqueTaskId : "",
@@ -832,7 +829,6 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
           this.dataAprobacionesPorPosicionAPS.forEach((item) => {
             this.dataTipoRuta.push(item.nivelAprobacionType.tipoRuta);
             this.dataRuta.push(item.nivelAprobacionType.ruta);
-            console.log("Aprobaciones APS = ", item.nivelAprobacionType);
           });
         },
         error: (error: HttpErrorResponse) => {
