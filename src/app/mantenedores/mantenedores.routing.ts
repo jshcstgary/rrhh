@@ -13,6 +13,8 @@ import { EstadosComponent } from "./estados/estados.component";
 import { AprobadoresFijosComponent } from "./aprobadores-fijos/aprobadores-fijos.component";
 import { CrearAprobadorFijoComponent } from "./crear-aprobador-fijo/crear-aprobador-fijo.component";
 import { EditarAprobadorFijoComponent } from "./editar-aprobador-fijo/editar-aprobador-fijo.component";
+import { mantenedoresGuard } from "../guards/mantenedores.guard";
+import { PageCodes } from "../enums/codes.enum";
 
 export const MantenedoresRoutes: Routes = [
   {
@@ -20,12 +22,17 @@ export const MantenedoresRoutes: Routes = [
     children: [
       {
         path: "niveles-aprobacion",
+        canActivate: [mantenedoresGuard(PageCodes.NivelesAprobacion)],
         component: NivelesAprobacionComponent,
         data: {
           title: "Niveles de Aprobación",
           urls: [
-            { title: "Mantenimiento" },
-            { title: "Niveles de Aprobación" },
+            {
+              title: "Mantenimiento"
+            },
+            {
+              title: "Niveles de Aprobación"
+            },
           ],
         },
       },
@@ -35,8 +42,12 @@ export const MantenedoresRoutes: Routes = [
         data: {
           title: "Crear Niveles de Aprobación",
           urls: [
-            { title: "Mantenimiento" },
-            { title: "Crear Niveles de Aprobación" },
+            {
+              title: "Mantenimiento"
+            },
+            {
+              title: "Crear Niveles de Aprobación"
+            },
           ],
         },
       },
@@ -45,7 +56,14 @@ export const MantenedoresRoutes: Routes = [
         component: TipoSolicitudComponent,
         data: {
           title: "Tipo de Solicitudes",
-          urls: [{ title: "Mantenimiento" }, { title: "Tipo de Solicitudes" }],
+          urls: [
+            {
+              title: "Mantenimiento"
+            },
+            {
+              title: "Tipo de Solicitudes"
+            }
+          ],
         },
       },
       {
@@ -53,7 +71,14 @@ export const MantenedoresRoutes: Routes = [
         component: TipoMotivoComponent,
         data: {
           title: "Tipo motivo",
-          urls: [{ title: "Mantenimiento" }, { title: "Tipo Motivo" }],
+          urls: [
+            {
+              title: "Mantenimiento"
+            },
+            {
+              title: "Tipo Motivo"
+            }
+          ],
         },
       },
       {
@@ -61,7 +86,14 @@ export const MantenedoresRoutes: Routes = [
         component: TipoAccionComponent,
         data: {
           title: "Tipo acción",
-          urls: [{ title: "Mantenimiento" }, { title: "Tipo Acción" }],
+          urls: [
+            {
+              title: "Mantenimiento"
+            },
+            {
+              title: "Tipo Acción"
+            }
+          ],
         },
       },
       {
@@ -69,7 +101,14 @@ export const MantenedoresRoutes: Routes = [
         component: TipoProcesoComponent,
         data: {
           title: "Tipo proceso",
-          urls: [{ title: "Mantenimiento" }, { title: "Tipo Proceso" }],
+          urls: [
+            {
+              title: "Mantenimiento"
+            },
+            {
+              title: "Tipo Proceso"
+            }
+          ],
         },
       },
       {
@@ -77,23 +116,29 @@ export const MantenedoresRoutes: Routes = [
         component: TipoRutaComponent,
         data: {
           title: "Tipo ruta",
-          urls: [{ title: "Mantenimiento" }, { title: "Tipo Ruta" }],
+          urls: [
+            {
+              title: "Mantenimiento"
+            },
+            {
+              title: "Tipo Ruta"
+            }
+          ],
         },
       },
-      // {
-      //   path: "niveles",
-      //   component: NivelesComponent,
-      //   data: {
-      //     title: "Niveles",
-      //     urls: [{ title: "Mantenimiento" }, { title: "Niveles" }],
-      //   },
-      // },
       {
         path: "ruta",
         component: RutaComponent,
         data: {
           title: "Ruta",
-          urls: [{ title: "Mantenimiento" }, { title: "Ruta" }],
+          urls: [
+            {
+              title: "Mantenimiento"
+            },
+            {
+              title: "Ruta"
+            }
+          ],
         },
       },
       {
@@ -101,7 +146,14 @@ export const MantenedoresRoutes: Routes = [
         component: AccionComponent,
         data: {
           title: "Acción",
-          urls: [{ title: "Mantenimiento" }, { title: "Acción" }],
+          urls: [
+            {
+              title: "Mantenimiento"
+            },
+            {
+              title: "Acción"
+            }
+          ],
         },
       },
       {
@@ -109,7 +161,14 @@ export const MantenedoresRoutes: Routes = [
         component: EstadosComponent,
         data: {
           title: "Estados Solicitud",
-          urls: [{ title: "Mantenimiento" }, { title: "Estados Solicitud" }],
+          urls: [
+            {
+              title: "Mantenimiento"
+            },
+            {
+              title: "Estados Solicitud"
+            }
+          ],
         },
       },
       {
@@ -117,7 +176,14 @@ export const MantenedoresRoutes: Routes = [
         component: AprobadoresFijosComponent,
         data: {
           title: "Aprobadores Fijos",
-          urls: [{ title: "Mantenimiento" }, { title: "Aprobadores Fijos" }],
+          urls: [
+            {
+              title: "Mantenimiento"
+            },
+            {
+              title: "Aprobadores Fijos"
+            }
+          ],
         },
       },
       {
@@ -125,7 +191,14 @@ export const MantenedoresRoutes: Routes = [
         component: CrearAprobadorFijoComponent,
         data: {
           title: "Crear Aprobador Fijo",
-          urls: [{ title: "Mantenimiento" }, { title: "Crear Aprobador Fijo" }],
+          urls: [
+            {
+              title: "Mantenimiento"
+            },
+            {
+              title: "Crear Aprobador Fijo"
+            }
+          ],
         },
       },
       {
@@ -134,8 +207,12 @@ export const MantenedoresRoutes: Routes = [
         data: {
           title: "Editar Aprobador Fijo",
           urls: [
-            { title: "Mantenimiento" },
-            { title: "Editar Aprobador Fijo" },
+            {
+              title: "Mantenimiento"
+            },
+            {
+              title: "Editar Aprobador Fijo"
+            },
           ],
         },
       },

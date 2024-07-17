@@ -15,6 +15,7 @@ import { RegistrarComentarioSalidaRRHHComponent } from "./registrar-comentario-s
 import { RegistrarComentarioReingresoComponent } from "./registrar-comentario-reingreso/registrar-comentario-reingreso.component";
 import { RegistrarAccionPersonalComponent } from "./registrar-accion-personal/registrar-accion-personal.component";
 import { CompletarAccionPersonalComponent } from "./completar-accion-personal/completar-accion-personal.component";
+import { authGuardActivate } from "../guards/auth.guard";
 
 
 export const SolicitudesRoutes: Routes = [
@@ -23,6 +24,7 @@ export const SolicitudesRoutes: Routes = [
     children: [
       {
         path: "consulta-solicitudes",
+        canActivate: [authGuardActivate],
         component: ConsultaSolicitudesComponent,
         data: {
           title: "Solicitudes",

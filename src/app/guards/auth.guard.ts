@@ -10,7 +10,6 @@ export const authGuardActivate: CanActivateFn = (route, state) => {
   const permissionService = inject(PermisoService);
 
   const isAuthenticated: boolean = authGuardsService.isAuthenticated();
-  permissionService.getPagePermission(PageCodes.ConsultaTareas);
 
   if (state.url === "/login") {
     return isAuthenticated ? router.createUrlTree(["/solicitudes/consulta-solicitudes"]) : true;

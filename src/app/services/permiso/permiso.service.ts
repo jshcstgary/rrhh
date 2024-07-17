@@ -8,9 +8,13 @@ export class PermisoService {
   constructor() { }
 
   public getPagePermission(pageCode: string): Control[] {
-    const permissions: Permission[] = JSON.parse(localStorage.getItem("permisos")!);
+    const permissions: undefined | Permission[] = JSON.parse(localStorage.getItem("permisos"));
 
-    const permission: Permission = permissions.find(permission => permission.codigo === pageCode);
+    const permission: undefined | Permission = permissions.find(permission => permission.codigo === pageCode);
+
+    if (permission === undefined) {
+      return [];
+    }
 
     return permission.controles;
   }
