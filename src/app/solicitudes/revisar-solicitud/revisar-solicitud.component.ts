@@ -125,9 +125,7 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
   }
 
   checkTipoSolicitud(): void {
-    console.log("checkTipoSolicitud");
-    console.log("this.solicitud.tipoSolicitud : "+this.solicitud.tipoSolicitud);
-  }
+     }
 
   override model: RegistrarData = new RegistrarData(
     "",
@@ -511,8 +509,12 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
         this.nombreCompletoCandidato = res.seleccionCandidatoType[0].candidato;
         this.idSolicitudRP = res.seleccionCandidatoType[0].iD_SOLICITUD;
 
-        this.getSolicitudById(this.idSolicitudRP);
-        this.getSolicitudById(this.id_solicitud_by_params);
+        if (this.id_solicitud_by_params.toUpperCase().includes("RG")) {
+          this.getSolicitudById(this.idSolicitudRP);
+          this.getSolicitudById(this.id_solicitud_by_params);
+        }else{
+          this.getSolicitudById(this.id_solicitud_by_params);
+        }
       },
       error: (err) => {
         console.log(console.log(err));
@@ -637,6 +639,7 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
             this.taskId = params["id"];
             
           if (this.id_solicitud_by_params.toUpperCase().includes("RG")||this.id_solicitud_by_params.toUpperCase().includes("CF")) {
+
             this.getCandidatoValues();
           }else{
             this.getSolicitudById(this.id_solicitud_by_params);
