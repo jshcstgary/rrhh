@@ -897,6 +897,8 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
           this.model.sueldoAnual = this.detalleSolicitud.sueldoVariableAnual
           this.model.correo = this.detalleSolicitud.correo;
           this.model.fechaIngreso = this.detalleSolicitud.fechaIngreso;
+          this.modelRemuneracion = Number(this.model.sueldoAnual) / 12 + Number(this.model.sueldoSemestral) / 6 + Number(this.model.sueldoTrimestral) / 3 + Number(this.model.sueldoMensual);
+
         }else if (id.toUpperCase().includes("RG")) {
           if (this.detalleSolicitudRG.codigoPosicion.length > 0) {
             this.modelRG.codigoPosicion = this.detalleSolicitudRG.codigoPosicion;
