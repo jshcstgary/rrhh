@@ -6,11 +6,12 @@
           <div class="mb-3">
             <a (click)="pageSolicitudes()">
               <h2 class="sol-danger">
-                <i class="bi bi-arrow-left-circle azul"></i> {{ solicitud.idSolicitud }}
+                <i class="bi bi-arrow-left-circle azul"></i> {{ solicitudRG.idSolicitud }}
               </h2>
             </a>
           </div>
         </div>
+        
 
         <div class="col-md-12 text-end">
           <button *ngIf="RegistrarsolicitudCompletada" type="button" (click)="openModal('dialogReasignarUsuario')"
