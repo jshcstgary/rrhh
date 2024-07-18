@@ -753,7 +753,6 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
     }
   }
   modelRemuneracion: number = 0;
-  modelRemuneracionRG: number = 0;
   observacionRemuneraciones: string = "";
   getDetalleSolicitudById(id: any) {
     return this.solicitudes.getDetalleSolicitudById(id).subscribe({
@@ -973,7 +972,6 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
     });
   }
 
-  public pageSolicitudes(): void { }
 
   override generateVariablesFromFormFields() {
     let variables: any = {};

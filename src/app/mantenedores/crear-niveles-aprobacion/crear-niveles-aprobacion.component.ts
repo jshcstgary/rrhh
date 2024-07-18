@@ -67,10 +67,6 @@ export class CrearNivelesAprobacionComponent implements OnInit {
     });
   }
 
-  PageNivelesAprobacion() {
-    this.router.navigate(["/mantenedores/niveles-aprobacion"]);
-  }
-
   getNivelById() {
     this.utilService.openLoadingSpinner(
       "Cargando información, espere por favor..."

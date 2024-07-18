@@ -887,10 +887,6 @@ export class RegistrarComentarioSalidaRRHHComponent extends CompleteTaskComponen
 
   }
 
-  public pageSolicitudes(): void {
-
-  }
-
   public onCompletar(): void {
 
   }

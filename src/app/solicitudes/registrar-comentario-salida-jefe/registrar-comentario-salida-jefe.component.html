@@ -4,7 +4,7 @@
       <div class="row">
         <div class="col-md-8">
           <div class="mb-3">
-            <a (click)="pageSolicitudes()">
+            <a routerLink="/tareas/consulta-tareas">
               <h2 class="sol-danger">
                 <i class="bi bi-arrow-left-circle azul"></i> {{ solicitudRG.idSolicitud }}
               </h2>
@@ -607,15 +607,17 @@
         </div>
 
         <div class="row mt-3">
-          <div class="col-md-10">
-            <label for="comments" class="label-estilo">
-              Comentarios (Cómo fue el desempeño en el Área)
-            </label>
-            <textarea *ngIf="taskKey !== taskKeySolicitante" name="descripcionposicion"
-              style="color: black;width: 70%;margin-left: -2.8em; font-size: 14px; resize: none;" class="form-control"
-              id="comments" rows="3" [(ngModel)]="comentarios" required></textarea>
-            <span *ngIf="taskKey === taskKeySolicitante" #mivar id="tipoSolicitud" name="tipoSolicitud" style="color: black; font-size: 14px;"
-              class="text-start">{{ comentariosJefeInmediato.comentario }}</span>
+          <div class="col-md-12">
+            <div class="input-group mb-3">
+              <label for="comments" class="input-group label-estilo" style="width: 37%;">
+                Comentarios (¿Cómo fue el desempeño en el Área?)
+              </label>
+              <textarea *ngIf="taskKey !== taskKeySolicitante" name="descripcionposicion"
+                style="color: black;font-size: 14px; resize: none;" class="form-control"
+                id="comments" rows="3" [(ngModel)]="comentarios" required></textarea>
+              <span *ngIf="taskKey === taskKeySolicitante" #mivar id="tipoSolicitud" name="tipoSolicitud" style="color: black; font-size: 14px;"
+                class="text-start">{{ comentariosJefeInmediato.comentario }}</span>
+            </div>
           </div>
         </div>
 
@@ -717,7 +719,7 @@
         <div class="row mt-3">
           <div class="col-md-12 d-flex align-items-center">
             <label for="comments2" class="label-estilo me-2">
-              Comentarios (por qué considera el reingreso)*
+              Comentarios (¿por qué considera el reingreso?)*
             </label>
             <textarea name="descripcionposicion"
               style="color: black;width: 70%;margin-left: -2.8em; font-size: 14px; resize: none;" class="form-control"

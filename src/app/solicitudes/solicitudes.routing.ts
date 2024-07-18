@@ -87,7 +87,7 @@ export const SolicitudesRoutes: Routes = [
         path: "registrar-familiares/:id/:idSolicitud",
         component: RegistrarFamiliaresComponent,
         data: {
-          title: "Completar Solicitud",
+          title: "Registrar familiar",
           urls: [
             {
               title: "Solicitudes"

@@ -20,6 +20,7 @@ import { PageControlPermiso } from "src/app/types/page-control-permiso.type";
 import { PermisoService } from "src/app/services/permiso/permiso.service";
 import { Control } from "src/app/types/permiso.type";
 import { LocalStorageKeys } from "src/app/enums/local-storage-keys.enum";
+import { RegistrarCandidatoService } from "src/app/solicitudes/registrar-candidato/registrar-candidato.service";
 
 @Component({
   selector: "app-consulta-tareas",
@@ -85,7 +86,7 @@ export class ConsultaTareasComponent implements OnInit {
     private utilService: UtilService,
     private mantenimientoService: MantenimientoService,
     private router: Router,
-    private solicitudes: SolicitudesService,
+    private seleccionCandidatoService: RegistrarCandidatoService,
     private starterService: StarterService,
     private _route: ActivatedRoute,
     private permissionService: PermisoService
@@ -320,11 +321,20 @@ export class ConsultaTareasComponent implements OnInit {
                   ids[0],
                 ]);
               } else {
-                Swal.fire({
-                  text: "Completa la solicitud de Requisición de Personal",
-                  icon: "info",
-                  confirmButtonColor: "rgb(227, 199, 22)",
-                  confirmButtonText: "Ok",
+                this.seleccionCandidatoService.getCandidatoById(ids[0]).subscribe({
+                  next: ({ seleccionCandidatoType }) => {
+                    const { iD_SOLICITUD } = seleccionCandidatoType[0];
+
+                    Swal.fire({
+                      text: `Completa la solicitud ${iD_SOLICITUD} de Requisición de Personal`,
+                      icon: "info",
+                      confirmButtonColor: "rgb(227, 199, 22)",
+                      confirmButtonText: "Ok",
+                    });
+                  },
+                  error: (err) => {
+                    console.error(err);
+                  }
                 });
               }
 
@@ -338,11 +348,20 @@ export class ConsultaTareasComponent implements OnInit {
                   ids[0],
                 ]);
               } else {
-                Swal.fire({
-                  text: "Completa la solicitud de Contratación de Familiares",
-                  icon: "info",
-                  confirmButtonColor: "rgb(227, 199, 22)",
-                  confirmButtonText: "Ok",
+                this.seleccionCandidatoService.getCandidatoById(ids[0]).subscribe({
+                  next: ({ seleccionCandidatoType }) => {
+                    const { iD_SOLICITUD_PROCESO } = seleccionCandidatoType[0];
+
+                    Swal.fire({
+                      text: `Completa la solicitud ${iD_SOLICITUD_PROCESO} de Contratación de Familiares`,
+                      icon: "info",
+                      confirmButtonColor: "rgb(227, 199, 22)",
+                      confirmButtonText: "Ok",
+                    });
+                  },
+                  error: (err) => {
+                    console.error(err);
+                  }
                 });
               }
 
@@ -356,11 +375,20 @@ export class ConsultaTareasComponent implements OnInit {
                   ids[0],
                 ]);
               } else {
-                Swal.fire({
-                  text: "Completa la solicitud de Reingreso de Personal",
-                  icon: "info",
-                  confirmButtonColor: "rgb(227, 199, 22)",
-                  confirmButtonText: "Ok",
+                this.seleccionCandidatoService.getCandidatoById(ids[0]).subscribe({
+                  next: ({ seleccionCandidatoType }) => {
+                    const { iD_SOLICITUD_PROCESO } = seleccionCandidatoType[0];
+
+                    Swal.fire({
+                      text: `Completa la solicitud ${iD_SOLICITUD_PROCESO} de Reingreso de Personal`,
+                      icon: "info",
+                      confirmButtonColor: "rgb(227, 199, 22)",
+                      confirmButtonText: "Ok",
+                    });
+                  },
+                  error: (err) => {
+                    console.error(err);
+                  }
                 });
               }
 
@@ -374,11 +402,20 @@ export class ConsultaTareasComponent implements OnInit {
                   ids[0],
                 ]);
               } else {
-                Swal.fire({
-                  text: "Completa la solicitud de Reingreso de Personal",
-                  icon: "info",
-                  confirmButtonColor: "rgb(227, 199, 22)",
-                  confirmButtonText: "Ok",
+                this.seleccionCandidatoService.getCandidatoById(ids[0]).subscribe({
+                  next: ({ seleccionCandidatoType }) => {
+                    const { iD_SOLICITUD_PROCESO } = seleccionCandidatoType[0];
+
+                    Swal.fire({
+                      text: `Completa la solicitud ${iD_SOLICITUD_PROCESO} de Reingreso de Personal`,
+                      icon: "info",
+                      confirmButtonColor: "rgb(227, 199, 22)",
+                      confirmButtonText: "Ok",
+                    });
+                  },
+                  error: (err) => {
+                    console.error(err);
+                  }
                 });
               }
 
@@ -392,11 +429,20 @@ export class ConsultaTareasComponent implements OnInit {
                   ids[0]
                 ]);
               } else {
-                Swal.fire({
-                  text: "Completa la solicitud de Reingreso de Personal",
-                  icon: "info",
-                  confirmButtonColor: "rgb(227, 199, 22)",
-                  confirmButtonText: "Ok",
+                this.seleccionCandidatoService.getCandidatoById(ids[0]).subscribe({
+                  next: ({ seleccionCandidatoType }) => {
+                    const { iD_SOLICITUD_PROCESO } = seleccionCandidatoType[0];
+
+                    Swal.fire({
+                      text: `Completa la solicitud ${iD_SOLICITUD_PROCESO} de Reingreso de Personal`,
+                      icon: "info",
+                      confirmButtonColor: "rgb(227, 199, 22)",
+                      confirmButtonText: "Ok",
+                    });
+                  },
+                  error: (err) => {
+                    console.error(err);
+                  }
                 });
               }
 
@@ -410,11 +456,20 @@ export class ConsultaTareasComponent implements OnInit {
                   ids[0]
                 ]);
               } else {
-                Swal.fire({
-                  text: "Completa la solicitud de Reingreso de Personal",
-                  icon: "info",
-                  confirmButtonColor: "rgb(227, 199, 22)",
-                  confirmButtonText: "Ok",
+                this.seleccionCandidatoService.getCandidatoById(ids[0]).subscribe({
+                  next: ({ seleccionCandidatoType }) => {
+                    const { iD_SOLICITUD_PROCESO } = seleccionCandidatoType[0];
+
+                    Swal.fire({
+                      text: `Completa la solicitud ${iD_SOLICITUD_PROCESO} de Reingreso de Personal`,
+                      icon: "info",
+                      confirmButtonColor: "rgb(227, 199, 22)",
+                      confirmButtonText: "Ok",
+                    });
+                  },
+                  error: (err) => {
+                    console.error(err);
+                  }
                 });
               }
 
@@ -449,6 +504,22 @@ export class ConsultaTareasComponent implements OnInit {
                   ids[1],
                   ids[0]
                 ]);
+              } else {
+                this.seleccionCandidatoService.getCandidatoById(ids[0]).subscribe({
+                  next: ({ seleccionCandidatoType }) => {
+                    const { iD_SOLICITUD_PROCESO } = seleccionCandidatoType[0];
+
+                    Swal.fire({
+                      text: `Completa la solicitud ${iD_SOLICITUD_PROCESO} de Contratación de Familiares`,
+                      icon: "info",
+                      confirmButtonColor: "rgb(227, 199, 22)",
+                      confirmButtonText: "Ok",
+                    });
+                  },
+                  error: (err) => {
+                    console.error(err);
+                  }
+                });
               }
 
               break;
@@ -460,6 +531,22 @@ export class ConsultaTareasComponent implements OnInit {
                   ids[1],
                   ids[0]
                 ]);
+              } else {
+                this.seleccionCandidatoService.getCandidatoById(ids[0]).subscribe({
+                  next: ({ seleccionCandidatoType }) => {
+                    const { iD_SOLICITUD_PROCESO } = seleccionCandidatoType[0];
+
+                    Swal.fire({
+                      text: `Completa la solicitud ${iD_SOLICITUD_PROCESO} de Contratación de Familiares`,
+                      icon: "info",
+                      confirmButtonColor: "rgb(227, 199, 22)",
+                      confirmButtonText: "Ok",
+                    });
+                  },
+                  error: (err) => {
+                    console.error(err);
+                  }
+                });
               }
 
               break;

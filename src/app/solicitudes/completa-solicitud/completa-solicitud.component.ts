@@ -744,10 +744,6 @@ export class CompletaSolicitudComponent extends CompleteTaskComponent {
 
   }
 
-  pageSolicitudes() {
-    this.router.navigate(["/tareas/consulta-tareas"]);
-  }
-
   ObtenerServicioNivelDireccion() {
     return this.mantenimientoService.getCatalogo("RBPND").subscribe({
       // return this.mantenimientoService.getCatalogoRBPND().subscribe({
@@ -940,23 +936,6 @@ export class CompletaSolicitudComponent extends CompleteTaskComponent {
 
   onSubmit() {
     this.save();
-    // Swal.fire({
-    //   text: "¿Desea crear la Solicitud?",
-    //   icon: "question",
-    //   showCancelButton: true,
-    //   confirmButtonColor: "rgb(227, 199, 22)",
-    //   cancelButtonColor: "#77797a",
-    //   confirmButtonText: "Sí",
-    //   cancelButtonText: "No",
-    // }).then((result) => {
-    //   if (result.isConfirmed) {
-
-    //     if (this.submitted) {
-    //     }
-
-    //     //Fin Solicitud
-    //   }
-    // });
   }
 
   save() {
@@ -967,98 +946,6 @@ export class CompletaSolicitudComponent extends CompleteTaskComponent {
 
     this.saveDetalleAprobaciones();
 
-    //     this.submitted = true;
-    //     let idInstancia = this.solicitudDataInicial.idInstancia;
-
-    //     let extra = {
-    //       idEmpresa: this.model.compania,
-    //       empresa: this.model.compania,
-    //       estadoSolicitud: "Pendiente",
-    //       unidadNegocio: this.model.unidadNegocio,
-    //       idUnidadNegocio: this.model.unidadNegocio,
-    //     };
-
-    //     this.solicitud.empresa = this.model.idEmpresa;
-    //     this.solicitud.idEmpresa = this.model.idEmpresa;
-
-    //     this.solicitud.unidadNegocio = this.model.unidadNegocio;
-    //     this.solicitud.idUnidadNegocio = this.model.unidadNegocio;
-    //     this.solicitud.estadoSolicitud = "2";
-    //     this.solicitudes
-    //       .actualizarSolicitud(this.solicitud)
-    //       .subscribe((responseSolicitud) => {
-
-    //         this.detalleSolicitud.idSolicitud = this.solicitud.idSolicitud;
-
-    //         this.detalleSolicitud.areaDepartamento = this.model.departamento;
-
-    //         this.detalleSolicitud.cargo = this.model.nombreCargo;
-    //         this.detalleSolicitud.centroCosto = this.model.nomCCosto;
-    //         this.detalleSolicitud.codigoPosicion = this.model.codigoPosicion;
-    //         this.detalleSolicitud.compania = this.model.compania; //idEmpresa
-    //         this.detalleSolicitud.departamento = this.model.departamento;
-    //         this.detalleSolicitud.descripcionPosicion =
-    //           this.model.descrPosicion;
-
-    //         this.detalleSolicitud.justificacion = this.model.justificacionCargo;
-    //         this.detalleSolicitud.localidad = this.model.localidad;
-    //         this.detalleSolicitud.localidadZona = this.model.localidad;
-
-    //         this.detalleSolicitud.misionCargo = this.model.misionCargo;
-    //         this.detalleSolicitud.nivelDireccion = this.model.nivelDir;
-    //         this.detalleSolicitud.nivelReporteA = this.model.nivelRepa;
-
-    //         this.detalleSolicitud.nombreEmpleado = this.model.nombreCompleto;
-
-
-    //         this.detalleSolicitud.reportaA = this.model.reportaA;
-
-    //         this.detalleSolicitud.subledger = this.model.subledger;
-
-    //         this.detalleSolicitud.subledgerEmpleado = this.model.subledger;
-
-    //         this.detalleSolicitud.sucursal = this.model.sucursal;
-
-    //         this.detalleSolicitud.misionCargo = this.model.misionCargo;
-    //         this.detalleSolicitud.justificacion = this.model.justificacionCargo;
-
-    //         this.detalleSolicitud.sueldo = this.model.sueldo;
-    //         this.detalleSolicitud.sueldoVariableMensual =
-    //           this.model.sueldoMensual;
-    //         this.detalleSolicitud.sueldoVariableTrimestral =
-    //           this.model.sueldoTrimestral;
-    //         this.detalleSolicitud.sueldoVariableSemestral =
-    //           this.model.sueldoSemestral;
-    //         this.detalleSolicitud.sueldoVariableAnual = this.model.sueldoAnual;
-    //         this.detalleSolicitud.tipoContrato = this.model.tipoContrato;
-    //         this.detalleSolicitud.unidadNegocio = this.model.unidadNegocio;
-
-    //         this.detalleSolicitud.correo = this.model.correo;
-
-    //         this.detalleSolicitud.supervisaA = this.model.supervisaA;
-
-    //         this.detalleSolicitud.fechaIngreso = this.model.fechaIngresogrupo=="" ? this.model.fechaIngreso: this.model.fechaIngresogrupo;
-
-    //         this.solicitudes
-    //           .actualizarDetalleSolicitud(this.detalleSolicitud)
-    //           .subscribe((responseDetalle) => {
-
-    //             this.utilService.closeLoadingSpinner(); //comentado mmunoz
-    //             this.utilService.modalResponse(
-    //               "Datos ingresados correctamente",
-    //               "success"
-    //             );
-
-    //             setTimeout(() => {
-    //               this.router.navigate([
-    //                 "/tareas/consulta-tareas",
-    //               ]);
-    //             }, 1800);
-
-
-    //       });
-    //   }); //aqui debe crear los aprobadores
-    // this.submitted = true;
   }
 
   onCompletar() { //completar tarea mmunoz
@@ -1420,22 +1307,9 @@ export class CompletaSolicitudComponent extends CompleteTaskComponent {
   }
 
   saveDetalleAprobaciones() {
-    // this.solicitudes
-    // .guardarDetallesAprobacionesSolicitud(this.solicitudes.modelDetalleAprobaciones)
-    //   .subscribe((res) => {
-    //     /*this.utilService.modalResponse(
-    //       "Datos ingresados correctamente",
-    //       "success"
-    //     );
-    //      setTimeout(() => {
-    //       this.router.navigate(["/solicitudes/completar-solicitudes"]);
-    //     }, 1600);*/
-    //   });
     this.crearRegistradorSolicitud();
     this.solicitudes.modelDetalleAprobaciones.estadoAprobacion = this.buttonValue;
     this.solicitudes.modelDetalleAprobaciones.comentario = this.textareaContent;
-
-    console.log(this.solicitudes);
 
     const request = {
       iD_SOLICITUD: this.solicitud.idSolicitud,
@@ -1457,12 +1331,11 @@ export class CompletaSolicitudComponent extends CompleteTaskComponent {
       procesoDeContratacion: null,
       finProcesoContratacion: null,
       fechaInicioReingreso: null,
-      fechaFinReingreso: null,
+      fechaFinReingreso: new Date(),
       fechaInicioContratacionFamiliares: null,
-      fechaFinContratacionFamiliares: null,
+      fechaFinContratacionFamiliares: new Date(),
       fechaIngresoCandidato: this.selectedDateIn
     };
-    console.log(request);
 
     this.seleccionCandidatoService.saveCandidato(request).subscribe({
       next: () => {

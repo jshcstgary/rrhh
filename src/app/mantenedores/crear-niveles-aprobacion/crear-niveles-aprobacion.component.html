@@ -1,208 +1,110 @@
-<!--Modal Crer Solicittud-->
-
 <div class="row">
   <div class="col-lg-12">
     <div class="card">
       <div>
         <h2 class="card-body text-start">
           <div class="row">
-            <!--<div class="col-md-8">
-                            <b style="color: rgb(227, 199, 22);font-size: 20px; margin: 20px;">Mantenimiento de rutas</b>
-                        </div>-->
             <div class="col-md-8">
               <div class="mb-3">
-                <a (click)="PageNivelesAprobacion()">
+                <a routerLink="/mantenedores/niveles-aprobacion">
                   <h3 class="danger">
                     <i class="bi bi-arrow-left-circle azul"></i> Mantenimiento
                     de rutas
-                  </h3></a
-                >
+                  </h3>
+                </a>
               </div>
             </div>
 
             <div class="col-md-4 text-end">
-              <!--<button style="margin: 10px;color: black;" type="button" (click)="modal.dismiss('Cross click')"
-                                class="mr-10 fz-14 btn btn-outline-secondary btn-icon-end">Cancelar
-                            </button>-->
-
-              <button
-                *ngIf="id_edit === undefined"
-                type="button"
-                class="mr-10 fz-14 btn btn-info btn-icon-end"
-                aria-label="Close"
-                aria-label="Close"
-                (click)="procesarNivelAprobacion()"
-              >
+              <button *ngIf="id_edit === undefined" type="button" class="mr-10 fz-14 btn btn-info btn-icon-end"
+                aria-label="Close" aria-label="Close" (click)="procesarNivelAprobacion()">
                 <i class="fas fa-save"></i> Guardar
               </button>
-              <button
-                *ngIf="id_edit !== undefined"
-                type="button"
-                class="mr-10 fz-14 btn btn-info btn-icon-end"
-                aria-label="Close"
-                aria-label="Close"
-                (click)="procesarNivelAprobacion()"
-              >
+              <button *ngIf="id_edit !== undefined" type="button" class="mr-10 fz-14 btn btn-info btn-icon-end"
+                aria-label="Close" aria-label="Close" (click)="procesarNivelAprobacion()">
                 <i class="fas fa-save"></i> Guardar
               </button>
             </div>
           </div>
-          <div
-            class="row"
-            style="
+          <div class="row" style="
               padding-top: 20px;
               display: flex;
               justify-content: start;
               margin: 10px;
-            "
-          >
+            ">
             <div class="col-md-12" style="width: 75%">
               <div class="input-group mb-3">
-                <label
-                  class="input-group-text"
-                  for="tiposolicitud"
-                  style="color: black; font-size: 14px; width: 45%"
-                  >Tipo Solicitud</label
-                >
-                <select
-                  [(ngModel)]="modelo.idTipoSolicitud"
-                  (ngModelChange)="
+                <label class="input-group-text" for="tiposolicitud"
+                  style="color: black; font-size: 14px; width: 45%">Tipo Solicitud</label>
+                <select [(ngModel)]="modelo.idTipoSolicitud" (ngModelChange)="
                     onChangeTipoSolicitud(modelo.idTipoSolicitud)
-                  "
-                  id="tiposolicitud"
-                  name="tiposolicitud"
-                  class="form-select"
-                  style="font-size: 14px"
-                  required
-                >
-                  <!-- <option value="" hidden>Selecccione</option> -->
-                  <option
-                    *ngFor="let baseDeDatos of dataTipoSolicitudes"
-                    [value]="baseDeDatos.id"
-                  >
+                  " id="tiposolicitud" name="tiposolicitud" class="form-select" style="font-size: 14px" required>
+                  <option *ngFor="let baseDeDatos of dataTipoSolicitudes" [value]="baseDeDatos.id">
                     {{ baseDeDatos.descripcion }}
                   </option>
                 </select>
               </div>
             </div>
           </div>
-          <div
-            class="row"
-            style="
+          <div class="row" style="
               padding-top: 20px;
               display: flex;
               justify-content: start;
               margin: 10px;
-            "
-          >
+            ">
             <div class="col-md-12" style="width: 75%">
               <div class="input-group mb-3">
-                <label
-                  class="input-group-text"
-                  for="tipomotivo"
-                  style="color: black; font-size: 14px; width: 45%"
-                  >Tipo de Motivo</label
-                >
-                <select
-                  [(ngModel)]="modelo.idTipoMotivo"
-                  id="tipomotivo"
-                  name="tipomotivo"
-                  class="form-select"
-                  #productoSelect
-                  style="font-size: 14px"
-                  required
-                  [disabled]="desactivarTipoMotivoYAccion"
-                >
-                  <!-- <ng-container *ngIf="!desactivarTipoMotivoYAccion"> -->
-                  <!-- <option hidden>Selecccione</option> -->
-                  <option
-                    *ngFor="
+                <label class="input-group-text" for="tipomotivo" style="color: black; font-size: 14px; width: 45%">Tipo
+                  de Motivo</label>
+                <select [(ngModel)]="modelo.idTipoMotivo" id="tipomotivo" name="tipomotivo" class="form-select"
+                  #productoSelect style="font-size: 14px" required [disabled]="desactivarTipoMotivoYAccion">
+                  <option *ngFor="
                       let baseDeDatos of dataTiposMotivosPorTipoSolicitud[
                         tipoSolicitudSeleccionada
                       ]
-                    "
-                    [value]="baseDeDatos.id"
-                  >
+                    " [value]="baseDeDatos.id">
                     {{ baseDeDatos.tipoMotivo }}
                   </option>
-                  <!-- </ng-container> -->
                 </select>
               </div>
             </div>
           </div>
-          <div
-            class="row"
-            style="
+          <div class="row" style="
               padding-top: 20px;
               display: flex;
               justify-content: start;
               margin: 10px;
-            "
-          >
+            ">
             <div class="col-md-12" style="width: 75%">
               <div class="input-group mb-3">
-                <label
-                  class="input-group-text"
-                  for="accion"
-                  style="color: black; font-size: 14px; width: 45%"
-                  >Acción</label
-                >
-                <select
-                  [(ngModel)]="modelo.idAccion"
-                  id="accion"
-                  name="accion"
-                  class="form-select"
-                  style="font-size: 14px"
-                  required
-                  [disabled]="desactivarTipoMotivoYAccion"
-                >
-                  <!--<option>Crear Posicion (esten o no presupuestadas)</option>-->
-                  <!-- <option value="" hidden>Selecccione</option> -->
-                  <option
-                    *ngFor="
+                <label class="input-group-text" for="accion"
+                  style="color: black; font-size: 14px; width: 45%">Acción</label>
+                <select [(ngModel)]="modelo.idAccion" id="accion" name="accion" class="form-select"
+                  style="font-size: 14px" required [disabled]="desactivarTipoMotivoYAccion">
+                  <option *ngFor="
                       let baseDeDatos of dataAccionesPorTipoSolicitud[
                         tipoSolicitudSeleccionada
                       ]
-                    "
-                    [value]="baseDeDatos.id"
-                  >
+                    " [value]="baseDeDatos.id">
                     {{ baseDeDatos.accion }}
                   </option>
                 </select>
               </div>
             </div>
           </div>
-          <div
-            class="row"
-            style="
+          <div class="row" style="
               padding-top: 20px;
               display: flex;
               justify-content: start;
               margin: 10px;
-            "
-          >
+            ">
             <div class="col-md-12" style="width: 75%">
               <div class="input-group mb-3">
-                <label
-                  class="input-group-text"
-                  for="niveldireccion"
-                  style="color: black; font-size: 14px; width: 45%"
-                  >Niveles de dirección</label
-                >
-                <select
-                  [(ngModel)]="modelo.idNivelDireccion"
-                  id="niveldireccion"
-                  name="niveldireccion"
-                  class="form-select"
-                  style="font-size: 14px"
-                  required
-                >
-                  <!--<option>Supervición/Coordinación</option>-->
-                  <!-- <option value="" hidden>Selecccione</option> -->
-                  <option
-                    *ngFor="let item of dataNivelDireccion"
-                    [value]="item"
-                  >
+                <label class="input-group-text" for="niveldireccion"
+                  style="color: black; font-size: 14px; width: 45%">Niveles de dirección</label>
+                <select [(ngModel)]="modelo.idNivelDireccion" id="niveldireccion" name="niveldireccion"
+                  class="form-select" style="font-size: 14px" required>
+                  <option *ngFor="let item of dataNivelDireccion" [value]="item">
                     {{ item }}
                   </option>
                 </select>
@@ -210,38 +112,19 @@
             </div>
           </div>
 
-          <div
-            class="row"
-            style="
+          <div class="row" style="
               padding-top: 20px;
               display: flex;
               justify-content: start;
               margin: 10px;
-            "
-          >
+            ">
             <div class="col-md-12" style="width: 75%">
               <div class="input-group mb-3">
-                <label
-                  class="input-group-text"
-                  for="tiporuta"
-                  style="color: black; font-size: 14px; width: 45%"
-                  >Tipo de Ruta</label
-                >
-                <select
-                  [(ngModel)]="modelo.idTipoRuta"
-                  (ngModelChange)="onChangeTipoRuta(modelo.idTipoRuta)"
-                  id="tiporuta"
-                  name="tiporuta"
-                  class="form-select"
-                  style="font-size: 14px"
-                  required
-                >
-                  <!--<option>Areas Corporativas</option>-->
-                  <!-- <option value="" hidden>Selecccione</option> -->
-                  <option
-                    *ngFor="let baseDeDatos of dataTipoRuta"
-                    [value]="baseDeDatos.id"
-                  >
+                <label class="input-group-text" for="tiporuta" style="color: black; font-size: 14px; width: 45%">Tipo de
+                  Ruta</label>
+                <select [(ngModel)]="modelo.idTipoRuta" (ngModelChange)="onChangeTipoRuta(modelo.idTipoRuta)"
+                  id="tiporuta" name="tiporuta" class="form-select" style="font-size: 14px" required>
+                  <option *ngFor="let baseDeDatos of dataTipoRuta" [value]="baseDeDatos.id">
                     {{ baseDeDatos.descripcion }}
                   </option>
                 </select>
@@ -249,41 +132,23 @@
             </div>
           </div>
 
-          <div
-            class="row"
-            style="
+          <div class="row" style="
               padding-top: 20px;
               display: flex;
               justify-content: start;
               margin: 10px;
-            "
-          >
+            ">
             <div class="col-md-12" style="width: 75%">
               <div class="input-group mb-3">
-                <label
-                  class="input-group-text"
-                  for="ruta"
-                  style="color: black; font-size: 14px; width: 45%"
-                  >Ruta</label
-                >
-                <select
-                  [(ngModel)]="modelo.idRuta"
-                  id="ruta"
-                  name="ruta"
-                  class="form-select"
-                  style="font-size: 14px"
-                  required
-                >
-                  <!--<option>Lvl1 Aprobación</option>-->
-                  <!-- <option value="" hidden>Selecccione</option> -->
-                  <option
-                    *ngFor="
+                <label class="input-group-text" for="ruta"
+                  style="color: black; font-size: 14px; width: 45%">Ruta</label>
+                <select [(ngModel)]="modelo.idRuta" id="ruta" name="ruta" class="form-select" style="font-size: 14px"
+                  required>
+                  <option *ngFor="
                       let baseDeDatos of dataRutasPorTipoRuta[
                         tipoRutaSeleccionada
                       ]
-                    "
-                    [value]="baseDeDatos.id"
-                  >
+                    " [value]="baseDeDatos.id">
                     {{ baseDeDatos.ruta }}
                   </option>
                 </select>
@@ -291,37 +156,19 @@
             </div>
           </div>
 
-          <div
-            class="row"
-            style="
+          <div class="row" style="
               padding-top: 20px;
               display: flex;
               justify-content: start;
               margin: 10px;
-            "
-          >
+            ">
             <div class="col-md-12" style="width: 75%">
               <div class="input-group mb-3">
-                <label
-                  class="input-group-text"
-                  for="nivelaprobacion"
-                  style="color: black; font-size: 14px; width: 45%"
-                  >Nivel de Aprobación</label
-                >
-                <select
-                  [(ngModel)]="modelo.idNivelAprobacionRuta"
-                  id="nivelaprobacion"
-                  name="nivelaprobacion"
-                  class="form-select"
-                  style="font-size: 14px"
-                  required
-                >
-                  <!--<option>Jefatura</option>-->
-                  <!-- <option value="" hidden>Selecccione</option> -->
-                  <option
-                    *ngFor="let item of dataNivelAprobacion"
-                    [value]="item.id"
-                  >
+                <label class="input-group-text" for="nivelaprobacion"
+                  style="color: black; font-size: 14px; width: 45%">Nivel de Aprobación</label>
+                <select [(ngModel)]="modelo.idNivelAprobacionRuta" id="nivelaprobacion" name="nivelaprobacion"
+                  class="form-select" style="font-size: 14px" required>
+                  <option *ngFor="let item of dataNivelAprobacion" [value]="item.id">
                     {{ item.descripcion }}
                   </option>
                 </select>
@@ -329,59 +176,21 @@
             </div>
           </div>
 
-          <div
-            class="row"
-            style="
+          <div class="row" style="
               padding-top: 20px;
               display: flex;
               justify-content: start;
               margin: 10px;
-            "
-          >
+            ">
             <div class="col-md-12" style="width: 75%">
               <div class="input-group mb-3">
-                <label
-                  class="input-group-text"
-                  for="estado"
-                  style="color: black; font-size: 14px; width: 45%"
-                  >Estado</label
-                >
+                <label class="input-group-text" for="estado"
+                  style="color: black; font-size: 14px; width: 45%">Estado</label>
                 &nbsp;
                 <div class="form-check form-switch">
-                  <input
-                    class="form-check-input"
-                    type="checkbox"
-                    required
-                    id="estado"
-                    [(ngModel)]="modelo.estado"
-                    name="estado"
-                    checked
-                  />
-                  <!-- {{ modelo.estado | json }} -->
-                  <!-- <label
-                    style="font-size: 14px"
-                    class="form-check-label"
-                    for="activo"
-                    >Estado</label
-                  > -->
+                  <input class="form-check-input" type="checkbox" required id="estado" [(ngModel)]="modelo.estado"
+                    name="estado" checked />
                 </div>
-                <!-- <select
-                [(ngModel)]="modelo.idTipoMotivo"
-                id="tipomotivo"
-                name="tipomotivo"
-                class="form-select"
-                #productoSelect
-                style="font-size: 14px"
-                required
-              >
-                <option value="" hidden>Selecccione</option>
-                <option
-                  *ngFor="let baseDeDatos of dataTipoMotivo"
-                  [value]="baseDeDatos.id"
-                >
-                  {{ baseDeDatos.descripcion }}
-                </option>
-              </select> -->
               </div>
             </div>
           </div>

@@ -4,7 +4,7 @@
       <div class="row">
         <div class="col-md-8">
           <div class="mb-3">
-            <a (click)="pageSolicitudes()">
+            <a routerLink="/tareas/consulta-tareas">
               <h3 class="sol-danger">
                 <i class="bi bi-arrow-left-circle azul"></i> {{ solicitud.idSolicitud }}
               </h3>
@@ -920,7 +920,7 @@
       <div class="row mt-3">
         <div class="col-md-10">
           <label for="comments" class="label-estilo">
-            Comentarios (Cómo fue el desempeño en el Área)
+            Comentarios (¿Cómo fue el desempeño en el Área?)
           </label>
           
           <span *ngIf="mostrarFormularioReingreso"  #mivar id="tipoSolicitud" name="tipoSolicitud" style="color: black; font-size: 14px;"

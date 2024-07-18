@@ -913,8 +913,6 @@ export class CompletarAccionPersonalComponent extends CompleteTaskComponent {
 
   }
 
-  public pageSolicitudes(): void {}
-
   onCompletar() {
     //completar tarea mmunoz
     if (this.uniqueTaskId === null) {

@@ -1,17 +1,12 @@
-Correo<!--Modal Crer Solicittud-->
-
 <div class="row">
   <div class="col-lg-12">
     <div class="card">
       <div>
         <h2 class="card-body text-start">
           <div class="row">
-            <!--<div class="col-md-8">
-                            <b style="color: rgb(227, 199, 22);font-size: 20px; margin: 20px;">Mantenimiento de rutas</b>
-                        </div>-->
             <div class="col-md-8">
               <div class="mb-3">
-                <a (click)="PageNivelesAprobacion()">
+                <a routerLink="/mantenedores/aprobadores-fijos">
                   <h3 class="danger">
                     <i class="bi bi-arrow-left-circle azul"></i> Mantenimiento
                     de Aprobadores Fijos
@@ -21,46 +16,12 @@ Correo<!--Modal Crer Solicittud-->
             </div>
 
             <div class="col-md-4 text-end">
-              <!--<button style="margin: 10px;color: black;" type="button" (click)="modal.dismiss('Cross click')"
-                                class="mr-10 fz-14 btn btn-outline-secondary btn-icon-end">Cancelar
-                            </button>-->
-
               <button *ngIf="id_edit !== undefined" type="button" class="mr-10 fz-14 btn btn-warning btn-icon-end"
                 aria-label="Close" aria-label="Close" (click)="actualizarAprobadorFijo()" [disabled]="disableButton">
                 <i class="fas fa-save"></i> Guardar
               </button>
             </div>
           </div>
-
-          <!-- <div class="row">
-            <div class="col-md-6">
-              <div class="input-group">
-                <label
-                  class="input-group-text"
-                  for="codigoposicion"
-                  style="color: black; font-size: 14px; width: 45%"
-                >
-                  Código de posición
-                </label>
-                &nbsp;
-                <input
-                  type="text"
-                  name="codigoposicion"
-                  [(ngModel)]="modeloSearch.codigoPosicion"
-                  style="color: black; font-size: 14px; width: 30%"
-                  [ngbTypeahead]="searchCodigoPosicion"
-                  (selectItem)="onSelectItem('codigoPosicion', $event)"
-                  class="form-control"
-                  id="codigoposicion"
-                  aria-describedby="inputGroupPrepend"
-                  required
-                />
-                <button class="btn btn-light" type="button" disabled>
-                  <i class="ti-search"></i>
-                </button>
-              </div>
-            </div>
-          </div> -->
 
           <div class="row" style="
               padding-top: 20px;
@@ -162,13 +123,6 @@ Correo<!--Modal Crer Solicittud-->
                     Comité de Remuneraciones
                   </option>
                 </select>
-                <!-- <span
-                  id="nivelDireccion"
-                  name=""
-                  style="color: black; font-size: 14px; margin: auto auto"
-                  class="text-center"
-                  >{{ modelo.niveL_DIRECCION }}</span
-                > -->
               </div>
             </div>
           </div>
@@ -203,13 +157,6 @@ Correo<!--Modal Crer Solicittud-->
                 <div class="form-check form-switch">
                   <input class="form-check-input" type="checkbox" required id="estado" [(ngModel)]="modelo.estado"
                     name="estado" checked />
-                  <!-- {{ modelo.estado | json }} -->
-                  <!-- <label
-                    style="font-size: 14px"
-                    class="form-check-label"
-                    for="activo"
-                    >Estado</label
-                  > -->
                 </div>
               </div>
             </div>

@@ -988,11 +988,6 @@ export class RegistrarComentarioSalidaJefeComponent extends CompleteTaskComponen
     });
   }
 
-
-  public pageSolicitudes(): void {
-
-  }
-
   generateVariablesFromFormFieldsJefeSolicitante() {
     let variables: any = {};
 

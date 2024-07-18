@@ -862,10 +862,6 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
     // }
   }
 
-  pageSolicitudes() {
-    this.router.navigate(["/tareas/consulta-tareas"]);
-  }
-
   ObtenerServicioNivelDireccion() {
     return this.mantenimientoService.getCatalogo("RBPND").subscribe({
       // return this.mantenimientoService.getCatalogoRBPND().subscribe({

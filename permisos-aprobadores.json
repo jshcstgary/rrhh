@@ -1,0 +1,212 @@
+[
+    {
+        "codigo": "wf_solicitudes",
+        "nombre": "Solicitudes",
+        "visualizar": true,
+        "nuevo": false,
+        "modificar": false,
+        "eliminar": false,
+        "exportar": false,
+        "procesar": false,
+        "consulta": true,
+        "controles": [
+            {
+                "codigo_Control": "",
+                "habilitar": false,
+                "modificar": false,
+                "visualizar": false
+            }
+        ]
+    },
+    {
+        "codigo": "wf_consulta_solicitudes",
+        "nombre": "Consulta Solicitudes",
+        "visualizar": true,
+        "nuevo": false,
+        "modificar": false,
+        "eliminar": false,
+        "exportar": false,
+        "procesar": false,
+        "consulta": true,
+        "controles": [
+            {
+                "codigo_Control": "01",
+                "habilitar": false,
+                "modificar": false,
+                "visualizar": true
+            },
+            {
+                "codigo_Control": "02",
+                "habilitar": true,
+                "modificar": true,
+                "visualizar": true
+            },
+            {
+                "codigo_Control": "03",
+                "habilitar": true,
+                "modificar": true,
+                "visualizar": true
+            },
+            {
+                "codigo_Control": "04",
+                "habilitar": true,
+                "modificar": true,
+                "visualizar": true
+            },
+            {
+                "codigo_Control": "05",
+                "habilitar": true,
+                "modificar": true,
+                "visualizar": true
+            },
+            {
+                "codigo_Control": "06",
+                "habilitar": true,
+                "modificar": true,
+                "visualizar": true
+            },
+            {
+                "codigo_Control": "07",
+                "habilitar": true,
+                "modificar": true,
+                "visualizar": true
+            },
+            {
+                "codigo_Control": "08",
+                "habilitar": true,
+                "modificar": false,
+                "visualizar": true
+            },
+            {
+                "codigo_Control": "09",
+                "habilitar": false,
+                "modificar": false,
+                "visualizar": false
+            },
+            {
+                "codigo_Control": "10",
+                "habilitar": false,
+                "modificar": false,
+                "visualizar": false
+            },
+            {
+                "codigo_Control": "11",
+                "habilitar": true,
+                "modificar": false,
+                "visualizar": true
+            },
+            {
+                "codigo_Control": "12",
+                "habilitar": true,
+                "modificar": true,
+                "visualizar": true
+            },
+            {
+                "codigo_Control": "13",
+                "habilitar": true,
+                "modificar": false,
+                "visualizar": true
+            },
+            {
+                "codigo_Control": "14",
+                "habilitar": false,
+                "modificar": false,
+                "visualizar": true
+            }
+        ]
+    },
+    {
+        "codigo": "wf_detalle_solicitud",
+        "nombre": "Detalle Solicitud",
+        "visualizar": true,
+        "nuevo": false,
+        "modificar": false,
+        "eliminar": false,
+        "exportar": true,
+        "procesar": false,
+        "consulta": true,
+        "controles": [
+            {
+                "codigo_Control": "01",
+                "habilitar": true,
+                "modificar": false,
+                "visualizar": true
+            },
+            {
+                "codigo_Control": "02",
+                "habilitar": true,
+                "modificar": false,
+                "visualizar": true
+            }
+        ]
+    },
+    {
+        "codigo": "wf_tareas",
+        "nombre": "Tareas",
+        "visualizar": true,
+        "nuevo": false,
+        "modificar": false,
+        "eliminar": false,
+        "exportar": false,
+        "procesar": false,
+        "consulta": true,
+        "controles": [
+            {
+                "codigo_Control": "",
+                "habilitar": false,
+                "modificar": false,
+                "visualizar": false
+            }
+        ]
+    },
+    {
+        "codigo": "wf_mis_tareas",
+        "nombre": "Tareas",
+        "visualizar": true,
+        "nuevo": false,
+        "modificar": false,
+        "eliminar": false,
+        "exportar": false,
+        "procesar": false,
+        "consulta": true,
+        "controles": [
+            {
+                "codigo_Control": "01",
+                "habilitar": true,
+                "modificar": true,
+                "visualizar": true
+            },
+            {
+                "codigo_Control": "02",
+                "habilitar": true,
+                "modificar": false,
+                "visualizar": true
+            },
+            {
+                "codigo_Control": "03",
+                "habilitar": true,
+                "modificar": false,
+                "visualizar": true
+            }
+        ]
+    },
+    {
+        "codigo": "wf_mantenimiento",
+        "nombre": "Mantenimiento",
+        "visualizar": true,
+        "nuevo": false,
+        "modificar": false,
+        "eliminar": false,
+        "exportar": false,
+        "procesar": false,
+        "consulta": true,
+        "controles": [
+            {
+                "codigo_Control": "",
+                "habilitar": false,
+                "modificar": false,
+                "visualizar": false
+            }
+        ]
+    }
+]

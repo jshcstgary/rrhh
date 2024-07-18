@@ -321,10 +321,6 @@ export class EditarAprobadorFijoComponent implements OnInit {
     });
   }
 
-  PageNivelesAprobacion() {
-    this.router.navigate(["/mantenedores/aprobadores-fijos"]);
-  }
-
   // searchCorreoEmpleado: OperatorFunction<string, readonly string[]> = (
   //   text$: Observable<string>
   // ) =>

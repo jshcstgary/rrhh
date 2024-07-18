@@ -882,10 +882,6 @@ export class RegistrarComentarioReingresoComponent extends CompleteTaskComponent
 
   }
 
-  public pageSolicitudes(): void {
-
-  }
-
   public onCompletar(): void {
 
   }

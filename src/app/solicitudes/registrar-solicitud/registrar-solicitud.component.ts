@@ -893,10 +893,6 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
     
   }
 
-  pageSolicitudes() {
-    this.router.navigate(["/tareas/consulta-tareas"]);
-  }
-
   ObtenerServicioNivelDireccion() {
     return this.mantenimientoService.getCatalogo("RBPND").subscribe({
       // return this.mantenimientoService.getCatalogoRBPND().subscribe({

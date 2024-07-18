@@ -4,7 +4,7 @@
       <div class="row">
         <div class="col-md-8">
           <div class="mb-3">
-            <a (click)="pageSolicitudes()">
+            <a routerLink="/solicitudes/consulta-solicitudes">
               <h3 class="sol-danger">
                 <i class="bi bi-arrow-left-circle azul"></i> {{ solicitud.idSolicitud }}
               </h3>
@@ -1602,7 +1602,7 @@
 
         <div class="col-md-4 d-flex ">
           <label for="input2" class="input-group-text adjustable-label">Fin de proceso</label>
-          <input id="input2" type="text" class="form-control" readonly [value]="fechas.finProceso">
+          <input id="input2" type="text" class="form-control" readonly [value]="fechas.reingreso === '' ? '' : fechas.finProceso">
         </div>
 
       </div>
@@ -1624,7 +1624,7 @@
         </div>
         <div class="col-md-4 d-flex ">
           <label for="input2" class="input-group-text adjustable-label">Fin de proceso</label>
-          <input id="input2" type="text" class="form-control" readonly [value]="fechas.finProcesoFamiliares">
+          <input id="input2" type="text" class="form-control" readonly [value]="fechas.contratacionFamiliares === '' ? '' : fechas.finProcesoFamiliares">
         </div>
 
       </div>

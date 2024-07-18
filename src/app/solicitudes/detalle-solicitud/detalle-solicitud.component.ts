@@ -829,13 +829,8 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 
   }
 
-  pageSolicitudes() {
-    this.router.navigate(["/solicitudes/consulta-solicitudes"]);
-  }
-
   ObtenerServicioNivelDireccion() {
     return this.mantenimientoService.getCatalogo("RBPND").subscribe({
-      // return this.mantenimientoService.getCatalogoRBPND().subscribe({
       next: (response) => {
         this.dataNivelDireccion = response.itemCatalogoTypes; //verificar la estructura mmunoz
 
@@ -843,8 +838,6 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
           response.itemCatalogoTypes.filter(
             (data) => data.codigo == this.detalleSolicitud.nivelDireccion
           )[0]?.valor;
-
-        // this.utilService.closeLoadingSpinner();
       },
       error: (error: HttpErrorResponse) => {
         this.utilService.modalResponse(error.error, "error");

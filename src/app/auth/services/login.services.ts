@@ -1,13 +1,29 @@
 import { Injectable } from "@angular/core";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { environment } from "src/environments/environment";
+import { LoginRequest, Perfil } from "src/app/types/permiso.type";
+import { Observable, of } from "rxjs";
+import { LocalStorageKeys } from "src/app/enums/local-storage-keys.enum";
 
 @Injectable({
   providedIn: "root",
 })
 export class LoginServices {
+  private loginUrl: string = environment.loginES;
 
   constructor(private http: HttpClient) {}
+
+  public login(loginBody: LoginRequest): Observable<Perfil> {
+    return this.http.post<Perfil>(`${this.loginUrl}/obtenercredenciales`, loginBody);
+  }
+
+  public signOut(): Observable<boolean> {
+    localStorage.removeItem(LocalStorageKeys.IdLogin);
+    localStorage.removeItem(LocalStorageKeys.IdUsuario);
+    localStorage.removeItem(LocalStorageKeys.Permisos);
+    
+    return of(true);
+  }
 
   public isAuthenticated(): void {
     //const currentUser = localStorage.getItem('EjTrSIkX8MUkIQGPRD6mLQwZ5y0gWK5FjV05Aj3bnxDIySz1EW');

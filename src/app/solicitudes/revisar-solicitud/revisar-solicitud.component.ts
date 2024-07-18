@@ -880,10 +880,6 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
     // }
   }
 
-  pageSolicitudes() {
-    this.router.navigate(["/tareas/consulta-tareas"]);
-  }
-
   ObtenerServicioNivelDireccion() {
     return this.mantenimientoService.getCatalogo("RBPND").subscribe({
       next: (response) => {
