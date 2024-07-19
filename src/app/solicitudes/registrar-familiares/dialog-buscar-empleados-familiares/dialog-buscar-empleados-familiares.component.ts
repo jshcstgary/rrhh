@@ -211,6 +211,7 @@ export class DialogBuscarEmpleadosFamiliaresComponent {
   getDataEmpleadosEvolution(tipo: string) {
     return this.mantenimientoService.getDataEmpleadosEvolutionPorId(this.searchInp).subscribe({
       next: (response) => {
+        console.log(response);
         if (response.evType.length === 0) {
           Swal.fire({
             text: "No se encontró registro",

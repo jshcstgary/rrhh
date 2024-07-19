@@ -360,6 +360,8 @@ export class RegistrarComentarioSalidaJefeComponent extends CompleteTaskComponen
   public success: false;
   public params: any;
   public id_edit: undefined | string;
+  public existeMatenedores: boolean=false;
+
 
   private id_solicitud_by_params: any;
 
@@ -450,9 +452,9 @@ export class RegistrarComentarioSalidaJefeComponent extends CompleteTaskComponen
 
 			  const permisos: Permiso[] = JSON.parse(localStorage.getItem(LocalStorageKeys.Permisos)!);
 
-			  const existeMatenedores = permisos.some(permiso => permiso.codigo === PageCodes.AprobadorFijo);
+			  this.existeMatenedores = permisos.some(permiso => permiso.codigo === PageCodes.AprobadorFijo);
 
-              if (existe || existeMatenedores) {
+              if (existe || this.existeMatenedores) {
                 try {
                   await this.loadDataCamunda();
 
