@@ -1,31 +1,33 @@
-import { SolicitudesService } from "./solicitudes.service";
-import { Component } from "@angular/core";
-import { ActivatedRoute, Router } from "@angular/router";
-import { CamundaRestService } from "../../camunda-rest.service";
-import { CompleteTaskComponent } from "../general/complete-task.component";
 import {
-  HttpClientModule,
-  HttpErrorResponse
+	HttpClientModule,
+	HttpErrorResponse
 } from "@angular/common/http";
+import { Component } from "@angular/core";
 import { NgForm } from "@angular/forms";
-import { environment, portalWorkFlow } from "../../../environments/environment";
-import { RegistrarData } from "src/app/eschemas/RegistrarData";
+import { ActivatedRoute, Router } from "@angular/router";
+import { Observable, OperatorFunction, Subject } from "rxjs";
+import {
+	debounceTime,
+	distinctUntilChanged,
+	map
+} from "rxjs/operators";
+import { PageCodes } from "src/app/enums/codes.enum";
+import { LocalStorageKeys } from "src/app/enums/local-storage-keys.enum";
 import { DatosProcesoInicio } from "src/app/eschemas/DatosProcesoInicio";
 import { DatosSolicitud } from "src/app/eschemas/DatosSolicitud";
+import { DetalleSolicitud } from "src/app/eschemas/DetalleSolicitud";
+import { RegistrarData } from "src/app/eschemas/RegistrarData";
+import { Solicitud } from "src/app/eschemas/Solicitud";
 import { MantenimientoService } from "src/app/services/mantenimiento/mantenimiento.service";
 import { UtilService } from "src/app/services/util/util.service";
-import Swal from "sweetalert2";
-import { Solicitud } from "src/app/eschemas/Solicitud";
-import { DetalleSolicitud } from "src/app/eschemas/DetalleSolicitud";
-import { Subject, Observable, OperatorFunction } from "rxjs";
-import {
-  debounceTime,
-  distinctUntilChanged,
-  map
-} from "rxjs/operators";
-import { ConsultaTareasService } from "src/app/tareas/consulta-tareas/consulta-tareas.service";
 import { StarterService } from "src/app/starter/starter.service";
-import { LocalStorageKeys } from "src/app/enums/local-storage-keys.enum";
+import { ConsultaTareasService } from "src/app/tareas/consulta-tareas/consulta-tareas.service";
+import { Permiso } from "src/app/types/permiso.type";
+import Swal from "sweetalert2";
+import { environment, portalWorkFlow } from "../../../environments/environment";
+import { CamundaRestService } from "../../camunda-rest.service";
+import { CompleteTaskComponent } from "../general/complete-task.component";
+import { SolicitudesService } from "./solicitudes.service";
 
 @Component({
   selector: "registrarSolicitud",
@@ -338,25 +340,73 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
     private starterService: StarterService
   ) {
     super(route, router, camundaRestService);
-    
+
     this.searchSubject.pipe(debounceTime(0)).subscribe(({ campo, valor }) => {
       this.filtrarDatos(campo, valor);
     });
-    
+
     this.route.paramMap.subscribe((params) => {
       this.id_edit = params.get("idSolicitud");
     });
-    
+
     this.modelBase = new DatosProcesoInicio();
-    
+
     this.route.paramMap.subscribe((params) => {
       this.id_solicitud_by_params = params.get("idSolicitud");
       this.idDeInstancia = params.get("id");
     });
 
-    this.verifyData();
+
+	this.verifyData();
   }
-  
+
+  private verifyData(): void {
+    this.utilService.openLoadingSpinner("Cargando información, espere por favor...");
+
+    try {
+      this.starterService.getUser(localStorage.getItem(LocalStorageKeys.IdUsuario)!).subscribe({
+        next: (res) => {
+          return this.consultaTareasService.getTareasUsuario(res.evType[0].subledger).subscribe({
+            next: async (response) => {
+              const existe = response.solicitudes.some(({ idSolicitud, rootProcInstId}) => idSolicitud === this.id_solicitud_by_params && rootProcInstId === this.idDeInstancia);
+
+			  const permisos: Permiso[] = JSON.parse(localStorage.getItem(LocalStorageKeys.Permisos)!);
+
+			  const existeMatenedores = permisos.some(permiso => permiso.codigo === PageCodes.AprobadorFijo);
+
+              if (existe || existeMatenedores) {
+                try {
+                  await this.loadDataCamunda();
+
+                  this.utilService.closeLoadingSpinner();
+                } catch (error) {
+                  this.utilService.modalResponse(error.error, "error");
+                }
+              } else {
+                this.utilService.closeLoadingSpinner();
+
+                await Swal.fire({
+                  text: "Usuario no asignado",
+                  icon: "info",
+                  confirmButtonColor: "rgb(227, 199, 22)"
+                });
+
+                this.router.navigate(["/solicitudes/consulta-solicitudes"]);
+              }
+            },
+            error: (error: HttpErrorResponse) => {
+              this.utilService.modalResponse(error.error, "error");
+
+              this.utilService.closeLoadingSpinner();
+            },
+          });
+        }
+      });
+    } catch (error) {
+      this.utilService.modalResponse(error.error, "error");
+    }
+  }
+
   onSelectionChange() {
     console.log(this.selectedOption);
   }
@@ -639,7 +689,6 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
         this.obtenerAprobacionesPorPosicion();
       }
     } else {
-      // this.model.reset();
       let tempSearch = valor;
       this.model = new RegistrarData();
       if (campo == "codigoPosicion") {
@@ -649,10 +698,6 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
       } else if (campo == "nombreCompleto") {
         this.model.nombreCompleto = tempSearch;
       }
-      /*this.utilService.modalResponse(
-        "No existe un registro para este autocompletado",
-        "error"
-      );*/
     }
   }
 
@@ -716,7 +761,6 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
     } else {
 		tipoValue = this.model.descrPosicion;
 	}
-	console.log(tipoValue);
 
     this.mantenimientoService.getDataEmpleadosEvolutionPorId(tipoValue).subscribe({
       next: (response) => {
@@ -752,28 +796,6 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
           this.subledgers = [...new Set(this.dataEmpleadoEvolution.map((empleado) => empleado.subledger))];
           this.nombres = [...new Set(this.dataEmpleadoEvolution.map((empleado) => empleado.nombreCompleto))];
         }
-
-        // this.model = Object.assign(
-        //   {},
-        //   {
-        //     ...this.dataEmpleadoEvolution[0],
-        //     sueldo: this.dataEmpleadoEvolution[0].sueldo,
-        //     sueldoMensual: this.dataEmpleadoEvolution[0].sueldoVariableMensual,
-        //     sueldoTrimestral: this.dataEmpleadoEvolution[0].sueldoVariableTrimestral,
-        //     sueldoSemestral: this.dataEmpleadoEvolution[0].sueldoVariableSemestral,
-        //     sueldoAnual: this.dataEmpleadoEvolution[0].sueldoVariableAnual,
-        //   }
-        // );
-
-        // this.keySelected = `${this.solicitud.idTipoSolicitud}_${this.solicitud.idTipoMotivo}_${this.model.codigoPosicion}_${this.model.nivelDir}`;
-
-        // if (tipo === "nombreCompleto") {
-        //   this.nombresEmpleados = [...new Set(this.dataEmpleadoEvolution.map((empleado) => empleado.nombreCompleto))];
-        // }
-
-        // if (!this.dataAprobacionesPorPosicion[this.keySelected]) {
-        //   this.obtenerAprobacionesPorPosicion();
-        // }
       },
       error: (error: HttpErrorResponse) => {
         this.utilService.modalResponse(error.error, "error");
@@ -850,47 +872,8 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
     });
   }
 
-  private verifyData(): void {
-    this.utilService.openLoadingSpinner("Cargando información, espere por favor...");
-
-    try {
-      this.starterService.getUser(localStorage.getItem(LocalStorageKeys.IdUsuario)!).subscribe({
-        next: (res) => {
-          return this.consultaTareasService.getTareasUsuario(res.evType[0].subledger).subscribe({
-            next: async (response) => {
-              const existe = response.solicitudes.some(({ idSolicitud, rootProcInstId}) => idSolicitud === this.id_solicitud_by_params && rootProcInstId === this.idDeInstancia);
-
-              if (existe) {
-                this.loadDataCamunda();
-
-                this.utilService.closeLoadingSpinner();
-              } else {
-                this.utilService.closeLoadingSpinner();
-                
-                await Swal.fire({
-                  text: "Usuario no asignado",
-                  icon: "info",
-                  confirmButtonColor: "rgb(227, 199, 22)"
-                });
-
-                this.router.navigate(["/solicitudes/consulta-solicitudes"]);
-              }
-            },
-            error: (error: HttpErrorResponse) => {
-              this.utilService.modalResponse(error.error, "error");
-              
-              this.utilService.closeLoadingSpinner();
-            },
-          });
-        }
-      });
-    } catch (error) {
-      this.utilService.modalResponse(error.error, "error");
-    }
-  }
-
   async ngOnInit() {
-    
+
   }
 
   ObtenerServicioNivelDireccion() {

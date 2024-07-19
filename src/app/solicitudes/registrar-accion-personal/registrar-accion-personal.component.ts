@@ -3,11 +3,10 @@ import { Component, Type } from "@angular/core";
 import { NgForm } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 import {
-	NgbModal,
-	NgbTypeaheadSelectItemEvent,
+	NgbModal
 } from "@ng-bootstrap/ng-bootstrap";
-import { Subject } from "rxjs";
-import { catchError, debounceTime, map } from "rxjs/operators";
+import { Observable, OperatorFunction, Subject } from "rxjs";
+import { catchError, debounceTime, distinctUntilChanged, map } from "rxjs/operators";
 import { CamundaRestService } from "src/app/camunda-rest.service";
 import { DatosProcesoInicio } from "src/app/eschemas/DatosProcesoInicio";
 import { DatosSolicitud } from "src/app/eschemas/DatosSolicitud";
@@ -21,19 +20,12 @@ import { environment } from "src/environments/environment";
 import { CompleteTaskComponent } from "../general/complete-task.component";
 import { SolicitudesService } from "../registrar-solicitud/solicitudes.service";
 
-// import {
-//   DialogComponents,
-//   dialogComponentList,
-// } from "src/app/shared/dialogComponents/dialog.components";
 import {
 	IEmpleadoData,
 	IEmpleados,
 } from "src/app/services/mantenimiento/empleado.interface";
 import { DialogReasignarUsuarioComponent } from "src/app/shared/reasginar-usuario/reasignar-usuario.component";
 import Swal from "sweetalert2";
-
-
-
 
 interface DialogComponents {
   dialogReasignarUsuario: Type<DialogReasignarUsuarioComponent>;
@@ -127,28 +119,6 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
   // This is a more likely scenario.
   // In this case, parent flag is set to true. It requires additional handling to derive task id from process instance id.
   public parentIdFlag: string | null = "false"; // set to true if the id is for the process instance, instead of task-id
-
-  /*
-  public dataTipoSolicitud: any = [
-    { id: 1, descripcion: "Requisición de Personal" },
-    { id: 2, descripcion: "Contratación de Familiares" },
-    { id: 3, descripcion: "Reingreso de personal" },
-    { id: 4, descripcion: "Acción de Personal" },
-  ];
-  public dataTipoMotivo: any = [
-    { id: 1, descripcion: "Nuevo" },
-    { id: 2, descripcion: "Eventual" },
-    { id: 3, descripcion: "Pasante" },
-    { id: 4, descripcion: "Reemplazo" },
-  ];
-
-  // public dataTipoAccion: any;
-
-  public dataTipoAccion: any = [
-    { id: 1, descripcion: "Motivo1" },
-    { id: 2, descripcion: "Motivo2" },
-  ];
-  */
 
   public misParams: Solicitud;
 
@@ -354,7 +324,7 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
   ];
   */
 
-  nombresEmpleados: string[] = [];
+  nombres: string[] = [];
 
   subledgers: string[] = [];
 
@@ -396,24 +366,10 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
     );
     console.log("this.id_solicitud_by_params: ", this.id_solicitud_by_params);
     try {
-      // await this.ObtenerServicioTipoSolicitud();
-      // await this.ObtenerServicioTipoMotivo();
-      // await this.ObtenerServicioTipoAccion();
-      // await this.ObtenerServicioNivelDireccion();
-      // await this.getSolicitudes();
-      //if (this.id_edit !== undefined) { //comentado mmunoz
-      //await this.getDetalleSolicitudById(this.id_edit); //comentado mmunoz
-      //await this.getSolicitudById(this.id_edit);
-      //} // comentado munoz
-      // await this.getDataEmpleadosEvolution();
-      await this.loadDataCamunda(); //comentado para prueba mmunoz
-      //console.log("impreme arreglo de aprobadores: ");
-      //await this.recorrerArreglo();
+    	await this.loadDataCamunda();
 
-      // await this.getNivelesAprobacion();
       this.utilService.closeLoadingSpinner();
     } catch (error) {
-      // Manejar errores aquí de manera centralizada
       this.utilService.modalResponse(error.error, "error");
     }
   }
@@ -509,37 +465,159 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
     });
   }
 
-  getDataEmpleadosEvolution() {
-    return this.mantenimientoService.getDataEmpleadosEvolution().subscribe({
+  searchSubledger: OperatorFunction<any, readonly any[]> = (text$: Observable<string>) => text$.pipe(
+    debounceTime(200),
+    distinctUntilChanged(),
+    map((term) => {
+      if (term.length < 1) {
+        return [];
+      } else {
+        return this.subledgers.filter((subledger) => subledger.toLowerCase().includes(term.toLowerCase())).slice(0, 10);
+      }
+    })
+	);
+
+
+  searchNombre: OperatorFunction<any, readonly any[]> = (text$: Observable<string>) => text$.pipe(
+    debounceTime(200),
+    distinctUntilChanged(),
+    map((term) => {
+      if (term.length < 1) {
+        return [];
+      } else {
+        return this.nombres.filter((nombreCompleto) => nombreCompleto.toLowerCase().includes(term.toLowerCase())).slice(0, 10);
+      }
+    })
+  );
+
+
+  getDataEmpleadosEvolution(tipo: string) {
+    let tipoValue: string = "";
+
+    if (tipo === "codigoPosicion") {
+		tipoValue = this.model.codigoPosicion;
+    } else if (tipo === "subledger") {
+		tipoValue = this.model.subledger;
+    } else if (tipo === "nombreCompleto") {
+		tipoValue = this.model.nombreCompleto;
+    } else {
+		tipoValue = this.model.descrPosicion;
+	}
+
+    this.mantenimientoService.getDataEmpleadosEvolutionPorId(tipoValue).subscribe({
       next: (response) => {
+        if (response.evType.length === 0) {
+          Swal.fire({
+            text: "No se encontró registro",
+            icon: "info",
+            confirmButtonColor: "rgb(227, 199, 22)",
+            confirmButtonText: "Sí",
+          });
+
+          this.clearModel();
+          this.keySelected = "";
+          this.dataAprobacionesPorPosicion = {};
+
+          return;
+        }
+
         this.dataEmpleadoEvolution = response.evType;
 
-        this.nombresEmpleados = [
-          ...new Set(
-            this.dataEmpleadoEvolution.map(
-              (empleado) => empleado.nombreCompleto
-            )
-          ),
-        ];
-
-        this.subledgers = [
-          ...new Set(
-            this.dataEmpleadoEvolution.map((empleado) => empleado.subledger)
-          ),
-        ];
-
-        this.codigosPosicion = [
-          ...new Set(
-            this.dataEmpleadoEvolution.map(
-              (empleado) => empleado.codigoPosicion
-            )
-          ),
-        ];
+        if (tipo === "subledger") {
+          this.subledgers = [...new Set(this.dataEmpleadoEvolution.map((empleado) => empleado.subledger))];
+          this.nombres = [...new Set(this.dataEmpleadoEvolution.map((empleado) => empleado.nombreCompleto))];
+        } else if (tipo === "nombreCompleto") {
+          this.subledgers = [...new Set(this.dataEmpleadoEvolution.map((empleado) => empleado.subledger))];
+          this.nombres = [...new Set(this.dataEmpleadoEvolution.map((empleado) => empleado.nombreCompleto))];
+        }
       },
       error: (error: HttpErrorResponse) => {
         this.utilService.modalResponse(error.error, "error");
       },
     });
+	}
+
+  onSelectItem(campo: string, event) {
+    const valor = event.item;
+
+    const datosEmpleado = this.dataEmpleadoEvolution.find((empleado) => {
+      return empleado[campo] === valor;
+    });
+
+    if (datosEmpleado) {
+      this.model = Object.assign(
+        {},
+        {
+          ...datosEmpleado,
+          sueldo: datosEmpleado.sueldo,
+          sueldoMensual: datosEmpleado.sueldoVariableMensual,
+          sueldoTrimestral: datosEmpleado.sueldoVariableTrimestral,
+          sueldoSemestral: datosEmpleado.sueldoVariableSemestral,
+          sueldoAnual: datosEmpleado.sueldoVariableAnual,
+        }
+      );
+
+      this.keySelected = `${this.solicitud.idTipoSolicitud}_${this.solicitud.idTipoMotivo}_${this.model.codigoPosicion}_${this.model.nivelDir}`;
+
+    //   if (!this.dataAprobacionesPorPosicion[this.keySelected]) {
+    //     this.obtenerAprobacionesPorPosicion();
+    //   }
+    } else {
+      let tempSearch = valor;
+      this.model = new RegistrarData();
+      if (campo == "codigoPosicion") {
+        this.model.codigoPosicion = tempSearch;
+      } else if (campo == "subledger") {
+        this.model.subledger = tempSearch;
+      } else if (campo == "nombreCompleto") {
+        this.model.nombreCompleto = tempSearch;
+      }
+    }
+  }
+
+  clearModel() {
+    this.model = {
+      codigo: "",
+      idEmpresa: "",
+      compania: "",
+      departamento: "",
+      nombreCargo: "",
+      nomCCosto: "",
+      misionCargo: "",
+      justificacionCargo: "",
+      codigoPosicion: "",
+      descrPosicion: "",
+      codigoPuesto: "",
+      descrPuesto: "",
+      fechaIngresogrupo: "",
+      grupoPago: "",
+      reportaA: "",
+      supervisaA: "",
+      localidad: "",
+      nivelDir: "",
+      descrNivelDir: "",
+      nivelRepa: "",
+      nombreCompleto: "",
+      subledger: "",
+      sucursal: "",
+      unidadNegocio: "",
+      tipoContrato: "",
+      tipoProceso: "",
+      descripContrato: "",
+      status: "",
+      correo: "",
+      fechaIngreso: new Date(),
+      comentariosAnulacion: "",
+      sueldo: "",
+      sueldoMensual: "",
+      sueldoTrimestral: "",
+      sueldoSemestral: "",
+      sueldoAnual: "",
+      taskNivelAprobador: "",
+      puestoJefeInmediato: "",
+      jefeInmediatoSuperior: "",
+      responsableRRHH: ""
+    };
   }
 
   loadDataCamunda() {
@@ -608,7 +686,7 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
           this.taskId = params["id"];
 
           this.date = result.solicitudes[0].startTime;
-          
+
         });
 
 
@@ -975,11 +1053,6 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
 
   public onCancel(): void {}
 
-  public onSelectItem(
-    codigoPosicion: string,
-    event: NgbTypeaheadSelectItemEvent<any>
-  ): void {}
-
   indexedModal: Record<keyof DialogComponents, any> = {
     dialogReasignarUsuario: undefined
   };
@@ -1146,26 +1219,6 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
   isDisabledEmpleado: boolean = false;
   subledger: string = '';
   isDisabledSubledger: boolean = false;
-
-
-  searchEmpleado = (value: string): void => {
-    this.search(value, 'nombreCompleto', (data) => {
-      this.empleado = data.nombreCompleto;
-      this.isDisabledEmpleado = true;
-      this.subledger = data.subledger;
-      this.isDisabledSubledger = true;
-    })
-  }
-
-  searchSubledger = (value: string): void => {
-    this.search(value, 'subledger', (data) => {
-      this.empleado = data.nombreCompleto;
-      this.isDisabledEmpleado = true;
-      this.subledger = data.subledger;
-      this.isDisabledSubledger = true;
-    })
-  }
-
 
   search = (value: string, propSearch: 'nombreCompleto' | 'subledger', setEmpleadoData: (data: IEmpleadoData) => void): void => {
     this.mantenimientoService

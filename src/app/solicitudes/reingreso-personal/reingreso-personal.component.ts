@@ -1,35 +1,37 @@
+import { HttpErrorResponse } from "@angular/common/http";
 import { Component, Type } from "@angular/core";
+import { NgForm } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 import {
-  NgbModal,
-  NgbTypeaheadSelectItemEvent,
+	NgbModal,
+	NgbTypeaheadSelectItemEvent,
 } from "@ng-bootstrap/ng-bootstrap";
-import { CamundaRestService } from "src/app/camunda-rest.service";
-import { Solicitud } from "src/app/eschemas/Solicitud";
-import { CompleteTaskComponent } from "../general/complete-task.component";
 import { Observable, OperatorFunction, Subject } from "rxjs";
 import { debounceTime, distinctUntilChanged, map } from "rxjs/operators";
-import { RegistrarData } from "src/app/eschemas/RegistrarData";
-import { DatosProcesoInicio } from "src/app/eschemas/DatosProcesoInicio";
-import { UtilService } from "src/app/services/util/util.service";
-import { MantenimientoService } from "src/app/services/mantenimiento/mantenimiento.service";
-import { SolicitudesService } from "../registrar-solicitud/solicitudes.service";
-import { ConsultaTareasService } from "src/app/tareas/consulta-tareas/consulta-tareas.service";
-import { HttpErrorResponse } from "@angular/common/http";
-import { NgForm } from "@angular/forms";
-import { DetalleSolicitud } from "src/app/eschemas/DetalleSolicitud";
-import { DatosSolicitud } from "src/app/eschemas/DatosSolicitud";
-import { environment, portalWorkFlow } from "src/environments/environment";
-import {
-  columnsAprobadores,
-  dataTableAprobadores,
-} from "./reingreso-personal.data";
-import { DialogReasignarUsuarioComponent } from "src/app/shared/reasginar-usuario/reasignar-usuario.component";
-import Swal from "sweetalert2";
-import { DialogBuscarEmpleadosReingresoComponent } from "./dialog-buscar-empleados-reingreso/dialog-buscar-empleados-reingreso.component";
-import { RegistrarCandidatoService } from "../registrar-candidato/registrar-candidato.service";
-import { StarterService } from "src/app/starter/starter.service";
+import { CamundaRestService } from "src/app/camunda-rest.service";
+import { PageCodes } from "src/app/enums/codes.enum";
 import { LocalStorageKeys } from "src/app/enums/local-storage-keys.enum";
+import { DatosProcesoInicio } from "src/app/eschemas/DatosProcesoInicio";
+import { DatosSolicitud } from "src/app/eschemas/DatosSolicitud";
+import { DetalleSolicitud } from "src/app/eschemas/DetalleSolicitud";
+import { RegistrarData } from "src/app/eschemas/RegistrarData";
+import { Solicitud } from "src/app/eschemas/Solicitud";
+import { MantenimientoService } from "src/app/services/mantenimiento/mantenimiento.service";
+import { UtilService } from "src/app/services/util/util.service";
+import { DialogReasignarUsuarioComponent } from "src/app/shared/reasginar-usuario/reasignar-usuario.component";
+import { StarterService } from "src/app/starter/starter.service";
+import { ConsultaTareasService } from "src/app/tareas/consulta-tareas/consulta-tareas.service";
+import { Permiso } from "src/app/types/permiso.type";
+import { environment, portalWorkFlow } from "src/environments/environment";
+import Swal from "sweetalert2";
+import { CompleteTaskComponent } from "../general/complete-task.component";
+import { RegistrarCandidatoService } from "../registrar-candidato/registrar-candidato.service";
+import { SolicitudesService } from "../registrar-solicitud/solicitudes.service";
+import { DialogBuscarEmpleadosReingresoComponent } from "./dialog-buscar-empleados-reingreso/dialog-buscar-empleados-reingreso.component";
+import {
+	columnsAprobadores,
+	dataTableAprobadores,
+} from "./reingreso-personal.data";
 
 interface DialogComponents {
   dialogBuscarEmpleados: Type<DialogBuscarEmpleadosReingresoComponent>;
@@ -439,7 +441,8 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
       this.idDeInstancia = params.get("id");
     });
 
-    this.verifyData();
+
+	this.verifyData();
   }
 
   private verifyData(): void {
@@ -452,17 +455,21 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
             next: async (response) => {
               const existe = response.solicitudes.some(({ idSolicitud, rootProcInstId}) => idSolicitud === this.id_solicitud_by_params && rootProcInstId === this.idDeInstancia);
 
-              if (existe) {
+			  const permisos: Permiso[] = JSON.parse(localStorage.getItem(LocalStorageKeys.Permisos)!);
+
+			  const existeMatenedores = permisos.some(permiso => permiso.codigo === PageCodes.AprobadorFijo);
+
+              if (existe || existeMatenedores) {
                 try {
                   await this.loadDataCamunda();
-            
+
                   this.utilService.closeLoadingSpinner();
                 } catch (error) {
                   this.utilService.modalResponse(error.error, "error");
                 }
               } else {
                 this.utilService.closeLoadingSpinner();
-                
+
                 await Swal.fire({
                   text: "Usuario no asignado",
                   icon: "info",
@@ -474,7 +481,7 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
             },
             error: (error: HttpErrorResponse) => {
               this.utilService.modalResponse(error.error, "error");
-              
+
               this.utilService.closeLoadingSpinner();
             },
           });

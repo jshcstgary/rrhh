@@ -1,40 +1,37 @@
-import { Component } from "@angular/core";
-import { ActivatedRoute, ParamMap, Router } from "@angular/router";
-import { CamundaRestService } from "../../camunda-rest.service";
-import { CompleteTaskComponent } from "../general/complete-task.component";
 import {
-  HttpClientModule,
-  HttpErrorResponse,
-  HttpEvent,
-  HttpHandler,
-  HttpRequest,
+	HttpClientModule,
+	HttpErrorResponse
 } from "@angular/common/http";
+import { Component } from "@angular/core";
 import { NgForm } from "@angular/forms";
-import { environment, portalWorkFlow } from "../../../environments/environment";
-import { RegistrarData } from "src/app/eschemas/RegistrarData";
+import { ActivatedRoute, Router } from "@angular/router";
+import { Observable, OperatorFunction, Subject } from "rxjs";
+import {
+	debounceTime,
+	distinctUntilChanged,
+	map
+} from "rxjs/operators";
+import { PageCodes } from "src/app/enums/codes.enum";
+import { LocalStorageKeys } from "src/app/enums/local-storage-keys.enum";
+import { DatosAprobadores } from "src/app/eschemas/DatosAprobadores";
 import { DatosProcesoInicio } from "src/app/eschemas/DatosProcesoInicio";
 import { DatosSolicitud } from "src/app/eschemas/DatosSolicitud";
+import { DetalleSolicitud } from "src/app/eschemas/DetalleSolicitud";
+import { RegistrarData } from "src/app/eschemas/RegistrarData";
+import { Solicitud } from "src/app/eschemas/Solicitud";
 import { FamiliaresCandidatos, MantenimientoService } from "src/app/services/mantenimiento/mantenimiento.service";
 import { UtilService } from "src/app/services/util/util.service";
-import Swal from "sweetalert2";
-import { Solicitud } from "src/app/eschemas/Solicitud";
-import { DetalleSolicitud } from "src/app/eschemas/DetalleSolicitud";
-import { ComentarioSalidaJefeService } from './comentario-salida-jefe.service';
-import { Subject, Observable, OperatorFunction } from "rxjs";
-import {
-  debounceTime,
-  distinctUntilChanged,
-  map,
-  switchMap,
-} from "rxjs/operators";
-import { ConsultaTareasService } from "src/app/tareas/consulta-tareas/consulta-tareas.service";
-import { SolicitudesService } from "../registrar-solicitud/solicitudes.service";
-import { toDate } from "date-fns/esm";
-import { DatosAprobadores } from "src/app/eschemas/DatosAprobadores";
 import { columnsDatosFamiliares } from "src/app/solicitudes/revisar-solicitud/registrar-familiares.data";
-import { RegistrarCandidatoService } from "../registrar-candidato/registrar-candidato.service";
-import { LocalStorageKeys } from "src/app/enums/local-storage-keys.enum";
 import { StarterService } from "src/app/starter/starter.service";
+import { ConsultaTareasService } from "src/app/tareas/consulta-tareas/consulta-tareas.service";
+import { Permiso } from "src/app/types/permiso.type";
+import Swal from "sweetalert2";
+import { environment, portalWorkFlow } from "../../../environments/environment";
+import { CamundaRestService } from "../../camunda-rest.service";
+import { CompleteTaskComponent } from "../general/complete-task.component";
+import { RegistrarCandidatoService } from "../registrar-candidato/registrar-candidato.service";
+import { SolicitudesService } from "../registrar-solicitud/solicitudes.service";
+import { ComentarioSalidaJefeService } from './comentario-salida-jefe.service';
 
 @Component({
   selector: 'revisarSolicitud',
@@ -194,7 +191,7 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
   }>();
 
   // private
-  
+
   public solicitudDataInicial = new Solicitud();
   public tipo_solicitud_descripcion: string;
   public tipo_motivo_descripcion: string;
@@ -466,19 +463,22 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
           return this.consultaTareasService.getTareasUsuario(res.evType[0].subledger).subscribe({
             next: async (response) => {
               const existe = response.solicitudes.some(({ idSolicitud, rootProcInstId}) => idSolicitud === this.id_solicitud_by_params && rootProcInstId === this.idDeInstancia);
-              console.log(existe);
 
-              if (existe) {
+			  const permisos: Permiso[] = JSON.parse(localStorage.getItem(LocalStorageKeys.Permisos)!);
+
+			  const existeMatenedores = permisos.some(permiso => permiso.codigo === PageCodes.AprobadorFijo);
+
+              if (existe || existeMatenedores) {
                 await this.loadDataCamunda();
                 await this.obtenerServicioFamiliaresCandidatos({
                   idSolicitud: this.id_solicitud_by_params,
                 });
 
                 this.utilService.closeLoadingSpinner();
-                this.checkTipoSolicitud();
+				this.checkTipoSolicitud();
               } else {
                 this.utilService.closeLoadingSpinner();
-                
+
                 await Swal.fire({
                   text: "Usuario no asignado",
                   icon: "info",
@@ -490,7 +490,7 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
             },
             error: (error: HttpErrorResponse) => {
               this.utilService.closeLoadingSpinner();
-              
+
               this.utilService.modalResponse(error.error, "error");
             },
           });
@@ -637,7 +637,7 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
             this.nameTask = tarea.solicitudes[0].name;
             this.id_solicitud_by_params = tarea.solicitudes[0].idSolicitud;
             this.taskId = params["id"];
-            
+
           if (this.id_solicitud_by_params.toUpperCase().includes("RG")||this.id_solicitud_by_params.toUpperCase().includes("CF")) {
 
             this.getCandidatoValues();
@@ -912,8 +912,8 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
       },
     });
   }
-  
-  
+
+
 
   getComentarios() {
     this.comentarioSalidaJefeService.obtenerComentarios(this.detalleSolicitudRG.idSolicitud).subscribe({
@@ -991,11 +991,11 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
             this.modelRG.sueldoAnual = this.detalleSolicitudRG.sueldoVariableAnual;
             this.modelRG.correo = this.detalleSolicitudRG.correo;
             this.modelRG.correo = this.detalleSolicitudRG.correo;
-            this.causaSalida = this.detalleSolicitudRG.causaSalida;  
+            this.causaSalida = this.detalleSolicitudRG.causaSalida;
             this.modelRG.fechaIngreso = (this.detalleSolicitudRG.fechaIngreso as string).split("T")[0];
             this.remuneracion = Number(this.modelRG.sueldoAnual) / 12 + Number(this.modelRG.sueldoSemestral) / 6 + Number(this.modelRG.sueldoTrimestral) / 3 + Number(this.modelRG.sueldoMensual);
 
-            this.keySelected = this.solicitud.idTipoSolicitud + "_" + this.solicitud.idTipoMotivo + "_" + this.model.nivelDir;        
+            this.keySelected = this.solicitud.idTipoSolicitud + "_" + this.solicitud.idTipoMotivo + "_" + this.model.nivelDir;
             this.getComentarios();
           }
         }

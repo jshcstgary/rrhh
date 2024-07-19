@@ -6,6 +6,8 @@ import { NgbModal, NgbTypeaheadSelectItemEvent } from '@ng-bootstrap/ng-bootstra
 import { Subject } from 'rxjs';
 import { debounceTime } from "rxjs/operators";
 import { CamundaRestService } from 'src/app/camunda-rest.service';
+import { PageCodes } from "src/app/enums/codes.enum";
+import { LocalStorageKeys } from 'src/app/enums/local-storage-keys.enum';
 import { DatosProcesoInicio } from 'src/app/eschemas/DatosProcesoInicio';
 import { DatosSolicitud } from 'src/app/eschemas/DatosSolicitud';
 import { DetalleSolicitud } from 'src/app/eschemas/DetalleSolicitud';
@@ -14,16 +16,16 @@ import { Solicitud } from 'src/app/eschemas/Solicitud';
 import { MantenimientoService } from 'src/app/services/mantenimiento/mantenimiento.service';
 import { UtilService } from 'src/app/services/util/util.service';
 import { DialogComponents, dialogComponentList } from 'src/app/shared/dialogComponents/dialog.components';
-import { ConsultaTareasService } from 'src/app/tareas/consulta-tareas/consulta-tareas.service';
-import { environment, portalWorkFlow } from 'src/environments/environment';
-import { CompleteTaskComponent } from '../general/complete-task.component';
-import { SolicitudesService } from '../registrar-solicitud/solicitudes.service';
-import { columnsAprobadores, dataTableAprobadores } from './registrar-comentario-salida-jefe.data';
-import { RegistrarCandidatoService } from '../registrar-candidato/registrar-candidato.service';
 import { StarterService } from 'src/app/starter/starter.service';
-import { ComentarioSalidaJefeService } from './comentario-salida-jefe.service';
+import { ConsultaTareasService } from 'src/app/tareas/consulta-tareas/consulta-tareas.service';
+import { Permiso } from "src/app/types/permiso.type";
+import { environment, portalWorkFlow } from 'src/environments/environment';
 import Swal from 'sweetalert2';
-import { LocalStorageKeys } from 'src/app/enums/local-storage-keys.enum';
+import { CompleteTaskComponent } from '../general/complete-task.component';
+import { RegistrarCandidatoService } from '../registrar-candidato/registrar-candidato.service';
+import { SolicitudesService } from '../registrar-solicitud/solicitudes.service';
+import { ComentarioSalidaJefeService } from './comentario-salida-jefe.service';
+import { columnsAprobadores, dataTableAprobadores } from './registrar-comentario-salida-jefe.data';
 
 @Component({
   selector: 'app-registrar-comentario-salida-jefe',
@@ -432,6 +434,55 @@ export class RegistrarComentarioSalidaJefeComponent extends CompleteTaskComponen
       this.idDeInstancia = params.get("id");
       console.log("this.idDeInstancia: ", this.idDeInstancia);
     });
+
+	this.verifyData();
+  }
+
+  private verifyData(): void {
+    this.utilService.openLoadingSpinner("Cargando información, espere por favor...");
+
+    try {
+      this.starterService.getUser(localStorage.getItem(LocalStorageKeys.IdUsuario)!).subscribe({
+        next: (res) => {
+          return this.consultaTareasService.getTareasUsuario(res.evType[0].subledger).subscribe({
+            next: async (response) => {
+              const existe = response.solicitudes.some(({ idSolicitud, rootProcInstId}) => idSolicitud === this.id_solicitud_by_params && rootProcInstId === this.idDeInstancia);
+
+			  const permisos: Permiso[] = JSON.parse(localStorage.getItem(LocalStorageKeys.Permisos)!);
+
+			  const existeMatenedores = permisos.some(permiso => permiso.codigo === PageCodes.AprobadorFijo);
+
+              if (existe || existeMatenedores) {
+                try {
+                  await this.loadDataCamunda();
+
+                  this.utilService.closeLoadingSpinner();
+                } catch (error) {
+                  this.utilService.modalResponse(error.error, "error");
+                }
+              } else {
+                this.utilService.closeLoadingSpinner();
+
+                await Swal.fire({
+                  text: "Usuario no asignado",
+                  icon: "info",
+                  confirmButtonColor: "rgb(227, 199, 22)"
+                });
+
+                this.router.navigate(["/solicitudes/consulta-solicitudes"]);
+              }
+            },
+            error: (error: HttpErrorResponse) => {
+              this.utilService.modalResponse(error.error, "error");
+
+              this.utilService.closeLoadingSpinner();
+            },
+          });
+        }
+      });
+    } catch (error) {
+      this.utilService.modalResponse(error.error, "error");
+    }
   }
 
   async ngOnInit() {
