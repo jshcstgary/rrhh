@@ -24,6 +24,8 @@ import { AprobadoresFijosComponent } from "./aprobadores-fijos/aprobadores-fijos
 import { CrearAprobadorFijoComponent } from "./crear-aprobador-fijo/crear-aprobador-fijo.component";
 import { EditarAprobadorFijoComponent } from "./editar-aprobador-fijo/editar-aprobador-fijo.component";
 import { NgbTypeaheadModule } from "@ng-bootstrap/ng-bootstrap";
+import { ReasignarTareasUsuariosComponent } from "./reasignar-tareas-usuarios/reasignar-tareas-usuarios.component";
+
 
 @NgModule({
   declarations: [
@@ -39,6 +41,7 @@ import { NgbTypeaheadModule } from "@ng-bootstrap/ng-bootstrap";
     AprobadoresFijosComponent,
     CrearAprobadorFijoComponent,
     EditarAprobadorFijoComponent,
+    ReasignarTareasUsuariosComponent
     // SpinnerComponent,
     // NivelesAprobacionComponent,
     //CrearNivelesAprobacionComponent

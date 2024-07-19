@@ -14,6 +14,8 @@ import { AprobadoresFijosComponent } from "./aprobadores-fijos/aprobadores-fijos
 import { CrearAprobadorFijoComponent } from "./crear-aprobador-fijo/crear-aprobador-fijo.component";
 import { EditarAprobadorFijoComponent } from "./editar-aprobador-fijo/editar-aprobador-fijo.component";
 import { routeAccessGuard } from "../guards/route-access.guard";
+import { ReasignarTareasUsuariosComponent } from "./reasignar-tareas-usuarios/reasignar-tareas-usuarios.component";
+
 import { PageCodes } from "../enums/codes.enum";
 
 export const MantenedoresRoutes: Routes = [
@@ -235,6 +237,23 @@ export const MantenedoresRoutes: Routes = [
             {
               title: "Editar Aprobador Fijo"
             },
+          ],
+        },
+      },
+      {
+        path: "reasignar-tareas-usuarios",
+        canActivate: [routeAccessGuard],
+        component: ReasignarTareasUsuariosComponent,
+        data: {
+          code: PageCodes.AprobadorFijo,
+          title: "Reasignar Usuarios",
+          urls: [
+            {
+              title: "Mantenimiento"
+            },
+            {
+              title: "Reasignar Usuarios"
+            }
           ],
         },
       },
