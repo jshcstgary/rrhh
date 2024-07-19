@@ -1,48 +1,50 @@
 import {
-  Component,
-  SimpleChange,
-  Type,
-} from "@angular/core";
-import { ActivatedRoute, Router } from "@angular/router";
-import { CamundaRestService } from "../../camunda-rest.service";
-import { CompleteTaskComponent } from "../general/complete-task.component";
-import {
-  HttpClientModule,
-  HttpErrorResponse
+	HttpClientModule,
+	HttpErrorResponse
 } from "@angular/common/http";
+import {
+	Component,
+	SimpleChange,
+	Type,
+} from "@angular/core";
 import { NgForm } from "@angular/forms";
-import { environment, portalWorkFlow } from "../../../environments/environment";
-import { RegistrarData } from "src/app/eschemas/RegistrarData";
+import { ActivatedRoute, Router } from "@angular/router";
+import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
+import { Observable, OperatorFunction, Subject } from "rxjs";
+import {
+	debounceTime,
+	distinctUntilChanged,
+	map
+} from "rxjs/operators";
+import { IInputsComponent } from "src/app/component/input/input.interface";
+import { TableService } from "src/app/component/table/table.service";
+import { PageCodes } from "src/app/enums/codes.enum";
+import { LocalStorageKeys } from "src/app/enums/local-storage-keys.enum";
 import { DatosProcesoInicio } from "src/app/eschemas/DatosProcesoInicio";
 import { DatosSolicitud } from "src/app/eschemas/DatosSolicitud";
+import { DetalleSolicitud } from "src/app/eschemas/DetalleSolicitud";
+import { RegistrarData } from "src/app/eschemas/RegistrarData";
+import { Solicitud } from "src/app/eschemas/Solicitud";
+import { IEmpleadoData } from "src/app/services/mantenimiento/empleado.interface";
 import {
-  FamiliaresCandidatos,
-  MantenimientoService,
+	FamiliaresCandidatos,
+	MantenimientoService,
 } from "src/app/services/mantenimiento/mantenimiento.service";
 import { UtilService } from "src/app/services/util/util.service";
-import { IInputsComponent } from "src/app/component/input/input.interface";
-import Swal from "sweetalert2";
-import { Solicitud } from "src/app/eschemas/Solicitud";
-import { DetalleSolicitud } from "src/app/eschemas/DetalleSolicitud";
-import { Subject, Observable, OperatorFunction } from "rxjs";
-import {
-  debounceTime,
-  distinctUntilChanged,
-  map
-} from "rxjs/operators";
-import { ConsultaTareasService } from "src/app/tareas/consulta-tareas/consulta-tareas.service";
-import { SolicitudesService } from "../registrar-solicitud/solicitudes.service";
-import {
-  columnsDatosFamiliares
-} from "./registrar-familiares.data";
-import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
-import { IEmpleadoData } from "src/app/services/mantenimiento/empleado.interface";
-import { DialogBuscarEmpleadosFamiliaresComponent } from "./dialog-buscar-empleados-familiares/dialog-buscar-empleados-familiares.component";
 import { DialogReasignarUsuarioComponent } from "src/app/shared/reasginar-usuario/reasignar-usuario.component";
-import { TableService } from "src/app/component/table/table.service";
 import { StarterService } from "src/app/starter/starter.service";
+import { ConsultaTareasService } from "src/app/tareas/consulta-tareas/consulta-tareas.service";
+import { Permiso } from "src/app/types/permiso.type";
+import Swal from "sweetalert2";
+import { environment, portalWorkFlow } from "../../../environments/environment";
+import { CamundaRestService } from "../../camunda-rest.service";
+import { CompleteTaskComponent } from "../general/complete-task.component";
 import { RegistrarCandidatoService } from "../registrar-candidato/registrar-candidato.service";
-import { LocalStorageKeys } from "src/app/enums/local-storage-keys.enum";
+import { SolicitudesService } from "../registrar-solicitud/solicitudes.service";
+import { DialogBuscarEmpleadosFamiliaresComponent } from "./dialog-buscar-empleados-familiares/dialog-buscar-empleados-familiares.component";
+import {
+	columnsDatosFamiliares
+} from "./registrar-familiares.data";
 
 interface DialogComponents {
   dialogBuscarEmpleados: Type<DialogBuscarEmpleadosFamiliaresComponent>;
@@ -384,7 +386,8 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
       console.log("this.idDeInstancia: ", this.idDeInstancia);
     });
 
-    this.verifyData();
+
+	this.verifyData();
   }
 
   private verifyData(): void {
@@ -397,21 +400,21 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
             next: async (response) => {
               const existe = response.solicitudes.some(({ idSolicitud, rootProcInstId}) => idSolicitud === this.id_solicitud_by_params && rootProcInstId === this.idDeInstancia);
 
-              if (existe) {
+			  const permisos: Permiso[] = JSON.parse(localStorage.getItem(LocalStorageKeys.Permisos)!);
+
+			  const existeMatenedores = permisos.some(permiso => permiso.codigo === PageCodes.AprobadorFijo);
+
+              if (existe || existeMatenedores) {
                 try {
-                  await this.loadDataCamunda(); //comentado para prueba mmunoz
-            
-                  await this.obtenerServicioFamiliaresCandidatos({
-                    idSolicitud: this.id_solicitud_by_params,
-                  });
-            
+                  await this.loadDataCamunda();
+
                   this.utilService.closeLoadingSpinner();
                 } catch (error) {
                   this.utilService.modalResponse(error.error, "error");
                 }
               } else {
                 this.utilService.closeLoadingSpinner();
-                
+
                 await Swal.fire({
                   text: "Usuario no asignado",
                   icon: "info",
@@ -423,7 +426,7 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
             },
             error: (error: HttpErrorResponse) => {
               this.utilService.modalResponse(error.error, "error");
-              
+
               this.utilService.closeLoadingSpinner();
             },
           });
