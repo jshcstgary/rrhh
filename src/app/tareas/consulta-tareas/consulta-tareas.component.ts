@@ -1,26 +1,25 @@
+import { HttpErrorResponse } from "@angular/common/http";
 import { Component, OnInit } from "@angular/core";
+import { ActivatedRoute, Router } from "@angular/router";
 import { IColumnsTable } from "src/app/component/table/table.interface";
-import { ConsultaTareasData } from "./consulta-tareas.data";
-import Swal from "sweetalert2";
-import { HttpErrorResponse } from "@angular/common/http"
-import { reportCodeEnum } from "src/app/services/util/util.interface";
 import { TableService } from "src/app/component/table/table.service";
-import { ValidationsService } from "src/app/services/validations/validations.service";
-import { environment } from "src/environments/environment";
-import { UtilService } from "src/app/services/util/util.service";
-import { ConsultaTareasService } from "./consulta-tareas.service";
+import { PageCodes } from "src/app/enums/codes.enum";
+import { LocalStorageKeys } from "src/app/enums/local-storage-keys.enum";
+import { ConsultaTareasPageControlPermission } from "src/app/enums/page-control-permisions.enum";
 import { DataFilterNivelesAprobacion } from "src/app/eschemas/DataFilterNivelesAprobacion";
 import { MantenimientoService } from "src/app/services/mantenimiento/mantenimiento.service";
-import { ActivatedRoute, Router } from "@angular/router";
-import { SolicitudesService } from "src/app/solicitudes/registrar-solicitud/solicitudes.service";
-import { StarterService } from "src/app/starter/starter.service";
-import { PageCodes } from "src/app/enums/codes.enum";
-import { ConsultaTareasPageControlPermission } from "src/app/enums/page-control-permisions.enum";
-import { PageControlPermiso } from "src/app/types/page-control-permiso.type";
 import { PermisoService } from "src/app/services/permiso/permiso.service";
-import { Control } from "src/app/types/permiso.type";
-import { LocalStorageKeys } from "src/app/enums/local-storage-keys.enum";
+import { reportCodeEnum } from "src/app/services/util/util.interface";
+import { UtilService } from "src/app/services/util/util.service";
+import { ValidationsService } from "src/app/services/validations/validations.service";
 import { RegistrarCandidatoService } from "src/app/solicitudes/registrar-candidato/registrar-candidato.service";
+import { StarterService } from "src/app/starter/starter.service";
+import { PageControlPermiso } from "src/app/types/page-control-permiso.type";
+import { Control } from "src/app/types/permiso.type";
+import { environment } from "src/environments/environment";
+import Swal from "sweetalert2";
+import { ConsultaTareasData } from "./consulta-tareas.data";
+import { ConsultaTareasService } from "./consulta-tareas.service";
 
 @Component({
   selector: "app-consulta-tareas",
@@ -253,332 +252,337 @@ export class ConsultaTareasComponent implements OnInit {
   }
 
   onRowActionClicked(id: string, key: string, tooltip: string, id_edit) {
-    // Lógica cuando se da click en una acción de la fila
     if (this.isTarea) {
       let ids = id_edit.split(",");
 
-      this.consultaTareasService.getTareaIdParam(ids[0])
-        .subscribe((tarea) => {
+      this.consultaTareasService.getTareaIdParam(ids[0]).subscribe((tarea) => {
+		let taeraopcion = tarea.solicitudes[0].tasK_DEF_KEY;
+		let registrar = environment.taskType_RRHH;
 
-          let taeraopcion = tarea.solicitudes[0].tasK_DEF_KEY;
-          let registrar = environment.taskType_RRHH;
+		switch (tarea.solicitudes[0].tasK_DEF_KEY) {
+		case environment.taskType_Registrar:
 
-          switch (tarea.solicitudes[0].tasK_DEF_KEY) {
-            case environment.taskType_Registrar:
+			this.router.navigate([
+			"/solicitudes/registrar-solicitud",
+			ids[1],
+			ids[0],
+			]);
 
-              this.router.navigate([
-                "/solicitudes/registrar-solicitud",
-                ids[1],
-                ids[0],
-              ]);
+			break;
 
-              break;
+		case environment.taskType_Revisar:
 
-            case environment.taskType_Revisar:
+			this.router.navigate([
+			"/solicitudes/revisar-solicitud",
+			ids[1],
+			ids[0],
+			]);
 
-              this.router.navigate([
-                "/solicitudes/revisar-solicitud",
-                ids[1],
-                ids[0],
-              ]);
+			break;
+		case environment.taskType_RRHH:
 
-              break;
-            case environment.taskType_RRHH:
+			this.router.navigate([
+			"/solicitudes/revisar-solicitud",
+			ids[1],
+			ids[0],
+			]);
 
-              this.router.navigate([
-                "/solicitudes/revisar-solicitud",
-                ids[1],
-                ids[0],
-              ]);
+			break;
 
-              break;
+		case environment.taskType_CREM:
 
-            case environment.taskType_CREM:
+			this.router.navigate([
+			"/solicitudes/revisar-solicitud",
+			ids[1],
+			ids[0],
+			]);
 
-              this.router.navigate([
-                "/solicitudes/revisar-solicitud",
-                ids[1],
-                ids[0],
-              ]);
+			break;
 
-              break;
+		case environment.taskType_RegistrarCandidato:
 
-            case environment.taskType_RegistrarCandidato:
+			this.router.navigate([
+			"/solicitudes/registrar-candidato",
+			ids[1],
+			ids[0],
+			]);
 
-              this.router.navigate([
-                "/solicitudes/registrar-candidato",
-                ids[1],
-                ids[0],
-              ]);
+			break;
 
-              break;
+		case environment.taskType_CompletarRequisicion:
+			if (tarea.solicitudes[0].tipoSolicitud.toUpperCase().includes("REQUISI")) {
+			this.router.navigate([
+				"/solicitudes/completa-solicitud",
+				ids[1],
+				ids[0],
+			]);
+			} else {
+			this.seleccionCandidatoService.getCandidatoById(ids[0]).subscribe({
+				next: ({ seleccionCandidatoType }) => {
+				const { iD_SOLICITUD } = seleccionCandidatoType[0];
 
-            case environment.taskType_CompletarRequisicion:
-              if (tarea.solicitudes[0].tipoSolicitud.toUpperCase().includes("REQUISI")) {
-                this.router.navigate([
-                  "/solicitudes/completa-solicitud",
-                  ids[1],
-                  ids[0],
-                ]);
-              } else {
-                this.seleccionCandidatoService.getCandidatoById(ids[0]).subscribe({
-                  next: ({ seleccionCandidatoType }) => {
-                    const { iD_SOLICITUD } = seleccionCandidatoType[0];
+				Swal.fire({
+					text: `Completa la solicitud ${iD_SOLICITUD} de Requisición de Personal`,
+					icon: "info",
+					confirmButtonColor: "rgb(227, 199, 22)",
+					confirmButtonText: "Ok",
+				});
+				},
+				error: (err) => {
+				console.error(err);
+				}
+			});
+			}
 
-                    Swal.fire({
-                      text: `Completa la solicitud ${iD_SOLICITUD} de Requisición de Personal`,
-                      icon: "info",
-                      confirmButtonColor: "rgb(227, 199, 22)",
-                      confirmButtonText: "Ok",
-                    });
-                  },
-                  error: (err) => {
-                    console.error(err);
-                  }
-                });
-              }
+			break;
 
-              break;
+		case environment.taskType_CF:
+			if (tarea.solicitudes[0].tipoSolicitud.toUpperCase().includes("FAMILIA")) {
+			this.router.navigate([
+				"/solicitudes/registrar-familiares",
+				ids[1],
+				ids[0],
+			]);
+			} else {
+			this.seleccionCandidatoService.getCandidatoById(ids[0]).subscribe({
+				next: ({ seleccionCandidatoType }) => {
+				const { iD_SOLICITUD_PROCESO } = seleccionCandidatoType[0];
 
-            case environment.taskType_CF:
-              if (tarea.solicitudes[0].tipoSolicitud.toUpperCase().includes("FAMILIA")) {
-                this.router.navigate([
-                  "/solicitudes/registrar-familiares",
-                  ids[1],
-                  ids[0],
-                ]);
-              } else {
-                this.seleccionCandidatoService.getCandidatoById(ids[0]).subscribe({
-                  next: ({ seleccionCandidatoType }) => {
-                    const { iD_SOLICITUD_PROCESO } = seleccionCandidatoType[0];
+				Swal.fire({
+					text: `Completa la solicitud ${iD_SOLICITUD_PROCESO} de Contratación de Familiares`,
+					icon: "info",
+					confirmButtonColor: "rgb(227, 199, 22)",
+					confirmButtonText: "Ok",
+				});
+				},
+				error: (err) => {
+				console.error(err);
+				}
+			});
+			}
 
-                    Swal.fire({
-                      text: `Completa la solicitud ${iD_SOLICITUD_PROCESO} de Contratación de Familiares`,
-                      icon: "info",
-                      confirmButtonColor: "rgb(227, 199, 22)",
-                      confirmButtonText: "Ok",
-                    });
-                  },
-                  error: (err) => {
-                    console.error(err);
-                  }
-                });
-              }
+			break;
 
-              break;
+		case environment.taskType_RG:
+			if (tarea.solicitudes[0].tipoSolicitud.toUpperCase().includes("REINGRESO")) {
+			this.router.navigate([
+				"/solicitudes/reingreso-personal",
+				ids[1],
+				ids[0],
+			]);
+			} else {
+			this.seleccionCandidatoService.getCandidatoById(ids[0]).subscribe({
+				next: ({ seleccionCandidatoType }) => {
+				const { iD_SOLICITUD_PROCESO } = seleccionCandidatoType[0];
 
-            case environment.taskType_RG:
-              if (tarea.solicitudes[0].tipoSolicitud.toUpperCase().includes("REINGRESO")) {
-                this.router.navigate([
-                  "/solicitudes/reingreso-personal",
-                  ids[1],
-                  ids[0],
-                ]);
-              } else {
-                this.seleccionCandidatoService.getCandidatoById(ids[0]).subscribe({
-                  next: ({ seleccionCandidatoType }) => {
-                    const { iD_SOLICITUD_PROCESO } = seleccionCandidatoType[0];
+				Swal.fire({
+					text: `Completa la solicitud ${iD_SOLICITUD_PROCESO} de Reingreso de Personal`,
+					icon: "info",
+					confirmButtonColor: "rgb(227, 199, 22)",
+					confirmButtonText: "Ok",
+				});
+				},
+				error: (err) => {
+				console.error(err);
+				}
+			});
+			}
 
-                    Swal.fire({
-                      text: `Completa la solicitud ${iD_SOLICITUD_PROCESO} de Reingreso de Personal`,
-                      icon: "info",
-                      confirmButtonColor: "rgb(227, 199, 22)",
-                      confirmButtonText: "Ok",
-                    });
-                  },
-                  error: (err) => {
-                    console.error(err);
-                  }
-                });
-              }
+			break;
 
-              break;
+		case environment.taskType_RGC_RRHH:
+			if (tarea.solicitudes[0].tipoSolicitud.toUpperCase().includes("REINGRESO")) {
+			this.router.navigate([
+				`/solicitudes/reingreso-personal/registro-comentarios`,
+				ids[1],
+				ids[0],
+			]);
+			} else {
+			this.seleccionCandidatoService.getCandidatoById(ids[0]).subscribe({
+				next: ({ seleccionCandidatoType }) => {
+				const { iD_SOLICITUD_PROCESO } = seleccionCandidatoType[0];
 
-            case environment.taskType_RGC_RRHH:
-              if (tarea.solicitudes[0].tipoSolicitud.toUpperCase().includes("REINGRESO")) {
-                this.router.navigate([
-                  `/solicitudes/reingreso-personal/registro-comentarios`,
-                  ids[1],
-                  ids[0],
-                ]);
-              } else {
-                this.seleccionCandidatoService.getCandidatoById(ids[0]).subscribe({
-                  next: ({ seleccionCandidatoType }) => {
-                    const { iD_SOLICITUD_PROCESO } = seleccionCandidatoType[0];
+				Swal.fire({
+					text: `Completa la solicitud ${iD_SOLICITUD_PROCESO} de Reingreso de Personal`,
+					icon: "info",
+					confirmButtonColor: "rgb(227, 199, 22)",
+					confirmButtonText: "Ok",
+				});
+				},
+				error: (err) => {
+				console.error(err);
+				}
+			});
+			}
 
-                    Swal.fire({
-                      text: `Completa la solicitud ${iD_SOLICITUD_PROCESO} de Reingreso de Personal`,
-                      icon: "info",
-                      confirmButtonColor: "rgb(227, 199, 22)",
-                      confirmButtonText: "Ok",
-                    });
-                  },
-                  error: (err) => {
-                    console.error(err);
-                  }
-                });
-              }
+			break;
 
-              break;
+		case environment.taskType_RGC_ULTIMO_JEFE:
+			if (tarea.solicitudes[0].tipoSolicitud.toUpperCase().includes("REINGRESO")) {
+			this.router.navigate([
+				`/solicitudes/reingreso-personal/registro-comentarios`,
+				ids[1],
+				ids[0]
+			]);
+			} else {
+			this.seleccionCandidatoService.getCandidatoById(ids[0]).subscribe({
+				next: ({ seleccionCandidatoType }) => {
+				const { iD_SOLICITUD_PROCESO } = seleccionCandidatoType[0];
 
-            case environment.taskType_RGC_ULTIMO_JEFE:
-              if (tarea.solicitudes[0].tipoSolicitud.toUpperCase().includes("REINGRESO")) {
-                this.router.navigate([
-                  `/solicitudes/reingreso-personal/registro-comentarios`,
-                  ids[1],
-                  ids[0]
-                ]);
-              } else {
-                this.seleccionCandidatoService.getCandidatoById(ids[0]).subscribe({
-                  next: ({ seleccionCandidatoType }) => {
-                    const { iD_SOLICITUD_PROCESO } = seleccionCandidatoType[0];
+				Swal.fire({
+					text: `Completa la solicitud ${iD_SOLICITUD_PROCESO} de Reingreso de Personal`,
+					icon: "info",
+					confirmButtonColor: "rgb(227, 199, 22)",
+					confirmButtonText: "Ok",
+				});
+				},
+				error: (err) => {
+				console.error(err);
+				}
+			});
+			}
 
-                    Swal.fire({
-                      text: `Completa la solicitud ${iD_SOLICITUD_PROCESO} de Reingreso de Personal`,
-                      icon: "info",
-                      confirmButtonColor: "rgb(227, 199, 22)",
-                      confirmButtonText: "Ok",
-                    });
-                  },
-                  error: (err) => {
-                    console.error(err);
-                  }
-                });
-              }
+			break;
 
-              break;
+		case environment.taskType_RG_Jefe_Solicitante:
+			if (tarea.solicitudes[0].tipoSolicitud.toUpperCase().includes("REINGRESO")) {
+			this.router.navigate([
+				`/solicitudes/reingreso-personal/registro-comentarios`,
+				ids[1],
+				ids[0]
+			]);
+			} else {
+			this.seleccionCandidatoService.getCandidatoById(ids[0]).subscribe({
+				next: ({ seleccionCandidatoType }) => {
+				const { iD_SOLICITUD_PROCESO } = seleccionCandidatoType[0];
 
-            case environment.taskType_RG_Jefe_Solicitante:
-              if (tarea.solicitudes[0].tipoSolicitud.toUpperCase().includes("REINGRESO")) {
-                this.router.navigate([
-                  `/solicitudes/reingreso-personal/registro-comentarios`,
-                  ids[1],
-                  ids[0]
-                ]);
-              } else {
-                this.seleccionCandidatoService.getCandidatoById(ids[0]).subscribe({
-                  next: ({ seleccionCandidatoType }) => {
-                    const { iD_SOLICITUD_PROCESO } = seleccionCandidatoType[0];
+				Swal.fire({
+					text: `Completa la solicitud ${iD_SOLICITUD_PROCESO} de Reingreso de Personal`,
+					icon: "info",
+					confirmButtonColor: "rgb(227, 199, 22)",
+					confirmButtonText: "Ok",
+				});
+				},
+				error: (err) => {
+				console.error(err);
+				}
+			});
+			}
 
-                    Swal.fire({
-                      text: `Completa la solicitud ${iD_SOLICITUD_PROCESO} de Reingreso de Personal`,
-                      icon: "info",
-                      confirmButtonColor: "rgb(227, 199, 22)",
-                      confirmButtonText: "Ok",
-                    });
-                  },
-                  error: (err) => {
-                    console.error(err);
-                  }
-                });
-              }
+			break;
 
-              break;
+		case environment.taskType_RG_RRHH:
+			if (tarea.solicitudes[0].tipoSolicitud.toUpperCase().includes("REINGRESO")) {
+			this.router.navigate([
+				`/solicitudes/revisar-solicitud`,
+				ids[1],
+				ids[0]
+			]);
+			}
 
-            case environment.taskType_RG_RRHH:
-              if (tarea.solicitudes[0].tipoSolicitud.toUpperCase().includes("REINGRESO")) {
-                this.router.navigate([
-                  `/solicitudes/revisar-solicitud`,
-                  ids[1],
-                  ids[0]
-                ]);
-              }
+			break;
 
-              break;
+		case environment.taskType_RG_Remuneraciones:
+			if (tarea.solicitudes[0].tipoSolicitud.toUpperCase().includes("REINGRESO")) {
+			this.router.navigate([
+				`/solicitudes/revisar-solicitud`,
+				ids[1],
+				ids[0]
+			]);
+			}
 
-            case environment.taskType_RG_Remuneraciones:
-              if (tarea.solicitudes[0].tipoSolicitud.toUpperCase().includes("REINGRESO")) {
-                this.router.navigate([
-                  `/solicitudes/revisar-solicitud`,
-                  ids[1],
-                  ids[0]
-                ]);
-              }
+			break;
 
-              break;
+		case environment.taskType_CF_Remuneraciones:
+			if (tarea.solicitudes[0].tipoSolicitud.toUpperCase().includes("FAMILIA")) {
+			this.router.navigate([
+				`/solicitudes/revisar-solicitud`,
+				ids[1],
+				ids[0]
+			]);
+			} else {
+			this.seleccionCandidatoService.getCandidatoById(ids[0]).subscribe({
+				next: ({ seleccionCandidatoType }) => {
+				const { iD_SOLICITUD_PROCESO } = seleccionCandidatoType[0];
 
-            case environment.taskType_CF_Remuneraciones:
-              if (tarea.solicitudes[0].tipoSolicitud.toUpperCase().includes("FAMILIA")) {
-                this.router.navigate([
-                  `/solicitudes/revisar-solicitud`,
-                  ids[1],
-                  ids[0]
-                ]);
-              } else {
-                this.seleccionCandidatoService.getCandidatoById(ids[0]).subscribe({
-                  next: ({ seleccionCandidatoType }) => {
-                    const { iD_SOLICITUD_PROCESO } = seleccionCandidatoType[0];
+				Swal.fire({
+					text: `Completa la solicitud ${iD_SOLICITUD_PROCESO} de Contratación de Familiares`,
+					icon: "info",
+					confirmButtonColor: "rgb(227, 199, 22)",
+					confirmButtonText: "Ok",
+				});
+				},
+				error: (err) => {
+				console.error(err);
+				}
+			});
+			}
 
-                    Swal.fire({
-                      text: `Completa la solicitud ${iD_SOLICITUD_PROCESO} de Contratación de Familiares`,
-                      icon: "info",
-                      confirmButtonColor: "rgb(227, 199, 22)",
-                      confirmButtonText: "Ok",
-                    });
-                  },
-                  error: (err) => {
-                    console.error(err);
-                  }
-                });
-              }
+			break;
 
-              break;
+		case environment.taskType_CF_RRHH:
+			if (tarea.solicitudes[0].tipoSolicitud.toUpperCase().includes("FAMILIA")) {
+			this.router.navigate([
+				`/solicitudes/revisar-solicitud`,
+				ids[1],
+				ids[0]
+			]);
+			} else {
+			this.seleccionCandidatoService.getCandidatoById(ids[0]).subscribe({
+				next: ({ seleccionCandidatoType }) => {
+				const { iD_SOLICITUD_PROCESO } = seleccionCandidatoType[0];
 
-            case environment.taskType_CF_RRHH:
-              if (tarea.solicitudes[0].tipoSolicitud.toUpperCase().includes("FAMILIA")) {
-                this.router.navigate([
-                  `/solicitudes/revisar-solicitud`,
-                  ids[1],
-                  ids[0]
-                ]);
-              } else {
-                this.seleccionCandidatoService.getCandidatoById(ids[0]).subscribe({
-                  next: ({ seleccionCandidatoType }) => {
-                    const { iD_SOLICITUD_PROCESO } = seleccionCandidatoType[0];
+				Swal.fire({
+					text: `Completa la solicitud ${iD_SOLICITUD_PROCESO} de Contratación de Familiares`,
+					icon: "info",
+					confirmButtonColor: "rgb(227, 199, 22)",
+					confirmButtonText: "Ok",
+				});
+				},
+				error: (err) => {
+				console.error(err);
+				}
+			});
+			}
 
-                    Swal.fire({
-                      text: `Completa la solicitud ${iD_SOLICITUD_PROCESO} de Contratación de Familiares`,
-                      icon: "info",
-                      confirmButtonColor: "rgb(227, 199, 22)",
-                      confirmButtonText: "Ok",
-                    });
-                  },
-                  error: (err) => {
-                    console.error(err);
-                  }
-                });
-              }
+			break;
 
-              break;
+		case environment.taskType_AP_Registrar:
+			if (tarea.solicitudes[0].tipoSolicitud.toUpperCase().includes("PERSONAL")) {
+			this.router.navigate([
+				`/solicitudes/revisar-solicitud`,
+				ids[1],
+				ids[0]
+			]);
+			}
 
-            case environment.taskType_AP_Remuneraciones:
-              if (tarea.solicitudes[0].tipoSolicitud.toUpperCase().includes("PERSONAL")) {
-                this.router.navigate([
-                  `/solicitudes/revisar-solicitud`,
-                  ids[1],
-                  ids[0]
-                ]);
-              }
+			break;
 
-              break;
+		case environment.taskType_AP_Remuneraciones:
+			if (tarea.solicitudes[0].tipoSolicitud.toUpperCase().includes("PERSONAL")) {
+			this.router.navigate([
+				`/solicitudes/revisar-solicitud`,
+				ids[1],
+				ids[0]
+			]);
+			}
 
-            case environment.taskType_AP_RRHH:
-              if (tarea.solicitudes[0].tipoSolicitud.toUpperCase().includes("PERSONAL")) {
-                this.router.navigate([
-                  `/solicitudes/revisar-solicitud`,
-                  ids[1],
-                  ids[0]
-                ]);
-              }
+			break;
 
-              break;
+		case environment.taskType_AP_RRHH:
+			if (tarea.solicitudes[0].tipoSolicitud.toUpperCase().includes("PERSONAL")) {
+			this.router.navigate([
+				`/solicitudes/revisar-solicitud`,
+				ids[1],
+				ids[0]
+			]);
+			}
 
-            default:
-          }
-        });
+			break;
 
-
+		default:
+      }
+    });
     }
   }
-
 }

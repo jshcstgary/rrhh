@@ -1,19 +1,19 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
-import { Router } from "@angular/router";
-import { Session } from "../../interfaces/session.interface";
-import { NgSelectModule } from "@ng-select/ng-select";
 import { CommonModule } from "@angular/common";
+import { Component } from "@angular/core";
 import { FormsModule } from "@angular/forms";
+import { Router } from "@angular/router";
+import { NgSelectModule } from "@ng-select/ng-select";
+import { Session } from "../../interfaces/session.interface";
 // import { PermisoService } from "../../../../modules/util/services/permiso.service";
-import { Subject, takeUntil } from "rxjs";
+import { Subject } from "rxjs";
 // import { UtilService } from "../../../../modules/util/services/util.service";
-import { HttpErrorResponse } from "@angular/common/http";
-import { StarterService } from "src/app/starter/starter.service";
-import Swal from "sweetalert2";
+import { PageCodes } from "src/app/enums/codes.enum";
 import { LocalStorageKeys } from "src/app/enums/local-storage-keys.enum";
-import { LoginServices } from "../../services/login.services";
+import { StarterService } from "src/app/starter/starter.service";
 import { LoginRequest, Perfil } from "src/app/types/permiso.type";
-import { appCode, environment } from "src/environments/environment";
+import { appCode } from "src/environments/environment";
+import Swal from "sweetalert2";
+import { LoginServices } from "../../services/login.services";
 @Component({
   selector: "app-login",
   standalone: true,
@@ -92,18 +92,24 @@ export class LoginComponent {
 
           return;
         }
-        
+
         localStorage.setItem(LocalStorageKeys.IdLogin, codigo);
         localStorage.setItem(LocalStorageKeys.IdUsuario, email);
         localStorage.setItem(LocalStorageKeys.Permisos, JSON.stringify(vistas));
-        
+
         this.isLoading = false;
 
-        this.router.navigate(["/solicitudes/consulta-solicitudes"]);
+		const isTasksEnabled: boolean = vistas.some(vista => vista.codigo === PageCodes.Tareas);
+
+		if (isTasksEnabled) {
+			this.router.navigate(["/tareas/consulta-tareas"]);
+		} else {
+			this.router.navigate(["/solicitudes/consulta-solicitudes"]);
+		}
       },
       error: (err) => {
         console.error(err);
-        
+
         localStorage.removeItem(LocalStorageKeys.IdLogin);
         localStorage.removeItem(LocalStorageKeys.IdUsuario);
         localStorage.removeItem(LocalStorageKeys.Permisos);

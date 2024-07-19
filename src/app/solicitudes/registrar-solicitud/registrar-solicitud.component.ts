@@ -338,17 +338,17 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
     private starterService: StarterService
   ) {
     super(route, router, camundaRestService);
-    
+
     this.searchSubject.pipe(debounceTime(0)).subscribe(({ campo, valor }) => {
       this.filtrarDatos(campo, valor);
     });
-    
+
     this.route.paramMap.subscribe((params) => {
       this.id_edit = params.get("idSolicitud");
     });
-    
+
     this.modelBase = new DatosProcesoInicio();
-    
+
     this.route.paramMap.subscribe((params) => {
       this.id_solicitud_by_params = params.get("idSolicitud");
       this.idDeInstancia = params.get("id");
@@ -356,7 +356,7 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
 
     this.verifyData();
   }
-  
+
   onSelectionChange() {
     console.log(this.selectedOption);
   }
@@ -639,7 +639,6 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
         this.obtenerAprobacionesPorPosicion();
       }
     } else {
-      // this.model.reset();
       let tempSearch = valor;
       this.model = new RegistrarData();
       if (campo == "codigoPosicion") {
@@ -649,10 +648,6 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
       } else if (campo == "nombreCompleto") {
         this.model.nombreCompleto = tempSearch;
       }
-      /*this.utilService.modalResponse(
-        "No existe un registro para este autocompletado",
-        "error"
-      );*/
     }
   }
 
@@ -716,7 +711,6 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
     } else {
 		tipoValue = this.model.descrPosicion;
 	}
-	console.log(tipoValue);
 
     this.mantenimientoService.getDataEmpleadosEvolutionPorId(tipoValue).subscribe({
       next: (response) => {
@@ -752,28 +746,6 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
           this.subledgers = [...new Set(this.dataEmpleadoEvolution.map((empleado) => empleado.subledger))];
           this.nombres = [...new Set(this.dataEmpleadoEvolution.map((empleado) => empleado.nombreCompleto))];
         }
-
-        // this.model = Object.assign(
-        //   {},
-        //   {
-        //     ...this.dataEmpleadoEvolution[0],
-        //     sueldo: this.dataEmpleadoEvolution[0].sueldo,
-        //     sueldoMensual: this.dataEmpleadoEvolution[0].sueldoVariableMensual,
-        //     sueldoTrimestral: this.dataEmpleadoEvolution[0].sueldoVariableTrimestral,
-        //     sueldoSemestral: this.dataEmpleadoEvolution[0].sueldoVariableSemestral,
-        //     sueldoAnual: this.dataEmpleadoEvolution[0].sueldoVariableAnual,
-        //   }
-        // );
-
-        // this.keySelected = `${this.solicitud.idTipoSolicitud}_${this.solicitud.idTipoMotivo}_${this.model.codigoPosicion}_${this.model.nivelDir}`;
-
-        // if (tipo === "nombreCompleto") {
-        //   this.nombresEmpleados = [...new Set(this.dataEmpleadoEvolution.map((empleado) => empleado.nombreCompleto))];
-        // }
-
-        // if (!this.dataAprobacionesPorPosicion[this.keySelected]) {
-        //   this.obtenerAprobacionesPorPosicion();
-        // }
       },
       error: (error: HttpErrorResponse) => {
         this.utilService.modalResponse(error.error, "error");
@@ -866,7 +838,7 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
                 this.utilService.closeLoadingSpinner();
               } else {
                 this.utilService.closeLoadingSpinner();
-                
+
                 await Swal.fire({
                   text: "Usuario no asignado",
                   icon: "info",
@@ -878,7 +850,7 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
             },
             error: (error: HttpErrorResponse) => {
               this.utilService.modalResponse(error.error, "error");
-              
+
               this.utilService.closeLoadingSpinner();
             },
           });
@@ -890,7 +862,7 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
   }
 
   async ngOnInit() {
-    
+
   }
 
   ObtenerServicioNivelDireccion() {
