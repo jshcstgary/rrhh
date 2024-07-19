@@ -2,7 +2,7 @@ import {
 	HttpClientModule,
 	HttpErrorResponse
 } from "@angular/common/http";
-import { Component } from "@angular/core";
+import { Component, Type } from "@angular/core";
 import { NgForm } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 import { Observable, OperatorFunction, Subject } from "rxjs";
@@ -32,6 +32,21 @@ import { CompleteTaskComponent } from "../general/complete-task.component";
 import { RegistrarCandidatoService } from "../registrar-candidato/registrar-candidato.service";
 import { SolicitudesService } from "../registrar-solicitud/solicitudes.service";
 import { ComentarioSalidaJefeService } from './comentario-salida-jefe.service';
+import { DialogBuscarEmpleadosFamiliaresComponent } from "../registrar-familiares/dialog-buscar-empleados-familiares/dialog-buscar-empleados-familiares.component";
+import { DialogReasignarUsuarioComponent } from "src/app/shared/reasginar-usuario/reasignar-usuario.component";
+import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
+import { IEmpleadoData } from "src/app/services/mantenimiento/empleado.interface";
+
+interface DialogComponents {
+  dialogBuscarEmpleados: Type<DialogBuscarEmpleadosFamiliaresComponent>;
+  dialogReasignarUsuario: Type<DialogReasignarUsuarioComponent>;
+}
+
+
+const dialogComponentList: DialogComponents = {
+  dialogBuscarEmpleados: DialogBuscarEmpleadosFamiliaresComponent,
+  dialogReasignarUsuario: DialogReasignarUsuarioComponent,
+};
 
 @Component({
   selector: 'revisarSolicitud',
@@ -40,6 +55,7 @@ import { ComentarioSalidaJefeService } from './comentario-salida-jefe.service';
   providers: [CamundaRestService, HttpClientModule],
   exportAs: "revisarSolicitud",
 })
+
 export class RevisarSolicitudComponent extends CompleteTaskComponent {
   NgForm = NgForm;
 
@@ -403,6 +419,7 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
   public success: false;
   public params: any;
   public id_edit: undefined | string;
+  public existeMatenedores: boolean=false;
 
   private id_solicitud_by_params: any;
 
@@ -432,7 +449,9 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
     private consultaTareasService: ConsultaTareasService,
     private seleccionCandidatoService: RegistrarCandidatoService,
     private comentarioSalidaJefeService: ComentarioSalidaJefeService,
-    private starterService: StarterService
+    private starterService: StarterService,
+    private modalService: NgbModal
+
   ) {
     super(route, router, camundaRestService);
 
@@ -453,7 +472,101 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
 
     this.verifyData();
   }
+  openModalBuscarEmpleado() {
+    this.modalService
+      .open(dialogComponentList.dialogBuscarEmpleados, {
+        ariaLabelledBy: "modal-title",
+      })
+      .result.then(
+        (result) => {
+          if (result?.action === "close") {
+            return;
+          }
 
+          if (result?.data) {
+            const data: IEmpleadoData = result.data;
+
+            const dtoFamiliares: FamiliaresCandidatos = {
+              idSolicitud: this.id_solicitud_by_params,
+              nombreEmpleado: data.nombreCompleto,
+              // fechaCreacion: new Date(data.fechaIngresogrupo) ?? new Date(),
+              fechaCreacion: new Date(),
+              cargo: data.nombreCargo,
+              unidad: data.unidadNegocio,
+              departamento: data.departamento,
+              localidad: data.localidad,
+              parentesco: "",
+              codigoPosicion: data.codigoPosicion,
+              fechaModificacion: new Date(),
+              descripcionPosicion: data.descrPosicion,
+              subledger: data.subledger,
+              estado: "A",
+              usuarioCreacion: this.solicitud.usuarioCreacion,
+              usuarioModificacion: this.solicitud.usuarioActualizacion
+            };
+
+            /*
+            {
+              "codigoPosicionPadre": "string",
+              "idSolicitudPadre": "string",
+              "descripcionPosicion": "string",
+              "codigoPosicionReportaA": "string",
+              "reportaA": "string",
+
+              "subledger": "string",
+              "estado": "string",
+
+              "codigoPosicion": "string",
+              "idSolicitud": "string",
+              "nombreEmpleado": "string",
+              "cargo": "string",
+              "unidad": "string",
+              "departamento": "string",
+              "localidad": "string",
+              "parentesco": "string",
+              "usuarioCreacion": "string",
+              "usuarioModificacion": "string",
+              "fechaCreacion": "2024-07-01T14:19:35.838Z",
+              "fechaModificacion": "2024-07-01T14:19:35.838Z"
+            }
+            */
+          }
+        },
+        (reason) => {
+          console.log(`Dismissed with: ${reason}`);
+        }
+      );
+  }
+
+  openModalReasignarUsuario() {
+    this.modalService
+      .open(dialogComponentList.dialogReasignarUsuario, {
+        ariaLabelledBy: "modal-title",
+      })
+      .result.then(
+        (result) => {
+          if (result === "close") {
+            return;
+          }
+          if (result?.data) {
+            if (result?.data) {
+            }
+          }
+        },
+        (reason) => {
+          console.log(`Dismissed with: ${reason}`);
+        }
+      );
+  }
+
+  indexedModal: Record<keyof DialogComponents, any> = {
+    dialogBuscarEmpleados: () => this.openModalBuscarEmpleado(),
+    dialogReasignarUsuario: () => this.openModalReasignarUsuario(),
+  };
+
+  openModal(component: keyof DialogComponents) {
+    this.indexedModal[component]();
+  }
   private verifyData(): void {
     this.utilService.openLoadingSpinner("Cargando información, espere por favor...");
 
@@ -466,9 +579,9 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
 
 			  const permisos: Permiso[] = JSON.parse(localStorage.getItem(LocalStorageKeys.Permisos)!);
 
-			  const existeMatenedores = permisos.some(permiso => permiso.codigo === PageCodes.AprobadorFijo);
+			   this.existeMatenedores = permisos.some(permiso => permiso.codigo === PageCodes.AprobadorFijo);
 
-              if (existe || existeMatenedores) {
+              if (existe || this.existeMatenedores) {
                 await this.loadDataCamunda();
                 await this.obtenerServicioFamiliaresCandidatos({
                   idSolicitud: this.id_solicitud_by_params,

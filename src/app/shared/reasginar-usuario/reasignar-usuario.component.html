@@ -18,7 +18,7 @@
             [(ngModel)]="search"
             class="form-control"
             id="search"
-            placeholder="Ingresar los dos apellidos del empleado"
+            placeholder="Ingrese nombre o Apellido"
             style="width: 100%; color: black"
             (keyup.enter)="onEnter(search)"
           />
@@ -35,7 +35,7 @@
           <input
             readonly
             id="nombreCompleto"
-            [(ngModel)]="fields.nombreCompleto"
+            [(ngModel)]="this.dataEmpleadoEvolution[0].nombreCompleto"
             type="text"
             class="form-control mb-3"
             style="width: 100%; color: black"
@@ -51,7 +51,7 @@
           <input
             readonly
             id="compania"
-            [(ngModel)]="fields.compania"
+            [(ngModel)]="this.dataEmpleadoEvolution[0].compania"
             type="text"
             class="form-control mb-3"
             style="width: 100%; color: black"
@@ -69,7 +69,7 @@
           <input
             readonly
             id="codigo"
-            [(ngModel)]="fields.codigo"
+            [(ngModel)]="this.dataEmpleadoEvolution[0].codigo"
             type="text"
             class="form-control mb-3"
             style="width: 100%; color: black"
@@ -85,7 +85,7 @@
           <input
             readonly
             id="unidadNegocio"
-            [(ngModel)]="fields.unidadNegocio"
+            [(ngModel)]="this.dataEmpleadoEvolution[0].unidadNegocio"
             type="text"
             class="form-control mb-3"
             style="width: 100%; color: black"

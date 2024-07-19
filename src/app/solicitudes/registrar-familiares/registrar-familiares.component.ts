@@ -335,6 +335,8 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
   public success: false;
   public params: any;
   public id_edit: undefined | string;
+  public existeMatenedores: boolean=false;
+
 
   private id_solicitud_by_params: any;
 
@@ -402,9 +404,9 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
 
 			  const permisos: Permiso[] = JSON.parse(localStorage.getItem(LocalStorageKeys.Permisos)!);
 
-			  const existeMatenedores = permisos.some(permiso => permiso.codigo === PageCodes.AprobadorFijo);
+			  this.existeMatenedores = permisos.some(permiso => permiso.codigo === PageCodes.AprobadorFijo);
 
-              if (existe || existeMatenedores) {
+              if (existe ||  this.existeMatenedores) {
                 try {
                   await this.loadDataCamunda();
 
@@ -1843,26 +1845,6 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
               "fechaModificacion": "2024-07-01T14:19:35.838Z"
             }
             */
-
-            this.mantenimientoService
-              .guardarFamiliaresCandidato(dtoFamiliares)
-              .subscribe({
-                next: (response) => {
-                  console.log(
-                    "guardarFamiliaresCandidato:",
-                    dtoFamiliares,
-                    response
-                  );
-                  this.addNewRow(dtoFamiliares);
-                  this.utilService.modalResponse(
-                    "Familiar ingresado correctamente",
-                    "success"
-                  );
-                },
-                error: (err) => {
-                  console.error(err);
-                }
-              });
           }
         },
         (reason) => {

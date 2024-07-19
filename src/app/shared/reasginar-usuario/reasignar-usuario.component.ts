@@ -30,6 +30,7 @@ export class DialogReasignarUsuarioComponent {
     departamento: "",
     localidad: "",
   };
+  public dataEmpleadoEvolution: any[];
 
   constructor(private mantenimientoService: MantenimientoService) {}
 
@@ -48,18 +49,10 @@ export class DialogReasignarUsuarioComponent {
 
   onEnter(search: string): void {
     this.mantenimientoService
-      .getDataEmpleadosEvolution("ev")
-      .pipe(
-        map(this.buscarValor.bind(this, search, "evType")),
-        catchError((error) => {
-          return this.mantenimientoService
-            .getDataEmpleadosEvolution("jaff")
-            .pipe(map(this.buscarValor.bind(this, search, "jaffType")));
-        })
-      )
+      .getDataEmpleadosEvolutionPorId(search)   
       .subscribe({
         next: (data) => {
-          this.fields = data as IEmpleadoData;
+          this.dataEmpleadoEvolution = data.evType;
         },
         error: (error) => {
           console.error(error);
