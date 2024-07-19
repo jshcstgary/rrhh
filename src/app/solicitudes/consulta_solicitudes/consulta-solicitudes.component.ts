@@ -704,7 +704,11 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
     variables.tipoSolicitud = { value: this.solicitud.tipoSolicitud };
 
     if (this.solicitud.idTipoSolicitud == this.typeSolicitudSelected) {
-      variables.tipoAccion = { value: this.solicitud.tipoAccion };
+      if (this.solicitud.tipoAccion.toUpperCase().includes("TEMPORAL")) {
+      variables.tipoAccion = { value: "asignacionTemporal" };
+       }else{
+        variables.tipoAccion = { value: this.solicitud.tipoAccion };
+       }
     } else {
       variables.tipoMotivo = { value: this.solicitud.tipoMotivo };
     }
