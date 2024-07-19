@@ -14,12 +14,13 @@ COPY . .
 
 # Construye la aplicación
 RUN npx ng build --configuration=development
+RUN echo "esto es desa"
 
 # Etapa 2: Configurar el servidor Nginx para servir la aplicación
-FROM nginx:alpine
-# RUN apk update && apk add --no-cache icu-libs
-# RUN apk upgrade busybox
-# RUN apk add --no-cache openssl
+FROM nginx:alpine-slim
+RUN apk update && apk add --no-cache icu-libs
+RUN apk upgrade busybox
+RUN apk add --no-cache openssl
 
 # Copiar la aplicación compilada desde la etapa 1
 COPY --from=builder /app/dist/elite-admin-angular /usr/share/nginx/html
