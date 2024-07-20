@@ -143,6 +143,7 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
   public dataAprobacionesPorPosicion: { [key: string]: any[] } = {};
 
   public dataAprobacionesPorPosicionAPS: any = [];
+  public dataAprobacionesPorPosicionAPD: any = [];
 
   public dataTipoRuta: any[] = [];
 
@@ -846,12 +847,7 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
             console.log("SI LLEGA");
           }
 
-          console.log("aprobadores dinamicos", this.dataAprobadoresDinamicos);
-          // const jsonArrayString = JSON.stringify(this.dataAprobadoresDinamicos);
-          // console.log("conversion aprobadores dinamicos", jsonArrayString);
-          //console.log("Ruta", this.dataRuta);
           let variables = this.generateVariablesFromFormFields();
-          console.log("variables prueba ruta", variables);
         }
 
         //console.log("aprobacion: ",aprobacion);
@@ -887,7 +883,6 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
       .obtenerAprobacionesPorPosicion(this.solicitud.idTipoSolicitud, this.solicitud.idTipoMotivo, this.model.codigoPosicion, this.model.nivelDir, 'A')
       .subscribe({
         next: (response) => {
-          this.mapearDetallesAprobadores(response.nivelAprobacionPosicionType);
           this.dataAprobacionesPorPosicion[this.keySelected] = response.nivelAprobacionPosicionType;
         },
         error: (error: HttpErrorResponse) => {
@@ -955,17 +950,15 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
         this.solicitud.idTipoSolicitud,
         this.solicitud.idTipoMotivo,
         this.model.codigoPosicion,
-        this.model.nivelDir,
-        "APD"
+        this.model.nivelDir, 'APD'
       )
       .subscribe({
         next: (response) => {
           this.dataAprobadoresDinamicos.length = 0;
-          this.dataAprobacionesPorPosicionAPS =
-            response.nivelAprobacionPosicionType;
-          this.dataAprobacionesPorPosicionAPS.forEach((item) => {
+          this.dataAprobacionesPorPosicionAPD = response.nivelAprobacionPosicionType;
+
+          this.dataAprobacionesPorPosicionAPD.forEach(item => {
             this.dataAprobadoresDinamicos.push(item.aprobador.nivelDireccion);
-            console.log("Aprobaciones APD = ", item.aprobador);
           });
         },
         error: (error: HttpErrorResponse) => {
@@ -973,7 +966,7 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
             "No existe aprobadores de solicitud para los datos ingresados",
             "error"
           );
-        },
+        }
       });
   }
 
@@ -1355,9 +1348,10 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
           fechaModificacion: new Date().toISOString()
         }));
       }
-    });
 
+    });
     console.log(this.detalleNivelAprobacion);
+
   }
   consultarNextTask(IdSolicitud: string) {
     this.consultaTareasService.getTareaIdParam(IdSolicitud)
@@ -1385,7 +1379,6 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
     this.utilService.openLoadingSpinner("Completando Tarea, espere por favor...");
 
     let variables = this.generateVariablesFromFormFields();
-
     this.solicitudes.cargarDetalleAprobacionesArreglo(this.detalleNivelAprobacion).subscribe({
       next: (res) => {
         this.camundaRestService.postCompleteTask(this.uniqueTaskId, variables).subscribe({
