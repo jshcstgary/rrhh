@@ -16,13 +16,6 @@
           <div class="col-md-12 text-end">
             <button
               type="button"
-              (click)="openModalReasignar('dialogReasignarUsuario')"
-              class="btn btn-info me-2 mt-1"
-            >
-              <i class="fas fa-redo"></i> Reasignar
-            </button>
-            <button
-              type="button"
               type="submit"
               class="btn btn-info me-2 mt-1"
               aria-label="Close"
@@ -191,7 +184,7 @@
 							name="tipoSolicitud"
 							style="color: black; font-size: 14px"
 							class="text-start"
-							>{{ this.detalleSolicitud.fechaIngreso | date:'yyyy/MM/dd' }}</span
+							>{{ model.fechaIngresogrupo | date:'yyyy/MM/dd' }}</span
 							>
 						</div>
 					</div>
@@ -207,7 +200,7 @@
 					  name="comp"
 					  style="color: black; font-size: 14px"
 					  class="text-start"
-					  >{{ this.detalleSolicitud.compania }}</span
+					  >{{ model.compania }}</span
 					>
 				  </div>
 				</div>
@@ -222,7 +215,7 @@
 					  name="unidad"
 					  style="color: black; font-size: 14px"
 					  class="text-start"
-					  >{{ this.detalleSolicitud.unidad }}</span
+					  >{{ model.unidadNegocio }}</span
 					>
 				  </div>
 				</div>
@@ -237,7 +230,7 @@
 					  name="comp"
 					  style="color: black; font-size: 14px"
 					  class="text-start"
-					  >{{ this.detalleSolicitud.areaDepartamento }}</span
+					  >{{ model.departamento }}</span
 					>
 				  </div>
 				</div>
@@ -252,7 +245,7 @@
 					  name="unidad"
 					  style="color: black; font-size: 14px"
 					  class="text-start"
-					  >{{ this.detalleSolicitud.localidad }}</span
+					  >{{ model.localidad }}</span
 					>
 				  </div>
 				</div>
@@ -267,7 +260,7 @@
 					  name="unidad"
 					  style="color: black; font-size: 14px"
 					  class="text-start"
-					  >{{ this.detalleSolicitud.grupoDePago }}</span
+					  >{{ model.grupoPago }}</span
 					>
 				  </div>
 				</div>
@@ -282,7 +275,7 @@
 					  name="comp"
 					  style="color: black; font-size: 14px"
 					  class="text-start"
-					  >{{ this.detalleSolicitud.puesto }}</span
+					  >{{ model.descrPuesto }}</span
 					>
 				  </div>
 				</div>
@@ -297,7 +290,7 @@
 					  name="unidad"
 					  style="color: black; font-size: 14px"
 					  class="text-start"
-					  >{{ this.detalleSolicitud.centroCosto }}</span
+					  >{{ model.nomCCosto }}</span
 					>
 				  </div>
 				</div>
@@ -312,7 +305,7 @@
 					  name="unidad"
 					  style="color: black; font-size: 14px"
 					  class="text-start"
-					  >{{ this.detalleSolicitud.sucursal }}</span
+					  >{{ model.sucursal }}</span
 					>
 				  </div>
 				</div>
@@ -327,7 +320,7 @@
 					  name="mov"
 					  style="color: black; font-size: 14px"
 					  class="text-start"
-					  >{{ this.detalleSolicitud.movilizacion }}</span
+					  >{{ 0 }}</span
 					>
 				  </div>
 				</div>
@@ -342,7 +335,7 @@
 					  name="al"
 					  style="color: black; font-size: 14px"
 					  class="text-start"
-					  >{{ this.detalleSolicitud.alimentacion }}</span
+					  >{{ 0 }}</span
 					>
 				  </div>
 				</div>
@@ -367,7 +360,7 @@
 					  name="comp"
 					  style="color: black; font-size: 14px"
 					  class="text-start"
-					  >{{ this.detalleSolicitud.sueldo }}</span
+					  >{{ model.sueldo }}</span
 					>
 				  </div>
 				</div>
@@ -382,7 +375,7 @@
 					  name="me"
 					  style="color: black; font-size: 14px"
 					  class="text-start"
-					  >{{ this.detalleSolicitud.sueldoVariableMensual }}</span
+					  >{{ model.sueldoMensual }}</span
 					>
 				  </div>
 				</div>
@@ -397,7 +390,7 @@
 					  name="al"
 					  style="color: black; font-size: 14px"
 					  class="text-start"
-					  >{{ this.detalleSolicitud.sueldoVariableTrimestral }}</span
+					  >{{ model.sueldoTrimestral }}</span
 					>
 				  </div>
 				</div>
@@ -412,7 +405,7 @@
 					  name="al"
 					  style="color: black; font-size: 14px"
 					  class="text-start"
-					  >{{ this.detalleSolicitud.sueldoVariableSemestral }}</span
+					  >{{ model.sueldoSemestral }}</span
 					>
 				  </div>
 				</div>
@@ -427,7 +420,7 @@
 					  name="al"
 					  style="color: black; font-size: 14px"
 					  class="text-start"
-					  >{{ this.detalleSolicitud.sueldoVariableAnual }}</span
+					  >{{  model.sueldoAnual }}</span
 					>
 				  </div>
 				</div>
@@ -729,7 +722,7 @@
 				<div class="input-group mb-3 contenedor">
 					<label class="input-group-text adjustable-label">Tipod de acción</label>
 					&nbsp;
-					<span>Solicitud</span>
+					<span>{{solicitud.tipoAccion}}</span>
 
 					<!-- <div class="form-check form-check-inline">
 						<input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="Si" [(ngModel)]="selectedOptionAnulacion" (change)="onSelectionChange()">
@@ -751,13 +744,15 @@
 					&nbsp;
 
 					<div class="form-check form-check-inline">
-						<input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="Si" [(ngModel)]="selectedOptionAnulacion" (change)="onSelectionChange()">
+						<input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="Si"
+						  [(ngModel)]="selectedOption" (change)="onSelectionChange()">
 						<label class="form-check-label" for="inlineRadio1">Si</label>
-					</div>
-					<div class="form-check form-check-inline">
-						<input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="No" [(ngModel)]="selectedOptionAnulacion" (change)="onSelectionChange()">
+					  </div>
+					  <div class="form-check form-check-inline">
+						<input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="No"
+						  [(ngModel)]="selectedOption" (change)="onSelectionChange()">
 						<label class="form-check-label" for="inlineRadio2">No</label>
-					</div>
+					  </div>
 				</div>
 			</div>
 		</div>

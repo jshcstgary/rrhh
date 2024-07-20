@@ -16,7 +16,7 @@ import { Solicitud } from "src/app/eschemas/Solicitud";
 import { MantenimientoService } from "src/app/services/mantenimiento/mantenimiento.service";
 import { UtilService } from "src/app/services/util/util.service";
 import { ConsultaTareasService } from "src/app/tareas/consulta-tareas/consulta-tareas.service";
-import { environment } from "src/environments/environment";
+import { environment, portalWorkFlow } from "../../../environments/environment";
 import { CompleteTaskComponent } from "../general/complete-task.component";
 import { SolicitudesService } from "../registrar-solicitud/solicitudes.service";
 
@@ -26,6 +26,8 @@ import {
 } from "src/app/services/mantenimiento/empleado.interface";
 import { DialogReasignarUsuarioComponent } from "src/app/shared/reasginar-usuario/reasignar-usuario.component";
 import Swal from "sweetalert2";
+import { StarterService } from "src/app/starter/starter.service";
+import { LocalStorageKeys } from "src/app/enums/local-storage-keys.enum";
 
 interface DialogComponents {
   dialogReasignarUsuario: Type<DialogReasignarUsuarioComponent>;
@@ -43,12 +45,17 @@ const dialogComponentList: DialogComponents = {
 export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
   NgForm = NgForm;
 
-  selectedOptionAnulacion: string;
+  selectedOptionAnulacion: string= "No";
   selected_tipo_accion: number;
   selectedOption: string = "No";
   empleadoSearch : string = "";
 
 
+  private readonly NIVEL_APROBACION_GERENCIA_MEDIA: string = "GERENCIA MEDIA";
+  private readonly NIVEL_APROBACION_GERENCIA_UNIDAD: string = "GERENCIA DE UNIDAD O CORPORATIVA";
+  private readonly NIVEL_APROBACION_JEFATURA: string = "JEFATURA";
+  private readonly NIVEL_APROBACION_VICEPRESIDENCIA: string = "VICEPRESIDENCIA";
+  private readonly NIVEL_APROBACION_RRHH: string = "Gerente de RRHH Corporativo";
   override model: RegistrarData = new RegistrarData(
     "",
     "",
@@ -298,6 +305,8 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
   private id_solicitud_by_params: any;
 
   public dataAprobadoresDinamicos: any[] = [];
+  private detalleNivelAprobacion: any[] = [];
+
   public suggestions: string[] = [];
 
   public idDeInstancia: any;
@@ -330,6 +339,15 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
 
   codigosPosicion: string[] = [];
   jsonResult: string;
+  
+  emailVariables = {
+    de: "",
+    password: "",
+    alias: "",
+    para: "",
+    asunto: "",
+    cuerpo: ""
+  };
 
   constructor(
     route: ActivatedRoute,
@@ -339,7 +357,9 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
     private solicitudes: SolicitudesService,
     private utilService: UtilService,
     private consultaTareasService: ConsultaTareasService,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private starterService: StarterService
+
   ) {
     super(route, router, camundaRestService);
 
@@ -559,9 +579,10 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
 
       this.keySelected = `${this.solicitud.idTipoSolicitud}_${this.solicitud.idTipoMotivo}_${this.model.codigoPosicion}_${this.model.nivelDir}`;
 
-    //   if (!this.dataAprobacionesPorPosicion[this.keySelected]) {
-    //     this.obtenerAprobacionesPorPosicion();
-    //   }
+      console.log(!this.dataAprobacionesPorPosicion[this.keySelected]);
+      if (!this.dataAprobacionesPorPosicion[this.keySelected]) {
+        this.obtenerAprobacionesPorPosicion();
+      }
     } else {
       let tempSearch = valor;
       this.model = new RegistrarData();
@@ -822,6 +843,7 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
           if (this.model.codigoPosicion.trim().length > 0) {
             this.obtenerAprobacionesPorPosicionAPS();
             this.obtenerAprobacionesPorPosicionAPD();
+            console.log("SI LLEGA");
           }
 
           console.log("aprobadores dinamicos", this.dataAprobadoresDinamicos);
@@ -860,24 +882,31 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
     });
   }
 
+  obtenerAprobacionesPorPosicion() {
+    return this.solicitudes
+      .obtenerAprobacionesPorPosicion(this.solicitud.idTipoSolicitud, this.solicitud.idTipoMotivo, this.model.codigoPosicion, this.model.nivelDir, 'A')
+      .subscribe({
+        next: (response) => {
+          this.mapearDetallesAprobadores(response.nivelAprobacionPosicionType);
+          this.dataAprobacionesPorPosicion[this.keySelected] = response.nivelAprobacionPosicionType;
+        },
+        error: (error: HttpErrorResponse) => {
+          this.utilService.modalResponse(
+            "No existe aprobadores de solicitud para los datos ingresados",
+            "error"
+          );
+        },
+      });
+  }
+
   getNivelesAprobacion() {
-    if (
-      this.detalleSolicitud.codigoPosicion !== "" &&
-      this.detalleSolicitud.codigoPosicion !== undefined &&
-      this.detalleSolicitud.codigoPosicion != null
-    ) {
-      this.solicitudes
-        .obtenerAprobacionesPorPosicion(
-          this.solicitud.idTipoSolicitud,
-          this.solicitud.idTipoMotivo,
-          this.detalleSolicitud.codigoPosicion,
-          this.detalleSolicitud.nivelDireccion,
-          "A"
-        )
+    if (this.detalleSolicitud.codigoPosicion !== "" && this.detalleSolicitud.codigoPosicion !== undefined && this.detalleSolicitud.codigoPosicion != null) {
+      this.solicitudes.obtenerAprobacionesPorPosicion(this.solicitud.idTipoSolicitud, this.solicitud.idTipoMotivo, this.detalleSolicitud.codigoPosicion, this.detalleSolicitud.nivelDireccion, 'A')
         .subscribe({
           next: (response) => {
-            this.dataAprobacionesPorPosicion[this.keySelected] =
-              response.nivelAprobacionPosicionType;
+            this.mapearDetallesAprobadores(response.nivelAprobacionPosicionType);
+
+            this.dataAprobacionesPorPosicion[this.keySelected] = response.nivelAprobacionPosicionType;
           },
           error: (error: HttpErrorResponse) => {
             this.utilService.modalResponse(
@@ -886,7 +915,9 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
             );
           },
         });
+
     }
+
   }
 
   obtenerAprobacionesPorPosicionAPS() {
@@ -946,24 +977,7 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
       });
   }
 
-  consultarNextTask(IdSolicitud: string) {
-    this.consultaTareasService
-      .getTareaIdParam(IdSolicitud)
-      .subscribe((tarea) => {
-        console.log("Task: ", tarea);
-
-        this.uniqueTaskId = tarea.solicitudes[0].taskId;
-        this.taskType_Activity = tarea.solicitudes[0].tasK_DEF_KEY;
-        this.nameTask = tarea.solicitudes[0].name;
-        this.id_solicitud_by_params = tarea.solicitudes[0].idSolicitud;
-
-        if (this.taskType_Activity !== environment.taskType_Registrar) {
-          this.RegistrarsolicitudCompletada = false;
-        }
-      });
-  }
-
-  lookForError(result: any): void {
+   lookForError(result: any): void {
     if (result.error !== undefined && result.error !== null) {
       console.log("routing to app error page ", result.error.message);
       this.errorMessage = result.error.message;
@@ -995,58 +1009,444 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
 
   }
 
+  override generateVariablesFromFormFields() {
+    let variables: any = {};
+
+    if (this.taskType_Activity == environment.taskType_AP_Registrar) {
+      this.dataAprobacionesPorPosicionAPS.forEach((elemento, index) => {
+        if (index === 0) {
+          const htmlString = "<!DOCTYPE html>\r\n<html lang=\"es\">\r\n\r\n<head>\r\n  <meta charset=\"UTF-8\">\r\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n  <title>Document<\/title>\r\n<\/head>\r\n\r\n<body>\r\n  <h2>Estimado(a)<\/h2>\r\n  <h3>{NOMBRE_APROBADOR}<\/h3>\r\n\r\n  <P>La Solicitud de {TIPO_SOLICITUD} {ID_SOLICITUD} para la posici\u00F3n de {DESCRIPCION_POSICION} est\u00E1 disponible para su\r\n    revisi\u00F3n y aprobaci\u00F3n.<\/P>\r\n\r\n  <p>\r\n    <b>\r\n      Favor ingresar al siguiente enlace: <a href=\"{URL_APROBACION}\">{URL_APROBACION}<\/a>\r\n      <br>\r\n      <br>\r\n      Gracias por su atenci\u00F3n.\r\n    <\/b>\r\n  <\/p>\r\n<\/body>\r\n\r\n<\/html>\r\n";
+
+          const modifiedHtmlString = htmlString.replace("{NOMBRE_APROBADOR}", elemento.aprobador.usuario).replace("{TIPO_SOLICITUD}", this.solicitud.tipoSolicitud).replace("{ID_SOLICITUD}", this.solicitud.idSolicitud).replace("{DESCRIPCION_POSICION}", this.detalleSolicitud.descripcionPosicion).replace(new RegExp("{URL_APROBACION}", "g"), `${portalWorkFlow}tareas/consulta-tareas?idUsuario=${elemento.aprobador.subledger}`);
+
+          variables.correo_notificador_creador = {
+            value: this.solicitudes.modelDetalleAprobaciones.correo
+          };
+          variables.alias = {
+            value: this.solicitudes.modelDetalleAprobaciones.correo
+          };
+          variables.correo_aprobador = {
+            value: elemento.aprobador.correo
+          };
+          variables.asunto_revision_solicitud = {
+            value: `Autorización de Solicitud de ${this.solicitud.tipoSolicitud} ${this.solicitud.idSolicitud}`
+          };
+          variables.cuerpo_notificacion = {
+            value: modifiedHtmlString
+          };
+          variables.password = {
+            value: "p4$$w0rd"
+          };
+
+          this.emailVariables = {
+            de: this.solicitudes.modelDetalleAprobaciones.correo,
+            para: elemento.aprobador.correo,
+            // alias: this.solicitudes.modelDetalleAprobaciones.correo,
+            alias: "Notificación 1",
+            asunto: variables.asunto_revision_solicitud.value,
+            cuerpo: modifiedHtmlString,
+            password: variables.password.value
+          };
+        }
+
+        if (elemento.aprobador.nivelDireccion === this.NIVEL_APROBACION_GERENCIA_MEDIA) {
+          variables.correoNotificacionGerenciaMedia = {
+            value: elemento.aprobador.correo
+          };
+          variables.usuarioNotificacionGerenciaMedia = {
+            value: elemento.aprobador.usuario
+          };
+          variables.nivelDireccionNotificacionGerenciaMedia = {
+            value: elemento.aprobador.nivelDireccion
+          };
+          variables.descripcionPosicionNotificacionGerenciaMedia = {
+            value: elemento.aprobador.descripcionPosicion
+          };
+          variables.subledgerNotificacionGerenciaMedia = {
+            value: elemento.aprobador.subledger
+          };
+        } else if (elemento.aprobador.nivelDireccion === this.NIVEL_APROBACION_GERENCIA_UNIDAD) {
+          variables.correoNotificacionGerenciaUnidadCorporativa = {
+            value: elemento.aprobador.correo
+          };
+          variables.usuarioNotificacionGerenciaUnidadCorporativa = {
+            value: elemento.aprobador.usuario
+          };
+          variables.nivelDireccionNotificacionGerenciaUnidadCorporativa = {
+            value: elemento.aprobador.nivelDireccion
+          };
+          variables.descripcionPosicionNotificacionGerenciaUnidadCorporativa = {
+            value: elemento.aprobador.descripcionPosicion
+          };
+          variables.subledgerNotificacionGerenciaUnidadCorporativa = {
+            value: elemento.aprobador.subledger
+          };
+        } else if (elemento.aprobador.nivelDireccion === this.NIVEL_APROBACION_JEFATURA) {
+          variables.correoNotificacionJefatura = {
+            value: elemento.aprobador.correo
+          };
+          variables.usuarioNotificacionJefatura = {
+            value: elemento.aprobador.usuario
+          };
+          variables.nivelDireccionNotificacionJefatura = {
+            value: elemento.aprobador.nivelDireccion
+          };
+          variables.descripcionPosicionNotificacionJefatura = {
+            value: elemento.aprobador.descripcionPosicion
+          };
+          variables.subledgerNotificacionJefatura = {
+            value: elemento.aprobador.subledger
+          };
+        } else if (elemento.aprobador.nivelDireccion.toUpperCase().includes(this.NIVEL_APROBACION_VICEPRESIDENCIA)) {
+          variables.correoNotificacionVicepresidencia = {
+            value: elemento.aprobador.correo
+          };
+          variables.usuarioNotificacionVicepresidencia = {
+            value: elemento.aprobador.usuario
+          };
+          variables.nivelDireccionNotificacionVicepresidencia = {
+            value: elemento.aprobador.nivelDireccion
+          };
+          variables.descripcionPosicionNotificacionVicepresidencia = {
+            value: elemento.aprobador.descripcionPosicion
+          };
+          variables.subledgerNotificacionVicepresidencia = {
+            value: elemento.aprobador.subledger
+          };
+        } else if (elemento.aprobador.nivelDireccion === this.NIVEL_APROBACION_RRHH) {
+          variables.correoNotificacionGerenteRRHH = {
+            value: elemento.aprobador.correo
+          };
+          variables.usuarioNotificacionGerenteRRHH = {
+            value: elemento.aprobador.usuario
+          };
+          variables.nivelDireccionNotificacionGerenteRRHH = {
+            value: elemento.aprobador.nivelDireccion
+          };
+          variables.descripcionPosicionNotificacionGerenteRRHH = {
+            value: elemento.aprobador.descripcionPosicion
+          };
+          variables.subledgerNotificacionGerenteRRHH = {
+            value: elemento.aprobador.subledger
+          };
+        }
+      });
+
+      variables.codigoPosicion = {
+        value: this.model.codigoPosicion
+      };
+      variables.misionCargo = {
+        value: this.model.misionCargo
+      };
+      variables.justificacionCargo = {
+        value: this.model.justificacionCargo
+      };
+      variables.empresa = {
+        value: this.model.compania
+      };
+      variables.unidadNegocio = {
+        value: this.model.unidadNegocio
+      };
+      variables.descripcionPosicion = {
+        value: this.model.descrPosicion
+      };
+      variables.areaDepartamento = {
+        value: this.model.departamento
+      };
+      variables.localidadZona = {
+        value: this.model.localidad
+      };
+      variables.centroCosto = {
+        value: this.model.nomCCosto
+      };
+      variables.reportaa = {
+        value: this.model.reportaA
+      };
+      variables.nivelReportea = {
+        value: this.model.nivelRepa
+      };
+      variables.supervisa = {
+        value: this.model.supervisaA
+      };
+      variables.tipoContrato = {
+        value: this.model.tipoContrato
+      };
+      variables.sueldo = {
+        value: this.model.sueldo
+      };
+      variables.sueldoMensual = {
+        value: this.model.sueldoMensual
+      };
+      variables.sueldoTrimestral = {
+        value: this.model.sueldoTrimestral
+      };
+      variables.sueldoSemestral = {
+        value: this.model.sueldoSemestral
+      };
+      variables.sueldoAnual = {
+        value: this.model.sueldoAnual
+      };
+      variables.anularSolicitud = {
+        value: this.selectedOption
+      };
+      variables.comentariosAnulacion = {
+        value: this.model.comentariosAnulacion
+      };
+      variables.nivelDireccion = {
+        value: this.model.nivelDir
+      };
+      variables.usuarioNotificacionCreador = {
+        value: this.solicitudes.modelDetalleAprobaciones.usuarioAprobador
+      };
+      variables.nivelDireccionNotificacionCreador = {
+        value: this.solicitudes.modelDetalleAprobaciones.nivelDireccionAprobador
+      };
+      variables.descripcionPosicionCreador = {
+        value: this.solicitudes.modelDetalleAprobaciones.descripcionPosicionAprobador
+      };
+      variables.subledgerNotificacionCreador = {
+        value: this.solicitudes.modelDetalleAprobaciones.sudlegerAprobador
+      };
+      variables.Id_Solicitud = {
+        value: this.solicitud.idSolicitud
+      };
+      variables.tipoSolicitud = {
+        value: this.solicitud.tipoSolicitud
+      };
+      if (this.solicitud.tipoAccion.toUpperCase().includes("TEMPORAL")) {
+        variables.tipoAccion = { value: "asignacionTemporal" };
+      }else{
+          variables.tipoAccion = { value: this.solicitud.tipoAccion };
+      }
+
+      variables.transferenciaCompania = {
+        value: this.viewInputs
+      };
+      variables.urlTarea = {
+        value: `${portalWorkFlow}solicitudes/revisar-solicitud/${this.idDeInstancia}/${this.id_solicitud_by_params}`
+      };
+      variables.tipoRuta = {
+        value: this.dataTipoRuta,
+        type: "String",
+        valueInfo: {
+          objectTypeName: "java.util.ArrayList",
+          serializationDataFormat: "application/json"
+        }
+      };
+      variables.ruta = {
+        value: this.dataRuta,
+        type: "String",
+        valueInfo: {
+          objectTypeName: "java.util.ArrayList",
+          serializationDataFormat: "application/json"
+        }
+      };
+      variables.resultadoRutaAprobacion = {
+        value: JSON.stringify(this.dataAprobadoresDinamicos),
+        type: "Object",
+        valueInfo: {
+          objectTypeName: "java.util.ArrayList",
+          serializationDataFormat: "application/json"
+        }
+      };
+    }
+
+    return { variables };
+  }
+
+  consultarNextTaskAprobador(IdSolicitud: string) {
+    this.consultaTareasService.getTareaIdParam(IdSolicitud)
+      .subscribe((tarea) => {
+        this.uniqueTaskId = tarea.solicitudes[0].taskId;
+        this.taskType_Activity = tarea.solicitudes[0].tasK_DEF_KEY;
+        this.nameTask = tarea.solicitudes[0].name;
+        this.id_solicitud_by_params = tarea.solicitudes[0].idSolicitud;
+
+        if (this.taskType_Activity !== environment.taskType_Registrar) {
+          this.RegistrarsolicitudCompletada = false;
+        }
+
+        let aprobadoractual = "";
+
+        this.camundaRestService.getVariablesForTaskLevelAprove(this.uniqueTaskId).subscribe({
+          next: (aprobador) => {
+            aprobadoractual = aprobador.nivelAprobacion?.value;
+
+            if (aprobadoractual !== undefined) {
+              this.dataAprobacionesPorPosicionAPS.forEach((elemento) => {
+                const aprobacion = elemento;
+
+                if (aprobacion.aprobador.nivelDireccion.trim() == aprobadoractual) {
+                  this.solicitudes.modelDetalleAprobaciones.id_Solicitud = this.solicitud.idSolicitud;
+                  this.solicitudes.modelDetalleAprobaciones.id_NivelAprobacion = aprobacion.nivelAprobacionType.idNivelAprobacion;
+                  this.solicitudes.modelDetalleAprobaciones.id_TipoSolicitud = aprobacion.nivelAprobacionType.idTipoSolicitud.toString();
+                  this.solicitudes.modelDetalleAprobaciones.id_Accion = aprobacion.nivelAprobacionType.idAccion;
+                  this.solicitudes.modelDetalleAprobaciones.id_TipoMotivo = aprobacion.nivelAprobacionType.idTipoMotivo;
+                  this.solicitudes.modelDetalleAprobaciones.id_TipoRuta = aprobacion.nivelAprobacionType.idTipoRuta;
+                  this.solicitudes.modelDetalleAprobaciones.id_Ruta = aprobacion.nivelAprobacionType.idRuta;
+                  this.solicitudes.modelDetalleAprobaciones.tipoSolicitud = aprobacion.nivelAprobacionType.tipoSolicitud;
+                  this.solicitudes.modelDetalleAprobaciones.motivo = aprobacion.nivelAprobacionType.tipoMotivo;
+                  this.solicitudes.modelDetalleAprobaciones.tipoRuta = aprobacion.nivelAprobacionType.tipoRuta;
+                  this.solicitudes.modelDetalleAprobaciones.ruta = aprobacion.nivelAprobacionType.ruta;
+                  this.solicitudes.modelDetalleAprobaciones.accion = aprobacion.nivelAprobacionType.accion;
+                  this.solicitudes.modelDetalleAprobaciones.nivelDirecion = aprobacion.nivelAprobacionType.nivelDireccion;
+                  this.solicitudes.modelDetalleAprobaciones.nivelAprobacionRuta = aprobacion.nivelAprobacionType.nivelAprobacionRuta;
+                  this.solicitudes.modelDetalleAprobaciones.usuarioAprobador = aprobacion.aprobador.usuario;
+                  this.solicitudes.modelDetalleAprobaciones.codigoPosicionAprobador = aprobacion.aprobador.codigoPosicion;
+                  this.solicitudes.modelDetalleAprobaciones.descripcionPosicionAprobador = aprobacion.aprobador.descripcionPosicion;
+                  this.solicitudes.modelDetalleAprobaciones.sudlegerAprobador = aprobacion.aprobador.subledger;
+                  this.solicitudes.modelDetalleAprobaciones.nivelDireccionAprobador = aprobacion.aprobador.nivelDireccion;
+                  this.solicitudes.modelDetalleAprobaciones.codigoPosicionReportaA = aprobacion.aprobador.codigoPosicionReportaA;
+                  this.solicitudes.modelDetalleAprobaciones.estado = "A";
+                  this.solicitudes.modelDetalleAprobaciones.estadoAprobacion = "PorRevisar";
+                  this.solicitudes.modelDetalleAprobaciones.correo = aprobacion.aprobador.correo;
+                  this.solicitudes.modelDetalleAprobaciones.usuarioCreacion = aprobacion.aprobador.usuario;
+                  this.solicitudes.modelDetalleAprobaciones.usuarioModificacion = aprobacion.aprobador.usuario;
+                  this.solicitudes.modelDetalleAprobaciones.fechaCreacion = new Date().toISOString();
+                  this.solicitudes.modelDetalleAprobaciones.fechaModificacion = new Date().toISOString();
+                }
+              });
+
+              this.solicitudes.guardarDetallesAprobacionesSolicitud(this.solicitudes.modelDetalleAprobaciones).subscribe({
+                next: () => {
+                },
+                error: (err) => {
+                  console.error(err);
+                }
+              });
+            }
+          }
+        });
+      });
+  }
+
+
+  mapearDetallesAprobadores(nivelAprobacionPosicionType: any[]) {
+    this.starterService.getUser(localStorage.getItem(LocalStorageKeys.IdUsuario)).subscribe({
+      next: (res) => {
+        this.detalleNivelAprobacion = nivelAprobacionPosicionType.map(({ nivelAprobacionType, aprobador }) => ({
+          id_Solicitud: this.solicitud.idSolicitud,
+          id_NivelAprobacion: nivelAprobacionType.idNivelAprobacion,
+          id_TipoSolicitud: nivelAprobacionType.idTipoSolicitud.toString(),
+          id_Accion: nivelAprobacionType.idAccion,
+          id_TipoMotivo: nivelAprobacionType.idTipoMotivo,
+          id_TipoRuta: nivelAprobacionType.idTipoRuta,
+          id_Ruta: nivelAprobacionType.idRuta,
+          tipoSolicitud: nivelAprobacionType.tipoSolicitud,
+          motivo: nivelAprobacionType.tipoMotivo,
+          tipoRuta: nivelAprobacionType.tipoRuta,
+          ruta: nivelAprobacionType.ruta,
+          accion: nivelAprobacionType.accion,
+          nivelDirecion: nivelAprobacionType.nivelDireccion,
+          nivelAprobacionRuta: nivelAprobacionType.nivelAprobacionRuta,
+          usuarioAprobador: aprobador.usuario,
+          codigoPosicionAprobador: aprobador.codigoPosicion,
+          descripcionPosicionAprobador: aprobador.descripcionPosicion,
+          sudlegerAprobador: aprobador.subledger,
+          codigoPosicionReportaA: aprobador.codigoPosicionReportaA,
+          nivelDireccionAprobador: aprobador.nivelDireccion,
+          estadoAprobacion: nivelAprobacionType.idNivelAprobacionRuta.toUpperCase().includes("RRHH") ? "PorRevisarRRHH" : (nivelAprobacionType.idNivelAprobacionRuta.toUpperCase().includes("REMUNERA") ? "PorRevisarRemuneraciones" : "PendienteAsignacion"),
+          estado: nivelAprobacionType.estado,
+          correo: aprobador.correo === null ? "" : aprobador.correo,
+          usuarioCreacion: res.evType[0].nombreCompleto,
+          usuarioModificacion: res.evType[0].nombreCompleto,
+          comentario: "",
+          fechaCreacion: new Date().toISOString(),
+          fechaModificacion: new Date().toISOString()
+        }));
+      }
+    });
+
+    console.log(this.detalleNivelAprobacion);
+  }
+  consultarNextTask(IdSolicitud: string) {
+    this.consultaTareasService.getTareaIdParam(IdSolicitud)
+      .subscribe((tarea) => {
+
+        this.uniqueTaskId = tarea.solicitudes[0].taskId;
+        this.taskType_Activity = tarea.solicitudes[0].tasK_DEF_KEY;
+        this.nameTask = tarea.solicitudes[0].name;
+        this.id_solicitud_by_params = tarea.solicitudes[0].idSolicitud;
+        this.rootProces = tarea.solicitudes[0].rootProcInstId;
+
+        if (this.nameTask !== "Registrar solicitud") {
+          this.RegistrarsolicitudCompletada = false;
+        }
+      });
+  }
+
   onCompletar() {
-    //completar tarea mmunoz
     if (this.uniqueTaskId === null) {
-      //handle this as an error
-      this.errorMessage =
-        "Unique Task id is empty. Cannot initiate task complete.";
+      this.errorMessage = "Unique Task id is empty. Cannot initiate task complete.";
+
       return;
     }
-    this.utilService.openLoadingSpinner(
-      "Completando Tarea, espere por favor..."
-    );
+
+    this.utilService.openLoadingSpinner("Completando Tarea, espere por favor...");
 
     let variables = this.generateVariablesFromFormFields();
 
-    this.camundaRestService
-      .postCompleteTask(this.uniqueTaskId, variables)
-      .subscribe({
-        next: (res) => {
-          console.log("Complete task notificar");
-          //actualizo la solicitud a enviada
-          this.solicitud.empresa = this.model.idEmpresa;
-          this.solicitud.idEmpresa = this.model.idEmpresa;
+    this.solicitudes.cargarDetalleAprobacionesArreglo(this.detalleNivelAprobacion).subscribe({
+      next: (res) => {
+        this.camundaRestService.postCompleteTask(this.uniqueTaskId, variables).subscribe({
+          next: (res) => {
+            this.solicitud.empresa = this.model.compania;
+            this.solicitud.idEmpresa = this.model.compania;
+            this.solicitud.unidadNegocio = this.model.unidadNegocio;
+            this.solicitud.idUnidadNegocio = this.model.unidadNegocio;
 
-          this.solicitud.unidadNegocio = this.model.unidadNegocio;
-          this.solicitud.idUnidadNegocio = this.model.unidadNegocio;
-          if (this.selectedOption == "No") {
-            this.solicitud.estadoSolicitud = "4";
-          } else {
-            this.solicitud.estadoSolicitud = "AN";
-          }
+            this.solicitud.estadoSolicitud === "No" ? "4" : "AN";
 
-          console.log("this.solicitud: ", this.solicitud);
-          this.solicitudes
-            .actualizarSolicitud(this.solicitud)
-            .subscribe((responseSolicitud) => {
-              console.log("responseSolicitud: ", responseSolicitud);
+            this.solicitudes.actualizarSolicitud(this.solicitud).subscribe({
+              next: (responseSolicitud) => {
+                setTimeout(() => {
+                  this.consultarNextTaskAprobador(this.solicitud.idSolicitud);
+
+                  this.solicitudes.sendEmail(this.emailVariables).subscribe({
+                    next: () => {
+                    },
+                    error: (error) => {
+                      console.error(error);
+                    }
+                  });
+
+                  this.utilService.closeLoadingSpinner();
+
+                  this.utilService.modalResponse(`Solicitud registrada correctamente [${this.solicitud.idSolicitud}]. Será redirigido en un momento...`, "success");
+
+                  setTimeout(() => {
+                    this.router.navigate([
+                      "/tareas/consulta-tareas",
+                    ]);
+                  }, 1800);
+                }, 3000);
+              },
+              error: (error) => {
+                console.error(error);
+              }
             });
+          },
+          error: (error: HttpErrorResponse) => {
+            this.utilService.modalResponse(
+              error.error,
+              "error"
+            );
+          },
+        });
+      },
+      error: (err) => {
+        console.error(err);
+      }
+    });
 
-          this.utilService.closeLoadingSpinner();
-          //fin actualizo la solicitud a enviada
-          this.utilService.modalResponse(
-            `Solicitud registrada correctamente [${this.idDeInstancia}]. Será redirigido en un momento...`,
-            "success"
-          );
-          setTimeout(() => {
-            this.router.navigate(["/tareas/consulta-tareas"]);
-          }, 1800);
-        },
-        error: (error: HttpErrorResponse) => {
-          this.utilService.modalResponse(error.error, "error");
-        },
-      });
+    // this.solicitudes.guardarDetallesAprobacionesSolicitud(this.solicitudes.modelDetalleAprobaciones).subscribe({
+    //   next: () => {
+
+    //   },
+    //   error: (err) => {
+    //     console.error(err);
+    //   }
+    // });
 
     this.submitted = true;
   }
@@ -1178,8 +1578,9 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
             console.log("AQUI HAY UN IDDEINSTANCIA?: ", this.idDeInstancia);
 
             setTimeout(() => {
-              this.router.navigate(["/tareas/consulta-tareas"]);
-            }, 1800);
+              // Recarga la página actual
+              window.location.reload();
+              }, 1800);
           });
       }); //aqui debe crear los aprobadores
     this.submitted = true;
@@ -1212,7 +1613,7 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
   }
 
   onSelectionChange() {
-    console.log(this.selectedOptionAnulacion);
+    console.log(this.selectedOption);
   }
 
   empleado: string = '';
