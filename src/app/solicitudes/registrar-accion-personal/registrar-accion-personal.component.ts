@@ -49,6 +49,8 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
   selected_tipo_accion: number;
   selectedOption: string = "No";
   empleadoSearch : string = "";
+  nivelDireccionDatoPropuesto : string = "";
+
 
 
   private readonly NIVEL_APROBACION_GERENCIA_MEDIA: string = "GERENCIA MEDIA";
@@ -780,6 +782,7 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
 		this.model.fechaIngreso = detalleActual.fechaIngreso;
 		this.model.grupoPago = detalleActual.grupoDePago;
 		this.model.descrPuesto = detalleActual.descripcionPosicion;
+    this.nivelDireccionDatoPropuesto = detalleActual.nivelDireccion;
 
 		if (response.totalRegistros === 2) {
 			const detallePropuestos = response.detalleSolicitudType.find(detalle => detalle.idDetalleSolicitud === 2);
@@ -865,8 +868,8 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
   }
 
   getNivelesAprobacion() {
-    if (this.detalleSolicitud.codigoPosicion !== "" && this.detalleSolicitud.codigoPosicion !== undefined && this.detalleSolicitud.codigoPosicion != null) {
-      this.solicitudes.obtenerAprobacionesPorPosicion(this.solicitud.idTipoSolicitud, this.solicitud.idTipoMotivo, this.detalleSolicitud.codigoPosicion, this.detalleSolicitud.nivelDireccion, 'A')
+    if (this.model.codigoPosicion !== "" && this.model.codigoPosicion !== undefined && this.model.codigoPosicion != null) {
+      this.solicitudes.obtenerAprobacionesPorPosicion(this.solicitud.idTipoSolicitud, this.solicitud.idTipoMotivo, this.model.codigoPosicion, this.nivelDireccionDatoPropuesto, 'A')
         .subscribe({
           next: (response) => {
             this.mapearDetallesAprobadores(response.nivelAprobacionPosicionType);
