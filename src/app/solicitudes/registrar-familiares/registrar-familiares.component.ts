@@ -410,6 +410,10 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
                 try {
                   await this.loadDataCamunda();
 
+				  await this.obtenerServicioFamiliaresCandidatos({
+				  	idSolicitud: this.id_solicitud_by_params,
+				  });
+
                   this.utilService.closeLoadingSpinner();
                 } catch (error) {
                   this.utilService.modalResponse(error.error, "error");
@@ -855,10 +859,6 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
 
     // try {
     //   await this.loadDataCamunda(); //comentado para prueba mmunoz
-
-    //   await this.obtenerServicioFamiliaresCandidatos({
-    //     idSolicitud: this.id_solicitud_by_params,
-    //   });
 
     //   this.utilService.closeLoadingSpinner();
     // } catch (error) {
@@ -1794,6 +1794,8 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
       })
       .result.then(
         (result) => {
+			  console.log("SELECCIONAR EMPLEADO");
+			  console.log(result);
           if (result?.action === "close") {
             return;
           }
@@ -1820,31 +1822,18 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
               usuarioModificacion: this.solicitud.usuarioActualizacion
             };
 
-            /*
-            {
-              "codigoPosicionPadre": "string",
-              "idSolicitudPadre": "string",
-              "descripcionPosicion": "string",
-              "codigoPosicionReportaA": "string",
-              "reportaA": "string",
+			this.mantenimientoService
+              .guardarFamiliaresCandidato(dtoFamiliares)
+              .subscribe({
+                next: () => {
+                  this.addNewRow(dtoFamiliares);
 
-              "subledger": "string",
-              "estado": "string",
-
-              "codigoPosicion": "string",
-              "idSolicitud": "string",
-              "nombreEmpleado": "string",
-              "cargo": "string",
-              "unidad": "string",
-              "departamento": "string",
-              "localidad": "string",
-              "parentesco": "string",
-              "usuarioCreacion": "string",
-              "usuarioModificacion": "string",
-              "fechaCreacion": "2024-07-01T14:19:35.838Z",
-              "fechaModificacion": "2024-07-01T14:19:35.838Z"
-            }
-            */
+                  this.utilService.modalResponse("Familiar ingresado correctamente", "success" );
+                },
+                error: (err) => {
+                  console.error(err);
+                }
+              });
           }
         },
         (reason) => {

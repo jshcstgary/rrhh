@@ -85,19 +85,6 @@
                   >Nombre de Empleado</label
                 >
                 &nbsp;
-                <!-- <input-component
-                  [id]="'empleadoSearch'"
-                  [type]="'string'"
-                  [buttonIcon]="'ti-search'"
-                  buttonFunction="searchEmpleado"
-                  placeholder="Buscar"
-                  [theValue]="empleado"
-                  [contexto]="this"
-                  [disabled]="isDisabledEmpleado"
-                  placeholder="Buscar por nombre"
-                  style="width: 50%"
-                ></input-component> -->
-
 				<input type="text" name="nombreCompleto" [(ngModel)]="model.nombreCompleto"
 					style="color: black; font-size: 14px; width: 30%" class="form-control text-start" id="nombreCompleto"
 					[ngbTypeahead]="searchSubledger" [ngbTypeahead]="searchNombre" (selectItem)="onSelectItem('nombreCompleto', $event)"
@@ -115,19 +102,6 @@
                     >Subledger</label
                   >
                   &nbsp;
-                  <!-- <input-component
-                    [id]="'subledgerSearch'"
-                    [type]="'string'"
-                    [buttonIcon]="'ti-search'"
-                    buttonFunction="searchSubledger"
-                    placeholder="Buscar"
-                    [theValue]="subledger"
-                    [contexto]="this"
-                    [disabled]="isDisabledSubledger"
-                    placeholder="Buscar por subledger"
-                    style="width: 50%; margin-left: -15%;"
-                  ></input-component> -->
-
 				  <input type="text" name="subledger" [(ngModel)]="model.subledger"
 					style="color: black; font-size: 14px; width: 30%" class="form-control text-start" id="subledger"
 					aria-describedby="inputGroupPrepend" required #subledger="ngModel" placeholder="Ingrese subledger"

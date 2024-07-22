@@ -826,14 +826,11 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
           this.solicitud.idTipoMotivo
         );
 
-        this.keySelected =
-          this.solicitud.idTipoSolicitud +
-          "_" +
-          this.solicitud.idTipoMotivo +
-          "_" +
-          this.model.nivelDir;
+		this.keySelected = `${this.solicitud.idTipoSolicitud}_${this.solicitud.idTipoMotivo}_${this.model.nivelDir}`;
+
         if (!this.dataAprobacionesPorPosicion[this.keySelected]) {
-          this.getNivelesAprobacion();
+		  this.getNivelesAprobacion();
+
           if (this.model.codigoPosicion.trim().length > 0) {
             this.obtenerAprobacionesPorPosicionAPS();
             this.obtenerAprobacionesPorPosicionAPD();
@@ -883,9 +880,7 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
             );
           },
         });
-
     }
-
   }
 
   obtenerAprobacionesPorPosicionAPS() {
@@ -1182,7 +1177,7 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
       }
 
       variables.transferenciaCompania = {
-        value: this.viewInputs
+        value: !this.viewInputs
       };
       variables.urlTarea = {
         value: `${portalWorkFlow}solicitudes/revisar-solicitud/${this.idDeInstancia}/${this.id_solicitud_by_params}`

@@ -5,6 +5,7 @@ import {
 import { Component, Type } from "@angular/core";
 import { NgForm } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
+import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { Observable, OperatorFunction, Subject } from "rxjs";
 import {
 	debounceTime,
@@ -19,8 +20,10 @@ import { DatosSolicitud } from "src/app/eschemas/DatosSolicitud";
 import { DetalleSolicitud } from "src/app/eschemas/DetalleSolicitud";
 import { RegistrarData } from "src/app/eschemas/RegistrarData";
 import { Solicitud } from "src/app/eschemas/Solicitud";
+import { IEmpleadoData } from "src/app/services/mantenimiento/empleado.interface";
 import { FamiliaresCandidatos, MantenimientoService } from "src/app/services/mantenimiento/mantenimiento.service";
 import { UtilService } from "src/app/services/util/util.service";
+import { DialogReasignarUsuarioComponent } from "src/app/shared/reasginar-usuario/reasignar-usuario.component";
 import { columnsDatosFamiliares } from "src/app/solicitudes/revisar-solicitud/registrar-familiares.data";
 import { StarterService } from "src/app/starter/starter.service";
 import { ConsultaTareasService } from "src/app/tareas/consulta-tareas/consulta-tareas.service";
@@ -30,12 +33,9 @@ import { environment, portalWorkFlow } from "../../../environments/environment";
 import { CamundaRestService } from "../../camunda-rest.service";
 import { CompleteTaskComponent } from "../general/complete-task.component";
 import { RegistrarCandidatoService } from "../registrar-candidato/registrar-candidato.service";
+import { DialogBuscarEmpleadosFamiliaresComponent } from "../registrar-familiares/dialog-buscar-empleados-familiares/dialog-buscar-empleados-familiares.component";
 import { SolicitudesService } from "../registrar-solicitud/solicitudes.service";
 import { ComentarioSalidaJefeService } from './comentario-salida-jefe.service';
-import { DialogBuscarEmpleadosFamiliaresComponent } from "../registrar-familiares/dialog-buscar-empleados-familiares/dialog-buscar-empleados-familiares.component";
-import { DialogReasignarUsuarioComponent } from "src/app/shared/reasginar-usuario/reasignar-usuario.component";
-import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
-import { IEmpleadoData } from "src/app/services/mantenimiento/empleado.interface";
 
 interface DialogComponents {
   dialogBuscarEmpleados: Type<DialogBuscarEmpleadosFamiliaresComponent>;
@@ -212,9 +212,11 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
   public tipo_solicitud_descripcion: string;
   public tipo_motivo_descripcion: string;
   public tipo_accion_descripcion: string;
-  public justificacionCF: string = "";
+	public justificacionCF: string = "";
+	public mostrarRequisicion: boolean = false;
   public mostrarFormularioFamiliares: boolean = false;
   public mostrarFormularioReingreso: boolean = false;
+  public mostrarAccionPersonal: boolean = false;
   public keySelected: any;
   public detalleSolicitudRG = new DetalleSolicitud();
   public remuneracion: number;
@@ -1015,8 +1017,10 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
     return this.solicitudes.getSolicitudById(id).subscribe({
       next: (response: any) => {
         this.solicitud = response;
-        this.mostrarFormularioFamiliares = this.solicitud.tipoSolicitud === "Contratación de Familiares";
-        this.mostrarFormularioReingreso = this.solicitud.tipoSolicitud === "Reingreso de Personal";
+        this.mostrarRequisicion = this.solicitud.idSolicitud.includes("RP-");
+        this.mostrarFormularioFamiliares = this.solicitud.idSolicitud.includes("CF-");
+        this.mostrarFormularioReingreso = this.solicitud.idSolicitud.includes("RG-");
+		this.mostrarAccionPersonal = this.solicitud.idSolicitud.includes("AP-");
         this.loadingComplete += 2;
         this.getDetalleSolicitudById(id);
       },
