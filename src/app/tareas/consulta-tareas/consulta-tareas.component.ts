@@ -547,14 +547,25 @@ export class ConsultaTareasComponent implements OnInit {
 
 			break;
 
-		case environment.taskType_AP_Registrar:
-			if (tarea.solicitudes[0].tipoSolicitud.toUpperCase().includes("PERSONAL")) {
+		case environment.taskType_AP_Completar:
+		  if (tarea.solicitudes[0].tipoSolicitud.toUpperCase().includes("PERSONAL")) {
 			this.router.navigate([
-				`/solicitudes/revisar-solicitud`,
+				`/solicitudes/accion-personal/registrar-solicitud`,
 				ids[1],
 				ids[0]
 			]);
-			}
+		  }
+
+		  break;
+
+		case environment.taskType_AP:
+		  if (tarea.solicitudes[0].tipoSolicitud.toUpperCase().includes("PERSONAL")) {
+			this.router.navigate([
+				`/solicitudes/accion-personal/registrar-solicitud`,
+				ids[1],
+				ids[0]
+			]);
+		  }
 
 			break;
 

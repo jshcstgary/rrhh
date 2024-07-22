@@ -15,7 +15,6 @@
 
           <div class="col-md-12 text-end">
             <button
-              type="button"
               type="submit"
               class="btn btn-info me-2 mt-1"
               aria-label="Close"
@@ -147,7 +146,7 @@
 			<div class="form-check text-center">
 			<input type="checkbox" class="form-check-input" id="customCheck1"
 					checked (change)="onCheckedComp($event)">
-			<label class="form-check-label" for="customCheck1">Transferencia de Compañia</label>
+			<label class="form-check-label" for="customCheck1">Transferencia de Compañía</label>
 			</div>
 		</div>
 		</div>
@@ -178,13 +177,14 @@
 							>Fecha de Ingreso</label
 							>
 							&nbsp;
+							{{model.fechaIngresogrupo}}
 							<span
 							#mivar
 							id="tipoSolicitud"
 							name="tipoSolicitud"
 							style="color: black; font-size: 14px"
 							class="text-start"
-							>{{ model.fechaIngresogrupo | date:'yyyy/MM/dd' }}</span
+							>{{ model.fechaIngreso | date:'yyyy/MM/dd' }}</span
 							>
 						</div>
 					</div>
@@ -312,7 +312,7 @@
 				<div class="row">
 				  <div class="col-12 input-group mb-3">
 					<label class="input-group label-estilo" for="mov"
-					  >Movilizacion</label
+					  >Movilización</label
 					>
 					&nbsp;
 					<span
@@ -327,7 +327,7 @@
 				<div class="row">
 				  <div class="col-12 input-group">
 					<label class="input-group label-estilo" for="al"
-					  >Alimentacion</label
+					  >Alimentación</label
 					>
 					&nbsp;
 					<span
@@ -428,33 +428,37 @@
 
 			<div class="col-md-6">
 				<div class="row my-5">
-					<h2 class="col-12 sol-danger">Datos actuales</h2>
+					<h2 class="col-12 sol-danger">Datos propuestos</h2>
 				</div>
 
 				<div class="row">
 				  <div class="col-12 input-group mb-3">
 					<label class="input-group label-estilo" for="tipoMotivo">Compañía</label>
+
 					&nbsp;
-					<input type="text" name="compania" placeholder="Campo obligatorio" [(ngModel)]="model.compania" class="form-control" id="compania" required />
+
+					<input type="text" name="compania" placeholder="Campo obligatorio" [(ngModel)]="viewInputs ? model.compania : modelPropuestos.compania" class="form-control" id="compania" [disabled]="viewInputs" />
 				  </div>
 				</div>
+
 				<div class="row">
 				  <div class="col-12 input-group mb-3">
 					<label class="input-group label-estilo" for="tipoMotivo">Unidad</label>
+
 					&nbsp;
-					<input type="text" name="unidad" placeholder="Campo obligatorio" [(ngModel)]="model.unidadNegocio" class="form-control" id="unidad" required />
+
+					<input type="text" name="unidad" placeholder="Campo obligatorio" [(ngModel)]="viewInputs ? model.unidadNegocio : modelPropuestos.unidadNegocio" class="form-control" id="unidad" [disabled]="viewInputs" />
 				  </div>
 				</div>
-				<div *ngIf="!viewInputs">
+
+				<div *ngIf="viewInputs">
 					<div class="row">
 						<div class="col-12 input-group mb-3">
 							<label class="input-group label-estilo" for="tipoSolicitud">Fecha de Ingreso</label>
 
 							&nbsp;
 
-							<input type="text" name="fecha-ingreso" placeholder="Campo obligatorio" [(ngModel)]="model.fechaIngreso" class="form-control" id="fecha-ingreso" required />
-
-							<!-- <span id="tipoSolicitud" name="tipoSolicitud" style="color: black; font-size: 14px" class="text-start">{{ this.detalleSolicitud.fechaIngreso | date:'yyyy/MM/dd' }}</span> -->
+							<input type="text" name="fecha-ingreso" placeholder="Campo obligatorio" [(ngModel)]="modelPropuestos.fechaIngreso" class="form-control" id="fecha-ingreso" required />
 						</div>
 					</div>
 					<div class="row">
@@ -463,9 +467,7 @@
 
 							&nbsp;
 
-							<input type="text" name="departamento" placeholder="Campo obligatorio" [(ngModel)]="model.departamento" class="form-control" id="departamento" required />
-
-							<!-- <span id="comp" name="comp" style="color: black; font-size: 14px" class="text-start">{{ this.detalleSolicitud.areaDepartamento }}</span> -->
+							<input type="text" name="departamento" placeholder="Campo obligatorio" [(ngModel)]="modelPropuestos.departamento" class="form-control" id="departamento" required />
 						</div>
 					</div>
 					<div class="row">
@@ -474,9 +476,7 @@
 
 							&nbsp;
 
-							<input type="text" name="localidad" placeholder="Campo obligatorio" [(ngModel)]="model.localidad" class="form-control" id="localidad" required />
-
-							<!-- <span id="unidad" name="unidad" style="color: black; font-size: 14px" class="text-start">{{ this.detalleSolicitud.localidad }}</span> -->
+							<input type="text" name="localidad" placeholder="Campo obligatorio" [(ngModel)]="modelPropuestos.localidad" class="form-control" id="localidad" required />
 						</div>
 					</div>
 					<div class="row">
@@ -485,9 +485,7 @@
 
 							&nbsp;
 
-							<input type="text" name="grupoPago" placeholder="Campo obligatorio" [(ngModel)]="model.grupoPago" class="form-control" id="grupoPago" required />
-
-							<!-- <span id="unidad" name="unidad" style="color: black; font-size: 14px" class="text-start">{{ this.detalleSolicitud.grupoDePago }}</span> -->
+							<input type="text" name="grupoPago" placeholder="Campo obligatorio" [(ngModel)]="modelPropuestos.grupoPago" class="form-control" id="grupoPago" required />
 						</div>
 					</div>
 					<div class="row">
@@ -496,9 +494,7 @@
 
 							&nbsp;
 
-							<input type="text" name="puesto" placeholder="Campo obligatorio" [(ngModel)]="model.descrPuesto" class="form-control" id="puesto" required />
-
-							<!-- <span id="comp" name="comp" style="color: black; font-size: 14px" class="text-start">{{ this.detalleSolicitud.puesto }}</ span> -->
+							<input type="text" name="puesto" placeholder="Campo obligatorio" [(ngModel)]="modelPropuestos.descrPuesto" class="form-control" id="puesto" required />
 						</div>
 					</div>
 					<div class="row">
@@ -507,9 +503,7 @@
 
 							&nbsp;
 
-							<input type="text" name="centro-costos" placeholder="Campo obligatorio" [(ngModel)]="model.nomCCosto" class="form-control" id="centro-costos" required />
-
-							<!-- <span id="unidad" name="unidad" style="color: black; font-size: 14px" class="text-start">{{ this.detalleSolicitud.centroCosto }}</span> -->
+							<input type="text" name="centro-costos" placeholder="Campo obligatorio" [(ngModel)]="modelPropuestos.nomCCosto" class="form-control" id="centro-costos" required />
 						</div>
 					</div>
 					<div class="row">
@@ -518,9 +512,7 @@
 
 							&nbsp;
 
-							<input type="text" name="suursal" placeholder="Campo obligatorio" [(ngModel)]="model.sucursal" class="form-control" id="suursal" required />
-
-							<!-- <span id="unidad" name="unidad" style="color: black; font-size: 14px" class="text-start">{{ this.detalleSolicitud.sucursal }}</span> -->
+							<input type="text" name="suursal" placeholder="Campo obligatorio" [(ngModel)]="modelPropuestos.sucursal" class="form-control" id="suursal" required />
 						</div>
 					</div>
 					<div class="row">
@@ -529,20 +521,16 @@
 
 							&nbsp;
 
-							<input type="text" name="movilizacion" placeholder="Campo obligatorio" [(ngModel)]="model.sucursal" class="form-control" id="movilizacion" required />
-
-							<!-- <span id="mov" name="mov" style="color: black; font-size: 14px" class="text-start">{{ this.detalleSolicitud.movilizacion }} </span> -->
+							<input type="text" name="movilizacion" placeholder="Campo obligatorio" [(ngModel)]="detalleSolicitudPropuestos.movilizacion" class="form-control" id="movilizacion" required />
 						</div>
 					</div>
 					<div class="row">
 						<div class="col-12 input-group">
-							<label class="input-group label-estilo" for="al">Alimentacion</label>
+							<label class="input-group label-estilo" for="al">Alimentación</label>
 
 							&nbsp;
 
-							<input type="text" name="alimentacion" placeholder="Campo obligatorio" [(ngModel)]="model.sucursal" class="form-control" id="alimentacion" required />
-
-							<!-- <span id="al" name="al" style="color: black; font-size: 14px" class="text-start">{{ this.detalleSolicitud.alimentacion }}</ span> -->
+							<input type="text" name="alimentacion" placeholder="Campo obligatorio" [(ngModel)]="detalleSolicitudPropuestos.alimentacion" class="form-control" id="alimentacion" required />
 						</div>
 					</div>
 					<div class="row my-4">
@@ -561,9 +549,7 @@
 
 							&nbsp;
 
-							<input type="text" name="sueldo" placeholder="Campo obligatorio" [(ngModel)]="model.sueldo" class="form-control" id="sueldo" required />
-
-							<!-- <span id="comp" name="comp" style="color: black; font-size: 14px" class="text-start">{{ this.detalleSolicitud.sueldo }}</ span> -->
+							<input type="text" name="sueldo" placeholder="Campo obligatorio" [(ngModel)]="modelPropuestos.sueldo" class="form-control" id="sueldo" required />
 						</div>
 					</div>
 					<div class="row">
@@ -572,9 +558,7 @@
 
 							&nbsp;
 
-							<input type="text" name="sueldo-mensual" placeholder="Campo obligatorio" [(ngModel)]="model.sueldoMensual" class="form-control" id="sueldo-mensual" required />
-
-							<!-- <span id="me" name="me" style="color: black; font-size: 14px" class="text-start">{{ this.detalleSolicitud.sueldoVariableMensual }}</span> -->
+							<input type="text" name="sueldo-mensual" placeholder="Campo obligatorio" [(ngModel)]="modelPropuestos.sueldoMensual" class="form-control" id="sueldo-mensual" required />
 						</div>
 					</div>
 					<div class="row">
@@ -583,9 +567,7 @@
 
 							&nbsp;
 
-							<input type="text" name="sueldo-trimestral" placeholder="Campo obligatorio" [(ngModel)]="model.sueldoTrimestral" class="form-control" id="sueldo-trimestral" required />
-
-							<!-- <span id="al" name="al" style="color: black; font-size: 14px" class="text-start">{{ this.detalleSolicitud.sueldoVariableTrimestral }}</span> -->
+							<input type="text" name="sueldo-trimestral" placeholder="Campo obligatorio" [(ngModel)]="modelPropuestos.sueldoTrimestral" class="form-control" id="sueldo-trimestral" required />
 						</div>
 					</div>
 					<div class="row">
@@ -594,9 +576,7 @@
 
 							&nbsp;
 
-							<input type="text" name="sueldo-semestral" placeholder="Campo obligatorio" [(ngModel)]="model.sueldoSemestral" class="form-control" id="sueldo-semestral" required />
-
-							<!-- <span id="al" name="al" style="color: black; font-size: 14px" class="text-start">{{ this.detalleSolicitud.sueldoVariableSemestral }}</span> -->
+							<input type="text" name="sueldo-semestral" placeholder="Campo obligatorio" [(ngModel)]="modelPropuestos.sueldoSemestral" class="form-control" id="sueldo-semestral" required />
 						</div>
 					</div>
 					<div class="row">
@@ -605,9 +585,7 @@
 
 							&nbsp;
 
-							<input type="text" name="sueldo-anual" placeholder="Campo obligatorio" [(ngModel)]="model.sueldoAnual" class="form-control" id="sueldo-anual" required />
-
-							<!-- <span id="al" name="al" style="color: black; font-size: 14px" class="text-start">{{ this.detalleSolicitud.sueldoVariableAnual }}</span> -->
+							<input type="text" name="sueldo-anual" placeholder="Campo obligatorio" [(ngModel)]="modelPropuestos.sueldoAnual" class="form-control" id="sueldo-anual" required />
 						</div>
 					</div>
 				</div>

@@ -58,9 +58,11 @@ export const environment = {
 
   taskType_RG_Remuneraciones: "RG_RevisarSolicitudRemuneraciones",
 
-  taskType_AP: "SB_RevisionSolicitudAP",
+  taskType_AP: "AP_RegistrarSolicitud",
 
-  taskType_AP_Registrar: "AP_RegistrarSolicitud",
+  taskType_AP_Completar: "AP_CompletarSolicitud",
+
+  taskType_AP_Revisar: "SB_RevisionSolicitudAP",
 
   taskType_AP_RRHH: "AP_RevisarSolicitudGerente",
 
