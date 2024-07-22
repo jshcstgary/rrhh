@@ -72,13 +72,13 @@ export const environment = {
   // camundaUrl: `${baseRBP}:8290/`,
   // camundaUrl: `localhost:8080/`,
 
-  exempleadoServiceEsJaff: `${base}:8078/v1/us/exempleadojaff`,
+  exempleadoServiceEsJaff: `${base}:8076/v1/us/exempleadojaff`,
   // exempleadoServiceEsJaff: `${baseG}/v1/us/exempleadojaff`,
-  // exempleadoServiceEsJaff: `${baseRBP}:8078/v1/us/exempleadojaff`,
+  // exempleadoServiceEsJaff: `${baseRBP}:8276/v1/us/exempleadojaff`,
 
   exempleadoServiceEsSpyral: `${base}:8079/v1/us/exempleadosp`,
   // exempleadoServiceEsSpyral: `${baseG}/v1/us/exempleadosp`,
-  // exempleadoServiceEsSpyral: `${baseRBP}:8079/v1/us/exempleadosp`,
+  // exempleadoServiceEsSpyral: `${baseRBP}:8279/v1/us/exempleadosp`,
 
 
   exempleadoService: `${base}:8089/v1/us/exempleados_rbp`,
