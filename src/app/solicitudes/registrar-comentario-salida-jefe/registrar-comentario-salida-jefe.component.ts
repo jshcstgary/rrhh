@@ -1177,7 +1177,7 @@ export class RegistrarComentarioSalidaJefeComponent extends CompleteTaskComponen
       next: () => {
         this.utilService.closeLoadingSpinner();
 
-        this.utilService.modalResponse(`Solicitud registrada correctamente [${this.idDeInstancia}]. Será redirigido en un momento...`, "success");
+        this.utilService.modalResponse(`Solicitud registrada correctamente [${this.solicitud.idSolicitud}]. Será redirigido en un momento...`, "success");
 
         setTimeout(() => {
           this.router.navigate([`/tareas/consulta-tareas`]);

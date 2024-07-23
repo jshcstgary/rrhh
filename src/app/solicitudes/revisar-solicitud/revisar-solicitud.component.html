@@ -352,25 +352,7 @@
 			</div>
 		</div>
     </div>
-      <div class="row" *ngIf="isFechaMaximaVisible">
-        <div class="col">
-          <div class="input-group mb-3 contenedor">
-
-            <label class="input-group-text label-estilo2" for="aprobar">Fecha máxima de espera
-            </label>
-
-            <div class="datepicker-container">
-              <mat-form-field appearance="outline">
-                <mat-label>Fecha</mat-label>
-                <input matInput [matDatepicker]="picker" [(ngModel)]="selectedDate" name="espera-maxima">
-                <mat-datepicker-toggle matSuffix [for]="picker">
-                </mat-datepicker-toggle>
-                <mat-datepicker #picker></mat-datepicker>
-              </mat-form-field>
-            </div>
-          </div>
-        </div>
-    </div>
+      
 
     <!-- Aqui empieza la condición Formulario Reingreso-->
     <div *ngIf="mostrarFormularioReingreso" >
@@ -1517,26 +1499,8 @@
           </div>
         </div>
       </div>
+      
     </div>
-      <div class="row" *ngIf="isFechaMaximaVisible">
-        <div class="col">
-          <div class="input-group mb-3 contenedor">
-
-            <label class="input-group-text label-estilo2" for="aprobar">Fecha máxima de espera
-            </label>
-
-            <div class="datepicker-container">
-              <mat-form-field appearance="outline">
-                <mat-label>Fecha</mat-label>
-                <input matInput [matDatepicker]="picker" [(ngModel)]="selectedDate" name="espera-maxima">
-                <mat-datepicker-toggle matSuffix [for]="picker">
-                </mat-datepicker-toggle>
-                <mat-datepicker #picker></mat-datepicker>
-              </mat-form-field>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
 
 	<div *ngIf="mostrarAccionPersonal">
@@ -1552,7 +1516,13 @@
 					[ngbTypeahead]="searchSubledger" [ngbTypeahead]="searchNombre" (selectItem)="onSelectItem('nombreCompleto', $event)"
 					aria-describedby="inputGroupPrepend" #nombreCompleto="ngModel" placeholder="Ingrese nombre" required /> -->
 
-				<span>Nombre completo</span>
+          <span
+          id="comp"
+          name="comp"
+          style="color: black; font-size: 14px"
+          class="text-start"
+          >{{ model.nombreCompleto }}</span
+        >
 
 				<!-- <button class="btn btn-light" type="button" (click)="getDataEmpleadosEvolution('nombreCompleto')">
 					<i class="ti-search"></i>
@@ -1571,7 +1541,13 @@
 					aria-describedby="inputGroupPrepend" required #subledger="ngModel" placeholder="Ingrese subledger"
 					[ngbTypeahead]="searchNombre" [ngbTypeahead]="searchSubledger" (selectItem)="onSelectItem('subledger', $event)" /> -->
 
-					<span>Subledger</span>
+					<span
+					  id="comp"
+					  name="comp"
+					  style="color: black; font-size: 14px"
+					  class="text-start"
+					  >{{ model.subledger }}</span
+					>
 
 					<!-- <button class="btn btn-light" type="button" (click)="getDataEmpleadosEvolution('subledger')">
 					<i class="ti-search"></i>
@@ -1584,7 +1560,7 @@
 		<div class="mx-auto my-5">
 		<div class="form-check form-check-inline">
 			<div class="form-check text-center">
-			<input type="checkbox" class="form-check-input" id="customCheck1" checked />
+			<input type="checkbox" class="form-check-input" id="customCheck1" checked disabled/>
 			<label class="form-check-label" for="customCheck1">Transferencia de Compañía</label>
 			</div>
 		</div>
@@ -1616,7 +1592,6 @@
 							>Fecha de Ingreso</label
 							>
 							&nbsp;
-							{{model.fechaIngresogrupo}}
 							<span
 							#mivar
 							id="tipoSolicitud"
@@ -1714,7 +1689,7 @@
 					  name="comp"
 					  style="color: black; font-size: 14px"
 					  class="text-start"
-					  >{{ model.descrPuesto }}</span
+					  >{{ model.nombreCargo }}</span
 					>
 				  </div>
 				</div>
@@ -1736,7 +1711,7 @@
 				<div class="row">
 				  <div class="col-12 input-group mb-3">
 					<label class="input-group label-estilo" for="tipoMotivo"
-					  >Sucursal (Nominá)</label
+					  >Sucursal (Nómina)</label
 					>
 					&nbsp;
 					<span
@@ -1759,7 +1734,7 @@
 					  name="mov"
 					  style="color: black; font-size: 14px"
 					  class="text-start"
-					  >{{ 0 }}</span
+					  >{{ detalleSolicitudPropuestos.movilizacion }}</span
 					>
 				  </div>
 				</div>
@@ -1774,7 +1749,7 @@
 					  name="al"
 					  style="color: black; font-size: 14px"
 					  class="text-start"
-					  >{{ 0 }}</span
+					  >{{ detalleSolicitudPropuestos.alimentacion }}</span
 					>
 				  </div>
 				</div>
@@ -1865,7 +1840,7 @@
 				</div>
 			</div>
 
-			<!-- <div class="col-md-6">
+			<div class="col-md-6">
 				<div class="row my-5">
 					<h2 class="col-12 sol-danger">Datos propuestos</h2>
 				</div>
@@ -1875,9 +1850,13 @@
 					<label class="input-group label-estilo" for="tipoMotivo">Compañía</label>
 
 					&nbsp;
-
-					<input type="text" name="compania" placeholder="Campo obligatorio" [(ngModel)]="viewInputs ? model.compania : modelPropuestos.compania" class="form-control" id="compania" [disabled]="viewInputs" />
-				  </div>
+          <span
+					  id="comp"
+					  name="comp"
+					  style="color: black; font-size: 14px"
+					  class="text-start"
+					  >{{ modelPropuestos.compania }}</span
+					>				  </div>
 				</div>
 
 				<div class="row">
@@ -1886,19 +1865,28 @@
 
 					&nbsp;
 
-					<input type="text" name="unidad" placeholder="Campo obligatorio" [(ngModel)]="viewInputs ? model.unidadNegocio : modelPropuestos.unidadNegocio" class="form-control" id="unidad" [disabled]="viewInputs" />
-				  </div>
+          <span
+          id="comp"
+          name="comp"
+          style="color: black; font-size: 14px"
+          class="text-start"
+          >{{ modelPropuestos.unidadNegocio }}</span
+        >					  </div>
 				</div>
 
-				<div *ngIf="viewInputs">
 					<div class="row">
 						<div class="col-12 input-group mb-3">
 							<label class="input-group label-estilo" for="tipoSolicitud">Fecha de Ingreso</label>
 
 							&nbsp;
-
-							<input type="text" name="fecha-ingreso" placeholder="Campo obligatorio" [(ngModel)]="modelPropuestos.fechaIngreso" class="form-control" id="fecha-ingreso" required />
-						</div>
+              <span
+							#mivar
+							id="tipoSolicitud"
+							name="tipoSolicitud"
+							style="color: black; font-size: 14px"
+							class="text-start"
+							>{{ modelPropuestos.fechaIngreso | date:'yyyy/MM/dd' }}</span
+							>						</div>
 					</div>
 					<div class="row">
 						<div class="col-12 input-group mb-3">
@@ -1906,8 +1894,13 @@
 
 							&nbsp;
 
-							<input type="text" name="departamento" placeholder="Campo obligatorio" [(ngModel)]="modelPropuestos.departamento" class="form-control" id="departamento" required />
-						</div>
+              <span
+              id="comp"
+              name="comp"
+              style="color: black; font-size: 14px"
+              class="text-start"
+              >{{ modelPropuestos.departamento }}</span
+            >							</div>
 					</div>
 					<div class="row">
 						<div class="col-12 input-group mb-3">
@@ -1915,8 +1908,13 @@
 
 							&nbsp;
 
-							<input type="text" name="localidad" placeholder="Campo obligatorio" [(ngModel)]="modelPropuestos.localidad" class="form-control" id="localidad" required />
-						</div>
+              <span
+              id="comp"
+              name="comp"
+              style="color: black; font-size: 14px"
+              class="text-start"
+              >{{ modelPropuestos.localidad }}</span
+            >							</div>
 					</div>
 					<div class="row">
 						<div class="col-12 input-group mb-3">
@@ -1924,8 +1922,13 @@
 
 							&nbsp;
 
-							<input type="text" name="grupoPago" placeholder="Campo obligatorio" [(ngModel)]="modelPropuestos.grupoPago" class="form-control" id="grupoPago" required />
-						</div>
+              <span
+              id="comp"
+              name="comp"
+              style="color: black; font-size: 14px"
+              class="text-start"
+              >{{ modelPropuestos.grupoPago }}</span
+            >							</div>
 					</div>
 					<div class="row">
 						<div class="col-12 input-group mb-3">
@@ -1933,8 +1936,13 @@
 
 							&nbsp;
 
-							<input type="text" name="puesto" placeholder="Campo obligatorio" [(ngModel)]="modelPropuestos.descrPuesto" class="form-control" id="puesto" required />
-						</div>
+              <span
+              id="comp"
+              name="comp"
+              style="color: black; font-size: 14px"
+              class="text-start"
+              >{{ modelPropuestos.nombreCargo }}</span
+            >							</div>
 					</div>
 					<div class="row">
 						<div class="col-12 input-group mb-3">
@@ -1942,8 +1950,13 @@
 
 							&nbsp;
 
-							<input type="text" name="centro-costos" placeholder="Campo obligatorio" [(ngModel)]="modelPropuestos.nomCCosto" class="form-control" id="centro-costos" required />
-						</div>
+<span
+					  id="comp"
+					  name="comp"
+					  style="color: black; font-size: 14px"
+					  class="text-start"
+					  >{{ modelPropuestos.nomCCosto }}</span
+					>							</div>
 					</div>
 					<div class="row">
 						<div class="col-12 input-group mb-3">
@@ -1951,8 +1964,13 @@
 
 							&nbsp;
 
-							<input type="text" name="suursal" placeholder="Campo obligatorio" [(ngModel)]="modelPropuestos.sucursal" class="form-control" id="suursal" required />
-						</div>
+              <span
+              id="comp"
+              name="comp"
+              style="color: black; font-size: 14px"
+              class="text-start"
+              >{{ modelPropuestos.sucursal }}</span
+            >						</div>
 					</div>
 					<div class="row">
 						<div class="col-12 input-group mb-3">
@@ -1960,8 +1978,13 @@
 
 							&nbsp;
 
-							<input type="text" name="movilizacion" placeholder="Campo obligatorio" [(ngModel)]="detalleSolicitudPropuestos.movilizacion" class="form-control" id="movilizacion" required />
-						</div>
+              <span
+              id="comp"
+              name="comp"
+              style="color: black; font-size: 14px"
+              class="text-start"
+              >{{ detalleSolicitudPropuestos.movilizacion }}</span
+            >						</div>
 					</div>
 					<div class="row">
 						<div class="col-12 input-group">
@@ -1969,8 +1992,13 @@
 
 							&nbsp;
 
-							<input type="text" name="alimentacion" placeholder="Campo obligatorio" [(ngModel)]="detalleSolicitudPropuestos.alimentacion" class="form-control" id="alimentacion" required />
-						</div>
+              <span
+              id="comp"
+              name="comp"
+              style="color: black; font-size: 14px"
+              class="text-start"
+              >{{ detalleSolicitudPropuestos.alimentacion }}</span
+            >						</div>
 					</div>
 					<div class="row my-4">
 						<div class="col-12">
@@ -1988,8 +2016,13 @@
 
 							&nbsp;
 
-							<input type="text" name="sueldo" placeholder="Campo obligatorio" [(ngModel)]="modelPropuestos.sueldo" class="form-control" id="sueldo" required />
-						</div>
+              <span
+              id="comp"
+              name="comp"
+              style="color: black; font-size: 14px"
+              class="text-start"
+              >{{ modelPropuestos.sueldo }}</span
+            >						</div>
 					</div>
 					<div class="row">
 						<div class="col-12 input-group mb-3">
@@ -1997,8 +2030,13 @@
 
 							&nbsp;
 
-							<input type="text" name="sueldo-mensual" placeholder="Campo obligatorio" [(ngModel)]="modelPropuestos.sueldoMensual" class="form-control" id="sueldo-mensual" required />
-						</div>
+              <span
+              id="comp"
+              name="comp"
+              style="color: black; font-size: 14px"
+              class="text-start"
+              >{{ modelPropuestos.sueldoMensual }}</span
+            >						</div>
 					</div>
 					<div class="row">
 						<div class="col-12 input-group mb-3">
@@ -2006,8 +2044,13 @@
 
 							&nbsp;
 
-							<input type="text" name="sueldo-trimestral" placeholder="Campo obligatorio" [(ngModel)]="modelPropuestos.sueldoTrimestral" class="form-control" id="sueldo-trimestral" required />
-						</div>
+              <span
+              id="comp"
+              name="comp"
+              style="color: black; font-size: 14px"
+              class="text-start"
+              >{{ modelPropuestos.sueldoTrimestral }}</span
+            >						</div>
 					</div>
 					<div class="row">
 						<div class="col-12 input-group mb-3">
@@ -2015,8 +2058,13 @@
 
 							&nbsp;
 
-							<input type="text" name="sueldo-semestral" placeholder="Campo obligatorio" [(ngModel)]="modelPropuestos.sueldoSemestral" class="form-control" id="sueldo-semestral" required />
-						</div>
+              <span
+              id="comp"
+              name="comp"
+              style="color: black; font-size: 14px"
+              class="text-start"
+              >{{ modelPropuestos.sueldoSemestral }}</span
+            >						</div>
 					</div>
 					<div class="row">
 						<div class="md-12 input-group mb-3">
@@ -2024,12 +2072,16 @@
 
 							&nbsp;
 
-							<input type="text" name="sueldo-anual" placeholder="Campo obligatorio" [(ngModel)]="modelPropuestos.sueldoAnual" class="form-control" id="sueldo-anual" required />
-						</div>
+              <span
+              id="comp"
+              name="comp"
+              style="color: black; font-size: 14px"
+              class="text-start"
+              >{{ modelPropuestos.sueldoAnual }}</span
+            >						</div>
 					</div>
-				</div>
 
-			</div> -->
+			</div>
 		</div>
 
 
@@ -2126,7 +2178,7 @@
         <div class="row mt-4">
             <div class="col-md-4">
               <div class="mb-4">
-                <a> <h3 class="sol-danger">Anulación de Solicitud</h3></a>
+                <a> <h3 class="sol-danger">Tipo de Acción</h3></a>
               </div>
             </div>
             <div class="col-md-8">
@@ -2137,7 +2189,6 @@
 		<div class="row" >
 			<div class="col">
 				<div class="input-group mb-3 contenedor">
-					<label class="input-group-text adjustable-label">Tipod de acción</label>
 					&nbsp;
 					<span>{{solicitud.tipoAccion}}</span>
 
@@ -2153,37 +2204,99 @@
 				</div>
 			</div>
 		</div>
+    <div class="row mt-4">
+			<div class="col-md-4">
+			<div class="mb-4">
+				<a>
+				<h3 class="sol-danger">Atención de Solicitud</h3>
+				</a>
+			</div>
+			</div>
+			<div class="col-md-8">
+			<hr />
+			</div>
+		</div>
 
-		<div class="row" >
-			<div class="col">
-				<div class="input-group mb-3 contenedor">
-					<label class="input-group-text adjustable-label">¿Anular solicitud?</label>
-					&nbsp;
-
-					<!-- <div class="form-check form-check-inline">
-						<input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="Si"
-						  [(ngModel)]="selectedOption" (change)="onSelectionChange()">
-						<label class="form-check-label" for="inlineRadio1">Si</label>
-					  </div>
-					  <div class="form-check form-check-inline">
-						<input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="No"
-						  [(ngModel)]="selectedOption" (change)="onSelectionChange()">
-						<label class="form-check-label" for="inlineRadio2">No</label>
-					  </div> -->
-				</div>
+		<div class="row">
+			<div class="col-md-6">
+			<div class="input-group mb-3" style="display: flex; align-items: center; flex-wrap: nowrap;">
+				<label class="input-group-text label-estilo" for="nivelaprobacion"
+				style="margin-right: 10px; white-space: nowrap;">
+				Nivel de aprobación
+				</label>
+				<span id="nivelaprobacion" name="nivelaprobacion"
+				style="color: black; font-size: 14px; margin-right: 10px; white-space: nowrap;">
+				{{ datosAprobadores.idNivelAprobacion }}
+				</span>
+				<span id="descripcionPosicion" name="descripcionPosicion"
+				style="color: #0056B3; font-size: 14px; margin-right: 10px; white-space: nowrap;">
+				{{ datosAprobadores.descripcionPosicion }}
+				</span>
+				<span id="usuarioaprueba" name="usuarioaprueba" style="color: black; font-size: 14px; white-space: nowrap;">
+				{{ datosAprobadores.usuario }}
+				</span>
+			</div>
 			</div>
 		</div>
 
 		<div class="row">
 			<div class="col">
-				<div class="input-group mb-3 contenedor">
-					<label class="input-group adjustable-label adjustable-label" for="anulacion">Comentarios Anulación de Solicitud</label>
-					&nbsp;
-					<textarea id="anulacion" name="anulacion" [(ngModel)]="model.comentariosAnulacion" style="color: black; font-size: 14px; height: 100px;"></textarea>
+			<div class="input-group mb-3 contenedor">
+				<label class="input-group-text label-estilo2" for="desicion">Decisión a tomar
+				</label>
+
+				<div class="btn-group" role="group" aria-label="Basic example" id="desicion">
+				<button type="button" class="btn"
+					[ngClass]="{'btn-primary': !isSelected('aprobar'), 'btn-success': isSelected('aprobar')}"
+					(click)="process('aprobar')" value="aprobar">Aprobar</button>
+				<button type="button" class="btn"
+					[ngClass]="{'btn-primary': !isSelected('devolver'), 'btn-success': isSelected('devolver')}"
+					(click)="process('devolver')" value="devolver">Devolver</button>
+				<button type="button" class="btn"
+					[ngClass]="{'btn-primary': !isSelected('rechazar'), 'btn-success': isSelected('rechazar')}"
+					(click)="process('rechazar')" value="rechazar">Cancelar</button>
+				<button type="button" class="btn"
+					[ngClass]="{'btn-primary': !isSelected('esperar'), 'btn-success': isSelected('esperar')}"
+					(click)="process('esperar')" value="esperar">En espera</button>
 				</div>
+
+			</div>
 			</div>
 		</div>
+
+
+		<div class="row">
+			<div class="col">
+			<div class="input-group mb-3 contenedor">
+				<label class="input-group-text label-estilo2" for="observacion">{{observaciontexto}}
+				</label>
+				&nbsp;
+				<textarea [(ngModel)]="textareaContent" id="observacion" name="observacion" #observacion="ngModel"
+				[required]="isRequired" style="color: black; font-size: 14px" [placeholder]="campoObligatorio"></textarea>
+			</div>
+			</div>
+		</div>
+    
 	</div>
+  <div class="row" *ngIf="isFechaMaximaVisible">
+    <div class="col">
+      <div class="input-group mb-3 contenedor">
+
+        <label class="input-group-text label-estilo2" for="aprobar">Fecha máxima de espera
+        </label>
+
+        <div class="datepicker-container">
+          <mat-form-field appearance="outline">
+            <mat-label>Fecha</mat-label>
+            <input matInput [matDatepicker]="picker" [(ngModel)]="selectedDate" name="espera-maxima">
+            <mat-datepicker-toggle matSuffix [for]="picker">
+            </mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+</div>
     </h2>
   </div>
 </form>

@@ -1486,8 +1486,6 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
 
             this.utilService.closeLoadingSpinner();
 
-            this.utilService.modalResponse(`Solicitud registrada correctamente [${this.idDeInstancia}]. Será redirigido en un momento...`, "success");
-
             setTimeout(() => {
               this.router.navigate(["/tareas/consulta-tareas"]);
             }, 1800);

@@ -139,6 +139,7 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
 
   checkTipoSolicitud(): void {
      }
+  modelPropuestos: RegistrarData = new RegistrarData();
 
   override model: RegistrarData = new RegistrarData(
     "",
@@ -198,6 +199,8 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
     "",
     ""
   );
+  public detalleSolicitudPropuestos = new DetalleSolicitud();
+
 
   // public solicitud = new Solicitud();
 
@@ -1047,10 +1050,82 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
       }
     });
   }
+  totalRegistrosDetallesolicitud: number = 0;
 
   getDetalleSolicitudById(id: any) {
     return this.solicitudes.getDetalleSolicitudById(id).subscribe({
       next: (response: any) => {
+    
+    if (id.toUpperCase().includes("AP")) {
+
+        this.totalRegistrosDetallesolicitud = response.totalRegistros;
+
+		const detalleActual = response.detalleSolicitudType.find(detalle => detalle.idDetalleSolicitud === 1);
+
+		this.model.codigoPosicion = detalleActual.codigoPosicion;
+		this.model.descrPosicion = detalleActual.descripcionPosicion;
+		this.model.subledger = detalleActual.subledger;
+		this.model.nombreCompleto = detalleActual.nombreEmpleado;
+		this.model.compania = detalleActual.compania;
+		this.model.unidadNegocio = detalleActual.unidadNegocio;
+		this.model.departamento = detalleActual.departamento;
+		this.model.nombreCargo = detalleActual.cargo;
+		this.model.localidad = detalleActual.localidad;
+		this.model.nivelDir = detalleActual.nivelDireccion;
+		this.model.nomCCosto = detalleActual.centroCosto;
+		this.model.misionCargo = detalleActual.misionCargo;
+		this.model.justificacionCargo = detalleActual.justificacion;
+		this.model.reportaA = detalleActual.reportaA;
+		this.model.supervisaA = detalleActual.supervisaA;
+		this.model.tipoContrato = detalleActual.tipoContrato;
+		this.model.nivelRepa = detalleActual.nivelReporteA;
+		this.model.sueldo = detalleActual.sueldo;
+		this.model.sueldoMensual = detalleActual.sueldoVariableMensual;
+		this.model.sueldoTrimestral = detalleActual.sueldoVariableTrimestral;
+		this.model.sueldoSemestral = detalleActual.sueldoVariableSemestral;
+		this.model.sueldoAnual = detalleActual.sueldoVariableAnual;
+		this.model.correo = detalleActual.correo;
+		this.model.fechaIngreso = detalleActual.fechaIngreso;
+		this.model.sucursal = detalleActual.sucursal;
+		this.model.fechaIngreso = detalleActual.fechaIngreso;
+		this.model.grupoPago = detalleActual.grupoDePago;
+		this.model.descrPuesto = detalleActual.descripcionPosicion;
+
+		if (response.totalRegistros === 2) {
+			const detallePropuestos = response.detalleSolicitudType.find(detalle => detalle.idDetalleSolicitud === 2);
+
+			this.modelPropuestos.codigoPosicion = detallePropuestos.codigoPosicion;
+			this.modelPropuestos.descrPosicion = detallePropuestos.descripcionPosicion;
+			this.modelPropuestos.subledger = detallePropuestos.subledger;
+			this.modelPropuestos.nombreCompleto = detallePropuestos.nombreEmpleado;
+			this.modelPropuestos.compania = detallePropuestos.compania;
+			this.modelPropuestos.unidadNegocio = detallePropuestos.unidadNegocio;
+			this.modelPropuestos.departamento = detallePropuestos.departamento;
+			this.modelPropuestos.nombreCargo = detallePropuestos.cargo;
+			this.modelPropuestos.localidad = detallePropuestos.localidad;
+			this.modelPropuestos.nivelDir = detallePropuestos.nivelDireccion;
+			this.modelPropuestos.nomCCosto = detallePropuestos.centroCosto;
+			this.modelPropuestos.misionCargo = detallePropuestos.misionCargo;
+			this.modelPropuestos.justificacionCargo = detallePropuestos.justificacion;
+			this.modelPropuestos.reportaA = detallePropuestos.reportaA;
+			this.modelPropuestos.supervisaA = detallePropuestos.supervisaA;
+			this.modelPropuestos.tipoContrato = detallePropuestos.tipoContrato;
+			this.modelPropuestos.nivelRepa = detallePropuestos.nivelReporteA;
+			this.modelPropuestos.sueldo = detallePropuestos.sueldo;
+			this.modelPropuestos.sueldoMensual = detallePropuestos.sueldoVariableMensual;
+			this.modelPropuestos.sueldoTrimestral = detallePropuestos.sueldoVariableTrimestral;
+			this.modelPropuestos.sueldoSemestral = detallePropuestos.sueldoVariableSemestral;
+			this.modelPropuestos.sueldoAnual = detallePropuestos.sueldoVariableAnual;
+			this.modelPropuestos.correo = detallePropuestos.correo;
+			this.modelPropuestos.fechaIngreso = detallePropuestos.fechaIngreso;
+			this.modelPropuestos.sucursal = detallePropuestos.sucursal;
+			this.modelPropuestos.fechaIngreso = detallePropuestos.fechaIngreso;
+			this.modelPropuestos.grupoPago = detallePropuestos.grupoDePago;
+			this.modelPropuestos.descrPuesto = detallePropuestos.descripcionPosicion;
+			this.detalleSolicitudPropuestos.movilizacion = detallePropuestos.movilizacion;
+			this.detalleSolicitudPropuestos.alimentacion = detallePropuestos.alimentacion;
+		}}
+        else{
         this.detalleSolicitud = response.detalleSolicitudType[0];
         this.detalleSolicitudRG = response.detalleSolicitudType[0];
         if (!(id.toUpperCase().includes("RG")) && this.detalleSolicitud.codigoPosicion.length > 0) {
@@ -1115,7 +1190,7 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
             this.keySelected = this.solicitud.idTipoSolicitud + "_" + this.solicitud.idTipoMotivo + "_" + this.model.nivelDir;
             this.getComentarios();
           }
-        }
+        }}
 
         this.loadingComplete++;
 
@@ -1732,7 +1807,13 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
         variables.comentariosAtencion = { value: this.datosAprobadores.nivelDireccion + ': ' + this.textareaContent };
 
         //RQ_GRRHH_RevisarSolicitud
-      } else if (this.taskType_Activity == environment.taskType_RRHH) { //GERENTE RECURSOS HUMANOS
+      
+      } else if (this.taskType_Activity == environment.taskType_RRHH
+        || this.taskType_Activity == environment.taskType_CF_RRHH
+        || this.taskType_Activity == environment.taskType_AP_RRHH
+        || this.taskType_Activity == environment.taskType_RG_RRHH
+
+      ) { //GERENTE RECURSOS HUMANOS
         variables.idSolicitud = {
           value: this.solicitud.idSolicitud
         };
@@ -1745,22 +1826,12 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
         variables.atencionRevisionGerente = { value: this.buttonValue };
         variables.comentariosAtencionGerenteRRHH = { value: this.textareaContent };
 
-        /*{
-          "variables": {
-          "atencionRevisionGerente": {
-              "value": "aprobar"
-            },
-          "comentariosAtencionGerente": {
-              "value": ""
-            },
-          "ruta": {
-              "value": ""
-            }
-          },
-          "withVariablesInReturn": true
-        }*/
+      } else if (this.taskType_Activity == environment.taskType_CREM
+        || this.taskType_Activity == environment.taskType_AP_Remuneraciones
+        || this.taskType_Activity == environment.taskType_RG_Remuneraciones
+        || this.taskType_Activity == environment.taskType_CF_Remuneraciones
 
-      } else if (this.taskType_Activity == environment.taskType_CREM) {// COMITE DE REMUNERACION
+      ) {// COMITE DE REMUNERACION
 
 
 
