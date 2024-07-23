@@ -2038,7 +2038,11 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
 
                    }*/
 
-                  if (this.taskType_Activity == environment.taskType_RRHH && aprobadoractual === undefined) {
+                  if ((this.taskType_Activity == environment.taskType_RRHH 
+                    || this.taskType_Activity == environment.taskType_CF_RRHH
+                    || this.taskType_Activity == environment.taskType_AP_RRHH
+                    || this.taskType_Activity == environment.taskType_RG_RRHH) 
+                    && aprobadoractual === undefined) {
 
                     if (aprobacion.aprobador.nivelDireccion.trim().toUpperCase().indexOf('RRHH') > 0) {
                       if (aprobacionesObj[String(Number(index) + 1)] === undefined || aprobacionesObj[String(Number(index) + 1)] === null) {
@@ -2087,7 +2091,11 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
                     }
 
 
-                  } else if (this.taskType_Activity == environment.taskType_CREM && aprobadoractual === undefined) {
+                  } else if ((this.taskType_Activity == environment.taskType_CREM 
+                    || this.taskType_Activity == environment.taskType_AP_Remuneraciones
+                    || this.taskType_Activity == environment.taskType_RG_Remuneraciones
+                    || this.taskType_Activity == environment.taskType_CF_Remuneraciones)
+                     && aprobadoractual === undefined) {
 
                     if (aprobacion.aprobador.nivelDireccion.trim().toUpperCase().indexOf('REMUNERA') > 0) {
                       this.aprobadorActual = aprobacionesObj[index];

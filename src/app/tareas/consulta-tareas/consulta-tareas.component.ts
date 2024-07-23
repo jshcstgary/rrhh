@@ -20,6 +20,7 @@ import { environment } from "src/environments/environment";
 import Swal from "sweetalert2";
 import { ConsultaTareasData } from "./consulta-tareas.data";
 import { ConsultaTareasService } from "./consulta-tareas.service";
+import { formatDate } from "@angular/common";
 
 @Component({
   selector: "app-consulta-tareas",
@@ -186,7 +187,7 @@ export class ConsultaTareasComponent implements OnInit {
           next: (response) => {
             this.dataTable = response.solicitudes.map((item) => ({
               idSolicitud: item.idSolicitud + "," + item.rootProcInstId,
-              startTime: item.startTime,
+              startTime: item.startTime.toString().split(" ")[0],
               name: item.name,
               tipoSolicitud: item.tipoSolicitud,
             }));

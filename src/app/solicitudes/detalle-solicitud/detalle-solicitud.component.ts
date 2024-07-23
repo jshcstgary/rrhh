@@ -40,6 +40,8 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
   isFechaMaximaVisible: boolean = false;
   campoObligatorio: string = '';
   observaciontexto: string = 'Observación';
+  modelPropuestos: RegistrarData = new RegistrarData();
+
   override model: RegistrarData = new RegistrarData(
     "",
     "",
@@ -68,6 +70,10 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
     "",
     ""
   );
+
+  public detalleSolicitudPropuestos = new DetalleSolicitud();
+
+
   columnsDatosFamiliares = columnsDatosFamiliares.columns;
   dataTableDatosFamiliares: FamiliaresCandidatos[] = [];
   datosAprobadores: DatosAprobadores = new DatosAprobadores();
@@ -129,6 +135,8 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 
   public mostrarFormularioFamiliares: boolean = false;
   public mostrarFormularioReingreso: boolean = false;
+  public mostrarRequisicion: boolean = false;
+  public mostrarAccionPersonal: boolean = false;
 
   public titulo: string = "Formulario De Registro";
 
@@ -849,8 +857,10 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
     return this.solicitudes.getSolicitudById(id).subscribe({
       next: (response: any) => {
         this.solicitud = response;
-        this.mostrarFormularioFamiliares = this.solicitud.tipoSolicitud === "Contratación de Familiares";
-        this.mostrarFormularioReingreso = this.solicitud.tipoSolicitud === "Reingreso de Personal";
+        this.mostrarRequisicion = this.solicitud.idSolicitud.includes("RP-");
+        this.mostrarFormularioFamiliares = this.solicitud.idSolicitud.includes("CF-");
+        this.mostrarFormularioReingreso = this.solicitud.idSolicitud.includes("RG-");
+		    this.mostrarAccionPersonal = this.solicitud.idSolicitud.includes("AP-");
         this.loadingComplete += 2;
         this.getDetalleSolicitudById(id);
       },
@@ -859,11 +869,82 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
       },
     });
   }
+  totalRegistrosDetallesolicitud: number = 0;
 
   getDetalleSolicitudById(id: any) {
     return this.solicitudes.getDetalleSolicitudById(id).subscribe({
       next: (response: any) => {
-        this.detalleSolicitud = response.detalleSolicitudType[0];
+        if (id.toUpperCase().includes("AP")) {
+
+          this.totalRegistrosDetallesolicitud = response.totalRegistros;
+  
+      const detalleActual = response.detalleSolicitudType.find(detalle => detalle.idDetalleSolicitud === 1);
+  
+      this.model.codigoPosicion = detalleActual.codigoPosicion;
+      this.model.descrPosicion = detalleActual.descripcionPosicion;
+      this.model.subledger = detalleActual.subledger;
+      this.model.nombreCompleto = detalleActual.nombreEmpleado;
+      this.model.compania = detalleActual.compania;
+      this.model.unidadNegocio = detalleActual.unidadNegocio;
+      this.model.departamento = detalleActual.departamento;
+      this.model.nombreCargo = detalleActual.cargo;
+      this.model.localidad = detalleActual.localidad;
+      this.model.nivelDir = detalleActual.nivelDireccion;
+      this.model.nomCCosto = detalleActual.centroCosto;
+      this.model.misionCargo = detalleActual.misionCargo;
+      this.model.justificacionCargo = detalleActual.justificacion;
+      this.model.reportaA = detalleActual.reportaA;
+      this.model.supervisaA = detalleActual.supervisaA;
+      this.model.tipoContrato = detalleActual.tipoContrato;
+      this.model.nivelRepa = detalleActual.nivelReporteA;
+      this.model.sueldo = detalleActual.sueldo;
+      this.model.sueldoMensual = detalleActual.sueldoVariableMensual;
+      this.model.sueldoTrimestral = detalleActual.sueldoVariableTrimestral;
+      this.model.sueldoSemestral = detalleActual.sueldoVariableSemestral;
+      this.model.sueldoAnual = detalleActual.sueldoVariableAnual;
+      this.model.correo = detalleActual.correo;
+      this.model.fechaIngreso = detalleActual.fechaIngreso;
+      this.model.sucursal = detalleActual.sucursal;
+      this.model.fechaIngreso = detalleActual.fechaIngreso;
+      this.model.grupoPago = detalleActual.grupoDePago;
+      this.model.descrPuesto = detalleActual.descripcionPosicion;
+  
+      if (response.totalRegistros === 2) {
+        const detallePropuestos = response.detalleSolicitudType.find(detalle => detalle.idDetalleSolicitud === 2);
+  
+        this.modelPropuestos.codigoPosicion = detallePropuestos.codigoPosicion;
+        this.modelPropuestos.descrPosicion = detallePropuestos.descripcionPosicion;
+        this.modelPropuestos.subledger = detallePropuestos.subledger;
+        this.modelPropuestos.nombreCompleto = detallePropuestos.nombreEmpleado;
+        this.modelPropuestos.compania = detallePropuestos.compania;
+        this.modelPropuestos.unidadNegocio = detallePropuestos.unidadNegocio;
+        this.modelPropuestos.departamento = detallePropuestos.departamento;
+        this.modelPropuestos.nombreCargo = detallePropuestos.cargo;
+        this.modelPropuestos.localidad = detallePropuestos.localidad;
+        this.modelPropuestos.nivelDir = detallePropuestos.nivelDireccion;
+        this.modelPropuestos.nomCCosto = detallePropuestos.centroCosto;
+        this.modelPropuestos.misionCargo = detallePropuestos.misionCargo;
+        this.modelPropuestos.justificacionCargo = detallePropuestos.justificacion;
+        this.modelPropuestos.reportaA = detallePropuestos.reportaA;
+        this.modelPropuestos.supervisaA = detallePropuestos.supervisaA;
+        this.modelPropuestos.tipoContrato = detallePropuestos.tipoContrato;
+        this.modelPropuestos.nivelRepa = detallePropuestos.nivelReporteA;
+        this.modelPropuestos.sueldo = detallePropuestos.sueldo;
+        this.modelPropuestos.sueldoMensual = detallePropuestos.sueldoVariableMensual;
+        this.modelPropuestos.sueldoTrimestral = detallePropuestos.sueldoVariableTrimestral;
+        this.modelPropuestos.sueldoSemestral = detallePropuestos.sueldoVariableSemestral;
+        this.modelPropuestos.sueldoAnual = detallePropuestos.sueldoVariableAnual;
+        this.modelPropuestos.correo = detallePropuestos.correo;
+        this.modelPropuestos.fechaIngreso = detallePropuestos.fechaIngreso;
+        this.modelPropuestos.sucursal = detallePropuestos.sucursal;
+        this.modelPropuestos.fechaIngreso = detallePropuestos.fechaIngreso;
+        this.modelPropuestos.grupoPago = detallePropuestos.grupoDePago;
+        this.modelPropuestos.descrPuesto = detallePropuestos.descripcionPosicion;
+        this.detalleSolicitudPropuestos.movilizacion = detallePropuestos.movilizacion;
+        this.detalleSolicitudPropuestos.alimentacion = detallePropuestos.alimentacion;
+      }}
+          else{
+            this.detalleSolicitud = response.detalleSolicitudType[0];
         this.detalleSolicitudRG = response.detalleSolicitudType[0];
         if (!(id.toUpperCase().includes("RG")) && this.detalleSolicitud.codigoPosicion.length > 0) {
           this.model.codigoPosicion = this.detalleSolicitud.codigoPosicion;
@@ -927,7 +1008,7 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
             this.keySelected = this.solicitud.idTipoSolicitud + "_" + this.solicitud.idTipoMotivo + "_" + this.model.nivelDir;        
             this.getComentarios();
           }
-        }
+        }}
 
         this.loadingComplete++;
 

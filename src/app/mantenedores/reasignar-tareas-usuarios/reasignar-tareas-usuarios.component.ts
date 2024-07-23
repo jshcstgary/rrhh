@@ -183,7 +183,7 @@ export class ReasignarTareasUsuariosComponent implements OnInit {
           next: (response) => {
             this.dataTable = response.solicitudes.map((item) => ({
               idSolicitud: item.idSolicitud + "," + item.rootProcInstId,
-              startTime: item.startTime,
+              startTime: item.startTime.toString().split(" ")[0],
               name: item.name,
               tipoSolicitud: item.tipoSolicitud,
             }));
