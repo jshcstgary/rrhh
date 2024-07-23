@@ -559,7 +559,7 @@ export class ConsultaTareasComponent implements OnInit {
 
 		  break;
 
-		case environment.taskType_AP:
+		case environment.taskType_AP_Registrar:
 		  if (tarea.solicitudes[0].tipoSolicitud.toUpperCase().includes("PERSONAL")) {
 			this.router.navigate([
 				`/solicitudes/accion-personal/registrar-solicitud`,
@@ -579,6 +579,28 @@ export class ConsultaTareasComponent implements OnInit {
 			]);
 			}
 
+			break;
+
+		case environment.taskType_AP_RV:
+			if (tarea.solicitudes[0].tipoSolicitud.toUpperCase().includes("PERSONAL")) {
+			this.router.navigate([
+				`/solicitudes/revisar-solicitud`,
+				ids[1],
+				ids[0]
+			]);
+			}
+
+			break;
+			
+		case environment.taskType_AP_Remuneraciones:
+			if (tarea.solicitudes[0].tipoSolicitud.toUpperCase().includes("PERSONAL")) {
+			this.router.navigate([
+				`/solicitudes/revisar-solicitud`,
+				ids[1],
+				ids[0]
+			]);
+		}
+	
 			break;
 
 		case environment.taskType_AP_RRHH:
