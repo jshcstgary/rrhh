@@ -19,9 +19,8 @@ export class NivelesAprobacionService {
   };
 
   public obtenerNiveleAprobaciones(): Observable<IConsultaNivelesAprobacionResponse> {
-    return this.http.get<IConsultaNivelesAprobacionResponse>(
-      `${this.apiUrlNivelAprobacion}`
-    );
+    // return this.http.get<IConsultaNivelesAprobacionResponse>(`${this.apiUrlNivelAprobacion}`);
+    return this.http.get<IConsultaNivelesAprobacionResponse>(`${this.apiUrlNivelAprobacion}`);
   }
 
   // Con headers

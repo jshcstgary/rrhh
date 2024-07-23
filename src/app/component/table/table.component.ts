@@ -1,21 +1,21 @@
 import {
-  Component,
-  Input,
-  OnChanges,
-  OnInit,
-  SimpleChanges,
+	Component,
+	Input,
+	OnChanges,
+	OnInit,
+	SimpleChanges,
 } from "@angular/core";
-import {
-  IColumnTable,
-  IColumnsTable,
-  ISelectOptionsTable,
-  sortColOrderType,
-  colTypeTable,
-} from "./table.interface";
-import { TableService } from "./table.service";
+import { UtilService } from "src/app/services/util/util.service";
 import { IInputsComponent } from "../input/input.interface";
 import { TableComponentData } from "./table.data";
-import { UtilService } from "src/app/services/util/util.service";
+import {
+	IColumnTable,
+	IColumnsTable,
+	ISelectOptionsTable,
+	colTypeTable,
+	sortColOrderType,
+} from "./table.interface";
+import { TableService } from "./table.service";
 @Component({
   selector: "table-component",
   templateUrl: "./table.component.html",
@@ -237,16 +237,16 @@ export class TableComponent implements OnInit, OnChanges {
   public onCheckCell(event: Event, key: string) {
     const checkValue = (event.target as HTMLInputElement).checked;
 
-    if (checkValue && !this.rowsChecked.includes(key)) {
-      this.rowsChecked.push(key);
-    } else if (!checkValue) {
-      this.rowsChecked = this.rowsChecked.filter((value) => value !== key);
-    }
+	if (checkValue && !this.rowsChecked.includes(key)) {
+		this.rowsChecked.push(key);
+	} else if (!checkValue) {
+		this.rowsChecked = this.rowsChecked.filter((value) => value !== key);
+	}
 
-    this.tableService.onCheckTable(this.tableName, this.rowsChecked);
+	this.tableService.onCheckTable(this.tableName, this.rowsChecked);
 
-    if (this.onCheck !== undefined) {
-      this.contexto[this.onCheck](this.rowsChecked);
+	if (this.onCheck !== undefined) {
+		this.contexto[this.onCheck](this.rowsChecked);
     }
 
     this.validateHeaderInputState();

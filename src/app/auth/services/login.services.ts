@@ -1,9 +1,9 @@
-import { Injectable } from "@angular/core";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
-import { environment } from "src/environments/environment";
-import { LoginRequest, Perfil } from "src/app/types/permiso.type";
+import { Injectable } from "@angular/core";
 import { Observable, of } from "rxjs";
 import { LocalStorageKeys } from "src/app/enums/local-storage-keys.enum";
+import { LoginRequest, Perfil } from "src/app/types/permiso.type";
+import { environment } from "src/environments/environment";
 
 @Injectable({
   providedIn: "root",
@@ -14,14 +14,14 @@ export class LoginServices {
   constructor(private http: HttpClient) {}
 
   public login(loginBody: LoginRequest): Observable<Perfil> {
-    return this.http.post<Perfil>(`${this.loginUrl}/obtenercredenciales`, loginBody);
+    return this.http.post<Perfil>(`${this.loginUrl}`, loginBody);
   }
 
   public signOut(): Observable<boolean> {
     localStorage.removeItem(LocalStorageKeys.IdLogin);
     localStorage.removeItem(LocalStorageKeys.IdUsuario);
     localStorage.removeItem(LocalStorageKeys.Permisos);
-    
+
     return of(true);
   }
 
@@ -59,8 +59,8 @@ export class LoginServices {
         'Authorization': `Bearer ${token}`
       });
 
-      console.log("retorna headers"); 
-      
+      console.log("retorna headers");
+
       return headers;
 
     }

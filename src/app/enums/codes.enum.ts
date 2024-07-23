@@ -11,5 +11,7 @@ export enum PageCodes {
   TipoRuta = "wf_tipo_ruta",
   Ruta = "wf_ruta",
   Accion = "wf_accion",
-  AprobadorFijo = "wf_aprobadores_fijos"
+  AprobadorFijo = "wf_aprobadores_fijos",
+  CrearAprobadorFijo = "wf_crear_aprobador_fijo",
+  EditarAprobadorFijo = "wf_editar_aprobador_fijo"
 }

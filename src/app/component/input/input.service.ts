@@ -34,12 +34,12 @@ export class InputService {
     labelName: keyof T,
     valueName: keyof T
   ): ISelectOptions {
-    return data.map((x) => ({
-      label: x.hasOwnProperty(labelName)
-        ? String(`${String(x[valueName])} - ${String(x[labelName])}`)
-        : "",
-      value: x.hasOwnProperty(valueName) ? String(x[valueName]) : "",
-    }));
+	  return data.map((x) => ({
+			  label: x.hasOwnProperty(labelName)
+				  ? String(`${String(x[valueName])} - ${String(x[labelName])}`)
+				  : "",
+			  value: x.hasOwnProperty(valueName) ? String(x[valueName]) : "",
+		  }));
   }
   /**
    * Convierte un array de objetos en un array de opciones de selección.

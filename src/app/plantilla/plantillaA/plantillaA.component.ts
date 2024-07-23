@@ -1,30 +1,30 @@
 import {
-  AfterViewInit,
-  Component,
-  HostListener,
-  Input,
-  OnChanges,
-  OnInit,
-  SimpleChanges,
+	AfterViewInit,
+	Component,
+	HostListener,
+	Input,
+	OnChanges,
+	OnInit,
+	SimpleChanges,
 } from "@angular/core";
 import { IDropdownOptions } from "src/app/component/dropdown/dropdown.interface";
 import {
-  IFormItems,
-  ISearchButtonForm,
+	IFormItems,
+	ISearchButtonForm,
 } from "src/app/component/form/form.interface";
 import { FormService } from "src/app/component/form/form.service";
 import { IInputsComponent } from "src/app/component/input/input.interface";
 import { TableComponentData } from "src/app/component/table/table.data";
 import {
-  IColumnsTable,
-  IRowTableAttributes,
-  idActionType,
-  sortColOrderType,
+	IColumnsTable,
+	IRowTableAttributes,
+	idActionType,
+	sortColOrderType,
 } from "src/app/component/table/table.interface";
 import { TableService } from "src/app/component/table/table.service";
 import {
-  FormatoUtilReporte,
-  reportCodeEnum,
+	FormatoUtilReporte,
+	reportCodeEnum,
 } from "src/app/services/util/util.interface";
 import { UtilService } from "src/app/services/util/util.service";
 import { environment } from "src/environments/environment";
@@ -362,16 +362,17 @@ export class PlantillaAComponent implements AfterViewInit, OnInit, OnChanges {
       case "editOnTable":
         if (!this.tableService.isAnyEditRowActive) {
           this.tableService.changeStateIsAnyEditRowActive(true);
+
           const rowToEdit: IRowTableAttributes = this.originalDataTable.find(
             (x: IRowTableAttributes) => x.key === key
-          );
-          rowToEdit.isEditingRow = true;
+			);
+			rowToEdit.isEditingRow = true;
           const newDataWithOutRowToEdit = this.dataToTable.filter(
             (x: IRowTableAttributes) => x.key !== key
-          );
-          newDataWithOutRowToEdit.unshift(rowToEdit);
+			);
+			newDataWithOutRowToEdit.unshift(rowToEdit);
           this.dataToTable = newDataWithOutRowToEdit;
-          this.utilService.focusOnHtmlElement(this.columnsTable[2].dataIndex);
+		  this.utilService.focusOnHtmlElement(this.columnsTable[2].dataIndex);
           this.disableIdCol(false);
         }
         break;

@@ -1,58 +1,47 @@
 import {
-  ChangeDetectorRef,
-  Component,
-  SimpleChange,
-  Type,
-} from "@angular/core";
-import { ActivatedRoute, Router } from "@angular/router";
-import { CamundaRestService } from "../../camunda-rest.service";
-import { CompleteTaskComponent } from "../general/complete-task.component";
-import {
-  HttpClientModule,
-  HttpErrorResponse,
-  HttpEvent,
-  HttpHandler,
-  HttpRequest,
+	HttpClientModule,
+	HttpErrorResponse
 } from "@angular/common/http";
+import {
+	Component,
+	SimpleChange,
+	Type
+} from "@angular/core";
 import { NgForm } from "@angular/forms";
-import { environment, portalWorkFlow } from "../../../environments/environment";
-import { RegistrarData } from "src/app/eschemas/RegistrarData";
+import { ActivatedRoute, Router } from "@angular/router";
+import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
+import { Observable, OperatorFunction, Subject } from "rxjs";
+import {
+	debounceTime,
+	distinctUntilChanged,
+	map
+} from "rxjs/operators";
+import { IInputsComponent } from "src/app/component/input/input.interface";
+import { TableService } from "src/app/component/table/table.service";
+import { LocalStorageKeys } from "src/app/enums/local-storage-keys.enum";
 import { DatosProcesoInicio } from "src/app/eschemas/DatosProcesoInicio";
 import { DatosSolicitud } from "src/app/eschemas/DatosSolicitud";
-import {
-  FamiliaresCandidatos,
-  MantenimientoService,
-} from "src/app/services/mantenimiento/mantenimiento.service";
-import { UtilService } from "src/app/services/util/util.service";
-import { IInputsComponent } from "src/app/component/input/input.interface";
-import Swal from "sweetalert2";
-import { Solicitud } from "src/app/eschemas/Solicitud";
 import { DetalleSolicitud } from "src/app/eschemas/DetalleSolicitud";
-import { Subject, Observable, OperatorFunction } from "rxjs";
-import {
-  debounceTime,
-  distinctUntilChanged,
-  isEmpty,
-  map,
-  switchMap,
-} from "rxjs/operators";
-import { ConsultaTareasService } from "src/app/tareas/consulta-tareas/consulta-tareas.service";
-import { SolicitudesService } from "../registrar-solicitud/solicitudes.service";
-import {
-  columnsDatosFamiliares,
-  dataTableAprobadores,
-} from "./registrar-familiares.data";
-import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
+import { RegistrarData } from "src/app/eschemas/RegistrarData";
+import { Solicitud } from "src/app/eschemas/Solicitud";
 import { IEmpleadoData } from "src/app/services/mantenimiento/empleado.interface";
 import {
-  IRowTableAttributes,
-  idActionType,
-} from "src/app/component/table/table.interface";
-import { DialogBuscarEmpleadosFamiliaresComponent } from "./dialog-buscar-empleados-familiares/dialog-buscar-empleados-familiares.component";
+	FamiliaresCandidatos,
+	MantenimientoService,
+} from "src/app/services/mantenimiento/mantenimiento.service";
+import { UtilService } from "src/app/services/util/util.service";
 import { DialogReasignarUsuarioComponent } from "src/app/shared/reasginar-usuario/reasignar-usuario.component";
-import { TableService } from "src/app/component/table/table.service";
 import { StarterService } from "src/app/starter/starter.service";
-import { LocalStorageKeys } from "src/app/enums/local-storage-keys.enum";
+import { ConsultaTareasService } from "src/app/tareas/consulta-tareas/consulta-tareas.service";
+import Swal from "sweetalert2";
+import { environment, portalWorkFlow } from "../../../environments/environment";
+import { CamundaRestService } from "../../camunda-rest.service";
+import { CompleteTaskComponent } from "../general/complete-task.component";
+import { SolicitudesService } from "../registrar-solicitud/solicitudes.service";
+import { DialogBuscarEmpleadosFamiliaresComponent } from "./dialog-buscar-empleados-familiares/dialog-buscar-empleados-familiares.component";
+import {
+	columnsDatosFamiliares
+} from "./registrar-familiares.data";
 
 interface DialogComponents {
   dialogBuscarEmpleados: Type<DialogBuscarEmpleadosFamiliaresComponent>;
@@ -1531,7 +1520,7 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
         if (index === 0) {
           const htmlString = "<!DOCTYPE html>\r\n<html lang=\"es\">\r\n\r\n<head>\r\n  <meta charset=\"UTF-8\">\r\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n  <title>Document<\/title>\r\n<\/head>\r\n\r\n<body>\r\n  <h2>Estimado(a)<\/h2>\r\n  <h3>{NOMBRE_APROBADOR}<\/h3>\r\n\r\n  <P>La Solicitud de {TIPO_SOLICITUD} {ID_SOLICITUD} para la posici\u00F3n de {DESCRIPCION_POSICION} est\u00E1 disponible para su\r\n    revisi\u00F3n y aprobaci\u00F3n.<\/P>\r\n\r\n  <p>\r\n    <b>\r\n      Favor ingresar al siguiente enlace: <a href=\"{URL_APROBACION}\">{URL_APROBACION}<\/a>\r\n      <br>\r\n      <br>\r\n      Gracias por su atenci\u00F3n.\r\n    <\/b>\r\n  <\/p>\r\n<\/body>\r\n\r\n<\/html>\r\n";
 
-          const modifiedHtmlString = htmlString.replace("{NOMBRE_APROBADOR}", elemento.aprobador.usuario).replace("{TIPO_SOLICITUD}", this.solicitud.tipoSolicitud).replace("{ID_SOLICITUD}", this.solicitud.idSolicitud).replace("{DESCRIPCION_POSICION}", this.detalleSolicitud.descripcionPosicion).replace(new RegExp("{URL_APROBACION}", "g"), `${portalWorkFlow}tareas/consulta-tareas?idUsuario=${elemento.aprobador.subledger}`);
+          const modifiedHtmlString = htmlString.replace("{NOMBRE_APROBADOR}", elemento.aprobador.usuario).replace("{TIPO_SOLICITUD}", this.solicitud.tipoSolicitud).replace("{ID_SOLICITUD}", this.solicitud.idSolicitud).replace("{DESCRIPCION_POSICION}", this.detalleSolicitud.descripcionPosicion).replace(new RegExp("{URL_APROBACION}", "g"), `${portalWorkFlow}tareas/consulta-tareas`);
 
           this.emailVariables = {
             de: this.solicitudes.modelDetalleAprobaciones.correo,

@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { IInputComponent, ISelectOptions } from "../input/input.interface";
-import { IFormItems } from "./form.interface";
 import { InputService } from "../input/input.service";
+import { IFormItems } from "./form.interface";
 
 @Injectable({
   providedIn: "root",
@@ -39,7 +39,7 @@ export class FormService {
     value: any
   ): IFormItems {
     const propIndex = form.findIndex((x) => x.id === id);
-    form[propIndex] = { ...form[propIndex], [propName]: value };
+	form[propIndex] = { ...form[propIndex], [propName]: value };
     return form;
   }
   /**

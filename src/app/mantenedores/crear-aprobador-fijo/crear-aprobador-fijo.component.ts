@@ -1,17 +1,14 @@
-import { CommonModule, NgFor } from "@angular/common";
 import { HttpErrorResponse } from "@angular/common/http";
 import { Component, OnInit } from "@angular/core";
-import { NgModel, FormsModule } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
-import { NgSelectConfig, NgSelectModule } from "@ng-select/ng-select";
-import { MantenimientoService } from "src/app/services/mantenimiento/mantenimiento.service";
-import { UtilService } from "src/app/services/util/util.service";
-import { CrearAprobadorFijoService } from "./crear-aprobador-fijo.service";
-import Swal from "sweetalert2";
-import { DatosNivelesAprobacion } from "src/app/eschemas/DatosNivelesAprobacion";
-import { Subject, Observable, OperatorFunction } from "rxjs";
+import { NgSelectConfig } from "@ng-select/ng-select";
+import { Observable, OperatorFunction } from "rxjs";
 import { debounceTime, distinctUntilChanged, map } from "rxjs/operators";
 import { AprobadorFijo } from "src/app/eschemas/AprobadorFijo";
+import { MantenimientoService } from "src/app/services/mantenimiento/mantenimiento.service";
+import { UtilService } from "src/app/services/util/util.service";
+import Swal from "sweetalert2";
+import { CrearAprobadorFijoService } from "./crear-aprobador-fijo.service";
 
 @Component({
   selector: "app-crear-aprobador-fijo",

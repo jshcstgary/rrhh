@@ -1,20 +1,20 @@
-import { Component, OnInit } from "@angular/core";
-import { IColumnsTable } from "src/app/component/table/table.interface";
-import { ConsultaSolicitudesData } from "./niveles-aprobacion.data";
 import { HttpErrorResponse } from "@angular/common/http";
-import { reportCodeEnum } from "src/app/services/util/util.interface";
-import { TableService } from "src/app/component/table/table.service";
-import { ValidationsService } from "src/app/services/validations/validations.service";
-import { UtilService } from "src/app/services/util/util.service";
-import { NivelesAprobacionService } from "./niveles-aprobacion.service";
-import { DataFilterNivelesAprobacion } from "src/app/eschemas/DataFilterNivelesAprobacion";
-import { MantenimientoService } from "src/app/services/mantenimiento/mantenimiento.service";
+import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
+import { IColumnsTable } from "src/app/component/table/table.interface";
+import { TableService } from "src/app/component/table/table.service";
 import { PageCodes } from "src/app/enums/codes.enum";
 import { NivelAprobacionPageControlPermission } from "src/app/enums/page-control-permisions.enum";
-import { PageControlPermiso } from "src/app/types/page-control-permiso.type";
+import { DataFilterNivelesAprobacion } from "src/app/eschemas/DataFilterNivelesAprobacion";
+import { MantenimientoService } from "src/app/services/mantenimiento/mantenimiento.service";
 import { PermisoService } from "src/app/services/permiso/permiso.service";
+import { reportCodeEnum } from "src/app/services/util/util.interface";
+import { UtilService } from "src/app/services/util/util.service";
+import { ValidationsService } from "src/app/services/validations/validations.service";
+import { PageControlPermiso } from "src/app/types/page-control-permiso.type";
 import { Control } from "src/app/types/permiso.type";
+import { ConsultaSolicitudesData } from "./niveles-aprobacion.data";
+import { NivelesAprobacionService } from "./niveles-aprobacion.service";
 
 @Component({
   selector: "app-niveles-aprobacion",
@@ -200,12 +200,12 @@ export class NivelesAprobacionComponent implements OnInit {
       next: (response) => {
         this.dataTable = response.nivelAprobacionType.map(
           (nivelAprobacionResponse) => ({
-            ...nivelAprobacionResponse,
+			...nivelAprobacionResponse,
+			id: nivelAprobacionResponse.idNivelAprobacion,
             estado: nivelAprobacionResponse.estado === "A",
           })
         );
         this.utilService.closeLoadingSpinner();
-        // console.log("Data de niveles de aprobacion: ", this.dataTable);
       },
       error: (error: HttpErrorResponse) => {
         this.utilService.modalResponse(error.error, "error");

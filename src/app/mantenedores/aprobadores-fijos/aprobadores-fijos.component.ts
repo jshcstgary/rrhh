@@ -1,28 +1,20 @@
-import { Component, OnInit } from "@angular/core";
-import { IColumnsTable } from "src/app/component/table/table.interface";
-import { AprobadoresFijosData } from "./aprobadores-fijos.data";
-import {
-  IConsultaAprobadoresFijos,
-  IConsultaAprobadoresFijoTable,
-} from "./aprobadores-fijos.interface";
-import Swal from "sweetalert2";
 import { HttpErrorResponse } from "@angular/common/http";
-import { IInputsComponent } from "src/app/component/input/input.interface";
-import { reportCodeEnum } from "src/app/services/util/util.interface";
-import { TableService } from "src/app/component/table/table.service";
-import { ValidationsService } from "src/app/services/validations/validations.service";
-import { environment } from "src/environments/environment";
-import { UtilService } from "src/app/services/util/util.service";
-import { UtilData } from "src/app/services/util/util.data";
-import { AprobadoresFijosService } from "./aprobadores-fijos.service";
-import { DataFilterNivelesAprobacion } from "src/app/eschemas/DataFilterNivelesAprobacion";
-import { MantenimientoService } from "src/app/services/mantenimiento/mantenimiento.service";
+import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
-import { PermisoService } from "src/app/services/permiso/permiso.service";
-import { Control } from "src/app/types/permiso.type";
+import { IColumnsTable } from "src/app/component/table/table.interface";
+import { TableService } from "src/app/component/table/table.service";
 import { PageCodes } from "src/app/enums/codes.enum";
 import { AprobadorFijoPageControlPermission } from "src/app/enums/page-control-permisions.enum";
+import { DataFilterNivelesAprobacion } from "src/app/eschemas/DataFilterNivelesAprobacion";
+import { MantenimientoService } from "src/app/services/mantenimiento/mantenimiento.service";
+import { PermisoService } from "src/app/services/permiso/permiso.service";
+import { reportCodeEnum } from "src/app/services/util/util.interface";
+import { UtilService } from "src/app/services/util/util.service";
+import { ValidationsService } from "src/app/services/validations/validations.service";
 import { PageControlPermiso } from "src/app/types/page-control-permiso.type";
+import { Control } from "src/app/types/permiso.type";
+import { AprobadoresFijosData } from "./aprobadores-fijos.data";
+import { AprobadoresFijosService } from "./aprobadores-fijos.service";
 
 @Component({
   selector: "app-aprobadores-fijos",
@@ -169,6 +161,7 @@ export class AprobadoresFijosComponent implements OnInit {
         this.dataTable = response.aprobadoresFijos.map(
           (aprobadoresFijosResponse) => ({
             ...aprobadoresFijosResponse,
+			id: aprobadoresFijosResponse.iD_APROBADOR,
             estado: aprobadoresFijosResponse.estado === "A",
           })
         );
@@ -231,7 +224,6 @@ export class AprobadoresFijosComponent implements OnInit {
   }
 
   onRowActionClicked(id: string, key: string, tooltip: string, id_edit) {
-    // Lógica cuando se da click en una acción de la fila
     this.router.navigate(["/mantenedores/editar-aprobador-fijo", id_edit]);
   }
 }

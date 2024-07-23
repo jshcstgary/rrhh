@@ -1,25 +1,25 @@
-import { Component, OnInit } from "@angular/core";
-import { IColumnsTable } from "src/app/component/table/table.interface";
-import { TiposolicitudData } from "./tipo-solicitud.data";
-import {
-  ITiposolicitud,
-  ITiposolicitudTable,
-} from "./tipo-solicitud.interface";
-import Swal from "sweetalert2";
 import { HttpErrorResponse } from "@angular/common/http";
+import { Component, OnInit } from "@angular/core";
 import { IInputsComponent } from "src/app/component/input/input.interface";
-import { reportCodeEnum } from "src/app/services/util/util.interface";
+import { IColumnsTable } from "src/app/component/table/table.interface";
 import { TableService } from "src/app/component/table/table.service";
-import { ValidationsService } from "src/app/services/validations/validations.service";
-import { environment } from "src/environments/environment";
-import { UtilService } from "src/app/services/util/util.service";
-import { TipoSolicitudService } from "./tipo-solicitud.service";
-import { UtilData } from "src/app/services/util/util.data";
 import { PageCodes } from "src/app/enums/codes.enum";
 import { TipoSolicitudPageControlPermission } from "src/app/enums/page-control-permisions.enum";
-import { PageControlPermiso } from "src/app/types/page-control-permiso.type";
 import { PermisoService } from "src/app/services/permiso/permiso.service";
+import { UtilData } from "src/app/services/util/util.data";
+import { reportCodeEnum } from "src/app/services/util/util.interface";
+import { UtilService } from "src/app/services/util/util.service";
+import { ValidationsService } from "src/app/services/validations/validations.service";
+import { PageControlPermiso } from "src/app/types/page-control-permiso.type";
 import { Control } from "src/app/types/permiso.type";
+import { environment } from "src/environments/environment";
+import Swal from "sweetalert2";
+import { TiposolicitudData } from "./tipo-solicitud.data";
+import {
+	ITiposolicitud,
+	ITiposolicitudTable,
+} from "./tipo-solicitud.interface";
+import { TipoSolicitudService } from "./tipo-solicitud.service";
 
 @Component({
   templateUrl: "./tipo-solicitud.component.html",

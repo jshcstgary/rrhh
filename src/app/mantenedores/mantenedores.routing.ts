@@ -1,20 +1,20 @@
 import { Routes } from "@angular/router";
 
-import { TipoSolicitudComponent } from "./tipo_solicitud/tipo-solicitud.component";
-import { TipoMotivoComponent } from "./tipo_motivo/tipo-motivo.component";
-import { TipoAccionComponent } from "./tipo_accion/tipo-accion.component";
-import { TipoProcesoComponent } from "./tipo_proceso/tipo-proceso.component";
-import { TipoRutaComponent } from "./tipo_ruta/tipo-ruta.component";
-import { RutaComponent } from "./ruta/ruta.component";
+import { routeAccessGuard } from "../guards/route-access.guard";
 import { AccionComponent } from "./accion/accion.component";
-import { NivelesAprobacionComponent } from "./niveles-aprobacion/niveles-aprobacion.component";
-import { CrearNivelesAprobacionComponent } from "./crear-niveles-aprobacion/crear-niveles-aprobacion.component";
-import { EstadosComponent } from "./estados/estados.component";
 import { AprobadoresFijosComponent } from "./aprobadores-fijos/aprobadores-fijos.component";
 import { CrearAprobadorFijoComponent } from "./crear-aprobador-fijo/crear-aprobador-fijo.component";
+import { CrearNivelesAprobacionComponent } from "./crear-niveles-aprobacion/crear-niveles-aprobacion.component";
 import { EditarAprobadorFijoComponent } from "./editar-aprobador-fijo/editar-aprobador-fijo.component";
-import { routeAccessGuard } from "../guards/route-access.guard";
+import { EstadosComponent } from "./estados/estados.component";
+import { NivelesAprobacionComponent } from "./niveles-aprobacion/niveles-aprobacion.component";
 import { ReasignarTareasUsuariosComponent } from "./reasignar-tareas-usuarios/reasignar-tareas-usuarios.component";
+import { RutaComponent } from "./ruta/ruta.component";
+import { TipoAccionComponent } from "./tipo_accion/tipo-accion.component";
+import { TipoMotivoComponent } from "./tipo_motivo/tipo-motivo.component";
+import { TipoProcesoComponent } from "./tipo_proceso/tipo-proceso.component";
+import { TipoRutaComponent } from "./tipo_ruta/tipo-ruta.component";
+import { TipoSolicitudComponent } from "./tipo_solicitud/tipo-solicitud.component";
 
 import { PageCodes } from "../enums/codes.enum";
 
@@ -213,6 +213,7 @@ export const MantenedoresRoutes: Routes = [
         canActivate: [routeAccessGuard],
         component: CrearAprobadorFijoComponent,
         data: {
+			code: PageCodes.CrearAprobadorFijo,
           title: "Crear Aprobador Fijo",
           urls: [
             {
@@ -229,6 +230,7 @@ export const MantenedoresRoutes: Routes = [
         canActivate: [routeAccessGuard],
         component: EditarAprobadorFijoComponent,
         data: {
+		  code: PageCodes.EditarAprobadorFijo,
           title: "Editar Aprobador Fijo",
           urls: [
             {

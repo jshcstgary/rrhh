@@ -1,25 +1,25 @@
-import { Component, OnInit } from "@angular/core";
-import { IColumnsTable } from "src/app/component/table/table.interface";
-import { TiporutaData } from "./ruta.data";
-import { ITipoRuta, IRuta, IRutaTable } from "./ruta.interface";
-import Swal from "sweetalert2";
 import { HttpErrorResponse } from "@angular/common/http";
-import { IInputsComponent } from "src/app/component/input/input.interface";
-import { reportCodeEnum } from "src/app/services/util/util.interface";
-import { TableService } from "src/app/component/table/table.service";
-import { ValidationsService } from "src/app/services/validations/validations.service";
-import { environment } from "src/environments/environment";
-import { UtilService } from "src/app/services/util/util.service";
-import { RutaService } from "./ruta.service";
-import { UtilData } from "src/app/services/util/util.data";
-import { InputService } from "src/app/component/input/input.service";
+import { Component, OnInit } from "@angular/core";
 import { FormService } from "src/app/component/form/form.service";
-import { MantenimientoService } from "src/app/services/mantenimiento/mantenimiento.service";
+import { IInputsComponent } from "src/app/component/input/input.interface";
+import { InputService } from "src/app/component/input/input.service";
+import { IColumnsTable } from "src/app/component/table/table.interface";
+import { TableService } from "src/app/component/table/table.service";
 import { PageCodes } from "src/app/enums/codes.enum";
 import { RutaPageControlPermission } from "src/app/enums/page-control-permisions.enum";
-import { PageControlPermiso } from "src/app/types/page-control-permiso.type";
+import { MantenimientoService } from "src/app/services/mantenimiento/mantenimiento.service";
 import { PermisoService } from "src/app/services/permiso/permiso.service";
+import { UtilData } from "src/app/services/util/util.data";
+import { reportCodeEnum } from "src/app/services/util/util.interface";
+import { UtilService } from "src/app/services/util/util.service";
+import { ValidationsService } from "src/app/services/validations/validations.service";
+import { PageControlPermiso } from "src/app/types/page-control-permiso.type";
 import { Control } from "src/app/types/permiso.type";
+import { environment } from "src/environments/environment";
+import Swal from "sweetalert2";
+import { TiporutaData } from "./ruta.data";
+import { IRuta, IRutaTable } from "./ruta.interface";
+import { RutaService } from "./ruta.service";
 
 @Component({
   templateUrl: "./ruta.component.html",
@@ -146,7 +146,6 @@ export class RutaComponent implements OnInit {
           estado: accionResponse.estado === "A",
           tipoRutaFormatted: this.formatTipoRutaEstaciones(accionResponse),
         }));
-        //this.utilService.closeLoadingSpinner();
       },
       error: (error: HttpErrorResponse) =>
         this.utilService.modalResponse(error.error, "error"),
