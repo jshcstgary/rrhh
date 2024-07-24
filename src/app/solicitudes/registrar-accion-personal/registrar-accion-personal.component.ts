@@ -172,6 +172,10 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
 
   public mostrarSubledger = false;
 
+  eventSearch = {
+    item: ""
+  };
+
   public dataEmpleadoEvolution: any[] = [
     {
       codigo: "CODIGO_1", //?
@@ -539,9 +543,13 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
         if (tipo === "subledger") {
           this.subledgers = [...new Set(this.dataEmpleadoEvolution.map((empleado) => empleado.subledger))];
           this.nombres = [...new Set(this.dataEmpleadoEvolution.map((empleado) => empleado.nombreCompleto))];
+          this.eventSearch.item=this.dataEmpleadoEvolution[0].codigoPosicion;
+          this.onSelectItem('subledger',this.subledger);
         } else if (tipo === "nombreCompleto") {
           this.subledgers = [...new Set(this.dataEmpleadoEvolution.map((empleado) => empleado.subledger))];
           this.nombres = [...new Set(this.dataEmpleadoEvolution.map((empleado) => empleado.nombreCompleto))];
+          this.eventSearch.item=this.dataEmpleadoEvolution[0].nombreCompleto;
+          this.onSelectItem('nombreCompleto',this.eventSearch);
         }
       },
       error: (error: HttpErrorResponse) => {
