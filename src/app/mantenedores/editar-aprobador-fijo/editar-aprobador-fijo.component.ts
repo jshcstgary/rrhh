@@ -719,6 +719,7 @@ export class EditarAprobadorFijoComponent implements OnInit {
       this.modelo.descripcioN_POSICION = response.descripcioN_POSICION;
       this.modelo.supervisA_A = response.supervisA_A;
       this.modelo.niveL_REPORTE = response.niveL_REPORTE;*/
+      this.modelo.iD_APROBADOR = this.id_edit;
 
       this.editarAprobadorFijoService
         .actualizarAprobadorFijo(
