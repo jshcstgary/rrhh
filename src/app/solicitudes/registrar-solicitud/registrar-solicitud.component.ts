@@ -50,6 +50,9 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
     asunto: "",
     cuerpo: ""
   };
+  eventSearch = {
+    item: ""
+  };
 
   private readonly NIVEL_APROBACION_GERENCIA_MEDIA: string = "GERENCIA MEDIA";
   private readonly NIVEL_APROBACION_GERENCIA_UNIDAD: string = "GERENCIA DE UNIDAD O CORPORATIVA";
@@ -684,7 +687,6 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
 
       this.keySelected = `${this.solicitud.idTipoSolicitud}_${this.solicitud.idTipoMotivo}_${this.model.codigoPosicion}_${this.model.nivelDir}`;
 
-      console.log(!this.dataAprobacionesPorPosicion[this.keySelected]);
       if (!this.dataAprobacionesPorPosicion[this.keySelected]) {
         this.obtenerAprobacionesPorPosicion();
       }
@@ -784,18 +786,28 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
         if (tipo === "codigoPosicion") {
           this.codigosPosicion = [...new Set(this.dataEmpleadoEvolution.map((empleado) => empleado.codigoPosicion))];
           this.descripcionPosiciones = [...new Set(this.dataEmpleadoEvolution.map((empleado) => empleado.descrPosicion))];
+          this.eventSearch.item=this.dataEmpleadoEvolution[0].codigoPosicion;
+          this.onSelectItem('codigoPosicion',this.eventSearch);
         } else if (tipo === "subledger") {
           this.subledgers = [...new Set(this.dataEmpleadoEvolution.map((empleado) => empleado.subledger))];
           this.nombres = [...new Set(this.dataEmpleadoEvolution.map((empleado) => empleado.nombreCompleto))];
+          this.eventSearch.item=this.dataEmpleadoEvolution[0].subledger;
+          this.onSelectItem('subledger',this.eventSearch);
         } else if (tipo === "nombreCompleto") {
           this.subledgers = [...new Set(this.dataEmpleadoEvolution.map((empleado) => empleado.subledger))];
           this.nombres = [...new Set(this.dataEmpleadoEvolution.map((empleado) => empleado.nombreCompleto))];
+          this.eventSearch.item=this.dataEmpleadoEvolution[0].nombreCompleto;
+          this.onSelectItem('nombreCompleto',this.eventSearch);
         } else {
           this.codigosPosicion = [...new Set(this.dataEmpleadoEvolution.map((empleado) => empleado.codigoPosicion))];
           this.descripcionPosiciones = [...new Set(this.dataEmpleadoEvolution.map((empleado) => empleado.descrPosicion))];
           this.subledgers = [...new Set(this.dataEmpleadoEvolution.map((empleado) => empleado.subledger))];
           this.nombres = [...new Set(this.dataEmpleadoEvolution.map((empleado) => empleado.nombreCompleto))];
+          this.eventSearch.item=this.dataEmpleadoEvolution[0].codigoPosicion;
+          this.onSelectItem('codigoPosicion',this.eventSearch);
         }
+        
+
       },
       error: (error: HttpErrorResponse) => {
         this.utilService.modalResponse(error.error, "error");

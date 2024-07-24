@@ -405,6 +405,10 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
   public jefesReferencia: any[] = [];
   public responsablesRRHH: any[] = [];
 
+  eventSearch = {
+    item: ""
+  };
+
   subledgers: string[] = [];
 
   codigosPosicion: string[] = [];
@@ -609,7 +613,7 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
     })
   );
 
-  formatOption = (value: { nombreCompleto: string }) => value.nombreCompleto;
+  formatOption = (value: { nombreCompleto: string }) => value.nombreCompleto; 
 
   searchJefeReferencia: OperatorFunction<string, readonly any[]> = (text$: Observable<string>) => text$.pipe(
     debounceTime(200),
@@ -621,6 +625,7 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
     debounceTime(200),
     distinctUntilChanged(),
     map((term) => term.length < 1 ? [] : this.responsablesRRHH.filter(({ nombreCompleto }) => nombreCompleto.toLowerCase().includes(term.toLowerCase())).slice(0, 10))
+
   );
 
   getDataJefeInmediatoSuperior() {
@@ -640,14 +645,50 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
     this.mantenimientoService.getDataEmpleadosEvolutionPorId(search).subscribe({
       next: (response) => {
         this.dataEmpleadoEvolution = response.evType;
+        const datosEmpleado = this.dataEmpleadoEvolution.find((empleado) => {
+          return empleado['codigoPosicion'] === this.dataEmpleadoEvolution[0].codigoPosicion;
+        });
 
         if (arrayToFill === "nombresJefeInmediatoSuperior") {
           this.jefesInmediatoSuperior = [...new Set(this.dataEmpleadoEvolution.map((empleado) => empleado))];
+          this.jefeInmediatoSuperiorQuery = Object.assign(
+            {},
+            {
+              ...datosEmpleado,
+              sueldo: datosEmpleado.sueldo,
+              sueldoMensual: datosEmpleado.sueldoVariableMensual,
+              sueldoTrimestral: datosEmpleado.sueldoVariableTrimestral,
+              sueldoSemestral: datosEmpleado.sueldoVariableSemestral,
+              sueldoAnual: datosEmpleado.sueldoVariableAnual,
+            }
+          );
         } else if (arrayToFill === "nombresJefeReferencia") {
           this.jefesReferencia = [...new Set(this.dataEmpleadoEvolution.map((empleado) => empleado))];
+          this.jefeReferenciaQuery = Object.assign(
+            {},
+            {
+              ...datosEmpleado,
+              sueldo: datosEmpleado.sueldo,
+              sueldoMensual: datosEmpleado.sueldoVariableMensual,
+              sueldoTrimestral: datosEmpleado.sueldoVariableTrimestral,
+              sueldoSemestral: datosEmpleado.sueldoVariableSemestral,
+              sueldoAnual: datosEmpleado.sueldoVariableAnual,
+            }
+          );
         } else {
           this.responsablesRRHH = [...new Set(this.dataEmpleadoEvolution.map((empleado) => empleado))];
-        }
+        
+          this.responsableRRHHQuery = Object.assign(
+            {},
+            {
+              ...datosEmpleado,
+              sueldo: datosEmpleado.sueldo,
+              sueldoMensual: datosEmpleado.sueldoVariableMensual,
+              sueldoTrimestral: datosEmpleado.sueldoVariableTrimestral,
+              sueldoSemestral: datosEmpleado.sueldoVariableSemestral,
+              sueldoAnual: datosEmpleado.sueldoVariableAnual,
+            }
+          );}     
       },
       error: (error: HttpErrorResponse) => {
         this.utilService.modalResponse(error.error, "error");
@@ -728,6 +769,7 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
   }
 
   filtrarDatos(campo: string, valor: string) {
+
     const datosEmpleado = this.dataEmpleadoEvolution.find((empleado) => {
       console.log("Empleado iterando: ", empleado);
       console.log(

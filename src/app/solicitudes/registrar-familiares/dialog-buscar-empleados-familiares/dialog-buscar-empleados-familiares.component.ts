@@ -38,6 +38,9 @@ export class DialogBuscarEmpleadosFamiliaresComponent {
   public dataEmpleadoEvolution: any[] = [];
 
   nombresEmpleados: string[] = [];
+  eventSearch = {
+    item: ""
+  };
 
   constructor(private mantenimientoService: MantenimientoService, private utilService: UtilService) { }
 
@@ -100,6 +103,8 @@ export class DialogBuscarEmpleadosFamiliaresComponent {
       let fechaEnFormatoISO = fechaActual.toISOString();
 
       this.modelo = datosEmpleado;
+      this.searchInp = datosEmpleado.nombreCompleto;
+
       console.log(this.modelo);
 
       // this.model = {
@@ -227,8 +232,8 @@ export class DialogBuscarEmpleadosFamiliaresComponent {
         console.log(response.evType);
 
         this.dataEmpleadoEvolution = response.evType;
-        console.log(this.dataEmpleadoEvolution);
-
+        this.eventSearch.item=this.dataEmpleadoEvolution[0].nombreCompleto;
+        this.onSelectItem('nombreCompleto',this.eventSearch);  
         // let fechaActual = new Date();
         // let fechaEnFormatoISO = fechaActual.toISOString();
 

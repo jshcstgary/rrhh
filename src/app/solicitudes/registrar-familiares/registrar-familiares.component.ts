@@ -198,6 +198,9 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
   public restrictionsSubledgerIds: any[] = ["4", 4];
 
   public mostrarSubledger = false;
+  eventSearch = {
+    item: ""
+  };
 
   public dataEmpleadoEvolution: any[] = [
     {
@@ -755,6 +758,8 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
             )
           ),
         ];
+        this.eventSearch.item=this.dataEmpleadoEvolution[0].nombreCompleto;
+        this.onSelectItem('nombreCompleto',this.eventSearch);     
       },
       error: (error: HttpErrorResponse) => {
         this.utilService.modalResponse(error.error, "error");

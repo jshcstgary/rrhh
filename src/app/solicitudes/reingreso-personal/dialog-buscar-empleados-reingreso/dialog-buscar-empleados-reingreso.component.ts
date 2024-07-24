@@ -64,6 +64,9 @@ export class DialogBuscarEmpleadosReingresoComponent {
   };
 
   nombresEmpleados: string[] = [];
+  eventSearch = {
+    item: ""
+  };
 
   public dataEmpleadoEvolution: any[] = [];
 
@@ -124,6 +127,7 @@ export class DialogBuscarEmpleadosReingresoComponent {
       let fechaEnFormatoISO = fechaActual.toISOString();
 
       this.modelo = datosEmpleado;
+      this.searchInp = datosEmpleado.nombreCompleto;
     } else {
       // this.model.reset();
       let tempSearch = valor;
@@ -203,7 +207,8 @@ export class DialogBuscarEmpleadosReingresoComponent {
         this.dataEmpleadoEvolution = response.empleadosRBP;
 
         this.nombresEmpleados = [...new Set(this.dataEmpleadoEvolution.map((empleado) => empleado.nombreCompleto))];
-
+        this.eventSearch.item=this.dataEmpleadoEvolution[0].nombreCompleto;
+        this.onSelectItem('nombreCompleto',this.eventSearch);
         this.disableButton = false;
       },
       error: (error: HttpErrorResponse) => {
