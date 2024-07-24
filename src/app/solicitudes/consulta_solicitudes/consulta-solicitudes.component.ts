@@ -1,76 +1,54 @@
 import {
-  Component,
-  ViewChild,
-  OnInit,
-  HostListener,
-  AfterViewInit,
-  ElementRef,
-  TemplateRef,
-  SimpleChanges,
+	AfterViewInit,
+	Component,
+	ElementRef,
+	HostListener,
+	OnInit,
+	TemplateRef,
+	ViewChild
 } from "@angular/core";
 
-import { FormsModule } from "@angular/forms";
-import { NgxDatatableModule } from "@swimlane/ngx-datatable";
-import { NgSelectConfig, NgSelectModule } from "@ng-select/ng-select";
+import { HttpErrorResponse } from "@angular/common/http";
+import { ActivatedRoute, Router } from "@angular/router";
+import {
+	NgbCalendar,
+	NgbDateStruct,
+	NgbModal,
+	NgbNavChangeEvent
+} from "@ng-bootstrap/ng-bootstrap";
+import { NgSelectConfig } from "@ng-select/ng-select";
 import { forkJoin, map } from "rxjs";
+import { CamundaRestService } from "src/app/camunda-rest.service";
 import { IColumnsTable } from "src/app/component/table/table.interface";
+import { TableService } from "src/app/component/table/table.service";
+import { DataFilterNivelesAprobacion } from "src/app/eschemas/DataFilterNivelesAprobacion";
+import { DatosInstanciaProceso } from "src/app/eschemas/DatosInstanciaProceso";
+import { Solicitud } from "src/app/eschemas/Solicitud";
+import { MantenimientoService } from "src/app/services/mantenimiento/mantenimiento.service";
+import { reportCodeEnum } from "src/app/services/util/util.interface";
+import { UtilService } from "src/app/services/util/util.service";
+import { ValidationsService } from "src/app/services/validations/validations.service";
+import Swal from "sweetalert2";
+import { SolicitudesService } from "../registrar-solicitud/solicitudes.service";
 import { ConsultaSolicitudesData } from "./consulta-solicitudes.data";
 import {
-  NgbNavModule,
-  NgbNavChangeEvent,
-  NgbDropdownModule,
-  NgbAlertModule,
-  NgbCalendar,
-  NgbDateAdapter,
-  NgbDateParserFormatter,
-  NgbDatepickerModule,
-  NgbDateStruct,
-  NgbModal,
-} from "@ng-bootstrap/ng-bootstrap";
-import {
-  IConsultaSolicitud,
-  IConsultaSolicitudTable,
+	IConsultaSolicitudesTable
 } from "./consulta-solicitudes.interface";
-import Swal from "sweetalert2";
-import { HttpErrorResponse } from "@angular/common/http";
-import { IInputsComponent } from "src/app/component/input/input.interface";
-import { reportCodeEnum } from "src/app/services/util/util.interface";
-import { TableService } from "src/app/component/table/table.service";
-import { ValidationsService } from "src/app/services/validations/validations.service";
-import { environment } from "src/environments/environment";
-import { UtilService } from "src/app/services/util/util.service";
-import { UtilData } from "src/app/services/util/util.data";
-import { DataFilterNivelesAprobacion } from "src/app/eschemas/DataFilterNivelesAprobacion";
-import { MantenimientoService } from "src/app/services/mantenimiento/mantenimiento.service";
-import { ActivatedRoute, Router } from "@angular/router";
-import { SolicitudesService } from "../registrar-solicitud/solicitudes.service";
-import { SimpleDatepickerBasic } from "src/app/component/datepicker/simpledatepicker.component";
-import { Custommonth } from "src/app/component/datepicker/customonth.component";
-import { FeatherModule } from "angular-feather";
-import {
-  IConsultaSolicitudes,
-  IConsultaSolicitudesTable,
-} from "./consulta-solicitudes.interface";
-import { Solicitud } from "src/app/eschemas/Solicitud";
-import { CamundaRestService } from "src/app/camunda-rest.service";
-import { DatosInstanciaProceso } from "src/app/eschemas/DatosInstanciaProceso";
 
 import { NgSelectComponent } from "@ng-select/ng-select";
-import { ComponentsModule } from "src/app/component/component.module";
-import { DatosProcesoInicio } from "src/app/eschemas/DatosProcesoInicio";
-import { DatosSolicitud } from "src/app/eschemas/DatosSolicitud";
-import { TableComponentData } from "src/app/component/table/table.data";
-import { DataFilterSolicitudes } from "src/app/eschemas/DataFilterSolicitudes";
-import { ConsultaSolicitudesService } from "./consulta-solicitudes.service";
-import { DetalleSolicitud } from "src/app/eschemas/DetalleSolicitud";
 import { single } from "src/app/charts/ngx-charts/chartData";
-import { StarterService } from "src/app/starter/starter.service";
+import { TableComponentData } from "src/app/component/table/table.data";
 import { PageCodes } from "src/app/enums/codes.enum";
-import { PageControlPermiso } from "src/app/types/page-control-permiso.type";
-import { PermisoService } from "src/app/services/permiso/permiso.service";
-import { Control } from "src/app/types/permiso.type";
-import { ConsultaSolicitudPageControlPermission } from "src/app/enums/page-control-permisions.enum";
 import { LocalStorageKeys } from "src/app/enums/local-storage-keys.enum";
+import { ConsultaSolicitudPageControlPermission } from "src/app/enums/page-control-permisions.enum";
+import { DataFilterSolicitudes } from "src/app/eschemas/DataFilterSolicitudes";
+import { DatosProcesoInicio } from "src/app/eschemas/DatosProcesoInicio";
+import { DetalleSolicitud } from "src/app/eschemas/DetalleSolicitud";
+import { PermisoService } from "src/app/services/permiso/permiso.service";
+import { StarterService } from "src/app/starter/starter.service";
+import { PageControlPermiso } from "src/app/types/page-control-permiso.type";
+import { Control } from "src/app/types/permiso.type";
+import { ConsultaSolicitudesService } from "./consulta-solicitudes.service";
 //import { StarterService } from "src/app/starter/starter.service";
 
 
@@ -149,128 +127,7 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
     }
   };
 
-  public dataTable: IConsultaSolicitudesTable = [
-    {
-      idSolicitud: 1,
-      tipoSolicitud: "Tipo 1",
-      nombreEmpleado: "Empleado 1",
-      estado: true,
-    },
-    {
-      idSolicitud: 2,
-      tipoSolicitud: "Tipo 2",
-      nombreEmpleado: "Empleado 2",
-      estado: false,
-    },
-    {
-      idSolicitud: 3,
-      tipoSolicitud: "Tipo 3",
-      nombreEmpleado: "Empleado 3",
-      estado: true,
-    },
-    {
-      idSolicitud: 4,
-      tipoSolicitud: "Tipo 4",
-      nombreEmpleado: "Empleado 4",
-      estado: false,
-    },
-    {
-      idSolicitud: 5,
-      tipoSolicitud: "Tipo 5",
-      nombreEmpleado: "Empleado 5",
-      estado: true,
-    },
-    {
-      idSolicitud: 6,
-      tipoSolicitud: "Tipo 6",
-      nombreEmpleado: "Empleado 6",
-      estado: false,
-    },
-    {
-      idSolicitud: 7,
-      tipoSolicitud: "Tipo 7",
-      nombreEmpleado: "Empleado 7",
-      estado: true,
-    },
-    {
-      idSolicitud: 8,
-      tipoSolicitud: "Tipo 8",
-      nombreEmpleado: "Empleado 8",
-      estado: false,
-    },
-    {
-      idSolicitud: 9,
-      tipoSolicitud: "Tipo 9",
-      nombreEmpleado: "Empleado 9",
-      estado: true,
-    },
-    {
-      idSolicitud: 10,
-      tipoSolicitud: "Tipo 10",
-      nombreEmpleado: "Empleado 10",
-      estado: false,
-    },
-    {
-      idSolicitud: 11,
-      tipoSolicitud: "Tipo 11",
-      nombreEmpleado: "Empleado 11",
-      estado: true,
-    },
-    {
-      idSolicitud: 12,
-      tipoSolicitud: "Tipo 12",
-      nombreEmpleado: "Empleado 12",
-      estado: false,
-    },
-    {
-      idSolicitud: 13,
-      tipoSolicitud: "Tipo 13",
-      nombreEmpleado: "Empleado 13",
-      estado: true,
-    },
-    {
-      idSolicitud: 14,
-      tipoSolicitud: "Tipo 14",
-      nombreEmpleado: "Empleado 14",
-      estado: false,
-    },
-    {
-      idSolicitud: 15,
-      tipoSolicitud: "Tipo 15",
-      nombreEmpleado: "Empleado 15",
-      estado: true,
-    },
-    {
-      idSolicitud: 16,
-      tipoSolicitud: "Tipo 16",
-      nombreEmpleado: "Empleado 16",
-      estado: false,
-    },
-    {
-      idSolicitud: 17,
-      tipoSolicitud: "Tipo 17",
-      nombreEmpleado: "Empleado 17",
-      estado: true,
-    },
-    {
-      idSolicitud: 18,
-      tipoSolicitud: "Tipo 18",
-      nombreEmpleado: "Empleado 18",
-      estado: false,
-    },
-    {
-      idSolicitud: 19,
-      tipoSolicitud: "Tipo 19",
-      nombreEmpleado: "Empleado 19",
-      estado: true,
-    },
-    {
-      idSolicitud: 20,
-      tipoSolicitud: "Tipo 20",
-      nombreEmpleado: "Empleado 20",
-      estado: false,
-    },
-  ];
+  public dataTable: IConsultaSolicitudesTable = [];
   public columnsTable: IColumnsTable = ConsultaSolicitudesData.columns;
   public hasFiltered: boolean = true;
   public submitted: boolean = false;
@@ -1142,7 +999,12 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 
   onRowActionClicked(id: string, key: string, tooltip: string, id_edit) {
     // Lógica cuando se da click en una acción de la fila
-    this.router.navigate(["/solicitudes/detalle-solicitud", id_edit]);
+	  console.log(tooltip);
+	if (tooltip === "Info") {
+		this.router.navigate(["/solicitudes/detalle-solicitud", id_edit]);
+	} else {
+		this.router.navigate(["/solicitudes/trazabilidad", id_edit]);
+	}
   }
 
   mostrarModalCrearInstanciaSolicitud() {

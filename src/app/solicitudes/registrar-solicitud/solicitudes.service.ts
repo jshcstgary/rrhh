@@ -1,15 +1,14 @@
-import {
-  IAprobacionesPosicion,
-  ITareasResponse,
-} from "./registrar-solicitudes.interface";
 import { HttpClient, HttpHeaders, HttpParams, HttpParamsOptions } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { Observable, of } from "rxjs";
+import { Observable } from "rxjs";
+import { DetalleAprobaciones } from "src/app/eschemas/DetalleAprobaciones";
 import { DetalleSolicitud } from "src/app/eschemas/DetalleSolicitud";
 import { Solicitud } from "src/app/eschemas/Solicitud";
 import { environment } from "src/environments/environment";
-import { IEmpleados } from "../../services/mantenimiento/empleado.interface";
-import { DetalleAprobaciones } from "src/app/eschemas/DetalleAprobaciones";
+import {
+	IAprobacionesPosicion,
+	ITareasResponse,
+} from "./registrar-solicitudes.interface";
 
 @Injectable({
   providedIn: "root",
@@ -34,6 +33,10 @@ export class SolicitudesService {
 
   public getSolicitudById(idSolicitud: any): Observable<any> {
     return this.http.get<any>(`${this.apiUrlSolicitudes}/${idSolicitud}`);
+  }
+
+  public getDetalleAprobadoresSolicitudesById(idSolicitud: any): Observable<any> {
+    return this.http.get<any>(`${this.apiDetalleAprobaciones}/${idSolicitud}`);
   }
 
   public getDetalleSolicitudById(idSolicitud: any): Observable<any> {

@@ -1,7 +1,6 @@
+import { IInputsComponent } from "src/app/component/input/input.interface";
 import { IColumnsTable } from "src/app/component/table/table.interface";
 import { ITipomotivoTable } from "./tipo-motivo.interface";
-import { IInputsComponent } from "src/app/component/input/input.interface";
-import { PlantillaAData } from "src/app/plantilla/plantillaA/plantillaA.data";
 
 export const TipomotivoData: ITipomotivoData = {
   columns: [
@@ -56,7 +55,7 @@ export const TipomotivoData: ITipomotivoData = {
     id: "0",
     tipoMotivo: "",
     tipoSolicitudId: null,
-    estado: true,
+    estado: true
   },
   tableInputsEditRow: [
     {

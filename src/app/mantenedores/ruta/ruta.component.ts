@@ -6,6 +6,7 @@ import { InputService } from "src/app/component/input/input.service";
 import { IColumnsTable } from "src/app/component/table/table.interface";
 import { TableService } from "src/app/component/table/table.service";
 import { PageCodes } from "src/app/enums/codes.enum";
+import { LocalStorageKeys } from "src/app/enums/local-storage-keys.enum";
 import { RutaPageControlPermission } from "src/app/enums/page-control-permisions.enum";
 import { MantenimientoService } from "src/app/services/mantenimiento/mantenimiento.service";
 import { PermisoService } from "src/app/services/permiso/permiso.service";
@@ -80,6 +81,12 @@ export class RutaComponent implements OnInit {
     private mantenimientoService: MantenimientoService,
     private permissionService: PermisoService
   ) {
+	if (localStorage.getItem(LocalStorageKeys.Reloaded)! === "0") {
+		localStorage.setItem(LocalStorageKeys.Reloaded, "1");
+
+		window.location.reload();
+	}
+
     this.getPermissions();
   }
 

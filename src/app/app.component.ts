@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { LocalStorageKeys } from './enums/local-storage-keys.enum';
 
 @Component({
   selector: 'app-root',
@@ -7,4 +8,12 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'app';
+
+  constructor() {
+	  const reloaded = localStorage.getItem(LocalStorageKeys.Reloaded);
+
+	if (reloaded === undefined || reloaded === null || reloaded === "0") {
+		localStorage.setItem(LocalStorageKeys.Reloaded, "0");
+	}
+  }
 }

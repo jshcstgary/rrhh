@@ -1,6 +1,6 @@
+import { IInputsComponent } from "src/app/component/input/input.interface";
 import { IColumnsTable } from "src/app/component/table/table.interface";
 import { IConsultaSolicitudTable } from "./consulta-solicitudes.interface";
-import { IInputsComponent } from "src/app/component/input/input.interface";
 
 export const ConsultaSolicitudesData: IConsultaSolicitudesData = {
   columns: [
@@ -37,6 +37,12 @@ export const ConsultaSolicitudesData: IConsultaSolicitudesData = {
           materialIcon: "info",
           id: "editOnTable",
           tooltip: "Info",
+          showed: true
+        },
+        {
+          materialIcon: "arrow_right",
+          id: "cloneOnTable",
+          tooltip: "Trazabilidad",
           showed: true
         }
       ],

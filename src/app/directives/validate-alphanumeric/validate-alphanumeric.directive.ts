@@ -4,7 +4,7 @@ import { Directive, HostListener } from '@angular/core';
   selector: '[appValidateAlphanumeric]'
 })
 export class ValidateAlphanumericDirective {
-	private regex: RegExp = new RegExp(/^[a-zA-Z0-9]*$/);
+	private regex: RegExp = new RegExp(/^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ ]*$/);
 	private specialKeys: Array<string> = ['Backspace', 'Tab', 'End', 'Home', 'ArrowLeft', 'ArrowRight', 'Del', 'Delete'];
 
   constructor() { }

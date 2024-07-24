@@ -8,13 +8,14 @@ import { RegistrarSolicitudComponent } from "./registrar-solicitud/registrar-sol
 import { RevisarSolicitudComponent } from "./revisar-solicitud/revisar-solicitud.component";
 
 // HISTORIAS - CGARCIA
-import { RegistrarFamiliaresComponent } from "./registrar-familiares/registrar-familiares.component";
-import { ReingresoPersonalComponent } from "./reingreso-personal/reingreso-personal.component";
+import { CompletarAccionPersonalComponent } from "./completar-accion-personal/completar-accion-personal.component";
+import { RegistrarAccionPersonalComponent } from "./registrar-accion-personal/registrar-accion-personal.component";
+import { RegistrarComentarioReingresoComponent } from "./registrar-comentario-reingreso/registrar-comentario-reingreso.component";
 import { RegistrarComentarioSalidaJefeComponent } from "./registrar-comentario-salida-jefe/registrar-comentario-salida-jefe.component";
 import { RegistrarComentarioSalidaRRHHComponent } from "./registrar-comentario-salida-rrhh/registrar-comentario-salida-rrhh.component";
-import { RegistrarComentarioReingresoComponent } from "./registrar-comentario-reingreso/registrar-comentario-reingreso.component";
-import { RegistrarAccionPersonalComponent } from "./registrar-accion-personal/registrar-accion-personal.component";
-import { CompletarAccionPersonalComponent } from "./completar-accion-personal/completar-accion-personal.component";
+import { RegistrarFamiliaresComponent } from "./registrar-familiares/registrar-familiares.component";
+import { ReingresoPersonalComponent } from "./reingreso-personal/reingreso-personal.component";
+import { TrazabilidadSolicitudComponent } from "./trazabilidad-solicitud/trazabilidad-solicitud.component";
 
 export const SolicitudesRoutes: Routes = [
   {
@@ -202,6 +203,21 @@ export const SolicitudesRoutes: Routes = [
             }
           ]
         }
+      },
+      {
+        path: "trazabilidad/:idSolicitud",
+        component: TrazabilidadSolicitudComponent,
+        data: {
+          title: "Trazabilidad de la Solicitud",
+          urls: [
+            {
+              title: "Solicitudes"
+            },
+            {
+              title: "Trazabilidad de la Solicitud"
+            }
+          ],
+        },
       },
       {
         path: "completa-solicitud/:id/:idSolicitud",

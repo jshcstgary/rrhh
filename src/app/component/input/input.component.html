@@ -19,6 +19,7 @@
     >
     <div class="input-group" *ngIf="showfilterInput">
       <input
+		appValidateAlphanumeric
         [id]="id"
         type="text"
         class="form-control"
@@ -69,6 +70,7 @@
     >
     <div class="input-group">
       <input
+		appValidateAlphanumeric
         [id]="id"
         type="text"
         class="form-control"

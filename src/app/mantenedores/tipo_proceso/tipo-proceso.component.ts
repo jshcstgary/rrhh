@@ -1,25 +1,26 @@
+import { HttpErrorResponse } from "@angular/common/http";
 import { Component, OnInit } from "@angular/core";
+import { FormService } from "src/app/component/form/form.service";
+import { IInputsComponent } from "src/app/component/input/input.interface";
+import { InputService } from "src/app/component/input/input.service";
 import { IColumnsTable } from "src/app/component/table/table.interface";
+import { TableService } from "src/app/component/table/table.service";
+import { PageCodes } from "src/app/enums/codes.enum";
+import { LocalStorageKeys } from "src/app/enums/local-storage-keys.enum";
+import { TipoProcesoPageControlPermission } from "src/app/enums/page-control-permisions.enum";
+import { MantenimientoService } from "src/app/services/mantenimiento/mantenimiento.service";
+import { PermisoService } from "src/app/services/permiso/permiso.service";
+import { UtilData } from "src/app/services/util/util.data";
+import { reportCodeEnum } from "src/app/services/util/util.interface";
+import { UtilService } from "src/app/services/util/util.service";
+import { ValidationsService } from "src/app/services/validations/validations.service";
+import { PageControlPermiso } from "src/app/types/page-control-permiso.type";
+import { Control } from "src/app/types/permiso.type";
+import { environment } from "src/environments/environment";
+import Swal from "sweetalert2";
 import { TipoprocesoData } from "./tipo-proceso.data";
 import { ITipoproceso, ITipoprocesoTable } from "./tipo-proceso.interface";
-import Swal from "sweetalert2";
-import { HttpErrorResponse } from "@angular/common/http";
-import { IInputsComponent } from "src/app/component/input/input.interface";
-import { reportCodeEnum } from "src/app/services/util/util.interface";
-import { TableService } from "src/app/component/table/table.service";
-import { ValidationsService } from "src/app/services/validations/validations.service";
-import { environment } from "src/environments/environment";
-import { UtilService } from "src/app/services/util/util.service";
 import { TipoProcesoService } from "./tipo-proceso.service";
-import { UtilData } from "src/app/services/util/util.data";
-import { InputService } from "src/app/component/input/input.service";
-import { FormService } from "src/app/component/form/form.service";
-import { MantenimientoService } from "src/app/services/mantenimiento/mantenimiento.service";
-import { PageCodes } from "src/app/enums/codes.enum";
-import { TipoProcesoPageControlPermission } from "src/app/enums/page-control-permisions.enum";
-import { PageControlPermiso } from "src/app/types/page-control-permiso.type";
-import { PermisoService } from "src/app/services/permiso/permiso.service";
-import { Control } from "src/app/types/permiso.type";
 
 @Component({
   templateUrl: "./tipo-proceso.component.html",
@@ -82,6 +83,12 @@ export class TipoProcesoComponent implements OnInit {
     private mantenimientoService: MantenimientoService,
     private permissionService: PermisoService
   ) {
+	if (localStorage.getItem(LocalStorageKeys.Reloaded)! === "0") {
+		localStorage.setItem(LocalStorageKeys.Reloaded, "1");
+
+		window.location.reload();
+	}
+
     this.getPermissions();
   }
 

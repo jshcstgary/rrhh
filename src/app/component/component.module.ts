@@ -1,17 +1,18 @@
-import { NgModule } from "@angular/core";
-import { RouterModule } from "@angular/router";
-import { ComponentsRoutes } from "./component.routing";
-import { TooltipComponent } from "./tooltip/tooltip.component";
 import { CommonModule } from "@angular/common";
-import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
+import { NgModule } from "@angular/core";
 import { FormsModule } from "@angular/forms";
-import { TableComponent } from "./table/table.component";
-import { InputComponent } from "./input/input.component";
-import { ColorPickerModule } from "ngx-color-picker";
+import { RouterModule } from "@angular/router";
+import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { NgSelectModule } from "@ng-select/ng-select";
+import { ColorPickerModule } from "ngx-color-picker";
+import { DirectivesModule } from "../directives/directives.module";
+import { ComponentsRoutes } from "./component.routing";
 import { DropdownComponent } from "./dropdown/dropdown.component";
 import { FormComponent } from "./form/form.component";
+import { InputComponent } from "./input/input.component";
 import { TablaComponent } from "./table-personalized/table.component";
+import { TableComponent } from "./table/table.component";
+import { TooltipComponent } from "./tooltip/tooltip.component";
 
 @NgModule({
   imports: [
@@ -20,7 +21,8 @@ import { TablaComponent } from "./table-personalized/table.component";
     NgbModule,
     FormsModule,
     ColorPickerModule,
-    NgSelectModule,
+	NgSelectModule,
+	DirectivesModule
   ],
   declarations: [
     TooltipComponent,
