@@ -1599,11 +1599,26 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
 
       if (this.taskType_Activity == environment.taskType_RegistrarCandidato) {
         if (this.model.tipoProceso.toUpperCase().includes("FAMILIA")) {
-          variables.tipoSolicitud = { value: "contratacionFamiliares" };
+          variables.tipoSolicitud = {
+			value: "contratacionFamiliares"
+		  };
+          variables.tipoProceso = {
+			value: "contratacionFamiliares"
+		  };
         } else if (this.model.tipoProceso.toUpperCase().includes("REINGRESO")) {
-          variables.tipoSolicitud = { value: "reingresoPersonal" };
+          variables.tipoSolicitud = {
+			value: "reingresoPersonal"
+		  };
+          variables.tipoProceso = {
+			value: "reingresoPersonal"
+		  };
         } else if (this.model.tipoProceso.toUpperCase().includes("REEMPLAZO")) {
-          variables.tipoSolicitud = { value: "nuevoIngresoReemplazo" };
+          variables.tipoSolicitud = {
+			value: "nuevoIngresoReemplazo"
+		  };
+          variables.tipoProceso = {
+			value: "nuevoIngresoReemplazo"
+		  };
         }
 
       }
