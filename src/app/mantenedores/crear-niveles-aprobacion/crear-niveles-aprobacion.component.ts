@@ -1,14 +1,13 @@
 import { CommonModule, NgFor } from "@angular/common";
 import { HttpErrorResponse } from "@angular/common/http";
 import { Component, OnInit } from "@angular/core";
-import { NgModel, FormsModule } from "@angular/forms";
+import { FormsModule } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
-import { NgSelectConfig, NgSelectModule } from "@ng-select/ng-select";
+import { NgSelectConfig } from "@ng-select/ng-select";
+import { DatosNivelesAprobacion } from "src/app/eschemas/DatosNivelesAprobacion";
 import { MantenimientoService } from "src/app/services/mantenimiento/mantenimiento.service";
 import { UtilService } from "src/app/services/util/util.service";
 import { CrearNivelesAprobacionService } from "./crear-niveles-aprobacion.service";
-import Swal from "sweetalert2";
-import { DatosNivelesAprobacion } from "src/app/eschemas/DatosNivelesAprobacion";
 
 @Component({
   standalone: true,
@@ -329,11 +328,11 @@ export class CrearNivelesAprobacionComponent implements OnInit {
                 "Datos ingresados correctamente",
                 "success"
               );
-              setTimeout(() => {
-                this.router.navigate([
-                  "/mantenedores/niveles-aprobacion",
-                ]);
-              }, 1600);
+            //   setTimeout(() => {
+            //     this.router.navigate([
+            //       "/mantenedores/niveles-aprobacion",
+            //     ]);
+            //   }, 1600);
               // Inicio
               /*this.serviceNivelesAprobacion
                 .refrescarNivelesAprobaciones()
