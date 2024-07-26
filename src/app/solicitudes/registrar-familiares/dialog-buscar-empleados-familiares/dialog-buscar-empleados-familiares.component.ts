@@ -1,13 +1,11 @@
 import { HttpErrorResponse } from "@angular/common/http";
 import { Component, inject } from "@angular/core";
-import { FormsModule } from "@angular/forms";
 import { NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
-import { Observable, OperatorFunction, catchError, debounceTime, distinctUntilChanged, map } from "rxjs";
-import { AprobadorFijo } from "src/app/eschemas/AprobadorFijo";
+import { Observable, OperatorFunction, debounceTime, distinctUntilChanged, map } from "rxjs";
 import {
-  EvType,
-  IEmpleadoData,
-  IEmpleados,
+	EvType,
+	IEmpleadoData,
+	IEmpleados,
 } from "src/app/services/mantenimiento/empleado.interface";
 import { MantenimientoService } from "src/app/services/mantenimiento/mantenimiento.service";
 import { UtilService } from "src/app/services/util/util.service";
@@ -99,68 +97,14 @@ export class DialogBuscarEmpleadosFamiliaresComponent {
     });
 
     if (datosEmpleado) {
-      let fechaActual = new Date();
-      let fechaEnFormatoISO = fechaActual.toISOString();
-
       this.modelo = datosEmpleado;
       this.searchInp = datosEmpleado.nombreCompleto;
-
-      console.log(this.modelo);
-
-      // this.model = {
-      //   codigo
-      //   idEmpresa
-      //   compania
-      //   departamento
-      //   nombreCargo
-      //   nomCCosto
-      //   codigoPosicion
-      //   descrPosicion
-      //   codigoPuesto
-      //   descrPuesto
-      //   fechaIngresogrupo
-      //   grupoPago
-      //   reportaA
-      //   localidad
-      //   nivelDir
-      //   descrNivelDir
-      //   nivelRepa
-      //   nombreCompleto
-      //   subledger
-      //   sucursal
-      //   unidadNegocio
-      //   tipoContrato
-      //   descripContrato
-      //   sueldo
-      //   sueldoVariableMensual
-      //   sueldoVariableTrimestral
-      //   sueldoVariableSemestral
-      //   sueldoVariableAnual
-      //   codigoPosicionReportaA
-      //   status
-      // };
-
-      // this.modelo.iD_APROBADOR = 1;
-      // this.modelo.niveL_DIRECCION = "Gerente de RRHH Corporativo";
-      // this.modelo.codigO_POSICION = datosEmpleado.codigoPosicion;
-      // this.modelo.subleger = datosEmpleado.subledger;
-      // this.modelo.nombre = datosEmpleado.nombreCompleto;
-      // this.modelo.codigO_POSICION_REPORTA_A = "N/A";
-      // this.modelo.reportA_A = datosEmpleado.reportaA;
-      // this.modelo.estado = true;
-      // this.modelo.fechA_CREACION = fechaEnFormatoISO;
-      // this.modelo.fechA_MODIFICACION = fechaEnFormatoISO;
-      // this.modelo.usuariO_CREACION = fechaEnFormatoISO;
-      // this.modelo.usuariO_MODIFICACION = fechaEnFormatoISO;
-      // this.modelo.descripcioN_POSICION = datosEmpleado.descrPosicion;
-      // this.modelo.supervisA_A = "N/A";
-      // this.modelo.niveL_REPORTE = datosEmpleado.nivelReporte;
-      // this.modelo.correo = datosEmpleado.correo
     } else {
-      // this.model.reset();
       let tempSearch = valor;
+
       this.clearModel();
-      if (campo == "codigoPosicion") {
+
+	  if (campo == "codigoPosicion") {
         this.modelo.codigoPosicion = tempSearch;
       } else if (campo == "subledger") {
         this.modelo.subledger = tempSearch;
@@ -229,63 +173,10 @@ export class DialogBuscarEmpleadosFamiliaresComponent {
 
           return;
         }
-        console.log(response.evType);
 
         this.dataEmpleadoEvolution = response.evType;
         this.eventSearch.item=this.dataEmpleadoEvolution[0].nombreCompleto;
-        this.onSelectItem('nombreCompleto',this.eventSearch);  
-        // let fechaActual = new Date();
-        // let fechaEnFormatoISO = fechaActual.toISOString();
-
-        // this.modelo = {
-        //     codigo: response.evType.codigo,
-        //     idEmpresa: response.evType.idEmpresa,
-        //     compania: response.evType.compania,
-        //     departamento: response.evType.departamento,
-        //     nombreCargo: response.evType.nombreCargo,
-        //     nomCCosto: response.evType.nomCCosto,
-        //     codigoPosicion: response.evType.codigoPosicion,
-        //     descrPosicion: response.evType.descrPosicion,
-        //     codigoPuesto: response.evType.codigoPuesto,
-        //     descrPuesto: response.evType.descrPuesto,
-        //     fechaIngresogrupo: response.evType.fechaIngresogrupo,
-        //     grupoPago: response.evType.grupoPago,
-        //     reportaA: response.evType.reportaA,
-        //     localidad: response.evType.localidad,
-        //     nivelDir: response.evType.nivelDir,
-        //     descrNivelDir: response.evType.descrNivelDir,
-        //     nivelRepa: response.evType.nivelRepa,
-        //     nombreCompleto: response.evType.nombreCompleto,
-        //     subledger: response.evType.subledger,
-        //     sucursal: response.evType.sucursal,
-        //     unidadNegocio: response.evType.unidadNegocio,
-        //     tipoContrato: response.evType.tipoContrato,
-        //     descripContrato: response.evType.descripContrato,
-        //     sueldo: response.evType.sueldo,
-        //     sueldoVariableMensual: response.evType.sueldoVariableMensual,
-        //     sueldoVariableTrimestral: response.evType.sueldoVariableTrimestral,
-        //     sueldoVariableSemestral: response.evType.sueldoVariableSemestral,
-        //     sueldoVariableAnual: response.evType.sueldoVariableAnual,
-        //     codigoPosicionReportaA: response.evType.codigoPosicionReportaA,
-        //     status: response.evType.status,
-        // };
-
-        // this.modelo.iD_APROBADOR = 1;
-        // this.modelo.niveL_DIRECCION = "Gerente de RRHH Corporativo";
-        // this.modelo.codigO_POSICION = this.dataEmpleadoEvolution[0].codigoPosicion;
-        // this.modelo.subleger = this.dataEmpleadoEvolution[0].subledger;
-        // this.modelo.nombre = this.dataEmpleadoEvolution[0].nombreCompleto;
-        // this.modelo.codigO_POSICION_REPORTA_A = "N/A";
-        // this.modelo.reportA_A = this.dataEmpleadoEvolution[0].reportaA;
-        // this.modelo.estado = true;
-        // this.modelo.fechA_CREACION = fechaEnFormatoISO;
-        // this.modelo.fechA_MODIFICACION = fechaEnFormatoISO;
-        // this.modelo.usuariO_CREACION = fechaEnFormatoISO;
-        // this.modelo.usuariO_MODIFICACION = fechaEnFormatoISO;
-        // this.modelo.descripcioN_POSICION = this.dataEmpleadoEvolution[0].descrPosicion;
-        // this.modelo.supervisA_A = "N/A";
-        // this.modelo.niveL_REPORTE = this.dataEmpleadoEvolution[0].nivelReporte;
-        // this.modelo.correo = this.dataEmpleadoEvolution[0].correo
+        this.onSelectItem('nombreCompleto',this.eventSearch);
 
         this.nombresEmpleados = [...new Set(this.dataEmpleadoEvolution.map((empleado) => empleado.nombreCompleto))];
 

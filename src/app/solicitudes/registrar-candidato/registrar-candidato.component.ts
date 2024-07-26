@@ -5,6 +5,7 @@ import {
 import { Component } from "@angular/core";
 import { NgForm } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
+import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { Observable, OperatorFunction, Subject } from "rxjs";
 import {
 	debounceTime,
@@ -21,6 +22,8 @@ import { Solicitud } from "src/app/eschemas/Solicitud";
 import { TipoSolicitudService } from "src/app/mantenedores/tipo_solicitud/tipo-solicitud.service";
 import { MantenimientoService } from "src/app/services/mantenimiento/mantenimiento.service";
 import { UtilService } from "src/app/services/util/util.service";
+import { DialogComponents } from "src/app/shared/dialogComponents/dialog.components";
+import { DialogReasignarUsuarioComponent } from "src/app/shared/reasginar-usuario/reasignar-usuario.component";
 import { StarterService } from "src/app/starter/starter.service";
 import { ConsultaTareasService } from "src/app/tareas/consulta-tareas/consulta-tareas.service";
 import { Permiso } from "src/app/types/permiso.type";
@@ -30,6 +33,11 @@ import { CamundaRestService } from "../../camunda-rest.service";
 import { CompleteTaskComponent } from "../general/complete-task.component";
 import { SolicitudesService } from "../registrar-solicitud/solicitudes.service";
 import { RegistrarCandidatoService } from "./registrar-candidato.service";
+
+export const dialogComponentList: DialogComponents = {
+  dialogBuscarEmpleados: undefined,
+  dialogReasignarUsuario: DialogReasignarUsuarioComponent,
+};
 
 @Component({
   selector: 'app-registrar-candidato',
@@ -88,7 +96,7 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
 
   isFuenteExternaVisible: boolean = true;
 
-
+  public existeMatenedores: boolean = false;
 
   //tipoProceso: String = '';
 
@@ -412,6 +420,7 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
     private mantenimientoService: MantenimientoService,
     private solicitudes: SolicitudesService,
     private utilService: UtilService,
+	private modalService: NgbModal,
     private consultaTareasService: ConsultaTareasService,
     private seleccionCandidatoService: RegistrarCandidatoService,
     private tipoSolicitudServicio: TipoSolicitudService,
@@ -453,13 +462,13 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
         next: (res) => {
           return this.consultaTareasService.getTareasUsuario(res.evType[0].subledger).subscribe({
             next: async (response) => {
-              const existe = response.solicitudes.some(({ idSolicitud, rootProcInstId}) => idSolicitud === this.id_solicitud_by_params && rootProcInstId === this.idDeInstancia);
+              const existe = response.solicitudes.some(({ idSolicitud, rootProcInstId }) => idSolicitud === this.id_solicitud_by_params && rootProcInstId === this.idDeInstancia);
 
 			  const permisos: Permiso[] = JSON.parse(localStorage.getItem(LocalStorageKeys.Permisos)!);
 
-			  const existeMatenedores = permisos.some(permiso => permiso.codigo === PageCodes.AprobadorFijo);
+			  this.existeMatenedores = permisos.some(permiso => permiso.codigo === PageCodes.AprobadorFijo);
 
-              if (existe || existeMatenedores) {
+              if (existe || this.existeMatenedores) {
                 try {
                   await this.loadDataCamunda();
 
@@ -1932,6 +1941,40 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
     );
   }
 
+  openModalReasignarUsuario() {
+    const modelRef = this.modalService.open(dialogComponentList.dialogReasignarUsuario, {
+        ariaLabelledBy: "modal-title",
+	});
 
+	modelRef.componentInstance.idParam = this.solicitud.idSolicitud;
+	modelRef.componentInstance.taskId = this.taskType_Activity;
 
+    modelRef.result.then(
+        (result) => {
+          if (result === "close") {
+            return;
+		  }
+
+          if (result?.data) {
+			Swal.fire({
+				text: result.data,
+				icon: "success",
+				confirmButtonColor: "rgb(227, 199, 22)"
+			});
+          }
+        },
+        (reason) => {
+          console.log(`Dismissed with: ${reason}`);
+        }
+      );
+  }
+
+  indexedModal: Record<keyof DialogComponents, any> = {
+    dialogBuscarEmpleados: undefined,
+    dialogReasignarUsuario: () => this.openModalReasignarUsuario(),
+  };
+
+  openModal(component: keyof DialogComponents) {
+    this.indexedModal[component]();
+  }
 }

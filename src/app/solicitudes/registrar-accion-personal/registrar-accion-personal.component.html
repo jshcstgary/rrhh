@@ -13,7 +13,11 @@
             </div>
           </div>
 
-          <div class="col-md-12 text-end">
+		  <button *ngIf="existeMatenedores" type="button" (click)="openModal('dialogReasignarUsuario')" class="btn btn-info me-2 mt-1">
+			<i class="fas fa-redo"></i> Reasignar
+		  </button>
+
+          <div *ngIf="!existeMatenedores" class="col-md-12 text-end">
             <button
               type="submit"
               class="btn btn-info me-2 mt-1"

@@ -10,7 +10,6 @@
           <label class="label-estilo" for="searchInp" style="font-size: 14px; width: 100%">Buscar</label>
 
           <input type="text" [(ngModel)]="searchInp" class="form-control" id="searchInp" [ngbTypeahead]="searchNombreCompleto" (selectItem)="onSelectItem('nombreCompleto', $event)" />
-          <!-- (keyup.enter)="onEnter(searchInp)" -->
 
           <button class="btn btn-light" type="button" (click)="getDataEmpleadosEvolution('nombreEmpleado')">
             <i class="ti-search"></i>

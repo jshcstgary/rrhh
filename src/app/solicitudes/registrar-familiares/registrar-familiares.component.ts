@@ -338,7 +338,7 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
   public success: false;
   public params: any;
   public id_edit: undefined | string;
-  public existeMatenedores: boolean=false;
+  public existeMatenedores: boolean = false;
 
 
   private id_solicitud_by_params: any;
@@ -759,7 +759,7 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
           ),
         ];
         this.eventSearch.item=this.dataEmpleadoEvolution[0].nombreCompleto;
-        this.onSelectItem('nombreCompleto',this.eventSearch);     
+        this.onSelectItem('nombreCompleto',this.eventSearch);
       },
       error: (error: HttpErrorResponse) => {
         this.utilService.modalResponse(error.error, "error");
@@ -1856,8 +1856,11 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
             return;
           }
           if (result?.data) {
-            if (result?.data) {
-            }
+            Swal.fire({
+				text: result.data,
+				icon: "success",
+				confirmButtonColor: "rgb(227, 199, 22)"
+			});
           }
         },
         (reason) => {

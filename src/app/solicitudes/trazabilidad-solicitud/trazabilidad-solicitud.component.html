@@ -77,7 +77,12 @@
 				</button>
 			</div>
 
-			<div [id]="'collapse' + i" class="accordion-collapse collapse" [ngClass]="{ show: i === 0 }" data-bs-parent="#accordionExample">
+			<!--
+			nivelItem.estadoAprobacion -> show
+			0 -> show
+			 -->
+
+			<div [id]="'collapse' + i" class="accordion-collapse collapse" [ngClass]="{ show: nivelItem.estadoAprobacion.toUpperCase().includes('PORREVISAR') }" data-bs-parent="#accordionExample">
 				<div class="row">
 					<div class="col">
 						<div class="input-group">

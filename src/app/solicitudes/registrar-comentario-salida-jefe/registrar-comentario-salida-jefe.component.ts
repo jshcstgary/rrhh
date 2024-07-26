@@ -360,7 +360,7 @@ export class RegistrarComentarioSalidaJefeComponent extends CompleteTaskComponen
   public success: false;
   public params: any;
   public id_edit: undefined | string;
-  public existeMatenedores: boolean=false;
+  public existeMatenedores: boolean = false;
 
 
   private id_solicitud_by_params: any;
@@ -1199,11 +1199,46 @@ export class RegistrarComentarioSalidaJefeComponent extends CompleteTaskComponen
 
   }
 
+  openModalReasignarUsuario() {
+    const modelRef = this.modalService.open(dialogComponentList.dialogReasignarUsuario, {
+        ariaLabelledBy: "modal-title",
+	});
 
-  openModal(componentName: keyof DialogComponents) {
-    console.log('SE ABRIO EL MODAL')
+	modelRef.componentInstance.idParam = this.solicitud.idSolicitud;
+	modelRef.componentInstance.taskId = this.taskType_Activity;
+
+    modelRef.result.then(
+        (result) => {
+          if (result === "close") {
+            return;
+		  }
+
+          if (result?.data) {
+			Swal.fire({
+				text: result.data,
+				icon: "success",
+				confirmButtonColor: "rgb(227, 199, 22)"
+			});
+          }
+        },
+        (reason) => {
+          console.log(`Dismissed with: ${reason}`);
+        }
+      );
+  }
+
+  indexedModal: Record<keyof DialogComponents, any> = {
+    dialogBuscarEmpleados: () => this.openModalBuscarEmpleado(),
+    dialogReasignarUsuario: () => this.openModalReasignarUsuario(),
+  };
+
+  openModal(component: keyof DialogComponents) {
+    this.indexedModal[component]();
+  }
+
+  openModalBuscarEmpleado() {
     this.modalService
-      .open(dialogComponentList[componentName], {
+      .open(dialogComponentList.dialogBuscarEmpleados, {
         ariaLabelledBy: "modal-title",
       })
       .result.then(
@@ -1215,7 +1250,6 @@ export class RegistrarComentarioSalidaJefeComponent extends CompleteTaskComponen
           }
           if (Object.keys(result).length > 0) {
             console.log('Probando')
-            // this.dataTableAprobadores.push(result);
           }
         },
         (reason) => {

@@ -1,4 +1,3 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { lastValueFrom } from 'rxjs';
@@ -29,17 +28,14 @@ export class TrazabilidadSolicitudComponent {
 	public async ngOnInit(): Promise<void> {
 		this.utilService.openLoadingSpinner("Cargando información, espere por favor...");
 
-		// this.getSolicitudById(this.idSolicitudParam);
-
 		try {
 			const solicitudResponse = await lastValueFrom(this.solicitudes.getSolicitudById(this.idSolicitudParam));
 			this.solicitud = solicitudResponse
 
 			if (this.solicitud !== null) {
 				const nivelesAprobacionResponse = await lastValueFrom(this.solicitudes.getDetalleAprobadoresSolicitudesById(this.solicitud.idSolicitud));
-				console.log(nivelesAprobacionResponse);
+
 				this.dataDetalleAprobadorSolicitud = nivelesAprobacionResponse.detalleAprobadorSolicitud;
-				console.log(this.dataDetalleAprobadorSolicitud);
 			}
 
 			this.utilService.closeLoadingSpinner();
@@ -50,31 +46,18 @@ export class TrazabilidadSolicitudComponent {
 		}
 	}
 
-	private getSolicitudById(id: any): void {
-		this.solicitudes.getSolicitudById(id).subscribe({
-			next: (response: any) => {
-				this.solicitud = response;
+	// private getSolicitudById(id: any): void {
+	// 	this.solicitudes.getSolicitudById(id).subscribe({
+	// 		next: (response: any) => {
+	// 			this.solicitud = response;
 
-				this.utilService.closeLoadingSpinner();
-			},
-			error: (error: HttpErrorResponse) => {
-				this.utilService.modalResponse(error.error, "error");
-			},
-		});
-	}
+	// 			this.utilService.closeLoadingSpinner();
+	// 		},
+	// 		error: (error: HttpErrorResponse) => {
+	// 			this.utilService.modalResponse(error.error, "error");
+	// 		},
+	// 	});
+	// }
 
-	private getNivelesAprobacion(): void {
-		if (this.solicitud === null) {
-			return;
-		}
 
-		this.solicitudes.obtenerNivelesAprobacionRegistrados(this.solicitud.idSolicitud).subscribe({
-			next: (response) => {
-				this.dataDetalleAprobadorSolicitud = response.nivelAprobacionPosicionType;
-			},
-			error: (error: HttpErrorResponse) => {
-				this.utilService.modalResponse("No existen niveles de aprobación para este empleado", "error");
-			},
-		});
-	}
 }

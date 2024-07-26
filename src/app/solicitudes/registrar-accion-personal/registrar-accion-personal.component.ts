@@ -20,6 +20,7 @@ import { environment, portalWorkFlow } from "../../../environments/environment";
 import { CompleteTaskComponent } from "../general/complete-task.component";
 import { SolicitudesService } from "../registrar-solicitud/solicitudes.service";
 
+import { PageCodes } from "src/app/enums/codes.enum";
 import { LocalStorageKeys } from "src/app/enums/local-storage-keys.enum";
 import {
 	IEmpleadoData,
@@ -27,6 +28,7 @@ import {
 } from "src/app/services/mantenimiento/empleado.interface";
 import { DialogReasignarUsuarioComponent } from "src/app/shared/reasginar-usuario/reasignar-usuario.component";
 import { StarterService } from "src/app/starter/starter.service";
+import { Permiso } from "src/app/types/permiso.type";
 import Swal from "sweetalert2";
 
 interface DialogComponents {
@@ -51,7 +53,7 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
   empleadoSearch : string = "";
   nivelDireccionDatoPropuesto : string = "";
 
-
+  public existeMatenedores: boolean = false;
 
   private readonly NIVEL_APROBACION_GERENCIA_MEDIA: string = "GERENCIA MEDIA";
   private readonly NIVEL_APROBACION_GERENCIA_UNIDAD: string = "GERENCIA DE UNIDAD O CORPORATIVA";
@@ -389,20 +391,69 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
       this.idDeInstancia = params.get("id");
       console.log("this.idDeInstancia: ", this.idDeInstancia);
     });
+
+	  this.verifyData();
   }
 
-  async ngOnInit() {
-    this.utilService.openLoadingSpinner(
-      "Cargando información, espere por favor..."
-    );
-    console.log("this.id_solicitud_by_params: ", this.id_solicitud_by_params);
-    try {
-    	await this.loadDataCamunda();
+  private verifyData(): void {
+    this.utilService.openLoadingSpinner("Cargando información, espere por favor...");
 
-      this.utilService.closeLoadingSpinner();
+    try {
+      this.starterService.getUser(localStorage.getItem(LocalStorageKeys.IdUsuario)!).subscribe({
+        next: (res) => {
+          return this.consultaTareasService.getTareasUsuario(res.evType[0].subledger).subscribe({
+            next: async (response) => {
+              const existe = response.solicitudes.some(({ idSolicitud, rootProcInstId }) => idSolicitud === this.id_solicitud_by_params && rootProcInstId === this.idDeInstancia);
+
+			  const permisos: Permiso[] = JSON.parse(localStorage.getItem(LocalStorageKeys.Permisos)!);
+
+			  this.existeMatenedores = permisos.some(permiso => permiso.codigo === PageCodes.AprobadorFijo);
+
+              if (existe || this.existeMatenedores) {
+                try {
+                  await this.loadDataCamunda();
+
+                  this.utilService.closeLoadingSpinner();
+                } catch (error) {
+                  this.utilService.modalResponse(error.error, "error");
+                }
+              } else {
+                this.utilService.closeLoadingSpinner();
+
+                await Swal.fire({
+                  text: "Usuario no asignado",
+                  icon: "info",
+                  confirmButtonColor: "rgb(227, 199, 22)"
+                });
+
+                this.router.navigate(["/solicitudes/consulta-solicitudes"]);
+              }
+            },
+            error: (error: HttpErrorResponse) => {
+              this.utilService.modalResponse(error.error, "error");
+
+              this.utilService.closeLoadingSpinner();
+            },
+          });
+        }
+      });
     } catch (error) {
       this.utilService.modalResponse(error.error, "error");
     }
+  }
+
+  async ngOnInit() {
+    // this.utilService.openLoadingSpinner(
+    //   "Cargando información, espere por favor..."
+    // );
+    // console.log("this.id_solicitud_by_params: ", this.id_solicitud_by_params);
+    // try {
+    // 	await this.loadDataCamunda();
+
+    //   this.utilService.closeLoadingSpinner();
+    // } catch (error) {
+    //   this.utilService.modalResponse(error.error, "error");
+    // }
   }
 
   ObtenerServicioTipoSolicitud() {
@@ -1421,14 +1472,6 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
 
   public onCancel(): void {}
 
-  indexedModal: Record<keyof DialogComponents, any> = {
-    dialogReasignarUsuario: undefined
-  };
-
-  openModal(component: keyof DialogComponents) {
-    this.indexedModal[component]();
-  }
-
   save() {
     this.utilService.openLoadingSpinner("Guardando información, espere por favor...");
 
@@ -1733,4 +1776,39 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
 
   }
 
+  openModalReasignarUsuario() {
+    const modelRef = this.modalService.open(dialogComponentList.dialogReasignarUsuario, {
+        ariaLabelledBy: "modal-title",
+	});
+
+	modelRef.componentInstance.idParam = this.solicitud.idSolicitud;
+	modelRef.componentInstance.taskId = this.taskType_Activity;
+
+    modelRef.result.then(
+        (result) => {
+          if (result === "close") {
+            return;
+		  }
+
+          if (result?.data) {
+			Swal.fire({
+				text: result.data,
+				icon: "success",
+				confirmButtonColor: "rgb(227, 199, 22)"
+			});
+          }
+        },
+        (reason) => {
+          console.log(`Dismissed with: ${reason}`);
+        }
+      );
+  }
+
+  indexedModal: Record<keyof DialogComponents, any> = {
+    dialogReasignarUsuario: () => this.openModalReasignarUsuario(),
+  };
+
+  openModal(component: keyof DialogComponents) {
+    this.indexedModal[component]();
+  }
 }

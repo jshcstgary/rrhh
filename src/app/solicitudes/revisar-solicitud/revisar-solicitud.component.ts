@@ -424,7 +424,7 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
   public success: false;
   public params: any;
   public id_edit: undefined | string;
-  public existeMatenedores: boolean=false;
+  public existeMatenedores: boolean = false;
 
   private id_solicitud_by_params: any;
 
@@ -544,18 +544,25 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
   }
 
   openModalReasignarUsuario() {
-    this.modalService
-      .open(dialogComponentList.dialogReasignarUsuario, {
+    const modelRef = this.modalService.open(dialogComponentList.dialogReasignarUsuario, {
         ariaLabelledBy: "modal-title",
-      })
-      .result.then(
+	});
+
+	modelRef.componentInstance.idParam = this.solicitud.idSolicitud;
+	modelRef.componentInstance.taskId = this.taskType_Activity;
+
+    modelRef.result.then(
         (result) => {
           if (result === "close") {
             return;
-          }
+		  }
+
           if (result?.data) {
-            if (result?.data) {
-            }
+			Swal.fire({
+				text: result.data,
+				icon: "success",
+				confirmButtonColor: "rgb(227, 199, 22)"
+			});
           }
         },
         (reason) => {

@@ -25,7 +25,11 @@ import { SolicitudesService } from "../registrar-solicitud/solicitudes.service";
 //   DialogComponents,
 //   dialogComponentList,
 // } from "src/app/shared/dialogComponents/dialog.components";
+import { PageCodes } from "src/app/enums/codes.enum";
+import { LocalStorageKeys } from "src/app/enums/local-storage-keys.enum";
 import { DialogReasignarUsuarioComponent } from "src/app/shared/reasginar-usuario/reasignar-usuario.component";
+import { StarterService } from "src/app/starter/starter.service";
+import { Permiso } from "src/app/types/permiso.type";
 import Swal from "sweetalert2";
 
 
@@ -348,6 +352,8 @@ export class CompletarAccionPersonalComponent extends CompleteTaskComponent {
   ];
   */
 
+  public existeMatenedores: boolean = false;
+
   nombresEmpleados: string[] = [];
 
   subledgers: string[] = [];
@@ -363,7 +369,8 @@ export class CompletarAccionPersonalComponent extends CompleteTaskComponent {
     private solicitudes: SolicitudesService,
     private utilService: UtilService,
     private consultaTareasService: ConsultaTareasService,
-    private modalService: NgbModal
+	  private modalService: NgbModal,
+	private starterService: StarterService
   ) {
     super(route, router, camundaRestService);
 
@@ -382,34 +389,96 @@ export class CompletarAccionPersonalComponent extends CompleteTaskComponent {
       this.idDeInstancia = params.get("id");
       console.log("this.idDeInstancia: ", this.idDeInstancia);
     });
+
+	  this.verifyData();
+  }
+
+	private verifyData(): void {
+    this.utilService.openLoadingSpinner("Cargando información, espere por favor...");
+
+    try {
+      this.starterService.getUser(localStorage.getItem(LocalStorageKeys.IdUsuario)!).subscribe({
+        next: (res) => {
+          return this.consultaTareasService.getTareasUsuario(res.evType[0].subledger).subscribe({
+            next: async (response) => {
+              const existe = response.solicitudes.some(({ idSolicitud, rootProcInstId }) => idSolicitud === this.id_solicitud_by_params && rootProcInstId === this.idDeInstancia);
+
+			  const permisos: Permiso[] = JSON.parse(localStorage.getItem(LocalStorageKeys.Permisos)!);
+
+			  this.existeMatenedores = permisos.some(permiso => permiso.codigo === PageCodes.AprobadorFijo);
+
+              if (existe || this.existeMatenedores) {
+                try {
+                  	await this.ObtenerServicioTipoSolicitud();
+					await this.ObtenerServicioTipoMotivo();
+					await this.ObtenerServicioTipoAccion();
+					await this.ObtenerServicioNivelDireccion();
+					await this.getSolicitudes();
+					//if (this.id_edit !== undefined) { //comentado mmunoz
+					//await this.getDetalleSolicitudById(this.id_edit); //comentado mmunoz
+					await this.getSolicitudById(this.id_edit);
+					//} // comentado munoz
+					await this.getDataEmpleadosEvolution();
+					await this.loadDataCamunda(); //comentado para prueba mmunoz
+					//console.log("impreme arreglo de aprobadores: ");
+					//await this.recorrerArreglo();
+
+					// await this.getNivelesAprobacion();
+					this.utilService.closeLoadingSpinner();
+                } catch (error) {
+                  this.utilService.modalResponse(error.error, "error");
+                }
+              } else {
+                this.utilService.closeLoadingSpinner();
+
+                await Swal.fire({
+                  text: "Usuario no asignado",
+                  icon: "info",
+                  confirmButtonColor: "rgb(227, 199, 22)"
+                });
+
+                this.router.navigate(["/solicitudes/consulta-solicitudes"]);
+              }
+            },
+            error: (error: HttpErrorResponse) => {
+              this.utilService.modalResponse(error.error, "error");
+
+              this.utilService.closeLoadingSpinner();
+            },
+          });
+        }
+      });
+    } catch (error) {
+      this.utilService.modalResponse(error.error, "error");
+    }
   }
 
   async ngOnInit() {
-    this.utilService.openLoadingSpinner(
-      "Cargando información, espere por favor..."
-    );
-    console.log("this.id_solicitud_by_params: ", this.id_solicitud_by_params);
-    try {
-      await this.ObtenerServicioTipoSolicitud();
-      await this.ObtenerServicioTipoMotivo();
-      await this.ObtenerServicioTipoAccion();
-      await this.ObtenerServicioNivelDireccion();
-      await this.getSolicitudes();
-      //if (this.id_edit !== undefined) { //comentado mmunoz
-      //await this.getDetalleSolicitudById(this.id_edit); //comentado mmunoz
-      await this.getSolicitudById(this.id_edit);
-      //} // comentado munoz
-      await this.getDataEmpleadosEvolution();
-      await this.loadDataCamunda(); //comentado para prueba mmunoz
-      //console.log("impreme arreglo de aprobadores: ");
-      //await this.recorrerArreglo();
+    // this.utilService.openLoadingSpinner(
+    //   "Cargando información, espere por favor..."
+    // );
+    // console.log("this.id_solicitud_by_params: ", this.id_solicitud_by_params);
+    // try {
+    //   await this.ObtenerServicioTipoSolicitud();
+    //   await this.ObtenerServicioTipoMotivo();
+    //   await this.ObtenerServicioTipoAccion();
+    //   await this.ObtenerServicioNivelDireccion();
+    //   await this.getSolicitudes();
+    //   //if (this.id_edit !== undefined) { //comentado mmunoz
+    //   //await this.getDetalleSolicitudById(this.id_edit); //comentado mmunoz
+    //   await this.getSolicitudById(this.id_edit);
+    //   //} // comentado munoz
+    //   await this.getDataEmpleadosEvolution();
+    //   await this.loadDataCamunda(); //comentado para prueba mmunoz
+    //   //console.log("impreme arreglo de aprobadores: ");
+    //   //await this.recorrerArreglo();
 
-      // await this.getNivelesAprobacion();
-      this.utilService.closeLoadingSpinner();
-    } catch (error) {
-      // Manejar errores aquí de manera centralizada
-      this.utilService.modalResponse(error.error, "error");
-    }
+    //   // await this.getNivelesAprobacion();
+    //   this.utilService.closeLoadingSpinner();
+    // } catch (error) {
+    //   // Manejar errores aquí de manera centralizada
+    //   this.utilService.modalResponse(error.error, "error");
+    // }
   }
 
   ObtenerServicioTipoSolicitud() {
@@ -977,11 +1046,39 @@ export class CompletarAccionPersonalComponent extends CompleteTaskComponent {
   ): void {}
 
   indexedModal: Record<keyof DialogComponents, any> = {
-    dialogReasignarUsuario: undefined
+    dialogReasignarUsuario: () => this.openModalReasignarUsuario()
   };
 
   openModal(component: keyof DialogComponents) {
     this.indexedModal[component]();
+  }
+
+  openModalReasignarUsuario() {
+    const modelRef = this.modalService.open(dialogComponentList.dialogReasignarUsuario, {
+        ariaLabelledBy: "modal-title",
+	});
+
+	modelRef.componentInstance.idParam = this.solicitud.idSolicitud;
+	modelRef.componentInstance.taskId = this.taskType_Activity;
+
+    modelRef.result.then(
+        (result) => {
+          if (result === "close") {
+            return;
+		  }
+
+          if (result?.data) {
+			Swal.fire({
+				text: result.data,
+				icon: "success",
+				confirmButtonColor: "rgb(227, 199, 22)"
+			});
+          }
+        },
+        (reason) => {
+          console.log(`Dismissed with: ${reason}`);
+        }
+      );
   }
 
   save() {

@@ -12,15 +12,16 @@
               </a>
             </div>
           </div>
-  
-          <div class="col-md-12 text-end">
-            <button
-              type="button"
-              (click)="openModalReasignar('dialogReasignarUsuario')"
-              class="btn btn-info me-2 mt-1"
-            >
-              <i class="fas fa-redo"></i> Reasignar
-            </button>
+
+		  <button
+		    type="button"
+			*ngIf="existeMatenedores"
+		    (click)="openModal('dialogReasignarUsuario')"
+		    class="btn btn-info me-2 mt-1"
+		  >
+		    <i class="fas fa-redo"></i> Reasignar
+		  </button>
+		  <div *ngIf="!existeMatenedores" class="col-md-12 text-end">
             <button
               type="button"
               type="submit"
@@ -30,7 +31,7 @@
             >
               <i class="fas fa-save"></i> Guardar
             </button>
-  
+
             <button
               type="button"
               (click)="onCompletar()"
@@ -40,7 +41,7 @@
             </button>
           </div>
         </div>
-  
+
         <div class="row mt-4">
           <div class="col-md-4">
             <div class="input-group mb-3">
@@ -118,9 +119,9 @@
                   >
                 </div>
               </div>
-                
+
           </div>
-  
+
           <div class="row mt-2">
             <div class="col-md-6">
               <div class="mb-4">
@@ -129,12 +130,12 @@
                 </a>
               </div>
             </div>
-    
+
             <div class="col-md-6">
               <hr />
             </div>
           </div>
-  
+
           <div class="row mb-2">
             <div class="col-md-4">
               <div class="input-group mb-3">
@@ -153,7 +154,7 @@
               </div>
             </div>
           </div>
-  
+
           <div class="row mt-4">
             <div class="col-md-4">
               <div class="input-group mb-3">
@@ -186,7 +187,7 @@
               </div>
             </div>
           </div>
-  
+
           <div class="row mt-4">
             <div class="col-md-4">
               <div class="input-group mb-3">
@@ -234,7 +235,7 @@
               </div>
             </div>
           </div>
-  
+
           <div class="row mt-4">
             <div class="col-md-4">
               <div class="input-group mb-3">
@@ -282,7 +283,7 @@
               </div>
             </div>
           </div>
-  
+
           <div class="row mt-4">
               <div class="col-md-3"></div>
               <div class="col-md-6">
@@ -294,7 +295,7 @@
                   </label>
               </div>
           </div>
-  
+
           <div class="row mt-4">
             <div class="col-md-3">
               <div class="input-group mb-3">
@@ -357,7 +358,7 @@
               </div>
             </div>
           </div>
-  
+
           <div class="row mt-4">
               <div class="col-md-3"></div>
               <div class="col-md-3">
@@ -412,8 +413,8 @@
                   </div>
                 </div>
           </div>
-    
-  
+
+
         <div class="row mt-4">
           <div class="col-md-3">
             <div class="mb-4">
@@ -422,12 +423,12 @@
               </a>
             </div>
           </div>
-  
+
           <div class="col-md-9">
             <hr />
           </div>
         </div>
-  
+
         <div class="accordion" id="accordionExample">
           <div
             *ngFor="
@@ -451,7 +452,7 @@
                   style="align-items: center; justify-content: space-around"
                 >
                   <div class="col">{{ nivelItem.nivelAprobacionType.ruta }}</div>
-  
+
                   <div class="col">
                     {{
                       nivelItem.aprobador.usuario !== "" &&
@@ -461,14 +462,14 @@
                         : "No aplica"
                     }}
                   </div>
-  
+
                   <div class="col">
                     {{ nivelItem.nivelAprobacionType.nivelAprobacionRuta }}
                   </div>
                 </div>
               </button>
             </div>
-  
+
             <div
               [id]="'collapse' + i"
               class="accordion-collapse collapse"
@@ -481,9 +482,9 @@
                     <label for="lvl1descripcion">
                       Descripción de la posición
                     </label>
-  
+
                     &nbsp;
-  
+
                     <span
                       id="lvl1descripcion"
                       name=""
@@ -504,7 +505,7 @@
           </div>
         </div>
 
-          
+
         <div class="row mt-4">
           <div class="col-md-6">
             <div class="mb-4">
@@ -513,12 +514,12 @@
               </a>
             </div>
           </div>
-  
+
           <div class="col-md-6">
             <hr />
           </div>
         </div>
-  
+
         <div class="row mt-4">
           <div class="col-md-4">
             <div class="input-group mb-3">
@@ -532,7 +533,7 @@
                     class="text-start"
                     >{{ "01/20/23" }}</span
                   >
-           
+
             </div>
           </div>
           <div class="col-md-6">
@@ -594,7 +595,7 @@
                 placeholder=""
                 style="width: 40%"
               ></input-component>
-                
+
               </div>
             </div>
             <div class="col-md-4">
@@ -627,11 +628,11 @@
                 placeholder=""
                 style="width: 40%"
               ></input-component>
-                
+
               </div>
             </div>
           </div>
-  
+
           <div class="row mt-4">
             <div class="col-md-4">
               <div class="input-group mb-3">
@@ -663,7 +664,7 @@
                 placeholder=""
                 style="width: 40%"
               ></input-component>
-                
+
               </div>
             </div>
             <div class="col-md-4">
@@ -680,11 +681,11 @@
                 placeholder=""
                 style="width: 40%"
               ></input-component>
-                
+
               </div>
             </div>
           </div>
-  
+
           <div class="row mt-4">
               <div class="col-md-3"></div>
               <div class="col-md-6">
@@ -696,7 +697,7 @@
                   </label>
               </div>
           </div>
-  
+
           <div class="row mt-4">
             <div class="col-md-3">
               <div class="input-group mb-3">
@@ -760,11 +761,11 @@
                 placeholder=""
                 style="width: 40%"
               ></input-component>
-                
+
               </div>
             </div>
           </div>
-  
+
           <div class="row mt-4">
               <div class="col-md-3"></div>
               <div class="col-md-3">
@@ -868,9 +869,8 @@
             </div>
           </div>
 
-    
-    
+
+
       </div>
     </div>
   </form>
-  

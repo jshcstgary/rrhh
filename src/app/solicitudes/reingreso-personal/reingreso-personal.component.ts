@@ -57,6 +57,7 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
   empleadoSearch: string = "";
   causaSalida: string = "";
 
+  public existeMatenedores: boolean = false;
 
   public fechaSalida: Date = new Date();
 
@@ -461,9 +462,9 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
 
 			  const permisos: Permiso[] = JSON.parse(localStorage.getItem(LocalStorageKeys.Permisos)!);
 
-			  const existeMatenedores = permisos.some(permiso => permiso.codigo === PageCodes.AprobadorFijo);
+			  this.existeMatenedores = permisos.some(permiso => permiso.codigo === PageCodes.AprobadorFijo);
 
-              if (existe || existeMatenedores) {
+              if (existe || this.existeMatenedores) {
                 try {
                   await this.loadDataCamunda();
 
@@ -613,7 +614,7 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
     })
   );
 
-  formatOption = (value: { nombreCompleto: string }) => value.nombreCompleto; 
+  formatOption = (value: { nombreCompleto: string }) => value.nombreCompleto;
 
   searchJefeReferencia: OperatorFunction<string, readonly any[]> = (text$: Observable<string>) => text$.pipe(
     debounceTime(200),
@@ -677,7 +678,7 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
           );
         } else {
           this.responsablesRRHH = [...new Set(this.dataEmpleadoEvolution.map((empleado) => empleado))];
-        
+
           this.responsableRRHHQuery = Object.assign(
             {},
             {
@@ -688,7 +689,7 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
               sueldoSemestral: datosEmpleado.sueldoVariableSemestral,
               sueldoAnual: datosEmpleado.sueldoVariableAnual,
             }
-          );}     
+          );}
       },
       error: (error: HttpErrorResponse) => {
         this.utilService.modalResponse(error.error, "error");
@@ -1230,9 +1231,37 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
     console.log(event);
   }
 
+  openModalReasignarUsuario() {
+    const modelRef = this.modalService.open(dialogComponentList.dialogReasignarUsuario, {
+        ariaLabelledBy: "modal-title",
+	});
+
+	modelRef.componentInstance.idParam = this.solicitud.idSolicitud;
+	modelRef.componentInstance.taskId = this.taskType_Activity;
+
+    modelRef.result.then(
+        (result) => {
+          if (result === "close") {
+            return;
+		  }
+
+          if (result?.data) {
+			Swal.fire({
+				text: result.data,
+				icon: "success",
+				confirmButtonColor: "rgb(227, 199, 22)"
+			});
+          }
+        },
+        (reason) => {
+          console.log(`Dismissed with: ${reason}`);
+        }
+      );
+  }
+
   indexedModal: Record<keyof DialogComponents, any> = {
     dialogBuscarEmpleados: () => this.openModalBuscarEmpleado(),
-    dialogReasignarUsuario: undefined,
+    dialogReasignarUsuario: () => this.openModalReasignarUsuario()
   };
 
   openModal(component: keyof DialogComponents) {

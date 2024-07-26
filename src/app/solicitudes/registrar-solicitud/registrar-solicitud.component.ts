@@ -5,6 +5,7 @@ import {
 import { Component } from "@angular/core";
 import { NgForm } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
+import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { Observable, OperatorFunction, Subject } from "rxjs";
 import {
 	debounceTime,
@@ -20,6 +21,8 @@ import { RegistrarData } from "src/app/eschemas/RegistrarData";
 import { Solicitud } from "src/app/eschemas/Solicitud";
 import { MantenimientoService } from "src/app/services/mantenimiento/mantenimiento.service";
 import { UtilService } from "src/app/services/util/util.service";
+import { DialogComponents } from "src/app/shared/dialogComponents/dialog.components";
+import { DialogReasignarUsuarioComponent } from "src/app/shared/reasginar-usuario/reasignar-usuario.component";
 import { StarterService } from "src/app/starter/starter.service";
 import { ConsultaTareasService } from "src/app/tareas/consulta-tareas/consulta-tareas.service";
 import { Permiso } from "src/app/types/permiso.type";
@@ -28,6 +31,11 @@ import { environment, portalWorkFlow } from "../../../environments/environment";
 import { CamundaRestService } from "../../camunda-rest.service";
 import { CompleteTaskComponent } from "../general/complete-task.component";
 import { SolicitudesService } from "./solicitudes.service";
+
+const dialogComponentList: DialogComponents = {
+  dialogBuscarEmpleados: undefined,
+  dialogReasignarUsuario: DialogReasignarUsuarioComponent,
+};
 
 @Component({
   selector: "registrarSolicitud",
@@ -157,6 +165,8 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
 
   public dataRuta: any[] = [];
 
+  public existeMatenedores: boolean = false;
+
   public dataNivelDireccion: any[] = [];
 
   public dataNivelesAprobacionPorCodigoPosicion: { [key: string]: any[] } = {};
@@ -177,138 +187,7 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
 
   public models: any[] = [];
 
-  public dataEmpleadoEvolution: any[] = [
-    {
-      codigo: "CODIGO_1", //?
-      idEmpresa: "ID_EMPRESA", //?
-      compania: "Reybanpac", // Ok
-      departamento: "Inventarios", //ok
-      nombreCargo: "Jefatura", // ok
-      nomCCosto: "Zona camarones", // ok
-      codigoPosicion: "0425", //
-      descrPosicion: "Analista de recursos humanos", //ok
-      codigoPuesto: "CODIGO_PUESTO", //
-      descrPuesto: "Gerencia media", //
-      fechaIngresogrupo: "2024-04-15T12:08:34.473", //
-      grupoPago: "GRUPO_PAGO", //
-      reportaA: "Gerente RRHH", // ok
-      localidad: "Hacienda", // ok
-      nivelDir: "Tecnico/Asistencia", // ok
-      descrNivelDir: "Tecnico descripcion", //
-      nivelRepa: "Gerencia Medios", // Es esto nivel de reporte?
-      nombreCompleto: "MOROCHO VARGAS CAL ESTUARIO", //
-      subledger: "60067579", // Ok
-      sucursal: "SUSURSAL 1", //
-      unidadNegocio: "UNIDAD NEGOCIO 1", //ok
-      tipoContrato: "Eventual", // ok
-      descripContrato: "Eventual con remuneracion mixta", //
-      status: "A",
-    },
-    {
-      codigo: "CODIGO_2",
-      idEmpresa: "ID_EMPRESA",
-      compania: "Reybanpac",
-      departamento: "Inventarios",
-      nombreCargo: "Jefatura",
-      nomCCosto: "Zona camarones",
-      codigoPosicion: "0425",
-      descrPosicion: "Analista de recursos humanos",
-      codigoPuesto: "CODIGO_PUESTO",
-      descrPuesto: "Gerencia media",
-      fechaIngresogrupo: "2024-04-15T12:08:34.473",
-      grupoPago: "GRUPO_PAGO",
-      reportaA: "Gerente RRHH",
-      localidad: "Hacienda",
-      nivelDir: "Tecnico/Asistencia",
-      descrNivelDir: "Tecnico descripcion",
-      nivelRepa: "Gerencia Medios",
-      nombreCompleto: "MOROCHO VARGAS CAL ESTUARIO",
-      subledger: "60067579",
-      sucursal: "SUSURSAL 1",
-      unidadNegocio: "UNIDAD NEGOCIO 1",
-      tipoContrato: "Eventual",
-      descripContrato: "Eventual con remuneracion mixta",
-      status: "A",
-    },
-    {
-      codigo: "CODIGO_3",
-      idEmpresa: "ID_EMPRESA",
-      compania: "Reybanpac",
-      departamento: "Inventarios",
-      nombreCargo: "Jefatura",
-      nomCCosto: "Zona camarones",
-      codigoPosicion: "0425",
-      descrPosicion: "Analista de recursos humanos",
-      codigoPuesto: "CODIGO_PUESTO",
-      descrPuesto: "Gerencia media",
-      fechaIngresogrupo: "2024-04-15T12:08:34.473",
-      grupoPago: "GRUPO_PAGO",
-      reportaA: "Gerente RRHH",
-      localidad: "Hacienda",
-      nivelDir: "Tecnico/Asistencia",
-      descrNivelDir: "Tecnico descripcion",
-      nivelRepa: "Gerencia Medios",
-      nombreCompleto: "MOROCHO VARGAS CAL ESTUARIO",
-      subledger: "60067579",
-      sucursal: "SUSURSAL 1",
-      unidadNegocio: "UNIDAD NEGOCIO 1",
-      tipoContrato: "Eventual",
-      descripContrato: "Eventual con remuneracion mixta",
-      status: "A",
-    },
-    {
-      codigo: "CODIGO_4",
-      idEmpresa: "ID_EMPRESA",
-      compania: "Reybanpac",
-      departamento: "Inventarios",
-      nombreCargo: "Jefatura",
-      nomCCosto: "Zona camarones",
-      codigoPosicion: "0425",
-      descrPosicion: "Analista de recursos humanos",
-      codigoPuesto: "CODIGO_PUESTO",
-      descrPuesto: "Gerencia media",
-      fechaIngresogrupo: "2024-04-15T12:08:34.473",
-      grupoPago: "GRUPO_PAGO",
-      reportaA: "Gerente RRHH",
-      localidad: "Hacienda",
-      nivelDir: "Tecnico/Asistencia",
-      descrNivelDir: "Tecnico descripcion",
-      nivelRepa: "Gerencia Medios",
-      nombreCompleto: "MOROCHO VARGAS CAL ESTUARIO",
-      subledger: "60067579",
-      sucursal: "SUSURSAL 1",
-      unidadNegocio: "UNIDAD NEGOCIO 1",
-      tipoContrato: "Eventual",
-      descripContrato: "Eventual con remuneracion mixta",
-      status: "A",
-    },
-    {
-      codigo: "CODIGO_2",
-      idEmpresa: "ID_EMPRESA",
-      compania: "Reybanpac",
-      departamento: "Inventarios",
-      nombreCargo: "Gerencia de Proyectos",
-      nomCCosto: "Zona camarones",
-      codigoPosicion: "0426",
-      descrPosicion: "Gerencia de Proyectos",
-      codigoPuesto: "CODIGO_PUESTO",
-      descrPuesto: "Gerencia media",
-      fechaIngresogrupo: "2024-04-15T12:08:34.473",
-      grupoPago: "GRUPO_PAGO",
-      reportaA: "0427",
-      localidad: "Hacienda",
-      nivelDir: "Gerencia Media",
-      descrNivelDir: "Gerencia Media",
-      nivelRepa: "Gerencia Medios",
-      nombreCompleto: "MOROCHO VARGAS CAL ESTUARIO",
-      subledger: "60067579",
-      sucursal: "SUSURSAL 1",
-      unidadNegocio: "UNIDAD NEGOCIO 1",
-      tipoContrato: "Eventual",
-      descripContrato: "Eventual con remuneracion mixta",
-      status: "A",
-    },
-  ];
+  public dataEmpleadoEvolution: any[] = [];
 
   public success: false;
   public params: any;
@@ -340,7 +219,8 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
     private solicitudes: SolicitudesService,
     private utilService: UtilService,
     private consultaTareasService: ConsultaTareasService,
-    private starterService: StarterService
+    private starterService: StarterService,
+	private modalService: NgbModal
   ) {
     super(route, router, camundaRestService);
 
@@ -375,9 +255,9 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
 
 			  const permisos: Permiso[] = JSON.parse(localStorage.getItem(LocalStorageKeys.Permisos)!);
 
-			  const existeMatenedores = permisos.some(permiso => permiso.codigo === PageCodes.AprobadorFijo);
+			  this.existeMatenedores = permisos.some(permiso => permiso.codigo === PageCodes.AprobadorFijo);
 
-              if (existe || existeMatenedores) {
+              if (existe || this.existeMatenedores) {
                 try {
                   await this.loadDataCamunda();
 
@@ -806,7 +686,7 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
           this.eventSearch.item=this.dataEmpleadoEvolution[0].codigoPosicion;
           this.onSelectItem('codigoPosicion',this.eventSearch);
         }
-        
+
 
       },
       error: (error: HttpErrorResponse) => {
@@ -1009,6 +889,43 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
         this.utilService.modalResponse(error.error, "error");
       },
     });
+  }
+
+  openModalReasignarUsuario() {
+    const modelRef = this.modalService.open(dialogComponentList.dialogReasignarUsuario, {
+        ariaLabelledBy: "modal-title",
+	});
+
+	modelRef.componentInstance.idParam = this.solicitud.idSolicitud;
+	modelRef.componentInstance.taskId = this.taskType_Activity;
+
+    modelRef.result.then(
+        (result) => {
+          if (result === "close") {
+            return;
+		  }
+
+          if (result?.data) {
+			Swal.fire({
+				text: result.data,
+				icon: "success",
+				confirmButtonColor: "rgb(227, 199, 22)"
+			});
+          }
+        },
+        (reason) => {
+          console.log(`Dismissed with: ${reason}`);
+        }
+      );
+  }
+
+  indexedModal: Record<keyof DialogComponents, any> = {
+    dialogBuscarEmpleados: undefined,
+    dialogReasignarUsuario: () => this.openModalReasignarUsuario()
+  };
+
+  openModal(component: keyof DialogComponents) {
+    this.indexedModal[component]();
   }
 
   ObtenerServicioTipoAccion() {

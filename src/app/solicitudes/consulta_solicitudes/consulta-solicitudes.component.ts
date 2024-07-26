@@ -263,6 +263,12 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
     private starterService: StarterService,
     private permissionService: PermisoService
   ) {
+	if (localStorage.getItem(LocalStorageKeys.Reloaded)! === "0") {
+		localStorage.setItem(LocalStorageKeys.Reloaded, "1");
+
+		window.location.reload();
+	}
+
     this.getPermissions();
 
     this.model = calendar.getToday();
@@ -679,6 +685,14 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 
   mostrarModalCrearSolicitudes() {
     this.submitted = false;
+
+	this.solicitud.idTipoAccion = 0;
+	this.solicitud.idTipoMotivo = 0;
+	this.solicitud.idTipoSolicitud = null;
+
+	this.desactivarTipoMotivo = false;
+	this.desactivarTipoAccion = false;
+
     this.modalService.open(this.myModalSolicitudes, {
       centered: true,
       size: <any>"lg",

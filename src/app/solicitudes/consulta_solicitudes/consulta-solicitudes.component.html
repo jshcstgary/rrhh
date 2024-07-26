@@ -217,7 +217,7 @@
                 </button>
 
                 <button type="button" class="mr-10 fz-14 btn btn-info btn-icon-end" (click)="CrearInstanciaSolicitud()"
-                  aria-label="Close" aria-label="Close">
+                  aria-label="Close" aria-label="Close" [disabled]="solicitud.idTipoSolicitud === null || (desactivarTipoMotivo && solicitud.idTipoMotivo === 0) || (desactivarTipoAccion && solicitud.idTipoAccion === 0)">
                   <i class="fas fa-save"></i> Guardar
                 </button>
               </div>
@@ -273,22 +273,23 @@
                 justify-content: start;
                 margin: 10px;
               " *ngIf="desactivarTipoAccion">
-              <div class="col-md-12" style="width: 75%">
-                <div class="input-group mb-3">
-                  <label class="input-group-text" for="tipocumplimiento"
-                    style="color: black; font-size: 14px; width: 45%">Tipo de Acción</label>
-                  <select id="tipocumplimiento" name="tipocumplimiento" class="form-select" style="font-size: 14px"
-                    [(ngModel)]="solicitud.idTipoAccion" (ngModelChange)="onChangeTipoMotivo(solicitud.idTipoAccion)"
-                    required>
-                    <option value="" hidden>Selecccione</option>
-                    <option *ngFor="
-                        let baseDeDatos of dataTiposAccionesPorTipoSolicitud[
-                          tipoSolicitudSeleccionada
-                        ]
-                      " [value]="baseDeDatos.id">
-                      {{ baseDeDatos.tipoAccion }}
-                    </option>
-                  </select>
+              <div class="col-md-12">
+                <div class="col-md-12">
+				  <div class="input-group mb-3">
+					<label class="input-group-text" for="tipocumplimiento">Tipo de Acción</label>
+					<select id="tipocumplimiento" name="tipocumplimiento" class="form-select" style="font-size: 14px"
+						[(ngModel)]="solicitud.idTipoAccion" (ngModelChange)="onChangeTipoMotivo(solicitud.idTipoAccion)"
+						required>
+						<option value="" hidden>Selecccione</option>
+						<option *ngFor="
+							let baseDeDatos of dataTiposAccionesPorTipoSolicitud[
+							tipoSolicitudSeleccionada
+							]
+						" [value]="baseDeDatos.id">
+						{{ baseDeDatos.tipoAccion }}
+						</option>
+					</select>
+				  </div>
                 </div>
               </div>
             </div>

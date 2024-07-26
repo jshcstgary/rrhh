@@ -142,7 +142,7 @@ export const ROUTES: RouteInfo[] = [
         codigo: "wf_aprobadores_fijos",
         submenu: [],
       },
-      /*{
+      {
         path: "/mantenedores/reasignar-tareas-usuarios",
         title: "Reasignar Usuario",
         icon: "",
@@ -151,7 +151,7 @@ export const ROUTES: RouteInfo[] = [
         extralink: false,
         codigo: "wf_niveles_aprobacion",
         submenu: [],
-      },*/
+      }
     ],
   },
 ];

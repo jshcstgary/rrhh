@@ -6,22 +6,14 @@
     </div>
     <div class="px-4">
       <div class="row">
-        <div class="col-md-12 my-3">
-          <label
-            class="label-estilo"
-            for="search"
-            style="font-size: 14px; width: 100%"
-            >Buscar</label
-          >
-          <input
-            type="text"
-            [(ngModel)]="search"
-            class="form-control"
-            id="search"
-            placeholder="Ingrese nombre o Apellido"
-            style="width: 100%; color: black"
-            (keyup.enter)="onEnter(search)"
-          />
+        <div class="input-group my-3">
+          <label class="label-estilo" for="search" style="font-size: 14px; width: 100%">Buscar</label>
+
+          <input type="text" [(ngModel)]="search" class="form-control" id="search" placeholder="Ingrese nombre o Apellido" style="color: black" [ngbTypeahead]="searchNombreCompleto" (selectItem)="onSelectItem('nombreCompleto', $event)"/>
+
+		  <button class="btn btn-light" type="button" (click)="getDataEmpleadosEvolution('nombreEmpleado')">
+            <i class="ti-search"></i>
+          </button>
         </div>
       </div>
       <div class="row">
@@ -35,7 +27,7 @@
           <input
             readonly
             id="nombreCompleto"
-            [(ngModel)]="this.dataEmpleadoEvolution[0].nombreCompleto"
+            [(ngModel)]="this.modelo.nombreCompleto"
             type="text"
             class="form-control mb-3"
             style="width: 100%; color: black"
@@ -51,7 +43,7 @@
           <input
             readonly
             id="compania"
-            [(ngModel)]="this.dataEmpleadoEvolution[0].compania"
+            [(ngModel)]="this.modelo.compania"
             type="text"
             class="form-control mb-3"
             style="width: 100%; color: black"
@@ -69,7 +61,7 @@
           <input
             readonly
             id="codigo"
-            [(ngModel)]="this.dataEmpleadoEvolution[0].codigo"
+            [(ngModel)]="this.modelo.codigo"
             type="text"
             class="form-control mb-3"
             style="width: 100%; color: black"
@@ -85,7 +77,7 @@
           <input
             readonly
             id="unidadNegocio"
-            [(ngModel)]="this.dataEmpleadoEvolution[0].unidadNegocio"
+            [(ngModel)]="this.modelo.unidadNegocio"
             type="text"
             class="form-control mb-3"
             style="width: 100%; color: black"
@@ -131,7 +123,7 @@
       <button
         type="button"
         class="btn btn-primary"
-        (click)="onSave(fields)"
+        (click)="onSave()"
       >
         Grabar
       </button>
