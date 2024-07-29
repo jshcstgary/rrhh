@@ -12,9 +12,11 @@
           </div>
         </div>
 
-		<button *ngIf="existeMatenedores" type="button" (click)="openModal('dialogReasignarUsuario')" class="btn btn-info me-2 mt-1">
-			<i class="fas fa-redo"></i> Reasignar
-		</button>
+		<div *ngIf="existeMatenedores" class="col-md-12 text-end">
+      <button type="button" (click)="openModal('dialogReasignarUsuario')" class="btn btn-info me-2 mt-1">
+        <i class="fas fa-redo"></i> Reasignar
+      </button>
+    </div>
 
         <div *ngIf="!existeMatenedores" class="col-md-4 text-end d-flex justify-content-end align-items-center">
           <button type="button" class="btn btn-info me-2 d-flex align-items-center justify-content-center button-custom"

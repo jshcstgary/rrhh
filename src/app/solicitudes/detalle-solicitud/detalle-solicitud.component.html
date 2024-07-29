@@ -13,7 +13,7 @@
         </div>
 
         <div class="col-md-4 text-end">
-          <button class="btn btn-outline-info me-2">
+          <button class="btn btn-outline-info me-2" (click)="exportar()">
             <i class="fas fa-file-pdf"></i> Exportar
           </button>
         </div>
@@ -829,7 +829,7 @@
           <label for="comments" class="label-estilo">
             Comentarios (¿Cómo fue el desempeño en el Área?)
           </label>
-          
+
           <span *ngIf="mostrarFormularioReingreso"  #mivar id="tipoSolicitud" name="tipoSolicitud" style="color: black; font-size: 14px;"
             class="text-start">{{ comentariosJefeInmediato.comentario }}</span>
         </div>
@@ -947,7 +947,7 @@
         </div>
       </div>
     </div>
- 
+
   </div>
 
     <div *ngIf="mostrarRequisicion">
@@ -1105,7 +1105,7 @@
         </div>
       </div>
 
-    
+
       <div class="row mt-4">
         <div class="col-md-4">
           <div class="mb-4">
@@ -1272,7 +1272,7 @@
           </div>
         </div>
       </div>
-      
+
     </div>
     <div class="row mt-4">
       <div class="col-md-4">
@@ -2197,7 +2197,7 @@
 
 				</div>
 			</div>
-		</div>    
+		</div>
 	</div>
     </h2>
   </div>

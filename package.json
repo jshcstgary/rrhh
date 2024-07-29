@@ -42,6 +42,8 @@
     "chartjs-plugin-datalabels": "^2.2.0",
     "date-fns": "^2.30.0",
     "flatpickr": "^4.6.13",
+    "jspdf": "^2.5.1",
+    "jspdf-autotable": "^3.8.2",
     "material-icons": "^1.13.12",
     "ng-apexcharts": "^1.7.6",
     "ng-chartist": "^7.1.2",
