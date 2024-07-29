@@ -96,6 +96,7 @@
             name="comentarios"
             style="color: black; font-size: 14px; width: 100%; resize: none"
             class="form-control"
+            [(ngModel)]="textareaContent"
             id="comentarios"
             rows="3"
             required
@@ -111,7 +112,7 @@
           <input
             readonly
             id="usuario"
-            [(ngModel)]="fields.usuario"
+            [(ngModel)]="usuarioAprobador"
             type="text"
             class="form-control mb-3"
             style="width: 100%; color: black"

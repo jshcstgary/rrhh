@@ -1068,11 +1068,18 @@ export class CompletarAccionPersonalComponent extends CompleteTaskComponent {
 		  }
 
           if (result?.data) {
-			Swal.fire({
-				text: result.data,
-				icon: "success",
-				confirmButtonColor: "rgb(227, 199, 22)"
-			});
+            Swal.fire({
+              text: result.data,
+              icon: "success",
+              confirmButtonColor: "rgb(227, 199, 22)",
+              confirmButtonText: "Ok",
+            }).then((result) => {
+              if (result.isConfirmed) {
+                this.router.navigate(["/mantenedores/reasignar-tareas-usuarios"]);
+                if (this.submitted) {
+                }
+              }
+            });
           }
         },
         (reason) => {

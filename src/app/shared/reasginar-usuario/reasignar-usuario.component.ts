@@ -1,6 +1,7 @@
 import { HttpErrorResponse } from "@angular/common/http";
 import { Component, inject, Input } from "@angular/core";
 import { FormsModule } from "@angular/forms";
+import { ActivatedRoute, Router } from "@angular/router";
 import { NgbActiveModal, NgbTypeaheadModule } from "@ng-bootstrap/ng-bootstrap";
 import { debounceTime, distinctUntilChanged, map, Observable, OperatorFunction } from "rxjs";
 import { Solicitud } from "src/app/eschemas/Solicitud";
@@ -11,8 +12,9 @@ import {
 import { MantenimientoService } from "src/app/services/mantenimiento/mantenimiento.service";
 import { UtilService } from "src/app/services/util/util.service";
 import { SolicitudesService } from "src/app/solicitudes/registrar-solicitud/solicitudes.service";
-import { environment } from "src/environments/environment";
+import { environment, portalWorkFlow } from "src/environments/environment";
 import Swal from "sweetalert2";
+
 
 @Component({
   selector: "app-dialog-reasignar-usuario",
@@ -25,6 +27,17 @@ export class DialogReasignarUsuarioComponent {
   activeModal = inject(NgbActiveModal);
 
   search: string;
+  emailVariables = {
+    de: "",
+    password: "",
+    alias: "",
+    para: "",
+    asunto: "",
+    cuerpo: ""
+  };
+  textareaContent: string = '';
+  route: ActivatedRoute
+  router: Router
   fields = <IEmpleadoData>{
     nombreCompleto: "",
     compania: "",
@@ -85,6 +98,7 @@ export class DialogReasignarUsuarioComponent {
 	public mensaje: string = "";
 
 	public dataAprobador: any;
+  public usuarioAprobador: string = "";
 
   @Input("idParam")
   public idParam: string = "";
@@ -104,9 +118,11 @@ export class DialogReasignarUsuarioComponent {
 	console.log(this.idParam);
 	console.log(this.taskId);
 
-	if (this.solicitud === null) {
-		return;
-	}
+  this.solicitudes.getSolicitudById(this.idParam).subscribe({
+    next: (response: any) => {
+      this.solicitud = response;
+  	},
+	});
 
 	this.solicitudes.getDetalleAprobadoresSolicitudesById(this.idParam).subscribe({
 		next: (response) => {
@@ -163,6 +179,7 @@ export class DialogReasignarUsuarioComponent {
 			} else {
 				this.mensaje = "No existe tarea por reasignar";
 			}
+      this.usuarioAprobador = this.dataAprobador.usuarioAprobador;
 
 			this.utilService.closeLoadingSpinner();
 		},
@@ -188,15 +205,45 @@ export class DialogReasignarUsuarioComponent {
     this.dataAprobador.codigoPosicionReportaA = this.modelo.codigoPosicionReportaA;
     this.dataAprobador.correo = this.modelo.correo;
     this.dataAprobador.usuarioCreacion = this.modelo.nombreCompleto;
+    this.dataAprobador.comentario = this.textareaContent;
     this.dataAprobador.usuarioModificacion = this.modelo.nombreCompleto;
     this.dataAprobador.fechaCreacion = new Date().toISOString();
     this.dataAprobador.fechaModificacion = new Date().toISOString();
+    const htmlString = "<!DOCTYPE html>\r\n<html lang=\"es\">\r\n\r\n<head>\r\n  <meta charset=\"UTF-8\">\r\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n  <title>Document<\/title>\r\n<\/head>\r\n\r\n<body>\r\n  <h2>Estimado(a)<\/h2>\r\n  <h3>{NOMBRE_APROBADOR}<\/h3>\r\n\r\n  <P>La Solicitud de {TIPO_SOLICITUD} {ID_SOLICITUD} le ha sido reasignada para su\r\n    revisi\u00F3n y aprobaci\u00F3n.<\/P>\r\n\r\n  <p>\r\n    <b>\r\n      Favor ingresar al siguiente enlace: <a href=\"{URL_APROBACION}\">{URL_APROBACION}<\/a>\r\n      <br>\r\n      <br>\r\n      Gracias por su atenci\u00F3n.\r\n    <\/b>\r\n  <\/p>\r\n<\/body>\r\n\r\n<\/html>\r\n";
+
+    const modifiedHtmlString = htmlString.replace("{NOMBRE_APROBADOR}", this.modelo.nombreCompleto).replace("{TIPO_SOLICITUD}", this.solicitud.tipoSolicitud).replace("{ID_SOLICITUD}", this.solicitud.idSolicitud).replace(new RegExp("{URL_APROBACION}", "g"), `${portalWorkFlow}tareas/consulta-tareas`);
+
+
+    this.emailVariables = {
+      de: "prueba",
+      para: this.modelo.correo,
+      // alias: this.solicitudes.modelDetalleAprobaciones.correo,
+      alias: "Notificación 1",
+      asunto: `Reasignación de Autorización de Solicitud de ${this.solicitud.tipoSolicitud} ${this.solicitud.idSolicitud}`
+      ,
+      cuerpo: modifiedHtmlString,
+      password: "p"
+    };
 
 	this.solicitudes.guardarDetallesAprobacionesSolicitud(this.dataAprobador).subscribe({
 		next: () => {
+      this.solicitud.estadoSolicitud = "RA";
+      this.solicitud.fechaActualizacion = new Date();
+                  
 			this.activeModal.close({
 				data: `${this.mensaje} a ${this.modelo.nombreCompleto}`
 			});
+      this.solicitudes
+      .actualizarSolicitud(this.solicitud)
+      .subscribe((responseSolicitud) => {
+        this.solicitudes.sendEmail(this.emailVariables).subscribe({
+          next: () => {
+          },
+          error: (error) => {
+            console.error(error);
+          }
+        });
+       }); 
 		}
 	});
   }

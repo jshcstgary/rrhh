@@ -1846,21 +1846,32 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
   }
 
   openModalReasignarUsuario() {
-    this.modalService
-      .open(dialogComponentList.dialogReasignarUsuario, {
+    const modelRef = this.modalService.open(dialogComponentList.dialogReasignarUsuario, {
         ariaLabelledBy: "modal-title",
-      })
-      .result.then(
+	});
+
+	modelRef.componentInstance.idParam = this.solicitud.idSolicitud;
+	modelRef.componentInstance.taskId = this.taskType_Activity;
+
+    modelRef.result.then(
         (result) => {
           if (result === "close") {
             return;
-          }
+		  }
+
           if (result?.data) {
             Swal.fire({
-				text: result.data,
-				icon: "success",
-				confirmButtonColor: "rgb(227, 199, 22)"
-			});
+              text: result.data,
+              icon: "success",
+              confirmButtonColor: "rgb(227, 199, 22)",
+              confirmButtonText: "Ok",
+            }).then((result) => {
+              if (result.isConfirmed) {
+                this.router.navigate(["/mantenedores/reasignar-tareas-usuarios"]);
+                if (this.submitted) {
+                }
+              }
+            });
           }
         },
         (reason) => {
