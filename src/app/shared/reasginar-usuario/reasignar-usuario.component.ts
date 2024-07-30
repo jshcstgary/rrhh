@@ -131,13 +131,13 @@ export class DialogReasignarUsuarioComponent {
 			if (this.taskId === "Dinamico_RevisarSolicitud") {
 				this.mensaje = "Se reasignó la tarea de revisión por aprobadores dinámicos";
 				this.dataAprobador = this.dataDetalleAprobadorSolicitud.find(data => data.estadoAprobacion.toUpperCase() === "PORREVISAR");
-			} else if (this.taskId.toUpperCase().includes("RevisarSolicitudGerente") || this.taskId === "RQ_GRRHH_RevisarSolicitud") {
+			} else if (this.taskId.toUpperCase().includes("RevisarSolicitudGerente") || this.taskId === environment.taskType_RRHH) {
 				this.mensaje = "Se reasignó la tarea de revisión por gerencia de recursos humanos";
 				this.dataAprobador = this.dataDetalleAprobadorSolicitud.find(data => data.estadoAprobacion.toUpperCase().includes("PORREVISARRRHH"));
-			} else if (this.taskId.toUpperCase().includes("REMUNERACIONES") || this.taskId === "RQ_CREM_RevisarSolicitud") {
+			} else if (this.taskId.toUpperCase().includes("REMUNERACIONES") || this.taskId === environment.taskType_CREM) {
 				this.mensaje = "Se reasignó la tarea de revisión por comité de remuneraciones";
 				this.dataAprobador = this.dataDetalleAprobadorSolicitud.find(data => data.estadoAprobacion.toUpperCase().includes("PORREVISAREMUNERACIONES"));
-			} else if (this.taskId === "RP_RegistrarSeleccionCandidato") {
+			} else if (this.taskId === environment.taskType_RegistrarCandidato) {
 				this.mensaje = "Se reasignó la tarea de registrar selección de candidato";
 				this.dataAprobador = this.dataDetalleAprobadorSolicitud.find(data => data.estadoAprobacion.toUpperCase().includes("SELECCIONCANDIDATO"));
 			} else if (this.taskId === environment.taskType_CF) {
@@ -158,6 +158,12 @@ export class DialogReasignarUsuarioComponent {
 
 				this.dataAprobador.idNivelAprobacion = 500000;
 				this.dataAprobador.ruta = "Reasignación de Registro de Comentario Jefe";
+			} else if (this.taskId === environment.taskType_RG_Jefe_Solicitante) {
+				this.mensaje = "Se reasignó la tarea de registrar comentario de Jefe Solicitante";
+				this.dataAprobador = this.dataDetalleAprobadorSolicitud.find(data => data.estadoAprobacion.toUpperCase().includes("CREADO"));
+
+				this.dataAprobador.idNivelAprobacion = 700000;
+				this.dataAprobador.ruta = "Reasignación de Registro de Comentario Jefe";
 			} else if (this.taskId === environment.taskType_AP_Registrar) {
 				this.mensaje = "Se reasignó la tarea de registrar solicitud de acción de personal";
 				this.dataAprobador = this.dataDetalleAprobadorSolicitud.find(data => data.estadoAprobacion.toUpperCase().includes("CREADO"));
@@ -177,7 +183,10 @@ export class DialogReasignarUsuarioComponent {
 				this.dataAprobador.idNivelAprobacion = 310000;
 				this.dataAprobador.ruta = "Reasignación de Completar Solicitud";
 			} else {
-				this.mensaje = "No existe tarea por reasignar";
+				this.dataAprobador = this.dataDetalleAprobadorSolicitud.find(data => data.estadoAprobacion.toUpperCase().includes("CREADO"));
+        this.usuarioAprobador = this.dataAprobador.usuarioAprobador;
+        this.dataAprobador.idNivelAprobacion = 800000;
+				this.dataAprobador.ruta = "Reasignación de Tarea";
 			}
       this.usuarioAprobador = this.dataAprobador.usuarioAprobador;
 

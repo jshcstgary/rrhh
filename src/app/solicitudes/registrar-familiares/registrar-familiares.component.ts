@@ -339,6 +339,8 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
   public params: any;
   public id_edit: undefined | string;
   public existeMatenedores: boolean = false;
+  public existe: boolean = false;
+
 
 
   private id_solicitud_by_params: any;
@@ -403,13 +405,13 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
         next: (res) => {
           return this.consultaTareasService.getTareasUsuario(res.evType[0].subledger).subscribe({
             next: async (response) => {
-              const existe = response.solicitudes.some(({ idSolicitud, rootProcInstId}) => idSolicitud === this.id_solicitud_by_params && rootProcInstId === this.idDeInstancia);
+              this.existe = response.solicitudes.some(({ idSolicitud, rootProcInstId}) => idSolicitud === this.id_solicitud_by_params && rootProcInstId === this.idDeInstancia);
 
 			  const permisos: Permiso[] = JSON.parse(localStorage.getItem(LocalStorageKeys.Permisos)!);
 
 			  this.existeMatenedores = permisos.some(permiso => permiso.codigo === PageCodes.AprobadorFijo);
 
-              if (existe ||  this.existeMatenedores) {
+              if (this.existe ||  this.existeMatenedores) {
                 try {
                   await this.loadDataCamunda();
 

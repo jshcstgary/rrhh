@@ -21,7 +21,7 @@
             <i class="fas fa-redo"></i> Reasignar
           </button>
 
-          <button  *ngIf="!existeMatenedores"
+          <button  *ngIf="!existeMatenedores || existe"
             type="button"
             (click)="onSubmit()"
             class="btn btn-info me-2 mt-1"
@@ -30,7 +30,7 @@
           >
             <i class="fas fa-save"></i> Guardar
           </button>
-          <button  *ngIf="!existeMatenedores"
+          <button  *ngIf="!existeMatenedores || existe"
             type="button"
             (click)="onCompletar()"
             class="btn btn-info me-2 mt-1"
