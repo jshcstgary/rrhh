@@ -1,20 +1,20 @@
 import {
-	AfterViewInit,
-	Component,
-	ElementRef,
-	HostListener,
-	OnInit,
-	TemplateRef,
-	ViewChild
+  AfterViewInit,
+  Component,
+  ElementRef,
+  HostListener,
+  OnInit,
+  TemplateRef,
+  ViewChild
 } from "@angular/core";
 
 import { HttpErrorResponse } from "@angular/common/http";
 import { ActivatedRoute, Router } from "@angular/router";
 import {
-	NgbCalendar,
-	NgbDateStruct,
-	NgbModal,
-	NgbNavChangeEvent
+  NgbCalendar,
+  NgbDateStruct,
+  NgbModal,
+  NgbNavChangeEvent
 } from "@ng-bootstrap/ng-bootstrap";
 import { NgSelectConfig } from "@ng-select/ng-select";
 import { forkJoin, map } from "rxjs";
@@ -32,7 +32,7 @@ import Swal from "sweetalert2";
 import { SolicitudesService } from "../registrar-solicitud/solicitudes.service";
 import { ConsultaSolicitudesData } from "./consulta-solicitudes.data";
 import {
-	IConsultaSolicitudesTable
+  IConsultaSolicitudesTable
 } from "./consulta-solicitudes.interface";
 
 import { NgSelectComponent } from "@ng-select/ng-select";
@@ -137,7 +137,6 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
   public codigoTipoSolicitud: string;
   public processDefinitionKey: string;
 
-
   // public dataTiposMotivosPorTipoSolicitud : any[] = [];
 
   public dataTiposMotivosPorTipoSolicitud: { [idSolicitud: number]: any[] } =
@@ -150,7 +149,8 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
     Cuando es Acción Personal, Reingreso Personal y Contratación de Familiares
     se oculta el Tipo de Motivo, mostrar sólo Tipo de Acción
   */
-  public idsOcultarTipoMotivo: any[] = ["3", "5", "6", 3, 5, 6];
+  // public idsOcultarTipoMotivo: any[] = ["3", "5", "6", 3, 5, 6];
+  public idsOcultarTipoMotivo: any[] = ["RG", "CF", "AP"];
 
   // No mostrar = false
   public desactivarTipoMotivo = false;
@@ -158,7 +158,8 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
   /*
     Cuando es Requisión de personal se oculta Tipo de Acción, muestra sólo Tipo de Motivo
   */
-  public idsOcultarTipoAccion: any[] = ["1", 1];
+  // public idsOcultarTipoAccion: any[] = ["1", 1];
+  public idsOcultarTipoAccion: any[] = ["RP"];
 
   // No mostrar = false
   public desactivarTipoAccion = false;
@@ -263,11 +264,11 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
     private starterService: StarterService,
     private permissionService: PermisoService
   ) {
-	if (localStorage.getItem(LocalStorageKeys.Reloaded)! === "0") {
-		localStorage.setItem(LocalStorageKeys.Reloaded, "1");
+    if (localStorage.getItem(LocalStorageKeys.Reloaded)! === "0") {
+      localStorage.setItem(LocalStorageKeys.Reloaded, "1");
 
-		window.location.reload();
-	}
+      window.location.reload();
+    }
 
     this.getPermissions();
 
@@ -568,10 +569,10 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 
     if (this.solicitud.idTipoSolicitud == this.typeSolicitudSelected) {
       if (this.solicitud.tipoAccion.toUpperCase().includes("TEMPORAL")) {
-      variables.tipoAccion = { value: "asignacionTemporal" };
-       }else{
+        variables.tipoAccion = { value: "asignacionTemporal" };
+      } else {
         variables.tipoAccion = { value: this.solicitud.tipoAccion };
-       }
+      }
     } else {
       variables.tipoMotivo = { value: this.solicitud.tipoMotivo };
     }
@@ -603,12 +604,13 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
   }
 
   onChangeTipoSolicitud(idTipoSolicitud: number) {
-    this.tipoSolicitudSeleccionada = idTipoSolicitud;
-    this.desactivarTipoMotivo =
-      !this.idsOcultarTipoMotivo.includes(idTipoSolicitud);
+    this.codigoTipoSolicitud = this.dataTipoSolicitudes.filter((data) => data.id == this.solicitud.idTipoSolicitud)[0]?.codigoTipoSolicitud;
 
-    this.desactivarTipoAccion =
-      !this.idsOcultarTipoAccion.includes(idTipoSolicitud);
+    this.tipoSolicitudSeleccionada = idTipoSolicitud;
+    this.desactivarTipoMotivo = !this.idsOcultarTipoMotivo.includes(this.codigoTipoSolicitud);
+
+    this.desactivarTipoAccion = !this.idsOcultarTipoAccion.includes(this.codigoTipoSolicitud);
+
 
     if (!this.dataTiposMotivosPorTipoSolicitud[idTipoSolicitud]) {
       this.mantenimientoService
@@ -686,12 +688,12 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
   mostrarModalCrearSolicitudes() {
     this.submitted = false;
 
-	this.solicitud.idTipoAccion = 0;
-	this.solicitud.idTipoMotivo = 0;
-	this.solicitud.idTipoSolicitud = null;
+    this.solicitud.idTipoAccion = 0;
+    this.solicitud.idTipoMotivo = 0;
+    this.solicitud.idTipoSolicitud = null;
 
-	this.desactivarTipoMotivo = false;
-	this.desactivarTipoAccion = false;
+    this.desactivarTipoMotivo = false;
+    this.desactivarTipoAccion = false;
 
     this.modalService.open(this.myModalSolicitudes, {
       centered: true,
@@ -1013,12 +1015,12 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 
   onRowActionClicked(id: string, key: string, tooltip: string, id_edit) {
     // Lógica cuando se da click en una acción de la fila
-	  console.log(tooltip);
-	if (tooltip === "Info") {
-		this.router.navigate(["/solicitudes/detalle-solicitud", id_edit]);
-	} else {
-		this.router.navigate(["/solicitudes/trazabilidad", id_edit]);
-	}
+    console.log(tooltip);
+    if (tooltip === "Info") {
+      this.router.navigate(["/solicitudes/detalle-solicitud", id_edit]);
+    } else {
+      this.router.navigate(["/solicitudes/trazabilidad", id_edit]);
+    }
   }
 
   mostrarModalCrearInstanciaSolicitud() {

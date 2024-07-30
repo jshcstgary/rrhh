@@ -36,7 +36,8 @@ export class CrearNivelesAprobacionComponent implements OnInit {
 
   public desactivarTipoMotivoYAccion = false;
 
-  public restrictionsIds: any[] = ["3", "5", "6", 3, 5, 6];
+  // public restrictionsIds: any[] = ["3", "5", "6", 3, 5, 6];
+  public restrictionsIds: any[] = ["RG", "CF", "AP"];
 
   public tipoSolicitudSeleccionada: any;
 
@@ -47,6 +48,8 @@ export class CrearNivelesAprobacionComponent implements OnInit {
   public dataAccionesPorTipoSolicitud: { [idSolicitud: number]: any[] } = {};
 
   public dataRutasPorTipoRuta: { [idSolicitud: number]: any[] } = {};
+
+  public codigoTipoSolicitud: string = "";
 
   constructor(
     private config: NgSelectConfig,
@@ -123,10 +126,13 @@ export class CrearNivelesAprobacionComponent implements OnInit {
         { id: 3, descripcion: "Reingreso de personal" },
         { id: 4, descripcion: "Acción de Personal" },
       ];*/
+
+    this.codigoTipoSolicitud = this.dataTipoSolicitudes.filter((data) => data.id == this.modelo.idTipoSolicitud)[0]?.codigoTipoSolicitud;
+
     this.tipoSolicitudSeleccionada = idTipoSolicitud;
-    this.desactivarTipoMotivoYAccion = this.restrictionsIds.includes(
-      this.tipoSolicitudSeleccionada
-    );
+    // this.desactivarTipoMotivoYAccion = this.restrictionsIds.includes(this.tipoSolicitudSeleccionada);
+    this.desactivarTipoMotivoYAccion = this.restrictionsIds.includes(this.codigoTipoSolicitud);
+
     if (this.desactivarTipoMotivoYAccion) {
       this.modelo.tipoMotivo = "";
       this.modelo.idTipoMotivo = 0;
@@ -167,6 +173,7 @@ export class CrearNivelesAprobacionComponent implements OnInit {
         this.dataTipoSolicitudes = response.tipoSolicitudType.map((r) => ({
           id: r.id,
           descripcion: r.tipoSolicitud,
+          codigoTipoSolicitud: r.codigoTipoSolicitud
         })); //verificar la estructura mmunoz
       },
       error: (error: HttpErrorResponse) => {
@@ -328,11 +335,11 @@ export class CrearNivelesAprobacionComponent implements OnInit {
                 "Datos ingresados correctamente",
                 "success"
               );
-            //   setTimeout(() => {
-            //     this.router.navigate([
-            //       "/mantenedores/niveles-aprobacion",
-            //     ]);
-            //   }, 1600);
+              //   setTimeout(() => {
+              //     this.router.navigate([
+              //       "/mantenedores/niveles-aprobacion",
+              //     ]);
+              //   }, 1600);
               // Inicio
               /*this.serviceNivelesAprobacion
                 .refrescarNivelesAprobaciones()

@@ -161,8 +161,7 @@
                         </button>
                         <button type="submit"
                           *ngIf="controlsPermissions[pageControlPermission.ButtonExportar].visualizar"
-                          [disabled]="dataTable.length === 0"
-                          class="btn btn-outline-info me-2">
+                          [disabled]="dataTable.length === 0" class="btn btn-outline-info me-2">
                           <i class="fas fa-file-excel"></i> Exportar
                         </button>
                       </div>
@@ -217,7 +216,8 @@
                 </button>
 
                 <button type="button" class="mr-10 fz-14 btn btn-info btn-icon-end" (click)="CrearInstanciaSolicitud()"
-                  aria-label="Close" aria-label="Close" [disabled]="solicitud.idTipoSolicitud === null || (desactivarTipoMotivo && solicitud.idTipoMotivo === 0) || (desactivarTipoAccion && solicitud.idTipoAccion === 0)">
+                  aria-label="Close" aria-label="Close"
+                  [disabled]="solicitud.idTipoSolicitud === null || (desactivarTipoMotivo && solicitud.idTipoMotivo === 0) || (desactivarTipoAccion && solicitud.idTipoAccion === 0)">
                   <i class="fas fa-save"></i> Guardar
                 </button>
               </div>
@@ -275,21 +275,21 @@
               " *ngIf="desactivarTipoAccion">
               <div class="col-md-12">
                 <div class="col-md-12">
-				  <div class="input-group mb-3">
-					<label class="input-group-text" for="tipocumplimiento">Tipo de Acción</label>
-					<select id="tipocumplimiento" name="tipocumplimiento" class="form-select" style="font-size: 14px"
-						[(ngModel)]="solicitud.idTipoAccion" (ngModelChange)="onChangeTipoMotivo(solicitud.idTipoAccion)"
-						required>
-						<option value="" hidden>Selecccione</option>
-						<option *ngFor="
+                  <div class="input-group mb-3">
+                    <label class="input-group-text" for="tipocumplimiento">Tipo de Acción</label>
+                    <select id="tipocumplimiento" name="tipocumplimiento" class="form-select" style="font-size: 14px"
+                      [(ngModel)]="solicitud.idTipoAccion" (ngModelChange)="onChangeTipoMotivo(solicitud.idTipoAccion)"
+                      required>
+                      <option value="" hidden>Selecccione</option>
+                      <option *ngFor="
 							let baseDeDatos of dataTiposAccionesPorTipoSolicitud[
 							tipoSolicitudSeleccionada
 							]
 						" [value]="baseDeDatos.id">
-						{{ baseDeDatos.tipoAccion }}
-						</option>
-					</select>
-				  </div>
+                        {{ baseDeDatos.tipoAccion }}
+                      </option>
+                    </select>
+                  </div>
                 </div>
               </div>
             </div>
@@ -314,5 +314,6 @@
       </div>
     </div>
   </div>
+
 </ng-template>
 <!--End Modal Crear Solicitud-->

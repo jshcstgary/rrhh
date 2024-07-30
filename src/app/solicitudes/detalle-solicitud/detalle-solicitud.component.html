@@ -19,8 +19,6 @@
         </div>
       </div>
 
-      {{ this.solicitud.fechaCreacion }}
-
       <div class="row mt-4">
         <div class="col-md-4">
           <div class="input-group mb-3">
@@ -137,13 +135,15 @@
           <div class="col-md-7">
             <div class="input-group mb-3">
               <label class="input-group-text label-estilo" for="localidadzona">Cargo</label>
-              <span id="localidadzona" name="" style="color: black; font-size: 14px" class="text-start">Prueba</span>
+              <span id="localidadzona" name="" style="color: black; font-size: 14px" class="text-start">{{
+                model.nombreCargo }}</span>
             </div>
           </div>
           <div class="col-md">
             <div class="input-group mb-3">
               <label class="input-group-text label-estilo" for="niveldirección">Tipo de contrato</label>
-              <span id="niveldirección" name="" style="color: black; font-size: 14px" class="text-start">Especial</span>
+              <span id="niveldirección" name="" style="color: black; font-size: 14px" class="text-start">{{
+                model.tipoContrato }}</span>
             </div>
           </div>
         </div>
@@ -151,8 +151,8 @@
           <div class="col-md-7">
             <div class="input-group mb-3">
               <label class="input-group-text label-estilo" for="centrocosto">Jefe solicitante</label>
-              <span id="centrocosto" name="" style="color: black; font-size: 14px" class="text-start">Pedro
-                Ramirez</span>
+              <span id="centrocosto" name="" style="color: black; font-size: 14px" class="text-start">{{
+                solicitud.usuarioCreacion }}</span>
             </div>
           </div>
         </div>
@@ -160,7 +160,8 @@
           <div class="col-md-7">
             <div class="input-group mb-3">
               <label class="input-group-text label-estilo" for="centrocosto">Responsable de RRHH</label>
-              <span id="centrocosto" name="" style="color: black; font-size: 14px" class="text-start">Juan Garcez</span>
+              <span id="centrocosto" name="" style="color: black; font-size: 14px" class="text-start">{{
+                solicitud.usuarioCreacion }}</span>
             </div>
           </div>
         </div>

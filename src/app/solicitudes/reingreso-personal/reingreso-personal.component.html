@@ -13,20 +13,19 @@
           </div>
         </div>
 
-		<button  *ngIf="existeMatenedores"
-            type="button"
-            (click)="openModal('dialogReasignarUsuario')"
-            class="btn btn-info me-2 mt-1"
-        >
-          <i class="fas fa-redo"></i> Reasignar
-        </button>
-
         <div *ngIf="!existeMatenedores || existe" class="col-md-12 text-end">
-          <button type="button" class="btn btn-info me-2 mt-1" aria-label="Close" (click)="onSubmit()" [disabled]="this.jefeInmediatoSuperiorQuery === '' || this.jefeReferenciaQuery === '' || this.responsableRRHHQuery === ''">
+          <button *ngIf="existeMatenedores" type="button" (click)="openModal('dialogReasignarUsuario')"
+            class="btn btn-info me-2 mt-1">
+            <i class="fas fa-redo"></i> Reasignar
+          </button>
+
+          <button type="button" class="btn btn-info me-2 mt-1" aria-label="Close" (click)="onSubmit()"
+            [disabled]="this.jefeInmediatoSuperiorQuery === '' || this.jefeReferenciaQuery === '' || this.responsableRRHHQuery === ''">
             <i class="fas fa-save"></i> Guardar
           </button>
 
-          <button type="button" (click)="onCompletar()" class="btn btn-info me-2 mt-1" [disabled]="this.detalleSolicitudRG.supervisaA !== 'NA'">
+          <button type="button" (click)="onCompletar()" class="btn btn-info me-2 mt-1"
+            [disabled]="this.detalleSolicitudRG.supervisaA !== 'NA'">
             <i class="fas fa-check-circle"></i> Completar Tarea
           </button>
         </div>

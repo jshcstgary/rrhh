@@ -1506,6 +1506,14 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
   }
 
   public exportar(): void {
+    if (this.solicitud.idSolicitud.includes("RP")) {
+      this.exportarrequisicionPersonal();
+    } else if (this.solicitud.idSolicitud.includes("CF")) {
+      this.exportarContratacionFamiliar();
+    }
+  }
+
+  private exportarrequisicionPersonal(): void {
     const backgroundCellColor: [number, number, number] = [218, 238, 243];
     const textColor: [number, number, number] = [54, 95, 145];
     const lineColor: [number, number, number] = [149, 179, 215];
@@ -1553,7 +1561,6 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
         lineColor
       },
       body: [
-        // ["Creado por:", this.solicitud.usuarioCreacion, "Fecha:", format(this.solicitud.fechaCreacion!, "dd/MM/yyyy"), "Solicitud No:", this.solicitud.idSolicitud],
         ["Creado por:", this.solicitud.usuarioCreacion, "Fecha:", format(new Date(this.solicitud.fechaCreacion), "dd/MM/yyyy"), "Solicitud No:", this.solicitud.idSolicitud],
       ],
       columnStyles: {
@@ -1596,8 +1603,8 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
         ["Unidad:", this.model.unidadNegocio, "Motivo", this.solicitud.tipoMotivo],
         ["Ciudad/Localidad:", this.model.localidad, "Empleado a reemplazar", this.model.nombreCompleto],
         ["Cargo solicitado:", this.model.nombreCargo, "Sueldo", this.model.sueldo],
-        ["Área/Dpto:", this.model.departamento, "Variable mínima:", "0"],
-        ["Centro de Costos", this.model.nomCCosto, "Total", "0"],
+        ["Área/Dpto:", this.model.departamento, "Variable mínima:", this.model.sueldoMensual],
+        ["Centro de Costos", this.model.nomCCosto, "Total", parseInt(this.model.sueldo) + parseInt(this.model.sueldoMensual)],
         [
           "Justificación:",
           {
@@ -1620,6 +1627,268 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
         },
         3: {
           cellWidth: 60
+        }
+      }
+    });
+
+    // Funciones y responsabilidades
+    autoTable(doc, {
+      theme: "grid",
+      headStyles: {
+        fillColor: backgroundCellColor,
+        textColor: textColor,
+        halign: "center",
+        lineColor
+      },
+      bodyStyles: {
+        lineColor
+      },
+      head: [
+        [
+          {
+            content: "FUNCIONES Y RESPONSABILIDADES",
+            colSpan: 4
+          }
+        ]
+      ],
+      body: [
+        ["Reporta a:", this.model.reportaA, "Supervisa a:", this.model.supervisaA],
+        [
+          "Misión del cargo:",
+          {
+            content: this.model.misionCargo,
+            colSpan: 3
+          }
+        ]
+      ],
+      columnStyles: {
+        0: {
+          fontStyle: "bold",
+          cellWidth: 30
+        },
+        1: {
+          cellWidth: 60
+        },
+        2: {
+          fontStyle: "bold",
+          cellWidth: 30
+        },
+        3: {
+          cellWidth: 60
+        }
+      }
+    });
+
+    // Sección de candidato
+    autoTable(doc, {
+      theme: "grid",
+      headStyles: {
+        fillColor: backgroundCellColor,
+        textColor: textColor,
+        halign: "center",
+        lineColor
+      },
+      bodyStyles: {
+        lineColor
+      },
+      head: [
+        [
+          {
+            content: "SELECCIÓN DE CANDIDATO",
+            colSpan: 2
+          }
+        ]
+      ],
+      body: [
+        [
+          {
+            content: "TAREA:",
+            styles: {
+              halign: "center",
+              textColor,
+              fontStyle: "bold"
+            }
+          },
+          {
+            content: "FECHA:",
+            styles: {
+              halign: "center",
+              textColor,
+              fontStyle: "bold"
+            }
+          }
+        ],
+        ["Actualización del perfil:", this.fechas.actualizacionPerfil],
+        ["Búsqueda del candidato:", this.fechas.busquedaCandidatos],
+        ["Entrevistas:", this.fechas.entrevista],
+        ["Pruebas:", this.fechas.pruebas],
+        ["Referencias:", this.fechas.referencias],
+        ["Elaboración del Informe:", this.fechas.elaboracionInforme],
+        ["Entrega al Jefe Solicitante el informe de selección:", this.fechas.entregaJefe],
+        ["Entrevistas por parte de fejaturas:", this.fechas.entrevistaJefatura],
+        ["Toma de decisiones por parte de fejaturas:", this.fechas.tomaDecisiones],
+        ["Candidato seleccionado:", this.fechas.candidatoSeleccionado],
+        ["Proceso de Contratación:", this.fechas.procesoContratacion],
+        ["Fin del Proceso de Selección y Proceso de Contratación:", this.fechas.finProcesoContratacion],
+        [
+          {
+            content: "",
+            colSpan: 2
+          }
+        ],
+        ["Nombre del candidato escogido:", this.nombreCandidato],
+        ["Fecha de ingreso:", this.fechas.reingreso === "" ? this.fechas.contratacionFamiliares : this.fechas.reingreso]
+      ],
+      columnStyles: {
+        0: {
+          fontStyle: "bold",
+          cellWidth: 110
+        },
+        1: {
+          cellWidth: 70,
+          halign: "center"
+        }
+      }
+    });
+
+    doc.save(`${this.solicitud.idSolicitud}-${format(new Date(), "dd-MM-yyyy")}.pdf`)
+  }
+
+  private exportarContratacionFamiliar(): void {
+    const backgroundCellColor: [number, number, number] = [218, 238, 243];
+    const textColor: [number, number, number] = [54, 95, 145];
+    const lineColor: [number, number, number] = [149, 179, 215];
+
+    const doc = new jsPDF();
+
+    // Esquina de la hoja
+    autoTable(doc, {
+      theme: "plain",
+      body: [
+        [
+          {
+            content: `RR.HH.: ${this.solicitud.idSolicitud}`,
+            styles: {
+              halign: "right",
+              fontStyle: "bold"
+            }
+          }
+        ],
+      ]
+    });
+
+    // Títutlo
+    autoTable(doc, {
+      theme: "plain",
+      body: [
+        [
+          {
+            content: "CONTRATACIÓN DE FAMILIAR",
+            styles: {
+              halign: "center",
+              fontSize: 20,
+              fontStyle: "bold",
+              textColor: [0, 0, 255]
+            }
+          }
+        ],
+      ]
+    });
+
+    // Encabezado de la solicitud
+    autoTable(doc, {
+      theme: "grid",
+      bodyStyles: {
+        lineColor
+      },
+      body: [
+        [
+          {
+            content: "Creado por:",
+            rowSpan: 2,
+            styles: {
+              valign: "middle"
+            }
+          },
+          {
+            content: this.solicitud.usuarioCreacion,
+            rowSpan: 2,
+            styles: {
+              valign: "middle"
+            }
+          },
+          {
+            content: "Fecha:",
+            rowSpan: 2,
+            styles: {
+              valign: "middle"
+            }
+          },
+          {
+            content: format(new Date(this.solicitud.fechaCreacion), "dd/MM/yyyy"),
+            rowSpan: 2,
+            styles: {
+              valign: "middle"
+            }
+          },
+          "Solicitud No:",
+          this.solicitud.idSolicitud
+        ],
+        ["Requisición de Personal No:", this.idSolicitudRP]
+      ],
+      columnStyles: {
+        0: {
+          fontStyle: "bold",
+          halign: "right"
+        },
+        2: {
+          fontStyle: "bold",
+          halign: "right"
+        },
+        4: {
+          fontStyle: "bold",
+          halign: "right"
+        }
+      }
+    });
+
+    // Información de la persona a contratar
+    autoTable(doc, {
+      theme: "grid",
+      headStyles: {
+        fillColor: backgroundCellColor,
+        textColor: textColor,
+        halign: "center",
+        lineColor
+      },
+      bodyStyles: {
+        lineColor
+      },
+      head: [
+        [
+          {
+            content: "INFORMACIÓN DE LA PERSONA A CONTRATAR",
+            colSpan: 2
+          }
+        ]
+      ],
+      body: [
+        ["Apellidos y nombres:", this.nombreCompletoCandidato],
+        ["Unidad:", this.model.unidadNegocio],
+        ["Departamento:", this.model.departamento],
+        ["Cargo:", this.model.nombreCargo],
+        ["Localidad:", this.model.localidad],
+        ["Jefe Solicitante:", this.solicitud.usuarioCreacion],
+        ["Responsable de RR.HH.:", this.solicitud.usuarioCreacion],
+        ["Justificación:", this.model.justificacionCargo]
+      ],
+      columnStyles: {
+        0: {
+          fontStyle: "bold",
+          cellWidth: 50
+        },
+        1: {
+          cellWidth: 130
         }
       }
     });
