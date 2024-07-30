@@ -1,6 +1,6 @@
 <form (ngSubmit)="onSubmit()" #SolicitudForm="ngForm" #solicitudForm="ngForm">
   <div class="card">
-    <h2 class="card-body text-start">
+    <div class="card-body text-start">
       <div class="row">
         <div class="col-md-8">
           <div class="mb-3">
@@ -11,27 +11,26 @@
             </a>
           </div>
         </div>
-        <div class="col-md-4 text-end" >
-		<button  *ngIf="existeMatenedores"
-            type="button"
-            (click)="openModal('dialogReasignarUsuario')"
-            class="btn btn-info me-2 mt-1"
-        >
-          <i class="fas fa-redo"></i> Reasignar
-        </button>
+        <div class="col-md-4 text-end">
+          <button *ngIf="existeMatenedores" type="button" (click)="openModal('dialogReasignarUsuario')"
+            class="btn btn-info me-2 mt-1">
+            <i class="fas fa-redo"></i> Reasignar
+          </button>
 
-        <div *ngIf="!existeMatenedores || existe" class="col-md-4 text-end d-flex justify-content-end align-items-center">
-          <button type="submit" class="btn btn-info me-2 d-flex align-items-center justify-content-center button-custom"
-            aria-label="Close" [disabled]="!solicitudForm.form.valid">
-            <i class="fas fa-save me-2 icon-size"></i> Guardar
-          </button>
-          <button *ngIf="RegistrarsolicitudCompletada" type="button" (click)="onCompletar()"
-            class="btn btn-info me-2 d-flex align-items-center justify-content-center button-custom">
-            <i class="fas fa-check-circle me-2 icon-size"></i> Completar Tarea
-          </button>
+          <div *ngIf="!existeMatenedores || existe"
+            class="col-md-4 text-end d-flex justify-content-end align-items-center">
+            <button type="submit"
+              class="btn btn-info me-2 d-flex align-items-center justify-content-center button-custom"
+              aria-label="Close" [disabled]="!solicitudForm.form.valid">
+              <i class="fas fa-save me-2 icon-size"></i> Guardar
+            </button>
+            <button *ngIf="RegistrarsolicitudCompletada" type="button" (click)="onCompletar()"
+              class="btn btn-info me-2 d-flex align-items-center justify-content-center button-custom">
+              <i class="fas fa-check-circle me-2 icon-size"></i> Completar Tarea
+            </button>
+          </div>
         </div>
       </div>
-    </div>
 
       <div class="row mt-4">
         <div class="col-md-4">
@@ -102,7 +101,8 @@
               <input type="text" name="codigoposicion" [(ngModel)]="model.codigoPosicion"
                 style="color: black; font-size: 14px; width: 30%" class="form-control" id="codigoposicion"
                 aria-describedby="inputGroupPrepend" required #codigoposicion="ngModel" placeholder="Ingrese código"
-                [ngbTypeahead]="searchDescripcionPosicion" [ngbTypeahead]="searchCodigoPosicion" (selectItem)="onSelectItem('codigoPosicion', $event)" />
+                [ngbTypeahead]="searchDescripcionPosicion" [ngbTypeahead]="searchCodigoPosicion"
+                (selectItem)="onSelectItem('codigoPosicion', $event)" />
 
               <button class="btn btn-light" type="button" (click)="getDataEmpleadosEvolution('codigoPosicion')">
                 <i class="ti-search"></i>
@@ -115,21 +115,22 @@
             <label class="input-group-text label-estilo" for="descripcionposicion">Descripción de posición</label>
             &nbsp;
             <span *ngIf="solicitud.tipoMotivo === 'Reemplazo'; else editableDescPosition" id="descripcionposicion"
-            name="descripcionposicion" style="color: black; font-size: 14px;" class="text-start">{{
-            model.descrPosicion }}</span>
+              name="descripcionposicion" style="color: black; font-size: 14px;" class="text-start">{{
+              model.descrPosicion }}</span>
 
-          <ng-template #editableDescPosition>
-            <!-- <span id="descripcionposicion" name="descripcionposicion" style="color: black; font-size: 14px;"
+            <ng-template #editableDescPosition>
+              <!-- <span id="descripcionposicion" name="descripcionposicion" style="color: black; font-size: 14px;"
               class="text-start">{{ model.descrPosicion }}</span> -->
-			    <input type="text" name="descripcion-posicion" [(ngModel)]="model.descrPosicion"
-              style="color: black; font-size: 14px; width: 30%" class="form-control text-start" id="descripcionPosicion"
-              aria-describedby="inputGroupPrepend" required #descripcionPosicion="ngModel" placeholder="Ingrese descripcion posicion"
-              [ngbTypeahead]="searchCodigoPosicion" [ngbTypeahead]="searchDescripcionPosicion" (selectItem)="onSelectItem('descrPosicion', $event)" />
+              <input type="text" name="descripcion-posicion" [(ngModel)]="model.descrPosicion"
+                style="color: black; font-size: 14px; width: 30%" class="form-control text-start"
+                id="descripcionPosicion" aria-describedby="inputGroupPrepend" required #descripcionPosicion="ngModel"
+                placeholder="Ingrese descripcion posicion" [ngbTypeahead]="searchCodigoPosicion"
+                [ngbTypeahead]="searchDescripcionPosicion" (selectItem)="onSelectItem('descrPosicion', $event)" />
 
-			  <button class="btn btn-light" type="button" (click)="getDataEmpleadosEvolution('descrPosicion')">
-			    <i class="ti-search"></i>
-			  </button>
-      </ng-template>
+              <button class="btn btn-light" type="button" (click)="getDataEmpleadosEvolution('descrPosicion')">
+                <i class="ti-search"></i>
+              </button>
+            </ng-template>
 
           </div>
         </div>
@@ -144,7 +145,8 @@
             <input type="text" name="subledger" [(ngModel)]="model.subledger"
               style="color: black; font-size: 14px; width: 30%" class="form-control text-start" id="subledger"
               aria-describedby="inputGroupPrepend" required #subledger="ngModel" placeholder="Ingrese subledger"
-              [ngbTypeahead]="searchNombre" [ngbTypeahead]="searchSubledger" (selectItem)="onSelectItem('subledger', $event)" />
+              [ngbTypeahead]="searchNombre" [ngbTypeahead]="searchSubledger"
+              (selectItem)="onSelectItem('subledger', $event)" />
 
             <button class="btn btn-light" type="button" (click)="getDataEmpleadosEvolution('subledger')">
               <i class="ti-search"></i>
@@ -160,8 +162,9 @@
             &nbsp;
             <input type="text" name="nombreCompleto" [(ngModel)]="model.nombreCompleto"
               style="color: black; font-size: 14px; width: 30%" class="form-control text-start" id="nombreCompleto"
-              [ngbTypeahead]="searchSubledger" [ngbTypeahead]="searchNombre" (selectItem)="onSelectItem('nombreCompleto', $event)"
-              aria-describedby="inputGroupPrepend" #nombreCompleto="ngModel" placeholder="Ingrese nombre" required />
+              [ngbTypeahead]="searchSubledger" [ngbTypeahead]="searchNombre"
+              (selectItem)="onSelectItem('nombreCompleto', $event)" aria-describedby="inputGroupPrepend"
+              #nombreCompleto="ngModel" placeholder="Ingrese nombre" required />
 
             <button class="btn btn-light" type="button" (click)="getDataEmpleadosEvolution('nombreCompleto')">
               <i class="ti-search"></i>
@@ -385,7 +388,8 @@
 
                 <div class="col">
                   {{ nivelItem.aprobador.usuario !== "" && nivelItem.aprobador.usuario !== undefined &&
-                  nivelItem.aprobador.usuario != null ? nivelItem.aprobador.codigoPosicion + "-" + nivelItem.aprobador.usuario : "No aplica" }}
+                  nivelItem.aprobador.usuario != null ? nivelItem.aprobador.codigoPosicion + "-" +
+                  nivelItem.aprobador.usuario : "No aplica" }}
                 </div>
 
                 <div class="col">
@@ -543,6 +547,6 @@
 
 
 
-    </h2>
+    </div>
   </div>
 </form>

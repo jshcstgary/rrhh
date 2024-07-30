@@ -1,6 +1,6 @@
 import {
-	HttpClientModule,
-	HttpErrorResponse
+  HttpClientModule,
+  HttpErrorResponse
 } from "@angular/common/http";
 import { Component } from "@angular/core";
 import { NgForm } from "@angular/forms";
@@ -8,9 +8,9 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { Observable, OperatorFunction, Subject } from "rxjs";
 import {
-	debounceTime,
-	distinctUntilChanged,
-	map
+  debounceTime,
+  distinctUntilChanged,
+  map
 } from "rxjs/operators";
 import { PageCodes } from "src/app/enums/codes.enum";
 import { LocalStorageKeys } from "src/app/enums/local-storage-keys.enum";
@@ -422,7 +422,7 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
     private mantenimientoService: MantenimientoService,
     private solicitudes: SolicitudesService,
     private utilService: UtilService,
-	private modalService: NgbModal,
+    private modalService: NgbModal,
     private consultaTareasService: ConsultaTareasService,
     private seleccionCandidatoService: RegistrarCandidatoService,
     private tipoSolicitudServicio: TipoSolicitudService,
@@ -466,9 +466,9 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
             next: async (response) => {
               this.existe = response.solicitudes.some(({ idSolicitud, rootProcInstId }) => idSolicitud === this.id_solicitud_by_params && rootProcInstId === this.idDeInstancia);
 
-			  const permisos: Permiso[] = JSON.parse(localStorage.getItem(LocalStorageKeys.Permisos)!);
+              const permisos: Permiso[] = JSON.parse(localStorage.getItem(LocalStorageKeys.Permisos)!);
 
-			  this.existeMatenedores = permisos.some(permiso => permiso.codigo === PageCodes.AprobadorFijo);
+              this.existeMatenedores = permisos.some(permiso => permiso.codigo === PageCodes.AprobadorFijo);
 
               if (this.existe || this.existeMatenedores) {
                 try {
@@ -1611,25 +1611,25 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
       if (this.taskType_Activity == environment.taskType_RegistrarCandidato) {
         if (this.model.tipoProceso.toUpperCase().includes("FAMILIA")) {
           variables.tipoSolicitud = {
-			value: "contratacionFamiliares"
-		  };
+            value: "contratacionFamiliares"
+          };
           variables.tipoProceso = {
-			value: "contratacionFamiliares"
-		  };
+            value: "contratacionFamiliares"
+          };
         } else if (this.model.tipoProceso.toUpperCase().includes("REINGRESO")) {
           variables.tipoSolicitud = {
-			value: "reingresoPersonal"
-		  };
+            value: "reingresoPersonal"
+          };
           variables.tipoProceso = {
-			value: "reingresoPersonal"
-		  };
+            value: "reingresoPersonal"
+          };
         } else if (this.model.tipoProceso.toUpperCase().includes("REEMPLAZO")) {
           variables.tipoSolicitud = {
-			value: "nuevoIngresoReemplazo"
-		  };
+            value: "nuevoIngresoReemplazo"
+          };
           variables.tipoProceso = {
-			value: "nuevoIngresoReemplazo"
-		  };
+            value: "nuevoIngresoReemplazo"
+          };
         }
 
       }
@@ -1945,37 +1945,37 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
 
   openModalReasignarUsuario() {
     const modelRef = this.modalService.open(dialogComponentList.dialogReasignarUsuario, {
-        ariaLabelledBy: "modal-title",
-	});
+      ariaLabelledBy: "modal-title",
+    });
 
-	modelRef.componentInstance.idParam = this.solicitud.idSolicitud;
-	modelRef.componentInstance.taskId = this.taskType_Activity;
+    modelRef.componentInstance.idParam = this.solicitud.idSolicitud;
+    modelRef.componentInstance.taskId = this.taskType_Activity;
 
     modelRef.result.then(
-        (result) => {
-          if (result === "close") {
-            return;
-		  }
-
-          if (result?.data) {
-            Swal.fire({
-              text: result.data,
-              icon: "success",
-              confirmButtonColor: "rgb(227, 199, 22)",
-              confirmButtonText: "Ok",
-            }).then((result) => {
-              if (result.isConfirmed) {
-                this.router.navigate(["/mantenedores/reasignar-tareas-usuarios"]);
-                if (this.submitted) {
-                }
-              }
-            });
-          }
-        },
-        (reason) => {
-          console.log(`Dismissed with: ${reason}`);
+      (result) => {
+        if (result === "close") {
+          return;
         }
-      );
+
+        if (result?.data) {
+          Swal.fire({
+            text: result.data,
+            icon: "success",
+            confirmButtonColor: "rgb(227, 199, 22)",
+            confirmButtonText: "Ok",
+          }).then((result) => {
+            if (result.isConfirmed) {
+              this.router.navigate(["/mantenedores/reasignar-tareas-usuarios"]);
+              if (this.submitted) {
+              }
+            }
+          });
+        }
+      },
+      (reason) => {
+        console.log(`Dismissed with: ${reason}`);
+      }
+    );
   }
 
   indexedModal: Record<keyof DialogComponents, any> = {

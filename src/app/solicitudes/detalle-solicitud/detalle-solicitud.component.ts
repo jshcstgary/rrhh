@@ -1512,6 +1512,7 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 
     const doc = new jsPDF();
 
+    // Esquina de la hoja
     autoTable(doc, {
       theme: "plain",
       body: [
@@ -1527,6 +1528,7 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
       ]
     });
 
+    // Títutlo
     autoTable(doc, {
       theme: "plain",
       body: [
@@ -1544,45 +1546,33 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
       ]
     });
 
+    // Encabezado de la solicitud
     autoTable(doc, {
       theme: "grid",
+      bodyStyles: {
+        lineColor
+      },
       body: [
-        [
-          {
-            content: "Creado por:",
-            styles: {
-              fontStyle: "bold",
-              halign: "right"
-            }
-          },
-          {
-            content: this.solicitud.usuarioCreacion,
-          },
-          {
-            content: "Fecha:",
-            styles: {
-              fontStyle: "bold",
-              halign: "right"
-            }
-          },
-          {
-            // content: format(this.solicitud.fechaCreacion!, "dd/MM/yyyy")
-            content: "dd/MM/yyyy"
-          },
-          {
-            content: "Solicitud No:",
-            styles: {
-              fontStyle: "bold",
-              halign: "right"
-            }
-          },
-          {
-            content: this.solicitud.idSolicitud
-          }
-        ]
-      ]
+        // ["Creado por:", this.solicitud.usuarioCreacion, "Fecha:", format(this.solicitud.fechaCreacion!, "dd/MM/yyyy"), "Solicitud No:", this.solicitud.idSolicitud],
+        ["Creado por:", this.solicitud.usuarioCreacion, "Fecha:", "dd/MM/yyyy", "Solicitud No:", this.solicitud.idSolicitud],
+      ],
+      columnStyles: {
+        0: {
+          fontStyle: "bold",
+          halign: "right"
+        },
+        2: {
+          fontStyle: "bold",
+          halign: "right"
+        },
+        4: {
+          fontStyle: "bold",
+          halign: "right"
+        }
+      }
     });
 
+    // Información de la posición
     autoTable(doc, {
       theme: "grid",
       headStyles: {
@@ -1603,11 +1593,11 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
         ]
       ],
       body: [
-        ["Unidad:", this.model.unidadNegocio, "Motivo", "david@example.com"],
-        ["Ciudad/Localidad:", this.model.localidad, "Empleado a reemplazar", "castille@example.com"],
-        ["Cargo solicitado:", "Castille", "Sueldo", "castille@example.com"],
-        ["Área/Dpto:", this.model.departamento, "Variable mínima:", "castille@example.com"],
-        ["Centro de Costos", "Castille", "Total", "castille@example.com"],
+        ["Unidad:", this.model.unidadNegocio, "Motivo", this.solicitud.tipoMotivo],
+        ["Ciudad/Localidad:", this.model.localidad, "Empleado a reemplazar", this.model.nombreCompleto],
+        ["Cargo solicitado:", this.model.nombreCargo, "Sueldo", this.model.sueldo],
+        ["Área/Dpto:", this.model.departamento, "Variable mínima:", "0"],
+        ["Centro de Costos", this.model.nomCCosto, "Total", "0"],
         [
           "Justificación:",
           {
@@ -1630,6 +1620,142 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
         },
         3: {
           cellWidth: 60
+        }
+      }
+    });
+
+    // Funciones y responsabilidades
+    autoTable(doc, {
+      theme: "grid",
+      headStyles: {
+        fillColor: backgroundCellColor,
+        textColor: textColor,
+        halign: "center",
+        lineColor
+      },
+      bodyStyles: {
+        lineColor
+      },
+      head: [
+        [
+          {
+            content: "FUNCIONES Y RESPONSABILIDADES",
+            colSpan: 4
+          }
+        ]
+      ],
+      body: [
+        ["Reporta a:", this.model.reportaA, "Supervisa a:", this.model.supervisaA],
+        [
+          "Misión del cargo:",
+          {
+            content: this.model.misionCargo,
+            colSpan: 3
+          }
+        ]
+      ],
+      columnStyles: {
+        0: {
+          fontStyle: "bold",
+          cellWidth: 30
+        },
+        1: {
+          cellWidth: 60
+        },
+        2: {
+          fontStyle: "bold",
+          cellWidth: 30
+        },
+        3: {
+          cellWidth: 60
+        }
+      }
+    });
+
+    // Sección de candidato
+    autoTable(doc, {
+      theme: "grid",
+      headStyles: {
+        fillColor: backgroundCellColor,
+        textColor: textColor,
+        halign: "center",
+        lineColor
+      },
+      bodyStyles: {
+        lineColor
+      },
+      head: [
+        [
+          {
+            content: "SELECCIÓN DE CANDIDATO",
+            colSpan: 2
+          }
+        ]
+      ],
+      body: [
+        [
+          {
+            content: "TAREA:",
+            styles: {
+              halign: "center",
+              textColor,
+              fontStyle: "bold"
+            }
+          },
+          {
+            content: "FECHA:",
+            styles: {
+              halign: "center",
+              textColor,
+              fontStyle: "bold"
+            }
+          }
+        ],
+        ["Actualización del perfil:", this.fechas.actualizacionPerfil],
+        ["Búsqueda del candidato:", this.fechas.busquedaCandidatos],
+        ["Entrevistas:", this.fechas.entrevista],
+        ["Pruebas:", this.fechas.pruebas],
+        ["Referencias:", this.fechas.referencias],
+        ["Elaboración del Informe:", this.fechas.elaboracionInforme],
+        ["Entrega al Jefe Solicitante el informe de selección:", this.fechas.entregaJefe],
+        ["Entrevistas por parte de fejaturas:", this.fechas.entrevistaJefatura],
+        ["Toma de decisiones por parte de fejaturas:", this.fechas.tomaDecisiones],
+        ["Candidato seleccionado:", this.fechas.candidatoSeleccionado],
+        ["Proceso de Contratación:", this.fechas.procesoContratacion],
+        ["Fin del Proceso de Selección y Proceso de Contratación:", this.fechas.finProcesoContratacion],
+        [
+          {
+            content: "",
+            colSpan: 2
+          }
+        ],
+        [
+          {
+            content: "Nombre del candidato escogido:",
+            styles: {
+              cellWidth: 70
+            }
+          },
+          this.nombreCandidato
+        ],
+        [
+          {
+            content: "Fecha de ingreso:",
+            styles: {
+              cellWidth: 70
+            }
+          },
+          this.nombreCandidato
+        ]
+      ],
+      columnStyles: {
+        0: {
+          fontStyle: "bold",
+          cellWidth: 120
+        },
+        1: {
+          cellWidth: 60,
+          halign: "center"
         }
       }
     });
