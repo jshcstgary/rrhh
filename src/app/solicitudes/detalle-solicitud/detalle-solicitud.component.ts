@@ -26,7 +26,7 @@ import { ComentarioSalidaJefeService } from './comentario-salida-jefe.service';
 
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
-import { format } from "date-fns";
+import { format, parse } from "date-fns";
 import { NumericLiteral } from "typescript";
 
 @Component({
@@ -1554,7 +1554,7 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
       },
       body: [
         // ["Creado por:", this.solicitud.usuarioCreacion, "Fecha:", format(this.solicitud.fechaCreacion!, "dd/MM/yyyy"), "Solicitud No:", this.solicitud.idSolicitud],
-        ["Creado por:", this.solicitud.usuarioCreacion, "Fecha:", "dd/MM/yyyy", "Solicitud No:", this.solicitud.idSolicitud],
+        ["Creado por:", this.solicitud.usuarioCreacion, "Fecha:", format(new Date(this.solicitud.fechaCreacion), "dd/MM/yyyy"), "Solicitud No:", this.solicitud.idSolicitud],
       ],
       columnStyles: {
         0: {
@@ -1729,38 +1729,22 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
             colSpan: 2
           }
         ],
-        [
-          {
-            content: "Nombre del candidato escogido:",
-            styles: {
-              cellWidth: 70
-            }
-          },
-          this.nombreCandidato
-        ],
-        [
-          {
-            content: "Fecha de ingreso:",
-            styles: {
-              cellWidth: 70
-            }
-          },
-          this.fechas.reingreso === "" ? this.fechas.contratacionFamiliares : this.fechas.reingreso
-        ]
+        ["Nombre del candidato escogido:", this.nombreCandidato],
+        ["Fecha de ingreso:", this.fechas.reingreso === "" ? this.fechas.contratacionFamiliares : this.fechas.reingreso]
       ],
       columnStyles: {
         0: {
           fontStyle: "bold",
-          cellWidth: 120
+          cellWidth: 110
         },
         1: {
-          cellWidth: 60,
+          cellWidth: 70,
           halign: "center"
         }
       }
     });
 
-    doc.save('table.pdf')
+    doc.save(`${this.solicitud.idSolicitud}-${format(new Date(), "dd-MM-yyyy")}.pdf`)
   }
 }
 
