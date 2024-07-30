@@ -1745,7 +1745,7 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
               cellWidth: 70
             }
           },
-          this.nombreCandidato
+          this.fechas.reingreso === "" ? this.fechas.contratacionFamiliares : this.fechas.reingreso
         ]
       ],
       columnStyles: {

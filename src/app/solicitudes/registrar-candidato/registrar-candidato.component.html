@@ -12,25 +12,43 @@
           </div>
         </div>
 
+        <div class="col-md-12 text-end">
+          <button type="button" (click)="openModal('dialogReasignarUsuario')" class="btn btn-info me-2 mt-1">
+            <i class="fas fa-redo"></i> Reasignar
+          </button>
+
+          <button type="button" class="btn btn-info me-2 d-flex align-items-center justify-content-center button-custom"
+            aria-label="Close" (click)="saveCandidato()"
+            [disabled]="model.tipoProceso === '' && tipoProcesoSaved === ''">
+            <i class="fas fa-save me-2 icon-size"></i> Guardar
+          </button>
+
+          <button type="button" (click)="onCompletar()"
+            class="btn btn-info me-2 d-flex align-items-center justify-content-center button-custom"
+            [disabled]="!isCheckedPerfil || !isCheckedBusquedaCandidato || !isCheckedFinContratacion || !isCheckedProcesoContratacion || !isCheckedCandidatoSeleccionado || !isCheckedTomaDecisiones || !isCheckedEntrevistaJefatura || !isCheckedEntregaJefe || !isCheckedElaboracionInforme || !isCheckedReferencias || !isCheckedPruebas || !isCheckedEntrevista || nombreCandidato === ''">
+            <i class="fas fa-check-circle me-2 icon-size"></i> Completar Tarea
+          </button>
+        </div>
+
         <!-- <div *ngIf="existeMatenedores" class="col-md-12 text-end">
-        </div> -->
-        <button type="button" (click)="openModal('dialogReasignarUsuario')" class="btn btn-info me-2 mt-1">
-          <i class="fas fa-redo"></i> Reasignar
-        </button>
+          <button type="button" (click)="openModal('dialogReasignarUsuario')" class="btn btn-info me-2 mt-1">
+            <i class="fas fa-redo"></i> Reasignar
+          </button>
+        </div>
 
-        <!-- <div *ngIf="!existeMatenedores || existe" class="col-md-4 text-end d-flex justify-content-end align-items-center">
-        </div> -->
-        <button type="button" class="btn btn-info me-2 d-flex align-items-center justify-content-center button-custom"
-          aria-label="Close" (click)="saveCandidato()"
-          [disabled]="model.tipoProceso === '' && tipoProcesoSaved === ''">
-          <i class="fas fa-save me-2 icon-size"></i> Guardar
-        </button>
+        <div *ngIf="!existeMatenedores || existe" class="col-md-4 text-end d-flex justify-content-end align-items-center">
+          <button type="button" class="btn btn-info me-2 d-flex align-items-center justify-content-center button-custom"
+            aria-label="Close" (click)="saveCandidato()"
+            [disabled]="model.tipoProceso === '' && tipoProcesoSaved === ''">
+            <i class="fas fa-save me-2 icon-size"></i> Guardar
+          </button>
 
-        <button type="button" (click)="onCompletar()"
-          class="btn btn-info me-2 d-flex align-items-center justify-content-center button-custom"
-          [disabled]="!isCheckedPerfil || !isCheckedBusquedaCandidato || !isCheckedFinContratacion || !isCheckedProcesoContratacion || !isCheckedCandidatoSeleccionado || !isCheckedTomaDecisiones || !isCheckedEntrevistaJefatura || !isCheckedEntregaJefe || !isCheckedElaboracionInforme || !isCheckedReferencias || !isCheckedPruebas || !isCheckedEntrevista || nombreCandidato === ''">
-          <i class="fas fa-check-circle me-2 icon-size"></i> Completar Tarea
-        </button>
+          <button type="button" (click)="onCompletar()"
+            class="btn btn-info me-2 d-flex align-items-center justify-content-center button-custom"
+            [disabled]="!isCheckedPerfil || !isCheckedBusquedaCandidato || !isCheckedFinContratacion || !isCheckedProcesoContratacion || !isCheckedCandidatoSeleccionado || !isCheckedTomaDecisiones || !isCheckedEntrevistaJefatura || !isCheckedEntregaJefe || !isCheckedElaboracionInforme || !isCheckedReferencias || !isCheckedPruebas || !isCheckedEntrevista || nombreCandidato === ''">
+            <i class="fas fa-check-circle me-2 icon-size"></i> Completar Tarea
+          </button>
+        </div> -->
       </div>
 
       <div class="row mt-4">
@@ -116,8 +134,8 @@
               Subledger
             </label>
             &nbsp;
-            <span id="subledger" name="subledger" style="color: black; font-size: 14px; "
-            class="text-start">{{ model.subledger }}</span>
+            <span id="subledger" name="subledger" style="color: black; font-size: 14px; " class="text-start">{{
+              model.subledger }}</span>
           </div>
         </div>
 
@@ -128,7 +146,7 @@
             </label>
             &nbsp;
             <span id="nombreempleado" name="nombreempleado" style="color: black; font-size: 14px; "
-            class="text-start">{{ model.nombreCompleto }}</span>
+              class="text-start">{{ model.nombreCompleto }}</span>
           </div>
         </div>
       </div>
