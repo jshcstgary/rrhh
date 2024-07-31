@@ -1171,8 +1171,11 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
             this.solicitud.unidadNegocio = this.model.unidadNegocio;
             this.solicitud.idUnidadNegocio = this.model.unidadNegocio;
 
-            this.solicitud.estadoSolicitud === "No" ? "4" : "AN";
-
+            if(this.selectedOption.toUpperCase().includes("SI")){
+              this.solicitud.estadoSolicitud = "AN";
+            }else{
+              this.solicitud.estadoSolicitud === "No" ? "4" : "AN";
+            }           
             this.solicitudes.actualizarSolicitud(this.solicitud).subscribe({
               next: (responseSolicitud) => {
                 setTimeout(() => {
