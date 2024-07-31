@@ -976,6 +976,11 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
           this.model.fechaIngreso = detalleActual.fechaIngreso;
           this.model.grupoPago = detalleActual.grupoDePago;
           this.model.descrPuesto = detalleActual.descripcionPosicion;
+          if (detalleActual.valor.includes("Solicitud en Espera")) {
+            this.isFechaMaximaVisible = true;
+            this.textareaContent = detalleActual.valor;
+            this.selectedDate = detalleActual.fechaSalida;
+          }          
 
           if (response.totalRegistros === 2) {
             const detallePropuestos = response.detalleSolicitudType.find(detalle => detalle.idDetalleSolicitud === 2);
@@ -1010,6 +1015,11 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
             this.modelPropuestos.descrPuesto = detallePropuestos.descripcionPosicion;
             this.detalleSolicitudPropuestos.movilizacion = detallePropuestos.movilizacion;
             this.detalleSolicitudPropuestos.alimentacion = detallePropuestos.alimentacion;
+            if (detallePropuestos.valor.includes("Solicitud en Espera")) {
+              this.isFechaMaximaVisible = true;
+              this.textareaContent = detallePropuestos.valor;
+              this.selectedDate = detallePropuestos.fechaSalida;
+            }
           }
         }
         else {
@@ -1040,6 +1050,12 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
             this.model.sueldoAnual = this.detalleSolicitud.sueldoVariableAnual
             this.model.correo = this.detalleSolicitud.correo;
             this.model.fechaIngreso = this.detalleSolicitud.fechaIngreso;
+
+            if (this.detalleSolicitud.valor.includes("Solicitud en Espera")) {
+              this.isFechaMaximaVisible = true;
+              this.textareaContent = this.detalleSolicitud.valor;
+              this.selectedDate = new Date(this.detalleSolicitud.fechaSalida);
+            }
             this.modelRemuneracion = Number(this.model.sueldoAnual) / 12 + Number(this.model.sueldoSemestral) / 6 + Number(this.model.sueldoTrimestral) / 3 + Number(this.model.sueldoMensual);
 
           } else if (id.toUpperCase().includes("RG")) {
@@ -1073,7 +1089,11 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
               this.causaSalida = this.detalleSolicitudRG.causaSalida;
               this.modelRG.fechaIngreso = (this.detalleSolicitudRG.fechaIngreso as string).split("T")[0];
               this.remuneracion = Number(this.modelRG.sueldoAnual) / 12 + Number(this.modelRG.sueldoSemestral) / 6 + Number(this.modelRG.sueldoTrimestral) / 3 + Number(this.modelRG.sueldoMensual);
-
+              if (this.detalleSolicitudRG.valor.includes("Solicitud en Espera")) {
+                this.isFechaMaximaVisible = true;
+                this.textareaContent = this.detalleSolicitudRG.valor;
+                this.selectedDate = new Date(this.detalleSolicitudRG.fechaSalida);
+              }
               this.keySelected = this.solicitud.idTipoSolicitud + "_" + this.solicitud.idTipoMotivo + "_" + this.model.nivelDir;
               this.getComentarios();
             }
@@ -1809,13 +1829,34 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
   saveDetalleAprobaciones() {
     this.solicitudes.modelDetalleAprobaciones.estadoAprobacion = this.buttonValue;
     this.solicitudes.modelDetalleAprobaciones.comentario = this.textareaContent;
+    
+    if(this.buttonValue.includes("esperar")){  
+      this.detalleSolicitud.fechaSalida=this.selectedDate;
+      this.detalleSolicitud.valor = "Solicitud en Espera: " + this.textareaContent;
 
-    console.log(this.solicitudes.modelDetalleAprobaciones);
-    // return;
+      this.solicitudes
+      .actualizarDetalleSolicitud(this.detalleSolicitud).subscribe({
+        next: (response) => {
+        }
+      });
+    }else{
+    if(this.detalleSolicitud.valor.includes("Solicitud en Espera")){
+      
+        this.detalleSolicitud.fechaSalida=new Date();
+        this.detalleSolicitud.valor = null;
+      
+        this.solicitudes
+      .actualizarDetalleSolicitud(this.detalleSolicitud).subscribe({
+        next: (response) => {
+        }
+      });
+    }}
 
     if (this.taskType_Activity == environment.taskType_CREM) {
       this.detalleSolicitud.valor = this.textareaContent;
       this.detalleSolicitud.unidad = this.detalleSolicitud.unidadNegocio;
+
+
 
       this.solicitudes
         .actualizarDetalleSolicitud(this.detalleSolicitud).subscribe({

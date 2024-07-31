@@ -1238,7 +1238,7 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
         ariaLabelledBy: "modal-title",
 	});
 
-	modelRef.componentInstance.idParam = this.solicitud.idSolicitud;
+	modelRef.componentInstance.idParam = this.solicitudRG.idSolicitud;
 	modelRef.componentInstance.taskId = this.taskType_Activity;
 
     modelRef.result.then(
@@ -1486,7 +1486,6 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
             const data: any = result.data;
             console.log("AQUIIIII PRUEBA", data);
             this.fechaSalida = data.fechaSalida ?? new Date();
-            console.log(this.fechaSalida);
             this.modelRG.nombreCompleto = data.nombreCompleto;
             this.modelRG.subledger = data.subledger ?? "0";
             this.causaSalida = data.descr_CausaSalida ?? "";
