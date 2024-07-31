@@ -49,6 +49,8 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
   NgForm = NgForm;
 
   selectedOption: string = 'No';
+  public codigoPosicionReportaA: string = 'NOAPLICA';
+
 
   emailVariables = {
     de: "",
@@ -563,9 +565,34 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
           sueldoMensual: datosEmpleado.sueldoVariableMensual,
           sueldoTrimestral: datosEmpleado.sueldoVariableTrimestral,
           sueldoSemestral: datosEmpleado.sueldoVariableSemestral,
-          sueldoAnual: datosEmpleado.sueldoVariableAnual,
+          sueldoAnual: datosEmpleado.sueldoVariableAnual
         }
       );
+
+      this.mantenimientoService.getDataEmpleadosEvolutionPorId(datosEmpleado.codigoPosicionReportaA).subscribe({
+        next: (response) => {
+          if (response.evType.length === 0) {
+            Swal.fire({
+              text: "No se encontró registro",
+              icon: "info",
+              confirmButtonColor: "rgb(227, 199, 22)",
+              confirmButtonText: "Sí",
+            });
+  
+            this.clearModel();
+            this.keySelected = "";
+            this.dataAprobacionesPorPosicion = {};
+  
+            return;
+          }
+          this.model.jefeInmediatoSuperior =  response.evType[0].nombreCompleto;
+          this.model.puestoJefeInmediato =  response.evType[0].descrPosicion;  
+  
+        },
+        error: (error: HttpErrorResponse) => {
+          this.utilService.modalResponse(error.error, "error");
+        },
+      });
 
       this.keySelected = `${this.solicitud.idTipoSolicitud}_${this.solicitud.idTipoMotivo}_${this.model.codigoPosicion}_${this.model.nivelDir}`;
 
@@ -1067,6 +1094,12 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
         this.detalleSolicitud.nivelReporteA = this.model.nivelRepa;
 
         this.detalleSolicitud.nombreEmpleado = this.model.nombreCompleto;
+        this.detalleSolicitud.jefeInmediatoSuperior = this.model.jefeInmediatoSuperior;
+        this.detalleSolicitud.puestoJefeInmediato = this.model.puestoJefeInmediato;
+        this.detalleSolicitud.nombreJefeSolicitante = this.model.jefeInmediatoSuperior;
+        this.detalleSolicitud.responsableRRHH = this.solicitud.usuarioCreacion;
+        this.detalleSolicitud.jefeSolicitante = this.model.jefeInmediatoSuperior;
+
 
 
         this.detalleSolicitud.reportaA = this.model.reportaA;
@@ -1171,8 +1204,11 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
             this.solicitud.unidadNegocio = this.model.unidadNegocio;
             this.solicitud.idUnidadNegocio = this.model.unidadNegocio;
 
-            this.solicitud.estadoSolicitud === "No" ? "4" : "AN";
-
+            if(this.selectedOption.toUpperCase().includes("SI")){
+              this.solicitud.estadoSolicitud = "AN";
+            }else{
+              this.solicitud.estadoSolicitud === "No" ? "4" : "AN";
+            }           
             this.solicitudes.actualizarSolicitud(this.solicitud).subscribe({
               next: (responseSolicitud) => {
                 setTimeout(() => {

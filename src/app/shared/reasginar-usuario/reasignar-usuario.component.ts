@@ -139,54 +139,110 @@ export class DialogReasignarUsuarioComponent {
 				this.dataAprobador = this.dataDetalleAprobadorSolicitud.find(data => data.estadoAprobacion.toUpperCase().includes("PORREVISAREMUNERACIONES"));
 			} else if (this.taskId === environment.taskType_RegistrarCandidato) {
 				this.mensaje = "Se reasignó la tarea de registrar selección de candidato";
-				this.dataAprobador = this.dataDetalleAprobadorSolicitud.find(data => data.estadoAprobacion.toUpperCase().includes("SELECCIONCANDIDATO"));
-			} else if (this.taskId === environment.taskType_CF) {
+				this.dataAprobador = this.dataDetalleAprobadorSolicitud.find(data => data.estadoAprobacion.toUpperCase().includes("REASIGNADO"));
+        if (this.dataAprobador === undefined || this.dataAprobador === null) {
+          this.dataAprobador = this.dataDetalleAprobadorSolicitud.find(data => data.estadoAprobacion.toUpperCase().includes("CREADO"));
+        }
+        this.dataAprobador.idNivelAprobacion =900000;
+        this.dataAprobador.id_NivelAprobacion =this.dataAprobador.idNivelAprobacion ;
+				this.dataAprobador.ruta = "Reasignación de Selección de Candidato";
+        this.dataAprobador.nivelAprobacionRuta = "Selección de Candidato";
+        this.dataAprobador.estadoAprobacion ="Reasignado";
+      } else if (this.taskId === environment.taskType_CF) {
 				this.mensaje = "Se reasignó la tarea registrar solicitud de contratación de familiares";
-				this.dataAprobador = this.dataDetalleAprobadorSolicitud.find(data => data.estadoAprobacion.toUpperCase().includes("CREADO"));
-			} else if (this.taskId === environment.taskType_RG) {
+        this.dataAprobador = this.dataDetalleAprobadorSolicitud.find(data => data.estadoAprobacion.toUpperCase().includes("REASIGNADO"));
+        if (this.dataAprobador === undefined || this.dataAprobador === null) {
+          this.dataAprobador = this.dataDetalleAprobadorSolicitud.find(data => data.estadoAprobacion.toUpperCase().includes("CREADO"));
+        }
+        this.dataAprobador.estadoAprobacion ="Reasignado";
+      } else if (this.taskId === environment.taskType_RG) {
 				this.mensaje = "Se reasignó la tarea de registrar solicitud de reingreso de personal";
-				this.dataAprobador = this.dataDetalleAprobadorSolicitud.find(data => data.estadoAprobacion.toUpperCase().includes("CREADO"));
-			} else if (this.taskId === environment.taskType_RGC_RRHH) {
+        this.dataAprobador = this.dataDetalleAprobadorSolicitud.find(data => data.estadoAprobacion.toUpperCase().includes("REASIGNADO"));
+        if (this.dataAprobador === undefined || this.dataAprobador === null) {
+          this.dataAprobador = this.dataDetalleAprobadorSolicitud.find(data => data.estadoAprobacion.toUpperCase().includes("CREADO"));
+        }
+        this.dataAprobador.estadoAprobacion ="Reasignado";
+      } else if (this.taskId === environment.taskType_RGC_RRHH) {
 				this.mensaje = "Se reasignó la tarea de registrar comentario de gerente recursos humanos";
-				this.dataAprobador = this.dataDetalleAprobadorSolicitud.find(data => data.estadoAprobacion.toUpperCase().includes("CREADO"));
-
+        this.dataAprobador = this.dataDetalleAprobadorSolicitud.find(data => data.estadoAprobacion.toUpperCase().includes("REASIGNADO"));
+        if (this.dataAprobador === undefined || this.dataAprobador === null) {
+          this.dataAprobador = this.dataDetalleAprobadorSolicitud.find(data => data.estadoAprobacion.toUpperCase().includes("CREADO"));
+        }
 				this.dataAprobador.idNivelAprobacion =600000;
+        this.dataAprobador.id_NivelAprobacion =this.dataAprobador.idNivelAprobacion ;
 				this.dataAprobador.ruta = "Reasignación de Registro de Comentario de RRHH";
-			} else if (this.taskId === environment.taskType_RGC_ULTIMO_JEFE) {
+        this.dataAprobador.nivelAprobacionRuta = "Registro de Comentario de RRHH";
+        this.dataAprobador.estadoAprobacion ="Reasignado";
+      } else if (this.taskId === environment.taskType_RGC_ULTIMO_JEFE) {
 				this.mensaje = "Se reasignó la tarea de registrar comentario de último jefe";
-				this.dataAprobador = this.dataDetalleAprobadorSolicitud.find(data => data.estadoAprobacion.toUpperCase().includes("CREADO"));
-
+        this.dataAprobador = this.dataDetalleAprobadorSolicitud.find(data => data.estadoAprobacion.toUpperCase().includes("REASIGNADO"));
+        if (this.dataAprobador === undefined || this.dataAprobador === null) {
+          this.dataAprobador = this.dataDetalleAprobadorSolicitud.find(data => data.estadoAprobacion.toUpperCase().includes("CREADO"));
+        }
 				this.dataAprobador.idNivelAprobacion = 500000;
-				this.dataAprobador.ruta = "Reasignación de Registro de Comentario Jefe";
+        this.dataAprobador.id_NivelAprobacion =this.dataAprobador.idNivelAprobacion ;
+				this.dataAprobador.ruta = "Reasignación de Registro de Comentario Ultimo Jefe";
+        this.dataAprobador.nivelAprobacionRuta = "Registro de Comentario Ultimo Jefe";
+
 			} else if (this.taskId === environment.taskType_RG_Jefe_Solicitante) {
 				this.mensaje = "Se reasignó la tarea de registrar comentario de Jefe Solicitante";
-				this.dataAprobador = this.dataDetalleAprobadorSolicitud.find(data => data.estadoAprobacion.toUpperCase().includes("CREADO"));
-
+        this.dataAprobador = this.dataDetalleAprobadorSolicitud.find(data => data.estadoAprobacion.toUpperCase().includes("REASIGNADO"));
+        if (this.dataAprobador === undefined || this.dataAprobador === null) {
+          this.dataAprobador = this.dataDetalleAprobadorSolicitud.find(data => data.estadoAprobacion.toUpperCase().includes("CREADO"));
+        }
 				this.dataAprobador.idNivelAprobacion = 700000;
-				this.dataAprobador.ruta = "Reasignación de Registro de Comentario Jefe";
+        this.dataAprobador.id_NivelAprobacion =this.dataAprobador.idNivelAprobacion ;
+				this.dataAprobador.ruta = "Reasignación de Registro de Comentario Jefe Solicitante";
+        this.dataAprobador.nivelAprobacionRuta = "Registro de Comentario Jefe Solicitante";
+
 			} else if (this.taskId === environment.taskType_AP_Registrar) {
 				this.mensaje = "Se reasignó la tarea de registrar solicitud de acción de personal";
-				this.dataAprobador = this.dataDetalleAprobadorSolicitud.find(data => data.estadoAprobacion.toUpperCase().includes("CREADO"));
-			} else if (this.taskId === environment.taskType_Registrar) {
+        this.dataAprobador = this.dataDetalleAprobadorSolicitud.find(data => data.estadoAprobacion.toUpperCase().includes("REASIGNADO"));
+        if (this.dataAprobador === undefined || this.dataAprobador === null) {
+          this.dataAprobador = this.dataDetalleAprobadorSolicitud.find(data => data.estadoAprobacion.toUpperCase().includes("CREADO"));
+        }
+        this.dataAprobador.estadoAprobacion ="Reasignado";
+      } else if (this.taskId === environment.taskType_Registrar) {
 				this.mensaje = "Se reasignó la tarea de registrar solicitud de requisición de personal";
-				this.dataAprobador = this.dataDetalleAprobadorSolicitud.find(data => data.estadoAprobacion.toUpperCase().includes("CREADO"));
-			} else if (this.taskId === environment.taskType_AP_Completar) {
+        this.dataAprobador = this.dataDetalleAprobadorSolicitud.find(data => data.estadoAprobacion.toUpperCase().includes("REASIGNADO"));
+        if (this.dataAprobador === undefined || this.dataAprobador === null) {
+          this.dataAprobador = this.dataDetalleAprobadorSolicitud.find(data => data.estadoAprobacion.toUpperCase().includes("CREADO"));
+        }
+        this.dataAprobador.estadoAprobacion ="Reasignado";
+      } else if (this.taskId === environment.taskType_AP_Completar) {
 				this.mensaje = "Se reasignó la tarea de completar acción de personal";
-				this.dataAprobador = this.dataDetalleAprobadorSolicitud.find(data => data.estadoAprobacion.toUpperCase().includes("CREADO"));
-
+        this.dataAprobador = this.dataDetalleAprobadorSolicitud.find(data => data.estadoAprobacion.toUpperCase().includes("REASIGNADO"));
+        if (this.dataAprobador === undefined || this.dataAprobador === null) {
+          this.dataAprobador = this.dataDetalleAprobadorSolicitud.find(data => data.estadoAprobacion.toUpperCase().includes("CREADO"));
+        }
 				this.dataAprobador.idNivelAprobacion = 400000;
+        this.dataAprobador.id_NivelAprobacion =this.dataAprobador.idNivelAprobacion ;
 				this.dataAprobador.ruta = "Reasignación de Completar Solicitud";
+        this.dataAprobador.nivelAprobacionRuta = "Completar Solicitud";
+        this.dataAprobador.estadoAprobacion ="Reasignado";
 			} else if (this.taskId === environment.taskType_CompletarRequisicion) {
 				this.mensaje = "Se reasignó la tarea de completar requisición de personal";
-				this.dataAprobador = this.dataDetalleAprobadorSolicitud.find(data => data.estadoAprobacion.toUpperCase().includes("CREADO"));
-
+        this.dataAprobador = this.dataDetalleAprobadorSolicitud.find(data => data.estadoAprobacion.toUpperCase().includes("REASIGNADO"));
+        if (this.dataAprobador === undefined || this.dataAprobador === null) {
+          this.dataAprobador = this.dataDetalleAprobadorSolicitud.find(data => data.estadoAprobacion.toUpperCase().includes("CREADO"));
+        }
 				this.dataAprobador.idNivelAprobacion = 310000;
+        this.dataAprobador.id_NivelAprobacion =this.dataAprobador.idNivelAprobacion ;
 				this.dataAprobador.ruta = "Reasignación de Completar Solicitud";
+        this.dataAprobador.nivelAprobacionRuta = "Completar Solicitud";
+
 			} else {
-				this.dataAprobador = this.dataDetalleAprobadorSolicitud.find(data => data.estadoAprobacion.toUpperCase().includes("CREADO"));
+        this.dataAprobador = this.dataDetalleAprobadorSolicitud.find(data => data.estadoAprobacion.toUpperCase().includes("REASIGNADO"));
+        if (this.dataAprobador === undefined || this.dataAprobador === null) {
+          this.dataAprobador = this.dataDetalleAprobadorSolicitud.find(data => data.estadoAprobacion.toUpperCase().includes("CREADO"));
+        }
         this.usuarioAprobador = this.dataAprobador.usuarioAprobador;
         this.dataAprobador.idNivelAprobacion = 800000;
+        this.dataAprobador.id_NivelAprobacion =this.dataAprobador.idNivelAprobacion ;
 				this.dataAprobador.ruta = "Reasignación de Tarea";
+        this.dataAprobador.nivelAprobacionRuta = "Reasignación de Tarea";
+        this.dataAprobador.estadoAprobacion ="Reasignado";
+
 			}
       this.usuarioAprobador = this.dataAprobador.usuarioAprobador;
 
@@ -233,7 +289,7 @@ export class DialogReasignarUsuarioComponent {
       cuerpo: modifiedHtmlString,
       password: "p"
     };
-
+  console.log(this.dataAprobador);
 	this.solicitudes.guardarDetallesAprobacionesSolicitud(this.dataAprobador).subscribe({
 		next: () => {
       this.solicitud.estadoSolicitud = "RA";

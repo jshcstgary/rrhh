@@ -631,6 +631,31 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
         }
       );
 
+      this.mantenimientoService.getDataEmpleadosEvolutionPorId(datosEmpleado.codigoPosicionReportaA).subscribe({
+        next: (response) => {
+          if (response.evType.length === 0) {
+            Swal.fire({
+              text: "No se encontró registro",
+              icon: "info",
+              confirmButtonColor: "rgb(227, 199, 22)",
+              confirmButtonText: "Sí",
+            });
+  
+            this.clearModel();
+            this.keySelected = "";
+            this.dataAprobacionesPorPosicion = {};
+  
+            return;
+          }
+          this.model.jefeInmediatoSuperior =  response.evType[0].nombreCompleto;
+          this.model.puestoJefeInmediato =  response.evType[0].descrPosicion;  
+  
+        },
+        error: (error: HttpErrorResponse) => {
+          this.utilService.modalResponse(error.error, "error");
+        },
+      });
+
       this.keySelected = `${this.solicitud.idTipoSolicitud}_${this.solicitud.idTipoMotivo}_${this.model.codigoPosicion}_${this.model.nivelDir}`;
 
       console.log(!this.dataAprobacionesPorPosicion[this.keySelected]);
@@ -1519,6 +1544,11 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
         this.detalleSolicitud.nivelReporteA = this.model.nivelRepa;
 
         this.detalleSolicitud.nombreEmpleado = this.model.nombreCompleto;
+        this.detalleSolicitud.jefeInmediatoSuperior = this.model.jefeInmediatoSuperior;
+        this.detalleSolicitud.puestoJefeInmediato = this.model.puestoJefeInmediato;
+        this.detalleSolicitud.nombreJefeSolicitante = this.model.jefeInmediatoSuperior;
+        this.detalleSolicitud.responsableRRHH = this.solicitud.usuarioCreacion;
+        this.detalleSolicitud.jefeSolicitante = this.model.jefeInmediatoSuperior;
 
         this.detalleSolicitud.reportaA = this.model.reportaA;
 

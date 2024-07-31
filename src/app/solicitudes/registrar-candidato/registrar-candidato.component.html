@@ -12,24 +12,34 @@
           </div>
         </div>
 
-        <div class="col-md-6 text-end">
-          <button type="button" (click)="openModal('dialogReasignarUsuario')" class="btn btn-info me-2 mt-1">
+        <div class="col text-end">
+          <button  *ngIf="existeMatenedores"
+            type="button"
+            (click)="openModal('dialogReasignarUsuario')"
+            class="btn btn-info me-2 mt-1"
+          >
             <i class="fas fa-redo"></i> Reasignar
           </button>
 
-          <button type="button" class="btn btn-info me-2 d-flex align-items-center justify-content-center button-custom"
-            aria-label="Close" (click)="saveCandidato()"
-            [disabled]="model.tipoProceso === '' && tipoProcesoSaved === ''">
-            <i class="fas fa-save me-2 icon-size"></i> Guardar
+          <button  *ngIf="!existeMatenedores || existe"
+            type="button"
+            (click)="saveCandidato()"
+            class="btn btn-info me-2 mt-1"
+            aria-label="Close"
+            [disabled]="model.tipoProceso === '' && tipoProcesoSaved === ''"
+          >
+            <i class="fas fa-save"></i> Guardar
           </button>
-
-          <button type="button" (click)="onCompletar()"
-            class="btn btn-info me-2 d-flex align-items-center justify-content-center button-custom"
-            [disabled]="!isCheckedPerfil || !isCheckedBusquedaCandidato || !isCheckedFinContratacion || !isCheckedProcesoContratacion || !isCheckedCandidatoSeleccionado || !isCheckedTomaDecisiones || !isCheckedEntrevistaJefatura || !isCheckedEntregaJefe || !isCheckedElaboracionInforme || !isCheckedReferencias || !isCheckedPruebas || !isCheckedEntrevista || nombreCandidato === ''">
-            <i class="fas fa-check-circle me-2 icon-size"></i> Completar Tarea
+          <button  *ngIf="!existeMatenedores || existe"
+            type="button"
+            (click)="onCompletar()"
+            class="btn btn-info me-2 mt-1"
+            [disabled]="!isCheckedPerfil || !isCheckedBusquedaCandidato || !isCheckedFinContratacion || !isCheckedProcesoContratacion || !isCheckedCandidatoSeleccionado || !isCheckedTomaDecisiones || !isCheckedEntrevistaJefatura || !isCheckedEntregaJefe || !isCheckedElaboracionInforme || !isCheckedReferencias || !isCheckedPruebas || !isCheckedEntrevista || nombreCandidato === ''"
+          >
+            <i class="fas fa-check-circle"></i> Completar Tarea
           </button>
         </div>
-
+        
         <!-- <div *ngIf="existeMatenedores" class="col-md-12 text-end">
           <button type="button" (click)="openModal('dialogReasignarUsuario')" class="btn btn-info me-2 mt-1">
             <i class="fas fa-redo"></i> Reasignar
