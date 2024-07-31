@@ -312,18 +312,18 @@
               <label class="input-group-text label-estilo2" for="desicion">Decisión a tomar
               </label>
 
-              <div class="btn-group" role="group" aria-label="Basic example" id="desicion">
+              <div class="d-flex gap-3" role="group" aria-label="Basic example" id="desicion">
+                <button type="button" class="btn" (click)="process('aprobar')"
+                  [ngClass]="{'btn-primary': !isSelected('aprobar'), 'btn-selected': isSelected('aprobar')}"
+                  value="aprobar">Aprobar</button>
                 <button type="button" class="btn"
-                  [ngClass]="{'btn-primary': !isSelected('aprobar'), 'btn-success': isSelected('aprobar')}"
-                  (click)="process('aprobar')" value="aprobar">Aprobar</button>
-                <button type="button" class="btn"
-                  [ngClass]="{'btn-primary': !isSelected('devolver'), 'btn-success': isSelected('devolver')}"
+                  [ngClass]="{'btn-primary': !isSelected('devolver'), 'btn-selected': isSelected('devolver')}"
                   (click)="process('devolver')" value="devolver">Devolver</button>
                 <button type="button" class="btn"
-                  [ngClass]="{'btn-primary': !isSelected('rechazar'), 'btn-success': isSelected('rechazar')}"
+                  [ngClass]="{'btn-primary': !isSelected('rechazar'), 'btn-selected': isSelected('rechazar')}"
                   (click)="process('rechazar')" value="rechazar">Cancelar</button>
                 <button type="button" class="btn"
-                  [ngClass]="{'btn-primary': !isSelected('esperar'), 'btn-success': isSelected('esperar')}"
+                  [ngClass]="{'btn-primary': !isSelected('esperar'), 'btn-selected': isSelected('esperar')}"
                   (click)="process('esperar')" value="esperar">En espera</button>
               </div>
 
@@ -1067,18 +1067,18 @@
               <label class="input-group-text label-estilo2" for="desicion">Decisión a tomar
               </label>
 
-              <div class="btn-group" role="group" aria-label="Basic example" id="desicion">
+              <div class="d-flex gap-3" role="group" aria-label="Basic example" id="desicion">
+                <button type="button" class="btn" (click)="process('aprobar')"
+                  [ngClass]="{'btn-primary': !isSelected('aprobar'), 'btn-selected': isSelected('aprobar')}"
+                  value="aprobar">Aprobar</button>
                 <button type="button" class="btn"
-                  [ngClass]="{'btn-primary': !isSelected('aprobar'), 'btn-success': isSelected('aprobar')}"
-                  (click)="process('aprobar')" value="aprobar">Aprobar</button>
-                <button type="button" class="btn"
-                  [ngClass]="{'btn-primary': !isSelected('devolver'), 'btn-success': isSelected('devolver')}"
+                  [ngClass]="{'btn-primary': !isSelected('devolver'), 'btn-selected': isSelected('devolver')}"
                   (click)="process('devolver')" value="devolver">Devolver</button>
                 <button type="button" class="btn"
-                  [ngClass]="{'btn-primary': !isSelected('rechazar'), 'btn-success': isSelected('rechazar')}"
+                  [ngClass]="{'btn-primary': !isSelected('rechazar'), 'btn-selected': isSelected('rechazar')}"
                   (click)="process('rechazar')" value="rechazar">Cancelar</button>
                 <button type="button" class="btn"
-                  [ngClass]="{'btn-primary': !isSelected('esperar'), 'btn-success': isSelected('esperar')}"
+                  [ngClass]="{'btn-primary': !isSelected('esperar'), 'btn-selected': isSelected('esperar')}"
                   (click)="process('esperar')" value="esperar">En espera</button>
               </div>
 
@@ -1474,18 +1474,18 @@
                 <label class="input-group-text label-estilo2" for="desicion">Decisión a tomar
                 </label>
 
-                <div class="btn-group" role="group" aria-label="Basic example" id="desicion">
+                <div class="d-flex gap-3" role="group" aria-label="Basic example" id="desicion">
+                  <button type="button" class="btn" (click)="process('aprobar')"
+                    [ngClass]="{'btn-primary': !isSelected('aprobar'), 'btn-selected': isSelected('aprobar')}"
+                    value="aprobar">Aprobar</button>
                   <button type="button" class="btn"
-                    [ngClass]="{'btn-primary': !isSelected('aprobar'), 'btn-success': isSelected('aprobar')}"
-                    (click)="process('aprobar')" value="aprobar">Aprobar</button>
-                  <button type="button" class="btn"
-                    [ngClass]="{'btn-primary': !isSelected('devolver'), 'btn-success': isSelected('devolver')}"
+                    [ngClass]="{'btn-primary': !isSelected('devolver'), 'btn-selected': isSelected('devolver')}"
                     (click)="process('devolver')" value="devolver">Devolver</button>
                   <button type="button" class="btn"
-                    [ngClass]="{'btn-primary': !isSelected('rechazar'), 'btn-success': isSelected('rechazar')}"
+                    [ngClass]="{'btn-primary': !isSelected('rechazar'), 'btn-selected': isSelected('rechazar')}"
                     (click)="process('rechazar')" value="rechazar">Cancelar</button>
                   <button type="button" class="btn"
-                    [ngClass]="{'btn-primary': !isSelected('esperar'), 'btn-success': isSelected('esperar')}"
+                    [ngClass]="{'btn-primary': !isSelected('esperar'), 'btn-selected': isSelected('esperar')}"
                     (click)="process('esperar')" value="esperar">En espera</button>
                 </div>
 
@@ -2037,18 +2037,18 @@
               <label class="input-group-text label-estilo2" for="desicion">Decisión a tomar
               </label>
 
-              <div class="btn-group" role="group" aria-label="Basic example" id="desicion">
+              <div class="d-flex gap-3" role="group" aria-label="Basic example" id="desicion">
+                <button type="button" class="btn" (click)="process('aprobar')"
+                  [ngClass]="{'btn-primary': !isSelected('aprobar'), 'btn-selected': isSelected('aprobar')}"
+                  value="aprobar">Aprobar</button>
                 <button type="button" class="btn"
-                  [ngClass]="{'btn-primary': !isSelected('aprobar'), 'btn-success': isSelected('aprobar')}"
-                  (click)="process('aprobar')" value="aprobar">Aprobar</button>
-                <button type="button" class="btn"
-                  [ngClass]="{'btn-primary': !isSelected('devolver'), 'btn-success': isSelected('devolver')}"
+                  [ngClass]="{'btn-primary': !isSelected('devolver'), 'btn-selected': isSelected('devolver')}"
                   (click)="process('devolver')" value="devolver">Devolver</button>
                 <button type="button" class="btn"
-                  [ngClass]="{'btn-primary': !isSelected('rechazar'), 'btn-success': isSelected('rechazar')}"
+                  [ngClass]="{'btn-primary': !isSelected('rechazar'), 'btn-selected': isSelected('rechazar')}"
                   (click)="process('rechazar')" value="rechazar">Cancelar</button>
                 <button type="button" class="btn"
-                  [ngClass]="{'btn-primary': !isSelected('esperar'), 'btn-success': isSelected('esperar')}"
+                  [ngClass]="{'btn-primary': !isSelected('esperar'), 'btn-selected': isSelected('esperar')}"
                   (click)="process('esperar')" value="esperar">En espera</button>
               </div>
 

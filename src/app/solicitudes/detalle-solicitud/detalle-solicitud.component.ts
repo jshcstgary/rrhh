@@ -807,12 +807,13 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
     return this.mantenimientoService.getFamiliaresCandidatoBySolicitud(this.id_solicitud_by_params).subscribe({
       next: (response) => {
         const data = response?.familiaresCandidato || [];
-        console.log(data);
 
-        console.log(idSolicitud);
-        this.dataTableDatosFamiliares = data.filter(
-          (d) => d.idSolicitud === idSolicitud
-        );
+        this.dataTableDatosFamiliares = data.filter((d) => d.idSolicitud === idSolicitud);
+
+        this.dataTableDatosFamiliares = this.dataTableDatosFamiliares.map(dataFamiliar => ({
+          ...dataFamiliar,
+          fechaCreacion: format(new Date(dataFamiliar.fechaCreacion as string), "dd/MM/yyyy")
+        }))
       },
       error: (error: HttpErrorResponse) => {
         this.utilService.modalResponse(error.error, "error");
@@ -1506,16 +1507,18 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
   }
 
   public exportar(): void {
-    if (this.solicitud.idSolicitud.includes("RP")) {
+    if (this.solicitud.idSolicitud.toUpperCase().includes("RP")) {
       this.exportarrequisicionPersonal();
-    } else if (this.solicitud.idSolicitud.includes("CF")) {
+    } else if (this.solicitud.idSolicitud.toUpperCase().includes("CF")) {
       this.exportarContratacionFamiliar();
+    } else if (this.solicitud.idSolicitud.toUpperCase().includes("RG")) {
+      this.exportarReingresoPersonal();
     }
   }
 
   private exportarrequisicionPersonal(): void {
     const backgroundCellColor: [number, number, number] = [218, 238, 243];
-    const textColor: [number, number, number] = [54, 95, 145];
+    const textColor: [number, number, number] = [56, 95, 147];
     const lineColor: [number, number, number] = [149, 179, 215];
 
     const doc = new jsPDF();
@@ -1547,7 +1550,7 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
               halign: "center",
               fontSize: 20,
               fontStyle: "bold",
-              textColor: [0, 0, 255]
+              textColor
             }
           }
         ],
@@ -1733,7 +1736,11 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
         [
           {
             content: "",
-            colSpan: 2
+            colSpan: 2,
+            styles: {
+              fillColor: backgroundCellColor,
+              cellPadding: "2px"
+            }
           }
         ],
         ["Nombre del candidato escogido:", this.nombreCandidato],
@@ -1756,7 +1763,7 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 
   private exportarContratacionFamiliar(): void {
     const backgroundCellColor: [number, number, number] = [218, 238, 243];
-    const textColor: [number, number, number] = [54, 95, 145];
+    const textColor: [number, number, number] = [56, 95, 147];
     const lineColor: [number, number, number] = [149, 179, 215];
 
     const doc = new jsPDF();
@@ -1788,7 +1795,7 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
               halign: "center",
               fontSize: 20,
               fontStyle: "bold",
-              textColor: [0, 0, 255]
+              textColor
             }
           }
         ],
@@ -1893,7 +1900,7 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
       }
     });
 
-    // Funciones y responsabilidades
+    // Datos de familiares que ya laboran en la empresa
     autoTable(doc, {
       theme: "grid",
       headStyles: {
@@ -1908,40 +1915,233 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
       head: [
         [
           {
-            content: "FUNCIONES Y RESPONSABILIDADES",
+            content: "DATOS DE FAMILIARES QUE YA LABORAN EN LA EMPRESA",
+            colSpan: 7
+          }
+        ]
+      ],
+      body: [
+        [
+          {
+            content: "Nombre",
+            styles: {
+              fontStyle: "bold",
+              halign: "center"
+            }
+          },
+          {
+            content: "Fecha de ingreso",
+            styles: {
+              fontStyle: "bold",
+              halign: "center"
+            }
+          },
+          {
+            content: "Cargo",
+            styles: {
+              fontStyle: "bold",
+              halign: "center"
+            }
+          },
+          {
+            content: "Unidad",
+            styles: {
+              fontStyle: "bold",
+              halign: "center"
+            }
+          },
+          {
+            content: "Departamento",
+            styles: {
+              fontStyle: "bold",
+              halign: "center"
+            }
+          },
+          {
+            content: "Localidad",
+            styles: {
+              fontStyle: "bold",
+              halign: "center"
+            }
+          },
+          {
+            content: "Parentezco",
+            styles: {
+              fontStyle: "bold",
+              halign: "center"
+            }
+          }
+        ],
+        ...this.dataTableDatosFamiliares.map(datoFamiliar => ([datoFamiliar.nombreEmpleado, datoFamiliar.fechaCreacion as string, datoFamiliar.cargo, datoFamiliar.unidad, datoFamiliar.departamento, datoFamiliar.localidad, datoFamiliar.parentesco]))
+      ],
+      columnStyles: {
+        0: {
+          cellWidth: 25
+        },
+        1: {
+          cellWidth: 25
+        },
+        2: {
+          cellWidth: 25
+        },
+        3: {
+          cellWidth: 25
+        },
+        4: {
+          cellWidth: 30
+        },
+        5: {
+          cellWidth: 25
+        },
+        6: {
+          cellWidth: 25
+        }
+      }
+    });
+
+    doc.save(`${this.solicitud.idSolicitud}-${format(new Date(), "dd-MM-yyyy")}.pdf`)
+  }
+
+  private exportarReingresoPersonal(): void {
+    const backgroundCellColor: [number, number, number] = [218, 238, 243];
+    const textColor: [number, number, number] = [56, 95, 147];
+    const lineColor: [number, number, number] = [149, 179, 215];
+
+    const doc = new jsPDF();
+
+    // Esquina de la hoja
+    autoTable(doc, {
+      theme: "plain",
+      body: [
+        [
+          {
+            content: `RR.HH.: ${this.solicitud.idSolicitud}`,
+            styles: {
+              halign: "right",
+              fontStyle: "bold"
+            }
+          }
+        ],
+      ]
+    });
+
+    // Títutlo
+    autoTable(doc, {
+      theme: "plain",
+      body: [
+        [
+          {
+            content: "REINGRESO DE PERSONAL",
+            styles: {
+              halign: "center",
+              fontSize: 20,
+              fontStyle: "bold",
+              textColor
+            }
+          }
+        ],
+      ]
+    });
+
+    // Encabezado de la solicitud
+    autoTable(doc, {
+      theme: "grid",
+      bodyStyles: {
+        lineColor
+      },
+      body: [
+        [
+          {
+            content: "Creado por:",
+            rowSpan: 2,
+            styles: {
+              valign: "middle"
+            }
+          },
+          {
+            content: this.solicitud.usuarioCreacion,
+            rowSpan: 2,
+            styles: {
+              valign: "middle"
+            }
+          },
+          {
+            content: "Fecha:",
+            rowSpan: 2,
+            styles: {
+              valign: "middle"
+            }
+          },
+          {
+            content: format(new Date(this.solicitud.fechaCreacion), "dd/MM/yyyy"),
+            rowSpan: 2,
+            styles: {
+              valign: "middle"
+            }
+          },
+          "Solicitud No:",
+          this.solicitud.idSolicitud
+        ],
+        ["Requisición de Personal No:", this.idSolicitudRP]
+      ],
+      columnStyles: {
+        0: {
+          fontStyle: "bold",
+          halign: "right"
+        },
+        2: {
+          fontStyle: "bold",
+          halign: "right"
+        },
+        4: {
+          fontStyle: "bold",
+          halign: "right"
+        }
+      }
+    });
+
+    // Información de la persona a contratar
+    autoTable(doc, {
+      theme: "grid",
+      headStyles: {
+        fillColor: backgroundCellColor,
+        textColor: textColor,
+        halign: "center",
+        lineColor
+      },
+      bodyStyles: {
+        lineColor
+      },
+      head: [
+        [
+          {
+            content: "INFORMACIÓN DE LA PERSONA A CONTRATAR",
             colSpan: 4
           }
         ]
       ],
       body: [
-        ["Reporta a:", this.model.reportaA, "Supervisa a:", this.model.supervisaA],
-        [
-          "Misión del cargo:",
-          {
-            content: this.model.misionCargo,
-            colSpan: 3
-          }
-        ]
+        ["Apellidos y nombres:", this.nombreCompletoCandidato, "Fecha de ingreso:", "dd/MM/yyyy"]
       ],
       columnStyles: {
         0: {
           fontStyle: "bold",
-          cellWidth: 30
+          cellWidth: 40
         },
         1: {
-          cellWidth: 60
+          cellWidth: 75
         },
         2: {
           fontStyle: "bold",
-          cellWidth: 30
+          cellWidth: 35
         },
         3: {
-          cellWidth: 60
+          cellWidth: 30
         }
       }
     });
 
-    // Sección de candidato
+    // Datos de contratación
     autoTable(doc, {
       theme: "grid",
       headStyles: {
@@ -1956,15 +2156,15 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
       head: [
         [
           {
-            content: "SELECCIÓN DE CANDIDATO",
-            colSpan: 2
+            content: "DATOS DE CONTRTACIÓN",
+            colSpan: 3
           }
         ]
       ],
       body: [
         [
           {
-            content: "TAREA:",
+            content: "Descripción",
             styles: {
               halign: "center",
               textColor,
@@ -1972,7 +2172,15 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
             }
           },
           {
-            content: "FECHA:",
+            content: "Contratación anterior",
+            styles: {
+              halign: "center",
+              textColor,
+              fontStyle: "bold"
+            }
+          },
+          {
+            content: "Contratación actual",
             styles: {
               halign: "center",
               textColor,
@@ -1980,35 +2188,153 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
             }
           }
         ],
-        ["Actualización del perfil:", this.fechas.actualizacionPerfil],
-        ["Búsqueda del candidato:", this.fechas.busquedaCandidatos],
-        ["Entrevistas:", this.fechas.entrevista],
-        ["Pruebas:", this.fechas.pruebas],
-        ["Referencias:", this.fechas.referencias],
-        ["Elaboración del Informe:", this.fechas.elaboracionInforme],
-        ["Entrega al Jefe Solicitante el informe de selección:", this.fechas.entregaJefe],
-        ["Entrevistas por parte de fejaturas:", this.fechas.entrevistaJefatura],
-        ["Toma de decisiones por parte de fejaturas:", this.fechas.tomaDecisiones],
-        ["Candidato seleccionado:", this.fechas.candidatoSeleccionado],
-        ["Proceso de Contratación:", this.fechas.procesoContratacion],
-        ["Fin del Proceso de Selección y Proceso de Contratación:", this.fechas.finProcesoContratacion],
-        [
-          {
-            content: "",
-            colSpan: 2
-          }
-        ],
-        ["Nombre del candidato escogido:", this.nombreCandidato],
-        ["Fecha de ingreso:", this.fechas.reingreso === "" ? this.fechas.contratacionFamiliares : this.fechas.reingreso]
+        ["Compañía:", this.modelRG.compania, this.model.compania],
+        ["Sueldo:", this.modelRG.sueldo, this.model.sueldo],
+        ["Variable Máxima:", "", ""],
+        ["Remuneración Total:", "", ""],
+        ["Cargo:", this.modelRG.descrPosicion, this.model.descrPosicion],
+        ["Departamento:", this.modelRG.departamento, this.model.departamento],
+        ["Fecha de Ingreso:", format(new Date(this.modelRG.fechaIngreso), "dd/MM/yyyy"), format(new Date(this.model.fechaIngreso), "dd/MM/yyyy")],
+        ["Fecha de Salida:", format(new Date(this.detalleSolicitudRG.fechaSalida), "dd/MM/yyyy"), format(new Date(this.detalleSolicitud.fechaSalida), "dd/MM/yyyy")],
+        ["Jefe Inmediato Superior:", this.detalleSolicitudRG.jefeInmediatoSuperior, this.detalleSolicitud.jefeInmediatoSuperior],
+        ["Cargo Jefe Inemdiato Superior:", this.detalleSolicitudRG.puestoJefeInmediato, this.detalleSolicitud.puestoJefeInmediato],
+        ["Responsable de RR.HH.:", this.detalleSolicitudRG.responsableRRHH, this.detalleSolicitud.responsableRRHH]
       ],
       columnStyles: {
         0: {
           fontStyle: "bold",
-          cellWidth: 110
+          cellWidth: 60
         },
         1: {
-          cellWidth: 70,
-          halign: "center"
+          cellWidth: 60
+        },
+        2: {
+          cellWidth: 60
+        }
+      }
+    });
+
+    // Referencia de recursos humanos
+    autoTable(doc, {
+      theme: "grid",
+      headStyles: {
+        fillColor: backgroundCellColor,
+        textColor: textColor,
+        halign: "center",
+        lineColor
+      },
+      bodyStyles: {
+        lineColor
+      },
+      head: [
+        [
+          {
+            content: "REFERENCIA DE RECURSOS HUMANOS",
+            colSpan: 4
+          }
+        ]
+      ],
+      body: [
+        [
+          "Forma de salida:",
+          {
+            content: this.comentariosRRHH.comentario,
+            colSpan: 3
+          }
+        ],
+        [
+          "Causa real de salida:",
+          {
+            content: this.causaSalida,
+            colSpan: 3
+          }
+        ],
+        [
+          "Justificación", "", "Fecha:", format(this.currentDate, "dd/MM/yyyy")
+        ]
+      ],
+      columnStyles: {
+        0: {
+          fontStyle: "bold",
+          cellWidth: 40
+        },
+        2: {
+          fontStyle: "bold",
+          cellWidth: 25
+        },
+        3: {
+          cellWidth: 35
+        }
+      }
+    });
+
+    // Referencia del último jefe
+    autoTable(doc, {
+      theme: "grid",
+      headStyles: {
+        fillColor: backgroundCellColor,
+        textColor: textColor,
+        halign: "center",
+        lineColor
+      },
+      bodyStyles: {
+        lineColor
+      },
+      head: [
+        [
+          {
+            content: "REFERENCIA DEL ÚLTIMO JEFE",
+            colSpan: 2
+          }
+        ]
+      ],
+      body: [
+        ["¿Cómo fue el desempeño en el área?:", this.comentariosJefeInmediato.comentario],
+        ["Fecha:", format(this.currentDate, "dd/MM/yyyy")]
+      ],
+      columnStyles: {
+        0: {
+          fontStyle: "bold",
+          cellWidth: 70
+        }
+      }
+    });
+
+    // Jefe solicitante
+    autoTable(doc, {
+      theme: "grid",
+      headStyles: {
+        fillColor: backgroundCellColor,
+        textColor: textColor,
+        halign: "center",
+        lineColor
+      },
+      bodyStyles: {
+        lineColor
+      },
+      head: [
+        [
+          {
+            content: "JEFE SOLICITANTE",
+            colSpan: 4
+          }
+        ]
+      ],
+      body: [
+        ["Nombre del jefe solicitante:", this.detalleSolicitudRG.jefeSolicitante, "Cargo:", this.detalleSolicitudRG.puesto],
+        ["Justificación:", this.Comentario_Jefe_Solicitante.comentario, "Fecha:", format(this.currentDate, "dd/MM/yyyy")]
+      ],
+      columnStyles: {
+        0: {
+          fontStyle: "bold",
+          cellWidth: 60
+        },
+        2: {
+          fontStyle: "bold",
+          cellWidth: 25
+        },
+        3: {
+          cellWidth: 25
         }
       }
     });

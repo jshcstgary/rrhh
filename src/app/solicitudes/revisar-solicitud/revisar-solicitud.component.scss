@@ -121,3 +121,13 @@ textarea {
 .icon-size {
   font-size: 1.25rem; /* Ajusta el tamaño del icono */
 }
+
+.btn-selected {
+  background-color: lighten(green, 10%);
+  color: black;
+
+  &:hover {
+    box-shadow: 0 8px 15px rgba(0, 86, 179, 0.3);
+    background-color: lighten(green, 5%);
+  }
+}

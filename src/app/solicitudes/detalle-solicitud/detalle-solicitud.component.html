@@ -590,14 +590,14 @@
             </div>
           </div>
         </div>
-        <div class="row mt-4" *ngIf="solicitudRG">
+        <div class="row mt-4">
           <div class="col-md-1"></div>
           <div class="col">
             <div class="input-group mb-3">
               <label class="input-group label-estilo" for="tipoMotivo">Jefe Inmediato Superior</label>
               &nbsp;
               <span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px;" class="text-start">{{
-                this.detalleSolicitudRG.jefeInmediatoSuperior }}</span>
+                detalleSolicitudRG.jefeInmediatoSuperior }}</span>
             </div>
           </div>
           <div class="col">
@@ -617,7 +617,7 @@
               <label class="input-group label-estilo" for="tipoMotivo">Puesto Jefe In Superior</label>
               &nbsp;
               <span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px;" class="text-start">{{
-                this.detalleSolicitudRG.puestoJefeInmediato }}</span>
+                detalleSolicitudRG.puestoJefeInmediato }}</span>
             </div>
           </div>
           <div class="col">
@@ -626,7 +626,7 @@
               &nbsp;
               <span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px;"
                 class="text-start">{{this.detalleSolicitud.jefeInmediatoSuperior === '' ? 'No aplica' :
-                this.detalleSolicitud.jefeInmediatoSuperior}}</span>
+                detalleSolicitud.puestoJefeInmediato}}</span>
             </div>
           </div>
         </div>
@@ -687,7 +687,7 @@
               <label class="input-group label-estilo" for="tipoMotivo">Fecha de Salida</label>
               &nbsp;
               <span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px;"
-                class="text-start">{{this.detalleSolicitudRG.fechaSalida | date:'dd/MM/yyyy'}}</span>
+                class="text-start">{{detalleSolicitudRG.fechaSalida | date:'dd/MM/yyyy'}}</span>
             </div>
           </div>
         </div>
@@ -698,7 +698,7 @@
               <label class="input-group label-estilo" for="responRight">Responsable RRHH</label>
               &nbsp;
               <span id="responRight" name="responRight" style="color: black; font-size: 14px;" class="text-start">{{
-                this.detalleSolicitudRG.responsableRRHH }}</span>
+                detalleSolicitudRG.responsableRRHH }}</span>
             </div>
           </div>
         </div>
@@ -717,12 +717,6 @@
             <hr />
           </div>
         </div>
-
-        <!-- <table-component
-              tableName="tablaAprobadores"
-              [columns]="columnsAprobadores"
-              [dataTable]="dataTableAprobadores"
-          /> -->
 
         <div class="accordion" id="accordionExample">
           <div *ngFor="
@@ -845,8 +839,7 @@
             <div class="col-md-3">
               <div class="mb-4">
                 <a>
-                  <h2 class="sol-danger">Ingreso de
-                    Referencias de Jefe RRHH</h2>
+                  <h2 class="sol-danger">Ingreso de Referencias de Jefe RRHH</h2>
                 </a>
               </div>
             </div>
@@ -873,7 +866,7 @@
                 <label class="input-group label-estilo" for="tipoMotivo">Causa real de salida</label>
                 &nbsp;
                 <span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px;" class="text-start">{{
-                  this.causaSalida }}</span>
+                  causaSalida }}</span>
               </div>
             </div>
           </div>

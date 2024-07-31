@@ -40,7 +40,7 @@ export const ConsultaSolicitudesData: IConsultaSolicitudesData = {
           showed: true
         },
         {
-          materialIcon: "arrow_right",
+          materialIcon: "trending_up",
           id: "cloneOnTable",
           tooltip: "Trazabilidad",
           showed: true
