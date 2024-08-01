@@ -55,6 +55,7 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
 
   public existeMatenedores: boolean = false;
   public existe: boolean = false;
+  public codigoReportaA: string = "";
 
 
   private readonly NIVEL_APROBACION_GERENCIA_MEDIA: string = "GERENCIA MEDIA";
@@ -633,6 +634,21 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
         }
       );
 
+      if(this.model.nivelDir.toUpperCase().includes("VICEPRESIDENCIA")||
+      this.model.nivelDir.toUpperCase().includes("CORPORATIVO")||
+      this.model.nivelDir.toUpperCase().includes("CORPORATIVA")){
+        Swal.fire({
+          text: "Nivel de Dirección no permitido: "+this.model.nivelDir,
+          icon: "info",
+          confirmButtonColor: "rgb(227, 199, 22)",
+          confirmButtonText: "Sí",
+        });
+        this.clearModel();
+        this.keySelected = "";
+        this.dataAprobacionesPorPosicion = {};
+        return;
+      }
+
       this.mantenimientoService.getDataEmpleadosEvolutionPorId(datosEmpleado.codigoPosicionReportaA).subscribe({
         next: (response) => {
           if (response.evType.length === 0) {
@@ -651,6 +667,8 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
           }
           this.model.jefeInmediatoSuperior =  response.evType[0].nombreCompleto;
           this.model.puestoJefeInmediato =  response.evType[0].descrPosicion;  
+          this.codigoReportaA =  response.evType[0].subledger;
+
   
         },
         error: (error: HttpErrorResponse) => {
@@ -1553,7 +1571,7 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
         this.detalleSolicitud.puestoJefeInmediato = this.model.puestoJefeInmediato;
         this.detalleSolicitud.nombreJefeSolicitante = this.model.jefeInmediatoSuperior;
         this.detalleSolicitud.responsableRRHH = this.solicitud.usuarioCreacion;
-        this.detalleSolicitud.jefeSolicitante = this.model.jefeInmediatoSuperior;
+        this.detalleSolicitud.jefeSolicitante = this.codigoReportaA;
 
         this.detalleSolicitud.reportaA = this.model.reportaA;
 

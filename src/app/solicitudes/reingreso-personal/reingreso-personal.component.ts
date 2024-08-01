@@ -124,6 +124,7 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
   );
 
   public jefeInmediatoSuperiorQuery: any = "";
+  public jefeSolicitanteQuery: any = "";
   public puestoJefeInmediatoSuperior: string = "";
   public jefeReferenciaQuery: any = "";
   public puestoJefeReferencia: string = "";
@@ -1279,27 +1280,28 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
 
   llenarModelDetalleAprobaciones({tipoJefe, ...jefe}: any) {
     return {
+      
       id_Solicitud: this.solicitudRG.idSolicitud,
-      id_NivelAprobacion: tipoJefe === "jefeInmediato" ? 300000 : 350000,
+      id_NivelAprobacion: tipoJefe === "jefeInmediato" ? 300000 : (tipoJefe === "responsableRRHH" ? 300001 : 350000),
       id_TipoSolicitud: this.solicitudRG.idTipoSolicitud.toString(),
-      id_Accion: tipoJefe === "jefeInmediato" ? 300000 : 350000,
+      id_Accion: tipoJefe === "jefeInmediato" ? 300000 : (tipoJefe === "responsableRRHH" ? 300001 : 350000),
       id_TipoMotivo: this.solicitudRG.idTipoMotivo,
-      id_TipoRuta: tipoJefe === "jefeInmediato" ? 300000 : 350000,
-      id_Ruta: tipoJefe === "jefeInmediato" ? 300000 : 350000,
+      id_TipoRuta: tipoJefe === "jefeInmediato" ? 300000 : (tipoJefe === "responsableRRHH" ? 300001 : 350000),
+      id_Ruta: tipoJefe === "jefeInmediato" ? 300000 : (tipoJefe === "responsableRRHH" ? 300001 : 350000),
       tipoSolicitud: this.solicitudRG.tipoSolicitud,
-      motivo: tipoJefe === "jefeInmediato" ? "RegistrarComentarioJefe" : "RegistrarComentarioRRHH",
-      tipoRuta: tipoJefe === "jefeInmediato" ? "RegistrarComentarioJefe" : "RegistrarComentarioRRHH",
-      ruta: tipoJefe === "jefeInmediato" ? "RegistrarComentarioJefe" : "RegistrarComentarioRRHH",
-      accion: tipoJefe === "jefeInmediato" ? "RegistrarComentarioJefe" : "RegistrarComentarioRRHH",
+      motivo: tipoJefe === "jefeInmediato" ? "RegistrarComentarioJefe" : (tipoJefe === "responsableRRHH" ? "RegistrarComentarioRRHH" : "RegistrarComentarioSolicitante"),
+      tipoRuta: tipoJefe === "jefeInmediato" ? "RegistrarComentarioJefe" : (tipoJefe === "responsableRRHH" ? "RegistrarComentarioRRHH" : "RegistrarComentarioSolicitante"),
+      ruta: tipoJefe === "jefeInmediato" ? "RegistrarComentarioJefe" : (tipoJefe === "responsableRRHH" ? "RegistrarComentarioRRHH" : "RegistrarComentarioSolicitante"),
+      accion: tipoJefe === "jefeInmediato" ? "RegistrarComentarioJefe" : (tipoJefe === "responsableRRHH" ? "RegistrarComentarioRRHH" : "RegistrarComentarioSolicitante"),
       nivelDirecion: jefe.nivelDir,
-      nivelAprobacionRuta: tipoJefe === "jefeInmediato" ? "RegistrarComentarioJefe" : "RegistrarComentarioRRHH",
+      nivelAprobacionRuta: tipoJefe === "jefeInmediato" ? "RegistrarComentarioJefe" : (tipoJefe === "responsableRRHH" ? "RegistrarComentarioRRHH" : "RegistrarComentarioSolicitante"),
       usuarioAprobador: jefe.nombreCompleto,
       codigoPosicionAprobador: jefe.codigoPosicion,
       descripcionPosicionAprobador: jefe.descrPosicion,
       sudlegerAprobador: jefe.subledger,
       nivelDireccionAprobador: jefe.nivelDir,
       codigoPosicionReportaA: jefe.codigoPosicionReportaA,
-      estadoAprobacion: tipoJefe === "jefeInmediato" ? "RegistrarComentarioJefe" : "RegistrarComentarioRRHH",
+      estadoAprobacion: tipoJefe === "jefeInmediato" ? "RegistrarComentarioJefe" : tipoJefe === "responsableRRHH" ? "RegistrarComentarioRRHH" : "RegistrarComentarioSolicitante",
       estado: "A",
       correo: jefe.correo,
       usuarioCreacion: jefe.nombreCompleto,
@@ -1327,9 +1329,46 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
         tipoJefe: "responsableRRHH"
       });
     }
+console.log(this.detalleSolicitud.jefeSolicitante);
+    this.mantenimientoService.getDataEmpleadosEvolutionPorId(this.detalleSolicitud.jefeSolicitante).subscribe({
+      next: (responseSolicitante) => {
+        if (responseSolicitante.evType.length === 0) {
+          Swal.fire({
+            text: "No se encontró registro",
+            icon: "info",
+            confirmButtonColor: "rgb(227, 199, 22)",
+            confirmButtonText: "Sí",
+          });
+        }
+
+        this.jefeSolicitanteQuery = Object.assign(
+          {},
+          {
+            ...responseSolicitante.evType[0],
+            sueldo: responseSolicitante.evType[0].sueldo,
+            sueldoMensual: responseSolicitante.evType[0].sueldoVariableMensual,
+            sueldoTrimestral: responseSolicitante.evType[0].sueldoVariableTrimestral,
+            sueldoSemestral: responseSolicitante.evType[0].sueldoVariableSemestral,
+            sueldoAnual: responseSolicitante.evType[0].sueldoVariableAnual,
+          }
+        );
+          jefes.push({
+            ...this.jefeSolicitanteQuery,
+            tipoJefe: "jefeSolicitante"
+          });
+        },
+        error: (error: HttpErrorResponse) => {
+          this.utilService.modalResponse(error.error, "error");
+        },
+      });
+        jefes.push({
+          ...this.jefeSolicitanteQuery,
+          tipoJefe: "jefeSolicitante"
+        });
+
 
     const detallesJefes = jefes.map((jefe) => this.llenarModelDetalleAprobaciones(jefe));
-
+console.log(detallesJefes);
     this.solicitudes.cargarDetalleAprobacionesArreglo(detallesJefes).subscribe({
       next: () => {
         this.submitted = true;

@@ -395,6 +395,7 @@ export class RegistrarComentarioSalidaJefeComponent extends CompleteTaskComponen
   */
 
   nombreCompletoCandidato: string = "";
+  public taskType_Activity_subledger: any;
   idSolicitudRP: string = "";
 
   nombresEmpleados: string[] = [];
@@ -451,9 +452,8 @@ export class RegistrarComentarioSalidaJefeComponent extends CompleteTaskComponen
           return this.consultaTareasService.getTareasUsuario(res.evType[0].subledger).subscribe({
             next: async (response) => {
               this.existe = response.solicitudes.some(({ idSolicitud, rootProcInstId}) => idSolicitud === this.id_solicitud_by_params && rootProcInstId === this.idDeInstancia);
-
+              this.taskType_Activity_subledger = response.solicitudes.filter(({ idSolicitud, rootProcInstId}) => idSolicitud === this.id_solicitud_by_params && rootProcInstId === this.idDeInstancia);
 			  const permisos: Permiso[] = JSON.parse(localStorage.getItem(LocalStorageKeys.Permisos)!);
-
 			  this.existeMatenedores = permisos.some(permiso => permiso.codigo === PageCodes.AprobadorFijo);
 
               if (this.existe || this.existeMatenedores) {
@@ -493,7 +493,7 @@ export class RegistrarComentarioSalidaJefeComponent extends CompleteTaskComponen
     this.utilService.openLoadingSpinner("Cargando información, espere por favor...");
 
     try {
-      await this.loadDataCamunda();
+     // await this.loadDataCamunda();
 
       this.utilService.closeLoadingSpinner();
     } catch (error) {
@@ -688,18 +688,14 @@ export class RegistrarComentarioSalidaJefeComponent extends CompleteTaskComponen
 
       if ("true" === this.parentIdFlag) {
         this.idDeInstancia = params["id"];
-        this.solicitudes.getTareaIdParam(this.id_solicitud_by_params).subscribe((result) => {
-          this.taskKey = result.solicitudes[0].tasK_DEF_KEY;
-
-          this.lookForError(result);
-          this.uniqueTaskId = result.solicitudes[0].taskId;
+          this.taskKey = this.taskType_Activity_subledger[0].tasK_DEF_KEY;
+          this.uniqueTaskId = this.taskType_Activity_subledger[0].taskId;
           this.taskId = params["id"];
 
           this.getCandidatoValues();
 
-          this.date = result.solicitudes[0].startTime;
+          this.date = this.taskType_Activity_subledger[0].startTime;
           // this.loadExistingVariables(this.uniqueTaskId ? this.uniqueTaskId : "", variableNames);
-        });
       } else {
         // unique id is from the route params
         this.uniqueTaskId = params["id"];
@@ -1175,7 +1171,7 @@ export class RegistrarComentarioSalidaJefeComponent extends CompleteTaskComponen
       });
     }
 
-    this.camundaRestService.postCompleteTask(this.uniqueTaskId, variables).subscribe({
+    this.camundaRestService.postCompleteTask(this.taskType_Activity_subledger[0].taskId, variables).subscribe({
       next: () => {
         this.utilService.closeLoadingSpinner();
 

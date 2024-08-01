@@ -210,6 +210,8 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
 
 	descripcionPosiciones: string[] = [];
 
+  public codigoReportaA: string;
+
   subledgers: string[] = [];
 
   codigosPosicion: string[] = [];
@@ -568,6 +570,20 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
           sueldoAnual: datosEmpleado.sueldoVariableAnual
         }
       );
+      if(this.model.nivelDir.toUpperCase().includes("VICEPRESIDENCIA")||
+      this.model.nivelDir.toUpperCase().includes("CORPORATIVO")||
+      this.model.nivelDir.toUpperCase().includes("CORPORATIVA")){
+        Swal.fire({
+          text: "Nivel de Dirección no permitido: "+this.model.nivelDir,
+          icon: "info",
+          confirmButtonColor: "rgb(227, 199, 22)",
+          confirmButtonText: "Sí",
+        });
+        this.clearModel();
+        this.keySelected = "";
+        this.dataAprobacionesPorPosicion = {};
+        return;
+      }
 
       this.mantenimientoService.getDataEmpleadosEvolutionPorId(datosEmpleado.codigoPosicionReportaA).subscribe({
         next: (response) => {
@@ -586,7 +602,9 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
             return;
           }
           this.model.jefeInmediatoSuperior =  response.evType[0].nombreCompleto;
-          this.model.puestoJefeInmediato =  response.evType[0].descrPosicion;  
+          this.model.puestoJefeInmediato =  response.evType[0].descrPosicion;
+          this.codigoReportaA =  response.evType[0].subledger;  
+  
   
         },
         error: (error: HttpErrorResponse) => {
@@ -1098,7 +1116,7 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
         this.detalleSolicitud.puestoJefeInmediato = this.model.puestoJefeInmediato;
         this.detalleSolicitud.nombreJefeSolicitante = this.model.jefeInmediatoSuperior;
         this.detalleSolicitud.responsableRRHH = this.solicitud.usuarioCreacion;
-        this.detalleSolicitud.jefeSolicitante = this.model.jefeInmediatoSuperior;
+        this.detalleSolicitud.jefeSolicitante = this.codigoReportaA;
 
 
 
