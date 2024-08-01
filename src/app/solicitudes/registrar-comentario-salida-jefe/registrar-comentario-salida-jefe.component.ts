@@ -687,14 +687,34 @@ export class RegistrarComentarioSalidaJefeComponent extends CompleteTaskComponen
       const variableNames = Object.keys(this.model).join(",");
 
       if ("true" === this.parentIdFlag) {
+        console.log(this.taskType_Activity_subledger);
+        if (this.taskType_Activity_subledger.length === 0) {
+          console.log(this.taskType_Activity_subledger.length);
+
+        this.consultaTareasService
+      .getTareaIdParam(this.id_solicitud_by_params)
+      .subscribe((tarea) => {
+        console.log("Task: ", tarea);
+
+        this.uniqueTaskId = tarea.solicitudes[0].taskId;
+        this.taskType_Activity = tarea.solicitudes[0].tasK_DEF_KEY;
+        this.nameTask = tarea.solicitudes[0].name;
+        // this.id_solicitud_by_params = tarea.solicitudes[0].idSolicitud;
+
+        if (this.taskType_Activity !== environment.taskType_Registrar) {
+          this.RegistrarsolicitudCompletada = false;
+        }
+      });
         this.idDeInstancia = params["id"];
+        }else{
           this.taskKey = this.taskType_Activity_subledger[0].tasK_DEF_KEY;
           this.uniqueTaskId = this.taskType_Activity_subledger[0].taskId;
+          this.date = this.taskType_Activity_subledger[0].startTime;
+        }
           this.taskId = params["id"];
 
           this.getCandidatoValues();
 
-          this.date = this.taskType_Activity_subledger[0].startTime;
           // this.loadExistingVariables(this.uniqueTaskId ? this.uniqueTaskId : "", variableNames);
       } else {
         // unique id is from the route params
@@ -1171,7 +1191,7 @@ export class RegistrarComentarioSalidaJefeComponent extends CompleteTaskComponen
       });
     }
 
-    this.camundaRestService.postCompleteTask(this.taskType_Activity_subledger[0].taskId, variables).subscribe({
+    this.camundaRestService.postCompleteTask(this.uniqueTaskId, variables).subscribe({
       next: () => {
         this.utilService.closeLoadingSpinner();
 
