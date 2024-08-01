@@ -67,6 +67,7 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
   disabledComplete: boolean = true;
   isRequired: boolean = false;
   isFechaMaximaVisible: boolean = false;
+  viewInputs: boolean = false;  
   campoObligatorio: string = '';
   observaciontexto: string = 'Observación';
   selectedDate: Date = new Date();
@@ -941,6 +942,8 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
   getDetalleSolicitudById(id: any) {
     return this.solicitudes.getDetalleSolicitudById(id).subscribe({
       next: (response: any) => {
+
+        this.viewInputs = response.detalleSolicitudType[0].codigo === "100" ? false : true;
 
         if (id.toUpperCase().includes("AP")) {
 

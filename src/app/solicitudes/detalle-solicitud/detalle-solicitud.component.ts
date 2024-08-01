@@ -38,6 +38,8 @@ import { NumericLiteral } from "typescript";
 export class DetalleSolicitudComponent extends CompleteTaskComponent {
   NgForm = NgForm;
   isRequired: boolean = false;
+ public viewInputs: boolean = false;
+
   isFechaMaximaVisible: boolean = false;
   campoObligatorio: string = '';
   observaciontexto: string = 'Observación';
@@ -875,6 +877,7 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
     return this.solicitudes.getDetalleSolicitudById(id).subscribe({
       next: (response: any) => {
         if (id.toUpperCase().includes("AP")) {
+          this.viewInputs = response.detalleSolicitudType[0].codigo === "100" ? false : true;
 
           this.totalRegistrosDetallesolicitud = response.totalRegistros;
 
