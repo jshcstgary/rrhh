@@ -38,7 +38,7 @@ import { NumericLiteral } from "typescript";
 export class DetalleSolicitudComponent extends CompleteTaskComponent {
   NgForm = NgForm;
   isRequired: boolean = false;
- public viewInputs: boolean = false;
+  public viewInputs: boolean = false;
 
   isFechaMaximaVisible: boolean = false;
   campoObligatorio: string = '';
@@ -444,6 +444,7 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
   getComentarios() {
     this.comentarioSalidaJefeService.obtenerComentarios(this.detalleSolicitudRG.idSolicitud).subscribe({
       next: ({ comentarios }) => {
+        console.log(comentarios);
         comentarios.forEach(comentario => {
           if (comentario.tipo_Solicitud === "Comentario_Salida_Jefe") {
             this.comentariosJefeInmediato = comentario;
@@ -452,7 +453,10 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
           } if (comentario.tipo_Solicitud === "Comentario_RRHH") {
             this.comentariosRRHH = comentario;
           }
-        })
+        });
+        console.log(this.comentariosJefeInmediato);
+        console.log(this.Comentario_Jefe_Solicitante);
+        console.log(this.comentariosRRHH);
       }
     });
   }
@@ -602,7 +606,6 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 
     this.route.queryParams.subscribe((params: Solicitud) => {
       this.misParams = params;
-
     });
 
     this.route.queryParamMap.subscribe((qParams) => {
@@ -858,6 +861,7 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
   getSolicitudById(id: any) {
     return this.solicitudes.getSolicitudById(id).subscribe({
       next: (response: any) => {
+        console.log(response);
         this.solicitud = response;
         this.mostrarRequisicion = this.solicitud.idSolicitud.includes("RP-");
         this.mostrarFormularioFamiliares = this.solicitud.idSolicitud.includes("CF-");
@@ -1511,15 +1515,17 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 
   public exportar(): void {
     if (this.solicitud.idSolicitud.toUpperCase().includes("RP")) {
-      this.exportarrequisicionPersonal();
+      this.exportarRequisicionPersonal();
     } else if (this.solicitud.idSolicitud.toUpperCase().includes("CF")) {
       this.exportarContratacionFamiliar();
     } else if (this.solicitud.idSolicitud.toUpperCase().includes("RG")) {
       this.exportarReingresoPersonal();
+    } else if (this.solicitud.idSolicitud.toUpperCase().includes("AP")) {
+      this.exportarAccionPersonal();
     }
   }
 
-  private exportarrequisicionPersonal(): void {
+  private exportarRequisicionPersonal(): void {
     const backgroundCellColor: [number, number, number] = [218, 238, 243];
     const textColor: [number, number, number] = [56, 95, 147];
     const lineColor: [number, number, number] = [149, 179, 215];
@@ -1548,7 +1554,7 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
       body: [
         [
           {
-            content: "REQUERIMIENTO DE PERSONAL",
+            content: "REQUISICIÓN DE PERSONAL",
             styles: {
               halign: "center",
               fontSize: 20,
@@ -1590,7 +1596,7 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
       theme: "grid",
       headStyles: {
         fillColor: backgroundCellColor,
-        textColor: textColor,
+        textColor,
         halign: "center",
         lineColor
       },
@@ -1642,7 +1648,7 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
       theme: "grid",
       headStyles: {
         fillColor: backgroundCellColor,
-        textColor: textColor,
+        textColor,
         halign: "center",
         lineColor
       },
@@ -1690,7 +1696,7 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
       theme: "grid",
       headStyles: {
         fillColor: backgroundCellColor,
-        textColor: textColor,
+        textColor,
         halign: "center",
         lineColor
       },
@@ -1867,7 +1873,7 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
       theme: "grid",
       headStyles: {
         fillColor: backgroundCellColor,
-        textColor: textColor,
+        textColor,
         halign: "center",
         lineColor
       },
@@ -1908,7 +1914,7 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
       theme: "grid",
       headStyles: {
         fillColor: backgroundCellColor,
-        textColor: textColor,
+        textColor,
         halign: "center",
         lineColor
       },
@@ -2108,7 +2114,7 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
       theme: "grid",
       headStyles: {
         fillColor: backgroundCellColor,
-        textColor: textColor,
+        textColor,
         halign: "center",
         lineColor
       },
@@ -2149,7 +2155,7 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
       theme: "grid",
       headStyles: {
         fillColor: backgroundCellColor,
-        textColor: textColor,
+        textColor,
         halign: "center",
         lineColor
       },
@@ -2222,7 +2228,7 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
       theme: "grid",
       headStyles: {
         fillColor: backgroundCellColor,
-        textColor: textColor,
+        textColor,
         halign: "center",
         lineColor
       },
@@ -2276,7 +2282,7 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
       theme: "grid",
       headStyles: {
         fillColor: backgroundCellColor,
-        textColor: textColor,
+        textColor,
         halign: "center",
         lineColor
       },
@@ -2338,6 +2344,224 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
         },
         3: {
           cellWidth: 25
+        }
+      }
+    });
+
+    doc.save(`${this.solicitud.idSolicitud}-${format(new Date(), "dd-MM-yyyy")}.pdf`)
+  }
+
+  private exportarAccionPersonal(): void {
+    const backgroundCellColor: [number, number, number] = [218, 238, 243];
+    const textColor: [number, number, number] = [56, 95, 147];
+    const lineColor: [number, number, number] = [149, 179, 215];
+
+    const doc = new jsPDF();
+
+    // Esquina de la hoja
+    autoTable(doc, {
+      theme: "plain",
+      body: [
+        [
+          {
+            content: `RR.HH.: ${this.solicitud.idSolicitud}`,
+            styles: {
+              halign: "right",
+              fontStyle: "bold"
+            }
+          }
+        ],
+      ]
+    });
+
+    // Títutlo
+    autoTable(doc, {
+      theme: "plain",
+      body: [
+        [
+          {
+            content: "ACCIÓN DE PERSONAL",
+            styles: {
+              halign: "center",
+              fontSize: 20,
+              fontStyle: "bold",
+              textColor
+            }
+          }
+        ],
+      ]
+    });
+
+    // Encabezado de la solicitud
+    autoTable(doc, {
+      theme: "grid",
+      bodyStyles: {
+        lineColor
+      },
+      body: [
+        ["Creado por:", this.solicitud.usuarioCreacion, "Fecha:", format(new Date(this.solicitud.fechaCreacion), "dd/MM/yyyy"), "Solicitud No:", this.solicitud.idSolicitud],
+      ],
+      columnStyles: {
+        0: {
+          fontStyle: "bold",
+          halign: "right"
+        },
+        2: {
+          fontStyle: "bold",
+          halign: "right"
+        },
+        4: {
+          fontStyle: "bold",
+          halign: "right"
+        }
+      }
+    });
+
+    // Información
+    autoTable(doc, {
+      theme: "grid",
+      headStyles: {
+        fillColor: backgroundCellColor,
+        textColor,
+        halign: "center",
+        lineColor
+      },
+      bodyStyles: {
+        lineColor
+      },
+      head: [
+        [
+          {
+            content: "INFORMACIÓN",
+            colSpan: 4
+          }
+        ]
+      ],
+      body: [
+        [
+          {
+            content: "Nombre empleado"
+          },
+          {
+            content: this.model.nombreCompleto,
+            colSpan: 3
+          }
+        ],
+        [
+          {
+            content: "ORIGEN",
+            colSpan: 2,
+            styles: {
+              textColor,
+              halign: "center"
+            }
+          },
+          {
+            content: "DESTINO",
+            colSpan: 2,
+            styles: {
+              textColor,
+              halign: "center"
+            }
+          }
+        ],
+        ["Fecha de ingreso:", format(new Date(this.model.fechaIngreso), "dd/MM/yyyy"), "Fecha de cambio:", format(new Date(this.model.fechaIngreso), "dd/MM/yyyy")],
+        ["Cargo:", this.model.nombreCargo, "Cargo:", this.modelPropuestos.nombreCompleto],
+        ["Unidad:", this.model.unidadNegocio, "Unidad:", this.modelPropuestos.unidadNegocio],
+        ["Área/Departamento:", this.model.departamento, "Área/Departamento::", this.modelPropuestos.departamento],
+        ["Localidad:", this.model.localidad, "Localidad:", this.modelPropuestos.localidad],
+        ["Sueldo:", this.model.sueldo, "Sueldo:", this.modelPropuestos.sueldo],
+        ["Variable máxima:", "0", "Variable máxima:", "0"],
+        ["Movilizavión:", this.detalleSolicitudPropuestos.movilizacion, "Movilización:", this.detalleSolicitudPropuestos.movilizacion],
+        ["Alimentación:", this.detalleSolicitudPropuestos.alimentacion, "Alimentación:", this.detalleSolicitudPropuestos.alimentacion],
+        ["Centro de Costos:", this.model.nomCCosto, "Centro de Costos:", this.modelPropuestos.nomCCosto],
+        ["Grupo de pago:", this.model.grupoPago, "Grupo de pago:", this.modelPropuestos.grupoPago],
+        ["Sucursal (Nómina):", this.model.sucursal, "Scursal (Nómina):", this.modelPropuestos.sucursal],
+        ["Distribución contable:", "", "Distribución Contable:", ""]
+      ],
+      columnStyles: {
+        0: {
+          fontStyle: "bold",
+          cellWidth: 30
+        },
+        1: {
+          cellWidth: 60
+        },
+        2: {
+          fontStyle: "bold",
+          cellWidth: 30
+        },
+        3: {
+          cellWidth: 60
+        }
+      }
+    });
+
+    // Descripción
+    autoTable(doc, {
+      theme: "grid",
+      headStyles: {
+        fillColor: backgroundCellColor,
+        textColor,
+        halign: "center",
+        lineColor
+      },
+      bodyStyles: {
+        lineColor
+      },
+      head: [
+        [
+          {
+            content: "DESCRIPCIÓN",
+            colSpan: 2
+          }
+        ]
+      ],
+      body: [
+        ["Tipo de Acción:", this.solicitud.tipoAccion],
+        ["Justificación:", ""]
+      ],
+      columnStyles: {
+        0: {
+          fontStyle: "bold",
+          cellWidth: 30
+        }
+      }
+    });
+
+    // Sección para recursos humanos
+    autoTable(doc, {
+      theme: "grid",
+      headStyles: {
+        fillColor: backgroundCellColor,
+        textColor,
+        halign: "center",
+        lineColor
+      },
+      bodyStyles: {
+        lineColor
+      },
+      head: [
+        [
+          {
+            content: "SECCIÓN PARA RECURSOS HUMANOS",
+            colSpan: 2
+          }
+        ]
+      ],
+      body: [
+        ["Observaciones:", ""],
+        [
+          {
+            content: "",
+            colSpan: 2
+          }
+        ]
+      ],
+      columnStyles: {
+        0: {
+          fontStyle: "bold",
+          cellWidth: 30
         }
       }
     });

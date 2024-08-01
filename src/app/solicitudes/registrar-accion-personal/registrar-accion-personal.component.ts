@@ -3,7 +3,7 @@ import { Component, Type } from "@angular/core";
 import { NgForm } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 import {
-	NgbModal
+  NgbModal
 } from "@ng-bootstrap/ng-bootstrap";
 import { Observable, OperatorFunction, Subject } from "rxjs";
 import { catchError, debounceTime, distinctUntilChanged, map } from "rxjs/operators";
@@ -23,8 +23,8 @@ import { SolicitudesService } from "../registrar-solicitud/solicitudes.service";
 import { PageCodes } from "src/app/enums/codes.enum";
 import { LocalStorageKeys } from "src/app/enums/local-storage-keys.enum";
 import {
-	IEmpleadoData,
-	IEmpleados,
+  IEmpleadoData,
+  IEmpleados,
 } from "src/app/services/mantenimiento/empleado.interface";
 import { DialogReasignarUsuarioComponent } from "src/app/shared/reasginar-usuario/reasignar-usuario.component";
 import { StarterService } from "src/app/starter/starter.service";
@@ -47,11 +47,11 @@ const dialogComponentList: DialogComponents = {
 export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
   NgForm = NgForm;
 
-  selectedOptionAnulacion: string= "No";
+  selectedOptionAnulacion: string = "No";
   selected_tipo_accion: number;
   selectedOption: string = "No";
-  empleadoSearch : string = "";
-  nivelDireccionDatoPropuesto : string = "";
+  empleadoSearch: string = "";
+  nivelDireccionDatoPropuesto: string = "";
 
   public existeMatenedores: boolean = false;
   public existe: boolean = false;
@@ -91,9 +91,9 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
     "",
     "",
     ""
-	);
+  );
 
-	modelPropuestos: RegistrarData = new RegistrarData();
+  modelPropuestos: RegistrarData = new RegistrarData();
 
   // public solicitud = new Solicitud();
 
@@ -397,7 +397,7 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
       console.log("this.idDeInstancia: ", this.idDeInstancia);
     });
 
-	  this.verifyData();
+    this.verifyData();
   }
 
   private verifyData(): void {
@@ -410,9 +410,9 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
             next: async (response) => {
               this.existe = response.solicitudes.some(({ idSolicitud, rootProcInstId }) => idSolicitud === this.id_solicitud_by_params && rootProcInstId === this.idDeInstancia);
 
-			  const permisos: Permiso[] = JSON.parse(localStorage.getItem(LocalStorageKeys.Permisos)!);
+              const permisos: Permiso[] = JSON.parse(localStorage.getItem(LocalStorageKeys.Permisos)!);
 
-			  this.existeMatenedores = permisos.some(permiso => permiso.codigo === PageCodes.AprobadorFijo);
+              this.existeMatenedores = permisos.some(permiso => permiso.codigo === PageCodes.AprobadorFijo);
 
               if (this.existe || this.existeMatenedores) {
                 try {
@@ -516,7 +516,7 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
 
   // Prueba servicio
   getSolicitudes() {
-    this.solicitudes.getSolicitudes().subscribe((data) => {});
+    this.solicitudes.getSolicitudes().subscribe((data) => { });
   }
 
   getSolicitudById(id: any) {
@@ -524,12 +524,12 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
       next: (response: any) => {
         this.solicitud = response;
 
-         this.model.codigo=this.solicitud.idSolicitud ;
-         this.model.idEmpresa = this.solicitud.idEmpresa ;
-         this.model.compania=this.solicitud.empresa ;
-         this.model.unidadNegocio=this.solicitud.unidadNegocio;
+        this.model.codigo = this.solicitud.idSolicitud;
+        this.model.idEmpresa = this.solicitud.idEmpresa;
+        this.model.compania = this.solicitud.empresa;
+        this.model.unidadNegocio = this.solicitud.unidadNegocio;
 
-        this.loadingComplete+=2;
+        this.loadingComplete += 2;
         this.getDetalleSolicitudById(this.id_edit);
       },
       error: (error: HttpErrorResponse) => {
@@ -548,7 +548,7 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
         return this.subledgers.filter((subledger) => subledger.toLowerCase().includes(term.toLowerCase())).slice(0, 10);
       }
     })
-	);
+  );
 
 
   searchNombre: OperatorFunction<any, readonly any[]> = (text$: Observable<string>) => text$.pipe(
@@ -568,14 +568,14 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
     let tipoValue: string = "";
 
     if (tipo === "codigoPosicion") {
-		tipoValue = this.model.codigoPosicion;
+      tipoValue = this.model.codigoPosicion;
     } else if (tipo === "subledger") {
-		tipoValue = this.model.subledger;
+      tipoValue = this.model.subledger;
     } else if (tipo === "nombreCompleto") {
-		tipoValue = this.model.nombreCompleto;
+      tipoValue = this.model.nombreCompleto;
     } else {
-		tipoValue = this.model.descrPosicion;
-	}
+      tipoValue = this.model.descrPosicion;
+    }
 
     this.mantenimientoService.getDataEmpleadosEvolutionPorId(tipoValue).subscribe({
       next: (response) => {
@@ -599,20 +599,20 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
         if (tipo === "subledger") {
           this.subledgers = [...new Set(this.dataEmpleadoEvolution.map((empleado) => empleado.subledger))];
           this.nombres = [...new Set(this.dataEmpleadoEvolution.map((empleado) => empleado.nombreCompleto))];
-          this.eventSearch.item=this.dataEmpleadoEvolution[0].codigoPosicion;
-          this.onSelectItem('subledger',this.subledger);
+          this.eventSearch.item = this.dataEmpleadoEvolution[0].codigoPosicion;
+          this.onSelectItem('subledger', this.subledger);
         } else if (tipo === "nombreCompleto") {
           this.subledgers = [...new Set(this.dataEmpleadoEvolution.map((empleado) => empleado.subledger))];
           this.nombres = [...new Set(this.dataEmpleadoEvolution.map((empleado) => empleado.nombreCompleto))];
-          this.eventSearch.item=this.dataEmpleadoEvolution[0].nombreCompleto;
-          this.onSelectItem('nombreCompleto',this.eventSearch);
+          this.eventSearch.item = this.dataEmpleadoEvolution[0].nombreCompleto;
+          this.onSelectItem('nombreCompleto', this.eventSearch);
         }
       },
       error: (error: HttpErrorResponse) => {
         this.utilService.modalResponse(error.error, "error");
       },
     });
-	}
+  }
 
   onSelectItem(campo: string, event) {
     const valor = event.item;
@@ -634,11 +634,11 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
         }
       );
 
-      if(this.model.nivelDir.toUpperCase().includes("VICEPRESIDENCIA")||
-      this.model.nivelDir.toUpperCase().includes("CORPORATIVO")||
-      this.model.nivelDir.toUpperCase().includes("CORPORATIVA")){
+      if (this.model.nivelDir.toUpperCase().includes("VICEPRESIDENCIA") ||
+        this.model.nivelDir.toUpperCase().includes("CORPORATIVO") ||
+        this.model.nivelDir.toUpperCase().includes("CORPORATIVA")) {
         Swal.fire({
-          text: "Nivel de Dirección no permitido: "+this.model.nivelDir,
+          text: "Nivel de Dirección no permitido: " + this.model.nivelDir,
           icon: "info",
           confirmButtonColor: "rgb(227, 199, 22)",
           confirmButtonText: "Sí",
@@ -658,25 +658,25 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
               confirmButtonColor: "rgb(227, 199, 22)",
               confirmButtonText: "Sí",
             });
-  
+
             this.clearModel();
             this.keySelected = "";
             this.dataAprobacionesPorPosicion = {};
-  
+
             return;
           }
-          this.model.jefeInmediatoSuperior =  response.evType[0].nombreCompleto;
-          this.model.puestoJefeInmediato =  response.evType[0].descrPosicion;  
-          this.codigoReportaA =  response.evType[0].subledger;
+          this.model.jefeInmediatoSuperior = response.evType[0].nombreCompleto;
+          this.model.puestoJefeInmediato = response.evType[0].descrPosicion;
+          this.codigoReportaA = response.evType[0].subledger;
 
-  
+
         },
         error: (error: HttpErrorResponse) => {
           this.utilService.modalResponse(error.error, "error");
         },
       });
-      this.modelPropuestos=this.model;
-      this.modelPropuestos.fechaIngreso=this.model.fechaIngresogrupo;
+      this.modelPropuestos = structuredClone(this.model);
+      this.modelPropuestos.fechaIngreso = structuredClone(this.model.fechaIngresogrupo);
 
       this.keySelected = `${this.solicitud.idTipoSolicitud}_${this.solicitud.idTipoMotivo}_${this.model.codigoPosicion}_${this.model.nivelDir}`;
 
@@ -684,7 +684,7 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
       if (!this.dataAprobacionesPorPosicion[this.keySelected]) {
         this.obtenerAprobacionesPorPosicion();
       }
-      } else {
+    } else {
       let tempSearch = valor;
       this.model = new RegistrarData();
       if (campo == "codigoPosicion") {
@@ -853,80 +853,80 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
     }
   }
 
-	totalRegistrosDetallesolicitud: number = 0;
+  totalRegistrosDetallesolicitud: number = 0;
 
   getDetalleSolicitudById(id: any) {
     return this.solicitudes.getDetalleSolicitudById(id).subscribe({
       next: (response: any) => {
-		this.totalRegistrosDetallesolicitud = response.totalRegistros;
+        this.totalRegistrosDetallesolicitud = response.totalRegistros;
 
-		const detalleActual = response.detalleSolicitudType.find(detalle => detalle.idDetalleSolicitud === 1);
+        const detalleActual = response.detalleSolicitudType.find(detalle => detalle.idDetalleSolicitud === 1);
 
-		this.model.codigoPosicion = detalleActual.codigoPosicion;
-		this.model.descrPosicion = detalleActual.descripcionPosicion;
-		this.model.subledger = detalleActual.subledger;
-		this.model.nombreCompleto = detalleActual.nombreEmpleado;
-		this.model.compania = detalleActual.compania;
-		this.model.unidadNegocio = detalleActual.unidadNegocio;
-		this.model.departamento = detalleActual.departamento;
-		this.model.nombreCargo = detalleActual.cargo;
-		this.model.localidad = detalleActual.localidad;
-		this.model.nivelDir = detalleActual.nivelDireccion;
-		this.model.nomCCosto = detalleActual.centroCosto;
-		this.model.misionCargo = detalleActual.misionCargo;
-		this.model.justificacionCargo = detalleActual.justificacion;
-		this.model.reportaA = detalleActual.reportaA;
-		this.model.supervisaA = detalleActual.supervisaA;
-		this.model.tipoContrato = detalleActual.tipoContrato;
-		this.model.nivelRepa = detalleActual.nivelReporteA;
-		this.model.sueldo = detalleActual.sueldo;
-		this.model.sueldoMensual = detalleActual.sueldoVariableMensual;
-		this.model.sueldoTrimestral = detalleActual.sueldoVariableTrimestral;
-		this.model.sueldoSemestral = detalleActual.sueldoVariableSemestral;
-		this.model.sueldoAnual = detalleActual.sueldoVariableAnual;
-		this.model.correo = detalleActual.correo;
-		this.model.fechaIngreso = detalleActual.fechaIngreso;
-		this.model.sucursal = detalleActual.sucursal;
-		this.model.fechaIngreso = detalleActual.fechaIngreso;
-		this.model.grupoPago = detalleActual.grupoDePago;
-		this.model.descrPuesto = detalleActual.descripcionPosicion;
-    this.nivelDireccionDatoPropuesto = detalleActual.nivelDireccion;
-    this.viewInputs = detalleActual.codigo === "100" ? true : false;
+        this.model.codigoPosicion = detalleActual.codigoPosicion;
+        this.model.descrPosicion = detalleActual.descripcionPosicion;
+        this.model.subledger = detalleActual.subledger;
+        this.model.nombreCompleto = detalleActual.nombreEmpleado;
+        this.model.compania = detalleActual.compania;
+        this.model.unidadNegocio = detalleActual.unidadNegocio;
+        this.model.departamento = detalleActual.departamento;
+        this.model.nombreCargo = detalleActual.cargo;
+        this.model.localidad = detalleActual.localidad;
+        this.model.nivelDir = detalleActual.nivelDireccion;
+        this.model.nomCCosto = detalleActual.centroCosto;
+        this.model.misionCargo = detalleActual.misionCargo;
+        this.model.justificacionCargo = detalleActual.justificacion;
+        this.model.reportaA = detalleActual.reportaA;
+        this.model.supervisaA = detalleActual.supervisaA;
+        this.model.tipoContrato = detalleActual.tipoContrato;
+        this.model.nivelRepa = detalleActual.nivelReporteA;
+        this.model.sueldo = detalleActual.sueldo;
+        this.model.sueldoMensual = detalleActual.sueldoVariableMensual;
+        this.model.sueldoTrimestral = detalleActual.sueldoVariableTrimestral;
+        this.model.sueldoSemestral = detalleActual.sueldoVariableSemestral;
+        this.model.sueldoAnual = detalleActual.sueldoVariableAnual;
+        this.model.correo = detalleActual.correo;
+        this.model.fechaIngreso = detalleActual.fechaIngreso;
+        this.model.sucursal = detalleActual.sucursal;
+        this.model.fechaIngreso = detalleActual.fechaIngreso;
+        this.model.grupoPago = detalleActual.grupoDePago;
+        this.model.descrPuesto = detalleActual.descripcionPosicion;
+        this.nivelDireccionDatoPropuesto = detalleActual.nivelDireccion;
+        this.viewInputs = detalleActual.codigo === "100" ? true : false;
 
-		if (response.totalRegistros === 2) {
-			const detallePropuestos = response.detalleSolicitudType.find(detalle => detalle.idDetalleSolicitud === 2);
+        if (response.totalRegistros === 2) {
+          const detallePropuestos = response.detalleSolicitudType.find(detalle => detalle.idDetalleSolicitud === 2);
 
-			this.modelPropuestos.codigoPosicion = detallePropuestos.codigoPosicion;
-			this.modelPropuestos.descrPosicion = detallePropuestos.descripcionPosicion;
-			this.modelPropuestos.subledger = detallePropuestos.subledger;
-			this.modelPropuestos.nombreCompleto = detallePropuestos.nombreEmpleado;
-			this.modelPropuestos.compania = detallePropuestos.compania;
-			this.modelPropuestos.unidadNegocio = detallePropuestos.unidadNegocio;
-			this.modelPropuestos.departamento = detallePropuestos.departamento;
-			this.modelPropuestos.nombreCargo = detallePropuestos.cargo;
-			this.modelPropuestos.localidad = detallePropuestos.localidad;
-			this.modelPropuestos.nivelDir = detallePropuestos.nivelDireccion;
-			this.modelPropuestos.nomCCosto = detallePropuestos.centroCosto;
-			this.modelPropuestos.misionCargo = detallePropuestos.misionCargo;
-			this.modelPropuestos.justificacionCargo = detallePropuestos.justificacion;
-			this.modelPropuestos.reportaA = detallePropuestos.reportaA;
-			this.modelPropuestos.supervisaA = detallePropuestos.supervisaA;
-			this.modelPropuestos.tipoContrato = detallePropuestos.tipoContrato;
-			this.modelPropuestos.nivelRepa = detallePropuestos.nivelReporteA;
-			this.modelPropuestos.sueldo = detallePropuestos.sueldo;
-			this.modelPropuestos.sueldoMensual = detallePropuestos.sueldoVariableMensual;
-			this.modelPropuestos.sueldoTrimestral = detallePropuestos.sueldoVariableTrimestral;
-			this.modelPropuestos.sueldoSemestral = detallePropuestos.sueldoVariableSemestral;
-			this.modelPropuestos.sueldoAnual = detallePropuestos.sueldoVariableAnual;
-			this.modelPropuestos.correo = detallePropuestos.correo;
-			this.modelPropuestos.fechaIngreso = detallePropuestos.fechaIngreso;
-			this.modelPropuestos.sucursal = detallePropuestos.sucursal;
-			this.modelPropuestos.fechaIngreso = detallePropuestos.fechaIngreso;
-			this.modelPropuestos.grupoPago = detallePropuestos.grupoDePago;
-			this.modelPropuestos.descrPuesto = detallePropuestos.descripcionPosicion;
-			this.detalleSolicitudPropuestos.movilizacion = detallePropuestos.movilizacion;
-			this.detalleSolicitudPropuestos.alimentacion = detallePropuestos.alimentacion;
-		}
+          this.modelPropuestos.codigoPosicion = detallePropuestos.codigoPosicion;
+          this.modelPropuestos.descrPosicion = detallePropuestos.descripcionPosicion;
+          this.modelPropuestos.subledger = detallePropuestos.subledger;
+          this.modelPropuestos.nombreCompleto = detallePropuestos.nombreEmpleado;
+          this.modelPropuestos.compania = detallePropuestos.compania;
+          this.modelPropuestos.unidadNegocio = detallePropuestos.unidadNegocio;
+          this.modelPropuestos.departamento = detallePropuestos.departamento;
+          this.modelPropuestos.nombreCargo = detallePropuestos.cargo;
+          this.modelPropuestos.localidad = detallePropuestos.localidad;
+          this.modelPropuestos.nivelDir = detallePropuestos.nivelDireccion;
+          this.modelPropuestos.nomCCosto = detallePropuestos.centroCosto;
+          this.modelPropuestos.misionCargo = detallePropuestos.misionCargo;
+          this.modelPropuestos.justificacionCargo = detallePropuestos.justificacion;
+          this.modelPropuestos.reportaA = detallePropuestos.reportaA;
+          this.modelPropuestos.supervisaA = detallePropuestos.supervisaA;
+          this.modelPropuestos.tipoContrato = detallePropuestos.tipoContrato;
+          this.modelPropuestos.nivelRepa = detallePropuestos.nivelReporteA;
+          this.modelPropuestos.sueldo = detallePropuestos.sueldo;
+          this.modelPropuestos.sueldoMensual = detallePropuestos.sueldoVariableMensual;
+          this.modelPropuestos.sueldoTrimestral = detallePropuestos.sueldoVariableTrimestral;
+          this.modelPropuestos.sueldoSemestral = detallePropuestos.sueldoVariableSemestral;
+          this.modelPropuestos.sueldoAnual = detallePropuestos.sueldoVariableAnual;
+          this.modelPropuestos.correo = detallePropuestos.correo;
+          this.modelPropuestos.fechaIngreso = detallePropuestos.fechaIngreso;
+          this.modelPropuestos.sucursal = detallePropuestos.sucursal;
+          this.modelPropuestos.fechaIngreso = detallePropuestos.fechaIngreso;
+          this.modelPropuestos.grupoPago = detallePropuestos.grupoDePago;
+          this.modelPropuestos.descrPuesto = detallePropuestos.descripcionPosicion;
+          this.detalleSolicitudPropuestos.movilizacion = detallePropuestos.movilizacion;
+          this.detalleSolicitudPropuestos.alimentacion = detallePropuestos.alimentacion;
+        }
 
         this.loadingComplete++;
 
@@ -938,10 +938,10 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
           this.solicitud.idTipoMotivo
         );
 
-		this.keySelected = `${this.solicitud.idTipoSolicitud}_${this.solicitud.idTipoMotivo}_${this.model.nivelDir}`;
+        this.keySelected = `${this.solicitud.idTipoSolicitud}_${this.solicitud.idTipoMotivo}_${this.model.nivelDir}`;
 
         if (!this.dataAprobacionesPorPosicion[this.keySelected]) {
-		  this.getNivelesAprobacion();
+          this.getNivelesAprobacion();
 
           if (this.model.codigoPosicion.trim().length > 0) {
             this.obtenerAprobacionesPorPosicionAPS();
@@ -1050,7 +1050,7 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
       });
   }
 
-   lookForError(result: any): void {
+  lookForError(result: any): void {
     if (result.error !== undefined && result.error !== null) {
       console.log("routing to app error page ", result.error.message);
       this.errorMessage = result.error.message;
@@ -1070,11 +1070,11 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
 
     });
 
-	if (isConfirmed) {
-        this.save();
+    if (isConfirmed) {
+      this.save();
 
-        if (this.submitted) {
-        }
+      if (this.submitted) {
+      }
     }
   }
 
@@ -1284,8 +1284,8 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
       };
       if (this.solicitud.tipoAccion.toUpperCase().includes("TEMPORAL")) {
         variables.tipoAccion = { value: "asignacionTemporal" };
-      }else{
-          variables.tipoAccion = { value: this.solicitud.tipoAccion };
+      } else {
+        variables.tipoAccion = { value: this.solicitud.tipoAccion };
       }
 
       variables.transferenciaCompania = {
@@ -1376,7 +1376,7 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
                 }
               });
 
-			  this.solicitudes.guardarDetallesAprobacionesSolicitud(this.solicitudes.modelDetalleAprobaciones).subscribe({
+              this.solicitudes.guardarDetallesAprobacionesSolicitud(this.solicitudes.modelDetalleAprobaciones).subscribe({
                 next: () => {
                 },
                 error: (err) => {
@@ -1520,7 +1520,7 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
     this.submitted = true;
   }
 
-  public onCancel(): void {}
+  public onCancel(): void { }
 
   save() {
     this.utilService.openLoadingSpinner("Guardando información, espere por favor...");
@@ -1581,7 +1581,7 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
 
         this.detalleSolicitud.sucursal = this.model.sucursal;
 
-		this.detalleSolicitud.grupoDePago = this.model.grupoPago;
+        this.detalleSolicitud.grupoDePago = this.model.grupoPago;
 
         this.detalleSolicitud.misionCargo = this.model.misionCargo === "" || this.model.misionCargo === undefined || this.model.misionCargo === null ? "" : this.model.misionCargo;
         this.detalleSolicitud.justificacion = this.model.justificacionCargo === "" || this.model.justificacionCargo === undefined || this.model.justificacionCargo === null ? "" : this.model.justificacionCargo;
@@ -1597,89 +1597,89 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
 
         this.detalleSolicitud.supervisaA = this.model.supervisaA;
         this.detalleSolicitud.codigo = this.viewInputs ? "100" : "1";
-        
+
         this.detalleSolicitud.fechaIngreso = this.model.fechaIngresogrupo === "" ? this.model.fechaIngreso : this.model.fechaIngresogrupo;
 
         this.solicitudes
           .actualizarDetalleSolicitud(this.detalleSolicitud)
           .subscribe((responseDetalle) => {
-			this.detalleSolicitud.idSolicitud = this.solicitud.idSolicitud;
+            this.detalleSolicitud.idSolicitud = this.solicitud.idSolicitud;
 
-			this.detalleSolicitud.areaDepartamento = this.modelPropuestos.departamento === "" ? this.model.departamento: this.modelPropuestos.departamento;
+            this.detalleSolicitud.areaDepartamento = this.modelPropuestos.departamento === "" ? this.model.departamento : this.modelPropuestos.departamento;
 
-			this.detalleSolicitud.cargo = this.modelPropuestos.nombreCargo === "" ? this.model.nombreCargo: this.modelPropuestos.nombreCargo;
-			this.detalleSolicitud.centroCosto = this.modelPropuestos.nomCCosto === "" ? this.model.nomCCosto: this.modelPropuestos.nomCCosto; 
-			this.detalleSolicitud.codigoPosicion = this.modelPropuestos.codigoPosicion === "" ? this.model.codigoPosicion: this.modelPropuestos.codigoPosicion; 
-			this.detalleSolicitud.compania = this.viewInputs ? this.model.compania : this.modelPropuestos.compania;
-			this.detalleSolicitud.departamento = this.modelPropuestos.departamento === "" ? this.model.departamento: this.modelPropuestos.departamento;
-			this.detalleSolicitud.descripcionPosicion = this.modelPropuestos.descrPuesto === "" ? this.model.descrPuesto: this.modelPropuestos.descrPuesto;
+            this.detalleSolicitud.cargo = this.modelPropuestos.nombreCargo === "" ? this.model.nombreCargo : this.modelPropuestos.nombreCargo;
+            this.detalleSolicitud.centroCosto = this.modelPropuestos.nomCCosto === "" ? this.model.nomCCosto : this.modelPropuestos.nomCCosto;
+            this.detalleSolicitud.codigoPosicion = this.modelPropuestos.codigoPosicion === "" ? this.model.codigoPosicion : this.modelPropuestos.codigoPosicion;
+            this.detalleSolicitud.compania = this.viewInputs ? this.model.compania : this.modelPropuestos.compania;
+            this.detalleSolicitud.departamento = this.modelPropuestos.departamento === "" ? this.model.departamento : this.modelPropuestos.departamento;
+            this.detalleSolicitud.descripcionPosicion = this.modelPropuestos.descrPuesto === "" ? this.model.descrPuesto : this.modelPropuestos.descrPuesto;
 
-			this.detalleSolicitud.localidad = this.modelPropuestos.localidad === "" ? this.model.localidad: this.modelPropuestos.localidad; 
-			this.detalleSolicitud.localidadZona = this.modelPropuestos.localidad === "" ? this.model.localidad: this.modelPropuestos.localidad;
+            this.detalleSolicitud.localidad = this.modelPropuestos.localidad === "" ? this.model.localidad : this.modelPropuestos.localidad;
+            this.detalleSolicitud.localidadZona = this.modelPropuestos.localidad === "" ? this.model.localidad : this.modelPropuestos.localidad;
 
-			this.detalleSolicitud.misionCargo = this.modelPropuestos.misionCargo === "" ? this.model.misionCargo: this.modelPropuestos.misionCargo;
-			this.detalleSolicitud.nivelDireccion = this.modelPropuestos.nivelDir === "" ? this.model.nivelDir: this.modelPropuestos.nivelDir; 
-			this.detalleSolicitud.nivelReporteA = this.modelPropuestos.nivelRepa === "" ? this.model.nivelRepa: this.modelPropuestos.nivelRepa;
+            this.detalleSolicitud.misionCargo = this.modelPropuestos.misionCargo === "" ? this.model.misionCargo : this.modelPropuestos.misionCargo;
+            this.detalleSolicitud.nivelDireccion = this.modelPropuestos.nivelDir === "" ? this.model.nivelDir : this.modelPropuestos.nivelDir;
+            this.detalleSolicitud.nivelReporteA = this.modelPropuestos.nivelRepa === "" ? this.model.nivelRepa : this.modelPropuestos.nivelRepa;
 
-			this.detalleSolicitud.nombreEmpleado = this.modelPropuestos.nombreCompleto === "" ? this.model.nombreCompleto: this.modelPropuestos.nombreCompleto;
+            this.detalleSolicitud.nombreEmpleado = this.modelPropuestos.nombreCompleto === "" ? this.model.nombreCompleto : this.modelPropuestos.nombreCompleto;
 
-			this.detalleSolicitud.reportaA = this.modelPropuestos.reportaA === "" ? this.model.reportaA: this.modelPropuestos.reportaA;
+            this.detalleSolicitud.reportaA = this.modelPropuestos.reportaA === "" ? this.model.reportaA : this.modelPropuestos.reportaA;
 
-			this.detalleSolicitud.subledger = this.modelPropuestos.subledger === "" ? this.model.subledger: this.modelPropuestos.subledger;
+            this.detalleSolicitud.subledger = this.modelPropuestos.subledger === "" ? this.model.subledger : this.modelPropuestos.subledger;
 
-			this.detalleSolicitud.subledgerEmpleado = this.modelPropuestos.subledger === "" ? this.model.subledger: this.modelPropuestos.subledger;
+            this.detalleSolicitud.subledgerEmpleado = this.modelPropuestos.subledger === "" ? this.model.subledger : this.modelPropuestos.subledger;
 
-			this.detalleSolicitud.sucursal = this.modelPropuestos.sucursal === "" ? this.model.sucursal: this.modelPropuestos.sucursal;
+            this.detalleSolicitud.sucursal = this.modelPropuestos.sucursal === "" ? this.model.sucursal : this.modelPropuestos.sucursal;
 
-			this.detalleSolicitud.grupoDePago = this.modelPropuestos.grupoPago === "" ? this.model.grupoPago: this.modelPropuestos.grupoPago;
+            this.detalleSolicitud.grupoDePago = this.modelPropuestos.grupoPago === "" ? this.model.grupoPago : this.modelPropuestos.grupoPago;
 
-			this.detalleSolicitud.misionCargo = this.modelPropuestos.misionCargo === "" || this.modelPropuestos.misionCargo === undefined || this.modelPropuestos.misionCargo === null ? "" : this.modelPropuestos.misionCargo;
-			this.detalleSolicitud.justificacion = this.modelPropuestos.justificacionCargo === "" || this.modelPropuestos.justificacionCargo === undefined || this.modelPropuestos.justificacionCargo === null ? "" : this.modelPropuestos.justificacionCargo;
-			this.detalleSolicitud.sueldo = this.modelPropuestos.sueldo === "" ? this.model.sueldo: this.modelPropuestos.sueldo; 
-			this.detalleSolicitud.sueldoVariableMensual = this.modelPropuestos.sueldoMensual === "" ? this.model.sueldoMensual: this.modelPropuestos.sueldoMensual;
-			this.detalleSolicitud.sueldoVariableTrimestral = this.modelPropuestos.sueldoTrimestral === "" ? this.model.sueldoTrimestral: this.modelPropuestos.sueldoTrimestral; 
-			this.detalleSolicitud.sueldoVariableSemestral = this.modelPropuestos.sueldoSemestral === "" ? this.model.sueldoSemestral: this.modelPropuestos.sueldoSemestral; 
-			this.detalleSolicitud.sueldoVariableAnual = this.modelPropuestos.sueldoAnual === "" ? this.model.sueldoAnual: this.modelPropuestos.sueldoAnual; 
-			this.detalleSolicitud.tipoContrato = this.modelPropuestos.tipoContrato === "" ? this.model.tipoContrato: this.modelPropuestos.tipoContrato;
-			this.detalleSolicitud.unidadNegocio = this.viewInputs ? this.model.unidadNegocio : this.modelPropuestos.unidadNegocio;
+            this.detalleSolicitud.misionCargo = this.modelPropuestos.misionCargo === "" || this.modelPropuestos.misionCargo === undefined || this.modelPropuestos.misionCargo === null ? "" : this.modelPropuestos.misionCargo;
+            this.detalleSolicitud.justificacion = this.modelPropuestos.justificacionCargo === "" || this.modelPropuestos.justificacionCargo === undefined || this.modelPropuestos.justificacionCargo === null ? "" : this.modelPropuestos.justificacionCargo;
+            this.detalleSolicitud.sueldo = this.modelPropuestos.sueldo === "" ? this.model.sueldo : this.modelPropuestos.sueldo;
+            this.detalleSolicitud.sueldoVariableMensual = this.modelPropuestos.sueldoMensual === "" ? this.model.sueldoMensual : this.modelPropuestos.sueldoMensual;
+            this.detalleSolicitud.sueldoVariableTrimestral = this.modelPropuestos.sueldoTrimestral === "" ? this.model.sueldoTrimestral : this.modelPropuestos.sueldoTrimestral;
+            this.detalleSolicitud.sueldoVariableSemestral = this.modelPropuestos.sueldoSemestral === "" ? this.model.sueldoSemestral : this.modelPropuestos.sueldoSemestral;
+            this.detalleSolicitud.sueldoVariableAnual = this.modelPropuestos.sueldoAnual === "" ? this.model.sueldoAnual : this.modelPropuestos.sueldoAnual;
+            this.detalleSolicitud.tipoContrato = this.modelPropuestos.tipoContrato === "" ? this.model.tipoContrato : this.modelPropuestos.tipoContrato;
+            this.detalleSolicitud.unidadNegocio = this.viewInputs ? this.model.unidadNegocio : this.modelPropuestos.unidadNegocio;
 
-			this.detalleSolicitud.correo = this.modelPropuestos.correo === "" ? this.model.correo: this.modelPropuestos.correo;
+            this.detalleSolicitud.correo = this.modelPropuestos.correo === "" ? this.model.correo : this.modelPropuestos.correo;
 
-			this.detalleSolicitud.supervisaA = this.modelPropuestos.supervisaA === "" ? this.model.supervisaA: this.modelPropuestos.supervisaA;
+            this.detalleSolicitud.supervisaA = this.modelPropuestos.supervisaA === "" ? this.model.supervisaA : this.modelPropuestos.supervisaA;
 
-			this.detalleSolicitud.fechaIngreso = this.modelPropuestos.fechaIngreso === "" ? this.model.fechaIngreso: this.modelPropuestos.fechaIngreso;
+            this.detalleSolicitud.fechaIngreso = this.modelPropuestos.fechaIngreso === "" ? this.model.fechaIngreso : this.modelPropuestos.fechaIngreso;
 
-			this.detalleSolicitud.alimentacion = this.detalleSolicitudPropuestos.alimentacion;
-			this.detalleSolicitud.movilizacion = this.detalleSolicitudPropuestos.movilizacion;
+            this.detalleSolicitud.alimentacion = this.detalleSolicitudPropuestos.alimentacion;
+            this.detalleSolicitud.movilizacion = this.detalleSolicitudPropuestos.movilizacion;
 
-			if (this.totalRegistrosDetallesolicitud === 2) {
-        
-				this.detalleSolicitud.idDetalleSolicitud = 2;
-				this.solicitudes
-					.actualizarDetalleSolicitud(this.detalleSolicitud)
-					.subscribe((responseDetalle) => {
-						this.utilService.closeLoadingSpinner(); //comentado mmunoz
-						this.utilService.modalResponse("Datos ingresados correctamente", "success");
+            if (this.totalRegistrosDetallesolicitud === 2) {
 
-						setTimeout(() => {
-							window.location.reload();
-						}, 1800);
-					});
-			} else {
-				this.detalleSolicitud.idDetalleSolicitud = 100;
+              this.detalleSolicitud.idDetalleSolicitud = 2;
+              this.solicitudes
+                .actualizarDetalleSolicitud(this.detalleSolicitud)
+                .subscribe((responseDetalle) => {
+                  this.utilService.closeLoadingSpinner(); //comentado mmunoz
+                  this.utilService.modalResponse("Datos ingresados correctamente", "success");
 
-				this.solicitudes
-					.guardarDetalleSolicitud(this.detalleSolicitud)
-					.subscribe((responseDetalle) => {
-						this.utilService.closeLoadingSpinner(); //comentado mmunoz
-						this.utilService.modalResponse("Datos ingresados correctamente", "success");
+                  setTimeout(() => {
+                    window.location.reload();
+                  }, 1800);
+                });
+            } else {
+              this.detalleSolicitud.idDetalleSolicitud = 100;
 
-						setTimeout(() => {
-							window.location.reload();
-						}, 1800);
-					});
-			}
-      	});
+              this.solicitudes
+                .guardarDetalleSolicitud(this.detalleSolicitud)
+                .subscribe((responseDetalle) => {
+                  this.utilService.closeLoadingSpinner(); //comentado mmunoz
+                  this.utilService.modalResponse("Datos ingresados correctamente", "success");
+
+                  setTimeout(() => {
+                    window.location.reload();
+                  }, 1800);
+                });
+            }
+          });
       });
     this.submitted = true;
   }
@@ -1819,7 +1819,7 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
     return diferencia;
   }
 
-  formatter = (timestamp : any): Date => {
+  formatter = (timestamp: any): Date => {
     const fecha = new Date(timestamp);
 
     const fechaFormateada = new Intl.DateTimeFormat('en-CA', {
@@ -1834,37 +1834,37 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
 
   openModalReasignarUsuario() {
     const modelRef = this.modalService.open(dialogComponentList.dialogReasignarUsuario, {
-        ariaLabelledBy: "modal-title",
-	});
+      ariaLabelledBy: "modal-title",
+    });
 
-	modelRef.componentInstance.idParam = this.solicitud.idSolicitud;
-	modelRef.componentInstance.taskId = this.taskType_Activity;
+    modelRef.componentInstance.idParam = this.solicitud.idSolicitud;
+    modelRef.componentInstance.taskId = this.taskType_Activity;
 
     modelRef.result.then(
-        (result) => {
-          if (result === "close") {
-            return;
-		  }
-
-          if (result?.data) {
-            Swal.fire({
-              text: result.data,
-              icon: "success",
-              confirmButtonColor: "rgb(227, 199, 22)",
-              confirmButtonText: "Ok",
-            }).then((result) => {
-              if (result.isConfirmed) {
-                this.router.navigate(["/mantenedores/reasignar-tareas-usuarios"]);
-                if (this.submitted) {
-                }
-              }
-            });
-          }
-        },
-        (reason) => {
-          console.log(`Dismissed with: ${reason}`);
+      (result) => {
+        if (result === "close") {
+          return;
         }
-      );
+
+        if (result?.data) {
+          Swal.fire({
+            text: result.data,
+            icon: "success",
+            confirmButtonColor: "rgb(227, 199, 22)",
+            confirmButtonText: "Ok",
+          }).then((result) => {
+            if (result.isConfirmed) {
+              this.router.navigate(["/mantenedores/reasignar-tareas-usuarios"]);
+              if (this.submitted) {
+              }
+            }
+          });
+        }
+      },
+      (reason) => {
+        console.log(`Dismissed with: ${reason}`);
+      }
+    );
   }
 
   indexedModal: Record<keyof DialogComponents, any> = {
