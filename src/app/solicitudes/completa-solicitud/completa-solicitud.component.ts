@@ -29,6 +29,10 @@ import { CamundaRestService } from "../../camunda-rest.service";
 import { CompleteTaskComponent } from "../general/complete-task.component";
 import { RegistrarCandidatoService } from "../registrar-candidato/registrar-candidato.service";
 import { SolicitudesService } from "../registrar-solicitud/solicitudes.service";
+import { addDays } from "date-fns";
+import { dialogComponentList } from "../registrar-candidato/registrar-candidato.component";
+import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
+import { DialogComponents } from "src/app/shared/dialogComponents/dialog.components";
 
 @Component({
   selector: 'completaSolicitud',
@@ -334,6 +338,9 @@ export class CompletaSolicitudComponent extends CompleteTaskComponent {
       status: "A",
     },
   ];
+  public minDateValidation = new Date();
+  public maxDateValidation = addDays(new Date(), 365);
+
 
   public success: false;
   public params: any;
@@ -353,7 +360,8 @@ export class CompletaSolicitudComponent extends CompleteTaskComponent {
   subledgers: string[] = [];
 
   codigosPosicion: string[] = [];
-
+  public existeMatenedores: boolean = false;
+  public existe: boolean = false;
   public dataComentariosAprobaciones: any[] = [];
   public dataComentariosAprobacionesPorPosicion: any[] = [];
   public dataComentariosAprobacionesRRHH: any[] = [];
@@ -368,6 +376,7 @@ export class CompletaSolicitudComponent extends CompleteTaskComponent {
     private utilService: UtilService,
     private consultaTareasService: ConsultaTareasService,
     private starterService: StarterService,
+    private modalService: NgbModal,
     private seleccionCandidatoService: RegistrarCandidatoService
   ) {
     super(route, router, camundaRestService);
@@ -398,13 +407,13 @@ export class CompletaSolicitudComponent extends CompleteTaskComponent {
         next: (res) => {
           return this.consultaTareasService.getTareasUsuario(res.evType[0].subledger).subscribe({
             next: async (response) => {
-              const existe = response.solicitudes.some(({ idSolicitud, rootProcInstId}) => idSolicitud === this.id_solicitud_by_params && rootProcInstId === this.idDeInstancia);
+              this.existe = response.solicitudes.some(({ idSolicitud, rootProcInstId}) => idSolicitud === this.id_solicitud_by_params && rootProcInstId === this.idDeInstancia);
 
 			  const permisos: Permiso[] = JSON.parse(localStorage.getItem(LocalStorageKeys.Permisos)!);
 
-			  const existeMatenedores = permisos.some(permiso => permiso.codigo === PageCodes.AprobadorFijo);
+			  this.existeMatenedores = permisos.some(permiso => permiso.codigo === PageCodes.AprobadorFijo);
 
-              if (existe || existeMatenedores) {
+              if (this.existe || this.existeMatenedores) {
                 try {
                   await this.loadDataCamunda();
 
@@ -435,6 +444,15 @@ export class CompletaSolicitudComponent extends CompleteTaskComponent {
     } catch (error) {
       this.utilService.modalResponse(error.error, "error");
     }
+  }
+
+  indexedModal: Record<keyof DialogComponents, any> = {
+    dialogBuscarEmpleados: undefined,
+    dialogReasignarUsuario: () => this.openModalReasignarUsuario(),
+  };
+
+  openModal(component: keyof DialogComponents) {
+    this.indexedModal[component]();
   }
 
   searchCodigoPosicion: OperatorFunction<string, readonly string[]> = (
@@ -481,6 +499,41 @@ export class CompletaSolicitudComponent extends CompleteTaskComponent {
             .slice(0, 10)
       )
     );
+
+    openModalReasignarUsuario() {
+      const modelRef =this.modalService.open(dialogComponentList.dialogReasignarUsuario, {
+        ariaLabelledBy: "modal-title",
+      });
+  
+      modelRef.componentInstance.idParam = this.solicitud.idSolicitud;
+      modelRef.componentInstance.taskId = this.taskType_Activity;
+  
+      modelRef.result.then(
+        (result) => {
+          if (result === "close") {
+            return;
+          }
+  
+          if (result?.data) {
+            Swal.fire({
+              text: result.data,
+              icon: "success",
+              confirmButtonColor: "rgb(227, 199, 22)",
+              confirmButtonText: "Ok",
+            }).then((result) => {
+              if (result.isConfirmed) {
+                this.router.navigate(["/mantenedores/reasignar-tareas-usuarios"]);
+                if (this.submitted) {
+                }
+              }
+            });
+          }
+        },
+        (reason) => {
+          console.log(`Dismissed with: ${reason}`);
+        }
+      );
+    }
 
   loadDataCamunda() {
     this.route.queryParamMap.subscribe((qParams) => {
@@ -547,7 +600,6 @@ export class CompletaSolicitudComponent extends CompleteTaskComponent {
             this.id_solicitud_by_params = tarea.solicitudes[0].idSolicitud;
             this.taskId = params["id"];
 
-            this.getDetalleSolicitudById(this.id_solicitud_by_params);
             this.getSolicitudById(this.id_solicitud_by_params);
             this.date = tarea.solicitudes[0].fechaCreacion;
             this.loadExistingVariables(
@@ -814,7 +866,7 @@ export class CompletaSolicitudComponent extends CompleteTaskComponent {
       next: (response: any) => {
         this.solicitud = response;
 
-        this.loadingComplete++;
+        this.loadingComplete+=2;
         this.getDetalleSolicitudById(this.id_edit);
 
 
@@ -855,6 +907,11 @@ export class CompletaSolicitudComponent extends CompleteTaskComponent {
           this.model.sueldoAnual = this.detalleSolicitud.sueldoVariableAnual
           this.model.correo = this.detalleSolicitud.correo;
           this.model.fechaIngreso = this.detalleSolicitud.fechaIngreso;
+          if (this.detalleSolicitud.valor.includes("Solicitud en Espera")) {
+            this.isFechaMaximaVisible = true;
+            this.textareaContent = this.detalleSolicitud.valor;
+            this.selectedDate = new Date(this.detalleSolicitud.fechaSalida);
+          }   
 
 
         }
@@ -1021,20 +1078,22 @@ export class CompletaSolicitudComponent extends CompleteTaskComponent {
 
 
           switch (this.buttonValue) {
-            case 'devolver':
-
-              this.solicitud.estadoSolicitud = "DV";  //Devolver
-              break;
 
             case 'rechazar':
               this.solicitud.estadoSolicitud = "5"; //Cancelado
+              this.detalleSolicitud.fechaSalida=new Date();
+              this.detalleSolicitud.valor = null;
               break;
 
             case 'aprobar':
+              this.detalleSolicitud.fechaSalida=new Date();
+              this.detalleSolicitud.valor = null;
               this.solicitud.estadoSolicitud = "1";
               break;
 
             case 'esperar':
+              this.detalleSolicitud.fechaSalida=this.selectedDate;
+              this.detalleSolicitud.valor = "Solicitud en Espera: " + this.textareaContent;
 
               this.solicitud.estadoSolicitud = "2";
 
@@ -1045,7 +1104,11 @@ export class CompletaSolicitudComponent extends CompleteTaskComponent {
           this.solicitudes
             .actualizarSolicitud(this.solicitud)
             .subscribe((responseSolicitud) => {
-
+              this.solicitudes
+              .actualizarDetalleSolicitud(this.detalleSolicitud).subscribe({
+                next: (response) => {
+                }
+              });
 
             });
 

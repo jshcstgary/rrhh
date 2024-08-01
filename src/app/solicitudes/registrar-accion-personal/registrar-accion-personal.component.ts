@@ -327,6 +327,8 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
   public idDeInstancia: any;
 
   public loadingComplete = 0;
+  public viewInputs: boolean = false;
+
 
   /*
   nombresEmpleados: string[] = [
@@ -655,6 +657,8 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
           this.utilService.modalResponse(error.error, "error");
         },
       });
+      this.modelPropuestos=this.model;
+      this.modelPropuestos.fechaIngreso=this.model.fechaIngresogrupo;
 
       this.keySelected = `${this.solicitud.idTipoSolicitud}_${this.solicitud.idTipoMotivo}_${this.model.codigoPosicion}_${this.model.nivelDir}`;
 
@@ -662,7 +666,7 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
       if (!this.dataAprobacionesPorPosicion[this.keySelected]) {
         this.obtenerAprobacionesPorPosicion();
       }
-    } else {
+      } else {
       let tempSearch = valor;
       this.model = new RegistrarData();
       if (campo == "codigoPosicion") {
@@ -869,6 +873,7 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
 		this.model.grupoPago = detalleActual.grupoDePago;
 		this.model.descrPuesto = detalleActual.descripcionPosicion;
     this.nivelDireccionDatoPropuesto = detalleActual.nivelDireccion;
+    this.viewInputs = detalleActual.codigo === "100" ? true : false;
 
 		if (response.totalRegistros === 2) {
 			const detallePropuestos = response.detalleSolicitudType.find(detalle => detalle.idDetalleSolicitud === 2);
@@ -1573,7 +1578,8 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
         this.detalleSolicitud.correo = this.model.correo;
 
         this.detalleSolicitud.supervisaA = this.model.supervisaA;
-
+        this.detalleSolicitud.codigo = this.viewInputs ? "100" : "1";
+        
         this.detalleSolicitud.fechaIngreso = this.model.fechaIngresogrupo === "" ? this.model.fechaIngreso : this.model.fechaIngresogrupo;
 
         this.solicitudes
@@ -1581,56 +1587,56 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
           .subscribe((responseDetalle) => {
 			this.detalleSolicitud.idSolicitud = this.solicitud.idSolicitud;
 
-			this.detalleSolicitud.areaDepartamento = this.modelPropuestos.departamento;
+			this.detalleSolicitud.areaDepartamento = this.modelPropuestos.departamento === "" ? this.model.departamento: this.modelPropuestos.departamento;
 
-			this.detalleSolicitud.cargo = this.modelPropuestos.nombreCargo;
-			this.detalleSolicitud.centroCosto = this.modelPropuestos.nomCCosto;
-			this.detalleSolicitud.codigoPosicion = this.modelPropuestos.codigoPosicion;
+			this.detalleSolicitud.cargo = this.modelPropuestos.nombreCargo === "" ? this.model.nombreCargo: this.modelPropuestos.nombreCargo;
+			this.detalleSolicitud.centroCosto = this.modelPropuestos.nomCCosto === "" ? this.model.nomCCosto: this.modelPropuestos.nomCCosto; 
+			this.detalleSolicitud.codigoPosicion = this.modelPropuestos.codigoPosicion === "" ? this.model.codigoPosicion: this.modelPropuestos.codigoPosicion; 
 			this.detalleSolicitud.compania = this.viewInputs ? this.model.compania : this.modelPropuestos.compania;
-			this.detalleSolicitud.departamento = this.modelPropuestos.departamento;
-			this.detalleSolicitud.descripcionPosicion = this.modelPropuestos.descrPuesto;
+			this.detalleSolicitud.departamento = this.modelPropuestos.departamento === "" ? this.model.departamento: this.modelPropuestos.departamento;
+			this.detalleSolicitud.descripcionPosicion = this.modelPropuestos.descrPuesto === "" ? this.model.descrPuesto: this.modelPropuestos.descrPuesto;
 
-			this.detalleSolicitud.localidad = this.modelPropuestos.localidad;
-			this.detalleSolicitud.localidadZona = this.modelPropuestos.localidad;
+			this.detalleSolicitud.localidad = this.modelPropuestos.localidad === "" ? this.model.localidad: this.modelPropuestos.localidad; 
+			this.detalleSolicitud.localidadZona = this.modelPropuestos.localidad === "" ? this.model.localidad: this.modelPropuestos.localidad;
 
-			this.detalleSolicitud.misionCargo = this.modelPropuestos.misionCargo;
-			this.detalleSolicitud.nivelDireccion = this.modelPropuestos.nivelDir;
-			this.detalleSolicitud.nivelReporteA = this.modelPropuestos.nivelRepa;
+			this.detalleSolicitud.misionCargo = this.modelPropuestos.misionCargo === "" ? this.model.misionCargo: this.modelPropuestos.misionCargo;
+			this.detalleSolicitud.nivelDireccion = this.modelPropuestos.nivelDir === "" ? this.model.nivelDir: this.modelPropuestos.nivelDir; 
+			this.detalleSolicitud.nivelReporteA = this.modelPropuestos.nivelRepa === "" ? this.model.nivelRepa: this.modelPropuestos.nivelRepa;
 
-			this.detalleSolicitud.nombreEmpleado = this.modelPropuestos.nombreCompleto;
+			this.detalleSolicitud.nombreEmpleado = this.modelPropuestos.nombreCompleto === "" ? this.model.nombreCompleto: this.modelPropuestos.nombreCompleto;
 
-			this.detalleSolicitud.reportaA = this.modelPropuestos.reportaA;
+			this.detalleSolicitud.reportaA = this.modelPropuestos.reportaA === "" ? this.model.reportaA: this.modelPropuestos.reportaA;
 
-			this.detalleSolicitud.subledger = this.modelPropuestos.subledger;
+			this.detalleSolicitud.subledger = this.modelPropuestos.subledger === "" ? this.model.subledger: this.modelPropuestos.subledger;
 
-			this.detalleSolicitud.subledgerEmpleado = this.modelPropuestos.subledger;
+			this.detalleSolicitud.subledgerEmpleado = this.modelPropuestos.subledger === "" ? this.model.subledger: this.modelPropuestos.subledger;
 
-			this.detalleSolicitud.sucursal = this.modelPropuestos.sucursal;
+			this.detalleSolicitud.sucursal = this.modelPropuestos.sucursal === "" ? this.model.sucursal: this.modelPropuestos.sucursal;
 
-			this.detalleSolicitud.grupoDePago = this.modelPropuestos.grupoPago;
+			this.detalleSolicitud.grupoDePago = this.modelPropuestos.grupoPago === "" ? this.model.grupoPago: this.modelPropuestos.grupoPago;
 
 			this.detalleSolicitud.misionCargo = this.modelPropuestos.misionCargo === "" || this.modelPropuestos.misionCargo === undefined || this.modelPropuestos.misionCargo === null ? "" : this.modelPropuestos.misionCargo;
 			this.detalleSolicitud.justificacion = this.modelPropuestos.justificacionCargo === "" || this.modelPropuestos.justificacionCargo === undefined || this.modelPropuestos.justificacionCargo === null ? "" : this.modelPropuestos.justificacionCargo;
-			this.detalleSolicitud.sueldo = this.modelPropuestos.sueldo;
-			this.detalleSolicitud.sueldoVariableMensual = this.modelPropuestos.sueldoMensual;
-			this.detalleSolicitud.sueldoVariableTrimestral = this.modelPropuestos.sueldoTrimestral;
-			this.detalleSolicitud.sueldoVariableSemestral = this.modelPropuestos.sueldoSemestral;
-			this.detalleSolicitud.sueldoVariableAnual = this.modelPropuestos.sueldoAnual;
-			this.detalleSolicitud.tipoContrato = this.modelPropuestos.tipoContrato;
+			this.detalleSolicitud.sueldo = this.modelPropuestos.sueldo === "" ? this.model.sueldo: this.modelPropuestos.sueldo; 
+			this.detalleSolicitud.sueldoVariableMensual = this.modelPropuestos.sueldoMensual === "" ? this.model.sueldoMensual: this.modelPropuestos.sueldoMensual;
+			this.detalleSolicitud.sueldoVariableTrimestral = this.modelPropuestos.sueldoTrimestral === "" ? this.model.sueldoTrimestral: this.modelPropuestos.sueldoTrimestral; 
+			this.detalleSolicitud.sueldoVariableSemestral = this.modelPropuestos.sueldoSemestral === "" ? this.model.sueldoSemestral: this.modelPropuestos.sueldoSemestral; 
+			this.detalleSolicitud.sueldoVariableAnual = this.modelPropuestos.sueldoAnual === "" ? this.model.sueldoAnual: this.modelPropuestos.sueldoAnual; 
+			this.detalleSolicitud.tipoContrato = this.modelPropuestos.tipoContrato === "" ? this.model.tipoContrato: this.modelPropuestos.tipoContrato;
 			this.detalleSolicitud.unidadNegocio = this.viewInputs ? this.model.unidadNegocio : this.modelPropuestos.unidadNegocio;
 
-			this.detalleSolicitud.correo = this.modelPropuestos.correo;
+			this.detalleSolicitud.correo = this.modelPropuestos.correo === "" ? this.model.correo: this.modelPropuestos.correo;
 
-			this.detalleSolicitud.supervisaA = this.modelPropuestos.supervisaA;
+			this.detalleSolicitud.supervisaA = this.modelPropuestos.supervisaA === "" ? this.model.supervisaA: this.modelPropuestos.supervisaA;
 
-			this.detalleSolicitud.fechaIngreso = this.modelPropuestos.fechaIngresogrupo === "" ? this.modelPropuestos.fechaIngreso : this.modelPropuestos.fechaIngresogrupo;
+			this.detalleSolicitud.fechaIngreso = this.modelPropuestos.fechaIngreso === "" ? this.model.fechaIngreso: this.modelPropuestos.fechaIngreso;
 
 			this.detalleSolicitud.alimentacion = this.detalleSolicitudPropuestos.alimentacion;
 			this.detalleSolicitud.movilizacion = this.detalleSolicitudPropuestos.movilizacion;
 
 			if (this.totalRegistrosDetallesolicitud === 2) {
+        
 				this.detalleSolicitud.idDetalleSolicitud = 2;
-
 				this.solicitudes
 					.actualizarDetalleSolicitud(this.detalleSolicitud)
 					.subscribe((responseDetalle) => {
@@ -1733,12 +1739,12 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
     return result;
   };
 
-  viewInputs: boolean = false;
 
   onCheckedComp = (event: Event): void => {
     const isChecked = (event.target as HTMLInputElement).checked;
 
     this.viewInputs = !isChecked;
+    console.log(this.viewInputs)
   }
 
 

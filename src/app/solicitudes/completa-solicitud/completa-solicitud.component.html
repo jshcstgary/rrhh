@@ -12,7 +12,14 @@
           </div>
         </div>
         <div class="col-md-4 text-end">
-          <button
+          <button  *ngIf="existeMatenedores"
+            type="button"
+            (click)="openModal('dialogReasignarUsuario')"
+            class="btn btn-info me-2 mt-1"
+          >
+            <i class="fas fa-redo"></i> Reasignar
+          </button>
+          <button *ngIf="!existeMatenedores || existe"
             type="submit"
             class="btn btn-info me-2 mt-1"
             aria-label="Close"
@@ -20,7 +27,7 @@
           >
             <i class="fas fa-save"></i> Guardar
           </button>
-          <button
+          <button *ngIf="!existeMatenedores || existe"
             type="button"
             (click)="onCompletar()"
             class="btn btn-info me-2 mt-1"
@@ -855,11 +862,6 @@
               value="aprobar">Aprobar</button>
       <button type="button"
               class="btn"
-              [ngClass]="{'btn-primary': !isSelected('devolver'), 'btn-success': isSelected('devolver')}"
-              (click)="process('devolver')"
-              value="devolver">Devolver</button>
-      <button type="button"
-              class="btn"
               [ngClass]="{'btn-primary': !isSelected('rechazar'), 'btn-success': isSelected('rechazar')}"
               (click)="process('rechazar')"
               value="rechazar">Cancelar</button>
@@ -920,27 +922,27 @@
           </div>
       </div> -->
 
-      <div class="row" *ngIf="isFechaIngresoVisible">
+      <div class="row" *ngIf="isFechaMaximaVisible">
         <div class="col">
           <div class="input-group mb-3 contenedor">
+            <label class="input-group-text label-estilo2" for="aprobar">Fecha máxima de espera</label>
 
-              <label
-                  class="input-group-text label-estilo2"
-                  for="fechaingreso"
-                  >Fecha Ingreso Candidato
-              </label>
+            <div class="datepicker-container">
+              <mat-form-field appearance="outline">
+                <mat-label>Fecha</mat-label>
 
-              <div class="datepicker-container">
-                <mat-form-field appearance="outline">
-                  <mat-label>Fecha</mat-label>
-                  <input matInput [matDatepicker]="picker2" [(ngModel)]="selectedDateIn" name="fechaIngresoCandidato">
-                  <mat-datepicker-toggle matSuffix [for]="picker2">
-                  </mat-datepicker-toggle>
-                  <mat-datepicker #picker2></mat-datepicker>
-                </mat-form-field>
-              </div>
+                <input matInput [matDatepicker]="picker" [min]="minDateValidation" [max]="maxDateValidation"
+                  [(ngModel)]="selectedDate" name="espera-maxima">
+
+                <mat-hint>Máximo 365 días después de hoy</mat-hint>
+
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+
+                <mat-datepicker #picker></mat-datepicker>
+              </mat-form-field>
             </div>
           </div>
+        </div>
       </div>
 
     </h2>

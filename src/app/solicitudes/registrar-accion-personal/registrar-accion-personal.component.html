@@ -124,8 +124,8 @@
 		<div class="mx-auto my-5">
 		<div class="form-check form-check-inline">
 			<div class="form-check text-center">
-			<input type="checkbox" class="form-check-input" id="customCheck1"
-					checked (change)="onCheckedComp($event)">
+			<input type="checkbox" class="form-check-input"  name="customCheck1" id="customCheck1"
+			[(ngModel)]="!viewInputs" checked (change)="onCheckedComp($event)">
 			<label class="form-check-label" for="customCheck1">Transferencia de Compañía</label>
 			</div>
 		</div>
@@ -438,7 +438,7 @@
 
 							&nbsp;
 
-							<input type="text" name="fecha-ingreso" placeholder="Campo obligatorio" [(ngModel)]="modelPropuestos.fechaIngreso" class="form-control" id="fecha-ingreso" required />
+							<input type="text" name="fecha-ingreso" placeholder="Campo obligatorio" [(ngModel)]="!viewInputs ? date : modelPropuestos.fechaIngreso" class="form-control" id="fecha-ingreso" required />
 						</div>
 					</div>
 					<div class="row">
@@ -447,7 +447,7 @@
 
 							&nbsp;
 
-							<input type="text" name="departamento" placeholder="Campo obligatorio" [(ngModel)]="modelPropuestos.departamento" class="form-control" id="departamento" required />
+							<input type="text" name="departamento" placeholder="Campo obligatorio" [(ngModel)]="!viewInputs ? model.departamento : modelPropuestos.departamento" class="form-control" id="departamento" required />
 						</div>
 					</div>
 					<div class="row">
@@ -456,7 +456,7 @@
 
 							&nbsp;
 
-							<input type="text" name="localidad" placeholder="Campo obligatorio" [(ngModel)]="modelPropuestos.localidad" class="form-control" id="localidad" required />
+							<input type="text" name="localidad" placeholder="Campo obligatorio" [(ngModel)]="!viewInputs ? model.localidad : modelPropuestos.localidad" class="form-control" id="localidad" required />
 						</div>
 					</div>
 					<div class="row">
@@ -465,7 +465,7 @@
 
 							&nbsp;
 
-							<input type="text" name="grupoPago" placeholder="Campo obligatorio" [(ngModel)]="modelPropuestos.grupoPago" class="form-control" id="grupoPago" required />
+							<input type="text" name="grupoPago" placeholder="Campo obligatorio" [(ngModel)]="!viewInputs ? model.grupoPago : modelPropuestos.grupoPago" class="form-control" id="grupoPago" required />
 						</div>
 					</div>
 					<div class="row">
@@ -474,7 +474,7 @@
 
 							&nbsp;
 
-							<input type="text" name="puesto" placeholder="Campo obligatorio" [(ngModel)]="modelPropuestos.descrPuesto" class="form-control" id="puesto" required />
+							<input type="text" name="puesto" placeholder="Campo obligatorio" [(ngModel)]="!viewInputs ? model.descrPuesto : modelPropuestos.descrPuesto" class="form-control" id="puesto" required />
 						</div>
 					</div>
 					<div class="row">
@@ -483,7 +483,7 @@
 
 							&nbsp;
 
-							<input type="text" name="centro-costos" placeholder="Campo obligatorio" [(ngModel)]="modelPropuestos.nomCCosto" class="form-control" id="centro-costos" required />
+							<input type="text" name="centro-costos" placeholder="Campo obligatorio" [(ngModel)]="!viewInputs ? model.nomCCosto :modelPropuestos.nomCCosto" class="form-control" id="centro-costos" required />
 						</div>
 					</div>
 					<div class="row">
@@ -492,7 +492,7 @@
 
 							&nbsp;
 
-							<input type="text" name="suursal" placeholder="Campo obligatorio" [(ngModel)]="modelPropuestos.sucursal" class="form-control" id="suursal" required />
+							<input type="text" name="suursal" placeholder="Campo obligatorio" [(ngModel)]="!viewInputs ? model.sucursal : modelPropuestos.sucursal" class="form-control" id="suursal" required />
 						</div>
 					</div>
 					<div class="row">
@@ -501,7 +501,7 @@
 
 							&nbsp;
 
-							<input type="text" name="movilizacion" placeholder="Campo obligatorio" [(ngModel)]="detalleSolicitudPropuestos.movilizacion" class="form-control" id="movilizacion" required />
+							<input type="text" name="movilizacion" placeholder="Campo obligatorio" [(ngModel)]="!viewInputs ? 0 : detalleSolicitudPropuestos.movilizacion" class="form-control" id="movilizacion" required />
 						</div>
 					</div>
 					<div class="row">
@@ -510,7 +510,7 @@
 
 							&nbsp;
 
-							<input type="text" name="alimentacion" placeholder="Campo obligatorio" [(ngModel)]="detalleSolicitudPropuestos.alimentacion" class="form-control" id="alimentacion" required />
+							<input type="text" name="alimentacion" placeholder="Campo obligatorio" [(ngModel)]="!viewInputs ? 0 : detalleSolicitudPropuestos.alimentacion" class="form-control" id="alimentacion" required />
 						</div>
 					</div>
 					<div class="row my-4">
@@ -529,7 +529,7 @@
 
 							&nbsp;
 
-							<input type="text" name="sueldo" placeholder="Campo obligatorio" [(ngModel)]="modelPropuestos.sueldo" class="form-control" id="sueldo" required />
+							<input type="text" name="sueldo" placeholder="Campo obligatorio" [(ngModel)]="!viewInputs ? model.sueldo : modelPropuestos.sueldo" class="form-control" id="sueldo" required />
 						</div>
 					</div>
 					<div class="row">
@@ -538,7 +538,7 @@
 
 							&nbsp;
 
-							<input type="text" name="sueldo-mensual" placeholder="Campo obligatorio" [(ngModel)]="modelPropuestos.sueldoMensual" class="form-control" id="sueldo-mensual" required />
+							<input type="text" name="sueldo-mensual" placeholder="Campo obligatorio" [(ngModel)]="!viewInputs ? model.sueldoMensual : modelPropuestos.sueldoMensual" class="form-control" id="sueldo-mensual" required />
 						</div>
 					</div>
 					<div class="row">
@@ -547,7 +547,7 @@
 
 							&nbsp;
 
-							<input type="text" name="sueldo-trimestral" placeholder="Campo obligatorio" [(ngModel)]="modelPropuestos.sueldoTrimestral" class="form-control" id="sueldo-trimestral" required />
+							<input type="text" name="sueldo-trimestral" placeholder="Campo obligatorio" [(ngModel)]="!viewInputs ? model.sueldoTrimestral : modelPropuestos.sueldoTrimestral" class="form-control" id="sueldo-trimestral" required />
 						</div>
 					</div>
 					<div class="row">
@@ -556,7 +556,7 @@
 
 							&nbsp;
 
-							<input type="text" name="sueldo-semestral" placeholder="Campo obligatorio" [(ngModel)]="modelPropuestos.sueldoSemestral" class="form-control" id="sueldo-semestral" required />
+							<input type="text" name="sueldo-semestral" placeholder="Campo obligatorio" [(ngModel)]="!viewInputs ? model.sueldoSemestral : modelPropuestos.sueldoSemestral" class="form-control" id="sueldo-semestral" required />
 						</div>
 					</div>
 					<div class="row">
@@ -565,7 +565,7 @@
 
 							&nbsp;
 
-							<input type="text" name="sueldo-anual" placeholder="Campo obligatorio" [(ngModel)]="modelPropuestos.sueldoAnual" class="form-control" id="sueldo-anual" required />
+							<input type="text" name="sueldo-anual" placeholder="Campo obligatorio" [(ngModel)]="!viewInputs ? model.sueldoAnual : modelPropuestos.sueldoAnual" class="form-control" id="sueldo-anual" required />
 						</div>
 					</div>
 				</div>
