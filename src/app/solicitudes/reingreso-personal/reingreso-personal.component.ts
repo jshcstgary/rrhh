@@ -3,8 +3,8 @@ import { Component, Type } from "@angular/core";
 import { NgForm } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 import {
-	NgbModal,
-	NgbTypeaheadSelectItemEvent,
+  NgbModal,
+  NgbTypeaheadSelectItemEvent,
 } from "@ng-bootstrap/ng-bootstrap";
 import { Observable, OperatorFunction, Subject } from "rxjs";
 import { debounceTime, distinctUntilChanged, map } from "rxjs/operators";
@@ -29,8 +29,8 @@ import { RegistrarCandidatoService } from "../registrar-candidato/registrar-cand
 import { SolicitudesService } from "../registrar-solicitud/solicitudes.service";
 import { DialogBuscarEmpleadosReingresoComponent } from "./dialog-buscar-empleados-reingreso/dialog-buscar-empleados-reingreso.component";
 import {
-	columnsAprobadores,
-	dataTableAprobadores,
+  columnsAprobadores,
+  dataTableAprobadores,
 } from "./reingreso-personal.data";
 
 interface DialogComponents {
@@ -409,7 +409,7 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
   public jefesReferencia: any[] = [];
   public responsablesRRHH: any[] = [];
   public tareasPorCompletar: any;
-  public primerNivelAprobacion: string="";
+  public primerNivelAprobacion: string = "";
 
 
   eventSearch = {
@@ -453,7 +453,7 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
     });
 
 
-	this.verifyData();
+    this.verifyData();
   }
 
   private verifyData(): void {
@@ -464,11 +464,11 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
         next: (res) => {
           return this.consultaTareasService.getTareasUsuario(res.evType[0].subledger).subscribe({
             next: async (response) => {
-              this.existe = response.solicitudes.some(({ idSolicitud, rootProcInstId}) => idSolicitud === this.id_solicitud_by_params && rootProcInstId === this.idDeInstancia);
+              this.existe = response.solicitudes.some(({ idSolicitud, rootProcInstId }) => idSolicitud === this.id_solicitud_by_params && rootProcInstId === this.idDeInstancia);
 
-			  const permisos: Permiso[] = JSON.parse(localStorage.getItem(LocalStorageKeys.Permisos)!);
+              const permisos: Permiso[] = JSON.parse(localStorage.getItem(LocalStorageKeys.Permisos)!);
 
-			  this.existeMatenedores = permisos.some(permiso => permiso.codigo === PageCodes.AprobadorFijo);
+              this.existeMatenedores = permisos.some(permiso => permiso.codigo === PageCodes.AprobadorFijo);
 
               if (this.existe || this.existeMatenedores) {
                 try {
@@ -695,7 +695,8 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
               sueldoSemestral: datosEmpleado.sueldoVariableSemestral,
               sueldoAnual: datosEmpleado.sueldoVariableAnual,
             }
-          );}
+          );
+        }
       },
       error: (error: HttpErrorResponse) => {
         this.utilService.modalResponse(error.error, "error");
@@ -755,13 +756,13 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
             this.tareasPorCompletar = result.filter((empleado) => {
               return empleado["deleteReason"] === null;
             });
-            if(this.tareasPorCompletar.length === 0){
+            if (this.tareasPorCompletar.length === 0) {
               return;
-            }else{
-            this.uniqueTaskId = this.tareasPorCompletar[0].id;
-            this.taskType_Activity = this.tareasPorCompletar[0].taskDefinitionKey;
-            this.nameTask = this.tareasPorCompletar[0].name;
-            }        
+            } else {
+              this.uniqueTaskId = this.tareasPorCompletar[0].id;
+              this.taskType_Activity = this.tareasPorCompletar[0].taskDefinitionKey;
+              this.nameTask = this.tareasPorCompletar[0].name;
+            }
             this.taskId = params["id"];
             // this.getDetalleSolicitudById(this.id_solicitud_by_params); // Si se comenta, causa problemas al abrir el Sweet Alert 2
             this.getCandidatoValues();
@@ -973,7 +974,7 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
         next: (response) => {
           this.dataAprobadoresDinamicos.length = 0;
           this.dataAprobacionesPorPosicionAPS = response.nivelAprobacionPosicionType;
-          this.primerNivelAprobacion=response.nivelAprobacionPosicionType[0].aprobador.nivelDireccion;
+          this.primerNivelAprobacion = response.nivelAprobacionPosicionType[0].aprobador.nivelDireccion;
           this.dataAprobacionesPorPosicionAPS.forEach((item) => {
             this.dataAprobadoresDinamicos.push(item.aprobador.nivelDireccion);
           });
@@ -1050,12 +1051,12 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
         this.tareasPorCompletar = tarea.filter((empleado) => {
           return empleado["deleteReason"] === null;
         });
-        if(this.tareasPorCompletar.length === 0){
+        if (this.tareasPorCompletar.length === 0) {
           return;
-        }else{
-        this.uniqueTaskId = this.tareasPorCompletar[0].id;
-        this.taskType_Activity = this.tareasPorCompletar[0].taskDefinitionKey;
-        this.nameTask = this.tareasPorCompletar[0].name;
+        } else {
+          this.uniqueTaskId = this.tareasPorCompletar[0].id;
+          this.taskType_Activity = this.tareasPorCompletar[0].taskDefinitionKey;
+          this.nameTask = this.tareasPorCompletar[0].name;
 
           if (this.taskType_Activity !== environment.taskType_Registrar) {
             this.RegistrarsolicitudCompletada = false;
@@ -1103,7 +1104,7 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
                 this.solicitudes.modelDetalleAprobaciones.fechaModificacion = new Date().toISOString();
               }
 
-            this.solicitudes.guardarDetallesAprobacionesSolicitud(this.solicitudes.modelDetalleAprobaciones).subscribe({
+              this.solicitudes.guardarDetallesAprobacionesSolicitud(this.solicitudes.modelDetalleAprobaciones).subscribe({
                 next: () => {
                 },
                 error: (err) => {
@@ -1140,7 +1141,7 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
           sudlegerAprobador: aprobador.subledger,
           codigoPosicionReportaA: aprobador.codigoPosicionReportaA,
           nivelDireccionAprobador: aprobador.nivelDireccion,
-          estadoAprobacion: nivelAprobacionType.idNivelAprobacionRuta.toUpperCase().includes(this.primerNivelAprobacion.toUpperCase()) ? "PorRevisar" :  nivelAprobacionType.idNivelAprobacionRuta.toUpperCase().includes("RRHH") ? "PorRevisarRRHH" : (nivelAprobacionType.idNivelAprobacionRuta.toUpperCase().includes("REMUNERA") ? "PorRevisarRemuneraciones" : "PendienteAsignacion"),
+          estadoAprobacion: nivelAprobacionType.idNivelAprobacionRuta.toUpperCase().includes(this.primerNivelAprobacion.toUpperCase()) ? "PorRevisar" : nivelAprobacionType.idNivelAprobacionRuta.toUpperCase().includes("RRHH") ? "PorRevisarRRHH" : (nivelAprobacionType.idNivelAprobacionRuta.toUpperCase().includes("REMUNERA") ? "PorRevisarRemuneraciones" : "PendienteAsignacion"),
           estado: nivelAprobacionType.estado,
           correo: aprobador.correo === null ? "" : aprobador.correo,
           usuarioCreacion: res.evType[0].nombreCompleto,
@@ -1233,37 +1234,37 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
 
   openModalReasignarUsuario() {
     const modelRef = this.modalService.open(dialogComponentList.dialogReasignarUsuario, {
-        ariaLabelledBy: "modal-title",
-	});
+      ariaLabelledBy: "modal-title",
+    });
 
-	modelRef.componentInstance.idParam = this.solicitudRG.idSolicitud;
-	modelRef.componentInstance.taskId = this.taskType_Activity;
+    modelRef.componentInstance.idParam = this.solicitudRG.idSolicitud;
+    modelRef.componentInstance.taskId = this.taskType_Activity;
 
     modelRef.result.then(
-        (result) => {
-          if (result === "close") {
-            return;
-		  }
-
-          if (result?.data) {
-            Swal.fire({
-              text: result.data,
-              icon: "success",
-              confirmButtonColor: "rgb(227, 199, 22)",
-              confirmButtonText: "Ok",
-            }).then((result) => {
-              if (result.isConfirmed) {
-                this.router.navigate(["/mantenedores/reasignar-tareas-usuarios"]);
-                if (this.submitted) {
-                }
-              }
-            });
-          }
-        },
-        (reason) => {
-          console.log(`Dismissed with: ${reason}`);
+      (result) => {
+        if (result === "close") {
+          return;
         }
-      );
+
+        if (result?.data) {
+          Swal.fire({
+            text: result.data,
+            icon: "success",
+            confirmButtonColor: "rgb(227, 199, 22)",
+            confirmButtonText: "Ok",
+          }).then((result) => {
+            if (result.isConfirmed) {
+              this.router.navigate(["/mantenedores/reasignar-tareas-usuarios"]);
+              if (this.submitted) {
+              }
+            }
+          });
+        }
+      },
+      (reason) => {
+        console.log(`Dismissed with: ${reason}`);
+      }
+    );
   }
 
   indexedModal: Record<keyof DialogComponents, any> = {
@@ -1275,9 +1276,9 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
     this.indexedModal[component]();
   }
 
-  llenarModelDetalleAprobaciones({tipoJefe, ...jefe}: any) {
+  llenarModelDetalleAprobaciones({ tipoJefe, ...jefe }: any) {
     return {
-      
+
       id_Solicitud: this.solicitudRG.idSolicitud,
       id_NivelAprobacion: tipoJefe === "jefeInmediato" ? 300000 : (tipoJefe === "responsableRRHH" ? 300001 : 350000),
       id_TipoSolicitud: this.solicitudRG.idTipoSolicitud.toString(),
@@ -1326,7 +1327,7 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
         tipoJefe: "responsableRRHH"
       });
     }
-console.log(this.detalleSolicitud.jefeSolicitante);
+
     this.mantenimientoService.getDataEmpleadosEvolutionPorId(this.detalleSolicitud.jefeSolicitante).subscribe({
       next: (responseSolicitante) => {
         if (responseSolicitante.evType.length === 0) {
@@ -1349,23 +1350,23 @@ console.log(this.detalleSolicitud.jefeSolicitante);
             sueldoAnual: responseSolicitante.evType[0].sueldoVariableAnual,
           }
         );
-          jefes.push({
-            ...this.jefeSolicitanteQuery,
-            tipoJefe: "jefeSolicitante"
-          });
-        },
-        error: (error: HttpErrorResponse) => {
-          this.utilService.modalResponse(error.error, "error");
-        },
-      });
         jefes.push({
           ...this.jefeSolicitanteQuery,
           tipoJefe: "jefeSolicitante"
         });
+      },
+      error: (error: HttpErrorResponse) => {
+        this.utilService.modalResponse(error.error, "error");
+      },
+    });
+    jefes.push({
+      ...this.jefeSolicitanteQuery,
+      tipoJefe: "jefeSolicitante"
+    });
 
 
     const detallesJefes = jefes.map((jefe) => this.llenarModelDetalleAprobaciones(jefe));
-console.log(detallesJefes);
+    console.log(detallesJefes);
     this.solicitudes.cargarDetalleAprobacionesArreglo(detallesJefes).subscribe({
       next: () => {
         this.submitted = true;
@@ -1443,7 +1444,7 @@ console.log(detallesJefes);
                 this.detalleSolicitud.jefeReferencia = this.jefeReferenciaQuery.nombreCompleto;
                 this.detalleSolicitud.puesto = this.jefeReferenciaQuery.descrPuesto;
                 this.detalleSolicitud.responsableRRHH = this.responsableRRHHQuery.nombreCompleto;
-                this.detalleSolicitud.jefeSolicitante = this.solicitud.usuarioCreacion;
+                // this.detalleSolicitud.jefeSolicitante = this.solicitud.usuarioCreacion;
                 this.detalleSolicitud.fechaSalida = this.fechaSalida;
                 this.detalleSolicitud.causaSalida = this.causaSalida;
 

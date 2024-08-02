@@ -397,7 +397,7 @@ export class RegistrarComentarioSalidaJefeComponent extends CompleteTaskComponen
   nombreCompletoCandidato: string = "";
   public taskType_Activity_subledger: any;
   public tareasPorCompletar: any;
-  public primerNivelAprobacion: string="";
+  public primerNivelAprobacion: string = "";
 
 
   idSolicitudRP: string = "";
@@ -444,7 +444,7 @@ export class RegistrarComentarioSalidaJefeComponent extends CompleteTaskComponen
       console.log("this.idDeInstancia: ", this.idDeInstancia);
     });
 
-	this.verifyData();
+    this.verifyData();
   }
 
   private verifyData(): void {
@@ -455,10 +455,10 @@ export class RegistrarComentarioSalidaJefeComponent extends CompleteTaskComponen
         next: (res) => {
           return this.consultaTareasService.getTareasUsuario(res.evType[0].subledger).subscribe({
             next: async (response) => {
-              this.existe = response.solicitudes.some(({ idSolicitud, rootProcInstId}) => idSolicitud === this.id_solicitud_by_params && rootProcInstId === this.idDeInstancia);
-              this.taskType_Activity_subledger = response.solicitudes.filter(({ idSolicitud, rootProcInstId}) => idSolicitud === this.id_solicitud_by_params && rootProcInstId === this.idDeInstancia);
-			  const permisos: Permiso[] = JSON.parse(localStorage.getItem(LocalStorageKeys.Permisos)!);
-			  this.existeMatenedores = permisos.some(permiso => permiso.codigo === PageCodes.AprobadorFijo);
+              this.existe = response.solicitudes.some(({ idSolicitud, rootProcInstId }) => idSolicitud === this.id_solicitud_by_params && rootProcInstId === this.idDeInstancia);
+              this.taskType_Activity_subledger = response.solicitudes.filter(({ idSolicitud, rootProcInstId }) => idSolicitud === this.id_solicitud_by_params && rootProcInstId === this.idDeInstancia);
+              const permisos: Permiso[] = JSON.parse(localStorage.getItem(LocalStorageKeys.Permisos)!);
+              this.existeMatenedores = permisos.some(permiso => permiso.codigo === PageCodes.AprobadorFijo);
 
               if (this.existe || this.existeMatenedores) {
                 try {
@@ -497,7 +497,7 @@ export class RegistrarComentarioSalidaJefeComponent extends CompleteTaskComponen
     this.utilService.openLoadingSpinner("Cargando información, espere por favor...");
 
     try {
-     // await this.loadDataCamunda();
+      // await this.loadDataCamunda();
 
       this.utilService.closeLoadingSpinner();
     } catch (error) {
@@ -691,49 +691,41 @@ export class RegistrarComentarioSalidaJefeComponent extends CompleteTaskComponen
       const variableNames = Object.keys(this.model).join(",");
 
       if ("true" === this.parentIdFlag) {
-        console.log(this.taskType_Activity_subledger);
         if (this.taskType_Activity_subledger.length === 0) {
-         
-        this.idDeInstancia = params["id"];
-        this.solicitudes.getTaskId(this.idDeInstancia).subscribe({
-          next: (result) => {
-            this.tareasPorCompletar = result.filter((empleado) => {
-              return empleado["deleteReason"] === null;
-            });
-            if(this.tareasPorCompletar.length === 0){
-              return;
-            }else{
-            this.uniqueTaskId = this.tareasPorCompletar[0].id;
-            this.taskType_Activity = this.tareasPorCompletar[0].taskDefinitionKey;
-            this.nameTask = this.tareasPorCompletar[0].name;
-            }        
-            this.taskId = params["id"];
-            this.getCandidatoValues();
-            this.date = this.tareasPorCompletar[0].startTime;
-          },
-          error: (error) => {
-            console.error(error);
-          }
-        });
-       }else{
+          this.idDeInstancia = params["id"];
+
+          this.solicitudes.getTaskId(this.idDeInstancia).subscribe({
+            next: (result) => {
+              this.tareasPorCompletar = result.filter((empleado) => {
+                return empleado["deleteReason"] === null;
+              });
+
+              if (this.tareasPorCompletar.length === 0) {
+                return;
+              } else {
+                this.uniqueTaskId = this.tareasPorCompletar[0].id;
+                this.taskType_Activity = this.tareasPorCompletar[0].taskDefinitionKey;
+                this.nameTask = this.tareasPorCompletar[0].name;
+              }
+
+              this.taskId = params["id"];
+              this.date = this.tareasPorCompletar[0].startTime;
+            },
+            error: (error) => {
+              console.error(error);
+            }
+          });
+        } else {
           this.taskKey = this.taskType_Activity_subledger[0].tasK_DEF_KEY;
           this.uniqueTaskId = this.taskType_Activity_subledger[0].taskId;
           this.date = this.taskType_Activity_subledger[0].startTime;
         }
 
-
-          // this.loadExistingVariables(this.uniqueTaskId ? this.uniqueTaskId : "", variableNames);
+        this.getCandidatoValues();
       } else {
-        // unique id is from the route params
         this.uniqueTaskId = params["id"];
         this.taskId = params["id"];
-        // this.loadExistingVariables(
-        //   this.uniqueTaskId ? this.uniqueTaskId : "",
-        //   variableNames
-        // );
       }
-      // console.log("Así es mi variablesNames: ", variableNames);
-      // ready to do the processing now
     });
   }
 
@@ -921,7 +913,7 @@ export class RegistrarComentarioSalidaJefeComponent extends CompleteTaskComponen
           sudlegerAprobador: aprobador.subledger,
           codigoPosicionReportaA: aprobador.codigoPosicionReportaA,
           nivelDireccionAprobador: aprobador.nivelDireccion,
-          estadoAprobacion: nivelAprobacionType.idNivelAprobacionRuta.toUpperCase().includes(this.primerNivelAprobacion.toUpperCase()) ? "PorRevisar" :  nivelAprobacionType.idNivelAprobacionRuta.toUpperCase().includes("RRHH") ? "PorRevisarRRHH" : (nivelAprobacionType.idNivelAprobacionRuta.toUpperCase().includes("REMUNERA") ? "PorRevisarRemuneraciones" : "PendienteAsignacion"),
+          estadoAprobacion: nivelAprobacionType.idNivelAprobacionRuta.toUpperCase().includes(this.primerNivelAprobacion.toUpperCase()) ? "PorRevisar" : nivelAprobacionType.idNivelAprobacionRuta.toUpperCase().includes("RRHH") ? "PorRevisarRRHH" : (nivelAprobacionType.idNivelAprobacionRuta.toUpperCase().includes("REMUNERA") ? "PorRevisarRemuneraciones" : "PendienteAsignacion"),
           estado: nivelAprobacionType.estado,
           correo: aprobador.correo === null ? "" : aprobador.correo,
           usuarioCreacion: res.evType[0].nombreCompleto,
@@ -991,7 +983,7 @@ export class RegistrarComentarioSalidaJefeComponent extends CompleteTaskComponen
         next: (response) => {
           this.dataAprobadoresDinamicos.length = 0;
           this.dataAprobacionesPorPosicionAPS = response.nivelAprobacionPosicionType;
-          this.primerNivelAprobacion=response.nivelAprobacionPosicionType[0].aprobador.nivelDireccion;
+          this.primerNivelAprobacion = response.nivelAprobacionPosicionType[0].aprobador.nivelDireccion;
           this.dataAprobacionesPorPosicionAPS.forEach(item => {
             this.dataAprobadoresDinamicos.push(item.aprobador.nivelDireccion);
           });
@@ -1209,37 +1201,37 @@ export class RegistrarComentarioSalidaJefeComponent extends CompleteTaskComponen
 
   openModalReasignarUsuario() {
     const modelRef = this.modalService.open(dialogComponentList.dialogReasignarUsuario, {
-        ariaLabelledBy: "modal-title",
-	});
+      ariaLabelledBy: "modal-title",
+    });
 
-	modelRef.componentInstance.idParam = this.solicitudRG.idSolicitud;
-	modelRef.componentInstance.taskId = this.taskType_Activity;
+    modelRef.componentInstance.idParam = this.solicitudRG.idSolicitud;
+    modelRef.componentInstance.taskId = this.taskType_Activity;
 
     modelRef.result.then(
-        (result) => {
-          if (result === "close") {
-            return;
-		  }
-
-          if (result?.data) {
-            Swal.fire({
-              text: result.data,
-              icon: "success",
-              confirmButtonColor: "rgb(227, 199, 22)",
-              confirmButtonText: "Ok",
-            }).then((result) => {
-              if (result.isConfirmed) {
-                this.router.navigate(["/mantenedores/reasignar-tareas-usuarios"]);
-                if (this.submitted) {
-                }
-              }
-            });
-          }
-        },
-        (reason) => {
-          console.log(`Dismissed with: ${reason}`);
+      (result) => {
+        if (result === "close") {
+          return;
         }
-      );
+
+        if (result?.data) {
+          Swal.fire({
+            text: result.data,
+            icon: "success",
+            confirmButtonColor: "rgb(227, 199, 22)",
+            confirmButtonText: "Ok",
+          }).then((result) => {
+            if (result.isConfirmed) {
+              this.router.navigate(["/mantenedores/reasignar-tareas-usuarios"]);
+              if (this.submitted) {
+              }
+            }
+          });
+        }
+      },
+      (reason) => {
+        console.log(`Dismissed with: ${reason}`);
+      }
+    );
   }
 
   indexedModal: Record<keyof DialogComponents, any> = {
