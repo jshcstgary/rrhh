@@ -1554,7 +1554,7 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
       body: [
         [
           {
-            content: "REQUISICIÓN DE PERSONAL",
+            content: "REQUERIMIENTO DE PERSONAL",
             styles: {
               halign: "center",
               fontSize: 20,
@@ -1615,7 +1615,7 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
         ["Unidad:", this.model.unidadNegocio, "Motivo", this.solicitud.tipoMotivo],
         ["Ciudad/Localidad:", this.model.localidad, "Empleado a reemplazar", this.model.nombreCompleto],
         ["Cargo solicitado:", this.model.nombreCargo, "Sueldo", this.model.sueldo],
-        ["Área/Dpto:", this.model.departamento, "Variable mínima:", this.model.sueldoMensual],
+        ["Área/Dpto:", this.model.departamento, "Variable máxima:", this.model.sueldoMensual],
         ["Centro de Costos", this.model.nomCCosto, "Total", parseInt(this.model.sueldo) + parseInt(this.model.sueldoMensual)],
         [
           "Justificación:",
@@ -1763,6 +1763,68 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
         1: {
           cellWidth: 70,
           halign: "center"
+        }
+      }
+    });
+
+    // Log del flujo
+    autoTable(doc, {
+      theme: "grid",
+      headStyles: {
+        fillColor: backgroundCellColor,
+        textColor,
+        lineColor
+      },
+      bodyStyles: {
+        lineColor
+      },
+      head: [
+        [
+          {
+            content: "Log delflujo",
+            colSpan: 3
+          }
+        ]
+      ],
+      body: [
+        [
+          {
+            content: "Fecha",
+            styles: {
+              halign: "center",
+              textColor,
+              fontStyle: "bold"
+            }
+          },
+          {
+            content: "Acción",
+            styles: {
+              halign: "center",
+              textColor,
+              fontStyle: "bold"
+            }
+          },
+          {
+            content: "Responsble",
+            styles: {
+              halign: "center",
+              textColor,
+              fontStyle: "bold"
+            }
+          }
+        ],
+        ...this.dataAprobacionesPorPosicion[this.keySelected].map(dataAprobador => ([format(new Date(dataAprobador.nivelAprobacionType.fechaCreacion), "dd/MM/yyyy"), dataAprobador.nivelAprobacionType.ruta, dataAprobador.aprobador.usuario === "" ? "No aplica" : dataAprobador.aprobador.usuario]))
+      ],
+      columnStyles: {
+        0: {
+          cellWidth: 30,
+          halign: "center"
+        },
+        1: {
+          cellWidth: 75
+        },
+        2: {
+          cellWidth: 75
         }
       }
     });
@@ -2008,6 +2070,68 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
       }
     });
 
+    // Log del flujo
+    autoTable(doc, {
+      theme: "grid",
+      headStyles: {
+        fillColor: backgroundCellColor,
+        textColor,
+        lineColor
+      },
+      bodyStyles: {
+        lineColor
+      },
+      head: [
+        [
+          {
+            content: "Log delflujo",
+            colSpan: 3
+          }
+        ]
+      ],
+      body: [
+        [
+          {
+            content: "Fecha",
+            styles: {
+              halign: "center",
+              textColor,
+              fontStyle: "bold"
+            }
+          },
+          {
+            content: "Acción",
+            styles: {
+              halign: "center",
+              textColor,
+              fontStyle: "bold"
+            }
+          },
+          {
+            content: "Responsble",
+            styles: {
+              halign: "center",
+              textColor,
+              fontStyle: "bold"
+            }
+          }
+        ],
+        ...this.dataAprobacionesPorPosicion[this.keySelected].map(dataAprobador => ([format(new Date(dataAprobador.nivelAprobacionType.fechaCreacion), "dd/MM/yyyy"), dataAprobador.nivelAprobacionType.ruta, dataAprobador.aprobador.usuario === "" ? "No aplica" : dataAprobador.aprobador.usuario]))
+      ],
+      columnStyles: {
+        0: {
+          cellWidth: 30,
+          halign: "center"
+        },
+        1: {
+          cellWidth: 75
+        },
+        2: {
+          cellWidth: 75
+        }
+      }
+    });
+
     doc.save(`${this.solicitud.idSolicitud}-${format(new Date(), "dd-MM-yyyy")}.pdf`)
   }
 
@@ -2199,7 +2323,7 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
         ],
         ["Compañía:", this.modelRG.compania, this.model.compania],
         ["Sueldo:", this.modelRG.sueldo, this.model.sueldo],
-        ["Variable Máxima:", "", ""],
+        ["Variable Máxima:", this.model.sueldoMensual, this.modelRG.sueldoMensual],
         ["Remuneración Total:", "", ""],
         ["Cargo:", this.modelRG.descrPosicion, this.model.descrPosicion],
         ["Departamento:", this.modelRG.departamento, this.model.departamento],
@@ -2348,6 +2472,68 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
       }
     });
 
+    // Log del flujo
+    autoTable(doc, {
+      theme: "grid",
+      headStyles: {
+        fillColor: backgroundCellColor,
+        textColor,
+        lineColor
+      },
+      bodyStyles: {
+        lineColor
+      },
+      head: [
+        [
+          {
+            content: "Log delflujo",
+            colSpan: 3
+          }
+        ]
+      ],
+      body: [
+        [
+          {
+            content: "Fecha",
+            styles: {
+              halign: "center",
+              textColor,
+              fontStyle: "bold"
+            }
+          },
+          {
+            content: "Acción",
+            styles: {
+              halign: "center",
+              textColor,
+              fontStyle: "bold"
+            }
+          },
+          {
+            content: "Responsble",
+            styles: {
+              halign: "center",
+              textColor,
+              fontStyle: "bold"
+            }
+          }
+        ],
+        ...this.dataAprobacionesPorPosicion[this.keySelected].map(dataAprobador => ([format(new Date(dataAprobador.nivelAprobacionType.fechaCreacion), "dd/MM/yyyy"), dataAprobador.nivelAprobacionType.ruta, dataAprobador.aprobador.usuario === "" ? "No aplica" : dataAprobador.aprobador.usuario]))
+      ],
+      columnStyles: {
+        0: {
+          cellWidth: 30,
+          halign: "center"
+        },
+        1: {
+          cellWidth: 75
+        },
+        2: {
+          cellWidth: 75
+        }
+      }
+    });
+
     doc.save(`${this.solicitud.idSolicitud}-${format(new Date(), "dd-MM-yyyy")}.pdf`)
   }
 
@@ -2471,7 +2657,7 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
         ["Área/Departamento:", this.model.departamento, "Área/Departamento::", this.modelPropuestos.departamento],
         ["Localidad:", this.model.localidad, "Localidad:", this.modelPropuestos.localidad],
         ["Sueldo:", this.model.sueldo, "Sueldo:", this.modelPropuestos.sueldo],
-        ["Variable máxima:", "0", "Variable máxima:", "0"],
+        ["Variable máxima:", this.model.sueldoMensual, "Variable máxima:", this.modelPropuestos.sueldoMensual],
         ["Movilizavión:", this.detalleSolicitudPropuestos.movilizacion, "Movilización:", this.detalleSolicitudPropuestos.movilizacion],
         ["Alimentación:", this.detalleSolicitudPropuestos.alimentacion, "Alimentación:", this.detalleSolicitudPropuestos.alimentacion],
         ["Centro de Costos:", this.model.nomCCosto, "Centro de Costos:", this.modelPropuestos.nomCCosto],
@@ -2482,17 +2668,17 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
       columnStyles: {
         0: {
           fontStyle: "bold",
-          cellWidth: 30
+          cellWidth: 40
         },
         1: {
-          cellWidth: 60
+          cellWidth: 50
         },
         2: {
           fontStyle: "bold",
-          cellWidth: 30
+          cellWidth: 40
         },
         3: {
-          cellWidth: 60
+          cellWidth: 50
         }
       }
     });
@@ -2519,7 +2705,7 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
       ],
       body: [
         ["Tipo de Acción:", this.solicitud.tipoAccion],
-        ["Justificación:", ""]
+        ["Justificación:", this.model.justificacionCargo]
       ],
       columnStyles: {
         0: {
@@ -2554,7 +2740,19 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
         [
           {
             content: "",
-            colSpan: 2
+            colSpan: 2,
+            styles: {
+              minCellHeight: 20
+            }
+          }
+        ],
+        [
+          {
+            content: "ACEPTACIÓN DEL EMPLEADO",
+            colSpan: 2,
+            styles: {
+              halign: "center"
+            }
           }
         ]
       ],
@@ -2566,206 +2764,70 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
       }
     });
 
+    // doc.line(70, 270, 140, 270)
+
+    // Log del flujo
+    autoTable(doc, {
+      theme: "grid",
+      headStyles: {
+        fillColor: backgroundCellColor,
+        textColor,
+        lineColor
+      },
+      bodyStyles: {
+        lineColor
+      },
+      head: [
+        [
+          {
+            content: "Log delflujo",
+            colSpan: 3
+          }
+        ]
+      ],
+      body: [
+        [
+          {
+            content: "Fecha",
+            styles: {
+              halign: "center",
+              textColor,
+              fontStyle: "bold"
+            }
+          },
+          {
+            content: "Acción",
+            styles: {
+              halign: "center",
+              textColor,
+              fontStyle: "bold"
+            }
+          },
+          {
+            content: "Responsble",
+            styles: {
+              halign: "center",
+              textColor,
+              fontStyle: "bold"
+            }
+          }
+        ],
+        ...this.dataAprobacionesPorPosicion[this.keySelected].map(dataAprobador => ([format(new Date(dataAprobador.nivelAprobacionType.fechaCreacion), "dd/MM/yyyy"), dataAprobador.nivelAprobacionType.ruta, dataAprobador.aprobador.usuario === "" ? "No aplica" : dataAprobador.aprobador.usuario]))
+      ],
+      columnStyles: {
+        0: {
+          cellWidth: 30,
+          halign: "center"
+        },
+        1: {
+          cellWidth: 75
+        },
+        2: {
+          cellWidth: 75
+        }
+      }
+    });
+
     doc.save(`${this.solicitud.idSolicitud}-${format(new Date(), "dd-MM-yyyy")}.pdf`)
   }
 }
-
-/**
-  onClickImprimir() {
-    const currentDate: Date = new Date();
-
-    const day: number = currentDate.getDate();
-    const month: number = currentDate.getMonth() + 1;
-    const year: number = currentDate.getFullYear();
-    const hour: number = currentDate.getHours();
-    const minutes: number = currentDate.getMinutes();
-    const seconds: number = currentDate.getUTCSeconds();
-
-    const weekOfYear: number = Math.ceil((((currentDate.getTime() - new Date(currentDate.getFullYear(), 0, 1).getTime()) / 86400000) + new Date(currentDate.getFullYear(), 0, 1).getDay() + 1) / 7);
-    const pdf = new jsPDF({
-      orientation: "landscape"
-    });
-
-    const npagina = 'Pagina: ' + pdf.getNumberOfPages();
-
-    pdf.setFontSize(15);
-    pdf.text(npagina, 10, 10);
-    pdf.setFontSize(25);
-    pdf.text("Registro de Pase", 150, 10, {
-      align: "center"
-    });
-
-    // Muestra la fecha
-    autoTable(pdf, {
-      theme: "grid",
-      body: [
-        [
-          {
-            content: `No.: ${this.codigoPase}`,
-            colSpan: 3
-          }, `Semana: ${weekOfYear.toString().padStart(2, "0")}`
-        ],
-        [`Día: ${day.toString().padStart(2, "0")}`, `Mes: ${month.toString().padStart(2, "0")}`, `Año: ${year}`, `Hora: ${hour}:${minutes}:${seconds}`]
-      ],
-      margin: {
-        left: 170
-      },
-      bodyStyles: {
-        lineColor: 0
-      },
-      tableLineWidth: 0.1,
-      tableLineColor: 0,
-      columnStyles: {
-        0: {
-          cellWidth: 20
-        },
-        1: {
-          cellWidth: 20
-        },
-        2: {
-          cellWidth: 20
-        }
-      }
-    });
-    // Muestra los filtros    const servidorDesarrollo: Parametro = this.dataServidorDesarrollo.find(servidorDesarrollo => servidorDesarrollo.id === Number(this.RegistroObjetos.capSerDesarrollo));
-    const servidorProduccion: Parametro = this.dataServidorProduccion.find(servidorProduccion => servidorProduccion.id === Number(this.RegistroObjetos.capSerProduccion));
-    const unidadServicio: Parametro = this.dataServidorLocalidad.find(servidorLocalidad => servidorLocalidad.id === Number(this.RegistroObjetos.capLocalidad));
-    const plataforma: Plataforma = this.dataAmbiente.find(plataforma => plataforma.id === Number(this.RegistroObjetos.plaSecuencia));
-    const prioridad: Parametro = this.dataServidorPrioridad.find(prioridad => prioridad.id === Number(this.RegistroObjetos.capPrioridad));
-    const motivo: Parametro = this.dataServidorMotivo.find(motivo => motivo.id === Number(this.RegistroObjetos.capMotivoPase));
-    const tipoPase: Parametro = this.dataServidorTipo.find(tipo => tipo.id === Number(this.RegistroObjetos.capTipoPase));
-    const applications: Set<string> = new Set(this.dataObjetoVersionSeleccionada.map(data => data.appDescription));
-
-    autoTable(pdf, {
-      body: [
-        ["Aplicaciones:", Array.from(applications).join(", "), "Plataforma:", plataforma.descripcion],
-        ["Servidor de desarrollo:", servidorDesarrollo.descripcion, "Prioridad:", prioridad.descripcion],
-        ["Servidor de producción:", servidorProduccion.descripcion, "Motivo:", motivo.descripcion],
-        ["Unidad/P. Servicio:", unidadServicio.descripcion, "Tipo de pase:", tipoPase.descripcion]
-      ],
-      theme: "plain",
-      margin: {
-        left: 15,
-      },
-      columnStyles: {
-        0: {
-          cellWidth: 50,
-          halign: "right",
-          fontStyle: "bold"
-        },
-        1: {
-          cellWidth: 83
-        },
-        2: {
-          cellWidth: 50,
-          halign: "right",
-          fontStyle: "bold"
-        },
-        3: {
-          cellWidth: 83
-        }
-      }
-    });
-
-    const tablePdf: {
-      headers: string[];
-      values: (string | number)[][];
-    } = {
-      headers: [],
-      values: []
-    };
-
-    // Manipula el contenido de la tabla    tablePdf.headers = Array.from(this.content.nativeElement.children).map((cell: HTMLTableCellElement) => cell.textContent);
-    tablePdf.headers.shift();
-    tablePdf.values = this.dataObjetoVersionSeleccionada.map((objeto) => {
-      const devInt = this.dataTecnicos.find(t => t.id === Number(objeto.depDevInt));
-      const depProv = this.dataProveedores.find(p => p.id === Number(objeto.depCodProv));
-
-      return [objeto.appDescription, objeto.modDescription, objeto.codigo, objeto.descripcion, objeto.origen, objeto.destino, devInt !== undefined ? devInt.nombre : "", depProv !== undefined ? depProv.descripcion : "", objeto.descripcionCambio];
-    });
-
-    // Muestra la tabla
-    autoTable(pdf, {
-      head: [tablePdf.headers],
-      body: tablePdf.values,
-      columnStyles: {
-        0: {
-          cellWidth: 30
-        },
-        1: {
-          cellWidth: 30
-        },
-        2: {
-          cellWidth: 30
-        },
-        3: {
-          cellWidth: 30
-        },
-        4: {
-          cellWidth: 30
-        },
-        5: {
-          cellWidth: 30
-        },
-        6: {
-          cellWidth: 30
-        },
-        7: {
-          cellWidth: 30
-        },
-        8: {
-          cellWidth: 30
-        }
-      }
-    });
-
-    // Muestra los campos del footer
-    autoTable(pdf, {
-      body: [
-        [
-          {
-            content: "Observaciones:",
-            rowSpan: 2
-          },
-          {
-            content: this.RegistroObjetos.capObservacion,
-            rowSpan: 2
-          },
-          "Área solicitante:", this.RegistroObjetos.capAreaSolicitante
-        ],
-        ["Usuario solicitante:", this.RegistroObjetos.capUsuarioSolicitante],
-        [
-          {
-            content: "Especificaciones de implementación:",
-            rowSpan: 2
-          },
-          {
-            content: this.RegistroObjetos.capReqImpPV,
-            rowSpan: 2
-          },
-          "Proyecto/Caso:", this.RegistroObjetos.capNomPrj
-        ],
-        ["Anexo:", this.RegistroObjetos.paseAnexo.apvRutaObjetos]
-      ],
-      theme: "plain",
-      columnStyles: {
-        0: {
-          cellWidth: 40,
-          fontStyle: "bold"
-        },
-        1: {
-          cellWidth: 110
-        },
-        2: {
-          cellWidth: 45,
-          fontStyle: "bold"
-        }
-      }
-    });
-
-    pdf.setProperties({
-      title: "Registro del Pase"
-    });
-    pdf.save(this.codigoPase);
-  }
- */
