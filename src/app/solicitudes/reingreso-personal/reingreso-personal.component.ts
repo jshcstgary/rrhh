@@ -933,25 +933,25 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
       this.solicitudes.obtenerAprobacionesPorPosicion(this.solicitudRG.idTipoSolicitud, this.solicitudRG.idTipoMotivo, this.detalleSolicitudRG.codigoPosicion, this.detalleSolicitudRG.nivelDireccion, 'A').subscribe({
         next: (response) => {
           this.solicitudes
-          .obtenerAprobacionesPorPosicion(
-            this.solicitud.idTipoSolicitud,
-            this.solicitud.idTipoMotivo,
-            this.model.codigoPosicion,
-            this.model.nivelDir, 'APD'
-          )
-          .subscribe({
-            next: (responseAPD) => {
-                this.primerNivelAprobacion=responseAPD.nivelAprobacionPosicionType[0].aprobador.nivelDireccion;
+            .obtenerAprobacionesPorPosicion(
+              this.solicitud.idTipoSolicitud,
+              this.solicitud.idTipoMotivo,
+              this.model.codigoPosicion,
+              this.model.nivelDir, 'APD'
+            )
+            .subscribe({
+              next: (responseAPD) => {
+                this.primerNivelAprobacion = responseAPD.nivelAprobacionPosicionType[0].aprobador.nivelDireccion;
                 this.mapearDetallesAprobadores(response.nivelAprobacionPosicionType);
-    
+
               },
-            error: (error: HttpErrorResponse) => {
-              this.utilService.modalResponse(
-                "No existe aprobadores de solicitud para los datos ingresados",
-                "error"
-              );
-            }
-          });
+              error: (error: HttpErrorResponse) => {
+                this.utilService.modalResponse(
+                  "No existe aprobadores de solicitud para los datos ingresados",
+                  "error"
+                );
+              }
+            });
           this.dataAprobacionesPorPosicion[this.keySelected] = response.nivelAprobacionPosicionType;
         },
         error: (error: HttpErrorResponse) => {
@@ -1462,11 +1462,7 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
                 this.detalleSolicitud.jefeReferencia = this.jefeReferenciaQuery.nombreCompleto;
                 this.detalleSolicitud.puesto = this.jefeReferenciaQuery.descrPuesto;
                 this.detalleSolicitud.responsableRRHH = this.responsableRRHHQuery.nombreCompleto;
-<<<<<<< HEAD
                 // this.detalleSolicitud.jefeSolicitante = this.solicitud.usuarioCreacion;
-=======
-                //this.detalleSolicitud.jefeSolicitante = this.solicitud.usuarioCreacion;
->>>>>>> 0b03679dd9dac974dae571dbddd0f3165052b388
                 this.detalleSolicitud.fechaSalida = this.fechaSalida;
                 this.detalleSolicitud.causaSalida = this.causaSalida;
 
