@@ -377,7 +377,6 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
             // this.getDetalleSolicitudById(this.id_solicitud_by_params); // Si se comenta, causa problemas al abrir el Sweet Alert 2
             this.getSolicitudById(this.id_solicitud_by_params);
             this.date = this.tareasPorCompletar[0].startTime;
-            this.loadExistingVariables(this.uniqueTaskId ? this.uniqueTaskId : "", variableNames);
           },
           error: (error) => {
             console.error(error);
@@ -888,6 +887,7 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
           this.model.sueldoAnual = this.detalleSolicitud.sueldoVariableAnual
           this.model.correo = this.detalleSolicitud.correo;
           this.model.fechaIngreso = this.detalleSolicitud.fechaIngreso;
+          this.codigoReportaA = this.detalleSolicitud.jefeSolicitante;
         }
 
         this.loadingComplete++;
@@ -1679,7 +1679,26 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
       this.solicitudes.obtenerAprobacionesPorPosicion(this.solicitud.idTipoSolicitud, this.solicitud.idTipoMotivo, this.detalleSolicitud.codigoPosicion, this.detalleSolicitud.nivelDireccion, 'A')
         .subscribe({
           next: (response) => {
+            this.solicitudes
+      .obtenerAprobacionesPorPosicion(
+        this.solicitud.idTipoSolicitud,
+        this.solicitud.idTipoMotivo,
+        this.model.codigoPosicion,
+        this.model.nivelDir, 'APD'
+      )
+      .subscribe({
+        next: (responseAPD) => {
+            this.primerNivelAprobacion=responseAPD.nivelAprobacionPosicionType[0].aprobador.nivelDireccion;
             this.mapearDetallesAprobadores(response.nivelAprobacionPosicionType);
+
+          },
+        error: (error: HttpErrorResponse) => {
+          this.utilService.modalResponse(
+            "No existe aprobadores de solicitud para los datos ingresados",
+            "error"
+          );
+        }
+      });
             this.dataAprobacionesPorPosicion[this.keySelected] = response.nivelAprobacionPosicionType;
           },
           error: (error: HttpErrorResponse) => {

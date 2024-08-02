@@ -1698,8 +1698,26 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
         )
         .subscribe({
           next: (response) => {
-            this.mapearDetallesAprobadores(response.nivelAprobacionPosicionType);
-
+            this.solicitudes
+            .obtenerAprobacionesPorPosicion(
+              this.solicitud.idTipoSolicitud,
+              this.solicitud.idTipoMotivo,
+              this.model.codigoPosicion,
+              this.model.nivelDir, 'APD'
+            )
+            .subscribe({
+              next: (responseAPD) => {
+                  this.primerNivelAprobacion=responseAPD.nivelAprobacionPosicionType[0].aprobador.nivelDireccion;
+                  this.mapearDetallesAprobadores(response.nivelAprobacionPosicionType);
+      
+                },
+              error: (error: HttpErrorResponse) => {
+                this.utilService.modalResponse(
+                  "No existe aprobadores de solicitud para los datos ingresados",
+                  "error"
+                );
+              }
+            });
             this.dataAprobacionesPorPosicion[this.keySelected] = response.nivelAprobacionPosicionType;
           },
           error: (error: HttpErrorResponse) => {

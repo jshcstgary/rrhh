@@ -692,6 +692,7 @@ export class RegistrarComentarioSalidaJefeComponent extends CompleteTaskComponen
 
       if ("true" === this.parentIdFlag) {
         if (this.taskType_Activity_subledger.length === 0) {
+<<<<<<< HEAD
           this.idDeInstancia = params["id"];
 
           this.solicitudes.getTaskId(this.idDeInstancia).subscribe({
@@ -716,10 +717,35 @@ export class RegistrarComentarioSalidaJefeComponent extends CompleteTaskComponen
             }
           });
         } else {
+=======
+         
+        this.idDeInstancia = params["id"];
+        this.solicitudes.getTaskId(this.idDeInstancia).subscribe({
+          next: (result) => {
+            this.tareasPorCompletar = result.filter((empleado) => {
+              return empleado["deleteReason"] === null;
+            });
+            if(this.tareasPorCompletar.length === 0){
+              return;
+            }else{
+            this.uniqueTaskId = this.tareasPorCompletar[0].id;
+            this.taskType_Activity = this.tareasPorCompletar[0].taskDefinitionKey;
+            this.nameTask = this.tareasPorCompletar[0].name;
+            }        
+            this.taskId = params["id"];
+            this.date = this.tareasPorCompletar[0].startTime;
+          },
+          error: (error) => {
+            console.error(error);
+          }
+        });
+       }else{
+>>>>>>> 0b03679dd9dac974dae571dbddd0f3165052b388
           this.taskKey = this.taskType_Activity_subledger[0].tasK_DEF_KEY;
           this.uniqueTaskId = this.taskType_Activity_subledger[0].taskId;
           this.date = this.taskType_Activity_subledger[0].startTime;
         }
+        this.getCandidatoValues();
 
         this.getCandidatoValues();
       } else {
