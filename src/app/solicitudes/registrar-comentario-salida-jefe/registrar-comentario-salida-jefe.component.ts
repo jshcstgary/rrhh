@@ -708,7 +708,6 @@ export class RegistrarComentarioSalidaJefeComponent extends CompleteTaskComponen
             this.nameTask = this.tareasPorCompletar[0].name;
             }        
             this.taskId = params["id"];
-            this.getCandidatoValues();
             this.date = this.tareasPorCompletar[0].startTime;
           },
           error: (error) => {
@@ -720,6 +719,7 @@ export class RegistrarComentarioSalidaJefeComponent extends CompleteTaskComponen
           this.uniqueTaskId = this.taskType_Activity_subledger[0].taskId;
           this.date = this.taskType_Activity_subledger[0].startTime;
         }
+        this.getCandidatoValues();
 
 
           // this.loadExistingVariables(this.uniqueTaskId ? this.uniqueTaskId : "", variableNames);
