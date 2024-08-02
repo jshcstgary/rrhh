@@ -624,11 +624,11 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
       if ("true" === this.parentIdFlag) {
         this.idDeInstancia = params["id"];
 
-            if (!this.id_solicitud_by_params.toUpperCase().includes("AP") && !this.id_solicitud_by_params.toUpperCase().includes("DP")) {
-              this.getCandidatoValues();
-            } else {
-              this.getSolicitudById(this.id_solicitud_by_params);
-            }
+        if (!this.id_solicitud_by_params.toUpperCase().includes("AP") && !this.id_solicitud_by_params.toUpperCase().includes("DP")) {
+          this.getCandidatoValues();
+        } else {
+          this.getSolicitudById(this.id_solicitud_by_params);
+        }
       } else {
         // unique id is from the route params
         this.uniqueTaskId = params["id"];
@@ -993,7 +993,7 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
               this.modelRG.sueldoSemestral = this.detalleSolicitudRG.sueldoVariableSemestral;
               this.modelRG.sueldoAnual = this.detalleSolicitudRG.sueldoVariableAnual;
               this.modelRG.correo = this.detalleSolicitudRG.correo;
-              this.modelRG.correo = this.detalleSolicitudRG.correo;
+              // this.modelRG.correo = this.detalleSolicitudRG.correo;
               this.causaSalida = this.detalleSolicitudRG.causaSalida;
               this.modelRG.fechaIngreso = (this.detalleSolicitudRG.fechaIngreso as string).split("T")[0];
               this.remuneracion = Number(this.modelRG.sueldoAnual) / 12 + Number(this.modelRG.sueldoSemestral) / 6 + Number(this.modelRG.sueldoTrimestral) / 3 + Number(this.modelRG.sueldoMensual);
@@ -2111,6 +2111,9 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
     const textColor: [number, number, number] = [56, 95, 147];
     const lineColor: [number, number, number] = [149, 179, 215];
 
+    const variableMaxima = Math.max(...[parseInt(this.model.sueldoAnual), parseInt(this.model.sueldoMensual), parseInt(this.model.sueldoSemestral), parseInt(this.model.sueldoTrimestral)]);
+    const variableMaximaRG = Math.max(...[parseInt(this.modelRG.sueldoAnual), parseInt(this.modelRG.sueldoMensual), parseInt(this.modelRG.sueldoSemestral), parseInt(this.modelRG.sueldoTrimestral)]);
+
     const doc = new jsPDF();
 
     // Esquina de la hoja
@@ -2292,13 +2295,13 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
             }
           }
         ],
-        ["Compañía:", this.modelRG.compania, this.model.compania],
-        ["Sueldo:", this.modelRG.sueldo, this.model.sueldo],
-        ["Variable Máxima:", this.model.sueldoMensual, this.modelRG.sueldoMensual],
+        ["Compañía:", this.model.compania, this.modelRG.compania],
+        ["Sueldo:", this.model.sueldo, this.modelRG.sueldo],
+        ["Variable Máxima:", variableMaxima, variableMaximaRG],
         ["Remuneración Total:", "", ""],
-        ["Cargo:", this.modelRG.descrPosicion, this.model.descrPosicion],
-        ["Departamento:", this.modelRG.departamento, this.model.departamento],
-        ["Fecha de Ingreso:", format(new Date(this.modelRG.fechaIngreso), "dd/MM/yyyy"), format(new Date(this.model.fechaIngreso), "dd/MM/yyyy")],
+        ["Cargo:", this.model.descrPosicion, this.modelRG.descrPosicion],
+        ["Departamento:", this.model.departamento, this.modelRG.departamento],
+        ["Fecha de Ingreso:", format(new Date(this.model.fechaIngreso), "dd/MM/yyyy"), format(new Date(this.modelRG.fechaIngreso), "dd/MM/yyyy")],
         ["Fecha de Salida:", format(new Date(this.detalleSolicitudRG.fechaSalida), "dd/MM/yyyy"), format(new Date(this.detalleSolicitud.fechaSalida), "dd/MM/yyyy")],
         ["Jefe Inmediato Superior:", this.detalleSolicitudRG.jefeInmediatoSuperior, this.detalleSolicitud.jefeInmediatoSuperior],
         ["Cargo Jefe Inemdiato Superior:", this.detalleSolicitudRG.puestoJefeInmediato, this.detalleSolicitud.puestoJefeInmediato],
@@ -2513,6 +2516,9 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
     const textColor: [number, number, number] = [56, 95, 147];
     const lineColor: [number, number, number] = [149, 179, 215];
 
+    const variableMaxima = Math.max(...[parseInt(this.model.sueldoAnual), parseInt(this.model.sueldoMensual), parseInt(this.model.sueldoSemestral), parseInt(this.model.sueldoTrimestral)]);
+    const variableMaximaPropuestos = Math.max(...[parseInt(this.modelPropuestos.sueldoAnual), parseInt(this.modelPropuestos.sueldoMensual), parseInt(this.modelPropuestos.sueldoSemestral), parseInt(this.modelPropuestos.sueldoTrimestral)]);
+
     const doc = new jsPDF();
 
     // Esquina de la hoja
@@ -2627,14 +2633,14 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
         ["Unidad:", this.model.unidadNegocio, "Unidad:", this.modelPropuestos.unidadNegocio],
         ["Área/Departamento:", this.model.departamento, "Área/Departamento::", this.modelPropuestos.departamento],
         ["Localidad:", this.model.localidad, "Localidad:", this.modelPropuestos.localidad],
-        ["Sueldo:", this.model.sueldo, "Sueldo:", this.modelPropuestos.sueldo],
-        ["Variable máxima:", this.model.sueldoMensual, "Variable máxima:", this.modelPropuestos.sueldoMensual],
-        ["Movilizavión:", this.detalleSolicitudPropuestos.movilizacion, "Movilización:", this.detalleSolicitudPropuestos.movilizacion],
-        ["Alimentación:", this.detalleSolicitudPropuestos.alimentacion, "Alimentación:", this.detalleSolicitudPropuestos.alimentacion],
+        ["Sueldo:", `$ ${parseInt(this.model.sueldo).toFixed(2)}`, "Sueldo:", `$ ${parseInt(this.modelPropuestos.sueldo).toFixed(2)}`],
+        ["Variable máxima:", `$ ${variableMaxima.toFixed(2)}`, "Variable máxima:", `$ ${variableMaximaPropuestos.toFixed(2)}`],
+        ["Movilizavión:", this.detalleSolicitudPropuestos.movilizacion !== "" ? `$ ${parseInt(this.detalleSolicitudPropuestos.movilizacion).toFixed(2)}` : "$ 0.00", "Movilización:", this.detalleSolicitudPropuestos.movilizacion !== "" ? `$ ${parseInt(this.detalleSolicitudPropuestos.movilizacion).toFixed(2)}` : "$ 0.00"],
+        ["Alimentación:", this.detalleSolicitudPropuestos.alimentacion !== "" ? `$ ${parseInt(this.detalleSolicitudPropuestos.alimentacion).toFixed(2)}` : "$ 0.00", "Alimentación:", this.detalleSolicitudPropuestos.alimentacion !== "" ? `$ ${parseInt(this.detalleSolicitudPropuestos.alimentacion).toFixed(2)}` : "$ 0.00"],
         ["Centro de Costos:", this.model.nomCCosto, "Centro de Costos:", this.modelPropuestos.nomCCosto],
         ["Grupo de pago:", this.model.grupoPago, "Grupo de pago:", this.modelPropuestos.grupoPago],
         ["Sucursal (Nómina):", this.model.sucursal, "Scursal (Nómina):", this.modelPropuestos.sucursal],
-        ["Distribución contable:", "", "Distribución Contable:", ""]
+        ["Distribución contable:", this.model.subledger, "Distribución Contable:", this.modelPropuestos.subledger]
       ],
       columnStyles: {
         0: {

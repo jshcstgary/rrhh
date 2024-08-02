@@ -1025,7 +1025,8 @@ export class RegistrarComentarioSalidaJefeComponent extends CompleteTaskComponen
       tipo_Solicitud: this.taskKey === environment.taskType_RGC_ULTIMO_JEFE ? "Comentario_Salida_Jefe" : (this.taskKey === environment.taskType_RGC_RRHH ? "Comentario_RRHH" : "Comentario_Jefe_Solicitante"),
       comentario: this.comentarios,
       fecha_Creacion: new Date(),
-      fecha_Modificacion: new Date()
+      fecha_Modificacion: new Date(),
+      justificacion: this.model.justificacionCargo
     };
 
     this.comentarioSalidaJefeService.registrarComentario(comentario).subscribe({

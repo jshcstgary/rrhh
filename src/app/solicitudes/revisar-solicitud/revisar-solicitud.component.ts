@@ -67,7 +67,7 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
   disabledComplete: boolean = true;
   isRequired: boolean = false;
   isFechaMaximaVisible: boolean = false;
-  viewInputs: boolean = false;  
+  viewInputs: boolean = false;
   campoObligatorio: string = '';
   observaciontexto: string = 'Observación';
   selectedDate: Date = new Date();
@@ -641,27 +641,28 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
             this.tareasPorCompletar = result.filter((empleado) => {
               return empleado["deleteReason"] === null;
             });
-            if(this.tareasPorCompletar.length === 0){
+            if (this.tareasPorCompletar.length === 0) {
               return;
-            }else{
-            this.uniqueTaskId = this.tareasPorCompletar[0].id;
-            this.taskType_Activity = this.tareasPorCompletar[0].taskDefinitionKey;
-            this.nameTask = this.tareasPorCompletar[0].name;
-            this.date = this.tareasPorCompletar[0].startTime;
-
-            }        
-            this.taskId = params["id"];
-      }});
-            if (this.id_solicitud_by_params.toUpperCase().includes("RG") || this.id_solicitud_by_params.toUpperCase().includes("CF")) {
-
-              this.getCandidatoValues();
             } else {
-              this.getSolicitudById(this.id_solicitud_by_params);
+              this.uniqueTaskId = this.tareasPorCompletar[0].id;
+              this.taskType_Activity = this.tareasPorCompletar[0].taskDefinitionKey;
+              this.nameTask = this.tareasPorCompletar[0].name;
+              this.date = this.tareasPorCompletar[0].startTime;
+
             }
-            if (this.nameTask !== "Registrar solicitud") {
-              this.RegistrarsolicitudCompletada = false;
-            }
-          
+            this.taskId = params["id"];
+          }
+        });
+        if (this.id_solicitud_by_params.toUpperCase().includes("RG") || this.id_solicitud_by_params.toUpperCase().includes("CF")) {
+
+          this.getCandidatoValues();
+        } else {
+          this.getSolicitudById(this.id_solicitud_by_params);
+        }
+        if (this.nameTask !== "Registrar solicitud") {
+          this.RegistrarsolicitudCompletada = false;
+        }
+
       } else {
         // unique id is from the route params
         this.uniqueTaskId = params["id"];
@@ -985,7 +986,7 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
             this.isFechaMaximaVisible = true;
             this.textareaContent = detalleActual.valor;
             this.selectedDate = detalleActual.fechaSalida;
-          }          
+          }
 
           if (response.totalRegistros === 2) {
             const detallePropuestos = response.detalleSolicitudType.find(detalle => detalle.idDetalleSolicitud === 2);
@@ -1279,10 +1280,7 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
 
 
   save() {
-
-    this.utilService.openLoadingSpinner(
-      "Guardando información, espere por favor..."
-    ); // comentado mmunoz
+    this.utilService.openLoadingSpinner("Guardando información, espere por favor...");
 
     this.submitted = true;
     let idInstancia = this.solicitudDataInicial.idInstancia;
@@ -1301,79 +1299,66 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
     this.solicitud.unidadNegocio = this.model.unidadNegocio;
     this.solicitud.idUnidadNegocio = this.model.unidadNegocio;
     this.solicitud.estadoSolicitud = "2";
-    this.solicitudes
-      .actualizarSolicitud(this.solicitud)
-      .subscribe((responseSolicitud) => {
 
-        this.detalleSolicitud.idSolicitud = this.solicitud.idSolicitud;
+    this.solicitudes.actualizarSolicitud(this.solicitud).subscribe(() => {
+      this.detalleSolicitud.idSolicitud = this.solicitud.idSolicitud;
 
-        this.detalleSolicitud.areaDepartamento = this.model.departamento;
+      this.detalleSolicitud.areaDepartamento = this.model.departamento;
 
-        this.detalleSolicitud.cargo = this.model.nombreCargo;
-        this.detalleSolicitud.centroCosto = this.model.nomCCosto;
-        this.detalleSolicitud.codigoPosicion = this.model.codigoPosicion;
-        this.detalleSolicitud.compania = this.model.compania; //idEmpresa
-        this.detalleSolicitud.departamento = this.model.departamento;
-        this.detalleSolicitud.descripcionPosicion = this.model.descrPosicion;
+      this.detalleSolicitud.cargo = this.model.nombreCargo;
+      this.detalleSolicitud.centroCosto = this.model.nomCCosto;
+      this.detalleSolicitud.codigoPosicion = this.model.codigoPosicion;
+      this.detalleSolicitud.compania = this.model.compania; //idEmpresa
+      this.detalleSolicitud.departamento = this.model.departamento;
+      this.detalleSolicitud.descripcionPosicion = this.model.descrPosicion;
 
-        this.detalleSolicitud.justificacion = this.model.justificacionCargo;
-        this.detalleSolicitud.localidad = this.model.localidad;
-        this.detalleSolicitud.localidadZona = this.model.localidad;
+      this.detalleSolicitud.justificacion = this.model.justificacionCargo;
+      this.detalleSolicitud.localidad = this.model.localidad;
+      this.detalleSolicitud.localidadZona = this.model.localidad;
 
-        this.detalleSolicitud.misionCargo = this.model.misionCargo;
-        this.detalleSolicitud.nivelDireccion = this.model.nivelDir;
-        this.detalleSolicitud.nivelReporteA = this.model.nivelRepa;
+      this.detalleSolicitud.misionCargo = this.model.misionCargo;
+      this.detalleSolicitud.nivelDireccion = this.model.nivelDir;
+      this.detalleSolicitud.nivelReporteA = this.model.nivelRepa;
 
-        this.detalleSolicitud.nombreEmpleado = this.model.nombreCompleto;
+      this.detalleSolicitud.nombreEmpleado = this.model.nombreCompleto;
 
 
-        this.detalleSolicitud.reportaA = this.model.reportaA;
+      this.detalleSolicitud.reportaA = this.model.reportaA;
 
-        this.detalleSolicitud.subledger = this.model.subledger;
+      this.detalleSolicitud.subledger = this.model.subledger;
 
-        this.detalleSolicitud.subledgerEmpleado = this.model.subledger;
+      this.detalleSolicitud.subledgerEmpleado = this.model.subledger;
 
-        this.detalleSolicitud.sucursal = this.model.sucursal;
+      this.detalleSolicitud.sucursal = this.model.sucursal;
 
-        this.detalleSolicitud.misionCargo = this.model.misionCargo;
-        this.detalleSolicitud.justificacion = this.model.justificacionCargo;
+      this.detalleSolicitud.misionCargo = this.model.misionCargo;
+      this.detalleSolicitud.justificacion = this.model.justificacionCargo;
 
-        this.detalleSolicitud.sueldo = this.model.sueldo;
-        this.detalleSolicitud.sueldoVariableMensual =
-          this.model.sueldoMensual;
-        this.detalleSolicitud.sueldoVariableTrimestral =
-          this.model.sueldoTrimestral;
-        this.detalleSolicitud.sueldoVariableSemestral =
-          this.model.sueldoSemestral;
-        this.detalleSolicitud.sueldoVariableAnual = this.model.sueldoAnual;
-        this.detalleSolicitud.tipoContrato = this.model.tipoContrato;
-        this.detalleSolicitud.unidadNegocio = this.model.unidadNegocio;
+      this.detalleSolicitud.sueldo = this.model.sueldo;
+      this.detalleSolicitud.sueldoVariableMensual = this.model.sueldoMensual;
+      this.detalleSolicitud.sueldoVariableTrimestral = this.model.sueldoTrimestral;
+      this.detalleSolicitud.sueldoVariableSemestral = this.model.sueldoSemestral;
+      this.detalleSolicitud.sueldoVariableAnual = this.model.sueldoAnual;
+      this.detalleSolicitud.tipoContrato = this.model.tipoContrato;
+      this.detalleSolicitud.unidadNegocio = this.model.unidadNegocio;
 
-        this.detalleSolicitud.correo = this.model.correo;
+      this.detalleSolicitud.correo = this.model.correo;
 
-        this.detalleSolicitud.supervisaA = this.model.supervisaA;
+      this.detalleSolicitud.supervisaA = this.model.supervisaA;
 
-        this.detalleSolicitud.fechaIngreso = this.model.fechaIngresogrupo == "" ? this.model.fechaIngreso : this.model.fechaIngresogrupo;
+      this.detalleSolicitud.fechaIngreso = this.model.fechaIngresogrupo == "" ? this.model.fechaIngreso : this.model.fechaIngresogrupo;
 
-        this.solicitudes
-          .actualizarDetalleSolicitud(this.detalleSolicitud)
-          .subscribe((responseDetalle) => {
+      this.solicitudes.actualizarDetalleSolicitud(this.detalleSolicitud).subscribe((responseDetalle) => {
+        this.utilService.closeLoadingSpinner();
 
-            this.utilService.closeLoadingSpinner(); //comentado mmunoz
-            this.utilService.modalResponse(
-              "Datos ingresados correctamente",
-              "success"
-            );
+        this.utilService.modalResponse("Datos ingresados correctamente", "success");
 
-            setTimeout(() => {
-              this.router.navigate([
-                "/tareas/consulta-tareas",
-              ]);
-            }, 1800);
+        setTimeout(() => {
+          this.router.navigate(["/tareas/consulta-tareas"]);
+        }, 1800);
+      });
+    });
 
-
-          });
-      }); //aqui debe crear los aprobadores
     this.submitted = true;
   }
 
@@ -1436,18 +1421,16 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
             default:
           }
 
-          this.solicitudes
-            .actualizarSolicitud(this.solicitud)
-            .subscribe({
-              next: () => {
-                setTimeout(() => {
-                  this.consultarNextTaskAprobador(this.solicitud.idInstancia);
-                }, 3000);
-              },
-              error: (error) => {
-                console.error(error);
-              }
-            });
+          this.solicitudes.actualizarSolicitud(this.solicitud).subscribe({
+            next: () => {
+              setTimeout(() => {
+                this.consultarNextTaskAprobador(this.solicitud.idInstancia);
+              }, 3000);
+            },
+            error: (error) => {
+              console.error(error);
+            }
+          });
 
 
           this.utilService.closeLoadingSpinner();
@@ -1481,12 +1464,12 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
         this.tareasPorCompletar = tarea.filter((empleado) => {
           return empleado["deleteReason"] === null;
         });
-        if(this.tareasPorCompletar.length === 0){
+        if (this.tareasPorCompletar.length === 0) {
           return;
-        }else{
-        this.uniqueTaskId = this.tareasPorCompletar[0].id;
-        this.taskType_Activity = this.tareasPorCompletar[0].taskDefinitionKey;
-        this.nameTask = this.tareasPorCompletar[0].name;
+        } else {
+          this.uniqueTaskId = this.tareasPorCompletar[0].id;
+          this.taskType_Activity = this.tareasPorCompletar[0].taskDefinitionKey;
+          this.nameTask = this.tareasPorCompletar[0].name;
 
           if (this.taskType_Activity !== environment.taskType_Registrar) {
             this.RegistrarsolicitudCompletada = false;
@@ -1534,7 +1517,7 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
                 this.solicitudes.modelDetalleAprobaciones.fechaModificacion = new Date().toISOString();
               }
 
-            this.solicitudes.guardarDetallesAprobacionesSolicitud(this.solicitudes.modelDetalleAprobaciones).subscribe({
+              this.solicitudes.guardarDetallesAprobacionesSolicitud(this.solicitudes.modelDetalleAprobaciones).subscribe({
                 next: () => {
                 },
                 error: (err) => {
@@ -1715,62 +1698,56 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
   saveDetalleAprobaciones() {
     this.solicitudes.modelDetalleAprobaciones.estadoAprobacion = this.buttonValue;
     this.solicitudes.modelDetalleAprobaciones.comentario = this.textareaContent;
-    
-    if(this.buttonValue.includes("esperar")){  
-      this.detalleSolicitud.fechaSalida=this.selectedDate;
-      this.detalleSolicitud.valor = "Solicitud en Espera: " + this.textareaContent;
 
-      this.solicitudes
-      .actualizarDetalleSolicitud(this.detalleSolicitud).subscribe({
+    if (this.buttonValue.includes("esperar")) {
+      this.detalleSolicitud.fechaSalida = this.selectedDate;
+      this.detalleSolicitud.valor = `Solicitud en Espera: ${this.textareaContent}`;
+
+      this.solicitudes.actualizarDetalleSolicitud(this.detalleSolicitud).subscribe({
         next: (response) => {
         }
       });
-    }else{
-    if(this.detalleSolicitud.valor.includes("Solicitud en Espera")){
-      
-        this.detalleSolicitud.fechaSalida=new Date();
+    } else {
+      if (this.detalleSolicitud.valor.includes("Solicitud en Espera")) {
+        this.detalleSolicitud.fechaSalida = new Date();
         this.detalleSolicitud.valor = null;
-      
-        this.solicitudes
-      .actualizarDetalleSolicitud(this.detalleSolicitud).subscribe({
-        next: (response) => {
-        }
-      });
-    }}
+
+        this.solicitudes.actualizarDetalleSolicitud(this.detalleSolicitud).subscribe({
+          next: (response) => {
+          }
+        });
+      }
+    }
 
     if (this.taskType_Activity == environment.taskType_CREM) {
       this.detalleSolicitud.valor = this.textareaContent;
       this.detalleSolicitud.unidad = this.detalleSolicitud.unidadNegocio;
 
-
-
-      this.solicitudes
-        .actualizarDetalleSolicitud(this.detalleSolicitud).subscribe({
-          next: (response) => {
-          }
-        });
-    }
-    this.solicitudes
-      .guardarDetallesAprobacionesSolicitud(this.solicitudes.modelDetalleAprobaciones)
-      .subscribe({
-        next: (res) => {
-          Swal.fire({
-            text: "Datos guardados",
-            icon: "success",
-            confirmButtonColor: "rgb(227, 199, 22)",
-            confirmButtonText: "Ok",
-          });
-
-          this.disabledComplete = false;
-          /*this.utilService.modalResponse(
-            "Datos ingresados correctamente",
-            "success"
-          );
-          setTimeout(() => {
-            this.router.navigate(["/solicitudes/completar-solicitudes"]);
-          }, 1600);*/
+      this.solicitudes.actualizarDetalleSolicitud(this.detalleSolicitud).subscribe({
+        next: (response) => {
         }
       });
+    }
+
+    this.solicitudes.guardarDetallesAprobacionesSolicitud(this.solicitudes.modelDetalleAprobaciones).subscribe({
+      next: (res) => {
+        Swal.fire({
+          text: "Datos guardados",
+          icon: "success",
+          confirmButtonColor: "rgb(227, 199, 22)",
+          confirmButtonText: "Ok",
+        });
+
+        this.disabledComplete = false;
+        /*this.utilService.modalResponse(
+          "Datos ingresados correctamente",
+          "success"
+        );
+        setTimeout(() => {
+          this.router.navigate(["/solicitudes/completar-solicitudes"]);
+        }, 1600);*/
+      }
+    });
   }
 
   ObtenerNivelAprobadorTask() {

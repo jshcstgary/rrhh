@@ -12,13 +12,14 @@
           </div>
         </div>
 
-		<div class="col-md-12 text-end">
-      <button *ngIf="existeMatenedores" type="button" (click)="openModal('dialogReasignarUsuario')" class="btn btn-info me-2 mt-1">
-        <i class="fas fa-redo"></i> Reasignar
-      </button>
-    </div>
+        <div class="col-md-12 text-end">
+          <button *ngIf="existeMatenedores" type="button" (click)="openModal('dialogReasignarUsuario')"
+            class="btn btn-info me-2 mt-1">
+            <i class="fas fa-redo"></i> Reasignar
+          </button>
+        </div>
 
-		<div class="col-md-12 text-end" *ngIf="!existeMatenedores || existe">
+        <div class="col-md-12 text-end" *ngIf="!existeMatenedores || existe">
           <button type="button" type="submit" class="btn btn-info me-2 mt-1" aria-label="Close"
             [disabled]="comentarios === ''">
             <i class="fas fa-save"></i> Guardar
@@ -387,16 +388,16 @@
           <div class="input-group mb-3">
             <label class="input-group label-estilo" for="tipoMotivo">Jefe Inmediato Superior</label>
             &nbsp;
-            <span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px;"
-              class="text-start">{{ this.detalleSolicitudRG.jefeInmediatoSuperior }}</span>
+            <span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px;" class="text-start">{{
+              this.detalleSolicitudRG.jefeInmediatoSuperior }}</span>
           </div>
         </div>
         <div class="col">
           <div class="input-group mb-3">
             <label class="input-group label-estilo" for="tipoMotivo">Jefe Inmediato Superior</label>
             &nbsp;
-            <span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px;"
-              class="text-start">{{ this.detalleSolicitud.jefeInmediatoSuperior === '' ? 'No aplica' :
+            <span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px;" class="text-start">{{
+              this.detalleSolicitud.jefeInmediatoSuperior === '' ? 'No aplica' :
               this.detalleSolicitud.jefeInmediatoSuperior }}</span>
           </div>
         </div>
@@ -407,8 +408,8 @@
           <div class="input-group mb-3">
             <label class="input-group label-estilo" for="tipoMotivo">Puesto Jefe In Superior</label>
             &nbsp;
-            <span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px;"
-              class="text-start">{{ this.detalleSolicitudRG.puestoJefeInmediato }}</span>
+            <span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px;" class="text-start">{{
+              this.detalleSolicitudRG.puestoJefeInmediato }}</span>
           </div>
         </div>
         <div class="col">
@@ -427,8 +428,8 @@
           <div class="input-group mb-3">
             <label class="input-group label-estilo" for="jeferef">Jefe Referencia</label>
             &nbsp;
-            <span id="jeferef" name="jeferef" style="color: black; font-size: 14px;"
-              class="text-start">{{ this.detalleSolicitudRG.jefeReferencia }}</span>
+            <span id="jeferef" name="jeferef" style="color: black; font-size: 14px;" class="text-start">{{
+              this.detalleSolicitudRG.jefeReferencia }}</span>
           </div>
         </div>
         <div class="col">
@@ -446,8 +447,8 @@
           <div class="input-group mb-3">
             <label class="input-group label-estilo" for="tipoMotivo">Puesto Referencia</label>
             &nbsp;
-            <span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px;"
-              class="text-start">{{ this.detalleSolicitudRG.puesto }}</span>
+            <span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px;" class="text-start">{{
+              this.detalleSolicitudRG.puesto }}</span>
           </div>
         </div>
         <div class="col mb-4">
@@ -488,8 +489,8 @@
           <div class="input-group mb-3">
             <label class="input-group label-estilo" for="responRight">Responsable RRHH</label>
             &nbsp;
-            <span id="responRight" name="responRight" style="color: black; font-size: 14px;"
-              class="text-start">{{ this.detalleSolicitudRG.responsableRRHH }}</span>
+            <span id="responRight" name="responRight" style="color: black; font-size: 14px;" class="text-start">{{
+              this.detalleSolicitudRG.responsableRRHH }}</span>
           </div>
         </div>
       </div>
@@ -601,8 +602,8 @@
             <div class="input-group mb-3">
               <label class="input-group label-estilo" for="tipoMotivo">Puesto</label>
               &nbsp;
-              <span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px;"
-                class="text-start">{{ this.detalleSolicitudRG.puestoJefeInmediato }}</span>
+              <span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px;" class="text-start">{{
+                this.detalleSolicitudRG.puestoJefeInmediato }}</span>
             </div>
           </div>
         </div>
@@ -614,10 +615,11 @@
                 Comentarios (¿Cómo fue el desempeño en el Área?)
               </label>
               <textarea *ngIf="taskKey !== taskKeySolicitante" name="descripcionposicion"
-                style="color: black;font-size: 14px; resize: none;" class="form-control"
-                id="comments" rows="3" [(ngModel)]="comentarios" required></textarea>
-              <span *ngIf="taskKey === taskKeySolicitante" #mivar id="tipoSolicitud" name="tipoSolicitud" style="color: black; font-size: 14px;"
-                class="text-start">{{ comentariosJefeInmediato.comentario }}</span>
+                style="color: black;font-size: 14px; resize: none;" class="form-control" id="comments" rows="3"
+                [(ngModel)]="comentarios" required></textarea>
+              <span *ngIf="taskKey === taskKeySolicitante" #mivar id="tipoSolicitud" name="tipoSolicitud"
+                style="color: black; font-size: 14px;" class="text-start">{{ comentariosJefeInmediato.comentario
+                }}</span>
             </div>
           </div>
         </div>
@@ -627,8 +629,8 @@
             <div class="input-group mb-3">
               <label class="input-group label-estilo" for="tipoMotivo">Fecha</label>
               &nbsp;
-              <span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px;"
-                class="text-start">{{ currentDate | date:'dd/MM/yyyy' }}</span>
+              <span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px;" class="text-start">{{
+                currentDate | date:'dd/MM/yyyy' }}</span>
             </div>
           </div>
         </div>
@@ -655,10 +657,11 @@
             <div class="input-group mb-3">
               <label class="input-group label-estilo" for="tipoSolicitud">Forma de Salida</label>
               &nbsp;
-              <input *ngIf="taskKey !== taskKeySolicitante" type="text" [(ngModel)]="comentarios" type="text" name="comentario" placeholder="Campo obligatorio"
+              <input *ngIf="taskKey !== taskKeySolicitante" type="text" [(ngModel)]="comentarios" type="text"
+                name="comentario" placeholder="Campo obligatorio"
                 style="border: 1px solid blue; border-radius: 7px; width:50%;">
-              <span *ngIf="taskKey === taskKeySolicitante" #mivar id="tipoSolicitud" name="tipoSolicitud" style="color: black; font-size: 14px;"
-                class="text-start">{{ comentariosRRHH.comentario }}</span>
+              <span *ngIf="taskKey === taskKeySolicitante" #mivar id="tipoSolicitud" name="tipoSolicitud"
+                style="color: black; font-size: 14px;" class="text-start">{{ comentariosRRHH.comentario }}</span>
             </div>
           </div>
         </div>
@@ -667,8 +670,20 @@
             <div class="input-group mb-3">
               <label class="input-group label-estilo" for="tipoMotivo">Causa real de salida</label>
               &nbsp;
-              <span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px;"
-                class="text-start">{{ causaSalida }}</span>
+              <span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px;" class="text-start">{{
+                causaSalida }}</span>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <div class="input-group mb-3">
+              <label class="input-group label-estilo" for="justificacion" style="width: 20%">Justificación <span
+                  style="color: red;">*</span></label>
+              &nbsp;
+              <textarea id="justificacion" name="justificacion" placeholder="Campo obligatorio"
+                [(ngModel)]="model.justificacionCargo" style="color: black; font-size: 14px" required
+                #justificacion="ngModel"></textarea>
             </div>
           </div>
         </div>
@@ -677,8 +692,8 @@
             <div class="input-group mb-3">
               <label class="input-group label-estilo" for="tipoMotivo">Fecha</label>
               &nbsp;
-              <span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px;"
-                class="text-start">{{ currentDate | date:'dd/MM/yyyy' }}</span>
+              <span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px;" class="text-start">{{
+                currentDate | date:'dd/MM/yyyy' }}</span>
             </div>
           </div>
         </div>
@@ -712,8 +727,8 @@
             <div class="input-group mb-3">
               <label class="input-group label-estilo" for="tipoMotivo">Puesto</label>
               &nbsp;
-              <span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px;"
-                class="text-start">{{ detalleSolicitudRG.puesto }}</span>
+              <span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px;" class="text-start">{{
+                detalleSolicitudRG.puesto }}</span>
             </div>
           </div>
         </div>
@@ -732,8 +747,8 @@
             <div class="input-group mb-3">
               <label class="input-group label-estilo" for="tipoMotivo">Fecha</label>
               &nbsp;
-              <span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px;"
-                class="text-start">{{ currentDate | date:'dd/MM/yyyy' }}</span>
+              <span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px;" class="text-start">{{
+                currentDate | date:'dd/MM/yyyy' }}</span>
             </div>
           </div>
         </div>

@@ -36,7 +36,7 @@ import {
 } from "./consulta-solicitudes.interface";
 
 import { NgSelectComponent } from "@ng-select/ng-select";
-import { single } from "src/app/charts/ngx-charts/chartData";
+import { multi, single } from "src/app/charts/ngx-charts/chartData";
 import { TableComponentData } from "src/app/component/table/table.data";
 import { PageCodes } from "src/app/enums/codes.enum";
 import { LocalStorageKeys } from "src/app/enums/local-storage-keys.enum";
@@ -244,6 +244,7 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
   };
 
   single: any[];
+  multi: any[];
 
   gradient6: boolean = true;
 
@@ -274,6 +275,7 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 
     this.model = calendar.getToday();
     Object.assign(this, { single });
+    Object.assign(this, { multi });
 
     this.camundaRestService = camundaRestService;
     this.route = route;

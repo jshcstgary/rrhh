@@ -11,24 +11,22 @@
             </a>
           </div>
         </div>
-        <div class="col-md-4 text-end">
+
+        <div *ngIf="!existeMatenedores || existe"
+          class="col-md-4 text-end d-flex justify-content-end align-items-center">
           <button *ngIf="existeMatenedores" type="button" (click)="openModal('dialogReasignarUsuario')"
             class="btn btn-info me-2 mt-1">
             <i class="fas fa-redo"></i> Reasignar
           </button>
 
-          <div *ngIf="!existeMatenedores || existe"
-            class="col-md-4 text-end d-flex justify-content-end align-items-center">
-            <button type="submit"
-              class="btn btn-info me-2 d-flex align-items-center justify-content-center button-custom"
-              aria-label="Close" [disabled]="!solicitudForm.form.valid">
-              <i class="fas fa-save me-2 icon-size"></i> Guardar
-            </button>
-            <button *ngIf="RegistrarsolicitudCompletada" type="button" (click)="onCompletar()"
-              class="btn btn-info me-2 d-flex align-items-center justify-content-center button-custom">
-              <i class="fas fa-check-circle me-2 icon-size"></i> Completar Tarea
-            </button>
-          </div>
+          <button type="submit" class="btn btn-info me-2 d-flex align-items-center justify-content-center button-custom"
+            aria-label="Close" [disabled]="!solicitudForm.form.valid">
+            <i class="fas fa-save me-2 icon-size"></i> Guardar
+          </button>
+          <button *ngIf="RegistrarsolicitudCompletada" type="button" (click)="onCompletar()"
+            class="btn btn-info me-2 d-flex align-items-center justify-content-center button-custom">
+            <i class="fas fa-check-circle me-2 icon-size"></i> Completar Tarea
+          </button>
         </div>
       </div>
 
