@@ -316,6 +316,8 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
 
   public minDateValidation = new Date();
   public maxDateValidation = addDays(new Date(), 365);
+  public tareasPorCompletar: any;
+
 
   constructor(
     route: ActivatedRoute,
@@ -634,32 +636,32 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
       if ("true" === this.parentIdFlag) {
         this.idDeInstancia = params["id"];
 
-        this.consultaTareasService.getTareaIdParam(this.id_solicitud_by_params)
-          .subscribe((tarea) => {
+        this.solicitudes.getTaskId(this.idDeInstancia).subscribe({
+          next: (result) => {
+            this.tareasPorCompletar = result.filter((empleado) => {
+              return empleado["deleteReason"] === null;
+            });
+            if(this.tareasPorCompletar.length === 0){
+              return;
+            }else{
+            this.uniqueTaskId = this.tareasPorCompletar[0].id;
+            this.taskType_Activity = this.tareasPorCompletar[0].taskDefinitionKey;
+            this.nameTask = this.tareasPorCompletar[0].name;
+            this.date = this.tareasPorCompletar[0].startTime;
 
-            this.uniqueTaskId = tarea.solicitudes[0].taskId;
-            this.taskType_Activity = tarea.solicitudes[0].tasK_DEF_KEY;
-            this.nameTask = tarea.solicitudes[0].name;
-            this.id_solicitud_by_params = tarea.solicitudes[0].idSolicitud;
+            }        
             this.taskId = params["id"];
-
+      }});
             if (this.id_solicitud_by_params.toUpperCase().includes("RG") || this.id_solicitud_by_params.toUpperCase().includes("CF")) {
 
               this.getCandidatoValues();
             } else {
               this.getSolicitudById(this.id_solicitud_by_params);
             }
-
-            this.date = tarea.solicitudes[0].fechaCreacion;
-            this.loadExistingVariables(
-              this.uniqueTaskId ? this.uniqueTaskId : "",
-              variableNames
-            );
-
             if (this.nameTask !== "Registrar solicitud") {
               this.RegistrarsolicitudCompletada = false;
             }
-          });
+          
       } else {
         // unique id is from the route params
         this.uniqueTaskId = params["id"];
@@ -1114,8 +1116,6 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
         if (!this.dataAprobacionesPorPosicion[this.keySelected]) {
           this.getNivelesAprobacion();
 
-          this.consultarNextTask(id);
-
           if (this.uniqueTaskId) {
             this.ObtenerNivelAprobadorTask();
           }
@@ -1441,7 +1441,7 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
             .subscribe({
               next: () => {
                 setTimeout(() => {
-                  this.consultarNextTaskAprobador(this.solicitud.idSolicitud);
+                  this.consultarNextTaskAprobador(this.solicitud.idInstancia);
                 }, 3000);
               },
               error: (error) => {
@@ -1476,176 +1476,75 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
   }
 
   consultarNextTaskAprobador(IdSolicitud: string) {
-    if (this.solicitud.estadoSolicitud !== "5") {
-      this.consultaTareasService.getTareaIdParam(IdSolicitud).subscribe((tarea) => {
-        this.uniqueTaskId = tarea.solicitudes[0].taskId;
-        this.taskType_Activity = tarea.solicitudes[0].tasK_DEF_KEY;
-        this.nameTask = tarea.solicitudes[0].name;
-        this.id_solicitud_by_params = tarea.solicitudes[0].idSolicitud;
+    this.consultaTareasService.getTaskId(IdSolicitud)
+      .subscribe((tarea) => {
+        this.tareasPorCompletar = tarea.filter((empleado) => {
+          return empleado["deleteReason"] === null;
+        });
+        if(this.tareasPorCompletar.length === 0){
+          return;
+        }else{
+        this.uniqueTaskId = this.tareasPorCompletar[0].id;
+        this.taskType_Activity = this.tareasPorCompletar[0].taskDefinitionKey;
+        this.nameTask = this.tareasPorCompletar[0].name;
 
-        if (this.taskType_Activity !== environment.taskType_Registrar) {
-          this.RegistrarsolicitudCompletada = false;
+          if (this.taskType_Activity !== environment.taskType_Registrar) {
+            this.RegistrarsolicitudCompletada = false;
+          }
         }
+        this.id_solicitud_by_params = this.solicitud.idSolicitud;
 
         let aprobadoractual = "";
-        let aprobadoractualModel = "";
-        let subledgerCreador = "";
-        let correoCreador = "";
-        let usuarioCreador = "";
-        let aprobadorRRHH = "";
-        let aprobadorRemuneracion = "";
 
         this.camundaRestService.getVariablesForTaskLevelAprove(this.uniqueTaskId).subscribe({
           next: (aprobador) => {
             aprobadoractual = aprobador.nivelAprobacion?.value;
-            correoCreador = aprobador.correo_notificador_creador?.value;
-            subledgerCreador = aprobador.subledgerNotificacionCreador?.value;
-            usuarioCreador = aprobador.usuarioNotificacionCreador?.value;
 
-            if (this.solicitud.estadoSolicitud === "4") {
-              if (aprobadoractual === undefined || aprobadoractual === null) {
-                aprobadoractual = this.aprobadorSiguiente.aprobador.nivelDireccion;
-                aprobadoractualModel = this.aprobadorActual.aprobador.nivelDireccion;
+            if (aprobadoractual !== undefined) {
+              const aprobacion = this.dataAprobacionesPorPosicionAPS.find(elemento => elemento.aprobador.nivelDireccion.toUpperCase().includes(aprobadoractual));
+              console.log(aprobacion);
+
+              if (aprobacion.aprobador.nivelDireccion.trim() !== null) {
+                this.solicitudes.modelDetalleAprobaciones.id_Solicitud = this.solicitud.idSolicitud;
+                this.solicitudes.modelDetalleAprobaciones.id_NivelAprobacion = aprobacion.nivelAprobacionType.idNivelAprobacion;
+                this.solicitudes.modelDetalleAprobaciones.id_TipoSolicitud = aprobacion.nivelAprobacionType.idTipoSolicitud.toString();
+                this.solicitudes.modelDetalleAprobaciones.id_Accion = aprobacion.nivelAprobacionType.idAccion;
+                this.solicitudes.modelDetalleAprobaciones.id_TipoMotivo = aprobacion.nivelAprobacionType.idTipoMotivo;
+                this.solicitudes.modelDetalleAprobaciones.id_TipoRuta = aprobacion.nivelAprobacionType.idTipoRuta;
+                this.solicitudes.modelDetalleAprobaciones.id_Ruta = aprobacion.nivelAprobacionType.idRuta;
+                this.solicitudes.modelDetalleAprobaciones.tipoSolicitud = aprobacion.nivelAprobacionType.tipoSolicitud;
+                this.solicitudes.modelDetalleAprobaciones.motivo = aprobacion.nivelAprobacionType.tipoMotivo;
+                this.solicitudes.modelDetalleAprobaciones.tipoRuta = aprobacion.nivelAprobacionType.tipoRuta;
+                this.solicitudes.modelDetalleAprobaciones.ruta = aprobacion.nivelAprobacionType.ruta;
+                this.solicitudes.modelDetalleAprobaciones.accion = aprobacion.nivelAprobacionType.accion;
+                this.solicitudes.modelDetalleAprobaciones.nivelDirecion = aprobacion.nivelAprobacionType.nivelDireccion;
+                this.solicitudes.modelDetalleAprobaciones.nivelAprobacionRuta = aprobacion.nivelAprobacionType.nivelAprobacionRuta;
+                this.solicitudes.modelDetalleAprobaciones.usuarioAprobador = aprobacion.aprobador.usuario;
+                this.solicitudes.modelDetalleAprobaciones.codigoPosicionAprobador = aprobacion.aprobador.codigoPosicion;
+                this.solicitudes.modelDetalleAprobaciones.descripcionPosicionAprobador = aprobacion.aprobador.descripcionPosicion;
+                this.solicitudes.modelDetalleAprobaciones.sudlegerAprobador = aprobacion.aprobador.subledger;
+                this.solicitudes.modelDetalleAprobaciones.nivelDireccionAprobador = aprobacion.aprobador.nivelDireccion;
+                this.solicitudes.modelDetalleAprobaciones.codigoPosicionReportaA = aprobacion.aprobador.codigoPosicionReportaA;
+                this.solicitudes.modelDetalleAprobaciones.estado = "A";
+                this.solicitudes.modelDetalleAprobaciones.estadoAprobacion = "PorRevisar";
+                this.solicitudes.modelDetalleAprobaciones.correo = aprobacion.aprobador.correo;
+                this.solicitudes.modelDetalleAprobaciones.usuarioCreacion = aprobacion.aprobador.usuario;
+                this.solicitudes.modelDetalleAprobaciones.usuarioModificacion = aprobacion.aprobador.usuario;
+                this.solicitudes.modelDetalleAprobaciones.fechaCreacion = new Date().toISOString();
+                this.solicitudes.modelDetalleAprobaciones.fechaModificacion = new Date().toISOString();
               }
 
-              this.dataAprobacionesPorPosicion[this.keySelected].forEach((elemento) => {
-                if (aprobadoractual !== "") {
-                  if (elemento.aprobador.nivelDireccion.trim() == aprobadoractual) {
-                    const htmlString = "<!DOCTYPE html>\r\n<html lang=\"es\">\r\n\r\n<head>\r\n  <meta charset=\"UTF-8\">\r\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n  <title>Document<\/title>\r\n<\/head>\r\n\r\n<body>\r\n  <h2>Estimado(a)<\/h2>\r\n  <h3>{NOMBRE_APROBADOR}<\/h3>\r\n\r\n  <P>La Solicitud de {TIPO_SOLICITUD} {ID_SOLICITUD} para la posici\u00F3n de {DESCRIPCION_POSICION} est\u00E1 disponible para su\r\n    revisi\u00F3n y aprobaci\u00F3n.<\/P>\r\n\r\n  <p>\r\n    <b>\r\n      Favor ingresar al siguiente enlace: <a href=\"{URL_APROBACION}\">{URL_APROBACION}<\/a>\r\n      <br>\r\n      <br>\r\n      Gracias por su atenci\u00F3n.\r\n    <\/b>\r\n  <\/p>\r\n<\/body>\r\n\r\n<\/html>\r\n";
-
-                    const modifiedHtmlString = htmlString.replace("{NOMBRE_APROBADOR}", elemento.aprobador.usuario).replace("{TIPO_SOLICITUD}", this.solicitud.tipoSolicitud).replace("{ID_SOLICITUD}", this.solicitud.idSolicitud).replace("{DESCRIPCION_POSICION}", this.detalleSolicitud.descripcionPosicion).replace(new RegExp("{URL_APROBACION}", "g"), `${portalWorkFlow}tareas/consulta-tareas`);
-
-                    this.emailVariables = {
-                      de: "solicitud.workflow@rbp.com",
-                      para: elemento.aprobador.correo,
-                      // alias: "solicitud.workflow@rbp.com",
-                      alias: "Notificación 1",
-                      asunto: `Autorización de Solicitud de ${this.solicitud.tipoSolicitud} ${this.solicitud.idSolicitud}`,
-                      cuerpo: modifiedHtmlString,
-                      password: "p4$$w0rd"
-                    };
-
-                    this.solicitudes.modelDetalleAprobaciones.id_Solicitud = this.solicitud.idSolicitud;
-                    this.solicitudes.modelDetalleAprobaciones.id_NivelAprobacion = elemento.nivelAprobacionType.idNivelAprobacion;
-                    this.solicitudes.modelDetalleAprobaciones.id_TipoSolicitud = elemento.nivelAprobacionType.idTipoSolicitud.toString();
-                    this.solicitudes.modelDetalleAprobaciones.id_Accion = elemento.nivelAprobacionType.idAccion;
-                    this.solicitudes.modelDetalleAprobaciones.id_TipoMotivo = elemento.nivelAprobacionType.idTipoMotivo;
-                    this.solicitudes.modelDetalleAprobaciones.id_TipoRuta = elemento.nivelAprobacionType.idTipoRuta;
-                    this.solicitudes.modelDetalleAprobaciones.id_Ruta = elemento.nivelAprobacionType.idRuta;
-                    this.solicitudes.modelDetalleAprobaciones.tipoSolicitud = elemento.nivelAprobacionType.tipoSolicitud;
-                    this.solicitudes.modelDetalleAprobaciones.motivo = elemento.nivelAprobacionType.tipoMotivo;
-                    this.solicitudes.modelDetalleAprobaciones.tipoRuta = elemento.nivelAprobacionType.tipoRuta;
-                    this.solicitudes.modelDetalleAprobaciones.ruta = elemento.nivelAprobacionType.ruta;
-                    this.solicitudes.modelDetalleAprobaciones.accion = elemento.nivelAprobacionType.accion;
-                    this.solicitudes.modelDetalleAprobaciones.nivelDirecion = elemento.nivelAprobacionType.nivelDireccion;
-                    this.solicitudes.modelDetalleAprobaciones.nivelAprobacionRuta = elemento.nivelAprobacionType.nivelAprobacionRuta;
-                    this.solicitudes.modelDetalleAprobaciones.usuarioAprobador = elemento.aprobador.usuario;
-                    this.solicitudes.modelDetalleAprobaciones.codigoPosicionAprobador = elemento.aprobador.codigoPosicion;
-                    this.solicitudes.modelDetalleAprobaciones.descripcionPosicionAprobador = elemento.aprobador.descripcionPosicion;
-                    this.solicitudes.modelDetalleAprobaciones.sudlegerAprobador = elemento.aprobador.subledger;
-                    this.solicitudes.modelDetalleAprobaciones.nivelDireccionAprobador = elemento.aprobador.nivelDireccion;
-                    this.solicitudes.modelDetalleAprobaciones.codigoPosicionReportaA = elemento.aprobador.codigoPosicionReportaA;
-                    this.solicitudes.modelDetalleAprobaciones.estado = "A";
-                    if (aprobadoractual.toUpperCase().includes("RRHH")) {
-                      this.solicitudes.modelDetalleAprobaciones.estadoAprobacion = "PorRevisarRRHH";
-                    } else {
-                      if (aprobadoractual.toUpperCase().includes("REMUNERA")) {
-                        this.solicitudes.modelDetalleAprobaciones.estadoAprobacion = "PorRevisarRemuneraciones";
-                      } else {
-                        this.solicitudes.modelDetalleAprobaciones.estadoAprobacion = "PorRevisar";
-                      }
-                    }
-                    this.solicitudes.modelDetalleAprobaciones.correo = elemento.aprobador.correo;
-                    this.solicitudes.modelDetalleAprobaciones.usuarioCreacion = elemento.aprobador.usuario;
-                    this.solicitudes.modelDetalleAprobaciones.usuarioModificacion = elemento.aprobador.usuario;
-                    this.solicitudes.modelDetalleAprobaciones.fechaCreacion = new Date().toISOString();
-                    this.solicitudes.modelDetalleAprobaciones.fechaModificacion = new Date().toISOString();
-
-                  }
-                }
-              });
-              if (this.aprobadorFijo === "NO") {
-                this.solicitudes.guardarDetallesAprobacionesSolicitud(this.solicitudes.modelDetalleAprobaciones).subscribe({
-                  next: () => {
-
-                    this.solicitudes.sendEmail(this.emailVariables).subscribe({
-                      next: () => {
-                      },
-                      error: (error) => {
-                        console.error(error);
-                      }
-                    });
-                  },
-                  error: (err) => {
-                    console.error(err);
-                  }
-                });
-              } else {
-                if (this.apruebaRemuneraciones === "SI") {
-                  if (aprobadoractualModel.toUpperCase().includes("REMUNERA")) {
-                    const htmlString = "<!DOCTYPE html>\r\n<html lang=\"es\">\r\n\r\n<head>\r\n  <meta charset=\"UTF-8\">\r\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n  <title>Document<\/title>\r\n<\/head>\r\n\r\n<body>\r\n  <h2>Estimado(a)<\/h2>\r\n  <h3>{NOMBRE_APROBADOR}<\/h3>\r\n\r\n  <P>Se le informa que se encuentra aprobada la Solicitud {ID_SOLICITUD}<\/P>\r\n\r\n  <p>\r\n    <b>\r\n      Favor ingresar al siguiente enlace: <a href=\"{URL_APROBACION}\">{URL_APROBACION}<\/a>\r\n      <br>\r\n      <br>\r\n      Gracias por su atenci\u00F3n.\r\n    <\/b>\r\n  <\/p>\r\n<\/body>\r\n\r\n<\/html>";
-
-                    const modifiedHtmlString = htmlString.replace("{NOMBRE_APROBADOR}", usuarioCreador).replace("{ID_SOLICITUD}", this.solicitud.idSolicitud).replace(new RegExp("{URL_APROBACION}", "g"), `${portalWorkFlow}tareas/consulta-tareas`);
-
-                    this.emailVariables = {
-                      de: "solicitud.workflow@rbp.com",
-                      para: correoCreador,
-                      // alias: "solicitud.workflow@rbp.com",
-                      alias: "Notificación 1",
-                      asunto: "Notificación Iniciador",
-                      cuerpo: modifiedHtmlString,
-                      password: "p4$$w0rd"
-                    };
-                  }
-                } else {
-                  const htmlString = "<!DOCTYPE html>\r\n<html lang=\"es\">\r\n\r\n<head>\r\n  <meta charset=\"UTF-8\">\r\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n  <title>Document<\/title>\r\n<\/head>\r\n\r\n<body>\r\n  <h2>Estimado(a)<\/h2>\r\n  <h3>{NOMBRE_APROBADOR}<\/h3>\r\n\r\n  <P>Se le informa que se encuentra aprobada la Solicitud {ID_SOLICITUD}<\/P>\r\n\r\n  <p>\r\n    <b>\r\n      Favor ingresar al siguiente enlace: <a href=\"{URL_APROBACION}\">{URL_APROBACION}<\/a>\r\n      <br>\r\n      <br>\r\n      Gracias por su atenci\u00F3n.\r\n    <\/b>\r\n  <\/p>\r\n<\/body>\r\n\r\n<\/html>";
-
-                  const modifiedHtmlString = htmlString.replace("{NOMBRE_APROBADOR}", usuarioCreador).replace("{ID_SOLICITUD}", this.solicitud.idSolicitud).replace(new RegExp("{URL_APROBACION}", "g"), `${portalWorkFlow}tareas/consulta-tareas`);
-
-                  this.emailVariables = {
-                    de: "solicitud.workflow@rbp.com",
-                    para: correoCreador,
-                    // alias: "solicitud.workflow@rbp.com",
-                    alias: "Notificación 1",
-                    asunto: "Notificación Iniciador",
-                    cuerpo: modifiedHtmlString,
-                    password: "p4$$w0rd"
-                  };
-                }
-                this.solicitudes.sendEmail(this.emailVariables).subscribe({
-                  next: () => {
-                  },
-                  error: (error) => {
-                    console.error(error);
-                  }
-                });
-              }
-            } if (this.solicitud.estadoSolicitud === "DV") {
-              const htmlString = "<!DOCTYPE html>\r\n<html lang=\"es\">\r\n\r\n<head>\r\n  <meta charset=\"UTF-8\">\r\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n  <title>Document<\/title>\r\n<\/head>\r\n\r\n<body>\r\n  <h2>Estimado(a)<\/h2>\r\n  <h3>{NOMBRE_APROBADOR}<\/h3>\r\n\r\n  <P>Se le informa que ha sido devuelta la Solicitud {ID_SOLICITUD}<\/P>\r\n\r\n  <p>\r\n    <b>\r\n      Favor ingresar al siguiente enlace: <a href=\"{URL_APROBACION}\">{URL_APROBACION}<\/a>\r\n      <br>\r\n      <br>\r\n      Gracias por su atenci\u00F3n.\r\n    <\/b>\r\n  <\/p>\r\n<\/body>\r\n\r\n<\/html>";
-
-              const modifiedHtmlString = htmlString.replace("{NOMBRE_APROBADOR}", usuarioCreador).replace("{ID_SOLICITUD}", this.solicitud.idSolicitud).replace(new RegExp("{URL_APROBACION}", "g"), `${portalWorkFlow}tareas/consulta-tareas`);
-
-              this.emailVariables = {
-                de: "solicitud.workflow@rbp.com",
-                para: correoCreador,
-                // alias: "solicitud.workflow@rbp.com",
-                alias: "Notificación 1",
-                asunto: `Notificación por devolución de Solicitud de ${this.solicitud.tipoSolicitud} ${this.solicitud.idSolicitud}`,
-                cuerpo: modifiedHtmlString,
-                password: "p4$$w0rd"
-              };
-              this.solicitudes.sendEmail(this.emailVariables).subscribe({
+            this.solicitudes.guardarDetallesAprobacionesSolicitud(this.solicitudes.modelDetalleAprobaciones).subscribe({
                 next: () => {
                 },
-                error: (error) => {
-                  console.error(error);
+                error: (err) => {
+                  console.error(err);
                 }
               });
             }
           }
         });
       });
-    }
   }
 
   recorrerArreglo() {
@@ -1684,22 +1583,6 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
           this.completeAndCheckTask(taskId, variables);
         } else {
           // El nombre ya no es "Notificar revisión solicitud", haz algo diferente
-        }
-      });
-  }
-
-  //this.detalleSolicitud.idSolicitud
-  consultarNextTask(IdSolicitud: string) {
-    this.consultaTareasService.getTareaIdParam(IdSolicitud)
-      .subscribe((tarea) => {
-        this.uniqueTaskId = tarea.solicitudes[0].taskId;
-        this.taskType_Activity = tarea.solicitudes[0].tasK_DEF_KEY;
-        this.nameTask = tarea.solicitudes[0].name;
-        this.id_solicitud_by_params = tarea.solicitudes[0].idSolicitud;
-        this.rootProces = tarea.solicitudes[0].rootProcInstId;
-
-        if (this.nameTask !== "Registrar solicitud") {
-          this.RegistrarsolicitudCompletada = false;
         }
       });
   }

@@ -841,7 +841,6 @@ export class CompletarAccionPersonalComponent extends CompleteTaskComponent {
            }
          }*/
 
-        this.consultarNextTask(id);
       },
       error: (error: HttpErrorResponse) => {
         this.utilService.modalResponse(error.error, "error");
@@ -932,23 +931,6 @@ export class CompletarAccionPersonalComponent extends CompleteTaskComponent {
             "error"
           );
         },
-      });
-  }
-
-  consultarNextTask(IdSolicitud: string) {
-    this.consultaTareasService
-      .getTareaIdParam(IdSolicitud)
-      .subscribe((tarea) => {
-        console.log("Task: ", tarea);
-
-        this.uniqueTaskId = tarea.solicitudes[0].taskId;
-        this.taskType_Activity = tarea.solicitudes[0].tasK_DEF_KEY;
-        this.nameTask = tarea.solicitudes[0].name;
-        this.id_solicitud_by_params = tarea.solicitudes[0].idSolicitud;
-
-        if (this.taskType_Activity !== environment.taskType_Registrar) {
-          this.RegistrarsolicitudCompletada = false;
-        }
       });
   }
 

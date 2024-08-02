@@ -624,26 +624,11 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
       if ("true" === this.parentIdFlag) {
         this.idDeInstancia = params["id"];
 
-        this.consultaTareasService.getTareaIdParam(this.id_solicitud_by_params)
-          .subscribe((tarea) => {
-            if (tarea.solicitudes.length > 0) {
-              this.uniqueTaskId = tarea.solicitudes[0].taskId;
-              this.taskType_Activity = tarea.solicitudes[0].tasK_DEF_KEY;
-              this.nameTask = tarea.solicitudes[0].name;
-              this.id_solicitud_by_params = tarea.solicitudes[0].idSolicitud;
-            }
-
             if (!this.id_solicitud_by_params.toUpperCase().includes("AP") && !this.id_solicitud_by_params.toUpperCase().includes("DP")) {
               this.getCandidatoValues();
             } else {
               this.getSolicitudById(this.id_solicitud_by_params);
             }
-
-
-            if (this.nameTask !== "Registrar solicitud") {
-              this.RegistrarsolicitudCompletada = false;
-            }
-          });
       } else {
         // unique id is from the route params
         this.uniqueTaskId = params["id"];
@@ -1461,20 +1446,6 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
             "error"
           );
         },
-      });
-  }
-
-  consultarNextTask(IdSolicitud: string) {
-    this.consultaTareasService.getTareaIdParam(IdSolicitud)
-      .subscribe((tarea) => {
-        console.log("Task: ", tarea);
-
-        this.uniqueTaskId = tarea.solicitudes[0].taskId;
-        this.taskType_Activity = tarea.solicitudes[0].tasK_DEF_KEY;
-        this.nameTask = tarea.solicitudes[0].name;
-        this.id_solicitud_by_params = tarea.solicitudes[0].idSolicitud;
-
-        this.obtenerComentariosAtencionPorInstanciaRaiz();
       });
   }
 
