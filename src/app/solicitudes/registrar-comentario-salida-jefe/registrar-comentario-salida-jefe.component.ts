@@ -396,6 +396,10 @@ export class RegistrarComentarioSalidaJefeComponent extends CompleteTaskComponen
 
   nombreCompletoCandidato: string = "";
   public taskType_Activity_subledger: any;
+  public tareasPorCompletar: any;
+  public primerNivelAprobacion: string="";
+
+
   idSolicitudRP: string = "";
 
   nombresEmpleados: string[] = [];
@@ -689,31 +693,34 @@ export class RegistrarComentarioSalidaJefeComponent extends CompleteTaskComponen
       if ("true" === this.parentIdFlag) {
         console.log(this.taskType_Activity_subledger);
         if (this.taskType_Activity_subledger.length === 0) {
-          console.log(this.taskType_Activity_subledger.length);
-
-        this.consultaTareasService
-      .getTareaIdParam(this.id_solicitud_by_params)
-      .subscribe((tarea) => {
-        console.log("Task: ", tarea);
-
-        this.uniqueTaskId = tarea.solicitudes[0].taskId;
-        this.taskType_Activity = tarea.solicitudes[0].tasK_DEF_KEY;
-        this.nameTask = tarea.solicitudes[0].name;
-        // this.id_solicitud_by_params = tarea.solicitudes[0].idSolicitud;
-
-        if (this.taskType_Activity !== environment.taskType_Registrar) {
-          this.RegistrarsolicitudCompletada = false;
-        }
-      });
+         
         this.idDeInstancia = params["id"];
-        }else{
+        this.solicitudes.getTaskId(this.idDeInstancia).subscribe({
+          next: (result) => {
+            this.tareasPorCompletar = result.filter((empleado) => {
+              return empleado["deleteReason"] === null;
+            });
+            if(this.tareasPorCompletar.length === 0){
+              return;
+            }else{
+            this.uniqueTaskId = this.tareasPorCompletar[0].id;
+            this.taskType_Activity = this.tareasPorCompletar[0].taskDefinitionKey;
+            this.nameTask = this.tareasPorCompletar[0].name;
+            }        
+            this.taskId = params["id"];
+            this.getCandidatoValues();
+            this.date = this.tareasPorCompletar[0].startTime;
+          },
+          error: (error) => {
+            console.error(error);
+          }
+        });
+       }else{
           this.taskKey = this.taskType_Activity_subledger[0].tasK_DEF_KEY;
           this.uniqueTaskId = this.taskType_Activity_subledger[0].taskId;
           this.date = this.taskType_Activity_subledger[0].startTime;
         }
-          this.taskId = params["id"];
 
-          this.getCandidatoValues();
 
           // this.loadExistingVariables(this.uniqueTaskId ? this.uniqueTaskId : "", variableNames);
       } else {
@@ -848,8 +855,6 @@ export class RegistrarComentarioSalidaJefeComponent extends CompleteTaskComponen
 
         this.mostrarTipoJustificacionYMision = this.restrictionsIds.includes(this.solicitud.idTipoMotivo);
         this.mostrarSubledger = this.restrictionsSubledgerIds.includes(this.solicitud.idTipoMotivo);
-
-        this.consultarNextTask(id);
       },
       error: (error: HttpErrorResponse) => {
         this.utilService.modalResponse(error.error, "error");
@@ -895,8 +900,8 @@ export class RegistrarComentarioSalidaJefeComponent extends CompleteTaskComponen
   mapearDetallesAprobadores(nivelAprobacionPosicionType: any[]) {
     this.starterService.getUser(localStorage.getItem(LocalStorageKeys.IdUsuario)).subscribe({
       next: (res) => {
-        this.detalleNivelAprobacion = nivelAprobacionPosicionType.map(({ nivelAprobacionType, aprobador }) => ({
-          id_Solicitud: this.solicitudRG.idSolicitud,
+        this.detalleNivelAprobacion = nivelAprobacionPosicionType.map(({ nivelAprobacionType, aprobador }, index) => ({
+          id_Solicitud: this.solicitud.idSolicitud,
           id_NivelAprobacion: nivelAprobacionType.idNivelAprobacion,
           id_TipoSolicitud: nivelAprobacionType.idTipoSolicitud.toString(),
           id_Accion: nivelAprobacionType.idAccion,
@@ -916,7 +921,7 @@ export class RegistrarComentarioSalidaJefeComponent extends CompleteTaskComponen
           sudlegerAprobador: aprobador.subledger,
           codigoPosicionReportaA: aprobador.codigoPosicionReportaA,
           nivelDireccionAprobador: aprobador.nivelDireccion,
-          estadoAprobacion: nivelAprobacionType.idNivelAprobacionRuta.toUpperCase().includes("RRHH") ? "PorRevisarRRHH" : (nivelAprobacionType.idNivelAprobacionRuta.toUpperCase().includes("REMUNERA") ? "PorRevisarRemuneraciones" : "PendienteAsignacion"),
+          estadoAprobacion: nivelAprobacionType.idNivelAprobacionRuta.toUpperCase().includes(this.primerNivelAprobacion.toUpperCase()) ? "PorRevisar" :  nivelAprobacionType.idNivelAprobacionRuta.toUpperCase().includes("RRHH") ? "PorRevisarRRHH" : (nivelAprobacionType.idNivelAprobacionRuta.toUpperCase().includes("REMUNERA") ? "PorRevisarRemuneraciones" : "PendienteAsignacion"),
           estado: nivelAprobacionType.estado,
           correo: aprobador.correo === null ? "" : aprobador.correo,
           usuarioCreacion: res.evType[0].nombreCompleto,
@@ -986,6 +991,7 @@ export class RegistrarComentarioSalidaJefeComponent extends CompleteTaskComponen
         next: (response) => {
           this.dataAprobadoresDinamicos.length = 0;
           this.dataAprobacionesPorPosicionAPS = response.nivelAprobacionPosicionType;
+          this.primerNivelAprobacion=response.nivelAprobacionPosicionType[0].aprobador.nivelDireccion;
           this.dataAprobacionesPorPosicionAPS.forEach(item => {
             this.dataAprobadoresDinamicos.push(item.aprobador.nivelDireccion);
           });
@@ -993,22 +999,6 @@ export class RegistrarComentarioSalidaJefeComponent extends CompleteTaskComponen
         error: (error: HttpErrorResponse) => {
           this.utilService.modalResponse("No existe aprobadores de solicitud para los datos ingresados", "error");
         },
-      });
-  }
-
-  consultarNextTask(IdSolicitud: string) {
-    this.consultaTareasService.getTareaIdParam(IdSolicitud)
-      .subscribe((tarea) => {
-        console.log("Task: ", tarea);
-
-        this.uniqueTaskId = tarea.solicitudes[0].taskId;
-        this.taskType_Activity = tarea.solicitudes[0].tasK_DEF_KEY;
-        this.nameTask = tarea.solicitudes[0].name;
-        this.id_solicitud_by_params = tarea.solicitudes[0].idSolicitud;
-
-        if (this.taskType_Activity !== environment.taskType_Registrar) {
-          this.RegistrarsolicitudCompletada = false;
-        }
       });
   }
 

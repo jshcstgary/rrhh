@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders, HttpParams, HttpParamsOptions } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { Observable } from "rxjs";
+import { catchError, Observable, of, tap } from "rxjs";
 import { DetalleAprobaciones } from "src/app/eschemas/DetalleAprobaciones";
 import { DetalleSolicitud } from "src/app/eschemas/DetalleSolicitud";
 import { Solicitud } from "src/app/eschemas/Solicitud";
@@ -9,6 +9,12 @@ import {
 	IAprobacionesPosicion,
 	ITareasResponse,
 } from "./registrar-solicitudes.interface";
+
+const httpOptions = {
+  headers: new HttpHeaders({
+    "Content-Type": "application/json",
+  }),
+};
 
 @Injectable({
   providedIn: "root",
@@ -21,6 +27,10 @@ export class SolicitudesService {
   private apiDetalleAprobaciones = environment.detalleAprobacionesServiceES;
   private apiUrlTareas = environment.tareasServiceES;
   private apiEmail = environment.senEmailService;
+  private engineRestUrl = environment.camundaUrl + "engine-rest/";
+  private log(message: string) {}
+
+
 
   public modelSolicitud = new Solicitud();
   public modelDetalleSolicitud = new DetalleSolicitud();
@@ -196,5 +206,25 @@ export class SolicitudesService {
 
   public getTareaIdParam(idParam: string): Observable<any> {
     return this.http.get<any>(`${this.apiUrlTareas}/${idParam}`);
+  }
+
+  public getTaskId(processInstanceId: String): Observable<any> {
+    const endpoint = `${this.engineRestUrl}history/task?rootProcessInstanceId=${processInstanceId}`;
+
+    return this.http.get<any>(endpoint, httpOptions).pipe(
+      tap((form) => {
+        this.log(`fetched variables`);
+        this.log(form);
+      }),
+      catchError(this.handleError("getVariablesForTask", []))
+    );
+  }
+
+  private handleError<T>(operation = "operation", result?: T) {
+    return (error: any): Observable<T> => {
+      console.error(error);
+      this.log(`${operation} fallida: ${error.message}`);
+      return of(error as T);
+    };
   }
 }

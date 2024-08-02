@@ -143,6 +143,18 @@ export class CamundaRestService {
     );
   }
 
+  getTaskId(processInstanceId: String): Observable<any> {
+    const endpoint = `${this.engineRestUrl}history/task?rootProcessInstanceId=${processInstanceId}`;
+
+    return this.http.get<any>(endpoint, httpOptions).pipe(
+      tap((form) => {
+        this.log(`fetched variables`);
+        this.log(form);
+      }),
+      catchError(this.handleError("getVariablesForTask", []))
+    );
+  }
+
   private handleError<T>(operation = "operation", result?: T) {
     return (error: any): Observable<T> => {
       console.error(error);

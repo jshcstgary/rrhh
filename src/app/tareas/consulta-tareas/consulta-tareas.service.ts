@@ -1,8 +1,14 @@
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { Observable } from "rxjs";
+import { catchError, Observable, of, tap } from "rxjs";
 import { environment } from "src/environments/environment";
 import { IConsultaNivelesAprobacionResponse } from "./consulta-tareas.interface";
+
+const httpOptions = {
+  headers: new HttpHeaders({
+    "Content-Type": "application/json",
+  }),
+};
 
 @Injectable({
   providedIn: "root",
@@ -12,6 +18,10 @@ export class ConsultaTareasService {
   private apiDetallesAprobacionesSolicitud = environment.detalleAprobacionesServiceES;
 
   private apiUrlTareas = environment.tareasServiceES;
+  private engineRestUrl = environment.camundaUrl + "engine-rest/";
+  private log(message: string) {}
+
+
 
   constructor(private http: HttpClient) {}
 
@@ -42,5 +52,24 @@ export class ConsultaTareasService {
 
   public getTareaIdParam(idParam: string): Observable<any> {
     return this.http.get<any>(`${this.apiUrlTareas}/${idParam}`);
+  }
+  public getTaskId(processInstanceId: String): Observable<any> {
+    const endpoint = `${this.engineRestUrl}history/task?rootProcessInstanceId=${processInstanceId}`;
+
+    return this.http.get<any>(endpoint, httpOptions).pipe(
+      tap((form) => {
+        this.log(`fetched variables`);
+        this.log(form);
+      }),
+      catchError(this.handleError("getVariablesForTask", []))
+    );
+  }
+
+  private handleError<T>(operation = "operation", result?: T) {
+    return (error: any): Observable<T> => {
+      console.error(error);
+      this.log(`${operation} fallida: ${error.message}`);
+      return of(error as T);
+    };
   }
 }

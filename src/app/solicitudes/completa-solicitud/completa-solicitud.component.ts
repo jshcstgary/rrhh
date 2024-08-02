@@ -350,6 +350,8 @@ export class CompletaSolicitudComponent extends CompleteTaskComponent {
 
   public dataNivelDireccion: any[] = [];
   public suggestions: string[] = [];
+  public tareasPorCompletar: any;
+
 
   public idDeInstancia: any;
 
@@ -591,26 +593,28 @@ export class CompletaSolicitudComponent extends CompleteTaskComponent {
         // id is parent process instance id. so handle it accordingly
         // we are looking for task id 'Registrar' in a recently started process instance 'id'
         this.idDeInstancia = params["id"];
-        this.consultaTareasService.getTareaIdParam(this.id_solicitud_by_params)
-          .subscribe((tarea) => {
-
-            this.uniqueTaskId = tarea.solicitudes[0].taskId;
-            this.taskType_Activity = tarea.solicitudes[0].tasK_DEF_KEY;
-            this.nameTask = tarea.solicitudes[0].name;
-            this.id_solicitud_by_params = tarea.solicitudes[0].idSolicitud;
+        this.solicitudes.getTaskId(this.idDeInstancia).subscribe({
+          next: (result) => {
+            this.tareasPorCompletar = result.filter((empleado) => {
+              return empleado["deleteReason"] === null;
+            });
+            if(this.tareasPorCompletar.length === 0){
+              return;
+            }else{
+            this.uniqueTaskId = this.tareasPorCompletar[0].id;
+            this.taskType_Activity = this.tareasPorCompletar[0].taskDefinitionKey;
+            this.nameTask = this.tareasPorCompletar[0].name;
+            }        
             this.taskId = params["id"];
-
+            // this.getDetalleSolicitudById(this.id_solicitud_by_params); // Si se comenta, causa problemas al abrir el Sweet Alert 2
             this.getSolicitudById(this.id_solicitud_by_params);
-            this.date = tarea.solicitudes[0].fechaCreacion;
-            this.loadExistingVariables(
-              this.uniqueTaskId ? this.uniqueTaskId : "",
-              variableNames
-            );
-
-            if (this.nameTask !== "Registrar solicitud") {
-              this.RegistrarsolicitudCompletada = false;
-            }
-          });
+            this.date = this.tareasPorCompletar[0].startTime;
+            this.loadExistingVariables(this.uniqueTaskId ? this.uniqueTaskId : "", variableNames);
+          },
+          error: (error) => {
+            console.error(error);
+          }
+        });
       } else {
         // unique id is from the route params
         this.uniqueTaskId = params["id"];
@@ -939,8 +943,6 @@ export class CompletaSolicitudComponent extends CompleteTaskComponent {
           this.obtenerComentariosAtencionPorInstanciaRaiz();
         }
 
-        this.consultarNextTask(id);
-
       },
       error: (error: HttpErrorResponse) => {
         this.utilService.modalResponse(error.error, "error");
@@ -1149,22 +1151,6 @@ export class CompletaSolicitudComponent extends CompleteTaskComponent {
           this.completeAndCheckTask(taskId, variables);
         } else {
           // El nombre ya no es "Notificar revisión solicitud", haz algo diferente
-        }
-      });
-  }
-
-
-  consultarNextTask(IdSolicitud: string) {
-    this.consultaTareasService.getTareaIdParam(IdSolicitud)
-      .subscribe((tarea) => {
-
-        this.uniqueTaskId = tarea.solicitudes[0].taskId;
-        this.taskType_Activity = tarea.solicitudes[0].tasK_DEF_KEY;
-        this.nameTask = tarea.solicitudes[0].name;
-        this.id_solicitud_by_params = tarea.solicitudes[0].idSolicitud;
-
-        if (this.nameTask !== "Registrar solicitud") {
-          this.RegistrarsolicitudCompletada = false;
         }
       });
   }

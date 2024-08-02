@@ -78,6 +78,8 @@ export class ConsultaTareasComponent implements OnInit {
   public dataTipoMotivo: any[] = [];
   public dataTipoSolicitudes: any[] = [];
   public dataNivelDireccion: any[] = [];
+  public tareasPorCompletar: any;
+
   constructor(
     private consultaTareasService: ConsultaTareasService,
     private tableService: TableService,
@@ -254,7 +256,7 @@ export class ConsultaTareasComponent implements OnInit {
   onRowActionClicked(id: string, key: string, tooltip: string, id_edit) {
     if (this.isTarea) {
       let ids = id_edit.split(",");
-
+	  
       this.consultaTareasService.getTareaIdParam(ids[0]).subscribe((tarea) => {
 		let taeraopcion = tarea.solicitudes[0].tasK_DEF_KEY;
 		let registrar = environment.taskType_RRHH;

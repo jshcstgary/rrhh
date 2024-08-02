@@ -133,6 +133,8 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
   public tipo_solicitud_descripcion: string;
   public tipo_motivo_descripcion: string;
   public tipo_accion_descripcion: string;
+  public tareasPorCompletar: any;
+
 
   public keySelected: any;
 
@@ -351,6 +353,8 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
   public idDeInstancia: any;
 
   public loadingComplete = 0;
+  public primerNivelAprobacion: string="";
+
 
   nombresEmpleados: string[] = [];
 
@@ -548,24 +552,27 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
         // we are looking for task id 'Registrar' in a recently started process instance 'id'
         this.idDeInstancia = params["id"];
         // this.camundaRestService.getTask(environment.taskType_CF, params["id"])
-        this.solicitudes.getTareaIdParam(this.id_solicitud_by_params)
-          .subscribe((result) => {
-            this.lookForError(result); // if error, then control gets redirected to err page
-
-            // if result is success - bingo, we got the task id
-            // this.uniqueTaskId = result.solicitudes[0].taskId; /* Es como la tarea que se crea en esa instancia */
-            // this.taskId = params["id"]; /* Esta es la instancia */
-            // this.getDetalleSolicitudById(this.id_solicitud_by_params);
-
+        this.solicitudes.getTaskId(this.idDeInstancia).subscribe({
+          next: (result) => {
+            this.tareasPorCompletar = result.filter((empleado) => {
+              return empleado["deleteReason"] === null;
+            });
+            if(this.tareasPorCompletar.length === 0){
+              return;
+            }else{
+            this.uniqueTaskId = this.tareasPorCompletar[0].id;
+            this.taskType_Activity = this.tareasPorCompletar[0].taskDefinitionKey;
+            this.nameTask = this.tareasPorCompletar[0].name;
+            }        
+            this.taskId = params["id"];
+            // this.getDetalleSolicitudById(this.id_solicitud_by_params); // Si se comenta, causa problemas al abrir el Sweet Alert 2
+            this.date = this.tareasPorCompletar[0].startTime;
             this.getCandidatoValues();
-
-            // this.getSolicitudById(this.id_solicitud_by_params);
-            // this.date = result.solicitudes[0].startTime;
-            // this.loadExistingVariables(
-            //   this.uniqueTaskId ? this.uniqueTaskId : "",
-            //   variableNames
-            // );
-          });
+          },
+          error: (error) => {
+            console.error(error);
+          }
+        });
       } else {
         // unique id is from the route params
         this.uniqueTaskId = params["id"];
@@ -664,6 +671,7 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
           this.dataAprobadoresDinamicos.length = 0;
           this.dataAprobacionesPorPosicionAPS =
             response.nivelAprobacionPosicionType;
+            this.primerNivelAprobacion=response.nivelAprobacionPosicionType[0].aprobador.nivelDireccion;
           this.dataAprobacionesPorPosicionAPS.forEach((item) => {
             this.dataAprobadoresDinamicos.push(item.aprobador.nivelDireccion);
             console.log("Aprobaciones APD = ", item.aprobador);
@@ -1034,7 +1042,6 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
           }
         }*/
 
-        this.consultarNextTask(id);
       },
       error: (error: HttpErrorResponse) => {
         this.utilService.modalResponse(error.error, "error");
@@ -1334,16 +1341,23 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
   }
 
   consultarNextTaskAprobador(IdSolicitud: string) {
-    this.consultaTareasService.getTareaIdParam(IdSolicitud)
+    this.consultaTareasService.getTaskId(IdSolicitud)
       .subscribe((tarea) => {
-        this.uniqueTaskId = tarea.solicitudes[0].taskId;
-        this.taskType_Activity = tarea.solicitudes[0].tasK_DEF_KEY;
-        this.nameTask = tarea.solicitudes[0].name;
-        this.id_solicitud_by_params = tarea.solicitudes[0].idSolicitud;
+        this.tareasPorCompletar = tarea.filter((empleado) => {
+          return empleado["deleteReason"] === null;
+        });
+        if(this.tareasPorCompletar.length === 0){
+          return;
+        }else{
+        this.uniqueTaskId = this.tareasPorCompletar[0].id;
+        this.taskType_Activity = this.tareasPorCompletar[0].taskDefinitionKey;
+        this.nameTask = this.tareasPorCompletar[0].name;
 
-        if (this.taskType_Activity !== environment.taskType_CF) {
-          this.RegistrarsolicitudCompletada = false;
+          if (this.taskType_Activity !== environment.taskType_Registrar) {
+            this.RegistrarsolicitudCompletada = false;
+          }
         }
+        this.id_solicitud_by_params = this.solicitud.idSolicitud;
 
         let aprobadoractual = "";
 
@@ -1352,41 +1366,40 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
             aprobadoractual = aprobador.nivelAprobacion?.value;
 
             if (aprobadoractual !== undefined) {
-              this.dataAprobacionesPorPosicionAPS.forEach((elemento) => {
-                const aprobacion = elemento;
+              const aprobacion = this.dataAprobacionesPorPosicionAPS.find(elemento => elemento.aprobador.nivelDireccion.toUpperCase().includes(aprobadoractual));
+              console.log(aprobacion);
 
-                if (aprobacion.aprobador.nivelDireccion.trim() == aprobadoractual) {
-                  this.solicitudes.modelDetalleAprobaciones.id_Solicitud = this.solicitud.idSolicitud;
-                  this.solicitudes.modelDetalleAprobaciones.id_NivelAprobacion = aprobacion.nivelAprobacionType.idNivelAprobacion;
-                  this.solicitudes.modelDetalleAprobaciones.id_TipoSolicitud = aprobacion.nivelAprobacionType.idTipoSolicitud.toString();
-                  this.solicitudes.modelDetalleAprobaciones.id_Accion = aprobacion.nivelAprobacionType.idAccion;
-                  this.solicitudes.modelDetalleAprobaciones.id_TipoMotivo = aprobacion.nivelAprobacionType.idTipoMotivo;
-                  this.solicitudes.modelDetalleAprobaciones.id_TipoRuta = aprobacion.nivelAprobacionType.idTipoRuta;
-                  this.solicitudes.modelDetalleAprobaciones.id_Ruta = aprobacion.nivelAprobacionType.idRuta;
-                  this.solicitudes.modelDetalleAprobaciones.tipoSolicitud = aprobacion.nivelAprobacionType.tipoSolicitud;
-                  this.solicitudes.modelDetalleAprobaciones.motivo = aprobacion.nivelAprobacionType.tipoMotivo;
-                  this.solicitudes.modelDetalleAprobaciones.tipoRuta = aprobacion.nivelAprobacionType.tipoRuta;
-                  this.solicitudes.modelDetalleAprobaciones.ruta = aprobacion.nivelAprobacionType.ruta;
-                  this.solicitudes.modelDetalleAprobaciones.accion = aprobacion.nivelAprobacionType.accion;
-                  this.solicitudes.modelDetalleAprobaciones.nivelDirecion = aprobacion.nivelAprobacionType.nivelDireccion;
-                  this.solicitudes.modelDetalleAprobaciones.nivelAprobacionRuta = aprobacion.nivelAprobacionType.nivelAprobacionRuta;
-                  this.solicitudes.modelDetalleAprobaciones.usuarioAprobador = aprobacion.aprobador.usuario;
-                  this.solicitudes.modelDetalleAprobaciones.codigoPosicionAprobador = aprobacion.aprobador.codigoPosicion;
-                  this.solicitudes.modelDetalleAprobaciones.descripcionPosicionAprobador = aprobacion.aprobador.descripcionPosicion;
-                  this.solicitudes.modelDetalleAprobaciones.sudlegerAprobador = aprobacion.aprobador.subledger;
-                  this.solicitudes.modelDetalleAprobaciones.nivelDireccionAprobador = aprobacion.aprobador.nivelDireccion;
-                  this.solicitudes.modelDetalleAprobaciones.codigoPosicionReportaA = aprobacion.aprobador.codigoPosicionReportaA;
-                  this.solicitudes.modelDetalleAprobaciones.estado = "A";
-                  this.solicitudes.modelDetalleAprobaciones.estadoAprobacion = "PorRevisar";
-                  this.solicitudes.modelDetalleAprobaciones.correo = aprobacion.aprobador.correo;
-                  this.solicitudes.modelDetalleAprobaciones.usuarioCreacion = aprobacion.aprobador.usuario;
-                  this.solicitudes.modelDetalleAprobaciones.usuarioModificacion = aprobacion.aprobador.usuario;
-                  this.solicitudes.modelDetalleAprobaciones.fechaCreacion = new Date().toISOString();
-                  this.solicitudes.modelDetalleAprobaciones.fechaModificacion = new Date().toISOString();
-                }
-              });
+              if (aprobacion.aprobador.nivelDireccion.trim() !== null) {
+                this.solicitudes.modelDetalleAprobaciones.id_Solicitud = this.solicitud.idSolicitud;
+                this.solicitudes.modelDetalleAprobaciones.id_NivelAprobacion = aprobacion.nivelAprobacionType.idNivelAprobacion;
+                this.solicitudes.modelDetalleAprobaciones.id_TipoSolicitud = aprobacion.nivelAprobacionType.idTipoSolicitud.toString();
+                this.solicitudes.modelDetalleAprobaciones.id_Accion = aprobacion.nivelAprobacionType.idAccion;
+                this.solicitudes.modelDetalleAprobaciones.id_TipoMotivo = aprobacion.nivelAprobacionType.idTipoMotivo;
+                this.solicitudes.modelDetalleAprobaciones.id_TipoRuta = aprobacion.nivelAprobacionType.idTipoRuta;
+                this.solicitudes.modelDetalleAprobaciones.id_Ruta = aprobacion.nivelAprobacionType.idRuta;
+                this.solicitudes.modelDetalleAprobaciones.tipoSolicitud = aprobacion.nivelAprobacionType.tipoSolicitud;
+                this.solicitudes.modelDetalleAprobaciones.motivo = aprobacion.nivelAprobacionType.tipoMotivo;
+                this.solicitudes.modelDetalleAprobaciones.tipoRuta = aprobacion.nivelAprobacionType.tipoRuta;
+                this.solicitudes.modelDetalleAprobaciones.ruta = aprobacion.nivelAprobacionType.ruta;
+                this.solicitudes.modelDetalleAprobaciones.accion = aprobacion.nivelAprobacionType.accion;
+                this.solicitudes.modelDetalleAprobaciones.nivelDirecion = aprobacion.nivelAprobacionType.nivelDireccion;
+                this.solicitudes.modelDetalleAprobaciones.nivelAprobacionRuta = aprobacion.nivelAprobacionType.nivelAprobacionRuta;
+                this.solicitudes.modelDetalleAprobaciones.usuarioAprobador = aprobacion.aprobador.usuario;
+                this.solicitudes.modelDetalleAprobaciones.codigoPosicionAprobador = aprobacion.aprobador.codigoPosicion;
+                this.solicitudes.modelDetalleAprobaciones.descripcionPosicionAprobador = aprobacion.aprobador.descripcionPosicion;
+                this.solicitudes.modelDetalleAprobaciones.sudlegerAprobador = aprobacion.aprobador.subledger;
+                this.solicitudes.modelDetalleAprobaciones.nivelDireccionAprobador = aprobacion.aprobador.nivelDireccion;
+                this.solicitudes.modelDetalleAprobaciones.codigoPosicionReportaA = aprobacion.aprobador.codigoPosicionReportaA;
+                this.solicitudes.modelDetalleAprobaciones.estado = "A";
+                this.solicitudes.modelDetalleAprobaciones.estadoAprobacion = "PorRevisar";
+                this.solicitudes.modelDetalleAprobaciones.correo = aprobacion.aprobador.correo;
+                this.solicitudes.modelDetalleAprobaciones.usuarioCreacion = aprobacion.aprobador.usuario;
+                this.solicitudes.modelDetalleAprobaciones.usuarioModificacion = aprobacion.aprobador.usuario;
+                this.solicitudes.modelDetalleAprobaciones.fechaCreacion = new Date().toISOString();
+                this.solicitudes.modelDetalleAprobaciones.fechaModificacion = new Date().toISOString();
+              }
 
-              this.solicitudes.guardarDetallesAprobacionesSolicitud(this.solicitudes.modelDetalleAprobaciones).subscribe({
+            this.solicitudes.guardarDetallesAprobacionesSolicitud(this.solicitudes.modelDetalleAprobaciones).subscribe({
                 next: () => {
                 },
                 error: (err) => {
@@ -1402,7 +1415,7 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
   mapearDetallesAprobadores(nivelAprobacionPosicionType: any[]) {
     this.starterService.getUser(localStorage.getItem(LocalStorageKeys.IdUsuario)).subscribe({
       next: (res) => {
-        this.detalleNivelAprobacion = nivelAprobacionPosicionType.map(({ nivelAprobacionType, aprobador }) => ({
+        this.detalleNivelAprobacion = nivelAprobacionPosicionType.map(({ nivelAprobacionType, aprobador }, index) => ({
           id_Solicitud: this.solicitud.idSolicitud,
           id_NivelAprobacion: nivelAprobacionType.idNivelAprobacion,
           id_TipoSolicitud: nivelAprobacionType.idTipoSolicitud.toString(),
@@ -1423,7 +1436,7 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
           sudlegerAprobador: aprobador.subledger,
           codigoPosicionReportaA: aprobador.codigoPosicionReportaA,
           nivelDireccionAprobador: aprobador.nivelDireccion,
-          estadoAprobacion: nivelAprobacionType.idNivelAprobacionRuta.toUpperCase().includes("RRHH") ? "PorRevisarRRHH" : (nivelAprobacionType.idNivelAprobacionRuta.toUpperCase().includes("REMUNERA") ? "PorRevisarRemuneraciones" : "PendienteAsignacion"),
+          estadoAprobacion: nivelAprobacionType.idNivelAprobacionRuta.toUpperCase().includes(this.primerNivelAprobacion.toUpperCase()) ? "PorRevisar" :  nivelAprobacionType.idNivelAprobacionRuta.toUpperCase().includes("RRHH") ? "PorRevisarRRHH" : (nivelAprobacionType.idNivelAprobacionRuta.toUpperCase().includes("REMUNERA") ? "PorRevisarRemuneraciones" : "PendienteAsignacion"),
           estado: nivelAprobacionType.estado,
           correo: aprobador.correo === null ? "" : aprobador.correo,
           usuarioCreacion: res.evType[0].nombreCompleto,
@@ -1434,8 +1447,6 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
         }));
       }
     });
-
-    console.log(this.detalleNivelAprobacion);
   }
 
   //!Esta funcion para completar tarea no se puede completar debido a que al cargar los datos de camunda esta uniqueTaskId se queda en null debido a un error que surje gracias al servicio de camunda especificamente en el metodo getTask (No es que este malo el servicio sino el como se obtiene las tareas, debido a que me trae un array vacio)
@@ -1465,7 +1476,7 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
             this.solicitudes.actualizarSolicitud(this.solicitud).subscribe({
               next: (responseSolicitud) => {
                 setTimeout(() => {
-                  this.consultarNextTaskAprobador(this.solicitud.idSolicitud);
+                 // this.consultarNextTaskAprobador(this.solicitud.idInstancia);
 
                   this.solicitudes.sendEmail(this.emailVariables).subscribe({
                     next: () => {
@@ -1556,24 +1567,6 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
   }
 
   //this.detalleSolicitud.idSolicitud
-  consultarNextTask(IdSolicitud: string) {
-    this.consultaTareasService
-      .getTareaIdParam(IdSolicitud)
-      .subscribe((tarea) => {
-        console.log("consultarNextTask: ", tarea);
-        const solicitud = tarea.solicitudes[0];
-
-        this.uniqueTaskId = solicitud.taskId;
-        this.taskType_Activity = solicitud.tasK_DEF_KEY;
-        this.nameTask = solicitud.name;
-        this.id_solicitud_by_params = solicitud.idSolicitud;
-
-        if (this.taskType_Activity !== environment.taskType_CF) {
-          this.RegistrarsolicitudCompletada = false;
-        }
-      });
-  }
-
   override generateVariablesFromFormFields() {
     let variables: any = {};
 

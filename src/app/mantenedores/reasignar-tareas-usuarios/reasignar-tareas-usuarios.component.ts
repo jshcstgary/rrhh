@@ -80,6 +80,8 @@ export class ReasignarTareasUsuariosComponent implements OnInit {
   public dataTipoMotivo: any[] = [];
   public dataTipoSolicitudes: any[] = [];
   public dataNivelDireccion: any[] = [];
+  public tareasPorCompletar: any;
+
   constructor(
     private consultaTareasService: ConsultaTareasService,
     private tableService: TableService,
