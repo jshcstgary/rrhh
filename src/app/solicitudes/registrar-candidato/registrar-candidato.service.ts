@@ -28,4 +28,8 @@ export class RegistrarCandidatoService {
   getCandidatoById(idSolictud: string): Observable<any> {
     return this.http.get<any>(`${this.apiUrlSeleccionCandidato}/${idSolictud}`);
   }
+
+  deleteCandidatoById(idSolictud: string): Observable<any> {
+    return this.http.delete<any>(`${this.apiUrlSeleccionCandidato}/${idSolictud}`);
+  }
 }
