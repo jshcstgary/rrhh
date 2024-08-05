@@ -1220,6 +1220,13 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
 
     let variables = this.generateVariablesFromFormFields();
 
+    if(this.selectedOption.toUpperCase().includes("SI")){
+      this.solicitud.estadoSolicitud = "AN";
+    }else{
+      this.solicitud.estadoSolicitud === "No" ? "4" : "AN";
+    }
+
+    if(!this.solicitud.estadoSolicitud.includes("AN")){
     this.solicitudes.cargarDetalleAprobacionesArreglo(this.detalleNivelAprobacion).subscribe({
       next: (res) => {
         this.camundaRestService.postCompleteTask(this.uniqueTaskId, variables).subscribe({
@@ -1228,12 +1235,6 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
             this.solicitud.idEmpresa = this.model.compania;
             this.solicitud.unidadNegocio = this.model.unidadNegocio;
             this.solicitud.idUnidadNegocio = this.model.unidadNegocio;
-
-            if(this.selectedOption.toUpperCase().includes("SI")){
-              this.solicitud.estadoSolicitud = "AN";
-            }else{
-              this.solicitud.estadoSolicitud === "No" ? "4" : "AN";
-            }
 
             this.solicitudes.actualizarSolicitud(this.solicitud).subscribe({
               next: (responseSolicitud) => {
@@ -1277,16 +1278,59 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
       }
     });
 
-    // this.solicitudes.guardarDetallesAprobacionesSolicitud(this.solicitudes.modelDetalleAprobaciones).subscribe({
-    //   next: () => {
-
-    //   },
-    //   error: (err) => {
-    //     console.error(err);
-    //   }
-    // });
-
     this.submitted = true;
+    }if(this.solicitud.estadoSolicitud.includes("AN")){
+    const htmlString = "<!DOCTYPE html>\r\n<html lang=\"es\">\r\n\r\n<head>\r\n  <meta charset=\"UTF-8\">\r\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n  <title>Document<\/title>\r\n<\/head>\r\n\r\n<body>\r\n  <h2>Estimado(a)<\/h2>\r\n  <h3>{NOMBRE_APROBADOR}<\/h3>\r\n\r\n  <P>La Solicitud de {TIPO_SOLICITUD} {ID_SOLICITUD} para la posici\u00F3n de {DESCRIPCION_POSICION} ha sido anulada.<\/P>\r\n\r\n  <p>\r\n    <b>\r\n      Favor ingresar al siguiente enlace: <a href=\"{URL_APROBACION}\">{URL_APROBACION}<\/a>\r\n      <br>\r\n      <br>\r\n      Gracias por su atenci\u00F3n.\r\n    <\/b>\r\n  <\/p>\r\n<\/body>\r\n\r\n<\/html>\r\n";
+                           
+    const modifiedHtmlString = htmlString.replace("{NOMBRE_APROBADOR}", this.solicitud.usuarioCreacion).replace("{TIPO_SOLICITUD}", this.solicitud.tipoSolicitud).replace("{ID_SOLICITUD}", this.solicitud.idSolicitud).replace("{DESCRIPCION_POSICION}", this.detalleSolicitud.descripcionPosicion).replace(new RegExp("{URL_APROBACION}", "g"), `${portalWorkFlow}solicitudes/trazabilidad/${this.solicitud.idSolicitud}`);
+
+    this.emailVariables = {
+      de: "emisor",
+      para: localStorage.getItem(LocalStorageKeys.IdUsuario),
+      // alias: this.solicitudes.modelDetalleAprobaciones.correo,
+      alias: "Notificación 1",
+      asunto: `Notificación por Anulación de Solicitud de ${this.solicitud.tipoSolicitud} ${this.solicitud.idSolicitud}`,
+      cuerpo: modifiedHtmlString,
+      password: "password"
+    };
+    this.solicitud.empresa = this.model.compania;
+      this.solicitud.idEmpresa = this.model.compania;
+      this.solicitud.unidadNegocio = this.model.unidadNegocio;
+      this.solicitud.idUnidadNegocio = this.model.unidadNegocio;
+
+      this.camundaRestService.postCompleteTask(this.uniqueTaskId, variables).subscribe({
+        next: (res) => {
+       this.solicitudes.actualizarSolicitud(this.solicitud).subscribe({
+        next: (responseSolicitud) => {
+          setTimeout(() => {
+            //this.consultarNextTaskAprobador(this.solicitud.idInstancia);
+
+            this.solicitudes.sendEmail(this.emailVariables).subscribe({
+              next: () => {
+              },
+              error: (error) => {
+                console.error(error);
+              }
+            });
+
+            this.utilService.closeLoadingSpinner();
+
+            this.utilService.modalResponse(`Solicitud registrada correctamente [${this.solicitud.idSolicitud}]. Será redirigido en un momento...`, "success");
+
+            setTimeout(() => {
+              this.router.navigate([
+                "/solicitudes/consulta-solicitudes",
+              ]);
+            }, 1800);
+          }, 3000);
+        },
+        error: (error) => {
+          console.error(error);
+        }
+      });
+     }
+    });
+    }
   }
 
   recorrerArreglo() {

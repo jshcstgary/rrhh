@@ -1777,7 +1777,7 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
                         this.solicitudes.modelDetalleAprobaciones.codigoPosicionAprobador = this.aprobacion.aprobador.codigoPosicion;
                         this.solicitudes.modelDetalleAprobaciones.descripcionPosicionAprobador = this.aprobacion.aprobador.descripcionPosicion;
                         this.solicitudes.modelDetalleAprobaciones.sudlegerAprobador = this.aprobacion.aprobador.subledger;
-                        this.solicitudes.modelDetalleAprobaciones.nivelDireccionAprobador = this.aprobacion.aprobador.nivelDireccion;
+                        this.solicitudes.modelDetalleAprobaciones.nivelDireccionAprobador = this.aprobacion.nivelAprobacionType.nivelAprobacionRuta;
                         this.solicitudes.modelDetalleAprobaciones.codigoPosicionReportaA = this.aprobacion.aprobador.codigoPosicionReportaA;
                         this.solicitudes.modelDetalleAprobaciones.estado = "A";
                         this.solicitudes.modelDetalleAprobaciones.estadoAprobacion = "PorRevisar";

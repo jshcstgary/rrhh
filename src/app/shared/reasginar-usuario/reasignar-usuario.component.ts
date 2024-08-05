@@ -128,7 +128,7 @@ export class DialogReasignarUsuarioComponent {
 		next: (response) => {
 			this.dataDetalleAprobadorSolicitud = response.detalleAprobadorSolicitud;
 
-			if (this.taskId === "Dinamico_RevisarSolicitud") {
+			if (this.taskId === environment.taskType_Revisar) {
 				this.mensaje = "Se reasignó la tarea de revisión por aprobadores dinámicos";
         this.dataAprobador = this.dataDetalleAprobadorSolicitud.find(data => data.estadoAprobacion.toUpperCase() === "PORREVISAR");
         if (this.dataAprobador === undefined || this.dataAprobador === null)
@@ -274,12 +274,21 @@ export class DialogReasignarUsuarioComponent {
   }
 
   onSave() {
-	this.dataAprobador.nivelDirecion = this.modelo.nivelDir;
+    if (this.taskId === environment.taskType_Revisar
+      && this.dataAprobador.nivelDirecion !== this.modelo.nivelDir) {
+        Swal.fire({
+          text: "Empleado a Reasignar no tiene el mismo nivel de Dirección: "+ this.dataAprobador.nivelDirecion,
+          icon: "error",
+          showCancelButton: false,
+          confirmButtonColor: "rgb(227, 199, 22)",
+          cancelButtonColor: "#77797a",
+          confirmButtonText: "OK"
+        });
+    }else{
     this.dataAprobador.usuarioAprobador = this.modelo.nombreCompleto;
     this.dataAprobador.codigoPosicionAprobador = this.modelo.codigoPosicion;
     this.dataAprobador.descripcionPosicionAprobador = this.modelo.descrPosicion;
     this.dataAprobador.sudlegerAprobador = this.modelo.subledger;
-    this.dataAprobador.nivelDireccionAprobador = this.modelo.nivelDir;
     this.dataAprobador.codigoPosicionReportaA = this.modelo.codigoPosicionReportaA;
     this.dataAprobador.correo = this.modelo.correo;
     this.dataAprobador.usuarioCreacion = this.modelo.nombreCompleto;
@@ -302,8 +311,8 @@ export class DialogReasignarUsuarioComponent {
       cuerpo: modifiedHtmlString,
       password: "p"
     };
-  console.log(this.dataAprobador);
-	this.solicitudes.guardarDetallesAprobacionesSolicitud(this.dataAprobador).subscribe({
+
+    this.solicitudes.guardarDetallesAprobacionesSolicitud(this.dataAprobador).subscribe({
 		next: () => {
       this.solicitud.estadoSolicitud = "RA";
       this.solicitud.fechaActualizacion = new Date();
@@ -324,6 +333,7 @@ export class DialogReasignarUsuarioComponent {
        }); 
 		}
 	});
+  }
   }
 
   onEnter(search: string): void {
