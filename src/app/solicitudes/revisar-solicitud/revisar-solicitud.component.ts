@@ -1777,7 +1777,7 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
                         this.solicitudes.modelDetalleAprobaciones.codigoPosicionAprobador = this.aprobacion.aprobador.codigoPosicion;
                         this.solicitudes.modelDetalleAprobaciones.descripcionPosicionAprobador = this.aprobacion.aprobador.descripcionPosicion;
                         this.solicitudes.modelDetalleAprobaciones.sudlegerAprobador = this.aprobacion.aprobador.subledger;
-                        this.solicitudes.modelDetalleAprobaciones.nivelDireccionAprobador = this.aprobacion.nivelAprobacionType.nivelAprobacionRuta;
+                        this.solicitudes.modelDetalleAprobaciones.nivelDireccionAprobador = this.aprobacion.aprobador.nivelDireccion;
                         this.solicitudes.modelDetalleAprobaciones.codigoPosicionReportaA = this.aprobacion.aprobador.codigoPosicionReportaA;
                         this.solicitudes.modelDetalleAprobaciones.estado = "A";
                         this.solicitudes.modelDetalleAprobaciones.estadoAprobacion = "PorRevisar";
@@ -2151,7 +2151,7 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
                         this.solicitudes.modelDetalleAprobaciones.tipoRuta = aprobacion.nivelAprobacionType.tipoRuta;
                         this.solicitudes.modelDetalleAprobaciones.ruta = aprobacion.nivelAprobacionType.ruta;
                         this.solicitudes.modelDetalleAprobaciones.accion = aprobacion.nivelAprobacionType.accion;
-                        this.solicitudes.modelDetalleAprobaciones.nivelDirecion = aprobacion.aprobador.nivelDirecion;
+                        this.solicitudes.modelDetalleAprobaciones.nivelDirecion = aprobacion.nivelAprobacionType.nivelDirecion;
                         this.solicitudes.modelDetalleAprobaciones.nivelAprobacionRuta = aprobacion.nivelAprobacionType.nivelAprobacionRuta;
                         this.solicitudes.modelDetalleAprobaciones.usuarioAprobador = aprobacion.aprobador.usuario;
                         this.solicitudes.modelDetalleAprobaciones.codigoPosicionAprobador = aprobacion.aprobador.codigoPosicion;
@@ -2236,7 +2236,7 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
                       this.solicitudes.modelDetalleAprobaciones.codigoPosicionAprobador = aprobacion.aprobador.codigoPosicion;
                       this.solicitudes.modelDetalleAprobaciones.descripcionPosicionAprobador = aprobacion.aprobador.descripcionPosicion;
                       this.solicitudes.modelDetalleAprobaciones.sudlegerAprobador = aprobacion.aprobador.subledger;
-                      this.solicitudes.modelDetalleAprobaciones.nivelDireccionAprobador = aprobacion.nivelAprobacionType.nivelDireccion;
+                      this.solicitudes.modelDetalleAprobaciones.nivelDireccionAprobador = aprobacion.aprobador.nivelDireccion;
                       this.solicitudes.modelDetalleAprobaciones.codigoPosicionReportaA = aprobacion.aprobador.codigoPosicionReportaA;
                       this.solicitudes.modelDetalleAprobaciones.estado = "A";
                       this.solicitudes.modelDetalleAprobaciones.correo = aprobacion.aprobador.correo;

@@ -126,8 +126,8 @@ export class DialogReasignarUsuarioComponent {
 
 	this.solicitudes.getDetalleAprobadoresSolicitudesById(this.idParam).subscribe({
 		next: (response) => {
+      console.log(response);
 			this.dataDetalleAprobadorSolicitud = response.detalleAprobadorSolicitud;
-
 			if (this.taskId === environment.taskType_Revisar) {
 				this.mensaje = "Se reasignó la tarea de revisión por aprobadores dinámicos";
         this.dataAprobador = this.dataDetalleAprobadorSolicitud.find(data => data.estadoAprobacion.toUpperCase() === "PORREVISAR");
@@ -275,9 +275,9 @@ export class DialogReasignarUsuarioComponent {
 
   onSave() {
     if (this.taskId === environment.taskType_Revisar
-      && this.dataAprobador.nivelDirecion !== this.modelo.nivelDir) {
+      && this.dataAprobador.nivelDireccionAprobador !== this.modelo.nivelDir) {
         Swal.fire({
-          text: "Empleado a Reasignar no tiene el mismo nivel de Dirección: "+ this.dataAprobador.nivelDirecion,
+          text: "Empleado a Reasignar no tiene el mismo nivel de Dirección: "+ this.dataAprobador.nivelDireccionAprobador,
           icon: "error",
           showCancelButton: false,
           confirmButtonColor: "rgb(227, 199, 22)",

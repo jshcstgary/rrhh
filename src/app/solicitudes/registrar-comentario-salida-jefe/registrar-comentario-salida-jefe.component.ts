@@ -742,7 +742,7 @@ export class RegistrarComentarioSalidaJefeComponent extends CompleteTaskComponen
                 return;
               } else {
                 this.uniqueTaskId = this.tareasPorCompletar[0].id;
-                this.taskType_Activity = this.tareasPorCompletar[0].taskDefinitionKey;
+                this.taskKey = this.tareasPorCompletar[0].taskDefinitionKey;
                 this.nameTask = this.tareasPorCompletar[0].name;
               }
 
@@ -1290,37 +1290,37 @@ export class RegistrarComentarioSalidaJefeComponent extends CompleteTaskComponen
 
   openModalReasignarUsuario() {
     const modelRef = this.modalService.open(dialogComponentList.dialogReasignarUsuario, {
-      ariaLabelledBy: "modal-title",
-    });
+        ariaLabelledBy: "modal-title",
+	});
 
-    modelRef.componentInstance.idParam = this.solicitudRG.idSolicitud;
-    modelRef.componentInstance.taskId = this.taskType_Activity;
+	modelRef.componentInstance.idParam = this.solicitudRG.idSolicitud;
+	modelRef.componentInstance.taskId = this.taskKey;
 
     modelRef.result.then(
-      (result) => {
-        if (result === "close") {
-          return;
-        }
+        (result) => {
+          if (result === "close") {
+            return;
+		  }
 
-        if (result?.data) {
-          Swal.fire({
-            text: result.data,
-            icon: "success",
-            confirmButtonColor: "rgb(227, 199, 22)",
-            confirmButtonText: "Ok",
-          }).then((result) => {
-            if (result.isConfirmed) {
-              this.router.navigate(["/mantenedores/reasignar-tareas-usuarios"]);
-              if (this.submitted) {
+          if (result?.data) {
+            Swal.fire({
+              text: result.data,
+              icon: "success",
+              confirmButtonColor: "rgb(227, 199, 22)",
+              confirmButtonText: "Ok",
+            }).then((result) => {
+              if (result.isConfirmed) {
+                this.router.navigate(["/mantenedores/reasignar-tareas-usuarios"]);
+                if (this.submitted) {
+                }
               }
-            }
-          });
+            });
+          }
+        },
+        (reason) => {
+          console.log(`Dismissed with: ${reason}`);
         }
-      },
-      (reason) => {
-        console.log(`Dismissed with: ${reason}`);
-      }
-    );
+      );
   }
 
   indexedModal: Record<keyof DialogComponents, any> = {
