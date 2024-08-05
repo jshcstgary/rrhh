@@ -1,7 +1,7 @@
 import { Routes } from "@angular/router";
 
 import { CompletaSolicitudComponent } from "./completa-solicitud/completa-solicitud.component";
-import { ConsultaSolicitudesComponent } from "./consulta_solicitudes/consulta-solicitudes.component";
+import { ConsultaSolicitudesComponent } from "./consulta-solicitudes/consulta-solicitudes.component";
 import { DetalleSolicitudComponent } from "./detalle-solicitud/detalle-solicitud.component";
 import { RegistrarCandidatoComponent } from "./registrar-candidato/registrar-candidato.component";
 import { RegistrarSolicitudComponent } from "./registrar-solicitud/registrar-solicitud.component";

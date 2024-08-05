@@ -36,7 +36,7 @@ import {
 } from "./consulta-solicitudes.interface";
 
 import { NgSelectComponent } from "@ng-select/ng-select";
-import { multi, single } from "src/app/charts/ngx-charts/chartData";
+import { single } from "src/app/charts/ngx-charts/chartData";
 import { TableComponentData } from "src/app/component/table/table.data";
 import { PageCodes } from "src/app/enums/codes.enum";
 import { LocalStorageKeys } from "src/app/enums/local-storage-keys.enum";
@@ -49,8 +49,43 @@ import { StarterService } from "src/app/starter/starter.service";
 import { PageControlPermiso } from "src/app/types/page-control-permiso.type";
 import { Control } from "src/app/types/permiso.type";
 import { ConsultaSolicitudesService } from "./consulta-solicitudes.service";
+import { ConsultaGraficosData } from "./consulta-grafico.data";
 //import { StarterService } from "src/app/starter/starter.service";
 
+// const DATA_SAMPLE = {
+//   completed: [
+//     {
+//         "name": "Aprobados",
+//         "value": 9
+//     },
+//     {
+//         "name": "Rechazadas",
+//         "value": 7
+//     },
+//     {
+//         "name": "Anuladas",
+//         "value": 2
+//     }
+//   ],
+//   pending: [
+//     {
+//         "name": "Creadas",
+//         "value": 16
+//     },
+//     {
+//         "name": "Enviadas",
+//         "value": 49
+//     },
+//     {
+//         "name": "Reasignadas",
+//         "value": 8
+//     },
+//     {
+//         "name": "Devueltas",
+//         "value": 0
+//     }
+//   ]
+// };
 
 //import { single} from './chartData';
 declare var require: any;
@@ -136,6 +171,8 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
   public tipoSolicitudSeleccionada: any;
   public codigoTipoSolicitud: string;
   public processDefinitionKey: string;
+
+  public columnsTableGraphic: IColumnsTable = ConsultaGraficosData.columns
 
   // public dataTiposMotivosPorTipoSolicitud : any[] = [];
 
@@ -243,8 +280,9 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
     domain: ["#2962ff", "#3699ff", "#ee9d01", "#dee2e6"],
   };
 
-  single: any[];
-  multi: any[];
+  solicitudesCompletadas: any[] = [];
+  solicitudesPendientes: any[] = [];
+  solicitudesTipo: any[] = [];
 
   gradient6: boolean = true;
 
@@ -274,8 +312,8 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
     this.getPermissions();
 
     this.model = calendar.getToday();
-    Object.assign(this, { single });
-    Object.assign(this, { multi });
+    // Object.assign(this, { single });
+    // Object.assign(this, { multi });
 
     this.camundaRestService = camundaRestService;
     this.route = route;
@@ -661,6 +699,7 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
   ObtenerServicioTipoSolicitud() {
     return this.mantenimientoService.getTipoSolicitud().subscribe({
       next: (response: any) => {
+        console.log(response);
         this.dataTipoSolicitudes = response.tipoSolicitudType.filter((r) => r.estado === "A" && (r.codigoTipoSolicitud === "RP" || r.codigoTipoSolicitud === "AP" || r.codigoTipoSolicitud === "DP")).map((r) => ({
           id: r.id,
           descripcion: r.tipoSolicitud,
@@ -917,6 +956,7 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 
     combinedData$.subscribe({
       next: (response) => {
+        console.log(response);
         this.dataTable = response;
 
         this.utilService.closeLoadingSpinner();
@@ -960,64 +1000,55 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 
   private getDataToTable() {
     this.ObtenerServicioEstado();
-    this.utilService.openLoadingSpinner(
-      "Cargando información, espere por favor..."
-    );
-    const combinedData$ = forkJoin(
-      this.solicitudes.getSolicitudes(),
-      this.solicitudes.getDetalleSolicitud()
-    ).pipe(
-      map(([solicitudes, detallesSolicitud]) => {
-        // Combinar las solicitudes y los detalles de la solicitud
 
-        const data = solicitudes.solicitudType.map((solicitud) => {
-          const detalles = detallesSolicitud.detalleSolicitudType.find(
-            (detalle) => detalle.idSolicitud === solicitud.idSolicitud
-          );
-          return { ...solicitud, ...detalles };
+    this.utilService.openLoadingSpinner("Cargando información, espere por favor...");
+
+    forkJoin([this.solicitudes.getSolicitudes(), this.solicitudes.getDetalleSolicitud(), this.solicitudes.getConteo()])
+      .pipe(
+        map(([solicitudes, detallesSolicitud, conteo]) => {
+          this.solicitudesCompletadas = conteo.totalesCompletadasType;
+          this.solicitudesPendientes = conteo.totalesPendientesType;
+          this.solicitudesTipo = conteo.listadoSolicitudes.map(data => ({
+            ...data,
+            idSolicitud: data.name
+          }));
+
+          // Combinar las solicitudes y los detalles de la solicitud
+          const data = solicitudes.solicitudType.map((solicitud) => {
+            const detalles = detallesSolicitud.detalleSolicitudType.find((detalle) => detalle.idSolicitud === solicitud.idSolicitud);
+
+            return {
+              ...solicitud,
+              ...detalles
+            };
+          });
+
+          return data.sort((a, b) => new Date(b.fechaCreacion).getTime() - new Date(a.fechaCreacion).getTime());
+        })
+      )
+      .subscribe((data) => {
+        this.dataTable = data.map((itemSolicitud) => {
+          const descripcionEstado = this.data_estado.find((itemEstado) => itemEstado.codigo == itemSolicitud.estadoSolicitud);
+
+          return {
+            ...itemSolicitud,
+            estado: descripcionEstado !== undefined ? descripcionEstado.descripcion : "N/A",
+          };
         });
+        console.log(this.dataTable);
 
-        // Ordenar la data por fechaCreacion de forma descendente
-        return data.sort((a, b) => {
-          return b.idDetalleSolicitud - a.idDetalleSolicitud;
-        });
-      })
-    );
-
-    combinedData$.subscribe((data) => {
-      this.utilService.closeLoadingSpinner();
-      // this.data_estado.find(itemEstado => itemEstado.codigo == itemSolicitud.estadoSolicitud)
-      this.dataTable = data.map((itemSolicitud) => {
-        let descripcionEstado = this.data_estado.find(
-          (itemEstado) => itemEstado.codigo == itemSolicitud.estadoSolicitud
-        );
-        return {
-          ...itemSolicitud,
-          estado:
-            descripcionEstado !== undefined
-              ? descripcionEstado.descripcion
-              : "N/A",
-        };
+        this.utilService.closeLoadingSpinner();
       });
-      // Aquí tienes la data combinada y ordenada
-    });
+  }
 
-    /*return this.solicitudes.getSolicitudes().subscribe({
-      next: (response) => {
-        this.dataTable = response.nivelAprobacionType.map((nivelAprobacionResponse=>({
-          ...nivelAprobacionResponse,
-          estado: nivelAprobacionResponse.estado === "A",
-        })));
-      },
-      error: (error: HttpErrorResponse) => {
-        this.utilService.modalResponse(error.error, "error");
-      },
-    });*/
+  onRowActionGraphics(id: string, key: string, tooltip: string, id_edit) {
+    console.log(id);
+    console.log(key);
+    console.log(id_edit);
+    this.active = 2;
   }
 
   onRowActionClicked(id: string, key: string, tooltip: string, id_edit) {
-    // Lógica cuando se da click en una acción de la fila
-    console.log(tooltip);
     if (tooltip === "Info") {
       this.router.navigate(["/solicitudes/detalle-solicitud", id_edit]);
     } else {

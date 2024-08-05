@@ -314,16 +314,16 @@
 
               <div class="d-flex gap-3" role="group" aria-label="Basic example" id="desicion">
                 <button type="button" class="btn" (click)="process('aprobar')"
-                  [ngClass]="{'btn-primary': !isSelected('aprobar'), 'btn-selected': isSelected('aprobar')}"
+                  [ngClass]="{'btn-primary btn-unselected': !isSelected('aprobar'), 'btn-selected': isSelected('aprobar')}"
                   value="aprobar">Aprobar</button>
                 <button type="button" class="btn"
-                  [ngClass]="{'btn-primary': !isSelected('devolver'), 'btn-selected': isSelected('devolver')}"
+                  [ngClass]="{'btn-primary btn-unselected': !isSelected('devolver'), 'btn-selected': isSelected('devolver')}"
                   (click)="process('devolver')" value="devolver">Devolver</button>
                 <button type="button" class="btn"
-                  [ngClass]="{'btn-primary': !isSelected('rechazar'), 'btn-selected': isSelected('rechazar')}"
+                  [ngClass]="{'btn-primary btn-unselected': !isSelected('rechazar'), 'btn-selected': isSelected('rechazar')}"
                   (click)="process('rechazar')" value="rechazar">Cancelar</button>
                 <button type="button" class="btn"
-                  [ngClass]="{'btn-primary': !isSelected('esperar'), 'btn-selected': isSelected('esperar')}"
+                  [ngClass]="{'btn-primary btn-unselected': !isSelected('esperar'), 'btn-selected': isSelected('esperar')}"
                   (click)="process('esperar')" value="esperar">En espera</button>
               </div>
 
@@ -1069,16 +1069,16 @@
 
               <div class="d-flex gap-3" role="group" aria-label="Basic example" id="desicion">
                 <button type="button" class="btn" (click)="process('aprobar')"
-                  [ngClass]="{'btn-primary': !isSelected('aprobar'), 'btn-selected': isSelected('aprobar')}"
+                  [ngClass]="{'btn-primary btn-unselected': !isSelected('aprobar'), 'btn-selected': isSelected('aprobar')}"
                   value="aprobar">Aprobar</button>
                 <button type="button" class="btn"
-                  [ngClass]="{'btn-primary': !isSelected('devolver'), 'btn-selected': isSelected('devolver')}"
+                  [ngClass]="{'btn-primary btn-unselected': !isSelected('devolver'), 'btn-selected': isSelected('devolver')}"
                   (click)="process('devolver')" value="devolver">Devolver</button>
                 <button type="button" class="btn"
-                  [ngClass]="{'btn-primary': !isSelected('rechazar'), 'btn-selected': isSelected('rechazar')}"
+                  [ngClass]="{'btn-primary btn-unselected': !isSelected('rechazar'), 'btn-selected': isSelected('rechazar')}"
                   (click)="process('rechazar')" value="rechazar">Cancelar</button>
                 <button type="button" class="btn"
-                  [ngClass]="{'btn-primary': !isSelected('esperar'), 'btn-selected': isSelected('esperar')}"
+                  [ngClass]="{'btn-primary btn-unselected': !isSelected('esperar'), 'btn-selected': isSelected('esperar')}"
                   (click)="process('esperar')" value="esperar">En espera</button>
               </div>
 
@@ -1476,16 +1476,16 @@
 
                 <div class="d-flex gap-3" role="group" aria-label="Basic example" id="desicion">
                   <button type="button" class="btn" (click)="process('aprobar')"
-                    [ngClass]="{'btn-primary': !isSelected('aprobar'), 'btn-selected': isSelected('aprobar')}"
+                    [ngClass]="{'btn-primary btn-unselected': !isSelected('aprobar'), 'btn-selected': isSelected('aprobar')}"
                     value="aprobar">Aprobar</button>
                   <button type="button" class="btn"
-                    [ngClass]="{'btn-primary': !isSelected('devolver'), 'btn-selected': isSelected('devolver')}"
+                    [ngClass]="{'btn-primary btn-unselected': !isSelected('devolver'), 'btn-selected': isSelected('devolver')}"
                     (click)="process('devolver')" value="devolver">Devolver</button>
                   <button type="button" class="btn"
-                    [ngClass]="{'btn-primary': !isSelected('rechazar'), 'btn-selected': isSelected('rechazar')}"
+                    [ngClass]="{'btn-primary btn-unselected': !isSelected('rechazar'), 'btn-selected': isSelected('rechazar')}"
                     (click)="process('rechazar')" value="rechazar">Cancelar</button>
                   <button type="button" class="btn"
-                    [ngClass]="{'btn-primary': !isSelected('esperar'), 'btn-selected': isSelected('esperar')}"
+                    [ngClass]="{'btn-primary btn-unselected': !isSelected('esperar'), 'btn-selected': isSelected('esperar')}"
                     (click)="process('esperar')" value="esperar">En espera</button>
                 </div>
 
@@ -1553,7 +1553,8 @@
         <div class="mx-auto my-5">
           <div class="form-check form-check-inline">
             <div class="form-check text-center">
-              <input type="checkbox" [(ngModel)]="viewInputs" class="form-check-input" name="customCheck1"  id="customCheck1" checked disabled />
+              <input type="checkbox" [(ngModel)]="viewInputs" class="form-check-input" name="customCheck1"
+                id="customCheck1" checked disabled />
               <label class="form-check-label" for="customCheck1">Transferencia de Compañía</label>
             </div>
           </div>
@@ -2039,16 +2040,16 @@
 
               <div class="d-flex gap-3" role="group" aria-label="Basic example" id="desicion">
                 <button type="button" class="btn" (click)="process('aprobar')"
-                  [ngClass]="{'btn-primary': !isSelected('aprobar'), 'btn-selected': isSelected('aprobar')}"
+                  [ngClass]="{'btn-primary btn-unselected': !isSelected('aprobar'), 'btn-selected': isSelected('aprobar')}"
                   value="aprobar">Aprobar</button>
                 <button type="button" class="btn"
-                  [ngClass]="{'btn-primary': !isSelected('devolver'), 'btn-selected': isSelected('devolver')}"
+                  [ngClass]="{'btn-primary btn-unselected': !isSelected('devolver'), 'btn-selected': isSelected('devolver')}"
                   (click)="process('devolver')" value="devolver">Devolver</button>
                 <button type="button" class="btn"
-                  [ngClass]="{'btn-primary': !isSelected('rechazar'), 'btn-selected': isSelected('rechazar')}"
+                  [ngClass]="{'btn-primary btn-unselected': !isSelected('rechazar'), 'btn-selected': isSelected('rechazar')}"
                   (click)="process('rechazar')" value="rechazar">Cancelar</button>
                 <button type="button" class="btn"
-                  [ngClass]="{'btn-primary': !isSelected('esperar'), 'btn-selected': isSelected('esperar')}"
+                  [ngClass]="{'btn-primary btn-unselected': !isSelected('esperar'), 'btn-selected': isSelected('esperar')}"
                   (click)="process('esperar')" value="esperar">En espera</button>
               </div>
 

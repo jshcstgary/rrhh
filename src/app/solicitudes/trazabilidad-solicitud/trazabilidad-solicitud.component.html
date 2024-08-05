@@ -1,98 +1,101 @@
 <div class="row justify-around items-center">
-	<div class="col">
-		<div>
-			<h3>
-				<a routerLink="/solicitudes/consulta-solicitudes" class="sol-danger">
-					<i class="bi bi-arrow-left-circle azul"></i> {{ solicitud.idSolicitud }}
-				</a>
-			</h3>
-		</div>
-	</div>
+  <div class="col">
+    <div>
+      <h3>
+        <a routerLink="/solicitudes/consulta-solicitudes" class="sol-danger">
+          <i class="bi bi-arrow-left-circle azul"></i> {{ solicitud.idSolicitud }}
+        </a>
+      </h3>
+    </div>
+  </div>
 
-	<div class="col text-end">
-		<button type="button" class="btn btn-info me-2 mt-1">
-			<i class="fas fa-file-excel"></i> Exportar
-		</button>
-	</div>
+  <div class="col text-end">
+    <button type="button" class="btn btn-info me-2 mt-1">
+      <i class="fas fa-file-excel"></i> Exportar
+    </button>
+  </div>
 
-	<div class="mt-5">
-		<div class="row">
-			<div class="col-md-4 my-3">
-				<div class="row">
-					<div class="label-estilo col-4">Usuario:</div>
+  <div class="mt-5">
+    <div class="row">
+      <div class="col-md-4 my-3">
+        <div class="row">
+          <div class="label-estilo col-4">Usuario:</div>
 
-					<div class="col-8">{{ solicitud.usuarioCreacion }}</div>
-				</div>
-			</div>
+          <div class="col-8">{{ solicitud.usuarioCreacion }}</div>
+        </div>
+      </div>
 
-			<div class="col-md-4 my-3">
-				<div class="row">
-					<div class="label-estilo col-4">Fecha de creación</div>
+      <div class="col-md-4 my-3">
+        <div class="row">
+          <div class="label-estilo col-4">Fecha de creación</div>
 
-					<div class="col-8">{{ solicitud.fechaCreacion | date:'dd/MM/yyyy' }}</div>
-				</div>
-			</div>
+          <div class="col-8">{{ solicitud.fechaCreacion | date:'dd/MM/yyyy' }}</div>
+        </div>
+      </div>
 
-			<div class="col-md-4 my-3">
-				<div class="row">
-					<div class="label-estilo col-4">Estado</div>
+      <div class="col-md-4 my-3">
+        <div class="row">
+          <div class="label-estilo col-4">Estado</div>
 
-					<div class="col-8">{{ solicitud.estado }}</div>
-				</div>
-			</div>
-		</div>
-	</div>
+          <div class="col-8">{{ solicitud.estado }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-	<div class="mt-3 mb-5">
-		<div class="row">
-			<div class="col-md-4 my-3">
-				<div class="row">
-					<div class="label-estilo col-4">Role:</div>
+  <div class="mt-3 mb-5">
+    <div class="row">
+      <div class="col-md-4 my-3">
+        <div class="row">
+          <div class="label-estilo col-4">Role:</div>
 
-					<div class="col-8">Iniciador</div>
-				</div>
-			</div>
+          <div class="col-8">Iniciador</div>
+        </div>
+      </div>
 
-			<div class="col-md-4 my-3">
-				<div class="row">
-					<div class="label-estilo col-4">Fecha de finalización</div>
+      <div class="col-md-4 my-3">
+        <div class="row">
+          <div class="label-estilo col-4">Fecha de finalización</div>
 
-					<div class="col-8">{{ solicitud.fechaActualizacion }}</div>
-				</div>
-			</div>
-		</div>
-	</div>
+          <div class="col-8">{{ solicitud.fechaActualizacion }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-	<div class="accordion" id="accordionExample">
-		<div *ngFor="let nivelItem of dataDetalleAprobadorSolicitud; let i = index" class="accordion-item">
-			<div class="accordion-header">
-				<button class="accordion-button" type="button" data-bs-toggle="collapse" [attr.data-bs-target]="'#collapse' + i" aria-expanded="true" [attr.aria-controls]="'collapse' + i" style="display: block">
-					<div class="row" style="align-items: center; justify-content: space-around">
-						<div class="col">{{ nivelItem.ruta }}</div>
+  <div class="accordion" id="accordionExample">
+    <div *ngFor="let nivelItem of dataDetalleAprobadorSolicitud; let i = index" class="accordion-item">
+      <div class="accordion-header">
+        <button class="accordion-button" type="button" data-bs-toggle="collapse" [attr.data-bs-target]="'#collapse' + i"
+          aria-expanded="true" [attr.aria-controls]="'collapse' + i" style="display: block">
+          <div class="row" style="align-items: center; justify-content: space-around">
+            <div class="col">{{ nivelItem.ruta }}</div>
 
-						<div class="col">{{ nivelItem.usuarioAprobador !== "" && nivelItem.usuarioAprobador !== undefined && nivelItem.usuarioAprobador !== null ? nivelItem.codigoPosicionAprobador + " - " + nivelItem.usuarioAprobador : "No aplica" }}</div>
+            <div class="col">{{ nivelItem.usuarioAprobador !== "" && nivelItem.usuarioAprobador !== undefined &&
+              nivelItem.usuarioAprobador !== null ? nivelItem.codigoPosicionAprobador + " - " +
+              nivelItem.usuarioAprobador : "No aplica" }}</div>
 
-						<div class="col">{{ nivelItem.nivelAprobacionRuta }}</div>
-					</div>
-				</button>
-			</div>
+            <div class="col">{{ nivelItem.nivelAprobacionRuta }}</div>
+          </div>
+        </button>
+      </div>
 
-			<!--
-			nivelItem.estadoAprobacion -> show
-			0 -> show
-			 -->
+      <div [id]="'collapse' + i" class="accordion-collapse collapse"
+        [ngClass]="{ show: nivelItem.estadoAprobacion.toUpperCase().includes('PORREVISAR') }"
+        data-bs-parent="#accordionExample">
+        <div class="row">
+          <div class="col">
+            <div class="input-group">
+              <label>Estado: </label>
 
-			<div [id]="'collapse' + i" class="accordion-collapse collapse" [ngClass]="{ show: nivelItem.estadoAprobacion.toUpperCase().includes('PORREVISAR') }" data-bs-parent="#accordionExample">
-				<div class="row">
-					<div class="col">
-						<div class="input-group">
-							<label>Estado: </label>
-
-							<span id="lvl1descripcion" name="" style="color: black; font-size: 14px">{{ nivelItem.usuarioAprobador !== "" && nivelItem.usuarioAprobador !== undefined && nivelItem.usuarioAprobador !== null ? (nivelItem.estadoAprobacion.toUpperCase() === "APROBAR" ? "Aprobado" : nivelItem.estadoAprobacion) : "No aplica" }}</span>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+              <span id="lvl1descripcion" name="" style="color: black; font-size: 14px">{{ nivelItem.usuarioAprobador !==
+                "" && nivelItem.usuarioAprobador !== undefined && nivelItem.usuarioAprobador !== null ?
+                (nivelItem.estadoAprobacion.toUpperCase() === "APROBAR" ? "Aprobado" : nivelItem.estadoAprobacion) : "No
+                aplica" }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

@@ -7,9 +7,7 @@ export interface IConsultaSolicitud {
   estado: string | boolean;
 }
 
-export interface IConsultaSolicitudTable
-  extends IConsultaSolicitud,
-    IRowTableAttributes {}
+export interface IConsultaSolicitudTable extends IConsultaSolicitud, IRowTableAttributes {}
 
 export type IConsultaSolicitudes = IConsultaSolicitud[];
 export type IConsultaSolicitudesTable = IConsultaSolicitudTable[];

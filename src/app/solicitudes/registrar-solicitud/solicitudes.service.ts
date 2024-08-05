@@ -59,6 +59,10 @@ export class SolicitudesService {
     return this.http.get<any>(this.apiUrlSolicitudes + "/detalle-solicitud");
   }
 
+  public getConteo(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrlSolicitudes}/obtenerconteo`);
+  }
+
   cargarDetalleAprobacionesArreglo(detalleAprobaciones: any[]): Observable<any> {
     return this.http.post<any>(`${this.apiDetalleAprobaciones}/post_arreglo`, {
       detalleAprobadorSolicitud: detalleAprobaciones

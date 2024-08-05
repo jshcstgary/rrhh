@@ -11,9 +11,10 @@
 }
 
 body {
- // font-family: Montserrat, sans-serif;
- font-family: Raleway, sans-serif;
+  // font-family: Montserrat, sans-serif;
+  font-family: Raleway, sans-serif;
 }
+
 /* rutas */
 a.link:hover,
 a.link:focus {
@@ -29,58 +30,91 @@ a.link:focus {
 //estilos de usuario y la imagen
 
 .dropdown-item.active {
-  background-color: #C69D08; /* Cambia el color de fondo a dorado */
+  background-color: #C69D08;
+  /* Cambia el color de fondo a dorado */
 }
 
 .dropdown-menu {
-  width: 280px; /* Ajusta el ancho según tus necesidades */
+  width: 280px;
+  /* Ajusta el ancho según tus necesidades */
 }
 
 
-.sidebar-nav ul .sidebar-item.active > .sidebar-link{
+.sidebar-nav ul .sidebar-item.active>.sidebar-link {
   color: #0056B3 !important;
 }
 
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Raleway, sans-serif; }
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Raleway, sans-serif;
+}
 
 .modal-dialog {
-	width: 600px;
+  width: 600px;
 }
 
 .card-body {
-	background-color: #fff;
+  background-color: #fff;
 }
 
-// .accordion {
-// 	& > .accordion-item {
-// 		border-bottom: 1px solid gray;
+.advanced-pie-legend {
+  height: auto;
 
-// 		// &:last-child {
-// 		// 	border-bottom: none;
-// 		// }
-// 	}
+  & .total-value {
+    height: 20px;
+    font-size: 28px !important;
+    margin-bottom: 5px;
+  }
 
-// 	button.accordion-button > div.row > div.col:first-child {
-// 		font-weight: bold;
-// 	}
+  & .total-label {
+    font-size: 18px !important;
+    color: darken(#0056B3, 15%);
+  }
 
-// 	.accordion-collapse.collapse {
-// 		div.col {
-// 			margin: 0 20px;
-// 		}
+  & .legend-items-container {
+    & .legend-items {
+      height: auto;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      overflow: visible !important;
 
-// 		.input-group > label {
-// 			width: 24%;
-// 			color: #0056b3;
-// 			font-size: 15px;
-// 			font-weight: bold;
-// 		}
+      & .legend-item {
+        display: grid !important;
+        grid-template-columns: 0.3fr 1fr 0.5fr;
+        grid-template-areas: "color label value";
+        margin: 0 !important;
+        margin-right: 35px !important;
 
-// 		.input-group > span {
-// 			width: 74%;
-// 			text-align: left;
-// 		}
-// 	}
-// }
+        & .item-color {
+          border-left-width: 15px !important;
+          height: 15px !important;
+          grid-area: color;
+          margin: 0 !important;
+        }
+
+        & .item-value {
+          margin: 0 !important;
+          font-size: 18px !important;
+          grid-area: value;
+          text-align: right;
+        }
+
+        & .item-label {
+          margin: 0 !important;
+          grid-area: label;
+        }
+
+        &>.item-percent {
+          display: none;
+        }
+      }
+    }
+  }
+}

@@ -23,7 +23,7 @@ import { NgxDatatableModule } from "@swimlane/ngx-datatable";
 import { FeatherModule } from "angular-feather";
 import { ComponentsModule } from "../component/component.module";
 import { PlantillaModule } from "../plantilla/plantilla.module";
-import { ConsultaSolicitudesComponent } from "./consulta_solicitudes/consulta-solicitudes.component";
+import { ConsultaSolicitudesComponent } from "./consulta-solicitudes/consulta-solicitudes.component";
 import { DetalleSolicitudComponent } from "./detalle-solicitud/detalle-solicitud.component";
 import { TableService } from "./ngtable/ngtable.service";
 import { RegistrarSolicitudComponent } from "./registrar-solicitud/registrar-solicitud.component";
