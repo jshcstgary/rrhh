@@ -128,7 +128,8 @@
 
         <img alt="" src="assets/images/users/user4.jpg" class="user-image" />
         <dropdown-component [textButton]="userName" [options]="userDropdownOptions"
-          [buttonClasses]="dropdownButtonClasses"></dropdown-component>
+          [buttonClasses]="dropdownButtonClasses" [contexto]="this"
+          onDropDownClickFunction="signOut"></dropdown-component>
 
       </div>
     </li>

@@ -1,7 +1,5 @@
-import { CommonModule, NgFor } from "@angular/common";
 import { HttpErrorResponse } from "@angular/common/http";
 import { Component, OnInit } from "@angular/core";
-import { FormsModule } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 import { NgSelectConfig } from "@ng-select/ng-select";
 import { DatosNivelesAprobacion } from "src/app/eschemas/DatosNivelesAprobacion";
@@ -10,11 +8,9 @@ import { UtilService } from "src/app/services/util/util.service";
 import { CrearNivelesAprobacionService } from "./crear-niveles-aprobacion.service";
 
 @Component({
-  standalone: true,
   selector: "app-crear-niveles-aprobacion",
   templateUrl: "./crear-niveles-aprobacion.component.html",
-  styleUrls: ["./crear-niveles-aprobacion.component.scss"],
-  imports: [NgFor, FormsModule, CommonModule],
+  styleUrls: ["./crear-niveles-aprobacion.component.scss"]
 })
 export class CrearNivelesAprobacionComponent implements OnInit {
   public dataTipoSolicitudes: any[] = [];

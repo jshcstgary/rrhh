@@ -26,8 +26,10 @@ import { RutaService } from "./ruta.service";
   templateUrl: "./ruta.component.html",
 })
 export class RutaComponent implements OnInit {
-  private pageCode: string = PageCodes.Ruta;
   public pageControlPermission: typeof RutaPageControlPermission = RutaPageControlPermission;
+  public activeRecords: boolean = true;
+
+  private pageCode: string = PageCodes.Ruta;
 
   public controlsPermissions: PageControlPermiso = {
     [RutaPageControlPermission.FiltroTipoSolicitud]: {
@@ -64,6 +66,8 @@ export class RutaComponent implements OnInit {
 
   public columnsTable: IColumnsTable = TiporutaData.columns;
   public dataTable: any[] = [];
+  public dataTableActive: any[] = [];
+  public dataTableInactive: any[] = [];
   public tableInputsEditRow: IInputsComponent = TiporutaData.tableInputsEditRow;
   public colsToFilterByText: string[] = TiporutaData.colsToFilterByText;
   public IdRowToClone: string = null;
@@ -81,16 +85,18 @@ export class RutaComponent implements OnInit {
     private mantenimientoService: MantenimientoService,
     private permissionService: PermisoService
   ) {
-	if (localStorage.getItem(LocalStorageKeys.Reloaded)! === "0") {
-		localStorage.setItem(LocalStorageKeys.Reloaded, "1");
+    if (localStorage.getItem(LocalStorageKeys.Reloaded)! === "0") {
+      localStorage.setItem(LocalStorageKeys.Reloaded, "1");
 
-		window.location.reload();
-	}
+      window.location.reload();
+    }
 
     this.getPermissions();
   }
 
   ngOnInit(): void {
+    this.utilService.openLoadingSpinner("Cargando información, espere por favor...");
+
     this.columnsTable[this.columnsTable.length - 1].actions.forEach(action => {
       if (action.id === "editOnTable") {
         action.showed = this.controlsPermissions[RutaPageControlPermission.ButtonEditar].visualizar
@@ -123,21 +129,17 @@ export class RutaComponent implements OnInit {
   private getDataToCombo() {
     return this.mantenimientoService.getTipoRuta().subscribe({
       next: (response) => {
-        const comboTipoRuta = this.inputService.formatDataToOptionsValueInLabel(
-          response.tipoRutaType,
-          "tipoRuta",
-          "id"
-        );
+        const comboTipoRuta = this.inputService.formatDataToOptionsValueInLabel(response.tipoRutaType.filter(data => data.estado === "A"), "tipoRuta", "id");
+
         this.dataTipoRuta = response.tipoRutaType;
-        this.tableInputsEditRow = this.formService.changeValuePropFormById(
-          "idTipoRuta",
-          this.tableInputsEditRow,
-          "options",
-          comboTipoRuta
-        );
+
+        this.tableInputsEditRow = this.formService.changeValuePropFormById("idTipoRuta", this.tableInputsEditRow, "options", comboTipoRuta);
+
         this.getDataToTable();
       },
       error: (error: HttpErrorResponse) => {
+        this.utilService.closeLoadingSpinner();
+
         if (error.status !== 404) {
           this.utilService.modalResponse(error.error, "error");
         }
@@ -148,14 +150,24 @@ export class RutaComponent implements OnInit {
   private getDataToTable() {
     return this.RutasService.index().subscribe({
       next: (response) => {
-        this.dataTable = response.map((accionResponse) => ({
-          ...accionResponse,
-          estado: accionResponse.estado === "A",
-          tipoRutaFormatted: this.formatTipoRutaEstaciones(accionResponse),
-        }));
+        this.dataTable = response
+          .map((accionResponse) => ({
+            ...accionResponse,
+            estado: accionResponse.estado === "A",
+            tipoRutaFormatted: this.formatTipoRutaEstaciones(accionResponse),
+          }))
+          .sort((a, b) => a.ruta.localeCompare(b.ruta));
+
+        this.dataTableActive = this.dataTable.filter(data => data.estado);
+        this.dataTableInactive = this.dataTable.filter(data => !data.estado);
+
+        this.utilService.closeLoadingSpinner();
       },
-      error: (error: HttpErrorResponse) =>
-        this.utilService.modalResponse(error.error, "error"),
+      error: (error: HttpErrorResponse) => {
+        this.utilService.closeLoadingSpinner();
+
+        this.utilService.modalResponse(error.error, "error");
+      }
     });
   }
   private formatTipoRutaEstaciones(accionResponse: IRuta): string {
@@ -242,5 +254,9 @@ export class RutaComponent implements OnInit {
     ) {
       this.onSaveRowTable(rowData, finishedClonningRow);
     }
+  }
+
+  public onChangeActiveRecordsCheckbox(event: any): void {
+    this.activeRecords = event;
   }
 }

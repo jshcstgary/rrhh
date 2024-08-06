@@ -16,8 +16,8 @@ import { environment } from "src/environments/environment";
 import Swal from "sweetalert2";
 import { TiposolicitudData } from "./tipo-solicitud.data";
 import {
-	ITiposolicitud,
-	ITiposolicitudTable,
+  ITiposolicitud,
+  ITiposolicitudTable,
 } from "./tipo-solicitud.interface";
 import { TipoSolicitudService } from "./tipo-solicitud.service";
 
@@ -27,6 +27,7 @@ import { TipoSolicitudService } from "./tipo-solicitud.service";
 export class TipoSolicitudComponent implements OnInit {
   private pageCode: string = PageCodes.TipoSolicitud;
   public pageControlPermission: typeof TipoSolicitudPageControlPermission = TipoSolicitudPageControlPermission;
+  public activeRecords: boolean = true;
 
   public controlsPermissions: PageControlPermiso = {
     [TipoSolicitudPageControlPermission.FiltroTipoSolicitud]: {
@@ -63,6 +64,8 @@ export class TipoSolicitudComponent implements OnInit {
 
   public columnsTable: IColumnsTable = TiposolicitudData.columns;
   public dataTable: any[] = [];
+  public dataTableActive: any[] = [];
+  public dataTableInactive: any[] = [];
   public tableInputsEditRow: IInputsComponent =
     TiposolicitudData.tableInputsEditRow;
   public colsToFilterByText: string[] = TiposolicitudData.colsToFilterByText;
@@ -82,6 +85,8 @@ export class TipoSolicitudComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.utilService.openLoadingSpinner("Cargando información, espere por favor...");
+
     this.columnsTable[this.columnsTable.length - 1].actions.forEach(action => {
       if (action.id === "editOnTable") {
         action.showed = this.controlsPermissions[TipoSolicitudPageControlPermission.ButtonEditar].visualizar
@@ -114,17 +119,26 @@ export class TipoSolicitudComponent implements OnInit {
   private getDataToTable() {
     return this.tiposolicitudesService.index().subscribe({
       next: (response) => {
-        this.dataTable = response.tipoSolicitudType.map((r) => ({
-          ...r,
-          estado: r.estado === "A",
-        })); //verificar la estructura mmunoz
-        //this.utilService.closeLoadingSpinner();
+        this.dataTable = response.tipoSolicitudType
+          .map((r) => ({
+            ...r,
+            estado: r.estado === "A",
+          }))
+          .sort((a, b) => a.tipoSolicitud.localeCompare(b.tipoSolicitud));
+
+        this.dataTableActive = this.dataTable.filter(data => data.estado);
+        this.dataTableInactive = this.dataTable.filter(data => !data.estado);
+
+        this.utilService.closeLoadingSpinner();
       },
       error: (error: HttpErrorResponse) => {
+        this.utilService.closeLoadingSpinner();
+
         this.utilService.modalResponse(error.error, "error");
       },
     });
   }
+
   /**
    * Funcion para eliminar un registro
    *
@@ -206,22 +220,17 @@ export class TipoSolicitudComponent implements OnInit {
       this.validationsService.isNotEmptyStringVariable(rowData.tipoSolicitud);
     const codigoTipoSolicitudNotEmpty =
       this.validationsService.isNotEmptyStringVariable(rowData.codigoTipoSolicitud);
-      if (descripcionNotEmpty && codigoTipoSolicitudNotEmpty) {
-        if (
-          !environment.modalConfirmation ||
-          (await Swal.fire(UtilData.messageToSave)).isConfirmed
-        ) {
-          this.onSaveRowTable(rowData, finishedClonningRow);
-        }
+    if (descripcionNotEmpty && codigoTipoSolicitudNotEmpty) {
+      if (
+        !environment.modalConfirmation ||
+        (await Swal.fire(UtilData.messageToSave)).isConfirmed
+      ) {
+        this.onSaveRowTable(rowData, finishedClonningRow);
       }
-   /* if (!descripcionNotEmpty) {
-      return;
     }
-    if (
-      !environment.modalConfirmation ||
-      (await Swal.fire(UtilData.messageToSave)).isConfirmed
-    ) {
-      this.onSaveRowTable(rowData, finishedClonningRow);
-    }*/
+  }
+
+  public onChangeActiveRecordsCheckbox(event: any): void {
+    this.activeRecords = event;
   }
 }

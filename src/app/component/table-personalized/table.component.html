@@ -1,14 +1,15 @@
 <div class="table-container" id="app-container-table-component">
-<table aria-label="" id="app-table-component" [style.width]="tableWidth">
+  <table aria-label="" id="app-table-component" [style.width]="tableWidth">
     <thead>
       <tr>
         <th *ngFor="let column of columns" (click)="onChangeSort(column)">
-            <div class="d-flex justify-content-between cursor-pointer">
-                {{ column.title }}
+          <div class="d-flex justify-content-between cursor-pointer">
+            {{ column.title }}
             <ng-container *ngIf="column.sortActive">
-                <i [ngClass]="{'fa fa-sort-asc': column.sortTypeOrder === 'asc', 'fa fa-sort-desc': column.sortTypeOrder === 'desc'}"></i>
+              <i
+                [ngClass]="{'fa fa-sort-asc': column.sortTypeOrder === 'asc', 'fa fa-sort-desc': column.sortTypeOrder === 'desc'}"></i>
             </ng-container>
-        </div>
+          </div>
         </th>
       </tr>
     </thead>
@@ -21,34 +22,22 @@
                 <ng-container *ngIf="!row.isEditingRow; else editIcons">
                   <ng-container *ngFor="let action of column.actions">
                     <tooltip-component [text]="action.tooltip">
-                      <i
-                        *ngIf="action.icon"
-                        tabindex="0"
-                        class="text-info cursor-pointer action-icon"
+                      <i *ngIf="action.icon" tabindex="0" class="text-info cursor-pointer action-icon"
                         [ngClass]="action.icon"
                         (click)="clickOnAction(action.id, index, row, action.tooltip, getAdditionalParam(row))"
-                        (keyup.enter)="clickOnAction(action.id, index, row, action.tooltip, getAdditionalParam(row))"
-                      ></i>
-                      <i
-                        *ngIf="action.materialIcon"
-                        tabindex="0"
+                        (keyup.enter)="clickOnAction(action.id, index, row, action.tooltip, getAdditionalParam(row))"></i>
+                      <i *ngIf="action.materialIcon" tabindex="0"
                         class="material-icons text-info cursor-pointer action-icon"
                         (click)="clickOnAction(action.id, index, row, action.tooltip, getAdditionalParam(row))"
-                        (keyup.enter)="clickOnAction(action.id, index, row, action.tooltip, getAdditionalParam(row))"
-                      >
+                        (keyup.enter)="clickOnAction(action.id, index, row, action.tooltip, getAdditionalParam(row))">
                         {{ action.materialIcon }}
                       </i>
                     </tooltip-component>
                   </ng-container>
                 </ng-container>
                 <ng-template #editIcons>
-                  <i
-                    tabindex="0"
-                    id="iconSaveEditRowTable"
-                    class="fas fa-save text-info cursor-pointer action-icon"
-                    (click)="onSaveRowDataToModified(row)"
-                    (keyup.enter)="onSaveRowDataToModified(row)"
-                  ></i>
+                  <i tabindex="0" id="iconSaveEditRowTable" class="fas fa-save text-info cursor-pointer action-icon"
+                    (click)="onSaveRowDataToModified(row)" (keyup.enter)="onSaveRowDataToModified(row)"></i>
                 </ng-template>
               </div>
             </ng-container>
@@ -57,11 +46,19 @@
             </ng-template>
           </ng-container>
           <ng-container *ngIf="row.isEditingRow && column.isEditingRow">
-            <input
+            <select class="form-select" id="parentezco" name="parentezco"
+              (change)="onInputChange($event, row, column.dataIndex, index)">
+              <option selected>Seleccione parentezco...</option>
+
+              <option *ngFor="let parentezco of parentezcos" [value]="parentezco"
+                [selected]="row.parentesco === parentezco">{{ parentezco }}</option>
+            </select>
+
+            <!-- <input
                 class="editable-input"
                 [value]="!row[column.dataIndex] ? '' : row[column.dataIndex]"
                 (input)="onInputChange($event, row, column.dataIndex, index)"
-            />
+            /> -->
           </ng-container>
         </td>
       </tr>

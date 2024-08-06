@@ -41,10 +41,8 @@ import { ReasignarTareasUsuariosComponent } from "./reasignar-tareas-usuarios/re
     AprobadoresFijosComponent,
     CrearAprobadorFijoComponent,
     EditarAprobadorFijoComponent,
-    ReasignarTareasUsuariosComponent
-    // SpinnerComponent,
-    // NivelesAprobacionComponent,
-    //CrearNivelesAprobacionComponent
+    ReasignarTareasUsuariosComponent,
+    CrearNivelesAprobacionComponent
   ],
   imports: [
     RouterModule.forChild(MantenedoresRoutes),
@@ -60,4 +58,4 @@ import { ReasignarTareasUsuariosComponent } from "./reasignar-tareas-usuarios/re
   ],
   providers: [TableService],
 })
-export class MantenedoresModule {}
+export class MantenedoresModule { }

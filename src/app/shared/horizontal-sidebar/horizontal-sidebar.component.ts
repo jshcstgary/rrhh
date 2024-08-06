@@ -20,6 +20,8 @@ import { MatIconModule } from "@angular/material/icon";
 import { ScrollingModule } from "@angular/cdk/scrolling";
 import { Permiso } from "../../types/permiso.type";
 import { LocalStorageKeys } from "src/app/enums/local-storage-keys.enum";
+import { LoginServices } from "src/app/auth/services/login.services";
+import { UtilService } from "src/app/services/util/util.service";
 
 @Component({
   selector: "app-horizontal-sidebar",
@@ -136,6 +138,7 @@ export class HorizontalSidebarComponent {
       time: "9:00 AM",
     },
   ];
+
   ngOnInit() {
     this.updateBackground();
     window.addEventListener("resize", this.updateBackground);
@@ -163,7 +166,9 @@ export class HorizontalSidebarComponent {
 
   constructor(
     private menuServise: HorizontalSidebarService,
-    private router: Router
+    private router: Router,
+    private loginService: LoginServices,
+    private utilService: UtilService
   ) {
     this.menuServise.items.subscribe((menuItems) => {
       // ? FILTRAR ESTE ARREGLO
@@ -206,5 +211,17 @@ export class HorizontalSidebarComponent {
       left: 0,
       behavior: "smooth",
     });
+  }
+
+  public signOut() {
+    this.utilService.openLoadingSpinner("Cargando petición...");
+
+    this.loginService.signOut().subscribe({
+      next: () => {
+        this.router.navigate(["/login"]);
+      }
+    });
+
+    this.utilService.closeLoadingSpinner();
   }
 }

@@ -20,8 +20,8 @@ import { environment } from "src/environments/environment";
 import Swal from "sweetalert2";
 import { TipomotivoData } from "./tipo-motivo.data";
 import {
-	ITipomotivo,
-	ITipomotivoTable
+  ITipomotivo,
+  ITipomotivoTable
 } from "./tipo-motivo.interface";
 import { TipoMotivoService } from "./tipo-motivo.service";
 
@@ -31,6 +31,7 @@ import { TipoMotivoService } from "./tipo-motivo.service";
 export class TipoMotivoComponent implements OnInit {
   private pageCode: string = PageCodes.TipoMotivo;
   public pageControlPermission: typeof TipoMotivoPageControlPermission = TipoMotivoPageControlPermission;
+  public activeRecords: boolean = true;
 
   public controlsPermissions: PageControlPermiso = {
     [TipoMotivoPageControlPermission.FiltroTipoSolicitud]: {
@@ -67,6 +68,8 @@ export class TipoMotivoComponent implements OnInit {
 
   public columnsTable: IColumnsTable = TipomotivoData.columns;
   public dataTable: any[] = [];
+  public dataTableActive: any[] = [];
+  public dataTableInactive: any[] = [];
   public tableInputsEditRow: IInputsComponent =
     TipomotivoData.tableInputsEditRow;
   public colsToFilterByText: string[] = TipomotivoData.colsToFilterByText;
@@ -86,16 +89,18 @@ export class TipoMotivoComponent implements OnInit {
     private mantenimientoService: MantenimientoService,
     private permissionService: PermisoService
   ) {
-	if (localStorage.getItem(LocalStorageKeys.Reloaded)! === "0") {
-		localStorage.setItem(LocalStorageKeys.Reloaded, "1");
+    if (localStorage.getItem(LocalStorageKeys.Reloaded)! === "0") {
+      localStorage.setItem(LocalStorageKeys.Reloaded, "1");
 
-		window.location.reload();
-	}
+      window.location.reload();
+    }
 
     this.getPermissions();
   }
 
   ngOnInit(): void {
+    this.utilService.openLoadingSpinner("Cargando información, espere por favor...");
+
     this.columnsTable[this.columnsTable.length - 1].actions.forEach(action => {
       if (action.id === "editOnTable") {
         action.showed = this.controlsPermissions[TipoMotivoPageControlPermission.ButtonEditar].visualizar
@@ -128,19 +133,17 @@ export class TipoMotivoComponent implements OnInit {
   private getDataToCombo() {
     return this.mantenimientoService.getTipoSolicitud().subscribe({
       next: (response: any) => {
-        const comboTipoSolicitud = this.inputService.formatDataToOptionsValueInLabel(response.tipoSolicitudType, "tipoSolicitud", "id");
+        const comboTipoSolicitud = this.inputService.formatDataToOptionsValueInLabel(response.tipoSolicitudType.filter(data => data.estado === "A"), "tipoSolicitud", "id");
 
         this.dataTipoSolicitudes = response.tipoSolicitudType;
 
-        this.tableInputsEditRow = this.formService.changeValuePropFormById(
-          "tipoSolicitudId",
-          this.tableInputsEditRow,
-          "options",
-          comboTipoSolicitud
-        );
+        this.tableInputsEditRow = this.formService.changeValuePropFormById("tipoSolicitudId", this.tableInputsEditRow, "options", comboTipoSolicitud);
+
         this.getDataToTable();
       },
       error: (error: HttpErrorResponse) => {
+        this.utilService.closeLoadingSpinner();
+
         if (error.status !== 404) {
           this.utilService.modalResponse(error.error, "error");
         }
@@ -151,15 +154,24 @@ export class TipoMotivoComponent implements OnInit {
   private getDataToTable() {
     return this.tipomotivosService.index().subscribe({
       next: (response) => {
-        this.dataTable = response.map((motivoResponse) => ({
-          ...motivoResponse,
-          estado: motivoResponse.estado === "A",
-          tipoSolicitudFormatted: this.formatTipoSolicitudEstaciones(motivoResponse),
-        }));
-        //this.utilService.closeLoadingSpinner();
+        this.dataTable = response
+          .map((motivoResponse) => ({
+            ...motivoResponse,
+            estado: motivoResponse.estado === "A",
+            tipoSolicitudFormatted: this.formatTipoSolicitudEstaciones(motivoResponse),
+          }))
+          .sort((a, b) => a.tipoMotivo.localeCompare(b.tipoMotivo));
+
+        this.dataTableActive = this.dataTable.filter(data => data.estado);
+        this.dataTableInactive = this.dataTable.filter(data => !data.estado);
+
+        this.utilService.closeLoadingSpinner();
       },
-      error: (error: HttpErrorResponse) =>
-        this.utilService.modalResponse(error.error, "error"),
+      error: (error: HttpErrorResponse) => {
+        this.utilService.closeLoadingSpinner();
+
+        this.utilService.modalResponse(error.error, "error");
+      }
     });
   }
   private formatTipoSolicitudEstaciones(motivoResponse: ITipomotivo): string {
@@ -239,12 +251,16 @@ export class TipoMotivoComponent implements OnInit {
    */
   private async validateToSave(rowData: ITipomotivo, finishedClonningRow: boolean) {
     const descripcionNotEmpty = this.validationsService.isNotEmptyStringVariable(rowData.tipoMotivo);
-	if (!descripcionNotEmpty) {
+    if (!descripcionNotEmpty) {
       return;
     }
 
-	if (!environment.modalConfirmation || (await Swal.fire(UtilData.messageToSave)).isConfirmed) {
+    if (!environment.modalConfirmation || (await Swal.fire(UtilData.messageToSave)).isConfirmed) {
       this.onSaveRowTable(rowData, finishedClonningRow);
     }
+  }
+
+  public onChangeActiveRecordsCheckbox(event: any): void {
+    this.activeRecords = event;
   }
 }

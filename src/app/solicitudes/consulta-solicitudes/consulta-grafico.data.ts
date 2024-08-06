@@ -6,7 +6,7 @@ export const ConsultaGraficosData: IConsultaGraficosData = {
   columns: [
     {
       title: "TIPO DE SOLICITUD",
-      dataIndex: "idSolicitud",
+      dataIndex: "name",
       align: "center",
       sortActive: true,
       colType: "string",

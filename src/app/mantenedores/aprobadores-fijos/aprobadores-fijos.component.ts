@@ -23,6 +23,7 @@ import { AprobadoresFijosService } from "./aprobadores-fijos.service";
 })
 export class AprobadoresFijosComponent implements OnInit {
   private pageCode: string = PageCodes.AprobadorFijo;
+  public activeRecords: boolean = true;
   public pageControlPermission: typeof AprobadorFijoPageControlPermission = AprobadorFijoPageControlPermission;
 
   public controlsPermissions: PageControlPermiso = {
@@ -54,6 +55,8 @@ export class AprobadoresFijosComponent implements OnInit {
 
   public columnsTable: IColumnsTable = AprobadoresFijosData.columns;
   public dataTable: any[] = [];
+  public dataTableActive: any[] = [];
+  public dataTableInactive: any[] = [];
 
   public colsToFilterByText: string[] = AprobadoresFijosData.colsToFilterByText;
   public IdRowToClone: string = null;
@@ -77,6 +80,8 @@ export class AprobadoresFijosComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.utilService.openLoadingSpinner("Cargando información. Espere por favor...");
+
     this.columnsTable[this.columnsTable.length - 1].actions.forEach(action => {
       if (action.id === "editOnTable") {
         action.showed = this.controlsPermissions[AprobadorFijoPageControlPermission.ButtonEditar].visualizar
@@ -153,21 +158,26 @@ export class AprobadoresFijosComponent implements OnInit {
   }
 
   private getDataToTable() {
-    this.utilService.openLoadingSpinner(
-      "Cargando información. Espere por favor..."
-    );
     return this.aprobadoresFijosService.obtenerAprobadoresFijos().subscribe({
       next: (response) => {
-        this.dataTable = response.aprobadoresFijos.map(
-          (aprobadoresFijosResponse) => ({
-            ...aprobadoresFijosResponse,
-			id: aprobadoresFijosResponse.iD_APROBADOR,
-            estado: aprobadoresFijosResponse.estado === "A",
-          })
-        );
+        this.dataTable = response.aprobadoresFijos
+          .map(
+            (aprobadoresFijosResponse) => ({
+              ...aprobadoresFijosResponse,
+              id: aprobadoresFijosResponse.iD_APROBADOR,
+              estado: aprobadoresFijosResponse.estado === "A",
+            })
+          )
+          .sort((a, b) => a.niveL_DIRECCION.localeCompare(b.niveL_DIRECCION));
+
+        this.dataTableActive = this.dataTable.filter(data => data.estado);
+        this.dataTableInactive = this.dataTable.filter(data => !data.estado);
+
         this.utilService.closeLoadingSpinner();
       },
       error: (error: HttpErrorResponse) => {
+        this.utilService.closeLoadingSpinner();
+
         this.utilService.modalResponse(error.error, "error");
       },
     });
@@ -225,5 +235,9 @@ export class AprobadoresFijosComponent implements OnInit {
 
   onRowActionClicked(id: string, key: string, tooltip: string, id_edit) {
     this.router.navigate(["/mantenedores/editar-aprobador-fijo", id_edit]);
+  }
+
+  public onChangeActiveRecordsCheckbox(event: any): void {
+    this.activeRecords = event;
   }
 }

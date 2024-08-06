@@ -10,9 +10,10 @@ export interface IRuta {
 export interface ITipoRuta {
   id?: number | string;
   tipoRuta: string;
+  estado: string;
 }
 
-export interface IRutaTable extends IRuta, IRowTableAttributes {}
+export interface IRutaTable extends IRuta, IRowTableAttributes { }
 
 export type ITipoRutas = ITipoRuta[];
 export type IRutas = IRuta[];

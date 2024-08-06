@@ -93,27 +93,29 @@ export class HorizontalNavigationComponent implements AfterViewInit {
     icon: 'us'
   }
 
-  public languages: any[] = [{
-    language: 'English',
-    code: 'en',
-    type: 'US',
-    icon: 'us'
-  },
-  {
-    language: 'French',
-    code: 'fr',
-    icon: 'fr'
-  },
-  {
-    language: 'Spanish',
-    code: 'es',
-    icon: 'es'
-  },
-  {
-    language: 'German',
-    code: 'de',
-    icon: 'de'
-  }]
+  public languages: any[] = [
+    {
+      language: 'English',
+      code: 'en',
+      type: 'US',
+      icon: 'us'
+    },
+    {
+      language: 'French',
+      code: 'fr',
+      icon: 'fr'
+    },
+    {
+      language: 'Spanish',
+      code: 'es',
+      icon: 'es'
+    },
+    {
+      language: 'German',
+      code: 'de',
+      icon: 'de'
+    }
+  ];
 
   constructor(private modalService: NgbModal, private translate: TranslateService) {
 

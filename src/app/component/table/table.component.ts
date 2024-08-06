@@ -1,19 +1,19 @@
 import {
-	Component,
-	Input,
-	OnChanges,
-	OnInit,
-	SimpleChanges,
+  Component,
+  Input,
+  OnChanges,
+  OnInit,
+  SimpleChanges,
 } from "@angular/core";
 import { UtilService } from "src/app/services/util/util.service";
 import { IInputsComponent } from "../input/input.interface";
 import { TableComponentData } from "./table.data";
 import {
-	IColumnTable,
-	IColumnsTable,
-	ISelectOptionsTable,
-	colTypeTable,
-	sortColOrderType,
+  IColumnTable,
+  IColumnsTable,
+  ISelectOptionsTable,
+  colTypeTable,
+  sortColOrderType,
 } from "./table.interface";
 import { TableService } from "./table.service";
 @Component({
@@ -66,7 +66,6 @@ export class TableComponent implements OnInit, OnChanges {
     this.ValidateInitDataTable();
     this.tableService.onCheckTable(this.tableName, []);
     this.showActionColumn = this.columns[this.columns.length - 1].actions.some(action => action.showed);
-    console.log(this.columns);
   }
   public ngOnChanges(changes: SimpleChanges): void {
     this.ValidateInitDataTable();
@@ -237,16 +236,16 @@ export class TableComponent implements OnInit, OnChanges {
   public onCheckCell(event: Event, key: string) {
     const checkValue = (event.target as HTMLInputElement).checked;
 
-	if (checkValue && !this.rowsChecked.includes(key)) {
-		this.rowsChecked.push(key);
-	} else if (!checkValue) {
-		this.rowsChecked = this.rowsChecked.filter((value) => value !== key);
-	}
+    if (checkValue && !this.rowsChecked.includes(key)) {
+      this.rowsChecked.push(key);
+    } else if (!checkValue) {
+      this.rowsChecked = this.rowsChecked.filter((value) => value !== key);
+    }
 
-	this.tableService.onCheckTable(this.tableName, this.rowsChecked);
+    this.tableService.onCheckTable(this.tableName, this.rowsChecked);
 
-	if (this.onCheck !== undefined) {
-		this.contexto[this.onCheck](this.rowsChecked);
+    if (this.onCheck !== undefined) {
+      this.contexto[this.onCheck](this.rowsChecked);
     }
 
     this.validateHeaderInputState();
@@ -417,10 +416,10 @@ export class TableComponent implements OnInit, OnChanges {
       //
       return head.dataIndexesToJoin
         ? head.dataIndexesToJoin
-            .map((prop) => {
-              return tareaRow[prop];
-            })
-            .join(" - ")
+          .map((prop) => {
+            return tareaRow[prop];
+          })
+          .join(" - ")
         : tareaRow[head.dataIndex];
     }
     return head.dataIndexesToJoin

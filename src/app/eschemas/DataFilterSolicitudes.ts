@@ -4,11 +4,11 @@ export class DataFilterSolicitudes {
     // public idUnidadNegocio?: string,
     public empresa?: string,
     public unidadNegocio?: string,
-    public idTipoSolicitud?: string,
+    public idTipoSolicitud?: number,
     public estado?: string,
     public fechaDesde?: any,
     public fechaHasta?: any
-  ) {}
+  ) { }
 
   isUndefined(value: any): boolean {
     return typeof value === "undefined";

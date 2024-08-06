@@ -23,6 +23,7 @@ import { Control } from "src/app/types/permiso.type";
 })
 export class TipoRutaComponent implements OnInit {
   private pageCode: string = PageCodes.TipoRuta;
+  public activeRecords: boolean = true;
   public pageControlPermission: typeof TipoRutaPageControlPermission = TipoRutaPageControlPermission;
 
   public controlsPermissions: PageControlPermiso = {
@@ -60,6 +61,8 @@ export class TipoRutaComponent implements OnInit {
 
   public columnsTable: IColumnsTable = TiporutaData.columns;
   public dataTable: any[] = [];
+  public dataTableActive: any[] = [];
+  public dataTableInactive: any[] = [];
   public tableInputsEditRow: IInputsComponent = TiporutaData.tableInputsEditRow;
   public colsToFilterByText: string[] = TiporutaData.colsToFilterByText;
   public IdRowToClone: string = null;
@@ -77,6 +80,8 @@ export class TipoRutaComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.utilService.openLoadingSpinner("Cargando información, espere por favor...");
+
     this.columnsTable[this.columnsTable.length - 1].actions.forEach(action => {
       if (action.id === "editOnTable") {
         action.showed = this.controlsPermissions[TipoRutaPageControlPermission.ButtonEditar].visualizar
@@ -108,15 +113,22 @@ export class TipoRutaComponent implements OnInit {
 
   private getDataToTable() {
     return this.tiporutaesService.index().subscribe({
-      //return this.tipoviviendasService.index().subscribe({
       next: (response) => {
-        this.dataTable = response.tipoRutaType.map((tipoRutaResponse) => ({
-          ...tipoRutaResponse,
-          estado: tipoRutaResponse.estado === "A",
-        }));
-        //this.utilService.closeLoadingSpinner();
+        this.dataTable = response.tipoRutaType
+          .map((tipoRutaResponse) => ({
+            ...tipoRutaResponse,
+            estado: tipoRutaResponse.estado === "A",
+          }))
+          .sort((a, b) => a.tipoRuta.localeCompare(b.tipoRuta));
+
+        this.dataTableActive = this.dataTable.filter(data => data.estado);
+        this.dataTableInactive = this.dataTable.filter(data => !data.estado);
+
+        this.utilService.closeLoadingSpinner();
       },
       error: (error: HttpErrorResponse) => {
+        this.utilService.closeLoadingSpinner();
+
         this.utilService.modalResponse(error.error, "error");
       },
     });
@@ -203,5 +215,9 @@ export class TipoRutaComponent implements OnInit {
     ) {
       this.onSaveRowTable(rowData, finishedClonningRow);
     }
+  }
+
+  public onChangeActiveRecordsCheckbox(event: any): void {
+    this.activeRecords = event;
   }
 }

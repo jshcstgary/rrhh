@@ -23,6 +23,7 @@ import { NivelesAprobacionService } from "./niveles-aprobacion.service";
 })
 export class NivelesAprobacionComponent implements OnInit {
   private pageCode: string = PageCodes.NivelesAprobacion;
+  public activeRecords: boolean = true;
   public pageControlPermission: typeof NivelAprobacionPageControlPermission = NivelAprobacionPageControlPermission;
 
   public controlsPermissions: PageControlPermiso = {
@@ -78,6 +79,8 @@ export class NivelesAprobacionComponent implements OnInit {
 
   public columnsTable: IColumnsTable = ConsultaSolicitudesData.columns;
   public dataTable: any[] = [];
+  public dataTableActive: any[] = [];
+  public dataTableInactive: any[] = [];
   // public tableInputsEditRow: IInputsComponent = ConsultaSolicitudesData.tableInputsEditRow;
   // public colsToFilterByText: string[] = ConsultaSolicitudesData.colsToFilterByText;
   public IdRowToClone: string = null;
@@ -162,52 +165,46 @@ export class NivelesAprobacionComponent implements OnInit {
   }
 
   getDataToTableFilter() {
-    this.utilService.openLoadingSpinner(
-      "Cargando información, espere por favor..."
-    );
+    this.utilService.openLoadingSpinner("Cargando información, espere por favor...");
 
-    this.nivelesAprobacionService
-      .filterNivelesAprobaciones(
-        this.dataFilterNivelesAprobacion.tipoSolicitud,
-        this.dataFilterNivelesAprobacion.tipoMotivo,
-        this.dataFilterNivelesAprobacion.nivelDireccion
-      )
-      .subscribe({
-        next: (response) => {
-          this.dataTable = response.nivelAprobacionType.map(
-            (nivelAprobacionResponse) => ({
-              ...nivelAprobacionResponse,
-              estado: nivelAprobacionResponse.estado === "A",
-            })
-          );
-          this.utilService.closeLoadingSpinner();
-        },
-        error: (error: HttpErrorResponse) => {
-          this.dataTable = [];
-          this.utilService.modalResponse(
-            "No existen registros para esta búsqueda",
-            "error"
-          );
-        },
-      });
-  }
-
-  private getDataToTable() {
-    this.utilService.openLoadingSpinner(
-      "Cargando información. Espere por favor..."
-    );
-    return this.nivelesAprobacionService.obtenerNiveleAprobaciones().subscribe({
+    this.nivelesAprobacionService.filterNivelesAprobaciones(this.dataFilterNivelesAprobacion.tipoSolicitud, this.dataFilterNivelesAprobacion.tipoMotivo, this.dataFilterNivelesAprobacion.nivelDireccion).subscribe({
       next: (response) => {
-        this.dataTable = response.nivelAprobacionType.map(
-          (nivelAprobacionResponse) => ({
-			...nivelAprobacionResponse,
-			id: nivelAprobacionResponse.idNivelAprobacion,
-            estado: nivelAprobacionResponse.estado === "A",
-          })
-        );
+        this.dataTable = response.nivelAprobacionType.map((nivelAprobacionResponse) => ({
+          ...nivelAprobacionResponse,
+          estado: nivelAprobacionResponse.estado === "A",
+        }));
+
         this.utilService.closeLoadingSpinner();
       },
       error: (error: HttpErrorResponse) => {
+        this.utilService.closeLoadingSpinner();
+
+        this.dataTable = [];
+
+        this.utilService.modalResponse("No existen registros para esta búsqueda", "error");
+      },
+    });
+  }
+
+  private getDataToTable() {
+    this.utilService.openLoadingSpinner("Cargando información. Espere por favor...");
+
+    return this.nivelesAprobacionService.obtenerNiveleAprobaciones().subscribe({
+      next: (response) => {
+        this.dataTable = response.nivelAprobacionType.map((nivelAprobacionResponse) => ({
+          ...nivelAprobacionResponse,
+          id: nivelAprobacionResponse.idNivelAprobacion,
+          estado: nivelAprobacionResponse.estado === "A",
+        }));
+
+        this.dataTableActive = this.dataTable.filter(data => data.estado);
+        this.dataTableInactive = this.dataTable.filter(data => !data.estado);
+
+        this.utilService.closeLoadingSpinner();
+      },
+      error: (error: HttpErrorResponse) => {
+        this.utilService.closeLoadingSpinner();
+
         this.utilService.modalResponse(error.error, "error");
       },
     });
@@ -268,5 +265,9 @@ export class NivelesAprobacionComponent implements OnInit {
     this.router.navigate(["/mantenedores/crear-niveles-aprobacion"], {
       queryParams: { id_edit },
     });
+  }
+
+  public onChangeActiveRecordsCheckbox(event: any): void {
+    this.activeRecords = event;
   }
 }

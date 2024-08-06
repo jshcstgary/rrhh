@@ -20,8 +20,8 @@ import { environment } from "src/environments/environment";
 import Swal from "sweetalert2";
 import { TipoaccionData } from "./tipo-accion.data";
 import {
-	ITipoaccion,
-	ITipoaccionTable
+  ITipoaccion,
+  ITipoaccionTable
 } from "./tipo-accion.interface";
 import { TipoAccionService } from "./tipo-accion.service";
 
@@ -31,6 +31,7 @@ import { TipoAccionService } from "./tipo-accion.service";
 export class TipoAccionComponent implements OnInit {
   private pageCode: string = PageCodes.TipoAccion;
   public pageControlPermission: typeof TipoAccionPageControlPermission = TipoAccionPageControlPermission;
+  public activeRecords: boolean = true;
 
   public controlsPermissions: PageControlPermiso = {
     [TipoAccionPageControlPermission.FiltroTipoSolicitud]: {
@@ -67,6 +68,8 @@ export class TipoAccionComponent implements OnInit {
 
   public columnsTable: IColumnsTable = TipoaccionData.columns;
   public dataTable: any[] = [];
+  public dataTableActive: any[] = [];
+  public dataTableInactive: any[] = [];
   public tableInputsEditRow: IInputsComponent =
     TipoaccionData.tableInputsEditRow;
   public colsToFilterByText: string[] = TipoaccionData.colsToFilterByText;
@@ -86,16 +89,18 @@ export class TipoAccionComponent implements OnInit {
     private mantenimientoService: MantenimientoService,
     private permissionService: PermisoService
   ) {
-	if (localStorage.getItem(LocalStorageKeys.Reloaded)! === "0") {
-		localStorage.setItem(LocalStorageKeys.Reloaded, "1");
+    if (localStorage.getItem(LocalStorageKeys.Reloaded)! === "0") {
+      localStorage.setItem(LocalStorageKeys.Reloaded, "1");
 
-		window.location.reload();
-	}
+      window.location.reload();
+    }
 
     this.getPermissions();
   }
 
   ngOnInit(): void {
+    this.utilService.openLoadingSpinner("Cargando información, espere por favor...");
+
     this.columnsTable[this.columnsTable.length - 1].actions.forEach(action => {
       if (action.id === "editOnTable") {
         action.showed = this.controlsPermissions[TipoAccionPageControlPermission.ButtonEditar].visualizar
@@ -128,24 +133,17 @@ export class TipoAccionComponent implements OnInit {
   private getDataToCombo() {
     return this.mantenimientoService.getTipoSolicitud().subscribe({
       next: (response: any) => {
-        const comboTipoSolicitud =
-          this.inputService.formatDataToOptionsValueInLabel(
-            response.tipoSolicitudType,
-            "tipoSolicitud",
-            "id"
-          );
-		this.dataTipoSolicitudes = response.tipoSolicitudType;
+        const comboTipoSolicitud = this.inputService.formatDataToOptionsValueInLabel(response.tipoSolicitudType.filter(data => data.estado === "A"), "tipoSolicitud", "id");
 
-        this.tableInputsEditRow = this.formService.changeValuePropFormById(
-          "tipoSolicitudId",
-          this.tableInputsEditRow,
-          "options",
-          comboTipoSolicitud
-		);
+        this.dataTipoSolicitudes = response.tipoSolicitudType;
+
+        this.tableInputsEditRow = this.formService.changeValuePropFormById("tipoSolicitudId", this.tableInputsEditRow, "options", comboTipoSolicitud);
 
         this.getDataToTable();
       },
       error: (error: HttpErrorResponse) => {
+        this.utilService.closeLoadingSpinner();
+
         if (error.status !== 404) {
           this.utilService.modalResponse(error.error, "error");
         }
@@ -156,16 +154,24 @@ export class TipoAccionComponent implements OnInit {
   private getDataToTable() {
     return this.tipoaccionsService.index().subscribe({
       next: (response) => {
-        this.dataTable = response.map((accionResponse) => ({
-          ...accionResponse,
-          estado: accionResponse.estado === "A",
-          tipoSolicitudFormatted:
-            this.formatTipoSolicitudEstaciones(accionResponse),
-        }));
-        //this.utilService.closeLoadingSpinner();
+        this.dataTable = response
+          .map((accionResponse) => ({
+            ...accionResponse,
+            estado: accionResponse.estado === "A",
+            tipoSolicitudFormatted: this.formatTipoSolicitudEstaciones(accionResponse),
+          }))
+          .sort((a, b) => a.tipoAccion.localeCompare(b.tipoAccion));
+
+        this.dataTableActive = this.dataTable.filter(data => data.estado);
+        this.dataTableInactive = this.dataTable.filter(data => !data.estado);
+
+        this.utilService.closeLoadingSpinner();
       },
-      error: (error: HttpErrorResponse) =>
-        this.utilService.modalResponse(error.error, "error"),
+      error: (error: HttpErrorResponse) => {
+        this.utilService.closeLoadingSpinner();
+
+        this.utilService.modalResponse(error.error, "error");
+      }
     });
   }
   private formatTipoSolicitudEstaciones(accionResponse: ITipoaccion): string {
@@ -258,5 +264,9 @@ export class TipoAccionComponent implements OnInit {
     ) {
       this.onSaveRowTable(rowData, finishedClonningRow);
     }
+  }
+
+  public onChangeActiveRecordsCheckbox(event: any): void {
+    this.activeRecords = event;
   }
 }

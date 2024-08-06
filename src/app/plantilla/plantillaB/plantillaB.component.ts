@@ -1,10 +1,12 @@
 import {
   AfterViewInit,
   Component,
+  EventEmitter,
   HostListener,
   Input,
   OnChanges,
   OnInit,
+  Output,
   SimpleChanges,
 } from "@angular/core";
 import { IDropdownOptions } from "src/app/component/dropdown/dropdown.interface";
@@ -37,6 +39,11 @@ import { DataFilterNivelesAprobacion } from "src/app/eschemas/DataFilterNivelesA
   styleUrls: ["./plantillaB.component.scss"],
 })
 export class PlantillaBComponent implements AfterViewInit, OnInit, OnChanges {
+  @Input({
+    required: false
+  })
+  public activeRecordsCheckbox: boolean = true;
+
   @Input({ required: false }) public showFilterTipoSolicitud: boolean = true;
   @Input({ required: false }) public disabledFilterTipoSolicitud: boolean = false;
   @Input({ required: false }) public showFilterTipoMotivo: boolean = true;
@@ -85,6 +92,9 @@ export class PlantillaBComponent implements AfterViewInit, OnInit, OnChanges {
   @Input({ required: false }) public codigoReport: reportCodeEnum;
   @Input({ required: false }) public onChangeEditRowTableFunctionName: string;
 
+  @Output()
+  public onChangeActiveRecordsCheckbox: EventEmitter<boolean> = new EventEmitter<boolean>();
+
   public dropdownButtonClasses: string[] = ["btn-outline-info"];
   public filterFormContainsSearchButton: boolean = false;
   public textButtonDropdowm: string = "Exportar";
@@ -103,7 +113,7 @@ export class PlantillaBComponent implements AfterViewInit, OnInit, OnChanges {
     private tableService: TableService,
     private utilService: UtilService,
     private formService: FormService
-  ) {}
+  ) { }
 
   public ngAfterViewInit(): void {
     this.utilService.focusOnHtmlElement("searchInputFilter");
@@ -375,7 +385,7 @@ export class PlantillaBComponent implements AfterViewInit, OnInit, OnChanges {
     id: string,
     key: string,
     tooltip: string,
-    id_edit : any
+    id_edit: any
   ) {
     this.IdRowToClone = null;
     this.contexto[this.clickOnActionRow](id, key, tooltip, id_edit);
@@ -461,6 +471,12 @@ export class PlantillaBComponent implements AfterViewInit, OnInit, OnChanges {
   private onChangeEditRowTableFunction(formValue: any) {
     if (this.onChangeEditRowTableFunctionName) {
       this.contexto[this.onChangeEditRowTableFunctionName](formValue);
+    }
+  }
+
+  public onChangeActiveRecordsCheck(event: Event): void {
+    if (this.onChangeActiveRecordsCheckbox !== null) {
+      this.onChangeActiveRecordsCheckbox.emit((event.target as HTMLInputElement).checked);
     }
   }
 }

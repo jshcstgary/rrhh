@@ -101,11 +101,11 @@ export class LoginComponent {
 
         const isTasksEnabled: boolean = vistas.some(vista => vista.codigo === PageCodes.Tareas);
 
-        if (isTasksEnabled) {
-          this.router.navigate(["/tareas/consulta-tareas"]);
-        } else {
-          this.router.navigate(["/solicitudes/consulta-solicitudes"]);
-        }
+        this.router.navigate(["/solicitudes/consulta-solicitudes"]);
+        // if (isTasksEnabled) {
+        //   this.router.navigate(["/tareas/consulta-tareas"]);
+        // } else {
+        // }
       },
       error: (err) => {
         console.error(err);

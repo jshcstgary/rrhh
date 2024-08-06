@@ -1,10 +1,12 @@
 import {
   AfterViewInit,
   Component,
+  EventEmitter,
   HostListener,
   Input,
   OnChanges,
   OnInit,
+  Output,
   SimpleChanges,
 } from "@angular/core";
 import { IDropdownOptions } from "src/app/component/dropdown/dropdown.interface";
@@ -37,6 +39,11 @@ import { DataFilterNivelesAprobacion } from "src/app/eschemas/DataFilterNivelesA
   styleUrls: ["./plantillaE.component.scss"],
 })
 export class PlantillaEComponent implements AfterViewInit, OnInit, OnChanges {
+  @Input({
+    required: false
+  })
+  public activeRecordsCheckbox: boolean = true;
+
   @Input({ required: false }) public showFilterTipoSolicitud: boolean = true;
   @Input({ required: false }) public disabledFilterTipoSolicitud: boolean = false;
   @Input({ required: false }) public showButtonExportar: boolean = true
@@ -80,6 +87,9 @@ export class PlantillaEComponent implements AfterViewInit, OnInit, OnChanges {
   @Input({ required: false }) public codigoReport: reportCodeEnum;
   @Input({ required: false }) public onChangeEditRowTableFunctionName: string;
 
+  @Output()
+  public onChangeActiveRecordsCheckbox: EventEmitter<boolean> = new EventEmitter<boolean>();
+
   public dropdownButtonClasses: string[] = ["btn-outline-info"];
   public filterFormContainsSearchButton: boolean = false;
   public textButtonDropdowm: string = "Exportar";
@@ -98,7 +108,7 @@ export class PlantillaEComponent implements AfterViewInit, OnInit, OnChanges {
     private tableService: TableService,
     private utilService: UtilService,
     private formService: FormService
-  ) {}
+  ) { }
 
   public ngAfterViewInit(): void {
     this.utilService.focusOnHtmlElement("searchInputFilter");
@@ -455,6 +465,12 @@ export class PlantillaEComponent implements AfterViewInit, OnInit, OnChanges {
   private onChangeEditRowTableFunction(formValue: any) {
     if (this.onChangeEditRowTableFunctionName) {
       this.contexto[this.onChangeEditRowTableFunctionName](formValue);
+    }
+  }
+
+  public onChangeActiveRecordsCheck(event: Event): void {
+    if (this.onChangeActiveRecordsCheckbox !== null) {
+      this.onChangeActiveRecordsCheckbox.emit((event.target as HTMLInputElement).checked);
     }
   }
 }

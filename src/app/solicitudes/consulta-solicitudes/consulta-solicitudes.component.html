@@ -14,49 +14,32 @@
             <ng-template ngbNavContent>
               <div class="row">
                 <div class="col-md-6">
-                  <ngx-charts-advanced-pie-chart [view]="[600, 200]" label="Total completadas" [scheme]="colorScheme6" [results]="solicitudesCompletadas" [gradient]="gradient6"
-                    (select)="onSelect6($event)" (activate)="onActivate6($event)"
-                    (deactivate)="onDeactivate6($event)">
+                  <ngx-charts-advanced-pie-chart [view]="[600, 200]" label="Total completadas" [scheme]="colorScheme6"
+                    [results]="solicitudesCompletadas" [gradient]="gradient6" (select)="onSelect6($event)"
+                    (activate)="onActivate6($event)" (deactivate)="onDeactivate6($event)">
                   </ngx-charts-advanced-pie-chart>
                 </div>
 
                 <div class="col-md-6">
-                  <ngx-charts-advanced-pie-chart [view]="[600, 200]" label="Total pendientes" [scheme]="colorScheme6" [results]="solicitudesPendientes" [gradient]="gradient6"
-                    (select)="onSelect6($event)" (activate)="onActivate6($event)"
-                    (deactivate)="onDeactivate6($event)">
+                  <ngx-charts-advanced-pie-chart [view]="[600, 200]" label="Total pendientes" [scheme]="colorScheme6"
+                    [results]="solicitudesPendientes" [gradient]="gradient6" (select)="onSelect6($event)"
+                    (activate)="onActivate6($event)" (deactivate)="onDeactivate6($event)">
                   </ngx-charts-advanced-pie-chart>
                 </div>
               </div>
 
-              <plantilla-c-component
-                [dataFilterNivelesAprobacion]="dataFilterNivelesAprobacion"
-                [dataTipoMotivo]="dataTipoMotivo"
-                [dataTipoSolicitudes]="dataTipoSolicitudes"
-                [dataNivelDireccion]="dataNivelDireccion"
-                [dataTipoAccion]="dataTipoAccion"
-                [selected_empresa]="selected_empresa"
-                [selected_producto]="selected_producto"
-                [selected_tipo_solicitud]="selected_tipo_solicitud"
-                [selected_estado]="selected_estado"
-                [data_empresas]="data_empresas"
-                [data_productos]="dataUnidadesNegocio"
-                [data_estado]="data_estado"
-                [model]="model"
-                *ngIf="hasFiltered"
-                [columnsTable]="columnsTableGraphic"
-                [originalDataTable]="solicitudesTipo"
-                [placeholderHeaderInputText]="'Buscar niveles de aprobacion...'"
-                [contexto]="this"
-                keyNameTable="id"
-                clickOnActionRow="onRowActionGraphics"
-                clickOnFilter="filterDataTable"
-                clickOnMostrarModalCrearSolicitudes="mostrarModalCrearSolicitudes"
-                clickOnToggleDisabled="toggleDisabled"
-                clickOnPageCrear="pageCrear"
-                [IdRowToClone]="IdRowToClone"
-                colIdToDisable="id"
-                titleReport="NIVELES DE APROBACION"
-                [codigoReport]="codigoReporte">
+              <plantilla-c-component [dataFilterNivelesAprobacion]="dataFilterNivelesAprobacion"
+                [dataTipoMotivo]="dataTipoMotivo" [dataTipoSolicitudes]="dataTipoSolicitudes"
+                [dataNivelDireccion]="dataNivelDireccion" [dataTipoAccion]="dataTipoAccion"
+                [selected_empresa]="selected_empresa" [selected_producto]="selected_producto"
+                [selected_tipo_solicitud]="selected_tipo_solicitud" [selected_estado]="selected_estado"
+                [data_empresas]="data_empresas" [data_productos]="dataUnidadesNegocio" [data_estado]="data_estado"
+                [model]="model" *ngIf="hasFiltered" [columnsTable]="columnsTableGraphic"
+                [originalDataTable]="solicitudesTipo" [placeholderHeaderInputText]="'Buscar niveles de aprobacion...'"
+                [contexto]="this" keyNameTable="id" clickOnActionRow="onRowActionGraphics"
+                clickOnFilter="filterDataTable" clickOnMostrarModalCrearSolicitudes="mostrarModalCrearSolicitudes"
+                clickOnToggleDisabled="toggleDisabled" clickOnPageCrear="pageCrear" [IdRowToClone]="IdRowToClone"
+                colIdToDisable="id" titleReport="NIVELES DE APROBACION" [codigoReport]="codigoReporte">
               </plantilla-c-component>
             </ng-template>
           </li>
@@ -204,35 +187,18 @@
                   </div>
                 </div>
               </form>
-              <plantilla-c-component
-                [dataFilterNivelesAprobacion]="dataFilterNivelesAprobacion"
-                [dataTipoMotivo]="dataTipoMotivo"
-                [dataTipoSolicitudes]="dataTipoSolicitudes"
-                [dataNivelDireccion]="dataNivelDireccion"
-                [dataTipoAccion]="dataTipoAccion"
-                [selected_empresa]="selected_empresa"
-                [selected_producto]="selected_producto"
-                [selected_tipo_solicitud]="selected_tipo_solicitud"
-                [selected_estado]="selected_estado"
-                [data_empresas]="data_empresas"
-                [data_productos]="dataUnidadesNegocio"
-                [data_estado]="data_estado"
-                [model]="model"
-                *ngIf="hasFiltered"
-                [columnsTable]="columnsTable"
-                [originalDataTable]="dataTable"
-                [placeholderHeaderInputText]="'Buscar niveles de aprobacion...'"
-                [contexto]="this"
-                keyNameTable="id"
-                clickOnActionRow="onRowActionClicked"
-                clickOnFilter="filterDataTable"
+              <plantilla-c-component [dataFilterNivelesAprobacion]="dataFilterNivelesAprobacion"
+                [dataTipoMotivo]="dataTipoMotivo" [dataTipoSolicitudes]="dataTipoSolicitudes"
+                [dataNivelDireccion]="dataNivelDireccion" [dataTipoAccion]="dataTipoAccion"
+                [selected_empresa]="selected_empresa" [selected_producto]="selected_producto"
+                [selected_tipo_solicitud]="selected_tipo_solicitud" [selected_estado]="selected_estado"
+                [data_empresas]="data_empresas" [data_productos]="dataUnidadesNegocio" [data_estado]="data_estado"
+                [model]="model" *ngIf="hasFiltered" [columnsTable]="columnsTable" [originalDataTable]="dataTable"
+                [placeholderHeaderInputText]="'Buscar niveles de aprobacion...'" [contexto]="this" keyNameTable="id"
+                clickOnActionRow="onRowActionClicked" clickOnFilter="filterDataTable"
                 clickOnMostrarModalCrearSolicitudes="mostrarModalCrearSolicitudes"
-                clickOnToggleDisabled="toggleDisabled"
-                clickOnPageCrear="pageCrear"
-                [IdRowToClone]="IdRowToClone"
-                colIdToDisable="id"
-                titleReport="NIVELES DE APROBACION"
-                [codigoReport]="codigoReporte">
+                clickOnToggleDisabled="toggleDisabled" clickOnPageCrear="pageCrear" [IdRowToClone]="IdRowToClone"
+                colIdToDisable="id" titleReport="NIVELES DE APROBACION" [codigoReport]="codigoReporte">
               </plantilla-c-component>
             </ng-template>
           </li>

@@ -1,30 +1,32 @@
 import {
-	AfterViewInit,
-	Component,
-	HostListener,
-	Input,
-	OnChanges,
-	OnInit,
-	SimpleChanges,
+  AfterViewInit,
+  Component,
+  EventEmitter,
+  HostListener,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges,
 } from "@angular/core";
 import { IDropdownOptions } from "src/app/component/dropdown/dropdown.interface";
 import {
-	IFormItems,
-	ISearchButtonForm,
+  IFormItems,
+  ISearchButtonForm,
 } from "src/app/component/form/form.interface";
 import { FormService } from "src/app/component/form/form.service";
 import { IInputsComponent } from "src/app/component/input/input.interface";
 import { TableComponentData } from "src/app/component/table/table.data";
 import {
-	IColumnsTable,
-	IRowTableAttributes,
-	idActionType,
-	sortColOrderType,
+  IColumnsTable,
+  IRowTableAttributes,
+  idActionType,
+  sortColOrderType,
 } from "src/app/component/table/table.interface";
 import { TableService } from "src/app/component/table/table.service";
 import {
-	FormatoUtilReporte,
-	reportCodeEnum,
+  FormatoUtilReporte,
+  reportCodeEnum,
 } from "src/app/services/util/util.interface";
 import { UtilService } from "src/app/services/util/util.service";
 import { environment } from "src/environments/environment";
@@ -36,6 +38,11 @@ import { PlantillaAData } from "./plantillaA.data";
   templateUrl: "./plantillaA.component.html",
 })
 export class PlantillaAComponent implements AfterViewInit, OnInit, OnChanges {
+  @Input({
+    required: false
+  })
+  public activeRecordsCheckbox: boolean = true;
+
   @Input({ required: false }) public showFilterTipoSolicitud: boolean = true;
   @Input({ required: false }) public disabledFilterTipoSolicitud: boolean = false;
   @Input({ required: false }) public showButtonExportar: boolean = true
@@ -65,6 +72,9 @@ export class PlantillaAComponent implements AfterViewInit, OnInit, OnChanges {
   @Input({ required: false }) public codigoReport: reportCodeEnum;
   @Input({ required: false }) public onChangeEditRowTableFunctionName: string;
 
+  @Output()
+  public onChangeActiveRecordsCheckbox: EventEmitter<boolean> = new EventEmitter<boolean>();
+
   public dropdownButtonClasses: string[] = ["btn-outline-info"];
   public filterFormContainsSearchButton: boolean = false;
   public textButtonDropdowm: string = "Exportar";
@@ -83,7 +93,7 @@ export class PlantillaAComponent implements AfterViewInit, OnInit, OnChanges {
     private tableService: TableService,
     private utilService: UtilService,
     private formService: FormService
-  ) {}
+  ) { }
 
   public ngAfterViewInit(): void {
     this.utilService.focusOnHtmlElement("searchInputFilter");
@@ -149,74 +159,61 @@ export class PlantillaAComponent implements AfterViewInit, OnInit, OnChanges {
    * @param id
    */
   private isAnyRowCheckedInTable(formato: FormatoUtilReporte) {
-    let rowsCheckedInTable: any[] =
-      this.tableService.rowsCheckedByTable[this.mainTableName];
+    let rowsCheckedInTable: any[] = this.tableService.rowsCheckedByTable[this.mainTableName];
+
     if (rowsCheckedInTable.length === 0) {
-      rowsCheckedInTable = this.originalDataTable.map((x) => {
-        return x.key;
-      });
+      rowsCheckedInTable = this.originalDataTable.map((x) => x.key);
     }
-    const { headerTitles, dataIndexTitles } = this.columnsTable.reduce(
-      (acc, col) => {
-        if (col.title && col.title !== "Acciones") {
-          acc.headerTitles.push(col.title);
-          acc.dataIndexTitles.push({
-            dataIndex: col.dataIndex,
-            dataIndexesToJoin: col.dataIndexesToJoin,
-          });
-        }
-        return acc;
-      },
-      { headerTitles: [], dataIndexTitles: [] }
+
+    const { headerTitles, dataIndexTitles } = this.columnsTable.reduce((acc, col) => {
+      if (col.title && col.title !== "Acciones") {
+        acc.headerTitles.push(col.title);
+
+        acc.dataIndexTitles.push({
+          dataIndex: col.dataIndex,
+          dataIndexesToJoin: col.dataIndexesToJoin,
+        });
+      }
+
+      return acc;
+    },
+      {
+        headerTitles: [],
+        dataIndexTitles: []
+      }
     );
 
     const bodyReport = this.originalDataTable
-      .filter((row) =>
-        rowsCheckedInTable.some((keyChecked) => keyChecked === row.key)
-      )
-      .map((row) =>
-        dataIndexTitles.map(
-          (colDataIndex: {
-            dataIndex: string;
-            dataIndexesToJoin: string[];
-          }) => {
-            let value: string;
+      .filter((row) => rowsCheckedInTable.some((keyChecked) => keyChecked === row.key))
+      .map((row) => dataIndexTitles.map((colDataIndex: { dataIndex: string; dataIndexesToJoin: string[]; }) => {
+        let value: string;
 
-            if (
-              colDataIndex.dataIndex === "otrasCausales" ||
-              colDataIndex.dataIndex === "estado"
-            ) {
-              // Procesar solo la columna "otrasCausales"
-              value = row[colDataIndex.dataIndex]?.toString() ?? "";
+        if (colDataIndex.dataIndex === "otrasCausales" || colDataIndex.dataIndex === "estado") {
+          // Procesar solo la columna "otrasCausales"
+          value = row[colDataIndex.dataIndex]?.toString() ?? "";
 
-              if (value === "true" || value === "1") {
-                value = "Activo";
-              } else if (value === "false" || value === "0") {
-                value = "Inactivo";
-              }
-            } else {
-              // Mantener los valores de otras columnas sin cambios
-              if (colDataIndex.dataIndexesToJoin) {
-                value = colDataIndex.dataIndexesToJoin
-                  .map((index) => row[index])
-                  .join(" - ");
-              } else {
-                value = row[colDataIndex.dataIndex]?.toString() ?? "";
-              }
-            }
-
-            return value;
+          if (value === "true" || value === "1") {
+            value = "Activo";
+          } else if (value === "false" || value === "0") {
+            value = "Inactivo";
           }
-        )
-      );
-    this.utilService.generateReport(
-      formato,
-      this.codigoReport,
-      this.titleReport,
-      headerTitles,
-      bodyReport
-    );
+        } else {
+          // Mantener los valores de otras columnas sin cambios
+          if (colDataIndex.dataIndexesToJoin) {
+            value = colDataIndex.dataIndexesToJoin
+              .map((index) => row[index])
+              .join(" - ");
+          } else {
+            value = row[colDataIndex.dataIndex]?.toString() ?? "";
+          }
+        }
+
+        return value;
+      }));
+
+    this.utilService.generateReport(formato, this.codigoReport, this.titleReport, headerTitles, bodyReport);
   }
+
   private filterStringInTable(textToFilter: string) {
     this.filterSortFormatAndPaginateData(textToFilter);
   }
@@ -365,14 +362,14 @@ export class PlantillaAComponent implements AfterViewInit, OnInit, OnChanges {
 
           const rowToEdit: IRowTableAttributes = this.originalDataTable.find(
             (x: IRowTableAttributes) => x.key === key
-			);
-			rowToEdit.isEditingRow = true;
+          );
+          rowToEdit.isEditingRow = true;
           const newDataWithOutRowToEdit = this.dataToTable.filter(
             (x: IRowTableAttributes) => x.key !== key
-			);
-			newDataWithOutRowToEdit.unshift(rowToEdit);
+          );
+          newDataWithOutRowToEdit.unshift(rowToEdit);
           this.dataToTable = newDataWithOutRowToEdit;
-		  this.utilService.focusOnHtmlElement(this.columnsTable[2].dataIndex);
+          this.utilService.focusOnHtmlElement(this.columnsTable[2].dataIndex);
           this.disableIdCol(false);
         }
         break;
@@ -420,6 +417,12 @@ export class PlantillaAComponent implements AfterViewInit, OnInit, OnChanges {
   private onChangeEditRowTableFunction(formValue: any) {
     if (this.onChangeEditRowTableFunctionName) {
       this.contexto[this.onChangeEditRowTableFunctionName](formValue);
+    }
+  }
+
+  public onChangeActiveRecordsCheck(event: Event): void {
+    if (this.onChangeActiveRecordsCheckbox !== null) {
+      this.onChangeActiveRecordsCheckbox.emit((event.target as HTMLInputElement).checked);
     }
   }
 }

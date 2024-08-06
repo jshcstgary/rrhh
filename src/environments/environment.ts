@@ -15,7 +15,7 @@ export const environment = {
   port: "4200",
   production: false,
   modalConfirmation: false,
-  reporteUS: `${base}:8500/v1/us/reporte`,
+  reporteUS: `http://10.35.3.175:8500/v1/us/reporte`,
   // reporteUS: `${baseG}/v1/us/reporte`,
   // reporteUS: `${baseRBP}:8500/v1/us/reporte`,
 

@@ -699,26 +699,14 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
   ObtenerServicioTipoSolicitud() {
     return this.mantenimientoService.getTipoSolicitud().subscribe({
       next: (response: any) => {
-        console.log(response);
-        this.dataTipoSolicitudes = response.tipoSolicitudType.filter((r) => r.estado === "A" && (r.codigoTipoSolicitud === "RP" || r.codigoTipoSolicitud === "AP" || r.codigoTipoSolicitud === "DP")).map((r) => ({
-          id: r.id,
-          descripcion: r.tipoSolicitud,
-          codigoTipoSolicitud: r.codigoTipoSolicitud,
-          estado: r.estado
-        }));
-
-        // this.dataTipoSolicitudes = response.tipoSolicitudType.map((r) => {
-        //   if (r.estado === "A" && (r.codigoTipoSolicitud === "RP" || r.codigoTipoSolicitud === "AP")) {
-        //     return {
-        //       id: r.id,
-        //       descripcion: r.tipoSolicitud,
-        //       codigoTipoSolicitud: r.codigoTipoSolicitud,
-        //       estado: r.estado
-        //     }
-        //   }
-
-        //   return;
-        // }); //verificar la estructura mmunoz
+        this.dataTipoSolicitudes = response.tipoSolicitudType
+          .filter((r) => r.estado === "A" && (r.codigoTipoSolicitud === "RP" || r.codigoTipoSolicitud === "AP" || r.codigoTipoSolicitud === "DP"))
+          .map((r) => ({
+            id: r.id,
+            descripcion: r.tipoSolicitud,
+            codigoTipoSolicitud: r.codigoTipoSolicitud,
+            estado: r.estado
+          }));
       },
       error: (error: HttpErrorResponse) => {
         this.utilService.modalResponse(error.error, "error");
@@ -767,10 +755,7 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
   }
 
   filterDataTable() {
-    if (
-      this.dataFilterSolicitudes.idTipoSolicitud === undefined ||
-      this.dataFilterSolicitudes.idTipoSolicitud === null
-    ) {
+    if (this.dataFilterSolicitudes.idTipoSolicitud === undefined || this.dataFilterSolicitudes.idTipoSolicitud === null) {
       Swal.fire({
         text: "Mínimo debe seleccionar un Tipo de Solicitud",
         icon: "warning",
@@ -783,57 +768,15 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 
     const data = structuredClone(this.dataFilterSolicitudes);
 
-    if (
-      this.dataFilterSolicitudes.fechaDesde !== undefined &&
-      this.dataFilterSolicitudes.fechaDesde !== null
-    ) {
-      data.fechaDesde = this.formatFecha(
-        this.dataFilterSolicitudes,
-        "fechaDesde"
-      );
+    if (this.dataFilterSolicitudes.fechaDesde !== undefined && this.dataFilterSolicitudes.fechaDesde !== null) {
+      data.fechaDesde = this.formatFecha(this.dataFilterSolicitudes, "fechaDesde");
     }
 
-    if (
-      this.dataFilterSolicitudes.fechaHasta !== undefined &&
-      this.dataFilterSolicitudes.fechaHasta !== null
-    ) {
-      data.fechaHasta = this.formatFecha(
-        this.dataFilterSolicitudes,
-        "fechaHasta"
-      );
+    if (this.dataFilterSolicitudes.fechaHasta !== undefined && this.dataFilterSolicitudes.fechaHasta !== null) {
+      data.fechaHasta = this.formatFecha(this.dataFilterSolicitudes, "fechaHasta");
     }
 
     this.getDataToTableFilter(data);
-
-    // switch (this.dataFilterSolicitudes.verifyFilterFields()) {
-    //   case "case1":
-    //     this.getDataToTable();
-    //     break;
-    //   case "case2":
-    //     this.getDataToTable();
-    //     break;
-    //   case "case3":
-    //     this.getDataToTable();
-    //     break;
-    //   case "case4":
-    //     this.utilService.modalResponse(
-    //       "Por favor complete los campos del filtro",
-    //       "info"
-    //     );
-    //     break;
-    //   case "case5":
-    //     let data = { ...this.dataFilterSolicitudes };
-    //     data.fechaDesde = this.formatFecha(
-    //       this.dataFilterSolicitudes,
-    //       "fechaDesde"
-    //     );
-    //     data.fechaHasta = this.formatFecha(
-    //       this.dataFilterSolicitudes,
-    //       "fechaHasta"
-    //     );
-    //     this.getDataToTableFilter(data);
-    //     break;
-    // }
   }
 
   clearFechaDesde(fechaProp: string) {
@@ -913,38 +856,25 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
   getDataToTableFilter(data: any) {
     const currentDate: string = new Date().toISOString().split("T")[0];
 
-    this.utilService.openLoadingSpinner(
-      "Cargando información, espere por favor..."
-    );
+    this.utilService.openLoadingSpinner("Cargando información, espere por favor...");
+
     const combinedData$ = forkJoin(
-      this.consultaSolicitudesService.filterSolicitudes(
-        data.empresa === null || data.empresa === undefined
-          ? null
-          : data.empresa,
-        data.unidadNegocio === null || data.unidadNegocio === undefined
-          ? null
-          : data.unidadNegocio,
-        data.idTipoSolicitud === null || data.idTipoSolicitud === undefined
-          ? null
-          : data.idTipoSolicitud,
-        data.estado === null || data.estado === undefined ? null : data.estado,
-        data.fechaDesde === null || data.fechaDesde === undefined
-          ? currentDate
-          : data.fechaDesde,
-        data.fechaHasta === null || data.fechaHasta === undefined
-          ? currentDate
-          : data.fechaHasta
-      ),
-      this.solicitudes.getDetalleSolicitud()
+      [
+        this.consultaSolicitudesService.filterSolicitudes(data.empresa === null || data.empresa === undefined ? null : data.empresa, data.unidadNegocio === null || data.unidadNegocio === undefined ? null : data.unidadNegocio, data.idTipoSolicitud === null || data.idTipoSolicitud === undefined ? null : data.idTipoSolicitud, data.estado === null || data.estado === undefined ? null : data.estado, data.fechaDesde === null || data.fechaDesde === undefined ? currentDate : data.fechaDesde, data.fechaHasta === null || data.fechaHasta === undefined ? currentDate : data.fechaHasta),
+        this.solicitudes.getDetalleSolicitud()
+      ]
     ).pipe(
       map(([solicitudes, detallesSolicitud]) => {
         // Combinar las solicitudes y los detalles de la solicitud
         const data = solicitudes.solicitudType.map((solicitud) => {
-          const detalles = detallesSolicitud.detalleSolicitudType.find(
-            (detalle) => detalle.idSolicitud === solicitud.idSolicitud
-          );
+          const detalles = detallesSolicitud.detalleSolicitudType.find((detalle) => detalle.idSolicitud === solicitud.idSolicitud);
+
           detalles.estado = solicitud.estado;
-          return { ...solicitud, ...detalles };
+
+          return {
+            ...solicitud,
+            ...detalles
+          };
         });
 
         // Ordenar la data por fechaCreacion de forma descendente
@@ -956,7 +886,6 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 
     combinedData$.subscribe({
       next: (response) => {
-        console.log(response);
         this.dataTable = response;
 
         this.utilService.closeLoadingSpinner();
@@ -1008,10 +937,12 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
         map(([solicitudes, detallesSolicitud, conteo]) => {
           this.solicitudesCompletadas = conteo.totalesCompletadasType;
           this.solicitudesPendientes = conteo.totalesPendientesType;
-          this.solicitudesTipo = conteo.listadoSolicitudes.map(data => ({
-            ...data,
-            idSolicitud: data.name
-          }));
+          this.solicitudesTipo = conteo.listadoSolicitudes
+            .map(data => ({
+              ...data,
+              idSolicitud: data.id_solicitud
+            }))
+            .filter(data => data.name.toUpperCase().includes("REQUISICIÓN") || data.name.toUpperCase().includes("ACCIÓN"));
 
           // Combinar las solicitudes y los detalles de la solicitud
           const data = solicitudes.solicitudType.map((solicitud) => {
@@ -1035,17 +966,17 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
             estado: descripcionEstado !== undefined ? descripcionEstado.descripcion : "N/A",
           };
         });
-        console.log(this.dataTable);
 
         this.utilService.closeLoadingSpinner();
       });
   }
 
   onRowActionGraphics(id: string, key: string, tooltip: string, id_edit) {
-    console.log(id);
-    console.log(key);
-    console.log(id_edit);
     this.active = 2;
+
+    this.dataFilterSolicitudes.idTipoSolicitud = parseInt(id_edit);
+
+    this.filterDataTable();
   }
 
   onRowActionClicked(id: string, key: string, tooltip: string, id_edit) {

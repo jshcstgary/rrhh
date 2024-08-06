@@ -27,6 +27,7 @@ import { AccionService } from "./accion.service";
 })
 export class AccionComponent implements OnInit {
   private pageCode: string = PageCodes.Ruta;
+  public activeRecords: boolean = true;
   public pageControlPermission: typeof AccionPageControlPermission = AccionPageControlPermission;
 
   public controlsPermissions: PageControlPermiso = {
@@ -64,6 +65,8 @@ export class AccionComponent implements OnInit {
 
   public columnsTable: IColumnsTable = AccionData.columns;
   public dataTable: any[] = [];
+  public dataTableActive: any[] = [];
+  public dataTableInactive: any[] = [];
   public tableInputsEditRow: IInputsComponent = AccionData.tableInputsEditRow;
   public colsToFilterByText: string[] = AccionData.colsToFilterByText;
   public IdRowToClone: string = null;
@@ -80,16 +83,18 @@ export class AccionComponent implements OnInit {
     private mantenimientoService: MantenimientoService,
     private permissionService: PermisoService
   ) {
-	if (localStorage.getItem(LocalStorageKeys.Reloaded)! === "0") {
-		localStorage.setItem(LocalStorageKeys.Reloaded, "1");
+    if (localStorage.getItem(LocalStorageKeys.Reloaded)! === "0") {
+      localStorage.setItem(LocalStorageKeys.Reloaded, "1");
 
-		window.location.reload();
-	}
+      window.location.reload();
+    }
 
     this.getPermissions();
   }
 
   ngOnInit(): void {
+    this.utilService.openLoadingSpinner("Cargando información, espere por favor...");
+
     this.columnsTable[this.columnsTable.length - 1].actions.forEach(action => {
       if (action.id === "editOnTable") {
         action.showed = this.controlsPermissions[AccionPageControlPermission.ButtonEditar].visualizar
@@ -122,23 +127,17 @@ export class AccionComponent implements OnInit {
   private getDataToCombo() {
     return this.mantenimientoService.getTipoSolicitud().subscribe({
       next: (response: any) => {
-        const comboTipoSolicitud =
-          this.inputService.formatDataToOptionsValueInLabel(
-            response.tipoSolicitudType,
-            "tipoSolicitud",
-            "id"
-          );
+        const comboTipoSolicitud = this.inputService.formatDataToOptionsValueInLabel(response.tipoSolicitudType.filter(data => data.estado === "A"), "tipoSolicitud", "id");
+
         this.dataTipoSolicitudes = response.tipoSolicitudType;
 
+        this.tableInputsEditRow = this.formService.changeValuePropFormById("tipoSolicitudId", this.tableInputsEditRow, "options", comboTipoSolicitud);
+
         this.getDataToTable();
-        this.tableInputsEditRow = this.formService.changeValuePropFormById(
-          "tipoSolicitudId",
-          this.tableInputsEditRow,
-          "options",
-          comboTipoSolicitud
-        );
       },
       error: (error: HttpErrorResponse) => {
+        this.utilService.closeLoadingSpinner();
+
         if (error.status !== 404) {
           this.utilService.modalResponse(error.error, "error");
         }
@@ -149,16 +148,25 @@ export class AccionComponent implements OnInit {
   private getDataToTable() {
     return this.AccionesService.index().subscribe({
       next: (response) => {
-        this.dataTable = response.map((accionResponse) => ({
-          ...accionResponse,
-          estado: accionResponse.estado === "A",
-          tipoSolicitudFormatted:
-            this.formatTipoSolicitudEstaciones(accionResponse),
-        }));
-        //this.utilService.closeLoadingSpinner();
+        this.dataTable = response
+          .map((accionResponse) => ({
+            ...accionResponse,
+            estado: accionResponse.estado === "A",
+            tipoSolicitudFormatted:
+              this.formatTipoSolicitudEstaciones(accionResponse),
+          }))
+          .sort((a, b) => a.accion.localeCompare(b.accion));
+
+        this.dataTableActive = this.dataTable.filter(data => data.estado);
+        this.dataTableInactive = this.dataTable.filter(data => !data.estado);
+
+        this.utilService.closeLoadingSpinner();
       },
-      error: (error: HttpErrorResponse) =>
-        this.utilService.modalResponse(error.error, "error"),
+      error: (error: HttpErrorResponse) => {
+        this.utilService.closeLoadingSpinner();
+
+        this.utilService.modalResponse(error.error, "error");
+      }
     });
   }
   private formatTipoSolicitudEstaciones(procesoResponse: IAccion): string {
@@ -245,5 +253,9 @@ export class AccionComponent implements OnInit {
     ) {
       this.onSaveRowTable(rowData, finishedClonningRow);
     }
+  }
+
+  public onChangeActiveRecordsCheckbox(event: any): void {
+    this.activeRecords = event;
   }
 }

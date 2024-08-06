@@ -14,6 +14,8 @@ export class TablaComponent {
   @Output() saveRowData = new EventEmitter<any>();
   @Output() actionClick = new EventEmitter<any>();
 
+  public parentezcos: string[] = ["Madre/Padre", "Hermano/a", "Hijo/a", "Tío/a", "Sobrino/a", "Nieto/a", "Cónyuge"];
+
   onChangeSort(column: any) {
     this.changeSort.emit(column);
   }
@@ -25,7 +27,11 @@ export class TablaComponent {
 
   onInputChange(event: Event, row: any, dataIndex: string, index) {
     const input = event.target as HTMLInputElement;
+
     row[dataIndex] = input.value;
+
+    console.log(row);
+    return;
     this.clickOnAction("save", index, row, "Guardar", this.getAdditionalParam(row));
   }
 
@@ -44,7 +50,7 @@ export class TablaComponent {
     return row.idNivelAprobacion !== undefined
       ? row.idNivelAprobacion
       : row.iD_APROBADOR !== undefined
-      ? row.iD_APROBADOR
-      : row.idSolicitud;
+        ? row.iD_APROBADOR
+        : row.idSolicitud;
   }
 }

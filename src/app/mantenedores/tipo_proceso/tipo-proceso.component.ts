@@ -27,6 +27,7 @@ import { TipoProcesoService } from "./tipo-proceso.service";
 })
 export class TipoProcesoComponent implements OnInit {
   private pageCode: string = PageCodes.TipoProceso;
+  public activeRecords: boolean = true;
   public pageControlPermission: typeof TipoProcesoPageControlPermission = TipoProcesoPageControlPermission;
 
   public controlsPermissions: PageControlPermiso = {
@@ -64,6 +65,8 @@ export class TipoProcesoComponent implements OnInit {
 
   public columnsTable: IColumnsTable = TipoprocesoData.columns;
   public dataTable: any[] = [];
+  public dataTableActive: any[] = [];
+  public dataTableInactive: any[] = [];
   public tableInputsEditRow: IInputsComponent =
     TipoprocesoData.tableInputsEditRow;
   public colsToFilterByText: string[] = TipoprocesoData.colsToFilterByText;
@@ -83,16 +86,18 @@ export class TipoProcesoComponent implements OnInit {
     private mantenimientoService: MantenimientoService,
     private permissionService: PermisoService
   ) {
-	if (localStorage.getItem(LocalStorageKeys.Reloaded)! === "0") {
-		localStorage.setItem(LocalStorageKeys.Reloaded, "1");
+    if (localStorage.getItem(LocalStorageKeys.Reloaded)! === "0") {
+      localStorage.setItem(LocalStorageKeys.Reloaded, "1");
 
-		window.location.reload();
-	}
+      window.location.reload();
+    }
 
     this.getPermissions();
   }
 
   ngOnInit(): void {
+    this.utilService.openLoadingSpinner("Cargando información, espere por favor...");
+
     this.columnsTable[this.columnsTable.length - 1].actions.forEach(action => {
       if (action.id === "editOnTable") {
         action.showed = this.controlsPermissions[TipoProcesoPageControlPermission.ButtonEditar].visualizar
@@ -125,22 +130,17 @@ export class TipoProcesoComponent implements OnInit {
   private getDataToCombo() {
     return this.mantenimientoService.getTipoSolicitud().subscribe({
       next: (response: any) => {
-        const comboTipoSolicitud =
-          this.inputService.formatDataToOptionsValueInLabel(
-            response.tipoSolicitudType,
-            "tipoSolicitud",
-            "id"
-          );
+        const comboTipoSolicitud = this.inputService.formatDataToOptionsValueInLabel(response.tipoSolicitudType.filter(data => data.estado === "A"), "tipoSolicitud", "id");
+
         this.dataTipoSolicitudes = response.tipoSolicitudType;
-        this.tableInputsEditRow = this.formService.changeValuePropFormById(
-          "tipoSolicitudId",
-          this.tableInputsEditRow,
-          "options",
-          comboTipoSolicitud
-        );
+
+        this.tableInputsEditRow = this.formService.changeValuePropFormById("tipoSolicitudId", this.tableInputsEditRow, "options", comboTipoSolicitud);
+
         this.getDataToTable();
       },
       error: (error: HttpErrorResponse) => {
+        this.utilService.closeLoadingSpinner();
+
         if (error.status !== 404) {
           this.utilService.modalResponse(error.error, "error");
         }
@@ -151,16 +151,24 @@ export class TipoProcesoComponent implements OnInit {
   private getDataToTable() {
     return this.tipoprocesosService.index().subscribe({
       next: (response) => {
-        this.dataTable = response.map((procesoResponse) => ({
-          ...procesoResponse,
-          estado: procesoResponse.estado === "A",
-          tipoSolicitudFormatted:
-            this.formatTipoSolicitudEstaciones(procesoResponse),
-        }));
-        //this.utilService.closeLoadingSpinner();
+        this.dataTable = response
+          .map((procesoResponse) => ({
+            ...procesoResponse,
+            estado: procesoResponse.estado === "A",
+            tipoSolicitudFormatted: this.formatTipoSolicitudEstaciones(procesoResponse),
+          }))
+          .sort((a, b) => a.tipoProceso.localeCompare(b.tipoProceso));
+
+        this.dataTableActive = this.dataTable.filter(data => data.estado);
+        this.dataTableInactive = this.dataTable.filter(data => !data.estado);
+
+        this.utilService.closeLoadingSpinner();
       },
-      error: (error: HttpErrorResponse) =>
-        this.utilService.modalResponse(error.error, "error"),
+      error: (error: HttpErrorResponse) => {
+        this.utilService.closeLoadingSpinner();
+
+        this.utilService.modalResponse(error.error, "error");
+      }
     });
   }
   private formatTipoSolicitudEstaciones(procesoResponse: ITipoproceso): string {
@@ -253,5 +261,9 @@ export class TipoProcesoComponent implements OnInit {
     ) {
       this.onSaveRowTable(rowData, finishedClonningRow);
     }
+  }
+
+  public onChangeActiveRecordsCheckbox(event: any): void {
+    this.activeRecords = event;
   }
 }
