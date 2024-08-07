@@ -73,7 +73,7 @@ export class LoginComponent {
       codigoRecurso: "PWFCAMUMET",
       usuario: this.user,
       password: btoa(this.password),
-      isAutenticacionLocal: true,
+      isAutenticacionLocal: false,
 
     };
 
