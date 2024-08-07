@@ -6,7 +6,7 @@ $cell-padding: 12px 24px;
 @import "../../../assets/scss/variable";
 
 .table-container {
-  overflow-x: auto;
+  overflow-x: auto !important;
   width: 100%;
   min-height: 300px;
 }

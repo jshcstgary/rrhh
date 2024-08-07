@@ -166,11 +166,13 @@ export class CrearNivelesAprobacionComponent implements OnInit {
   ObtenerServicioTipoSolicitud() {
     return this.mantenimientoService.getTipoSolicitud().subscribe({
       next: (response: any) => {
-        this.dataTipoSolicitudes = response.tipoSolicitudType.map((r) => ({
-          id: r.id,
-          descripcion: r.tipoSolicitud,
-          codigoTipoSolicitud: r.codigoTipoSolicitud
-        })); //verificar la estructura mmunoz
+        this.dataTipoSolicitudes = response.tipoSolicitudType
+          .filter(data => data.estado === "A")
+          .map((r) => ({
+            id: r.id,
+            descripcion: r.tipoSolicitud,
+            codigoTipoSolicitud: r.codigoTipoSolicitud
+          }));
       },
       error: (error: HttpErrorResponse) => {
         this.utilService.modalResponse(error.error, "error");
@@ -181,10 +183,12 @@ export class CrearNivelesAprobacionComponent implements OnInit {
   ObtenerServicioTipoMotivo() {
     return this.mantenimientoService.getTipoMotivo().subscribe({
       next: (response) => {
-        this.dataTipoMotivo = response.map((r) => ({
-          id: r.id,
-          descripcion: r.tipoMotivo,
-        })); //verificar la estructura mmunoz
+        this.dataTipoMotivo = response
+          .filter(data => data.estado === "A")
+          .map((r) => ({
+            id: r.id,
+            descripcion: r.tipoMotivo,
+          }));
       },
       error: (error: HttpErrorResponse) => {
         this.utilService.modalResponse(error.error, "error");

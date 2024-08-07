@@ -1,3 +1,96 @@
+<div class="p-3">
+  <div class="row mb-3">
+    <div class="col-md-3 mb-3">
+      <label class="azul mb-1">Tipo de Solicitud</label>
+
+      <ng-select [(ngModel)]="dataFilterNivelesAprobacion.tipoSolicitud" name="tipo-solicitud" placeholder="Seleccione">
+        <ng-option *ngFor="let car of dataTipoSolicitudes" [value]="car.id">
+          {{ car.id }} - {{ car.descripcion }}
+        </ng-option>
+      </ng-select>
+    </div>
+
+    <div class="col-md-3 mb-3">
+      <label class="azul mb-1">Nivel de Direccion</label>
+
+      <ng-select [(ngModel)]="dataFilterNivelesAprobacion.nivelDireccion" name="id_trabajador" placeholder="Seleccione">
+        <ng-option *ngFor="let data of dataNivelDireccion" [value]="data">
+          {{ data }}
+        </ng-option>
+      </ng-select>
+    </div>
+
+    <div class="col-md-3 mb-3">
+      <label class="azul mb-1">Tipo Motivo</label>
+
+      <ng-select [(ngModel)]="dataFilterNivelesAprobacion.tipoMotivo" name="id_producto" placeholder="Seleccione">
+        <ng-option *ngFor="let car of dataTipoMotivo" [value]="car.id">
+          {{ car.id }} - {{ car.descripcion }}
+        </ng-option>
+      </ng-select>
+    </div>
+
+    <div class="col-md-3 mb-3">
+      <label class="azul mb-1">Tipo de Ruta</label>
+
+      <ng-select [(ngModel)]="dataFilterNivelesAprobacion.nivelDireccion" name="id_trabajador" placeholder="Seleccione">
+        <ng-option *ngFor="let data of dataNivelDireccion" [value]="data">
+          {{ data }}
+        </ng-option>
+      </ng-select>
+    </div>
+
+    <div class="col-md-3 mb-3">
+      <label class="azul mb-1">Tipo de Acción</label>
+
+      <ng-select [(ngModel)]="dataFilterNivelesAprobacion.nivelDireccion" name="id_trabajador" placeholder="Seleccione">
+        <ng-option *ngFor="let data of dataNivelDireccion" [value]="data">
+          {{ data }}
+        </ng-option>
+      </ng-select>
+    </div>
+
+    <div *ngIf="this.controlsPermissions[pageControlPermission.ButtonBuscar].visualizar" class="col-md-3 ms-auto align-self-center">
+      <div class="text-end">
+        <button (click)="getDataToTableFilter()" type="button" class="btn btn-info">
+          <i class="fas fa-filter"></i> Buscar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <!-- <div class="col-md-3 align-self-center">
+      <div class="form-check form-switch ps-0 mb-0">
+        <input class="form-check-input ms-0 me-2" type="checkbox" role="switch" id="active-records" [checked]="activeRecords" (change)="onChangeActiveRecordsCheckbox($event)">
+
+        <label class="form-check-label fs-6" for="active-records">{{ activeRecords ? "Activos" : "Inactivos" }}</label>
+      </div>
+    </div> -->
+
+    <div class="col-md-3 offset-md-9">
+      <form>
+        <div class="mb-3">
+          <div class="text-end">
+            <button *ngIf="this.controlsPermissions[pageControlPermission.ButtonAgregar].visualizar" type="button" (click)="pageCrear()" class="btn btn-info me-3">
+              <i class="fas fa-plus"></i> Agregar
+            </button>
+
+            <button *ngIf="this.controlsPermissions[pageControlPermission.ButtonExportar].visualizar" type="submit" class="btn btn-outline-info">
+              <i class="fas fa-file-excel"></i> Exportar
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <table-component [columns]="columnsTable2" [dataTable]="dataTable" [contexto]="this" onSaveRowTable="onSaveRowTable" [totalRows]="activeRecords ? dataTableActive.length : dataTableInactive.length" onChangePagination="onChangePaginationTable" onCancelEditRowTable="onCancelEditRowTable" [rowsPerPageValue]="rowsPerPageTable" [page]="pageNumberTable" clickOnActionRow="onRowActionClicked" [allowCloneButton]="false" tableWidth="150%"></table-component>
+</div>
+
+<!--
+
+666(onChangeActiveRecordsCheckbox)="onChangeActiveRecordsCheckbox($event)" -->
 <plantilla-b-component [dataFilterNivelesAprobacion]="dataFilterNivelesAprobacion" [dataTipoMotivo]="dataTipoMotivo"
   [dataTipoSolicitudes]="dataTipoSolicitudes" [dataNivelDireccion]="dataNivelDireccion" *ngIf="hasFiltered"
   [columnsTable]="columnsTable" [originalDataTable]="activeRecords ? dataTableActive : dataTableInactive"
@@ -13,5 +106,5 @@
   [showButtonBuscar]="this.controlsPermissions[pageControlPermission.ButtonBuscar].visualizar"
   [showCreateButton]="this.controlsPermissions[pageControlPermission.ButtonAgregar].visualizar"
   [showButtonExportar]="this.controlsPermissions[pageControlPermission.ButtonExportar].visualizar"
-  (onChangeActiveRecordsCheckbox)="onChangeActiveRecordsCheckbox($event)" [activeRecordsCheckbox]="activeRecords">
+  [activeRecordsCheckbox]="activeRecords">
 </plantilla-b-component>

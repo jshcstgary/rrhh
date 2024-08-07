@@ -25,6 +25,127 @@
               </button>
             </div>
           </div>
+
+          <div class="row mt-5">
+            <div class="col-md-6 mb-3">
+              <label class="azul mb-1">Tipo Solicitud</label>
+
+              <select class="form-select" [(ngModel)]="modelo.idTipoSolicitud" (change)="onChangeTipoSolicitud(modelo.idTipoSolicitud)">
+                <option *ngFor="let baseDeDatos of dataTipoSolicitudes" [value]="baseDeDatos.id">{{ baseDeDatos.descripcion }}</option>
+              </select>
+            </div>
+
+            <div class="col-md-6 mb-3">
+              <label class="azul mb-1">Tipo Motivo</label>
+
+              <select class="form-select" [(ngModel)]="modelo.idTipoMotivo">
+                <option *ngFor="let baseDeDatos of dataTiposMotivosPorTipoSolicitud[tipoSolicitudSeleccionada]" [value]="baseDeDatos.id">{{ baseDeDatos.tipoMotivo }}</option>
+              </select>
+            </div>
+
+            <div class="col-md-6 mb-3">
+              <label class="azul mb-1">Acción</label>
+
+              <select class="form-select" [(ngModel)]="modelo.idAccion">
+                <option *ngFor="let baseDeDatos of dataAccionesPorTipoSolicitud[tipoSolicitudSeleccionada]" [value]="baseDeDatos.id">{{ baseDeDatos.accion }}</option>
+              </select>
+            </div>
+
+            <div class="col-md-6 mb-3">
+              <label class="azul mb-1">Tipo de Ruta</label>
+
+              <select class="form-select" [(ngModel)]="modelo.idTipoRuta">
+                <option *ngFor="let baseDeDatos of dataTipoRuta" [value]="baseDeDatos.id">{{ baseDeDatos.descripcion }}</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="mt-3">
+            <table>
+              <colgroup>
+                <col style="width: 210px;">
+
+                <col style="width: 210px;">
+
+                <col style="width: 210px;">
+
+                <col style="width: 210px;">
+
+                <col style="width: 210px;">
+
+                <col style="width: 210px;">
+              </colgroup>
+
+              <!-- ! ES LA RUTA -->
+              <thead>
+                <tr>
+                  <th>1er Nivel Aprobación</th>
+
+                  <th>2do Nivel Aprobación</th>
+
+                  <th>3er Nivel Aprobación</th>
+
+                  <th>4to Nivel Aprobación</th>
+
+                  <th>Gerente RR.HH.</th>
+
+                  <th>Comité de Remuneración</th>
+                </tr>
+              </thead>
+
+              <!-- ! ES EL NIVEL DE APROBACIÓN -->
+              <tbody>
+                <tr>
+                  <td>
+                    <select class="form-select" [(ngModel)]="modelo.idAccion">
+                      <option *ngFor="let item of dataNivelAprobacion" [value]="item.id">{{ item.descripcion }}</option>
+                    </select>
+
+                    <div>
+                      <label class="input-group-text" for="estado">Estado</label>
+
+                      <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" required id="estado" [(ngModel)]="modelo.estado" name="estado" checked />
+                      </div>
+                    </div>
+                  </td>
+
+                  <td>
+                    <select class="form-select" [(ngModel)]="modelo.idAccion">
+                      <option *ngFor="let item of dataNivelAprobacion" [value]="item.id">{{ item.descripcion }}</option>
+                    </select>
+                  </td>
+
+                  <td>
+                    <select class="form-select" [(ngModel)]="modelo.idAccion">
+                      <option *ngFor="let item of dataNivelAprobacion" [value]="item.id">{{ item.descripcion }}</option>
+                    </select>
+                  </td>
+
+                  <td>
+                    <select class="form-select" [(ngModel)]="modelo.idAccion">
+                      <option *ngFor="let item of dataNivelAprobacion" [value]="item.id">{{ item.descripcion }}</option>
+                    </select>
+                  </td>
+
+                  <td>
+                    <select class="form-select" [(ngModel)]="modelo.idAccion">
+                      <option *ngFor="let item of dataNivelAprobacion" [value]="item.id">{{ item.descripcion }}</option>
+                    </select>
+                  </td>
+
+                  <td>
+                    <select class="form-select" [(ngModel)]="modelo.idAccion">
+                      <option *ngFor="let item of dataNivelAprobacion" [value]="item.id">{{ item.descripcion }}</option>
+                    </select>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+            <!-- <table-component [columns]="columnsTable2" [dataTable]="dataTable" [contexto]="this" onSaveRowTable="onSaveRowTable" [onChangePagination="onChangePaginationTable" onCancelEditRowTable="onCancelEditRowTable" [rowsPerPageValue]="rowsPerPageTable" [page]="pageNumberTable" clickOnActionRow="onRowActionClicked" [allowCloneButton]="false" tableWidth="150%"></table-component> -->
+          </div>
+
           <div class="row" style="
               padding-top: 20px;
               display: flex;
@@ -80,11 +201,7 @@
                   style="color: black; font-size: 14px; width: 45%">Acción</label>
                 <select [(ngModel)]="modelo.idAccion" id="accion" name="accion" class="form-select"
                   style="font-size: 14px" required [disabled]="desactivarTipoMotivoYAccion">
-                  <option *ngFor="
-                      let baseDeDatos of dataAccionesPorTipoSolicitud[
-                        tipoSolicitudSeleccionada
-                      ]
-                    " [value]="baseDeDatos.id">
+                  <option *ngFor="let baseDeDatos of dataAccionesPorTipoSolicitud[tipoSolicitudSeleccionada]" [value]="baseDeDatos.id">
                     {{ baseDeDatos.accion }}
                   </option>
                 </select>

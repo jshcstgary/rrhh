@@ -126,22 +126,6 @@
               class="text-start"
               >{{ model.codigoPosicion }}</span
             >
-            <!--<input
-              type="text"
-              name="codigoposicion"
-              [(ngModel)]="model.codigoPosicion"
-              style="color: black; font-size: 14px; width: 30%"
-              [ngbTypeahead]="searchCodigoPosicion"
-              (selectItem)="onSelectItem('codigoPosicion', $event)"
-              class="form-control"
-              id="codigoposicion"
-              aria-describedby="inputGroupPrepend"
-              required
-              #codigoposicion="ngModel"
-            />
-            <button class="btn btn-light" type="button" disabled>
-              <i class="ti-search"></i>
-            </button>-->
           </div>
         </div>
         <div class="col-md-6">
@@ -162,63 +146,6 @@
           </div>
         </div>
       </div>
-      <!-- <div class="row" *ngIf="mostrarSubledger">
-        <div class="col-md-6">
-          <div class="input-group mb-3">
-            <label
-              class="input-group-text label-estilo"
-              for="subledger"
-            >
-              Subledger
-            </label>
-            &nbsp;
-            <input
-              type="text"
-              name="subledger"
-              [(ngModel)]="model.subledger"
-              style="color: black; font-size: 14px; width: 30%"
-              [ngbTypeahead]="searchSubledger"
-              (selectItem)="onSelectItem('subledger', $event)"
-              class="form-control"
-              id="subledger"
-              aria-describedby="inputGroupPrepend"
-              required
-              #subledger="ngModel"
-            />
-            <button class="btn btn-light" type="button" disabled>
-              <i class="ti-search"></i>
-            </button>
-          </div>
-        </div>
-
-        <div class="col-md-6">
-          <div class="input-group mb-3">
-            <label
-              class="input-group-text label-estilo"
-              for="nombreempleado"
-            >
-              Empleado
-            </label>
-            &nbsp;
-            <input
-              type="text"
-              name="nombreempleado"
-              [(ngModel)]="model.nombreCompleto"
-              style="color: black; font-size: 14px; width: 30%"
-              [ngbTypeahead]="searchNombreCompleto"
-              (selectItem)="onSelectItem('nombreCompleto', $event)"
-              class="form-control"
-              id="nombreempleado"
-              aria-describedby="inputGroupPrepend"
-              #nombreCompleto="ngModel"
-              required
-            />
-            <button class="btn btn-light" type="button" disabled>
-              <i class="ti-search"></i>
-            </button>
-          </div>
-        </div>
-      </div> -->
 
       <div class="row">
         <div class="col-md-6">
@@ -357,15 +284,6 @@
               class="text-start"
               >{{ model.misionCargo }}</span
             >
-            <!--<input
-              type="text"
-              name="misioncargo"
-              [(ngModel)]="model.misionCargo"
-              class="form-control"
-              id="misioncargo"
-              #misioncargo="ngModel"
-              required
-            />-->
           </div>
         </div>
       </div>
@@ -377,7 +295,9 @@
               for="justificacion"
               >Justificación</label
             >
+
             &nbsp;
+
             <span
               id="justificacion"
               name="justificacion"
@@ -385,14 +305,6 @@
               class="text-start"
               >{{ model.justificacionCargo }}</span
             >
-            <!--<textarea
-              id="justificacion"
-              name="justificacion"
-              [(ngModel)]="model.justificacionCargo"
-              style="color: black; font-size: 14px"
-              required
-              #justificacion="ngModel"
-            ></textarea>-->
           </div>
         </div>
       </div>
@@ -460,19 +372,6 @@
               class="text-start"
               >{{ model.tipoContrato }}</span
             >
-
-            <!--<select
-              id="tipocontrato"
-              name="tipocontrato"
-              class="form-select"
-              [(ngModel)]="model.tipoContrato"
-              style="font-size: 14px"
-              required
-            >
-              <option selected>Eventual</option>
-              <option>Temporal</option>
-              <option>Mixto</option>
-            </select>-->
           </div>
         </div>
         <div class="col-md-6">
@@ -510,13 +409,6 @@
               class="text-start"
               >{{ model.sueldo }}</span
             >
-            <!--<input
-              [(ngModel)]="model.sueldo"
-              type="text"
-              name="sueldo"
-              class="form-control"
-              id="sueldo"
-            />-->
           </div>
         </div>
       </div>
@@ -545,13 +437,6 @@
               class="text-start"
               >{{ model.sueldoMensual }}</span
             >
-            <!--<input
-              [(ngModel)]="model.sueldoMensual"
-              type="text"
-              name="mensual"
-              class="form-control"
-              id="mensual"
-            />-->
           </div>
         </div>
         <div class="col-md-6">
@@ -569,13 +454,6 @@
               class="text-start"
               >{{ model.sueldoTrimestral }}</span
             >
-            <!--<input
-              [(ngModel)]="model.sueldoTrimestral"
-              type="text"
-              name="trimestral"
-              class="form-control"
-              id="trimestral"
-            />-->
           </div>
         </div>
       </div>
@@ -596,13 +474,6 @@
               class="text-start"
               >{{ model.sueldoSemestral }}</span
             >
-            <!--<input
-              [(ngModel)]="model.sueldoSemestral"
-              type="text"
-              name="semestral"
-              class="form-control"
-              id="semestral"
-            />-->
           </div>
         </div>
         <div class="col-md-6">
@@ -620,13 +491,6 @@
               class="text-start"
               >{{ model.sueldoAnual }}</span
             >
-            <!--<input
-              [(ngModel)]="model.sueldoAnual"
-              type="text"
-              name="anual"
-              class="form-control"
-              id="anual"
-            />-->
           </div>
         </div>
       </div>
@@ -854,22 +718,12 @@
         >Decisión a tomar
     </label>
 
-    <div class="btn-group" role="group" aria-label="Basic example" id="desicion">
-      <button type="button"
-              class="btn"
-              [ngClass]="{'btn-primary': !isSelected('aprobar'), 'btn-success': isSelected('aprobar')}"
-              (click)="process('aprobar')"
-              value="aprobar">Aprobar</button>
-      <button type="button"
-              class="btn"
-              [ngClass]="{'btn-primary': !isSelected('rechazar'), 'btn-success': isSelected('rechazar')}"
-              (click)="process('rechazar')"
-              value="rechazar">Cancelar</button>
-      <button type="button"
-              class="btn"
-              [ngClass]="{'btn-primary': !isSelected('esperar'), 'btn-success': isSelected('esperar')}"
-              (click)="process('esperar')"
-              value="esperar">En espera</button>
+    <div class="" role="group" aria-label="Basic example" id="desicion">
+      <button type="button" class="btn" [ngClass]="{'btn-primary btn-unselected': !isSelected('aprobar'), 'btn-selected': isSelected('aprobar')}" (click)="process('aprobar')" value="aprobar">Aprobar</button>
+
+      <button type="button" class="btn" [ngClass]="{'btn-primary btn-unselected': !isSelected('rechazar'), 'btn-selected': isSelected('rechazar')}" (click)="process('rechazar')" value="rechazar">Cancelar</button>
+
+      <button type="button" class="btn" [ngClass]="{'btn-primary btn-unselected': !isSelected('esperar'), 'btn-selected': isSelected('esperar')}" (click)="process('esperar')" value="esperar">En espera</button>
     </div>
 
     </div>

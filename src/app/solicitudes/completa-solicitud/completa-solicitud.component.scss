@@ -163,6 +163,23 @@ textarea {
 }
 
 
+.btn-unselected {
+  background-color: lighten(#003a7a, 30%);
+  border-color: lighten(#003a7a, 30%);
 
+  &:hover {
+    box-shadow: 0 8px 15px rgba(0, 86, 179, 0.3);
+    background-color: lighten(#003a7a, 20%);
+    border-color: lighten(#003a7a, 20%);
+  }
+}
 
+.btn-selected {
+  background-color: lighten(green, 10%);
+  color: white;
 
+  &:hover {
+    box-shadow: 0 8px 15px rgba(0, 86, 179, 0.3);
+    background-color: lighten(green, 5%);
+  }
+}

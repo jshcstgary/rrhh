@@ -14,28 +14,17 @@ export class DataFilterNivelesAprobacion {
   }
 
   verifyFilterFields() {
-    const allUndefined =
-      this.isUndefined(this.tipoMotivo) &&
-      this.isUndefined(this.tipoSolicitud) &&
-      this.isUndefined(this.nivelDireccion);
-    const allNull =
-      this.tipoMotivo === null &&
-      this.tipoSolicitud === null &&
-      this.nivelDireccion === null;
+    const allUndefined = this.isUndefined(this.tipoMotivo) && this.isUndefined(this.tipoSolicitud) && this.isUndefined(this.nivelDireccion);
 
-    const atLeastOneUndefinedOrNull =
-      this.isUndefinedOrNull(this.tipoMotivo) ||
-      this.isUndefinedOrNull(this.tipoSolicitud) ||
-      this.isUndefinedOrNull(this.nivelDireccion);
+    const allNull = this.tipoMotivo === null && this.tipoSolicitud === null && this.nivelDireccion === null;
 
-    const atLeastOneUndefinedOrNulltipoSolicitud =
-      this.isUndefinedOrNull(this.tipoSolicitud);
+    const atLeastOneUndefinedOrNull = this.isUndefinedOrNull(this.tipoMotivo) || this.isUndefinedOrNull(this.tipoSolicitud) || this.isUndefinedOrNull(this.nivelDireccion);
 
-    const atLeastOneUndefinedOrNulltipoMotivo =
-      this.isUndefinedOrNull(this.tipoMotivo);
+    const atLeastOneUndefinedOrNulltipoSolicitud = this.isUndefinedOrNull(this.tipoSolicitud);
 
-    const atLeastOneUndefinedOrNullnivelDireccion =
-      this.isUndefinedOrNull(this.nivelDireccion);
+    const atLeastOneUndefinedOrNulltipoMotivo = this.isUndefinedOrNull(this.tipoMotivo);
+
+    const atLeastOneUndefinedOrNullnivelDireccion = this.isUndefinedOrNull(this.nivelDireccion);
 
     if (allUndefined) {
       // return "Toda mi data sin filtrar";
@@ -45,12 +34,17 @@ export class DataFilterNivelesAprobacion {
       return "case2";
     } else if (atLeastOneUndefinedOrNull) {
       if (atLeastOneUndefinedOrNulltipoSolicitud) {
-      return "case3";
-      }if (atLeastOneUndefinedOrNulltipoMotivo) {
+        return "case3";
+      }
+
+      if (atLeastOneUndefinedOrNulltipoMotivo) {
         this.tipoMotivo = 10000;
-      }if (atLeastOneUndefinedOrNullnivelDireccion) {
+      }
+
+      if (atLeastOneUndefinedOrNullnivelDireccion) {
         this.nivelDireccion = 10000;
       }
+
       return "case4";
       // return "Mostrar un error";
     } else {

@@ -12,7 +12,7 @@
           <li [ngbNavItem]="1">
             <button ngbNavLink>Resumen</button>
             <ng-template ngbNavContent>
-              <div class="row">
+              <div class="row justify-content-between">
                 <div class="col-md-6">
                   <ngx-charts-advanced-pie-chart [view]="[600, 200]" label="Total completadas" [scheme]="colorScheme6"
                     [results]="solicitudesCompletadas" [gradient]="gradient6" (select)="onSelect6($event)"

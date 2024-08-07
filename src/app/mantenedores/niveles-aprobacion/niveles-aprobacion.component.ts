@@ -13,8 +13,10 @@ import { UtilService } from "src/app/services/util/util.service";
 import { ValidationsService } from "src/app/services/validations/validations.service";
 import { PageControlPermiso } from "src/app/types/page-control-permiso.type";
 import { Control } from "src/app/types/permiso.type";
-import { ConsultaSolicitudesData } from "./niveles-aprobacion.data";
+import { NivelesAprobacionData, NivelesAprobacionData2 } from "./niveles-aprobacion.data";
 import { NivelesAprobacionService } from "./niveles-aprobacion.service";
+import Swal from "sweetalert2";
+import { TableComponentData } from "src/app/component/table/table.data";
 
 @Component({
   selector: "app-niveles-aprobacion",
@@ -25,6 +27,22 @@ export class NivelesAprobacionComponent implements OnInit {
   private pageCode: string = PageCodes.NivelesAprobacion;
   public activeRecords: boolean = true;
   public pageControlPermission: typeof NivelAprobacionPageControlPermission = NivelAprobacionPageControlPermission;
+
+  public rowsPerPageTable: number = TableComponentData.defaultRowPerPage;
+  public pageNumberTable: number = 1;
+
+  DATA_SAMPLE = [
+    {
+      tipoRuta: "SUPERVISOR Y COORDINADOR",
+      tipoSolicitud: "Requisición de Personal",
+      nivelAprobacion1: "Miguel Joshua Castillo Riofrío",
+      nivelAprobacion2: "Miguel Joshua Castillo Riofrío",
+      nivelAprobacion3: "Miguel Joshua Castillo Riofrío",
+      nivelAprobacion4: "Miguel Joshua Castillo Riofrío",
+      nivelAprobacionGerenteRRHH: "Miguel Joshua Castillo Riofrío",
+      nivelAprobacionComiteRemuneracion: "Miguel Joshua Castillo Riofrío"
+    }
+  ];
 
   public controlsPermissions: PageControlPermiso = {
     [NivelAprobacionPageControlPermission.FiltroTipoSolicitud]: {
@@ -77,7 +95,8 @@ export class NivelesAprobacionComponent implements OnInit {
     }
   };
 
-  public columnsTable: IColumnsTable = ConsultaSolicitudesData.columns;
+  public columnsTable: IColumnsTable = NivelesAprobacionData.columns;
+  public columnsTable2: IColumnsTable = NivelesAprobacionData2.columns;
   public dataTable: any[] = [];
   public dataTableActive: any[] = [];
   public dataTableInactive: any[] = [];
@@ -144,35 +163,124 @@ export class NivelesAprobacionComponent implements OnInit {
   }
 
   filterDataTable() {
-    console.log(this.dataFilterNivelesAprobacion);
+    if (this.dataFilterNivelesAprobacion.tipoSolicitud === null || this.dataFilterNivelesAprobacion.tipoSolicitud === undefined || this.dataFilterNivelesAprobacion.nivelDireccion === null || this.dataFilterNivelesAprobacion.nivelDireccion === undefined) {
+      Swal.fire({
+        text: "Seleccione al menos un tipo de solicitud y un nivel de dirección",
+        icon: "info",
+        confirmButtonColor: "rgb(227, 199, 22)",
+        confirmButtonText: "Ok"
+      });
+
+      return;
+    }
+
     switch (this.dataFilterNivelesAprobacion.verifyFilterFields()) {
       case "case1":
         this.getDataToTable();
+
         break;
+
       case "case2":
         this.getDataToTable();
+
         break;
+
       case "case3":
-        this.utilService.modalResponse(
-          "Por favor seleccione el Tipo de Solicitud",
-          "info"
-        );
+        this.utilService.modalResponse("Por favor seleccione el Tipo de Solicitud", "info");
+
         break;
+
       case "case4":
         this.getDataToTableFilter();
+
         break;
     }
   }
 
   getDataToTableFilter() {
+    if (this.dataFilterNivelesAprobacion.tipoSolicitud === null || this.dataFilterNivelesAprobacion.tipoSolicitud === undefined || this.dataFilterNivelesAprobacion.nivelDireccion === null || this.dataFilterNivelesAprobacion.nivelDireccion === undefined) {
+      Swal.fire({
+        text: "Seleccione al menos un tipo de solicitud y un nivel de dirección",
+        icon: "info",
+        confirmButtonColor: "rgb(227, 199, 22)",
+        confirmButtonText: "Ok"
+      });
+
+      return;
+    }
+
+    if (this.dataFilterNivelesAprobacion.tipoMotivo === null || this.dataFilterNivelesAprobacion.tipoMotivo === undefined) {
+      this.dataFilterNivelesAprobacion.tipoMotivo = 1000;
+    }
+
     this.utilService.openLoadingSpinner("Cargando información, espere por favor...");
 
     this.nivelesAprobacionService.filterNivelesAprobaciones(this.dataFilterNivelesAprobacion.tipoSolicitud, this.dataFilterNivelesAprobacion.tipoMotivo, this.dataFilterNivelesAprobacion.nivelDireccion).subscribe({
       next: (response) => {
-        this.dataTable = response.nivelAprobacionType.map((nivelAprobacionResponse) => ({
-          ...nivelAprobacionResponse,
-          estado: nivelAprobacionResponse.estado === "A",
-        }));
+        if (response.totalRegistros === 0) {
+          this.dataTable = [];
+
+          this.utilService.closeLoadingSpinner();
+
+          return;
+        }
+
+        const dataTable = {
+          tipoRuta: "-",
+          tipoSolicitud: "-",
+          nivelAprobacion1: "-",
+          nivelAprobacion2: "-",
+          nivelAprobacion3: "-",
+          nivelAprobacion4: "-",
+          nivelAprobacionGerenteRRHH: "-",
+          nivelAprobacionComiteRemuneracion: "-"
+        };
+
+        response.nivelAprobacionType
+          .filter(data => data.estado === "A")
+          .forEach(({ idNivelAprobacionRuta, ruta }) => {
+            if (ruta.includes("1")) {
+              dataTable.nivelAprobacion1 = idNivelAprobacionRuta;
+            }
+
+            if (ruta.includes("2")) {
+              dataTable.nivelAprobacion2 = idNivelAprobacionRuta;
+            }
+
+            if (ruta.includes("3")) {
+              dataTable.nivelAprobacion3 = idNivelAprobacionRuta;
+            }
+
+            if (ruta.includes("4")) {
+              dataTable.nivelAprobacion4 = idNivelAprobacionRuta;
+            }
+
+            if (ruta.toUpperCase().includes("RRHH")) {
+              dataTable.nivelAprobacionGerenteRRHH = idNivelAprobacionRuta;
+            }
+
+            if (ruta.toUpperCase().includes("REMUNER")) {
+              dataTable.nivelAprobacionComiteRemuneracion = idNivelAprobacionRuta;
+            }
+          });
+
+        this.dataTable = [{
+          ...dataTable,
+          tipoRuta: "-",
+          tipoSolicitud: this.dataTipoSolicitudes.find(data => data.id === this.dataFilterNivelesAprobacion.tipoSolicitud).descripcion
+        }];
+
+        // this.dataTable = response.nivelAprobacionType
+        //   .map((nivelAprobacionResponse) => ({
+        //     ...nivelAprobacionResponse,
+        //     estado: nivelAprobacionResponse.estado === "A",
+        //   }))
+        //   .filter(data => nivelAprobacionResponse.estado === "A");
+
+        console.log(this.dataTable);
+
+        // this.dataTableActive = this.dataTable.filter(data => data.estado);
+        // this.dataTableInactive = this.dataTable.filter(data => !data.estado);
 
         this.utilService.closeLoadingSpinner();
       },
@@ -204,6 +312,8 @@ export class NivelesAprobacionComponent implements OnInit {
       },
       error: (error: HttpErrorResponse) => {
         this.utilService.closeLoadingSpinner();
+
+        this.dataTable = [];
 
         this.utilService.modalResponse(error.error, "error");
       },
@@ -267,7 +377,7 @@ export class NivelesAprobacionComponent implements OnInit {
     });
   }
 
-  public onChangeActiveRecordsCheckbox(event: any): void {
-    this.activeRecords = event;
+  public onChangeActiveRecordsCheckbox(event: Event): void {
+    this.activeRecords = (event.target as HTMLInputElement).checked;
   }
 }

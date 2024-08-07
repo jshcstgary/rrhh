@@ -86,11 +86,13 @@ body {
       overflow: visible !important;
 
       & .legend-item {
-        display: grid !important;
-        grid-template-columns: 0.3fr 1fr 0.5fr;
-        grid-template-areas: "color label value";
+        // display: grid !important;
+        // grid-template-columns: 0.3fr 1fr 0.5fr;
+        // grid-template-areas: "color label value";
         margin: 0 !important;
-        margin-right: 35px !important;
+        // margin-right: 35px !important;
+        display: flex !important;
+        gap: 15px;
 
         & .item-color {
           border-left-width: 15px !important;
@@ -102,13 +104,18 @@ body {
         & .item-value {
           margin: 0 !important;
           font-size: 18px !important;
-          grid-area: value;
+          // grid-area: value;
           text-align: right;
+          order: 3;
+          flex-basis: 30px;
         }
 
         & .item-label {
           margin: 0 !important;
-          grid-area: label;
+          font-size: 16px !important;
+          // grid-area: label;
+          order: 2;
+          flex-basis: 100px;
         }
 
         &>.item-percent {

@@ -171,7 +171,7 @@ export const environment = {
 
   // loginES: `${base}:8308/api/us/integracion-seguridad/iguana/obtenercredenciales`,
   // loginES: `${baseG}/api/us/integracion-seguridad`,
-  loginES: `${baseRBP}:8292/api/us/integracion-seguridad/obtenercredenciales`,
+  loginES: `${baseRBP}:8294/api/us/integracion-seguridad/obtenercredenciales`,
 
   /*
 
