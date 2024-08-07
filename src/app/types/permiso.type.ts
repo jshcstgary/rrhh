@@ -3,6 +3,9 @@ export type LoginRequest = {
   codigoEmpresa: string;
   codigoRecurso: string;
   usuario: string;
+  password: string;
+  isAutenticacionLocal: boolean;
+
 };
 
 export type Perfil = {

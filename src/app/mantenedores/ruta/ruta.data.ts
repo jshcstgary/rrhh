@@ -20,7 +20,7 @@ export const TiporutaData: IRutaData = {
     {
       title: "Tipo ruta",
       dataIndex: "idTipoRuta",
-      width: "200px",
+      width: "300px",
       dataIndexesToJoin: ["tipoRutaFormatted"],
       sortActive: true,
       colType: "string",

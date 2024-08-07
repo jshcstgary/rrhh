@@ -21,7 +21,7 @@ export const AccionData: IAccionData = {
     {
       title: "Tipo de solicitud",
       dataIndex: "tipoSolicitudId",
-      width: "200px",
+      width: "300px",
       dataIndexesToJoin: ["tipoSolicitudFormatted"],
       sortActive: true,
       colType: "string",
