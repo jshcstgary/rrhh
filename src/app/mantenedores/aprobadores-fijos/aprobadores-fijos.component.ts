@@ -61,7 +61,7 @@ export class AprobadoresFijosComponent implements OnInit {
   public colsToFilterByText: string[] = AprobadoresFijosData.colsToFilterByText;
   public IdRowToClone: string = null;
   // public defaultEmptyRowTable: ITiporutaTable = AprobadoresFijosData.defaultEmptyRowTable;
-  public codigoReporte: reportCodeEnum = reportCodeEnum.MANTENIMIENTO_TIPO_RUTA;
+  public codigoReporte: reportCodeEnum = reportCodeEnum.MANTENIMIENTO_APROBADORES_FIJOS;
   public hasFiltered: boolean = true;
   public dataFilterNivelesAprobacion = new DataFilterNivelesAprobacion();
   public dataTipoMotivo: any[] = [];

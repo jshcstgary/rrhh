@@ -24,9 +24,9 @@
             [disabled]="!solicitudForm.form.valid">
             <i class="fas fa-save"></i> Guardar
           </button>
-
+{{selectedOption}}
           <button type="button" (click)="onCompletar()" class="btn btn-info me-2 mt-1"
-            [disabled]="!solicitudForm.form.valid">
+            [disabled]="!solicitudForm.form.valid || selectedOption==='Si'">
             <i class="fas fa-check-circle"></i> Completar Tarea
           </button>
         </div>

@@ -74,7 +74,7 @@ export class RutaComponent implements OnInit {
   public defaultEmptyRowTable: IRutaTable = TiporutaData.defaultEmptyRowTable;
   public dataTipoRuta: any[] = [];
   public codigoReporte: reportCodeEnum =
-    reportCodeEnum.MANTENIMIENTO_TIPO_ACCION;
+    reportCodeEnum.MANTENIMIENTO_RUTA;
   constructor(
     private RutasService: RutaService,
     private tableService: TableService,

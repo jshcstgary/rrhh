@@ -92,8 +92,8 @@ export class PlantillaAComponent implements AfterViewInit, OnInit, OnChanges {
   constructor(
     private tableService: TableService,
     private utilService: UtilService,
-    private formService: FormService
-  ) { }
+    private formService: FormService,
+  ) {}
 
   public ngAfterViewInit(): void {
     this.utilService.focusOnHtmlElement("searchInputFilter");
@@ -164,6 +164,7 @@ export class PlantillaAComponent implements AfterViewInit, OnInit, OnChanges {
     if (rowsCheckedInTable.length === 0) {
       rowsCheckedInTable = this.originalDataTable.map((x) => x.key);
     }
+    
 
     const { headerTitles, dataIndexTitles } = this.columnsTable.reduce((acc, col) => {
       if (col.title && col.title !== "Acciones") {
