@@ -6,6 +6,7 @@ import { DatosNivelesAprobacion } from "src/app/eschemas/DatosNivelesAprobacion"
 import { MantenimientoService } from "src/app/services/mantenimiento/mantenimiento.service";
 import { UtilService } from "src/app/services/util/util.service";
 import { CrearNivelesAprobacionService } from "./crear-niveles-aprobacion.service";
+import { compileNgModule } from "@angular/compiler";
 
 @Component({
   selector: "app-crear-niveles-aprobacion",
@@ -29,6 +30,53 @@ export class CrearNivelesAprobacionComponent implements OnInit {
   selected_niveldir: number | string;
   selected_nivelaprob: number | string;
   public id_edit: undefined | number;
+
+  public modelHead = {
+    idTipoSolicitud: 0,
+    idTipoMotivo: 0,
+    idAccion: 0,
+    idTipoRuta: 0,
+    idNivelDireccion: ""
+  };
+
+  public nivelesAprobacion = {
+    nivelAprobacion1: {
+      idNivelAprobacionRuta: "",
+      idTipoRuta: 0,
+      idRuta: 0,
+      estado: true
+    },
+    nivelAprobacion2: {
+      idNivelAprobacionRuta: "",
+      idTipoRuta: 0,
+      idRuta: 0,
+      estado: true
+    },
+    nivelAprobacion3: {
+      idNivelAprobacionRuta: "",
+      idTipoRuta: 0,
+      idRuta: 0,
+      estado: true
+    },
+    nivelAprobacion4: {
+      idNivelAprobacionRuta: "",
+      idTipoRuta: 0,
+      idRuta: 0,
+      estado: true
+    },
+    nivelAprobacionRRHH: {
+      idNivelAprobacionRuta: "",
+      idTipoRuta: 0,
+      idRuta: 0,
+      estado: true
+    },
+    nivelAprobacionComite: {
+      idNivelAprobacionRuta: "",
+      idTipoRuta: 0,
+      idRuta: 0,
+      estado: true
+    }
+  };
 
   public desactivarTipoMotivoYAccion = false;
 
@@ -66,20 +114,22 @@ export class CrearNivelesAprobacionComponent implements OnInit {
   }
 
   getNivelById() {
-    this.utilService.openLoadingSpinner(
-      "Cargando información, espere por favor..."
-    );
-    this.serviceNivelesAprobacion
-      .getNivelById(this.id_edit)
-      .subscribe((data) => {
-        this.modelo = { ...data, estado: data.estado === "A" };
-        this.desactivarTipoMotivoYAccion = this.restrictionsIds.includes(
-          this.modelo.idTipoSolicitud
-        );
-        this.onChangeTipoSolicitud(this.modelo.idTipoSolicitud);
-        this.onChangeTipoRuta(this.modelo.idTipoRuta);
-        this.utilService.closeLoadingSpinner();
-      });
+    this.utilService.openLoadingSpinner("Cargando información, espere por favor...");
+
+    this.serviceNivelesAprobacion.getNivelById(this.id_edit).subscribe((data) => {
+      this.modelo = {
+        ...data,
+        estado: data.estado === "A"
+      };
+
+      this.desactivarTipoMotivoYAccion = this.restrictionsIds.includes(this.modelo.idTipoSolicitud);
+
+      this.onChangeTipoSolicitud(this.modelo.idTipoSolicitud);
+
+      this.onChangeTipoRuta(this.modelo.idTipoRuta);
+
+      this.utilService.closeLoadingSpinner();
+    });
   }
 
   ngOnInit() {
@@ -116,13 +166,6 @@ export class CrearNivelesAprobacionComponent implements OnInit {
   }
 
   onChangeTipoSolicitud(idTipoSolicitud: number) {
-    /*public dataTipoSolicitudes: any[] = [
-        { id: 1, descripcion: "Requisición de Personal" },
-        { id: 2, descripcion: "Contratación de Familiares" },
-        { id: 3, descripcion: "Reingreso de personal" },
-        { id: 4, descripcion: "Acción de Personal" },
-      ];*/
-
     this.codigoTipoSolicitud = this.dataTipoSolicitudes.filter((data) => data.id == this.modelo.idTipoSolicitud)[0]?.codigoTipoSolicitud;
 
     this.tipoSolicitudSeleccionada = idTipoSolicitud;
@@ -299,8 +342,6 @@ export class CrearNivelesAprobacionComponent implements OnInit {
           id: r.codigo,
           descripcion: r.valor,
         }));
-
-        console.log(this.dataNivelAprobacion);
       }
       // return this.mantenimientoService.getCatalogoRBPNA().subscribe({
       //   next: (response) => {
@@ -316,100 +357,83 @@ export class CrearNivelesAprobacionComponent implements OnInit {
     });
   }
 
+  public validateData(): boolean {
+    return this.modelHead.idAccion === 0 || this.modelHead.idNivelDireccion === '' || this.modelHead.idTipoMotivo === 0 || this.modelHead.idTipoRuta === 0 || this.modelHead.idTipoSolicitud === 0;
+  }
+
+  public validateNivelesAprobacion(): boolean {
+    return Object.values(this.nivelesAprobacion).some(({ idNivelAprobacionRuta }) => idNivelAprobacionRuta !== "");
+  }
+
   procesarNivelAprobacion() {
-    this.utilService.openLoadingSpinner(
-      "Guardando información, espere por favor..."
-    );
+    const nivelesAprobacion = [];
+
+    Object.values(this.nivelesAprobacion)
+      .filter(({ idNivelAprobacionRuta }) => idNivelAprobacionRuta !== "")
+      .forEach(nivelAprobacion => {
+        let modelo: DatosNivelesAprobacion = new DatosNivelesAprobacion();
+
+        modelo = {
+          ...modelo,
+          ...this.modelHead,
+          ...nivelAprobacion,
+          estado: nivelAprobacion.estado ? "A" : "I"
+        };
+
+        nivelesAprobacion.push(modelo);
+      });
+
+    return;
+
+    this.utilService.openLoadingSpinner("Guardando información, espere por favor...");
+
+    const modelo = {
+      ...this.modelo,
+      estado: this.modelo.estado ? "A" : "I",
+    };
 
     if (this.id_edit === undefined) {
       this.route.params.subscribe((params) => {
-        this.serviceNivelesAprobacion
-          .guardarNivelAprobacion({
-            ...this.modelo,
-            estado: this.modelo.estado ? "A" : "I",
-          })
-          .subscribe(
-            (response) => {
-              this.utilService.closeLoadingSpinner();
-              this.utilService.modalResponse(
-                "Datos ingresados correctamente",
-                "success"
-              );
-              //   setTimeout(() => {
-              //     this.router.navigate([
-              //       "/mantenedores/niveles-aprobacion",
-              //     ]);
-              //   }, 1600);
-              // Inicio
-              /*this.serviceNivelesAprobacion
-                .refrescarNivelesAprobaciones()
-                .subscribe(
-                  (response) => {
-                    this.utilService.closeLoadingSpinner();
-                    this.utilService.modalResponse(
-                      "Datos ingresados correctamente",
-                      "success"
-                    );
+        this.serviceNivelesAprobacion.guardarNivelAprobacion(modelo).subscribe({
+          next: (response) => {
+            this.utilService.closeLoadingSpinner();
 
-                    setTimeout(() => {
-                      this.router.navigate([
-                        "/mantenedores/niveles-aprobacion",
-                      ]);
-                    }, 1600);
-                  },
-                  (error: HttpErrorResponse) => {
-                    this.utilService.modalResponse(error.error, "error");
-                  }
-                );*/
+            this.utilService.modalResponse("Datos ingresados correctamente", "success");
 
-              // Fin
-            },
-            (error: HttpErrorResponse) => {
-              this.utilService.modalResponse(error.error, "error");
-            }
-          );
+            setTimeout(() => {
+              this.router.navigate(["/mantenedores/niveles-aprobacion"]);
+            }, 1600);
+          },
+          error: (error: HttpErrorResponse) => {
+            this.utilService.modalResponse(error.error, "error");
+          }
+        });
       });
+
       return;
     }
-    this.serviceNivelesAprobacion
-      .actualizarNivelAprobacion({
-        ...this.modelo,
-        estado: this.modelo.estado ? "A" : "I",
-      })
-      .subscribe(
-        (response) => {
-          this.utilService.closeLoadingSpinner();
-          this.utilService.modalResponse(
-            "Datos actualizados correctamente",
-            "success"
-          );
-          setTimeout(() => {
-            this.router.navigate(["/mantenedores/niveles-aprobacion"]);
-          }, 1600);
-          /*this.serviceNivelesAprobacion
-            .refrescarNivelesAprobaciones()
-            .subscribe(
-              (response) => {
-                this.utilService.closeLoadingSpinner();
-                console.log("RESPONSE REFRESH ACTUALIZAR: ", response);
-                this.utilService.modalResponse(
-                  "Datos actualizados correctamente",
-                  "success"
-                );
 
-                setTimeout(() => {
-                  this.router.navigate(["/mantenedores/niveles-aprobacion"]);
-                }, 1600);
-              },
-              (error: HttpErrorResponse) => {
-                this.utilService.modalResponse(error.error, "error");
-              }
-            );*/
-        },
-        (error: HttpErrorResponse) => {
-          this.utilService.modalResponse(error.error, "error");
-        }
-      );
-    console.log("Editar nivel de solicitud");
+    this.serviceNivelesAprobacion.actualizarNivelAprobacion(modelo).subscribe({
+      next: (response) => {
+        this.utilService.closeLoadingSpinner();
+
+        this.utilService.modalResponse("Datos actualizados correctamente", "success");
+
+        setTimeout(() => {
+          this.router.navigate(["/mantenedores/niveles-aprobacion"]);
+        }, 1600);
+      },
+      error: (error: HttpErrorResponse) => {
+        this.utilService.modalResponse(error.error, "error");
+      }
+    });
+  }
+
+  public onChangeNivelAprobacion({ idRuta, idTipoRuta, nivelAprobacionProperty }: { nivelAprobacionProperty: string, idTipoRuta: number, idRuta: string }): void {
+    this.nivelesAprobacion[nivelAprobacionProperty] = {
+      ...this.nivelesAprobacion[nivelAprobacionProperty],
+      idTipoRuta,
+      idRuta
+    }
   }
 }

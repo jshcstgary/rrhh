@@ -85,7 +85,7 @@
     </div>
   </div>
 
-  <table-component [columns]="columnsTable2" [dataTable]="dataTable" [contexto]="this" onSaveRowTable="onSaveRowTable" [totalRows]="activeRecords ? dataTableActive.length : dataTableInactive.length" onChangePagination="onChangePaginationTable" onCancelEditRowTable="onCancelEditRowTable" [rowsPerPageValue]="rowsPerPageTable" [page]="pageNumberTable" clickOnActionRow="onRowActionClicked" [allowCloneButton]="false" tableWidth="150%"></table-component>
+  <table-component overflowX="auto" [columns]="columnsTable2" [dataTable]="dataTable" [contexto]="this" onSaveRowTable="onSaveRowTable" [totalRows]="activeRecords ? dataTableActive.length : dataTableInactive.length" onChangePagination="onChangePaginationTable" onCancelEditRowTable="onCancelEditRowTable" [rowsPerPageValue]="rowsPerPageTable" [page]="pageNumberTable" clickOnActionRow="onRowActionClicked" [allowCloneButton]="false" tableWidth="150%"></table-component>
 </div>
 
 <!--

@@ -74,7 +74,6 @@ export class LoginComponent {
       usuario: this.user,
       password: btoa(this.password),
       isAutenticacionLocal: false,
-
     };
 
     this.loginService.login(loginRequest).subscribe({
@@ -106,10 +105,6 @@ export class LoginComponent {
         const isTasksEnabled: boolean = vistas.some(vista => vista.codigo === PageCodes.Tareas);
 
         this.router.navigate(["/solicitudes/consulta-solicitudes"]);
-        // if (isTasksEnabled) {
-        //   this.router.navigate(["/tareas/consulta-tareas"]);
-        // } else {
-        // }
       },
       error: (err) => {
         console.error(err);
@@ -118,7 +113,6 @@ export class LoginComponent {
         localStorage.removeItem(LocalStorageKeys.IdUsuario);
         localStorage.removeItem(LocalStorageKeys.Permisos);
         localStorage.removeItem(LocalStorageKeys.Reloaded);
-
 
         this.isLoading = false;
 

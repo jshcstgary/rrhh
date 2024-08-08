@@ -303,7 +303,6 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
     private starterService: StarterService,
     private permissionService: PermisoService
   ) {
-    
     this.getPermissions();
 
     this.model = calendar.getToday();

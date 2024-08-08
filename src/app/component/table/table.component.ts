@@ -22,6 +22,11 @@ import { TableService } from "./table.service";
   styleUrls: ["./table.component.scss"],
 })
 export class TableComponent implements OnInit, OnChanges {
+  @Input({
+    required: false
+  })
+  public overflowX: string = "visible";
+
   @Input({ required: false }) public allowCloneButton: boolean = false;
   @Input({ required: false }) public tableName: string;
   @Input({ required: false }) public onChangeEditRowFunction: string;

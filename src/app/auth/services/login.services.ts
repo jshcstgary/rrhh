@@ -23,7 +23,6 @@ export class LoginServices {
     localStorage.removeItem(LocalStorageKeys.Permisos);
     localStorage.removeItem(LocalStorageKeys.Reloaded);
 
-
     return of(true);
   }
 
