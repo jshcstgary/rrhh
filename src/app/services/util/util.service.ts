@@ -11,6 +11,7 @@ import {
 	IUtilReporte,
 	IUtilReporteDetail,
 } from "./util.interface";
+import { LocalStorageKeys } from "src/app/enums/local-storage-keys.enum";
 
 @Injectable({
   providedIn: "root",
@@ -80,9 +81,9 @@ export class UtilService {
     const reporteDetail: IUtilReporteDetail = {
       fechaReporte: new Date().toLocaleString(),
       codigoReporte: codigoReporte,
-      compania: "pruebacompania",
+      compania: "ReyBanpac",
       tituloReporte: tituloReporte,
-      usuario: "pruebausuario",
+      usuario: localStorage.getItem(LocalStorageKeys.IdLogin),
       columnas: columnas,
       contenidoColumnas: contenidoColumnas,
     };
