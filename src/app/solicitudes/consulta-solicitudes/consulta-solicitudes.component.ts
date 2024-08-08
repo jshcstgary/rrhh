@@ -303,12 +303,7 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
     private starterService: StarterService,
     private permissionService: PermisoService
   ) {
-    if (localStorage.getItem(LocalStorageKeys.Reloaded)! === "0") {
-      localStorage.setItem(LocalStorageKeys.Reloaded, "1");
-
-      window.location.reload();
-    }
-
+    
     this.getPermissions();
 
     this.model = calendar.getToday();

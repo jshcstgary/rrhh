@@ -89,7 +89,8 @@ export class TipoAccionComponent implements OnInit {
     private mantenimientoService: MantenimientoService,
     private permissionService: PermisoService
   ) {
-    if (localStorage.getItem(LocalStorageKeys.Reloaded)! === "0") {
+    if (localStorage.getItem(LocalStorageKeys.Reloaded)! === "0" ||
+        localStorage.getItem(LocalStorageKeys.Reloaded)===null) {
       localStorage.setItem(LocalStorageKeys.Reloaded, "1");
 
       window.location.reload();
