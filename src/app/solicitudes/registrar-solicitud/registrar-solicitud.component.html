@@ -20,7 +20,7 @@
           </button>
 
           <button type="submit" class="btn btn-info me-2 d-flex align-items-center justify-content-center button-custom"
-            aria-label="Close" [disabled]="!solicitudForm.form.valid || selectedOption==='No'">
+            aria-label="Close" [disabled]="!solicitudForm.form.valid || selectedOption==='Si'">
             <i class="fas fa-save me-2 icon-size"></i> Guardar
           </button>
           <button *ngIf="RegistrarsolicitudCompletada || selectedOption==='Si'" type="button" (click)="onCompletar()"
