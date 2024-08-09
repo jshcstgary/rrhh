@@ -1579,7 +1579,7 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
             this.fechaSalida = data.fechaSalida ?? new Date();
             this.modelRG.nombreCompleto = data.nombreCompleto;
             this.modelRG.subledger = data.subledger ?? "0";
-            this.causaSalida = data.descr_CausaSalida ?? "";
+            this.causaSalida = data.nombreCompania===null ? data.supervisaA : data.descr_CausaSalida ?? "";
             this.modelRG.compania = data.nombreCompania ?? data.compania;
             this.modelRG.sueldo = data.sueldo;
             this.modelRG.sueldoMensual = data.sueldoVariableMensual;
