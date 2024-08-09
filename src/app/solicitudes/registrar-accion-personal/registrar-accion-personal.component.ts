@@ -57,6 +57,7 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
   public existe: boolean = false;
   public codigoReportaA: string = "";
   public primerNivelAprobacion: string="";
+  public RegistrarsolicitudCompletada = false;
 
 
 
@@ -172,8 +173,6 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
   public dataNivelesAprobacion: any;
 
   public mostrarTipoJustificacionYMision = false;
-
-  public RegistrarsolicitudCompletada = true;
 
   public restrictionsIds: any[] = ["1", "2", 1, 2];
 
@@ -872,6 +871,9 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
     return this.solicitudes.getDetalleSolicitudById(id).subscribe({
       next: (response: any) => {
         this.totalRegistrosDetallesolicitud = response.totalRegistros;
+        if (response.detalleSolicitudType.codigoPosicion.length > 0) {
+        this.RegistrarsolicitudCompletada=true;
+        }
 
         const detalleActual = response.detalleSolicitudType.find(detalle => detalle.idDetalleSolicitud === 1);
 

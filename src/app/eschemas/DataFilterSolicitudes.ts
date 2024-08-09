@@ -7,7 +7,8 @@ export class DataFilterSolicitudes {
     public idTipoSolicitud?: number,
     public estado?: string,
     public fechaDesde?: any,
-    public fechaHasta?: any
+    public fechaHasta?: any,
+    public idSolicitud?: string
   ) { }
 
   isUndefined(value: any): boolean {

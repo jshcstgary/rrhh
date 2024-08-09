@@ -47,11 +47,20 @@
             <button ngbNavLink>Consultas</button>
             <ng-template ngbNavContent>
               <div class="form-body">
+                <div *ngIf="controlsPermissions[pageControlPermission.FiltroUnidadNegocio].visualizar"
+                  class="col-md-3">
+                  <div class="mb-3">
+                    <label class="azul">Nº de Solicitud</label>
+                    <input type="text" name="searchInputFilter" [(ngModel)]="searchInputFilter"
+                    style="color: black; font-size: 14px; width: 80%" class="form-control" id="searchInputFilter"
+                     placeholder="Ingrese Nº de Solicitud a Buscar" />
+                  </div>
+                </div>
                 <div class="row">
                   <div *ngIf="controlsPermissions[pageControlPermission.FiltroEmpresa].visualizar" class="col-md-3">
                     <div class="mb-3">
                       <label class="azul">Empresa</label>
-                      <ng-select [disabled]="!controlsPermissions[pageControlPermission.FiltroEmpresa].habilitar"
+                      <ng-select [disabled]="!controlsPermissions[pageControlPermission.FiltroEmpresa].habilitar || searchInputFilter!==''"
                         #inputSelectHacienda [(ngModel)]="dataFilterSolicitudes.empresa" name="empresa"
                         placeholder="Seleccione">
                         <ng-option *ngFor="let data of dataEmpresa" [value]="data">{{ data }}</ng-option>
@@ -62,7 +71,7 @@
                     class="col-md-3">
                     <div class="mb-3">
                       <label class="azul">Unidad de Negocio</label>
-                      <ng-select [disabled]="!controlsPermissions[pageControlPermission.FiltroUnidadNegocio].habilitar"
+                      <ng-select [disabled]="!controlsPermissions[pageControlPermission.FiltroUnidadNegocio].habilitar || searchInputFilter!==''"
                         #inputSelectProducto [(ngModel)]="dataFilterSolicitudes.unidadNegocio" name="unidadNegocio"
                         placeholder="Seleccione">
                         <ng-option *ngFor="let data of dataUnidadesNegocio" [value]="data">{{ data }}</ng-option>
@@ -72,10 +81,10 @@
                   <div [hidden]="!controlsPermissions[pageControlPermission.FiltroFechaDesde].visualizar"
                     class="col-md-3">
                     <div class="mb-3">
-                      <label class="azul">Fecha Desde</label>
+                      <label class="azul">Fecha Creación Desde</label>
                       <div class="input-group">
                         <input #inputDateFechaDesde
-                          [disabled]="!controlsPermissions[pageControlPermission.FiltroFechaDesde].habilitar"
+                          [disabled]="!controlsPermissions[pageControlPermission.FiltroFechaDesde].habilitar || searchInputFilter!==''"
                           class="form-control" placeholder="yyyy-mm-dd" name="fechaDesde"
                           [(ngModel)]="dataFilterSolicitudes.fechaDesde" ngbDatepicker
                           [footerTemplate]="footerTemplateFechaDesde" #fechaDesde="ngbDatepicker" />
@@ -89,10 +98,10 @@
                   <div [hidden]="!controlsPermissions[pageControlPermission.FiltroFechaDesde].visualizar"
                     class="col-md-3">
                     <div class="mb-3">
-                      <label class="azul">Fecha Hasta</label>
+                      <label class="azul">Fecha Creación Hasta</label>
                       <div class="input-group">
                         <input #inputDateFechaHasta
-                          [disabled]="!controlsPermissions[pageControlPermission.FiltroFechaHasta].habilitar"
+                          [disabled]="!controlsPermissions[pageControlPermission.FiltroFechaHasta].habilitar || searchInputFilter!==''"
                           class="form-control" placeholder="yyyy-mm-dd" name="fechaHasta"
                           [(ngModel)]="dataFilterSolicitudes.fechaHasta" ngbDatepicker
                           [footerTemplate]="footerTemplateFechaHasta" #fechaHasta="ngbDatepicker" />
@@ -108,7 +117,7 @@
                     <div class="mb-3">
                       <label class="azul">Tipo de Solicitud</label>
                       <ng-select #inputSelectLabor
-                        [disabled]="!controlsPermissions[pageControlPermission.FiltroTipoSolicitud].habilitar"
+                        [disabled]="!controlsPermissions[pageControlPermission.FiltroTipoSolicitud].habilitar || searchInputFilter!==''"
                         [(ngModel)]="dataFilterSolicitudes.idTipoSolicitud" name="idTipoSolicitud"
                         placeholder="Seleccione">
                         <ng-option *ngFor="let data of dataTipoSolicitudes" [value]="data.id">{{ data.id }} - {{
@@ -121,7 +130,7 @@
                     <div class="mb-3">
                       <label class="azul">Estado</label>
                       <ng-select #inputSelectTrabajador
-                        [disabled]="!controlsPermissions[pageControlPermission.FiltroEstado].habilitar"
+                        [disabled]="!controlsPermissions[pageControlPermission.FiltroEstado].habilitar || searchInputFilter!==''"
                         [(ngModel)]="dataFilterSolicitudes.estado" name="id_trabajador" placeholder="Seleccione">
                         <ng-option *ngFor="let data of data_estado" [value]="data.codigo">{{ data.codigo }} - {{
                           data.descripcion }}</ng-option>
@@ -318,7 +327,14 @@
                 justify-content: start;
                 margin: 10px;
               " [hidden]="!submitted">
-              <div>
+              <div *ngIf="this.getCreatedId() === 'No se ha creado Id de Proceso'">
+                <p>Proceso no ha sido iniciado.</p>
+                <code>{{ this.getCreatedId() }}</code>
+                <br />
+                <p class="lead mt-3">
+                  Intente crear la solicitud Nuevamente........</p>
+              </div>
+              <div *ngIf="this.getCreatedId() !== 'No se ha creado Id de Proceso'">
                 <p>Proceso ha sido iniciado.</p>
                 <code>{{ this.getCreatedId() }}</code>
                 <br />

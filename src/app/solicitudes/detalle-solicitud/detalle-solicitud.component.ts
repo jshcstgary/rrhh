@@ -444,7 +444,6 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
   getComentarios() {
     this.comentarioSalidaJefeService.obtenerComentarios(this.detalleSolicitudRG.idSolicitud).subscribe({
       next: ({ comentarios }) => {
-        console.log(comentarios);
         comentarios.forEach(comentario => {
           if (comentario.tipo_Solicitud === "Comentario_Salida_Jefe") {
             this.comentariosJefeInmediato = comentario;
@@ -454,9 +453,6 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
             this.comentariosRRHH = comentario;
           }
         });
-        console.log(this.comentariosJefeInmediato);
-        console.log(this.Comentario_Jefe_Solicitante);
-        console.log(this.comentariosRRHH);
       }
     });
   }
@@ -472,8 +468,6 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
         this.isChecked = candidatoValues.tipoFuente;
         this.idSolicitudRP = res.seleccionCandidatoType[0].iD_SOLICITUD;
 
-
-        console.log(this.isChecked);
 
         this.fechas.actualizacionPerfil = candidatoValues.actualizacionDelPerfil === null ? "" : this.getFormattedDate(candidatoValues.actualizacionDelPerfil);
         // this.disabledFechas.actualizacionPerfil = this.fechas.actualizacionPerfil !== null && this.fechas.actualizacionPerfil !== "";
@@ -531,7 +525,6 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
       },
       error: (err) => {
         this.getSolicitudById(this.id_solicitud_by_params);
-        console.log(console.log(err));
       }
     });
   }
@@ -846,7 +839,6 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
   getSolicitudById(id: any) {
     return this.solicitudes.getSolicitudById(id).subscribe({
       next: (response: any) => {
-        console.log(response);
         this.solicitud = response;
         this.mostrarRequisicion = this.solicitud.idSolicitud.includes("RP-");
         this.mostrarFormularioFamiliares = this.solicitud.idSolicitud.includes("CF-");
@@ -1462,9 +1454,6 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
           this.dataComentariosAprobaciones = this.filterDataComentarios(this.solicitud.idInstancia, 'RevisionSolicitud', 'comentariosAtencion');
           this.dataComentariosAprobacionesRRHH = this.filterDataComentarios(this.solicitud.idInstancia, 'RequisicionPersonal', 'comentariosAtencionGerenteRRHH');
           this.dataComentariosAprobacionesCREM = this.filterDataComentarios(this.solicitud.idInstancia, 'RequisicionPersonal', 'comentariosAtencionRemuneraciones');
-          console.log("Aprobaciones comentarios diamicos = ", this.dataComentariosAprobaciones);
-          console.log("Aprobaciones comentarios rrhh = ", this.dataComentariosAprobacionesRRHH);
-          console.log("Aprobaciones comentarios CREM = ", this.dataComentariosAprobacionesCREM);
         },
         error: (error: HttpErrorResponse) => {
           this.utilService.modalResponse(

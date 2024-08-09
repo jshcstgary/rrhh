@@ -18,6 +18,26 @@ export const ConsultaSolicitudesData: IConsultaSolicitudesData = {
       colType: "string",
     },
     {
+      title: "Motivo",
+      dataIndex: "tipoMotivo",
+      colType: "string",
+    },
+    {
+      title: "Empresa",
+      dataIndex: "empresa",
+      colType: "string",
+    },
+    {
+      title: "Unidad de Negocio",
+      dataIndex: "unidadNegocio",
+      colType: "string",
+    },
+    {
+      title: "Código Posición",
+      dataIndex: "codigoPosicion",
+      colType: "string",
+    },
+    {
       title: "Nombre de Empleado",
       dataIndex: "nombreEmpleado",
       sortActive: true,

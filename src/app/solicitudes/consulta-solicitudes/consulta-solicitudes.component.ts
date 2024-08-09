@@ -264,6 +264,7 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
   selected_tipo_solicitud: number;
   selected_estado: number;
   public dataFilterSolicitudes = new DataFilterSolicitudes();
+  public searchInputFilter: string="";
   data_empresas = [{ idEmpresa: "01", name: "Reybanpac" }];
 
   dataUnidadesNegocio: string[] = [];
@@ -476,7 +477,7 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
             this.solicitud.idInstancia = instanceOutput.id;
             this.solicitud.estado = "Creado"; //tveas TODO improve [Activo]
             this.solicitud.estadoSolicitud = "3"; // tveas TODO improve [Creado]
-
+            if(this.solicitud.idInstancia !== undefined){
             this.starterService.getUser(localStorage.getItem(LocalStorageKeys.IdUsuario)!).subscribe({
               next: (res) => {
                 this.solicitud.usuarioCreacion = res.evType[0].nombreCompleto;
@@ -524,7 +525,9 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
                 console.error(error);
               }
             });
-          },
+          }else{
+            this.submitted = true;
+          }},
           error: (error) => {
             console.error(error);
           }
@@ -749,9 +752,11 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
   }
 
   filterDataTable() {
-    if (this.dataFilterSolicitudes.idTipoSolicitud === undefined || this.dataFilterSolicitudes.idTipoSolicitud === null) {
+  
+    if ((this.searchInputFilter === undefined || this.searchInputFilter === null || this.searchInputFilter === '')
+      &&(this.dataFilterSolicitudes.idTipoSolicitud === undefined || this.dataFilterSolicitudes.idTipoSolicitud === null)) {
       Swal.fire({
-        text: "Mínimo debe seleccionar un Tipo de Solicitud",
+        text: "Mínimo debe seleccionar un Tipo de Solicitud o Ingresar el Nº de Solicitud",
         icon: "warning",
         confirmButtonColor: "#0056B3",
         confirmButtonText: "Sí",
@@ -854,14 +859,14 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 
     const combinedData$ = forkJoin(
       [
-        this.consultaSolicitudesService.filterSolicitudes(data.empresa === null || data.empresa === undefined ? null : data.empresa, data.unidadNegocio === null || data.unidadNegocio === undefined ? null : data.unidadNegocio, data.idTipoSolicitud === null || data.idTipoSolicitud === undefined ? null : data.idTipoSolicitud, data.estado === null || data.estado === undefined ? null : data.estado, data.fechaDesde === null || data.fechaDesde === undefined ? currentDate : data.fechaDesde, data.fechaHasta === null || data.fechaHasta === undefined ? currentDate : data.fechaHasta),
-        this.solicitudes.getDetalleSolicitud()
+        this.consultaSolicitudesService.filterSolicitudes(data.empresa === null || data.empresa === undefined ? null : data.empresa, this.searchInputFilter!==null && this.searchInputFilter!=='' ? this.searchInputFilter : data.unidadNegocio === null || data.unidadNegocio === undefined ? null : data.unidadNegocio, this.searchInputFilter!==null && this.searchInputFilter!=='' ? 900000 : data.idTipoSolicitud === null || data.idTipoSolicitud === undefined ? null : data.idTipoSolicitud, data.estado === null || data.estado === undefined ? null : data.estado, data.fechaDesde === null || data.fechaDesde === undefined ? currentDate : data.fechaDesde, data.fechaHasta === null || data.fechaHasta === undefined ? currentDate : data.fechaHasta),
+        //this.solicitudes.getDetalleSolicitud()
       ]
     ).pipe(
-      map(([solicitudes, detallesSolicitud]) => {
+      map(([solicitudes]) => {
         // Combinar las solicitudes y los detalles de la solicitud
         const data = solicitudes.solicitudType.map((solicitud) => {
-          const detalles = detallesSolicitud.detalleSolicitudType.find((detalle) => detalle.idSolicitud === solicitud.idSolicitud);
+          const detalles = solicitudes.detalleSolicitudType.find((detalle) => detalle.idSolicitud === solicitud.idSolicitud);
 
           detalles.estado = solicitud.estado;
 
