@@ -927,6 +927,7 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
   }
 
   private getDataToTable() {
+    localStorage.removeItem(LocalStorageKeys.Reloaded);
     this.ObtenerServicioEstado();
 
     this.utilService.openLoadingSpinner("Cargando información, espere por favor...");
