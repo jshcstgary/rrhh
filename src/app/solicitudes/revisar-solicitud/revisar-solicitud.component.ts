@@ -1420,6 +1420,11 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
 
               break;
 
+            case 'enEspera':
+              this.solicitud.estadoSolicitud = "2";//En espera
+  
+              break;
+
             default:
           }
           this.solicitudes.actualizarSolicitud(this.solicitud).subscribe({

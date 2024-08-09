@@ -871,7 +871,8 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
     return this.solicitudes.getDetalleSolicitudById(id).subscribe({
       next: (response: any) => {
         this.totalRegistrosDetallesolicitud = response.totalRegistros;
-        if (response.detalleSolicitudType.codigoPosicion.length > 0) {
+
+        if (response.detalleSolicitudType[0].codigoPosicion > 0) {
         this.RegistrarsolicitudCompletada=true;
         }
 
@@ -1776,7 +1777,7 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
                   this.utilService.modalResponse("Datos ingresados correctamente", "success");
 
                   setTimeout(() => {
-                    window.location.reload();
+                   // window.location.reload();
                   }, 1800);
                 });
             } else {
