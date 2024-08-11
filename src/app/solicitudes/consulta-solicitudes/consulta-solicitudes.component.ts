@@ -928,47 +928,59 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 
   private getDataToTable() {
     localStorage.removeItem(LocalStorageKeys.Reloaded);
-    this.ObtenerServicioEstado();
+    //this.ObtenerServicioEstado();
 
     this.utilService.openLoadingSpinner("Cargando información, espere por favor...");
+    this.mantenimientoService.getCatalogo("RBPEST").subscribe({
+      next: (response) => {
+        this.data_estado = response.itemCatalogoTypes.map((r) => ({
+          id: r.id,
+          codigo: r.codigo,
+          descripcion: r.valor,
+        })); //verificar la estructura mmunoz
 
     forkJoin([this.solicitudes.getSolicitudes(), this.solicitudes.getDetalleSolicitud(), this.solicitudes.getConteo()])
-      .pipe(
-        map(([solicitudes, detallesSolicitud, conteo]) => {
-          this.solicitudesCompletadas = conteo.totalesCompletadasType;
-          this.solicitudesPendientes = conteo.totalesPendientesType;
-          this.solicitudesTipo = conteo.listadoSolicitudes
-            .map(data => ({
-              ...data,
-              idSolicitud: data.id_solicitud
-            }))
-            .filter(data => data.name.toUpperCase().includes("REQUISICIÓN") || data.name.toUpperCase().includes("ACCIÓN"));
+    .pipe(
+      map(([solicitudes, detallesSolicitud, conteo]) => {
+        this.solicitudesCompletadas = conteo.totalesCompletadasType;
+        this.solicitudesPendientes = conteo.totalesPendientesType;
+        this.solicitudesTipo = conteo.listadoSolicitudes
+          .map(data => ({
+            ...data,
+            idSolicitud: data.id_solicitud
+          }))
+          .filter(data => data.name.toUpperCase().includes("REQUISICIÓN") || data.name.toUpperCase().includes("ACCIÓN"));
 
-          // Combinar las solicitudes y los detalles de la solicitud
-          const data = solicitudes.solicitudType.map((solicitud) => {
-            const detalles = detallesSolicitud.detalleSolicitudType.find((detalle) => detalle.idSolicitud === solicitud.idSolicitud);
-
-            return {
-              ...solicitud,
-              ...detalles
-            };
-          });
-
-          return data.sort((a, b) => new Date(b.fechaCreacion).getTime() - new Date(a.fechaCreacion).getTime());
-        })
-      )
-      .subscribe((data) => {
-        this.dataTable = data.map((itemSolicitud) => {
-          const descripcionEstado = this.data_estado.find((itemEstado) => itemEstado.codigo == itemSolicitud.estadoSolicitud);
+        // Combinar las solicitudes y los detalles de la solicitud
+        const data = solicitudes.solicitudType.map((solicitud) => {
+          const detalles = detallesSolicitud.detalleSolicitudType.find((detalle) => detalle.idSolicitud === solicitud.idSolicitud);
 
           return {
-            ...itemSolicitud,
-            estado: descripcionEstado !== undefined ? descripcionEstado.descripcion : "N/A",
+            ...solicitud,
+            ...detalles
           };
         });
 
-        this.utilService.closeLoadingSpinner();
+        return data.sort((a, b) => new Date(b.fechaCreacion).getTime() - new Date(a.fechaCreacion).getTime());
+      })
+    )
+    .subscribe((data) => {
+      this.dataTable = data.map((itemSolicitud) => {
+        const descripcionEstado = this.data_estado.find((itemEstado) => itemEstado.codigo == itemSolicitud.estadoSolicitud);
+
+        return {
+          ...itemSolicitud,
+          estado: descripcionEstado !== undefined ? descripcionEstado.descripcion : "N/A",
+        };
       });
+
+      this.utilService.closeLoadingSpinner();
+    });
+    },
+    error: (error: HttpErrorResponse) => {
+      this.utilService.modalResponse(error.error, "error");
+    },
+    });
   }
 
   onRowActionGraphics(id: string, key: string, tooltip: string, id_edit) {
