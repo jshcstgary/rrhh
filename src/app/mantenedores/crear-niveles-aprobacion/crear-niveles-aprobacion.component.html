@@ -15,7 +15,8 @@
             </div>
 
             <div class="col-md-4 text-end">
-              <button type="button" class="mr-10 fz-14 btn btn-info btn-icon-end" aria-label="Close" aria-label="Close" [disabled]="validateData() || !validateNivelesAprobacion()" (click)="procesarNivelAprobacion()">
+              <button type="button" class="mr-10 fz-14 btn btn-info btn-icon-end" aria-label="Close" aria-label="Close"
+                [disabled]="validateData() || !validateNivelesAprobacion()" (click)="procesarNivelAprobacion()">
                 <i class="fas fa-save"></i> Guardar
               </button>
               <!-- <button *ngIf="id_edit === undefined" type="button" class="mr-10 fz-14 btn btn-info btn-icon-end"
@@ -33,24 +34,30 @@
             <div class="col-md-6 mb-3">
               <label class="azul mb-1">Tipo Solicitud</label>
 
-              <select class="form-select" [(ngModel)]="modelHead.idTipoSolicitud" (change)="onChangeTipoSolicitud(modelHead.idTipoSolicitud)">
-                <option *ngFor="let baseDeDatos of dataTipoSolicitudes" [value]="baseDeDatos.id">{{ baseDeDatos.descripcion }}</option>
+              <select class="form-select" [(ngModel)]="modelHead.idTipoSolicitud"
+                (change)="onChangeTipoSolicitud(modelHead.idTipoSolicitud)">
+                <option *ngFor="let baseDeDatos of dataTipoSolicitudes" [value]="baseDeDatos.id"
+                  [selected]="modelHead.idTipoSolicitud === baseDeDatos.id">{{
+                  baseDeDatos.descripcion }}</option>
               </select>
             </div>
 
             <div class="col-md-6 mb-3">
               <label class="azul mb-1">Tipo Motivo</label>
 
-              <select class="form-select" [(ngModel)]="modelHead.idTipoMotivo">
-                <option *ngFor="let baseDeDatos of dataTiposMotivosPorTipoSolicitud[tipoSolicitudSeleccionada]" [value]="baseDeDatos.id">{{ baseDeDatos.tipoMotivo }}</option>
+              <select class="form-select" [(ngModel)]="modelHead.idTipoMotivo" [disabled]="desactivarTipoMotivoYAccion">
+                <option *ngFor="let baseDeDatos of dataTiposMotivosPorTipoSolicitud[tipoSolicitudSeleccionada]"
+                  [value]="baseDeDatos.id">{{ baseDeDatos.tipoMotivo }}</option>
               </select>
             </div>
 
+            {{ desactivarTipoMotivoYAccion }}
             <div class="col-md-6 mb-3">
               <label class="azul mb-1">Acción</label>
 
-              <select class="form-select" [(ngModel)]="modelHead.idAccion">
-                <option *ngFor="let baseDeDatos of dataAccionesPorTipoSolicitud[tipoSolicitudSeleccionada]" [value]="baseDeDatos.id">{{ baseDeDatos.accion }}</option>
+              <select class="form-select" [(ngModel)]="modelHead.idAccion" [disabled]="desactivarTipoMotivoYAccion">
+                <option *ngFor="let baseDeDatos of dataAccionesPorTipoSolicitud[tipoSolicitudSeleccionada]"
+                  [value]="baseDeDatos.id">{{ baseDeDatos.accion }}</option>
               </select>
             </div>
 
@@ -58,7 +65,8 @@
               <label class="azul mb-1">Tipo de Ruta</label>
 
               <select class="form-select" [(ngModel)]="modelHead.idTipoRuta">
-                <option *ngFor="let baseDeDatos of dataTipoRuta" [value]="baseDeDatos.id">{{ baseDeDatos.descripcion }}</option>
+                <option *ngFor="let baseDeDatos of dataTipoRuta" [value]="baseDeDatos.id">{{ baseDeDatos.descripcion }}
+                </option>
               </select>
             </div>
 
@@ -108,15 +116,12 @@
               <tbody>
                 <tr>
                   <td>
-                    <select
-                      class="form-select mb-3"
-                      [(ngModel)]="nivelesAprobacion.nivelAprobacion1.idNivelAprobacionRuta"
-                      (change)="onChangeNivelAprobacion({
+                    <select class="form-select mb-3"
+                      [(ngModel)]="nivelesAprobacion.nivelAprobacion1.idNivelAprobacionRuta" (change)="onChangeNivelAprobacion({
                         nivelAprobacionProperty: 'nivelAprobacion1',
                         idRuta: '1',
                         idTipoRuta: modelHead.idTipoRuta
-                      })"
-                    >
+                      })">
                       <option *ngFor="let item of dataNivelAprobacion" [value]="item.id">{{ item.descripcion }}</option>
                     </select>
 
@@ -124,23 +129,22 @@
                       <p for="estado">Estado:</p>
 
                       <div class="form-check form-switch">
-                        <input class="form-check-input" role="switch" type="checkbox" required id="estado1" [(ngModel)]="nivelesAprobacion.nivelAprobacion1.estado" name="estado1" />
+                        <input class="form-check-input" role="switch" type="checkbox" required id="estado1"
+                          [(ngModel)]="nivelesAprobacion.nivelAprobacion1.estado" name="estado1" />
 
-                        <label class="form-check-label" for="estado1">{{ modelo.estado ? "Activo" : "Inactivo" }}</label>
+                        <label class="form-check-label" for="estado1">{{ modelo.estado ? "Activo" : "Inactivo"
+                          }}</label>
                       </div>
                     </div>
                   </td>
 
                   <td>
-                    <select
-                      class="form-select mb-3"
-                      [(ngModel)]="nivelesAprobacion.nivelAprobacion2.idNivelAprobacionRuta"
-                      (change)="onChangeNivelAprobacion({
+                    <select class="form-select mb-3"
+                      [(ngModel)]="nivelesAprobacion.nivelAprobacion2.idNivelAprobacionRuta" (change)="onChangeNivelAprobacion({
                         nivelAprobacionProperty: 'nivelAprobacion2',
                         idRuta: '2',
                         idTipoRuta: modelHead.idTipoRuta
-                      })"
-                    >
+                      })">
                       <option *ngFor="let item of dataNivelAprobacion" [value]="item.id">{{ item.descripcion }}</option>
                     </select>
 
@@ -148,23 +152,22 @@
                       <p for="estado">Estado:</p>
 
                       <div class="form-check form-switch">
-                        <input class="form-check-input" role="switch" type="checkbox" required id="estado2" [(ngModel)]="nivelesAprobacion.nivelAprobacion2.estado" name="estado2" />
+                        <input class="form-check-input" role="switch" type="checkbox" required id="estado2"
+                          [(ngModel)]="nivelesAprobacion.nivelAprobacion2.estado" name="estado2" />
 
-                        <label class="form-check-label" for="estado2">{{ modelo.estado ? "Activo" : "Inactivo" }}</label>
+                        <label class="form-check-label" for="estado2">{{ modelo.estado ? "Activo" : "Inactivo"
+                          }}</label>
                       </div>
                     </div>
                   </td>
 
                   <td>
-                    <select
-                      class="form-select mb-3"
-                      [(ngModel)]="nivelesAprobacion.nivelAprobacion3.idNivelAprobacionRuta"
-                      (change)="onChangeNivelAprobacion({
+                    <select class="form-select mb-3"
+                      [(ngModel)]="nivelesAprobacion.nivelAprobacion3.idNivelAprobacionRuta" (change)="onChangeNivelAprobacion({
                         nivelAprobacionProperty: 'nivelAprobacion3',
                         idRuta: '3',
                         idTipoRuta: modelHead.idTipoRuta
-                      })"
-                    >
+                      })">
                       <option *ngFor="let item of dataNivelAprobacion" [value]="item.id">{{ item.descripcion }}</option>
                     </select>
 
@@ -172,23 +175,22 @@
                       <p for="estado">Estado:</p>
 
                       <div class="form-check form-switch">
-                        <input class="form-check-input" role="switch" type="checkbox" required id="estado3" [(ngModel)]="nivelesAprobacion.nivelAprobacion3.estado" name="estado3" />
+                        <input class="form-check-input" role="switch" type="checkbox" required id="estado3"
+                          [(ngModel)]="nivelesAprobacion.nivelAprobacion3.estado" name="estado3" />
 
-                        <label class="form-check-label" for="estado3">{{ modelo.estado ? "Activo" : "Inactivo" }}</label>
+                        <label class="form-check-label" for="estado3">{{ modelo.estado ? "Activo" : "Inactivo"
+                          }}</label>
                       </div>
                     </div>
                   </td>
 
                   <td>
-                    <select
-                      class="form-select mb-3"
-                      [(ngModel)]="nivelesAprobacion.nivelAprobacion4.idNivelAprobacionRuta"
-                      (change)="onChangeNivelAprobacion({
+                    <select class="form-select mb-3"
+                      [(ngModel)]="nivelesAprobacion.nivelAprobacion4.idNivelAprobacionRuta" (change)="onChangeNivelAprobacion({
                         nivelAprobacionProperty: 'nivelAprobacion4',
                         idRuta: '4',
                         idTipoRuta: modelHead.idTipoRuta
-                      })"
-                    >
+                      })">
                       <option *ngFor="let item of dataNivelAprobacion" [value]="item.id">{{ item.descripcion }}</option>
                     </select>
 
@@ -196,23 +198,22 @@
                       <p for="estado">Estado:</p>
 
                       <div class="form-check form-switch">
-                        <input class="form-check-input" role="switch" type="checkbox" required id="estado4" [(ngModel)]="nivelesAprobacion.nivelAprobacion4.estado" name="estado4" />
+                        <input class="form-check-input" role="switch" type="checkbox" required id="estado4"
+                          [(ngModel)]="nivelesAprobacion.nivelAprobacion4.estado" name="estado4" />
 
-                        <label class="form-check-label" for="estado4">{{ modelo.estado ? "Activo" : "Inactivo" }}</label>
+                        <label class="form-check-label" for="estado4">{{ modelo.estado ? "Activo" : "Inactivo"
+                          }}</label>
                       </div>
                     </div>
                   </td>
 
                   <td>
-                    <select
-                      class="form-select mb-3"
-                      [(ngModel)]="nivelesAprobacion.nivelAprobacionRRHH.idNivelAprobacionRuta"
-                      (change)="onChangeNivelAprobacion({
+                    <select class="form-select mb-3"
+                      [(ngModel)]="nivelesAprobacion.nivelAprobacionRRHH.idNivelAprobacionRuta" (change)="onChangeNivelAprobacion({
                         nivelAprobacionProperty: 'nivelAprobacionRRHH',
                         idRuta: '9',
                         idTipoRuta: modelHead.idTipoRuta
-                      })"
-                    >
+                      })">
                       <option *ngFor="let item of dataNivelAprobacion" [value]="item.id">{{ item.descripcion }}</option>
                     </select>
 
@@ -220,23 +221,22 @@
                       <p for="estado">Estado:</p>
 
                       <div class="form-check form-switch">
-                        <input class="form-check-input" role="switch" type="checkbox" required id="estadoRRHH" [(ngModel)]="nivelesAprobacion.nivelAprobacionRRHH.estado" name="estadoRRHH" />
+                        <input class="form-check-input" role="switch" type="checkbox" required id="estadoRRHH"
+                          [(ngModel)]="nivelesAprobacion.nivelAprobacionRRHH.estado" name="estadoRRHH" />
 
-                        <label class="form-check-label" for="estadoRRHH">{{ modelo.estado ? "Activo" : "Inactivo" }}</label>
+                        <label class="form-check-label" for="estadoRRHH">{{ modelo.estado ? "Activo" : "Inactivo"
+                          }}</label>
                       </div>
                     </div>
                   </td>
 
                   <td>
-                    <select
-                      class="form-select mb-3"
-                      [(ngModel)]="nivelesAprobacion.nivelAprobacionComite.idNivelAprobacionRuta"
-                      (change)="onChangeNivelAprobacion({
+                    <select class="form-select mb-3"
+                      [(ngModel)]="nivelesAprobacion.nivelAprobacionComite.idNivelAprobacionRuta" (change)="onChangeNivelAprobacion({
                         nivelAprobacionProperty: 'nivelAprobacionComite',
                         idRuta: '10',
                         idTipoRuta: modelHead.idTipoRuta
-                      })"
-                    >
+                      })">
                       <option *ngFor="let item of dataNivelAprobacion" [value]="item.id">{{ item.descripcion }}</option>
                     </select>
 
@@ -244,9 +244,11 @@
                       <p for="estado">Estado:</p>
 
                       <div class="form-check form-switch">
-                        <input class="form-check-input" role="switch" type="checkbox" required id="estadoComite" [(ngModel)]="nivelesAprobacion.nivelAprobacionComite.estado" name="estadoComite" />
+                        <input class="form-check-input" role="switch" type="checkbox" required id="estadoComite"
+                          [(ngModel)]="nivelesAprobacion.nivelAprobacionComite.estado" name="estadoComite" />
 
-                        <label class="form-check-label" for="estadoComite">{{ modelo.estado ? "Activo" : "Inactivo" }}</label>
+                        <label class="form-check-label" for="estadoComite">{{ modelo.estado ? "Activo" : "Inactivo"
+                          }}</label>
                       </div>
                     </div>
                   </td>
@@ -312,7 +314,8 @@
                   style="color: black; font-size: 14px; width: 45%">Acción</label>
                 <select [(ngModel)]="modelo.idAccion" id="accion" name="accion" class="form-select"
                   style="font-size: 14px" required [disabled]="desactivarTipoMotivoYAccion">
-                  <option *ngFor="let baseDeDatos of dataAccionesPorTipoSolicitud[tipoSolicitudSeleccionada]" [value]="baseDeDatos.id">
+                  <option *ngFor="let baseDeDatos of dataAccionesPorTipoSolicitud[tipoSolicitudSeleccionada]"
+                    [value]="baseDeDatos.id">
                     {{ baseDeDatos.accion }}
                   </option>
                 </select>

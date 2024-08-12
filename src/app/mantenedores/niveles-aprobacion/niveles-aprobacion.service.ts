@@ -24,18 +24,16 @@ export class NivelesAprobacionService {
   }
 
   // Con headers
-  public filterNivelesAprobaciones(
-    idTipoSolicitud: any,
-    idTipoMotivo: any,
-    idNivelDireccion: any
-  ): Observable<IConsultaNivelesAprobacionResponse> {
-    const myObject: any = {
+  public filterNivelesAprobaciones(idTipoSolicitud: number, idTipoMotivo: number, idNivelDireccion: number, idTipoRuta: number, idTipoAccion: number): Observable<IConsultaNivelesAprobacionResponse> {
+    const fromObject: any = {
       id_tipo_sol: idTipoSolicitud,
       id_tip_mot: idTipoMotivo,
       IdNivelDireccion: idNivelDireccion,
+      idTipoRuta,
+      idTipoAccion
     };
 
-    const httpParams: HttpParamsOptions = { fromObject: myObject } as HttpParamsOptions;
+    const httpParams: HttpParamsOptions = { fromObject } as HttpParamsOptions;
 
     return this.http.get<IConsultaNivelesAprobacionResponse>(`${this.apiUrlNivelAprobacion}/aprobacionesporfiltro`, {
         params: new HttpParams(httpParams)

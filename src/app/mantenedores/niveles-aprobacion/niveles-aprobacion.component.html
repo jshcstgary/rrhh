@@ -33,9 +33,9 @@
     <div class="col-md-3 mb-3">
       <label class="azul mb-1">Tipo de Ruta</label>
 
-      <ng-select [(ngModel)]="dataFilterNivelesAprobacion.nivelDireccion" name="id_trabajador" placeholder="Seleccione">
-        <ng-option *ngFor="let data of dataNivelDireccion" [value]="data">
-          {{ data }}
+      <ng-select [(ngModel)]="dataFilterNivelesAprobacion.tipoRuta" name="id_trabajador" placeholder="Seleccione">
+        <ng-option *ngFor="let data of dataTipoRuta" [value]="data.id">
+          {{ data.descripcion }}
         </ng-option>
       </ng-select>
     </div>
@@ -43,9 +43,9 @@
     <div class="col-md-3 mb-3">
       <label class="azul mb-1">Tipo de Acción</label>
 
-      <ng-select [(ngModel)]="dataFilterNivelesAprobacion.nivelDireccion" name="id_trabajador" placeholder="Seleccione">
-        <ng-option *ngFor="let data of dataNivelDireccion" [value]="data">
-          {{ data }}
+      <ng-select [(ngModel)]="dataFilterNivelesAprobacion.tipoAccion" name="id_trabajador" placeholder="Seleccione">
+        <ng-option *ngFor="let data of dataTipoAccion" [value]="data.id">
+          {{ data.descripcion }}
         </ng-option>
       </ng-select>
     </div>
@@ -85,6 +85,7 @@
     </div>
   </div>
 
+  <!-- <table-component overflowX="auto" [columns]="columnsTable2" [dataTable]="dataTable" [contexto]="this" onSaveRowTable="onSaveRowTable" [totalRows]="activeRecords ? dataTableActive.length : dataTableInactive.length" onChangePagination="onChangePaginationTable" onCancelEditRowTable="onCancelEditRowTable" [rowsPerPageValue]="rowsPerPageTable" [page]="pageNumberTable" clickOnActionRow="onRowActionClicked" [allowCloneButton]="false" tableWidth="150%"></table-component> -->
   <table-component overflowX="auto" [columns]="columnsTable2" [dataTable]="dataTable" [contexto]="this" onSaveRowTable="onSaveRowTable" [totalRows]="activeRecords ? dataTableActive.length : dataTableInactive.length" onChangePagination="onChangePaginationTable" onCancelEditRowTable="onCancelEditRowTable" [rowsPerPageValue]="rowsPerPageTable" [page]="pageNumberTable" clickOnActionRow="onRowActionClicked" [allowCloneButton]="false" tableWidth="150%"></table-component>
 </div>
 

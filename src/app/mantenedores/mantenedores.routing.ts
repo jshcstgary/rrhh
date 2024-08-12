@@ -17,6 +17,7 @@ import { TipoRutaComponent } from "./tipo_ruta/tipo-ruta.component";
 import { TipoSolicitudComponent } from "./tipo_solicitud/tipo-solicitud.component";
 
 import { PageCodes } from "../enums/codes.enum";
+import { EditarNivelesAprobacionComponent } from "./editar-niveles-aprobacion/editar-niveles-aprobacion.component";
 
 export const MantenedoresRoutes: Routes = [
   {
@@ -52,6 +53,23 @@ export const MantenedoresRoutes: Routes = [
             },
             {
               title: "Crear Niveles de Aprobación"
+            },
+          ],
+        },
+      },
+      {
+        path: "editar-niveles-aprobacion",
+        canActivate: [routeAccessGuard],
+        component: EditarNivelesAprobacionComponent,
+        data: {
+          code: PageCodes.CrearNivelesAprobacion,
+          title: "Editar Niveles de Aprobación",
+          urls: [
+            {
+              title: "Mantenimiento"
+            },
+            {
+              title: "Editar Niveles de Aprobación"
             },
           ],
         },
@@ -213,7 +231,7 @@ export const MantenedoresRoutes: Routes = [
         canActivate: [routeAccessGuard],
         component: CrearAprobadorFijoComponent,
         data: {
-			code: PageCodes.CrearAprobadorFijo,
+          code: PageCodes.CrearAprobadorFijo,
           title: "Crear Aprobador Fijo",
           urls: [
             {
@@ -230,7 +248,7 @@ export const MantenedoresRoutes: Routes = [
         canActivate: [routeAccessGuard],
         component: EditarAprobadorFijoComponent,
         data: {
-		  code: PageCodes.EditarAprobadorFijo,
+          code: PageCodes.EditarAprobadorFijo,
           title: "Editar Aprobador Fijo",
           urls: [
             {

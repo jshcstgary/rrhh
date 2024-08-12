@@ -7,6 +7,7 @@ import { MantenimientoService } from "src/app/services/mantenimiento/mantenimien
 import { UtilService } from "src/app/services/util/util.service";
 import { CrearNivelesAprobacionService } from "./crear-niveles-aprobacion.service";
 import { compileNgModule } from "@angular/compiler";
+import { NivelesAprobacionService } from "../niveles-aprobacion/niveles-aprobacion.service";
 
 @Component({
   selector: "app-crear-niveles-aprobacion",
@@ -109,7 +110,6 @@ export class CrearNivelesAprobacionComponent implements OnInit {
 
     this.route.queryParams.subscribe((params) => {
       this.id_edit = params["id_edit"];
-      // Utiliza el id_edit obtenido
     });
   }
 
@@ -270,10 +270,12 @@ export class CrearNivelesAprobacionComponent implements OnInit {
   ObtenerServicioTipoRuta() {
     return this.mantenimientoService.getTipoRuta().subscribe({
       next: (response) => {
-        this.dataTipoRuta = response.tipoRutaType.map((r) => ({
-          id: r.id,
-          descripcion: r.tipoRuta,
-        })); //verificar la estructura mmunoz
+        this.dataTipoRuta = response.tipoRutaType
+          .filter(({ estado }) => estado === "A")
+          .map((r) => ({
+            id: r.id,
+            descripcion: r.tipoRuta,
+          }));
       },
       error: (error: HttpErrorResponse) => {
         this.utilService.modalResponse(error.error, "error");
@@ -284,13 +286,7 @@ export class CrearNivelesAprobacionComponent implements OnInit {
   ObtenerServicioNivelDireccion() {
     return this.mantenimientoService.getNivelesPorTipo("ND").subscribe({
       next: (response) => {
-        this.dataNivelDireccion = [
-          ...new Set(
-            response.evType.map((item) => {
-              return item.nivelDir;
-            })
-          ),
-        ];
+        this.dataNivelDireccion = [...new Set(response.evType.map(({ nivelDir }) => nivelDir))];
       },
       error: (error: HttpErrorResponse) => {
         this.utilService.modalResponse(error.error, "error");
@@ -373,15 +369,18 @@ export class CrearNivelesAprobacionComponent implements OnInit {
       .forEach(nivelAprobacion => {
         let modelo: DatosNivelesAprobacion = new DatosNivelesAprobacion();
 
+        // estado: "nivelAprobacion.estado ? "A" : "I""
         modelo = {
           ...modelo,
           ...this.modelHead,
           ...nivelAprobacion,
-          estado: nivelAprobacion.estado ? "A" : "I"
+          estado: "A"
         };
 
         nivelesAprobacion.push(modelo);
       });
+
+    console.log(nivelesAprobacion);
 
     return;
 

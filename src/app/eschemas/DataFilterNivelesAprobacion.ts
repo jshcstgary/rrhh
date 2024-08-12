@@ -2,7 +2,9 @@ export class DataFilterNivelesAprobacion {
   constructor(
     public tipoMotivo?: number,
     public tipoSolicitud?: number,
-    public nivelDireccion?: number
+    public nivelDireccion?: number,
+    public tipoRuta?: number,
+    public tipoAccion?: number
   ) {}
 
   isUndefined(value: any): boolean {

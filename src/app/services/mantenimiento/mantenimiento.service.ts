@@ -28,8 +28,8 @@ export class MantenimientoService {
   private apiCatalogoUrl = environment.CatalogoServiceES;
   constructor(private http: HttpClient) { }
 
-  public getTipoSolicitud(): Observable<any[]> {
-    return this.http.get<any[]>(this.apiSolicitudUrl);
+  public getTipoSolicitud(): Observable<any> {
+    return this.http.get<any>(this.apiSolicitudUrl);
   }
 
   public getTipoProceso(): Observable<any[]> {

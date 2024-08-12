@@ -697,7 +697,7 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
     return this.mantenimientoService.getTipoSolicitud().subscribe({
       next: (response: any) => {
         this.dataTipoSolicitudes = response.tipoSolicitudType
-          .filter((r) => r.estado === "A" && (r.codigoTipoSolicitud === "RP" || r.codigoTipoSolicitud === "AP" || r.codigoTipoSolicitud === "DP"))
+          .filter((r) => r.estado === "A" && (r.codigoTipoSolicitud === "RP" || r.codigoTipoSolicitud === "AP" || r.codigoTipoSolicitud === "CF" || r.codigoTipoSolicitud === "RG" || r.codigoTipoSolicitud === "DP"))
           .map((r) => ({
             id: r.id,
             descripcion: r.tipoSolicitud,
@@ -752,7 +752,7 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
   }
 
   filterDataTable() {
-  
+
     if ((this.searchInputFilter === undefined || this.searchInputFilter === null || this.searchInputFilter === '')
       &&(this.dataFilterSolicitudes.idTipoSolicitud === undefined || this.dataFilterSolicitudes.idTipoSolicitud === null)) {
       Swal.fire({
@@ -944,12 +944,11 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
       map(([solicitudes, detallesSolicitud, conteo]) => {
         this.solicitudesCompletadas = conteo.totalesCompletadasType;
         this.solicitudesPendientes = conteo.totalesPendientesType;
-        this.solicitudesTipo = conteo.listadoSolicitudes
-          .map(data => ({
-            ...data,
-            idSolicitud: data.id_solicitud
-          }))
-          .filter(data => data.name.toUpperCase().includes("REQUISICIÓN") || data.name.toUpperCase().includes("ACCIÓN"));
+
+        this.solicitudesTipo = conteo.listadoSolicitudes.map(data => ({
+          ...data,
+          idSolicitud: data.id_solicitud
+        }));
 
         // Combinar las solicitudes y los detalles de la solicitud
         const data = solicitudes.solicitudType.map((solicitud) => {
