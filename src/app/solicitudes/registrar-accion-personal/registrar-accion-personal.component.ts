@@ -1528,7 +1528,7 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
       this.solicitud.estadoSolicitud === "No" ? "4" : "AN";
     }
 
-    if(!this.solicitud.estadoSolicitud.includes("AN")){
+    if(!this.solicitud.estadoSolicitud.includes("AN") && this.detalleNivelAprobacion.length > 0){
     this.solicitudes.cargarDetalleAprobacionesArreglo(this.detalleNivelAprobacion).subscribe({
       next: (res) => {
         this.camundaRestService.postCompleteTask(this.uniqueTaskId, variables).subscribe({

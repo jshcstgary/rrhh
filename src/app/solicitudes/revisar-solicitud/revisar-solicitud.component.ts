@@ -1392,6 +1392,12 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
       .postCompleteTask(this.uniqueTaskId, variables)
       .subscribe({
         next: (res) => {
+          this.solicitudes.modelDetalleAprobaciones.estadoAprobacion = this.buttonValue;
+          this.solicitudes.modelDetalleAprobaciones.comentario = this.textareaContent;
+          this.solicitudes.guardarDetallesAprobacionesSolicitud(this.solicitudes.modelDetalleAprobaciones).subscribe({
+            next: (res) => {
+            }
+          });
           if(this.id_solicitud_by_params.includes("RG")){
             this.solicitud = this.solicitudRG;
           }
@@ -2017,7 +2023,8 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
   }
 
   saveDetalleAprobaciones() {
-    this.solicitudes.modelDetalleAprobaciones.estadoAprobacion = this.buttonValue;
+    //this.solicitudes.modelDetalleAprobaciones.estadoAprobacion = this.buttonValue;
+    this.solicitudes.modelDetalleAprobaciones.estadoAprobacion = null;
     this.solicitudes.modelDetalleAprobaciones.comentario = this.textareaContent;
 
     if (this.buttonValue.includes("esperar")) {

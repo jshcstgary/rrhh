@@ -8,6 +8,7 @@ import {
   ITiposolicitudes,
 } from "./tipo-solicitud.interface";
 import { environment } from "src/environments/environment";
+import { LocalStorageKeys } from 'src/app/enums/local-storage-keys.enum';
 
 @Injectable({
   providedIn: 'root'
@@ -24,9 +25,13 @@ export class TipoSolicitudService {
     return this.http.delete<string>(`${this.apiUrl}/${codigo}`);
   }
   public store(request: ITiposolicitudTable): Observable<ITiposolicitud> {
+    request.usuarioCreacion=localStorage.getItem(LocalStorageKeys.IdLogin);
+    request.fechaActualizacion=null;
     return this.http.post<ITiposolicitud>(this.apiUrl, request);
   }
   public update(request: ITiposolicitud): Observable<ITiposolicitud> {
+    request.usuarioActualizacion=localStorage.getItem(LocalStorageKeys.IdLogin);
+    request.fechaActualizacion=new Date();
     return this.http.put<ITiposolicitud>(this.apiUrl, request);
   }
 }

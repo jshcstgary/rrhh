@@ -990,7 +990,7 @@
               </div>
             </div>
           </div>
-          <div class="row">
+          <div class="row" *ngIf="mostrarSubledger">
             <div class="col-md-6">
               <div class="input-group mb-3">
                 <label class="input-group-text label-estilo" for="subledger">
@@ -1002,7 +1002,7 @@
               </div>
             </div>
 
-            <div class="col-md-6">
+            <div class="col-md-6" *ngIf="mostrarSubledger">
               <div class="input-group mb-3">
                 <label class="input-group-text label-estilo" for="nombreempleado">
                   Empleado
@@ -1121,10 +1121,10 @@
             </div>
             <div class="col-md-6">
               <div class="input-group mb-3">
-                <label class="input-group-text label-estilo" for="supervisaa">Supervisa a</label>
+                <label class="input-group-text label-estilo" for="nivelRepa">Nivel de reporte</label>
                 &nbsp;
-                <span id="supervisaa" name="" style="color: black; font-size: 14px; " class="text-start">{{
-                  model.supervisaA
+                <span id="nivelRepa" name="" style="color: black; font-size: 14px; " class="text-start">{{
+                  model.nivelRepa
                   }}</span>
               </div>
             </div>
@@ -1141,10 +1141,10 @@
             </div>
             <div class="col-md-6">
               <div class="input-group mb-3">
-                <label class="input-group-text label-estilo" for="nivelRepa">Nivel de reporte</label>
+                <label class="input-group-text label-estilo" for="supervisaa">Supervisa a</label>
                 &nbsp;
-                <span id="nivelRepa" name="" style="color: black; font-size: 14px; " class="text-start">{{
-                  model.nivelRepa
+                <span id="supervisaa" name="" style="color: black; font-size: 14px; " class="text-start">{{
+                  model.supervisaA
                   }}</span>
               </div>
             </div>

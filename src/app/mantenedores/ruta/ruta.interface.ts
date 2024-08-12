@@ -5,6 +5,10 @@ export interface IRuta {
   ruta: string;
   idTipoRuta?: number | string;
   estado: string | boolean;
+  fechaActualizacion: Date;
+  fechaCreacion: Date;
+  usuarioCreacion: string;
+  usuarioActualizacion: string;
 }
 
 export interface ITipoRuta {

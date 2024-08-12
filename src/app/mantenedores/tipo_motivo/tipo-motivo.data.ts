@@ -55,7 +55,11 @@ export const TipomotivoData: ITipomotivoData = {
     id: "0",
     tipoMotivo: "",
     tipoSolicitudId: null,
-    estado: true
+    estado: true,
+    fechaActualizacion: new Date(),
+    fechaCreacion: new Date(),
+    usuarioCreacion: "",
+    usuarioActualizacion: ""
   },
   tableInputsEditRow: [
     {

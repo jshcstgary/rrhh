@@ -5,6 +5,10 @@ export interface ITipomotivo{
   tipoMotivo: string;
   tipoSolicitudId?: number | string;
   estado: string | boolean;
+  fechaActualizacion: Date;
+  fechaCreacion: Date;
+  usuarioCreacion: string;
+  usuarioActualizacion: string;
 
 }
 

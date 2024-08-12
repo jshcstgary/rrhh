@@ -4,6 +4,7 @@ import { FormsModule } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 import { NgbActiveModal, NgbTypeaheadModule } from "@ng-bootstrap/ng-bootstrap";
 import { debounceTime, distinctUntilChanged, map, Observable, OperatorFunction } from "rxjs";
+import { LocalStorageKeys } from "src/app/enums/local-storage-keys.enum";
 import { Solicitud } from "src/app/eschemas/Solicitud";
 import {
 	EvType,
@@ -291,9 +292,9 @@ export class DialogReasignarUsuarioComponent {
     this.dataAprobador.sudlegerAprobador = this.modelo.subledger;
     this.dataAprobador.codigoPosicionReportaA = this.modelo.codigoPosicionReportaA;
     this.dataAprobador.correo = this.modelo.correo;
-    this.dataAprobador.usuarioCreacion = this.modelo.nombreCompleto;
+    this.dataAprobador.usuarioCreacion = localStorage.getItem(LocalStorageKeys.IdLogin);
     this.dataAprobador.comentario = this.textareaContent;
-    this.dataAprobador.usuarioModificacion = this.modelo.nombreCompleto;
+    this.dataAprobador.usuarioModificacion = localStorage.getItem(LocalStorageKeys.IdLogin);
     this.dataAprobador.fechaCreacion = new Date().toISOString();
     this.dataAprobador.fechaModificacion = new Date().toISOString();
     const htmlString = "<!DOCTYPE html>\r\n<html lang=\"es\">\r\n\r\n<head>\r\n  <meta charset=\"UTF-8\">\r\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n  <title>Document<\/title>\r\n<\/head>\r\n\r\n<body>\r\n  <h2>Estimado(a)<\/h2>\r\n  <h3>{NOMBRE_APROBADOR}<\/h3>\r\n\r\n  <P>La Solicitud de {TIPO_SOLICITUD} {ID_SOLICITUD} le ha sido reasignada para su\r\n    revisi\u00F3n y aprobaci\u00F3n.<\/P>\r\n\r\n  <p>\r\n    <b>\r\n      Favor ingresar al siguiente enlace: <a href=\"{URL_APROBACION}\">{URL_APROBACION}<\/a>\r\n      <br>\r\n      <br>\r\n      Gracias por su atenci\u00F3n.\r\n    <\/b>\r\n  <\/p>\r\n<\/body>\r\n\r\n<\/html>\r\n";
@@ -311,7 +312,6 @@ export class DialogReasignarUsuarioComponent {
       cuerpo: modifiedHtmlString,
       password: "p"
     };
-
     this.solicitudes.guardarDetallesAprobacionesSolicitud(this.dataAprobador).subscribe({
 		next: () => {
       this.solicitud.estadoSolicitud = "RA";

@@ -57,6 +57,10 @@ export const TipoaccionData: ITipoaccionData = {
     tipoAccion: "",
     tipoSolicitudId: null,
     estado: true,
+    fechaActualizacion: new Date(),
+    fechaCreacion: new Date(),
+    usuarioCreacion: "",
+    usuarioActualizacion: ""
   },
   tableInputsEditRow: [
     {

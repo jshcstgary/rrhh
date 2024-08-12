@@ -7,6 +7,7 @@ import {
   ITiporutas,
 } from "./tipo-ruta.interface";
 import { environment } from "src/environments/environment";
+import { LocalStorageKeys } from 'src/app/enums/local-storage-keys.enum';
 
 @Injectable({
   providedIn: 'root'
@@ -23,9 +24,13 @@ export class TipoRutaService {
     return this.http.delete<string>(`${this.apiUrl}/${codigo}`);
   }
   public store(request: ITiporuta): Observable<ITiporuta> {
+    request.usuarioCreacion=localStorage.getItem(LocalStorageKeys.IdLogin);
+    request.fechaActualizacion=null;
     return this.http.post<ITiporuta>(this.apiUrl, request);
   }
   public update(request: ITiporuta): Observable<ITiporuta> {
+    request.usuarioActualizacion=localStorage.getItem(LocalStorageKeys.IdLogin);
+    request.fechaActualizacion=new Date();
     return this.http.put<ITiporuta>(this.apiUrl, request);
   }
 }

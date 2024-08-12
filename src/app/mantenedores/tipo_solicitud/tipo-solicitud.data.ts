@@ -56,6 +56,10 @@ export const TiposolicitudData: ITiposolicitudData = {
     codigoTipoSolicitud: "",
     tipoSolicitud: "",
     estado: true,
+    fechaActualizacion: new Date(),
+    fechaCreacion: new Date(),
+    usuarioCreacion: "",
+    usuarioActualizacion: ""
   },
   tableInputsEditRow: [
     // {

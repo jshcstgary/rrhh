@@ -33,36 +33,13 @@
             <div class="col-md-12" style="width: 75%">
               <div class="input-group mb-3">
                 <label class="input-group-text" for="codigoposicion" style="color: black; font-size: 14px; width: 45%">
-                  Correo empleado
+                  Correo del Empleado
                 </label>
                 &nbsp;
                 <input type="text" name="correo-empleado" [(ngModel)]="modelo.correo"
                   style="color: black; font-size: 14px; width: 30%" class="form-control" id="correo-empleado"
-                  aria-describedby="inputGroupPrepend" required />
+                  placeholder="Ingrese Correo del Empleado a Buscar" aria-describedby="inputGroupPrepend" required />
                 <button class="btn btn-light" type="button" (click)="getDataEmpleadosEvolution('correo')">
-                  <i class="ti-search"></i>
-                </button>
-              </div>
-            </div>
-          </div>
-          <div class="row" style="
-              padding-top: 20px;
-              display: flex;
-              justify-content: start;
-              margin: 10px;
-            ">
-            <div class="col-md-12" style="width: 75%">
-              <div class="input-group mb-3">
-                <label class="input-group-text" for="nombreempleado" style="color: black; font-size: 14px; width: 45%">
-                  Empleado
-                </label>
-                &nbsp;
-                <input type="text" name="nombreempleado" [(ngModel)]="modelo.nombre"
-                  style="color: black; font-size: 14px; width: 30%" [ngbTypeahead]="searchNombreCompleto"
-                  (selectItem)="onSelectItem('nombreCompleto', $event)" class="form-control" id="nombreempleado"
-                  aria-describedby="inputGroupPrepend" required />
-
-                <button class="btn btn-light" type="button" (click)="getDataEmpleadosEvolution('nombreEmpleado')">
                   <i class="ti-search"></i>
                 </button>
               </div>
@@ -82,13 +59,37 @@
                 &nbsp;
                 <input type="text" name="subledger" [(ngModel)]="modelo.subleger"
                   style="color: black; font-size: 14px; width: 30%" class="form-control" id="subledger"
-                  aria-describedby="inputGroupPrepend" required />
+                  placeholder="Ingrese Subledger del Empleado a Buscar" aria-describedby="inputGroupPrepend" required />
                 <button class="btn btn-light" type="button" (click)="getDataEmpleadosEvolution('subledger')">
                   <i class="ti-search"></i>
                 </button>
               </div>
             </div>
           </div>
+          <div class="row" style="
+              padding-top: 20px;
+              display: flex;
+              justify-content: start;
+              margin: 10px;
+            ">
+            <div class="col-md-12" style="width: 75%">
+              <div class="input-group mb-3">
+                <label class="input-group-text" for="nombreempleado" style="color: black; font-size: 14px; width: 45%">
+                  Nombre del Empleado
+                </label>
+                &nbsp;
+                <input type="text" name="nombreempleado" [(ngModel)]="modelo.nombre"
+                  style="color: black; font-size: 14px; width: 30%" [ngbTypeahead]="searchNombreCompleto"
+                  (selectItem)="onSelectItem('nombreCompleto', $event)" class="form-control" id="nombreempleado"
+                  placeholder="Ingrese Nombre o Apellido del Empleado a Buscar" aria-describedby="inputGroupPrepend" required />
+
+                <button class="btn btn-light" type="button" (click)="getDataEmpleadosEvolution('nombreEmpleado')">
+                  <i class="ti-search"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+          
           <div class="row" style="
               padding-top: 20px;
               display: flex;
@@ -125,22 +126,6 @@
                     Comité de Remuneraciones
                   </option>
                 </select>
-              </div>
-            </div>
-          </div>
-
-          <div class="row" style="
-              padding-top: 20px;
-              display: flex;
-              justify-content: start;
-              margin: 10px;
-            ">
-            <div class="col-md-12" style="width: 75%">
-              <div class="input-group mb-3">
-                <label class="input-group-text" for="reportaa" style="color: black; font-size: 14px; width: 45%">Reporta
-                  A</label>
-                <span id="reportaa" name="" style="color: black; font-size: 14px; margin: auto auto"
-                  class="text-center">{{ modelo.reportA_A }}</span>
               </div>
             </div>
           </div>

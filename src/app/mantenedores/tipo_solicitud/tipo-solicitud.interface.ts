@@ -5,6 +5,10 @@ export interface ITiposolicitud {
   codigoTipoSolicitud?: string;
   tipoSolicitud: string;
   estado: string | boolean;
+  fechaActualizacion: Date;
+  fechaCreacion: Date;
+  usuarioCreacion: string;
+  usuarioActualizacion: string;
 }
 export interface ITiposolicitudTable
   extends ITiposolicitud,
