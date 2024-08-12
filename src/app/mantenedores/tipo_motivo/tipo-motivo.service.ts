@@ -7,6 +7,7 @@ import {
   ITipomotivos,
 } from "./tipo-motivo.interface";
 import { environment } from "src/environments/environment";
+import { LocalStorageKeys } from 'src/app/enums/local-storage-keys.enum';
 
 @Injectable({
   providedIn: 'root'
@@ -22,9 +23,13 @@ export class TipoMotivoService {
     return this.http.delete<string>(`${this.apiUrl}/${codigo}`);
   }
   public store(request: ITipomotivo): Observable<ITipomotivo> {
+    request.usuarioCreacion=localStorage.getItem(LocalStorageKeys.IdLogin);
+    request.fechaActualizacion=null;
     return this.http.post<ITipomotivo>(this.apiUrl, request);
   }
   public update(request: ITipomotivo): Observable<ITipomotivo> {
+    request.usuarioActualizacion=localStorage.getItem(LocalStorageKeys.IdLogin);
+    request.fechaActualizacion=new Date();
     return this.http.put<ITipomotivo>(this.apiUrl, request);
   }
 }

@@ -7,6 +7,7 @@ import {
   ITipoacciones,
 } from "./tipo-accion.interface";
 import { environment } from "src/environments/environment";
+import { LocalStorageKeys } from 'src/app/enums/local-storage-keys.enum';
 
 @Injectable({
   providedIn: 'root'
@@ -22,9 +23,13 @@ export class TipoAccionService {
     return this.http.delete<string>(`${this.apiUrl}/${codigo}`);
   }
   public store(request: ITipoaccion): Observable<ITipoaccion> {
+    request.usuarioCreacion=localStorage.getItem(LocalStorageKeys.IdLogin);
+    request.fechaActualizacion=null;
     return this.http.post<ITipoaccion>(this.apiUrl, request);
   }
   public update(request: ITipoaccion): Observable<ITipoaccion> {
+    request.usuarioActualizacion=localStorage.getItem(LocalStorageKeys.IdLogin);
+    request.fechaActualizacion=new Date();
     return this.http.put<ITipoaccion>(this.apiUrl, request);
   }
 }

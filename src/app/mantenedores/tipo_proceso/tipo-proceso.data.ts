@@ -58,6 +58,10 @@ export const TipoprocesoData: ITipoprocesoData = {
     tipoProceso: "",
     tipoSolicitudId: null,
     estado: true,
+    fechaActualizacion: new Date(),
+    fechaCreacion: new Date(),
+    usuarioCreacion: "",
+    usuarioActualizacion: ""
   },
   tableInputsEditRow: [
     {

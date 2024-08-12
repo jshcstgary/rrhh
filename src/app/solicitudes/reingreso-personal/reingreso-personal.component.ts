@@ -1225,7 +1225,7 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
     this.utilService.openLoadingSpinner("Completando Tarea, espere por favor...");
 
     let variables = this.generateVariablesFromFormFields();
-
+   if(this.detalleNivelAprobacion.length > 0){
     this.solicitudes.cargarDetalleAprobacionesArreglo(this.detalleNivelAprobacion).subscribe({
       next: (res) => {
         this.camundaRestService.postCompleteTask(this.uniqueTaskId, variables).subscribe({
@@ -1283,6 +1283,7 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
         console.error(err);
       }
     });
+  }
 
     this.submitted = true;
   }

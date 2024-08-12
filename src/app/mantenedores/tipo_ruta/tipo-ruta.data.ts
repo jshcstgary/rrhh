@@ -47,6 +47,10 @@ export const TiporutaData: ITiporutaData = {
     id: "0",
     tipoRuta: "",
     estado: true,
+    fechaActualizacion: new Date(),
+    fechaCreacion: new Date(),
+    usuarioCreacion: "",
+    usuarioActualizacion: ""
   },
   tableInputsEditRow: [
     {

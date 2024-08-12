@@ -50,6 +50,8 @@ export class PlantillaCComponent implements AfterViewInit, OnInit, OnChanges {
   @Input({ required: false }) public dataTipoAccion: any[] = [];
   @Input({ required: false }) public active = 1;
   @Input({ required: false }) public disabled = true;
+  @Input({ required: false }) public overflowX = "visible";
+
 
   @Input({ required: false }) selected_empresa: number;
   @Input({ required: false }) selected_producto: number;
@@ -118,7 +120,7 @@ export class PlantillaCComponent implements AfterViewInit, OnInit, OnChanges {
     this.utilService.focusOnHtmlElement("searchInputFilter");
   }
   public ngOnInit(): void {
-    this.setInitialColToTable();
+    //this.setInitialColToTable();
     this.tableService.initializeAll();
     this.validatefilterFormContainsSearchButton();
   }

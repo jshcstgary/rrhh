@@ -5,6 +5,10 @@ export interface IAccion {
   accion: string;
   tipoSolicitudId?: number | string;
   estado: string | boolean;
+  fechaActualizacion: Date;
+  fechaCreacion: Date;
+  usuarioCreacion: string;
+  usuarioActualizacion: string;
 }
 export interface ITipoSolcitud{
   id?: number | string;

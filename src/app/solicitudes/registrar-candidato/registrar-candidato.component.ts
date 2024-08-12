@@ -1518,6 +1518,9 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
 
                             this.seleccionCandidatoService.saveCandidato(request).subscribe({
                               next: () => {
+                                if (this.model.tipoProceso.toUpperCase().includes("REINGRESO")) {
+                                  detalle.supervisaA='N/A';
+                                }
                                 this.solicitudes.guardarDetalleSolicitud(detalle).subscribe({
                                   next: () => {
                                     this.starterService.getUser(localStorage.getItem(LocalStorageKeys.IdUsuario)!).subscribe({

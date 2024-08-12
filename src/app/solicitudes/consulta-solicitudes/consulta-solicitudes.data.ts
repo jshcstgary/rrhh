@@ -18,15 +18,38 @@ export const ConsultaSolicitudesData: IConsultaSolicitudesData = {
       colType: "string",
     },
     {
+      title: "Motivo",
+      dataIndex: "tipoMotivo",
+      colType: "string",
+    },
+    {
+      title: "Empresa",
+      dataIndex: "empresa",
+      colType: "string",
+    },
+    {
       title: "Unidad de Negocio",
       dataIndex: "unidadNegocio",
-      sortActive: true,
+      colType: "string",
+    },
+    {
+      title: "Código Posición",
+      dataIndex: "codigoPosicion",
       colType: "string",
     },
     {
       title: "Descripción de la Posicón",
       dataIndex: "descripcionPosicion",
-      sortActive: true,
+      colType: "string",
+    },
+    {
+      title: "Nivel de Dirección",
+      dataIndex: "nivelDireccion",
+      colType: "string",
+    },
+    {
+      title: "Puesto",
+      dataIndex: "cargo",
       colType: "string",
     },
     {
@@ -38,13 +61,16 @@ export const ConsultaSolicitudesData: IConsultaSolicitudesData = {
     {
       title: "Estado",
       dataIndex: "estado",
-      sortActive: true,
+      colType: "string",
+    },
+    {
+      title: "Usuario",
+      dataIndex: "usuarioCreacion",
       colType: "string",
     },
     {
       title: "Fecha Creación",
       dataIndex: "fechaCreacion",
-      sortActive: true,
       colType: "string",
     },
     {

@@ -7,6 +7,7 @@ import {
   IRutas,
 } from "./ruta.interface";
 import { environment } from "src/environments/environment";
+import { LocalStorageKeys } from 'src/app/enums/local-storage-keys.enum';
 
 
 @Injectable({
@@ -24,9 +25,13 @@ export class RutaService {
     return this.http.delete<string>(`${this.apiUrl}/${codigo}`);
   }
   public store(request: IRuta): Observable<IRuta> {
+    request.usuarioCreacion=localStorage.getItem(LocalStorageKeys.IdLogin);
+    request.fechaActualizacion=null;
     return this.http.post<IRuta>(this.apiUrl, request);
   }
   public update(request: IRuta): Observable<IRuta> {
+    request.usuarioActualizacion=localStorage.getItem(LocalStorageKeys.IdLogin);
+    request.fechaActualizacion=new Date();
     return this.http.put<IRuta>(this.apiUrl, request);
   }
 }

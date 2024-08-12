@@ -8,6 +8,7 @@ import {
   ITipoprocesos
 } from "./tipo-proceso.interface";
 import { environment } from "src/environments/environment";
+import { LocalStorageKeys } from 'src/app/enums/local-storage-keys.enum';
 
 @Injectable({
   providedIn: 'root'
@@ -23,9 +24,13 @@ export class TipoProcesoService {
     return this.http.delete<string>(`${this.apiUrl}/${codigo}`);
   }
   public store(request: ITipoproceso): Observable<ITipoproceso> {
+    request.usuarioCreacion=localStorage.getItem(LocalStorageKeys.IdLogin);
+    request.fechaActualizacion=null;
     return this.http.post<ITipoproceso>(this.apiUrl, request);
   }
   public update(request: ITipoproceso): Observable<ITipoproceso> {
+    request.usuarioActualizacion=localStorage.getItem(LocalStorageKeys.IdLogin);
+    request.fechaActualizacion=new Date();
     return this.http.put<ITipoproceso>(this.apiUrl, request);
   }
 
