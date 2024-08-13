@@ -1272,10 +1272,10 @@
             </div>
             <div class="col-md-6">
               <div class="input-group mb-3">
-                <label class="input-group-text label-estilo" for="supervisaa">Supervisa a</label>
+                <label class="input-group-text label-estilo" for="nivelRepa">Nivel de reporte</label>
                 &nbsp;
-                <span id="supervisaa" name="" style="color: black; font-size: 14px; " class="text-start">{{
-                  model.supervisaA
+                <span id="nivelRepa" name="" style="color: black; font-size: 14px; " class="text-start">{{
+                  model.nivelRepa
                   }}</span>
               </div>
             </div>
@@ -1292,10 +1292,10 @@
             </div>
             <div class="col-md-6">
               <div class="input-group mb-3">
-                <label class="input-group-text label-estilo" for="nivelRepa">Nivel de reporte</label>
+                <label class="input-group-text label-estilo" for="supervisaa">Supervisa a</label>
                 &nbsp;
-                <span id="nivelRepa" name="" style="color: black; font-size: 14px; " class="text-start">{{
-                  model.nivelRepa
+                <span id="supervisaa" name="" style="color: black; font-size: 14px; " class="text-start">{{
+                  model.supervisaA
                   }}</span>
               </div>
             </div>
@@ -1651,6 +1651,7 @@
                   detalleSolicitudPropuestos.alimentacion }}</span>
               </div>
             </div>
+            <div *ngIf="!muestraRemuneracion">
             <div class="row my-4">
               <div class="col-12">
                 <label class="input-group label-estilo" style="font-size: 20px; color: black" for="tipoMotivo">Tipo de
@@ -1697,6 +1698,7 @@
                 <span id="al" name="al" style="color: black; font-size: 14px" class="text-start">{{ model.sueldoAnual
                   }}</span>
               </div>
+            </div>
             </div>
           </div>
 
@@ -1815,6 +1817,7 @@
                   detalleSolicitudPropuestos.alimentacion }}</span>
               </div>
             </div>
+            <div *ngIf="!muestraRemuneracion">
             <div class="row my-4">
               <div class="col-12">
                 <label class="input-group label-estilo" style="font-size: 20px; color: black" for="tipoMotivo">Tipo de
@@ -1871,6 +1874,7 @@
                 <span id="comp" name="comp" style="color: black; font-size: 14px" class="text-start">{{
                   modelPropuestos.sueldoAnual }}</span>
               </div>
+            </div>
             </div>
 
           </div>

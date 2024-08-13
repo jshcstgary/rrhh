@@ -284,6 +284,8 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
   public restrictionsIds: any[] = ["1", "2", 1, 2];
 
   public restrictionsSubledgerIds: any[] = ["4", 4];
+  public muestraRemuneracion: boolean = false;
+
 
   public mostrarSubledger = false;
 
@@ -891,10 +893,14 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
   getSolicitudById(id: any) {
     return this.solicitudes.getSolicitudById(id).subscribe({
       next: (response: any) => {
+        
         if(id.includes("RG")){
           this.solicitudRG = response;
         }else{
           this.solicitud = response;
+        }
+        if(this.solicitud.tipoAccion.toUpperCase().includes("ASIGNA")){
+          this.muestraRemuneracion=true;
         }
         this.mostrarRequisicion = this.id_solicitud_by_params.includes("RP-");
         this.mostrarFormularioFamiliares = this.id_solicitud_by_params.includes("CF-");
@@ -1627,7 +1633,7 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
             this.router.navigate([
               "/tareas/consulta-tareas",
             ]);
-          }, 1800);
+          }, 3000);
         },
         error: (error: HttpErrorResponse) => {
           this.utilService.modalResponse(
@@ -1658,6 +1664,9 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
           if (this.taskType_Activity !== environment.taskType_Registrar) {
             this.RegistrarsolicitudCompletada = false;
           }
+          if (this.taskType_Activity === environment.taskType_CompletarRequisicion) {
+            this.RegistrarsolicitudCompletada = false;
+          }
         }
 
         let aprobadoractual = "";
@@ -1671,11 +1680,9 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
                  .subscribe({
                   next: (responseAPS) => {
                     this.dataAprobacionesPorPosicionAPS = responseAPS.nivelAprobacionPosicionType;
-                    this.aprobacion = this.dataAprobacionesPorPosicionAPS.find(elemento => elemento.aprobador.nivelDireccion.toUpperCase().includes(aprobadoractual));
                     if (aprobadoractual !== undefined) {
-                      console.log( this.dataAprobacionesPorPosicionAPS);
-                      console.log(this.aprobacion);
-        
+                      this.aprobacion = this.dataAprobacionesPorPosicionAPS.find(elemento => elemento.nivelAprobacionType.nivelAprobacionRuta.toUpperCase().includes(aprobadoractual));
+
                       if (this.aprobacion.aprobador.nivelDireccion.trim() !== null) {
                         this.solicitudes.modelDetalleAprobaciones.id_Solicitud = this.solicitudRG.idSolicitud;
                         this.solicitudes.modelDetalleAprobaciones.id_NivelAprobacion = this.aprobacion.nivelAprobacionType.idNivelAprobacion;
@@ -1729,11 +1736,11 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
                        {
                          aprobadoractual="REMUNERA";
                        } else{
-                         aprobadoractual="Creado";
+                         aprobadoractual="REGISTRARSOLICITUD";
                        }
                       }
 
-                    this.aprobacion = this.dataAprobacionesPorPosicionAPS.find(elemento => elemento.aprobador.nivelDireccion.toUpperCase().includes(aprobadoractual));
+                    this.aprobacion = this.dataAprobacionesPorPosicionAPS.find(elemento => elemento.nivelAprobacionType.nivelAprobacionRuta.toUpperCase().includes(aprobadoractual));
 
                     const htmlString = "<!DOCTYPE html>\r\n<html lang=\"es\">\r\n\r\n<head>\r\n  <meta charset=\"UTF-8\">\r\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n  <title>Document<\/title>\r\n<\/head>\r\n\r\n<body>\r\n  <h2>Estimado(a)<\/h2>\r\n  <h3>{NOMBRE_APROBADOR}<\/h3>\r\n\r\n  <P>La Solicitud de {TIPO_SOLICITUD} {ID_SOLICITUD} para la posici\u00F3n de {DESCRIPCION_POSICION} est\u00E1 disponible para su\r\n    revisi\u00F3n y aprobaci\u00F3n.<\/P>\r\n\r\n  <p>\r\n    <b>\r\n      Favor ingresar al siguiente enlace: <a href=\"{URL_APROBACION}\">{URL_APROBACION}<\/a>\r\n      <br>\r\n      <br>\r\n      Gracias por su atenci\u00F3n.\r\n    <\/b>\r\n  <\/p>\r\n<\/body>\r\n\r\n<\/html>\r\n";
         
@@ -1764,10 +1771,8 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
                  .subscribe({
                   next: (responseAPS) => {
                     this.dataAprobacionesPorPosicionAPS = responseAPS.nivelAprobacionPosicionType;
-                    this.aprobacion = this.dataAprobacionesPorPosicionAPS.find(elemento => elemento.nivelAprobacionType.nivelAprobacionRuta.toUpperCase().includes(aprobadoractual));
                     if (aprobadoractual !== undefined) {
-                      console.log( this.dataAprobacionesPorPosicionAPS);
-                      console.log(this.aprobacion);
+                    this.aprobacion = this.dataAprobacionesPorPosicionAPS.find(elemento => elemento.nivelAprobacionType.nivelAprobacionRuta.toUpperCase().includes(aprobadoractual));
         
                       if (this.aprobacion.aprobador.nivelDireccion.trim() !== null) {
                         this.solicitudes.modelDetalleAprobaciones.id_Solicitud = this.solicitud.idSolicitud;

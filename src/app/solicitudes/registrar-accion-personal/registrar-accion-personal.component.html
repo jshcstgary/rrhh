@@ -26,7 +26,7 @@
           </button>
           <button *ngIf="RegistrarsolicitudCompletada || selectedOption==='Si'" type="button" (click)="onCompletar()"
             class="btn btn-info me-2 mt-1">
-            <i class="fas fa-check-circle"></i> Completar Tarea
+            <i class="fas fa-check-circle"></i> Enviar Solicitud
           </button>
         </div>
       </div>
@@ -220,6 +220,7 @@
               <span id="al" name="al" style="color: black; font-size: 14px" class="text-start">{{ 0 }}</span>
             </div>
           </div>
+          <div *ngIf="!muestraRemuneracion">
           <div class="row my-4">
             <div class="col-12">
               <label class="input-group label-estilo" style="font-size: 20px; color: black" for="tipoMotivo">Tipo de
@@ -268,6 +269,7 @@
             </div>
           </div>
         </div>
+        </div>
 
         <div class="col-md-6">
           <div class="row my-5">
@@ -279,33 +281,43 @@
               <label class="input-group label-estilo" for="tipoMotivo">Compañía</label>
 
               &nbsp;
-
-              <input type="text" name="compania" placeholder="Campo obligatorio" [(ngModel)]="modelPropuestos.compania"
-                class="form-control" id="compania" [disabled]="viewInputs" />
+              <ng-select #inputSelectHacienda [(ngModel)]="modelPropuestos.compania" name="compania"
+                        placeholder="Seleccione la Compañia" [disabled]="viewInputs" >
+                        <ng-option *ngFor="let data of dataEmpresa" [value]="data">{{ data }}</ng-option>
+                      </ng-select>
             </div>
           </div>
 
           <div class="row">
             <div class="col-12 input-group mb-3">
               <label class="input-group label-estilo" for="tipoMotivo">Unidad</label>
-
               &nbsp;
-
-              <input type="text" name="unidad" placeholder="Campo obligatorio"
-                [(ngModel)]="modelPropuestos.unidadNegocio" class="form-control" id="unidad" [disabled]="viewInputs" />
-            </div>
+              <ng-select #inputSelectProducto [(ngModel)]="modelPropuestos.unidadNegocio" name="unidad"
+                        placeholder="Seleccione la Unidad de Negocio" [disabled]="viewInputs">
+                        <ng-option *ngFor="let data of dataUnidadesNegocio" [value]="data">{{ data }}</ng-option>
+                      </ng-select>
+              </div>
           </div>
-
           <div *ngIf="viewInputs">
             <div class="row">
               <div class="col-12 input-group mb-3">
                 <label class="input-group label-estilo" for="tipoSolicitud">Fecha de Cambio</label>
 
-                &nbsp;
+              <div class="datepicker-container">
+                <mat-form-field appearance="outline">
+                  <mat-label>Fecha</mat-label>
+    
+                  <input matInput [matDatepicker]="picker" [min]="minDateValidation" [max]="maxDateValidation"
+                  [(ngModel)]="modelPropuestos.fechaIngreso" class="form-control" id="fecha-ingreso" required name="fecha-ingreso">
+    
+                  <mat-hint>Máximo 30 días después de la creación</mat-hint>
+    
+                  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    
+                  <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+              </div>              </div>
 
-                <input type="text" name="fecha-ingreso" placeholder="Campo obligatorio"
-                  [(ngModel)]="modelPropuestos.fechaIngreso" class="form-control" id="fecha-ingreso" required />
-              </div>
             </div>
             <div class="row">
               <div class="col-12 input-group mb-3">
@@ -389,6 +401,7 @@
                   required />
               </div>
             </div>
+            <div *ngIf="!muestraRemuneracion">
             <div class="row my-4">
               <div class="col-12">
                 <label class="input-group label-estilo" style="font-size: 20px; color: black" for="tipoMotivo">Tipo de
@@ -445,6 +458,7 @@
                 <input type="text" name="sueldo-anual" placeholder="Campo obligatorio"
                   [(ngModel)]="modelPropuestos.sueldoAnual" class="form-control" id="sueldo-anual" required />
               </div>
+            </div>
             </div>
           </div>
 
@@ -538,7 +552,7 @@
       <div class="row">
         <div class="col">
           <div class="input-group mb-3 contenedor">
-            <label class="input-group-text adjustable-label">Tipod de acción</label>
+            <label class="input-group-text adjustable-label">Tipo de acción</label>
             &nbsp;
             <span>{{solicitud.tipoAccion}}</span>
 

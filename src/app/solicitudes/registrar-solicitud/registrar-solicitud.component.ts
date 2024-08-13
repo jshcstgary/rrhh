@@ -122,7 +122,20 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
   public solicitud = new Solicitud();
 
   public titulo: string = "Formulario De Registro";
-
+  
+  public sueldoEmpleado: {
+    sueldo: string;
+    variableMensual: string;
+    variableTrimestral: string;
+    variableSemestral: string;
+    variableAnual: string;
+  } = {
+    sueldo: "0",
+    variableMensual: "0",
+    variableTrimestral: "0",
+    variableSemestral: "0",
+    variableAnual: "0"
+  };
   public dataAprobador: {
     correo: string;
     usuarioAprobador: string;
@@ -567,6 +580,12 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
     });
 
     if (datosEmpleado) {
+      this.sueldoEmpleado.sueldo = datosEmpleado.sueldo;
+      this.sueldoEmpleado.variableMensual = datosEmpleado.sueldoVariableMensual;
+      this.sueldoEmpleado.variableTrimestral = datosEmpleado.sueldoVariableTrimestral;
+      this.sueldoEmpleado.variableSemestral = datosEmpleado.sueldoVariableSemestral;
+      this.sueldoEmpleado.variableAnual  = datosEmpleado.sueldoVariableAnual;
+  
       this.model = Object.assign(
         {},
         {
@@ -861,6 +880,11 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
       next: (response: any) => {
         this.detalleSolicitud = response.detalleSolicitudType[0];
         if (this.detalleSolicitud.codigoPosicion.length > 0) {
+          this.sueldoEmpleado.sueldo = this.detalleSolicitud.sueldo;
+          this.sueldoEmpleado.variableMensual =this.detalleSolicitud.sueldoVariableMensual;
+          this.sueldoEmpleado.variableTrimestral =this.detalleSolicitud.sueldoVariableTrimestral;
+          this.sueldoEmpleado.variableSemestral = this.detalleSolicitud.sueldoVariableSemestral;
+          this.sueldoEmpleado.variableAnual  = this.detalleSolicitud.sueldoVariableAnual;
 
           this.RegistrarsolicitudCompletada = true;
 
@@ -1050,6 +1074,38 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
 
 
   onSubmit() {
+    const regexp = /^[0-9.,]+$/.test(this.model.sueldo);
+    const regexp1 = /^[0-9.,]+$/.test(this.model.sueldoMensual);
+    const regexp2 = /^[0-9.,]+$/.test(this.model.sueldoTrimestral);
+    const regexp3 = /^[0-9.,]+$/.test(this.model.sueldoSemestral);
+    const regexp4 = /^[0-9.,]+$/.test(this.model.sueldoAnual);
+
+    if(!regexp || !regexp1 || !regexp2 || !regexp3 || !regexp4 ){
+      Swal.fire({
+        text: "Debe ingresar solo números en el sueldo y tipo variable",
+        icon: "info",
+        confirmButtonColor: "rgb(227, 199, 22)",
+        confirmButtonText: "OK",
+      });
+      return;
+
+    }
+
+    if(parseFloat(this.sueldoEmpleado.sueldo) < parseFloat(this.model.sueldo)
+      || parseFloat(this.sueldoEmpleado.variableMensual) < parseFloat(this.model.sueldoMensual)
+      || parseFloat(this.sueldoEmpleado.variableTrimestral) < parseFloat(this.model.sueldoTrimestral)
+      || parseFloat(this.sueldoEmpleado.variableSemestral) < parseFloat(this.model.sueldoSemestral)
+      || parseFloat(this.sueldoEmpleado.variableAnual) < parseFloat(this.model.sueldoAnual)
+    ){
+      Swal.fire({
+        text: "No se puede registrar valores variables mayores a los obtenidos del sistema",
+        icon: "info",
+        confirmButtonColor: "rgb(227, 199, 22)",
+        confirmButtonText: "OK",
+      });
+      return;
+
+    }
     Swal.fire({
       text: "¿Desea guardar los cambios?",
       icon: "question",
@@ -1093,7 +1149,6 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
     this.solicitud.unidadNegocio = this.model.unidadNegocio;
     this.solicitud.idUnidadNegocio = this.model.unidadNegocio;
     this.solicitud.estadoSolicitud = "2";
-
 
     this.solicitudes
       .actualizarSolicitud(this.solicitud)
@@ -1210,6 +1265,38 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
   }
 
   onCompletar() {
+    const regexp = /^[0-9.,]+$/.test(this.model.sueldo);
+    const regexp1 = /^[0-9.,]+$/.test(this.model.sueldoMensual);
+    const regexp2 = /^[0-9.,]+$/.test(this.model.sueldoTrimestral);
+    const regexp3 = /^[0-9.,]+$/.test(this.model.sueldoSemestral);
+    const regexp4 = /^[0-9.,]+$/.test(this.model.sueldoAnual);
+
+    if(!regexp || !regexp1 || !regexp2 || !regexp3 || !regexp4 ){
+      Swal.fire({
+        text: "No se puede Enviar Solicitud: Debe ingresar solo números en el sueldo y tipo variable",
+        icon: "info",
+        confirmButtonColor: "rgb(227, 199, 22)",
+        confirmButtonText: "OK",
+      });
+      return;
+
+    }
+
+    if(parseFloat(this.sueldoEmpleado.sueldo) < parseFloat(this.model.sueldo)
+      || parseFloat(this.sueldoEmpleado.variableMensual) < parseFloat(this.model.sueldoMensual)
+      || parseFloat(this.sueldoEmpleado.variableTrimestral) < parseFloat(this.model.sueldoTrimestral)
+      || parseFloat(this.sueldoEmpleado.variableSemestral) < parseFloat(this.model.sueldoSemestral)
+      || parseFloat(this.sueldoEmpleado.variableAnual) < parseFloat(this.model.sueldoAnual)
+    ){
+      Swal.fire({
+        text: "No se puede Enviar Solicitud: Valores variables mayores a los obtenidos del sistema",
+        icon: "info",
+        confirmButtonColor: "rgb(227, 199, 22)",
+        confirmButtonText: "OK",
+      });
+      return;
+
+    }
     if (this.uniqueTaskId === null) {
       this.errorMessage = "Unique Task id is empty. Cannot initiate task complete.";
 

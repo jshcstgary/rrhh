@@ -1652,6 +1652,7 @@
                   detalleSolicitudPropuestos.alimentacion }}</span>
               </div>
             </div>
+            <div *ngIf="!muestraRemuneracion">
             <div class="row my-4">
               <div class="col-12">
                 <label class="input-group label-estilo" style="font-size: 20px; color: black" for="tipoMotivo">Tipo de
@@ -1698,6 +1699,7 @@
                 <span id="al" name="al" style="color: black; font-size: 14px" class="text-start">{{ model.sueldoAnual
                   }}</span>
               </div>
+            </div>
             </div>
           </div>
 
@@ -1816,6 +1818,7 @@
                   detalleSolicitudPropuestos.alimentacion }}</span>
               </div>
             </div>
+            <div *ngIf="!muestraRemuneracion">
             <div class="row my-4">
               <div class="col-12">
                 <label class="input-group label-estilo" style="font-size: 20px; color: black" for="tipoMotivo">Tipo de
@@ -1873,6 +1876,7 @@
                   modelPropuestos.sueldoAnual }}</span>
               </div>
             </div>
+          </div>
 
           </div>
         </div>

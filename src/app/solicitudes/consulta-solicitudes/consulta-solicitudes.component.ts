@@ -697,7 +697,7 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
     return this.mantenimientoService.getTipoSolicitud().subscribe({
       next: (response: any) => {
         this.dataTipoSolicitudes = response.tipoSolicitudType
-          .filter((r) => r.estado === "A" && (r.codigoTipoSolicitud === "RP" || r.codigoTipoSolicitud === "AP" || r.codigoTipoSolicitud === "CF" || r.codigoTipoSolicitud === "RG" || r.codigoTipoSolicitud === "DP"))
+          .filter((r) => r.estado === "A" && (r.codigoTipoSolicitud === "RP" || r.codigoTipoSolicitud === "AP" || r.codigoTipoSolicitud === "DP"))
           .map((r) => ({
             id: r.id,
             descripcion: r.tipoSolicitud,
