@@ -9,12 +9,6 @@
     </div>
   </div>
 
-  <div class="col text-end">
-    <button type="button" class="btn btn-info me-2 mt-1">
-      <i class="fas fa-file-excel"></i> Exportar
-    </button>
-  </div>
-
   <div class="mt-5">
     <div class="row">
       <div class="col-md-4 my-3">
@@ -27,7 +21,7 @@
 
       <div class="col-md-4 my-3">
         <div class="row">
-          <div class="label-estilo col-4">Fecha de creación</div>
+          <div class="label-estilo col-4">Fecha de Creación</div>
 
           <div class="col-8">{{ solicitud.fechaCreacion | date:'dd/MM/yyyy' }}</div>
         </div>
@@ -47,7 +41,7 @@
     <div class="row">
       <div class="col-md-4 my-3">
         <div class="row">
-          <div class="label-estilo col-4">Role:</div>
+          <div class="label-estilo col-4">Rol:</div>
 
           <div class="col-8">Iniciador</div>
         </div>
@@ -55,9 +49,9 @@
 
       <div class="col-md-4 my-3">
         <div class="row">
-          <div class="label-estilo col-4">Fecha de finalización</div>
+          <div class="label-estilo col-4">Fecha de Finalización</div>
 
-          <div class="col-8">{{ solicitud.fechaActualizacion }}</div>
+          <div class="col-8">{{ solicitud.fechaActualizacion | date:'dd/MM/yyyy' }}</div>
         </div>
       </div>
     </div>

@@ -30,6 +30,7 @@ import { DialogReasignarUsuarioComponent } from "src/app/shared/reasginar-usuari
 import { StarterService } from "src/app/starter/starter.service";
 import { Permiso } from "src/app/types/permiso.type";
 import Swal from "sweetalert2";
+import { addDays } from "date-fns";
 
 interface DialogComponents {
   dialogReasignarUsuario: Type<DialogReasignarUsuarioComponent>;
@@ -52,8 +53,23 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
   selectedOption: string = "No";
   empleadoSearch: string = "";
   nivelDireccionDatoPropuesto: string = "";
+  public sueldoEmpleado: {
+    sueldo: string;
+    variableMensual: string;
+    variableTrimestral: string;
+    variableSemestral: string;
+    variableAnual: string;
+  } = {
+    sueldo: "0",
+    variableMensual: "0",
+    variableTrimestral: "0",
+    variableSemestral: "0",
+    variableAnual: "0"
+  };
 
   public existeMatenedores: boolean = false;
+  public muestraRemuneracion: boolean = false;
+
   public existe: boolean = false;
   public codigoReportaA: string = "";
   public primerNivelAprobacion: string="";
@@ -111,6 +127,8 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
   public tipo_solicitud_descripcion: string;
   public tipo_motivo_descripcion: string;
   public tipo_accion_descripcion: string;
+  public minDateValidation = new Date();
+  public maxDateValidation = addDays(new Date(), 30);
 
   public keySelected: any;
 
@@ -147,6 +165,8 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
 
   public dataTipoSolicitud: any = [];
   public dataTipoMotivo: any = [];
+  dataUnidadesNegocio: string[] = [];
+  dataEmpresa: string[] = [];
 
   // public dataTipoAccion: any;
 
@@ -421,6 +441,8 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
               if (this.existe || this.existeMatenedores) {
                 try {
                   await this.loadDataCamunda();
+                  this.obtenerEmpresaYUnidadNegocio();
+
 
                   this.utilService.closeLoadingSpinner();
                 } catch (error) {
@@ -499,6 +521,30 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
     });
   }
 
+  obtenerEmpresaYUnidadNegocio() {
+    return this.mantenimientoService.getNiveles().subscribe({
+      next: (response) => {
+        this.dataUnidadesNegocio = [
+          ...new Set(
+            response.evType.map((item) => {
+              return item.unidadNegocio;
+            })
+          ),
+        ];
+        this.dataEmpresa = [
+          ...new Set(
+            response.evType.map((item) => {
+              return item.compania;
+            })
+          ),
+        ];
+      },
+      error: (error: HttpErrorResponse) => {
+        this.utilService.modalResponse(error.error, "error");
+      },
+    });
+  }
+
   ObtenerServicioNivelDireccion() {
     return this.mantenimientoService.getCatalogo("RBPND").subscribe({
       // return this.mantenimientoService.getCatalogoRBPND().subscribe({
@@ -527,12 +573,15 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
     return this.solicitudes.getSolicitudById(id).subscribe({
       next: (response: any) => {
         this.solicitud = response;
+        this.minDateValidation=this.solicitud.fechaCreacion;
 
         this.model.codigo = this.solicitud.idSolicitud;
         this.model.idEmpresa = this.solicitud.idEmpresa;
         this.model.compania = this.solicitud.empresa;
         this.model.unidadNegocio = this.solicitud.unidadNegocio;
-
+        if(this.solicitud.tipoAccion.toUpperCase().includes("ASIGNA")){
+          this.muestraRemuneracion=true;
+        }
         this.loadingComplete += 2;
         this.getDetalleSolicitudById(this.id_edit);
       },
@@ -626,6 +675,11 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
     });
 
     if (datosEmpleado) {
+      this.sueldoEmpleado.sueldo = datosEmpleado.sueldo;
+      this.sueldoEmpleado.variableMensual = datosEmpleado.sueldoVariableMensual;
+      this.sueldoEmpleado.variableTrimestral = datosEmpleado.sueldoVariableTrimestral;
+      this.sueldoEmpleado.variableSemestral = datosEmpleado.sueldoVariableSemestral;
+      this.sueldoEmpleado.variableAnual  = datosEmpleado.sueldoVariableAnual;
       this.model = Object.assign(
         {},
         {
@@ -681,6 +735,8 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
       });
       this.modelPropuestos = structuredClone(this.model);
       this.modelPropuestos.fechaIngreso = structuredClone(this.model.fechaIngresogrupo);
+      this.detalleSolicitudPropuestos.movilizacion = "0";
+      this.detalleSolicitudPropuestos.alimentacion = "0";
 
       this.keySelected = `${this.solicitud.idTipoSolicitud}_${this.solicitud.idTipoMotivo}_${this.model.codigoPosicion}_${this.model.nivelDir}`;
 
@@ -873,7 +929,12 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
         this.totalRegistrosDetallesolicitud = response.totalRegistros;
 
         if (response.detalleSolicitudType[0].codigoPosicion > 0) {
-        this.RegistrarsolicitudCompletada=true;
+          this.RegistrarsolicitudCompletada=true;
+          this.sueldoEmpleado.sueldo = this.detalleSolicitud.sueldo;
+          this.sueldoEmpleado.variableMensual =this.detalleSolicitud.sueldoVariableMensual;
+          this.sueldoEmpleado.variableTrimestral =this.detalleSolicitud.sueldoVariableTrimestral;
+          this.sueldoEmpleado.variableSemestral = this.detalleSolicitud.sueldoVariableSemestral;
+          this.sueldoEmpleado.variableAnual  = this.detalleSolicitud.sueldoVariableAnual;
         }
 
         const detalleActual = response.detalleSolicitudType.find(detalle => detalle.idDetalleSolicitud === 1);
@@ -1094,6 +1155,38 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
   }
 
   async onSubmit() {
+    const regexp = /^[0-9.,]+$/.test(this.model.sueldo);
+    const regexp1 = /^[0-9.,]+$/.test(this.model.sueldoMensual);
+    const regexp2 = /^[0-9.,]+$/.test(this.model.sueldoTrimestral);
+    const regexp3 = /^[0-9.,]+$/.test(this.model.sueldoSemestral);
+    const regexp4 = /^[0-9.,]+$/.test(this.model.sueldoAnual);
+
+    if(!regexp || !regexp1 || !regexp2 || !regexp3 || !regexp4 ){
+      Swal.fire({
+        text: "Debe ingresar solo números en el sueldo y tipo variable",
+        icon: "info",
+        confirmButtonColor: "rgb(227, 199, 22)",
+        confirmButtonText: "OK",
+      });
+      return;
+
+    }
+
+    if(parseFloat(this.sueldoEmpleado.sueldo) < parseFloat(this.model.sueldo)
+      || parseFloat(this.sueldoEmpleado.variableMensual) < parseFloat(this.model.sueldoMensual)
+      || parseFloat(this.sueldoEmpleado.variableTrimestral) < parseFloat(this.model.sueldoTrimestral)
+      || parseFloat(this.sueldoEmpleado.variableSemestral) < parseFloat(this.model.sueldoSemestral)
+      || parseFloat(this.sueldoEmpleado.variableAnual) < parseFloat(this.model.sueldoAnual)
+    ){
+      Swal.fire({
+        text: "No se puede registrar valores variables mayores a los obtenidos del sistema",
+        icon: "info",
+        confirmButtonColor: "rgb(227, 199, 22)",
+        confirmButtonText: "OK",
+      });
+      return;
+
+    }
     const { isConfirmed } = await Swal.fire({
       text: "¿Desea guardar la Solicitud?",
       icon: "question",
@@ -1512,6 +1605,38 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
   }
   
   onCompletar() {
+    const regexp = /^[0-9.,]+$/.test(this.model.sueldo);
+    const regexp1 = /^[0-9.,]+$/.test(this.model.sueldoMensual);
+    const regexp2 = /^[0-9.,]+$/.test(this.model.sueldoTrimestral);
+    const regexp3 = /^[0-9.,]+$/.test(this.model.sueldoSemestral);
+    const regexp4 = /^[0-9.,]+$/.test(this.model.sueldoAnual);
+
+    if(!regexp || !regexp1 || !regexp2 || !regexp3 || !regexp4 ){
+      Swal.fire({
+        text: "No se puede Enviar Solicitud: Debe ingresar solo números en el sueldo y tipo variable",
+        icon: "info",
+        confirmButtonColor: "rgb(227, 199, 22)",
+        confirmButtonText: "OK",
+      });
+      return;
+
+    }
+
+    if(parseFloat(this.sueldoEmpleado.sueldo) < parseFloat(this.model.sueldo)
+      || parseFloat(this.sueldoEmpleado.variableMensual) < parseFloat(this.model.sueldoMensual)
+      || parseFloat(this.sueldoEmpleado.variableTrimestral) < parseFloat(this.model.sueldoTrimestral)
+      || parseFloat(this.sueldoEmpleado.variableSemestral) < parseFloat(this.model.sueldoSemestral)
+      || parseFloat(this.sueldoEmpleado.variableAnual) < parseFloat(this.model.sueldoAnual)
+    ){
+      Swal.fire({
+        text: "No se puede Enviar Solicitud: Valores variables mayores a los obtenidos del sistema",
+        icon: "info",
+        confirmButtonColor: "rgb(227, 199, 22)",
+        confirmButtonText: "OK",
+      });
+      return;
+
+    }
     if (this.uniqueTaskId === null) {
       this.errorMessage = "Unique Task id is empty. Cannot initiate task complete.";
 
@@ -1777,7 +1902,7 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
                   this.utilService.modalResponse("Datos ingresados correctamente", "success");
 
                   setTimeout(() => {
-                   // window.location.reload();
+                   window.location.reload();
                   }, 1800);
                 });
             } else {

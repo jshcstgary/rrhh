@@ -1100,6 +1100,14 @@ export class CompletaSolicitudComponent extends CompleteTaskComponent {
               this.solicitud.estadoSolicitud = "2";
 
               break;
+            
+            case 'enEspera':
+              this.detalleSolicitud.fechaSalida=this.selectedDate;
+              this.detalleSolicitud.valor = "Solicitud en Espera: " + this.textareaContent;
+
+              this.solicitud.estadoSolicitud = "2";
+
+              break;
 
             default:
           }

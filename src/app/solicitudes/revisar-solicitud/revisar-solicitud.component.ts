@@ -284,6 +284,8 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
   public restrictionsIds: any[] = ["1", "2", 1, 2];
 
   public restrictionsSubledgerIds: any[] = ["4", 4];
+  public muestraRemuneracion: boolean = false;
+
 
   public mostrarSubledger = false;
 
@@ -891,10 +893,14 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
   getSolicitudById(id: any) {
     return this.solicitudes.getSolicitudById(id).subscribe({
       next: (response: any) => {
+        
         if(id.includes("RG")){
           this.solicitudRG = response;
         }else{
           this.solicitud = response;
+        }
+        if(this.solicitud.tipoAccion.toUpperCase().includes("ASIGNA")){
+          this.muestraRemuneracion=true;
         }
         this.mostrarRequisicion = this.id_solicitud_by_params.includes("RP-");
         this.mostrarFormularioFamiliares = this.id_solicitud_by_params.includes("CF-");
@@ -1013,6 +1019,11 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
               this.selectedDate = detallePropuestos.fechaSalida;
             }
           }
+          this.mostrarTipoJustificacionYMision = this.restrictionsIds.includes(this.solicitud.idTipoMotivo);
+
+          this.mostrarSubledger = this.restrictionsSubledgerIds.includes(this.solicitud.idTipoMotivo);
+  
+          this.keySelected = this.solicitud.idTipoSolicitud + "_" + this.solicitud.idTipoMotivo + "_" + this.model.nivelDir;
         }
         else {
           this.detalleSolicitud = response.detalleSolicitudType[0];
@@ -1049,7 +1060,11 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
               this.selectedDate = new Date(this.detalleSolicitud.fechaSalida);
             }
             this.modelRemuneracion = Number(this.model.sueldoAnual) / 12 + Number(this.model.sueldoSemestral) / 6 + Number(this.model.sueldoTrimestral) / 3 + Number(this.model.sueldoMensual);
+            this.mostrarTipoJustificacionYMision = this.restrictionsIds.includes(this.solicitud.idTipoMotivo);
 
+            this.mostrarSubledger = this.restrictionsSubledgerIds.includes(this.solicitud.idTipoMotivo);
+    
+            this.keySelected = this.solicitud.idTipoSolicitud + "_" + this.solicitud.idTipoMotivo + "_" + this.model.nivelDir;
           } else if (id.toUpperCase().includes("RG")) {
             if (this.detalleSolicitudRG.codigoPosicion.length > 0) {
               this.modelRG.codigoPosicion = this.detalleSolicitudRG.codigoPosicion;
@@ -1086,20 +1101,17 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
                 this.textareaContent = this.detalleSolicitudRG.valor;
                 this.selectedDate = new Date(this.detalleSolicitudRG.fechaSalida);
               }
-              this.keySelected = this.solicitud.idTipoSolicitud + "_" + this.solicitud.idTipoMotivo + "_" + this.model.nivelDir;
+              this.mostrarTipoJustificacionYMision = this.restrictionsIds.includes(this.solicitudRG.idTipoMotivo);
+
+              this.mostrarSubledger = this.restrictionsSubledgerIds.includes(this.solicitudRG.idTipoMotivo);
+      
+              this.keySelected = this.solicitudRG.idTipoSolicitud + "_" + this.solicitudRG.idTipoMotivo + "_" + this.modelRG.nivelDir;
               this.getComentarios();
             }
           }
         }
 
         this.loadingComplete++;
-
-        this.mostrarTipoJustificacionYMision = this.restrictionsIds.includes(this.solicitud.idTipoMotivo);
-
-        this.mostrarSubledger = this.restrictionsSubledgerIds.includes(this.solicitud.idTipoMotivo);
-
-        this.keySelected = this.solicitud.idTipoSolicitud + "_" + this.solicitud.idTipoMotivo + "_" + this.model.nivelDir;
-
         if (!this.dataAprobacionesPorPosicion[this.keySelected]) {
           this.getNivelesAprobacion();
           this.solicitudes.getTaskId(this.idDeInstancia).subscribe({
@@ -1627,7 +1639,7 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
             this.router.navigate([
               "/tareas/consulta-tareas",
             ]);
-          }, 1800);
+          }, 3000);
         },
         error: (error: HttpErrorResponse) => {
           this.utilService.modalResponse(
@@ -1658,6 +1670,9 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
           if (this.taskType_Activity !== environment.taskType_Registrar) {
             this.RegistrarsolicitudCompletada = false;
           }
+          if (this.taskType_Activity === environment.taskType_CompletarRequisicion) {
+            this.RegistrarsolicitudCompletada = false;
+          }
         }
 
         let aprobadoractual = "";
@@ -1671,11 +1686,9 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
                  .subscribe({
                   next: (responseAPS) => {
                     this.dataAprobacionesPorPosicionAPS = responseAPS.nivelAprobacionPosicionType;
-                    this.aprobacion = this.dataAprobacionesPorPosicionAPS.find(elemento => elemento.aprobador.nivelDireccion.toUpperCase().includes(aprobadoractual));
                     if (aprobadoractual !== undefined) {
-                      console.log( this.dataAprobacionesPorPosicionAPS);
-                      console.log(this.aprobacion);
-        
+                      this.aprobacion = this.dataAprobacionesPorPosicionAPS.find(elemento => elemento.nivelAprobacionType.nivelAprobacionRuta.toUpperCase().includes(aprobadoractual));
+
                       if (this.aprobacion.aprobador.nivelDireccion.trim() !== null) {
                         this.solicitudes.modelDetalleAprobaciones.id_Solicitud = this.solicitudRG.idSolicitud;
                         this.solicitudes.modelDetalleAprobaciones.id_NivelAprobacion = this.aprobacion.nivelAprobacionType.idNivelAprobacion;
@@ -1729,11 +1742,11 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
                        {
                          aprobadoractual="REMUNERA";
                        } else{
-                         aprobadoractual="Creado";
+                         aprobadoractual="REGISTRARSOLICITUD";
                        }
                       }
 
-                    this.aprobacion = this.dataAprobacionesPorPosicionAPS.find(elemento => elemento.aprobador.nivelDireccion.toUpperCase().includes(aprobadoractual));
+                    this.aprobacion = this.dataAprobacionesPorPosicionAPS.find(elemento => elemento.nivelAprobacionType.nivelAprobacionRuta.toUpperCase().includes(aprobadoractual));
 
                     const htmlString = "<!DOCTYPE html>\r\n<html lang=\"es\">\r\n\r\n<head>\r\n  <meta charset=\"UTF-8\">\r\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n  <title>Document<\/title>\r\n<\/head>\r\n\r\n<body>\r\n  <h2>Estimado(a)<\/h2>\r\n  <h3>{NOMBRE_APROBADOR}<\/h3>\r\n\r\n  <P>La Solicitud de {TIPO_SOLICITUD} {ID_SOLICITUD} para la posici\u00F3n de {DESCRIPCION_POSICION} est\u00E1 disponible para su\r\n    revisi\u00F3n y aprobaci\u00F3n.<\/P>\r\n\r\n  <p>\r\n    <b>\r\n      Favor ingresar al siguiente enlace: <a href=\"{URL_APROBACION}\">{URL_APROBACION}<\/a>\r\n      <br>\r\n      <br>\r\n      Gracias por su atenci\u00F3n.\r\n    <\/b>\r\n  <\/p>\r\n<\/body>\r\n\r\n<\/html>\r\n";
         
@@ -1764,10 +1777,8 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
                  .subscribe({
                   next: (responseAPS) => {
                     this.dataAprobacionesPorPosicionAPS = responseAPS.nivelAprobacionPosicionType;
-                    this.aprobacion = this.dataAprobacionesPorPosicionAPS.find(elemento => elemento.nivelAprobacionType.nivelAprobacionRuta.toUpperCase().includes(aprobadoractual));
                     if (aprobadoractual !== undefined) {
-                      console.log( this.dataAprobacionesPorPosicionAPS);
-                      console.log(this.aprobacion);
+                    this.aprobacion = this.dataAprobacionesPorPosicionAPS.find(elemento => elemento.nivelAprobacionType.nivelAprobacionRuta.toUpperCase().includes(aprobadoractual));
         
                       if (this.aprobacion.aprobador.nivelDireccion.trim() !== null) {
                         this.solicitudes.modelDetalleAprobaciones.id_Solicitud = this.solicitud.idSolicitud;
@@ -2006,7 +2017,7 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
   getNivelesAprobacion() {
     if (this.solicitud !== null) {
       this.solicitudes
-        .obtenerNivelesAprobacionRegistrados(this.solicitud.idSolicitud)
+        .obtenerNivelesAprobacionRegistrados(this.id_solicitud_by_params)
         .subscribe({
           next: (response) => {
             this.dataAprobacionesPorPosicion = {
@@ -2151,7 +2162,7 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
                           this.aprobadorFijo = "SI";
                         }
 
-                        this.solicitudes.modelDetalleAprobaciones.id_Solicitud = this.solicitud.idSolicitud;
+                        this.solicitudes.modelDetalleAprobaciones.id_Solicitud = this.id_solicitud_by_params;
                         this.solicitudes.modelDetalleAprobaciones.id_NivelAprobacion = aprobacion.nivelAprobacionType.idNivelAprobacion;
                         this.solicitudes.modelDetalleAprobaciones.id_TipoSolicitud = aprobacion.nivelAprobacionType.idTipoSolicitud.toString();
                         this.solicitudes.modelDetalleAprobaciones.id_Accion = aprobacion.nivelAprobacionType.idAccion;
@@ -2195,7 +2206,7 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
                         this.aprobadorActual = aprobacionesObj[index];
                         this.aprobadorFijo = "SI";
 
-                        this.solicitudes.modelDetalleAprobaciones.id_Solicitud = this.solicitud.idSolicitud;
+                        this.solicitudes.modelDetalleAprobaciones.id_Solicitud = this.id_solicitud_by_params;
                         this.solicitudes.modelDetalleAprobaciones.id_NivelAprobacion = aprobacion.nivelAprobacionType.idNivelAprobacion;
                         this.solicitudes.modelDetalleAprobaciones.id_TipoSolicitud = aprobacion.nivelAprobacionType.idTipoSolicitud.toString();
                         this.solicitudes.modelDetalleAprobaciones.id_Accion = aprobacion.nivelAprobacionType.idAccion;
@@ -2230,7 +2241,7 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
 
                     } else if (aprobadoractual === undefined) {
 
-                      this.solicitudes.modelDetalleAprobaciones.id_Solicitud = this.solicitud.idSolicitud;
+                      this.solicitudes.modelDetalleAprobaciones.id_Solicitud = this.id_solicitud_by_params;
                       this.solicitudes.modelDetalleAprobaciones.id_NivelAprobacion = aprobacion.nivelAprobacionType.idNivelAprobacion;
                       this.solicitudes.modelDetalleAprobaciones.id_TipoSolicitud = aprobacion.nivelAprobacionType.idTipoSolicitud.toString();
                       this.solicitudes.modelDetalleAprobaciones.id_Accion = aprobacion.nivelAprobacionType.idAccion;

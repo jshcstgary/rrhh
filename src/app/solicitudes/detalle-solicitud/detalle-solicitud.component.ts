@@ -39,6 +39,8 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
   NgForm = NgForm;
   isRequired: boolean = false;
   public viewInputs: boolean = false;
+  public muestraRemuneracion: boolean = false;
+
 
   isFechaMaximaVisible: boolean = false;
   campoObligatorio: string = '';
@@ -839,7 +841,11 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
   getSolicitudById(id: any) {
     return this.solicitudes.getSolicitudById(id).subscribe({
       next: (response: any) => {
+
         this.solicitud = response;
+        if(this.solicitud.tipoAccion.toUpperCase().includes("ASIGNA")){
+          this.muestraRemuneracion=true;
+        }
         this.mostrarRequisicion = this.solicitud.idSolicitud.includes("RP-");
         this.mostrarFormularioFamiliares = this.solicitud.idSolicitud.includes("CF-");
         this.mostrarFormularioReingreso = this.solicitud.idSolicitud.includes("RG-");
