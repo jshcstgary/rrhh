@@ -1019,6 +1019,11 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
               this.selectedDate = detallePropuestos.fechaSalida;
             }
           }
+          this.mostrarTipoJustificacionYMision = this.restrictionsIds.includes(this.solicitud.idTipoMotivo);
+
+          this.mostrarSubledger = this.restrictionsSubledgerIds.includes(this.solicitud.idTipoMotivo);
+  
+          this.keySelected = this.solicitud.idTipoSolicitud + "_" + this.solicitud.idTipoMotivo + "_" + this.model.nivelDir;
         }
         else {
           this.detalleSolicitud = response.detalleSolicitudType[0];
@@ -1055,7 +1060,11 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
               this.selectedDate = new Date(this.detalleSolicitud.fechaSalida);
             }
             this.modelRemuneracion = Number(this.model.sueldoAnual) / 12 + Number(this.model.sueldoSemestral) / 6 + Number(this.model.sueldoTrimestral) / 3 + Number(this.model.sueldoMensual);
+            this.mostrarTipoJustificacionYMision = this.restrictionsIds.includes(this.solicitud.idTipoMotivo);
 
+            this.mostrarSubledger = this.restrictionsSubledgerIds.includes(this.solicitud.idTipoMotivo);
+    
+            this.keySelected = this.solicitud.idTipoSolicitud + "_" + this.solicitud.idTipoMotivo + "_" + this.model.nivelDir;
           } else if (id.toUpperCase().includes("RG")) {
             if (this.detalleSolicitudRG.codigoPosicion.length > 0) {
               this.modelRG.codigoPosicion = this.detalleSolicitudRG.codigoPosicion;
@@ -1092,20 +1101,17 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
                 this.textareaContent = this.detalleSolicitudRG.valor;
                 this.selectedDate = new Date(this.detalleSolicitudRG.fechaSalida);
               }
-              this.keySelected = this.solicitud.idTipoSolicitud + "_" + this.solicitud.idTipoMotivo + "_" + this.model.nivelDir;
+              this.mostrarTipoJustificacionYMision = this.restrictionsIds.includes(this.solicitudRG.idTipoMotivo);
+
+              this.mostrarSubledger = this.restrictionsSubledgerIds.includes(this.solicitudRG.idTipoMotivo);
+      
+              this.keySelected = this.solicitudRG.idTipoSolicitud + "_" + this.solicitudRG.idTipoMotivo + "_" + this.modelRG.nivelDir;
               this.getComentarios();
             }
           }
         }
 
         this.loadingComplete++;
-
-        this.mostrarTipoJustificacionYMision = this.restrictionsIds.includes(this.solicitud.idTipoMotivo);
-
-        this.mostrarSubledger = this.restrictionsSubledgerIds.includes(this.solicitud.idTipoMotivo);
-
-        this.keySelected = this.solicitud.idTipoSolicitud + "_" + this.solicitud.idTipoMotivo + "_" + this.model.nivelDir;
-
         if (!this.dataAprobacionesPorPosicion[this.keySelected]) {
           this.getNivelesAprobacion();
           this.solicitudes.getTaskId(this.idDeInstancia).subscribe({
@@ -2011,7 +2017,7 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
   getNivelesAprobacion() {
     if (this.solicitud !== null) {
       this.solicitudes
-        .obtenerNivelesAprobacionRegistrados(this.solicitud.idSolicitud)
+        .obtenerNivelesAprobacionRegistrados(this.id_solicitud_by_params)
         .subscribe({
           next: (response) => {
             this.dataAprobacionesPorPosicion = {
@@ -2156,7 +2162,7 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
                           this.aprobadorFijo = "SI";
                         }
 
-                        this.solicitudes.modelDetalleAprobaciones.id_Solicitud = this.solicitud.idSolicitud;
+                        this.solicitudes.modelDetalleAprobaciones.id_Solicitud = this.id_solicitud_by_params;
                         this.solicitudes.modelDetalleAprobaciones.id_NivelAprobacion = aprobacion.nivelAprobacionType.idNivelAprobacion;
                         this.solicitudes.modelDetalleAprobaciones.id_TipoSolicitud = aprobacion.nivelAprobacionType.idTipoSolicitud.toString();
                         this.solicitudes.modelDetalleAprobaciones.id_Accion = aprobacion.nivelAprobacionType.idAccion;
@@ -2200,7 +2206,7 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
                         this.aprobadorActual = aprobacionesObj[index];
                         this.aprobadorFijo = "SI";
 
-                        this.solicitudes.modelDetalleAprobaciones.id_Solicitud = this.solicitud.idSolicitud;
+                        this.solicitudes.modelDetalleAprobaciones.id_Solicitud = this.id_solicitud_by_params;
                         this.solicitudes.modelDetalleAprobaciones.id_NivelAprobacion = aprobacion.nivelAprobacionType.idNivelAprobacion;
                         this.solicitudes.modelDetalleAprobaciones.id_TipoSolicitud = aprobacion.nivelAprobacionType.idTipoSolicitud.toString();
                         this.solicitudes.modelDetalleAprobaciones.id_Accion = aprobacion.nivelAprobacionType.idAccion;
@@ -2235,7 +2241,7 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
 
                     } else if (aprobadoractual === undefined) {
 
-                      this.solicitudes.modelDetalleAprobaciones.id_Solicitud = this.solicitud.idSolicitud;
+                      this.solicitudes.modelDetalleAprobaciones.id_Solicitud = this.id_solicitud_by_params;
                       this.solicitudes.modelDetalleAprobaciones.id_NivelAprobacion = aprobacion.nivelAprobacionType.idNivelAprobacion;
                       this.solicitudes.modelDetalleAprobaciones.id_TipoSolicitud = aprobacion.nivelAprobacionType.idTipoSolicitud.toString();
                       this.solicitudes.modelDetalleAprobaciones.id_Accion = aprobacion.nivelAprobacionType.idAccion;
