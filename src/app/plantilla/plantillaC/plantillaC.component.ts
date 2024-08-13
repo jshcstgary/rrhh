@@ -39,6 +39,11 @@ import { NgbNav } from "@ng-bootstrap/ng-bootstrap";
   styleUrls: ["./plantillaC.component.scss"],
 })
 export class PlantillaCComponent implements AfterViewInit, OnInit, OnChanges {
+  @Input({
+    required: false
+  })
+  public fixedLastColumnOnTable: boolean = false;
+
   @Input({ required: false }) public colIdToDisable: string | string[] = "";
   @Input({ required: false }) public keyNameTable: string = "";
   @Input({ required: false }) public dataFilterNivelesAprobacion =

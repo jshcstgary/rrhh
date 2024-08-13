@@ -866,7 +866,7 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
             this.uniqueTaskId = this.tareasPorCompletar[0].id;
             this.taskType_Activity = this.tareasPorCompletar[0].taskDefinitionKey;
             this.nameTask = this.tareasPorCompletar[0].name;
-            }        
+            }
             this.taskId = params["id"];
             // this.getDetalleSolicitudById(this.id_solicitud_by_params); // Si se comenta, causa problemas al abrir el Sweet Alert 2
             this.getSolicitudById(this.id_solicitud_by_params);
@@ -1070,7 +1070,7 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
               next: (responseAPD) => {
                   this.primerNivelAprobacion=responseAPD.nivelAprobacionPosicionType[0].aprobador.nivelDireccion;
                   this.mapearDetallesAprobadores(response.nivelAprobacionPosicionType);
-      
+
                 },
               error: (error: HttpErrorResponse) => {
                 this.utilService.modalResponse(
@@ -1484,7 +1484,7 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
                     if (aprobadoractual !== undefined) {
                       console.log( this.dataAprobacionesPorPosicionAPS);
                       console.log(this.aprobacion);
-        
+
                       if (this.aprobacion.aprobador.nivelDireccion.trim() !== null) {
                         this.solicitudes.modelDetalleAprobaciones.id_Solicitud = this.solicitud.idSolicitud;
                         this.solicitudes.modelDetalleAprobaciones.id_NivelAprobacion = this.aprobacion.nivelAprobacionType.idNivelAprobacion;
@@ -1514,7 +1514,7 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
                         this.solicitudes.modelDetalleAprobaciones.fechaCreacion = new Date().toISOString();
                         this.solicitudes.modelDetalleAprobaciones.fechaModificacion = new Date().toISOString();
                       }
-        
+
                       this.solicitudes.guardarDetallesAprobacionesSolicitud(this.solicitudes.modelDetalleAprobaciones).subscribe({
                         next: () => {
                         },
@@ -1525,12 +1525,12 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
                     }else{
 
                       console.log(this.taskType_Activity);
-        
+
                       if (this.taskType_Activity == environment.taskType_RRHH
                         || this.taskType_Activity == environment.taskType_CF_RRHH
                         || this.taskType_Activity == environment.taskType_AP_RRHH
                         || this.taskType_Activity == environment.taskType_RG_RRHH
-        
+
                       ) { //GERENTE RECURSOS HUMANOS
                         aprobadoractual="RRHH";
                       } else{
@@ -1540,9 +1540,9 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
                     this.aprobacion = this.dataAprobacionesPorPosicionAPS.find(elemento => elemento.aprobador.nivelDireccion.toUpperCase().includes(aprobadoractual));
 
                     const htmlString = "<!DOCTYPE html>\r\n<html lang=\"es\">\r\n\r\n<head>\r\n  <meta charset=\"UTF-8\">\r\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n  <title>Document<\/title>\r\n<\/head>\r\n\r\n<body>\r\n  <h2>Estimado(a)<\/h2>\r\n  <h3>{NOMBRE_APROBADOR}<\/h3>\r\n\r\n  <P>La Solicitud de {TIPO_SOLICITUD} {ID_SOLICITUD} para la posici\u00F3n de {DESCRIPCION_POSICION} est\u00E1 disponible para su\r\n    revisi\u00F3n y aprobaci\u00F3n.<\/P>\r\n\r\n  <p>\r\n    <b>\r\n      Favor ingresar al siguiente enlace: <a href=\"{URL_APROBACION}\">{URL_APROBACION}<\/a>\r\n      <br>\r\n      <br>\r\n      Gracias por su atenci\u00F3n.\r\n    <\/b>\r\n  <\/p>\r\n<\/body>\r\n\r\n<\/html>\r\n";
-        
+
                     const modifiedHtmlString = htmlString.replace("{NOMBRE_APROBADOR}", this.aprobacion.aprobador.usuario).replace("{TIPO_SOLICITUD}", this.solicitud.tipoSolicitud).replace("{ID_SOLICITUD}", this.solicitud.idSolicitud).replace("{DESCRIPCION_POSICION}", this.detalleSolicitud.descripcionPosicion).replace(new RegExp("{URL_APROBACION}", "g"), `${portalWorkFlow}tareas/consulta-tareas`);
-        
+
                     this.emailVariables = {
                       de: "emisor",
                       para: this.aprobacion.aprobador.correo,
@@ -1603,40 +1603,43 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
       }
     });
   }
-  
+
   onCompletar() {
-    const regexp = /^[0-9.,]+$/.test(this.model.sueldo);
-    const regexp1 = /^[0-9.,]+$/.test(this.model.sueldoMensual);
-    const regexp2 = /^[0-9.,]+$/.test(this.model.sueldoTrimestral);
-    const regexp3 = /^[0-9.,]+$/.test(this.model.sueldoSemestral);
-    const regexp4 = /^[0-9.,]+$/.test(this.model.sueldoAnual);
+    if (this.selectedOption === "No") {
+      const regexp = /^[0-9.,]+$/.test(this.model.sueldo);
+      const regexp1 = /^[0-9.,]+$/.test(this.model.sueldoMensual);
+      const regexp2 = /^[0-9.,]+$/.test(this.model.sueldoTrimestral);
+      const regexp3 = /^[0-9.,]+$/.test(this.model.sueldoSemestral);
+      const regexp4 = /^[0-9.,]+$/.test(this.model.sueldoAnual);
 
-    if(!regexp || !regexp1 || !regexp2 || !regexp3 || !regexp4 ){
-      Swal.fire({
-        text: "No se puede Enviar Solicitud: Debe ingresar solo números en el sueldo y tipo variable",
-        icon: "info",
-        confirmButtonColor: "rgb(227, 199, 22)",
-        confirmButtonText: "OK",
-      });
-      return;
+      if(!regexp || !regexp1 || !regexp2 || !regexp3 || !regexp4 ){
+        Swal.fire({
+          text: "No se puede Enviar Solicitud: Debe ingresar solo números en el sueldo y tipo variable",
+          icon: "info",
+          confirmButtonColor: "rgb(227, 199, 22)",
+          confirmButtonText: "OK",
+        });
+        return;
 
+      }
+
+      if(parseFloat(this.sueldoEmpleado.sueldo) < parseFloat(this.model.sueldo)
+        || parseFloat(this.sueldoEmpleado.variableMensual) < parseFloat(this.model.sueldoMensual)
+        || parseFloat(this.sueldoEmpleado.variableTrimestral) < parseFloat(this.model.sueldoTrimestral)
+        || parseFloat(this.sueldoEmpleado.variableSemestral) < parseFloat(this.model.sueldoSemestral)
+        || parseFloat(this.sueldoEmpleado.variableAnual) < parseFloat(this.model.sueldoAnual)
+      ) {
+        Swal.fire({
+          text: "No se puede Enviar Solicitud: Valores variables mayores a los obtenidos del sistema",
+          icon: "info",
+          confirmButtonColor: "rgb(227, 199, 22)",
+          confirmButtonText: "OK",
+        });
+        return;
+
+      }
     }
 
-    if(parseFloat(this.sueldoEmpleado.sueldo) < parseFloat(this.model.sueldo)
-      || parseFloat(this.sueldoEmpleado.variableMensual) < parseFloat(this.model.sueldoMensual)
-      || parseFloat(this.sueldoEmpleado.variableTrimestral) < parseFloat(this.model.sueldoTrimestral)
-      || parseFloat(this.sueldoEmpleado.variableSemestral) < parseFloat(this.model.sueldoSemestral)
-      || parseFloat(this.sueldoEmpleado.variableAnual) < parseFloat(this.model.sueldoAnual)
-    ){
-      Swal.fire({
-        text: "No se puede Enviar Solicitud: Valores variables mayores a los obtenidos del sistema",
-        icon: "info",
-        confirmButtonColor: "rgb(227, 199, 22)",
-        confirmButtonText: "OK",
-      });
-      return;
-
-    }
     if (this.uniqueTaskId === null) {
       this.errorMessage = "Unique Task id is empty. Cannot initiate task complete.";
 
@@ -1708,7 +1711,7 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
     this.submitted = true;
     }if(this.solicitud.estadoSolicitud.includes("AN")){
     const htmlString = "<!DOCTYPE html>\r\n<html lang=\"es\">\r\n\r\n<head>\r\n  <meta charset=\"UTF-8\">\r\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n  <title>Document<\/title>\r\n<\/head>\r\n\r\n<body>\r\n  <h2>Estimado(a)<\/h2>\r\n  <h3>{NOMBRE_APROBADOR}<\/h3>\r\n\r\n  <P>La Solicitud de {TIPO_SOLICITUD} {ID_SOLICITUD} para la posici\u00F3n de {DESCRIPCION_POSICION} ha sido anulada.<\/P>\r\n\r\n  <p>\r\n    <b>\r\n      Favor ingresar al siguiente enlace: <a href=\"{URL_APROBACION}\">{URL_APROBACION}<\/a>\r\n      <br>\r\n      <br>\r\n      Gracias por su atenci\u00F3n.\r\n    <\/b>\r\n  <\/p>\r\n<\/body>\r\n\r\n<\/html>\r\n";
-                           
+
     const modifiedHtmlString = htmlString.replace("{NOMBRE_APROBADOR}", this.solicitud.usuarioCreacion).replace("{TIPO_SOLICITUD}", this.solicitud.tipoSolicitud).replace("{ID_SOLICITUD}", this.solicitud.idSolicitud).replace("{DESCRIPCION_POSICION}", this.detalleSolicitud.descripcionPosicion).replace(new RegExp("{URL_APROBACION}", "g"), `${portalWorkFlow}solicitudes/trazabilidad/${this.solicitud.idSolicitud}`);
 
     this.emailVariables = {

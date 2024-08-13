@@ -142,21 +142,17 @@ thead th.fixed-col {
 }
 
 .fixed-col-end {
-  position: -webkit-sticky; /* Para navegadores WebKit como Safari */
   position: sticky;
   right: 0;
-  // background-color: #f4f4f4; /* Color de fondo para distinguir la columna fija */
-  box-shadow: -5px 0 10px black;
-  z-index: 1; /* Asegura que la columna quede encima del resto del contenido */
+  background-color: #efefef !important;
+  z-index: 10000;
 }
 
 thead th.fixed-col-end {
-  position: -webkit-sticky; /* Para navegadores WebKit como Safari */
   position: sticky;
-  background-color: rgba(0, 86, 179);
+  background-color: rgba(0, 86, 179) !important;
   color: white;
-  box-shadow: -5px 0 10px black;
   top: 0;
   right: 0;
-  z-index: 2; /* Asegura que el encabezado fijo quede encima del resto del contenido */
+  z-index: 10000;
 }

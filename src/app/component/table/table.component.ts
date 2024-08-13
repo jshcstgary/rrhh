@@ -27,6 +27,11 @@ export class TableComponent implements OnInit, OnChanges {
   })
   public overflowX: string = "visible";
 
+  @Input({
+    required: false
+  })
+  public fixedLastColumn: boolean = false;
+
   @Input({ required: false }) public allowCloneButton: boolean = false;
   @Input({ required: false }) public tableName: string;
   @Input({ required: false }) public onChangeEditRowFunction: string;
