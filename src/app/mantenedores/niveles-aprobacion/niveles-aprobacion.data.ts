@@ -60,19 +60,19 @@ export const NivelesAprobacionData2: IConsultaNivelesAprobacionData = {
           id: "editOnTable",
           tooltip: "Editar",
           showed: true
-        },
-        {
-          materialIcon: "info",
-          id: "cloneOnTable",
-          tooltip: "Info",
-          showed: true
-        },
-        {
-          materialIcon: "highlight_off",
-          id: "cloneOnTable",
-          tooltip: "Eliminar",
-          showed: true
-        },
+        }
+        // {
+        //   materialIcon: "info",
+        //   id: "redirect",
+        //   tooltip: "Info",
+        //   showed: true
+        // },
+        // {
+        //   materialIcon: "highlight_off",
+        //   id: "delete",
+        //   tooltip: "Eliminar",
+        //   showed: true
+        // },
       ],
     }
   ]

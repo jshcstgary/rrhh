@@ -125,3 +125,38 @@ body {
     }
   }
 }
+
+.fixed-col {
+  position: -webkit-sticky; /* Para navegadores WebKit como Safari */
+  position: sticky;
+  left: 0;
+  background-color: #f4f4f4; /* Color de fondo para distinguir la columna fija */
+  z-index: 1; /* Asegura que la columna quede encima del resto del contenido */
+}
+
+thead th.fixed-col {
+  position: -webkit-sticky; /* Para navegadores WebKit como Safari */
+  position: sticky;
+  top: 0;
+  z-index: 2; /* Asegura que el encabezado fijo quede encima del resto del contenido */
+}
+
+.fixed-col-end {
+  position: -webkit-sticky; /* Para navegadores WebKit como Safari */
+  position: sticky;
+  right: 0;
+  // background-color: #f4f4f4; /* Color de fondo para distinguir la columna fija */
+  box-shadow: -5px 0 10px black;
+  z-index: 1; /* Asegura que la columna quede encima del resto del contenido */
+}
+
+thead th.fixed-col-end {
+  position: -webkit-sticky; /* Para navegadores WebKit como Safari */
+  position: sticky;
+  background-color: rgba(0, 86, 179);
+  color: white;
+  box-shadow: -5px 0 10px black;
+  top: 0;
+  right: 0;
+  z-index: 2; /* Asegura que el encabezado fijo quede encima del resto del contenido */
+}

@@ -15,7 +15,7 @@
             </div>
 
             <div class="col-md-4 text-end">
-              <button type="button" class="mr-10 fz-14 btn btn-info btn-icon-end" aria-label="Close" aria-label="Close">
+              <button type="button" class="mr-10 fz-14 btn btn-info btn-icon-end" aria-label="Close" aria-label="Close" [disabled]="validateData() || !validateNivelesAprobacion()">
                 <i class="fas fa-save"></i> Guardar
               </button>
               <!-- <button *ngIf="id_edit === undefined" type="button" class="mr-10 fz-14 btn btn-info btn-icon-end"

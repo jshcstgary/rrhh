@@ -3,7 +3,7 @@
     <div class="col-md-3 mb-3">
       <label class="azul mb-1">Tipo de Solicitud</label>
 
-      <ng-select [(ngModel)]="dataFilterNivelesAprobacion.tipoSolicitud" name="tipo-solicitud" placeholder="Seleccione">
+      <ng-select [(ngModel)]="dataFilterNivelesAprobacion.tipoSolicitud" name="tipo-solicitud" placeholder="Seleccione" (change)="onChangeTipoSolicitud()">
         <ng-option *ngFor="let car of dataTipoSolicitudes" [value]="car.id">
           {{ car.id }} - {{ car.descripcion }}
         </ng-option>
@@ -23,7 +23,7 @@
     <div class="col-md-3 mb-3">
       <label class="azul mb-1">Tipo Motivo</label>
 
-      <ng-select [(ngModel)]="dataFilterNivelesAprobacion.tipoMotivo" name="id_producto" placeholder="Seleccione">
+      <ng-select [(ngModel)]="dataFilterNivelesAprobacion.tipoMotivo" name="id_producto" placeholder="Seleccione" [disabled]="tipoMotivoDeshablitado">
         <ng-option *ngFor="let car of dataTipoMotivo" [value]="car.id">
           {{ car.id }} - {{ car.descripcion }}
         </ng-option>
@@ -92,7 +92,7 @@
 <!--
 
 666(onChangeActiveRecordsCheckbox)="onChangeActiveRecordsCheckbox($event)" -->
-<plantilla-b-component [dataFilterNivelesAprobacion]="dataFilterNivelesAprobacion" [dataTipoMotivo]="dataTipoMotivo"
+<!-- <plantilla-b-component [dataFilterNivelesAprobacion]="dataFilterNivelesAprobacion" [dataTipoMotivo]="dataTipoMotivo"
   [dataTipoSolicitudes]="dataTipoSolicitudes" [dataNivelDireccion]="dataNivelDireccion" *ngIf="hasFiltered"
   [columnsTable]="columnsTable" [originalDataTable]="activeRecords ? dataTableActive : dataTableInactive"
   [placeholderHeaderInputText]="'Buscar niveles de aprobacion...'" [contexto]="this" keyNameTable="id"
@@ -108,4 +108,4 @@
   [showCreateButton]="this.controlsPermissions[pageControlPermission.ButtonAgregar].visualizar"
   [showButtonExportar]="this.controlsPermissions[pageControlPermission.ButtonExportar].visualizar"
   [activeRecordsCheckbox]="activeRecords">
-</plantilla-b-component>
+</plantilla-b-component> -->

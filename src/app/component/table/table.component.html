@@ -2,7 +2,7 @@
   <table aria-label="" id="app-table-component" [style.width]="tableWidth">
     <thead>
       <tr>
-        <th *ngFor="let head of columns; let i = index"
+        <th [ngClass]="{'fixed-col-start': i === 0, 'fixed-col-end': columns.length === i + 1}"  *ngFor="let head of columns; let i = index"
           [ngStyle]="{ width: head.type === 'actions' && !showActionColumn ? 0 : head.width }">
           <div *ngIf="head.type === 'actions' && !showActionColumn; else columnShowed">
           </div>
@@ -34,7 +34,7 @@
     </thead>
     <tbody *ngIf="!isTableEmpty; else emptytable">
       <tr *ngFor="let row of data; let indexRow = index">
-        <td *ngFor="let head of columns; let indexCol = index">
+        <td [ngClass]="{'fixed-col-start': i === 0, 'fixed-col-end': columns.length === i + 1}" *ngFor="let head of columns; let i = index; let indexCol = index">
           <!-- Entra en caso la columna no este editando -->
           <div *ngIf="!row.isEditingRow; else cellInputRows">
             <!-- Valido si la columna es especial o solo presento la data normal -->

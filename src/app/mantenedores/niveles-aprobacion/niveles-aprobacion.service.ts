@@ -24,7 +24,7 @@ export class NivelesAprobacionService {
   }
 
   // Con headers
-  public filterNivelesAprobaciones(idTipoSolicitud: number, idTipoMotivo: number, idNivelDireccion: number, idTipoRuta: number, idTipoAccion: number): Observable<IConsultaNivelesAprobacionResponse> {
+  public filterNivelesAprobaciones(idTipoSolicitud: string, idTipoMotivo:string, idNivelDireccion:string, idTipoRuta:string, idTipoAccion:string): Observable<IConsultaNivelesAprobacionResponse> {
     const fromObject: any = {
       id_tipo_sol: idTipoSolicitud,
       id_tip_mot: idTipoMotivo,
