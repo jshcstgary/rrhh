@@ -7,6 +7,7 @@ $cell-padding: 12px 24px;
 @import "../../../assets/scss/variable";
 
 table {
+  width: 100%;
   box-shadow: 0px 4px 4px 0px #00000040;
   border-radius: $border-table-radius;
 }
@@ -22,6 +23,8 @@ th {
   /* estilos de celda */
   height: 44px;
   padding: $cell-padding;
+  min-width: 200px;
+  max-width: 300px;
 }
 
 td {
@@ -34,6 +37,8 @@ td {
   border-bottom: 0.5px solid #506385;
   background-color: #fff;
   color: #182844;
+  min-width: 200px;
+  max-width: 300px;
 }
 
 th:first-child {

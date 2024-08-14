@@ -120,6 +120,7 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
   isCheckedEntrevista: boolean = false;
 
   nombreCandidato: string = "";
+  candidatoLleno: boolean = false;
   codigoSolicitudProceso: string = "";
   disabledTipoProceso: boolean = false;
 
@@ -601,6 +602,8 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
         this.fechas.finProcesoFamiliares = candidatoValues.fechaFinContratacionFamiliares === null ? "" : this.getFormattedDate(candidatoValues.fechaFinContratacionFamiliares);
 
         this.nombreCandidato = candidatoValues.candidato;
+        console.log(candidatoValues.candidato === "");
+        this.candidatoLleno = candidatoValues.candidato === "";
       },
       error: (err) => {
         console.log(console.log(err));
@@ -721,7 +724,7 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
             this.uniqueTaskId = this.tareasPorCompletar[0].id;
             this.taskType_Activity = this.tareasPorCompletar[0].taskDefinitionKey;
             this.nameTask = this.tareasPorCompletar[0].name;
-            }        
+            }
             this.taskId = params["id"];
             // this.getDetalleSolicitudById(this.id_solicitud_by_params); // Si se comenta, causa problemas al abrir el Sweet Alert 2
             this.getSolicitudById(this.id_solicitud_by_params);
@@ -731,7 +734,7 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
             console.error(error);
           }
         });
-                   
+
       } else {
         // unique id is from the route params
         this.uniqueTaskId = params["id"];
@@ -1409,6 +1412,10 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
             this.disabledFechas.candidatoSeleccionado = this.fechas.candidatoSeleccionado !== null && this.fechas.candidatoSeleccionado !== "";
             this.disabledFechas.procesoContratacion = this.fechas.procesoContratacion !== null && this.fechas.procesoContratacion !== "";
             this.disabledFechas.finProcesoContratacion = this.fechas.finProcesoContratacion !== null && this.fechas.finProcesoContratacion !== "";
+
+            setTimeout(() => {
+              window.location.reload();
+            }, 3000);
           }
         });
       },

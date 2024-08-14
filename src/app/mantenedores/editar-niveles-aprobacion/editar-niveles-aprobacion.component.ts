@@ -28,6 +28,8 @@ export class EditarNivelesAprobacionComponent {
   public idNivelesAprobacionRuta: {
     [key: string]: string;
   } = {};
+
+  public dataRutasPorTipoRuta: { [idSolicitud: number]: any[] } = {};
   // public nivelesAprobacion = {
   //   nivelAprobacion1: {
   //     idNivelAprobacionRuta: "",
@@ -90,8 +92,8 @@ export class EditarNivelesAprobacionComponent {
   private getSelectValues(): void {
     this.utilService.openLoadingSpinner("Cargando información, espere por favor...");
 
-    forkJoin([this.mantenimientoService.getTipoSolicitud(), this.mantenimientoService.getRuta(), this.mantenimientoService.getTipoRuta(), this.mantenimientoService.getTipoMotivo(), this.mantenimientoService.getAccion(), this.mantenimientoService.getNivelesPorTipo("ND"), this.mantenimientoService.getCatalogo("RBPNA")]).subscribe({
-      next: ([tipoSolicitud, ruta, tipoRuta, tipoMotivo, accion, nivelDireccion, nivelAprobacion]) => {
+    forkJoin([this.mantenimientoService.getTipoSolicitud(), this.mantenimientoService.getTipoRuta(), this.mantenimientoService.getTipoMotivo(), this.mantenimientoService.getAccion(), this.mantenimientoService.getNivelesPorTipo("ND"), this.mantenimientoService.getCatalogo("RBPNA")]).subscribe({
+      next: ([tipoSolicitud, tipoRuta, tipoMotivo, accion, nivelDireccion, nivelAprobacion]) => {
         this.dataTipoSolicitudes = tipoSolicitud.tipoSolicitudType
           .filter(data => data.estado === "A")
           .map((r) => ({
@@ -114,12 +116,12 @@ export class EditarNivelesAprobacionComponent {
             descripcion: r.accion,
           }));
 
-        this.dataRuta = ruta
-          .filter(({ estado }) => estado === "A")
-          .map((r) => ({
-            id: r.id,
-            descripcion: r.ruta,
-          }));
+        // this.dataRuta = ruta
+        //   .filter(({ estado }) => estado === "A")
+        //   .map((r) => ({
+        //     id: r.id,
+        //     descripcion: r.ruta,
+        //   }));
 
         this.dataTipoRuta = tipoRuta.tipoRutaType
           .filter(({ estado }) => estado === "A")
@@ -174,9 +176,11 @@ export class EditarNivelesAprobacionComponent {
       //     }
       //   });
       // } else {
-        this.fillTable(nivelAprobacionType);
+      this.onChangeTipoRuta();
 
-        this.validateData();
+      this.fillTable(nivelAprobacionType);
+
+      this.validateData();
       // }
     });
   }
@@ -282,6 +286,25 @@ export class EditarNivelesAprobacionComponent {
             descripcion: r.accion,
           }));
         }
+      });
+    }
+  }
+
+  onChangeTipoRuta() {
+    if (!this.dataRutasPorTipoRuta[this.modelHead.idTipoRuta]) {
+      this.mantenimientoService.getRutasPorTipoRuta(this.modelHead.idTipoRuta).subscribe({
+        next: (response) => {
+          this.dataRuta = response;
+
+          this.idNivelesAprobacionRuta = {};
+
+          this.dataRuta.forEach(data => {
+            this.idNivelesAprobacionRuta[data.id] = "";
+          });
+        },
+        error: (error: HttpErrorResponse) => {
+          this.utilService.modalResponse(error.error, "error");
+        },
       });
     }
   }

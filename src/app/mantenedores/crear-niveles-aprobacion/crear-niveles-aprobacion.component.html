@@ -25,7 +25,7 @@
             <div class="col-md-6 mb-3">
               <label class="azul mb-1">Tipo Solicitud</label>
 
-              <select class="form-select" [(ngModel)]="modelHead.idTipoSolicitud" (change)="onChangeTipoSolicitud(modelHead.idTipoSolicitud)">
+              <select class="form-select" [(ngModel)]="modelHead.idTipoSolicitud" (change)="onChangeTipoSolicitud()">
                 <option *ngFor="let baseDeDatos of dataTipoSolicitudes" [value]="baseDeDatos.id" [selected]="modelHead.idTipoSolicitud === baseDeDatos.id">
                   {{ baseDeDatos.descripcion }}
                 </option>
@@ -36,8 +36,8 @@
               <label class="azul mb-1">Tipo Motivo</label>
 
               <select class="form-select" [(ngModel)]="modelHead.idTipoMotivo" [disabled]="desactivarTipoMotivoYAccion">
-                <option *ngFor="let baseDeDatos of dataTiposMotivosPorTipoSolicitud[tipoSolicitudSeleccionada]" [value]="baseDeDatos.id">
-                  {{ baseDeDatos.tipoMotivo }}
+                <option *ngFor="let baseDeDatos of dataTipoMotivo" [value]="baseDeDatos.id">
+                  {{ baseDeDatos.descripcion }}
                 </option>
               </select>
             </div>
@@ -46,8 +46,8 @@
               <label class="azul mb-1">Acción</label>
 
               <select class="form-select" [(ngModel)]="modelHead.idAccion" [disabled]="desactivarTipoMotivoYAccion">
-                <option *ngFor="let baseDeDatos of dataAccionesPorTipoSolicitud[tipoSolicitudSeleccionada]" [value]="baseDeDatos.id">
-                  {{ baseDeDatos.accion }}
+                <option *ngFor="let baseDeDatos of dataAccion" [value]="baseDeDatos.id">
+                  {{ baseDeDatos.descripcion }}
                 </option>
               </select>
             </div>

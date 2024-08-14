@@ -34,12 +34,12 @@
             type="button"
             (click)="onCompletar()"
             class="btn btn-info me-2 mt-1"
-            [disabled]="!isCheckedPerfil || !isCheckedBusquedaCandidato || !isCheckedFinContratacion || !isCheckedProcesoContratacion || !isCheckedCandidatoSeleccionado || !isCheckedTomaDecisiones || !isCheckedEntrevistaJefatura || !isCheckedEntregaJefe || !isCheckedElaboracionInforme || !isCheckedReferencias || !isCheckedPruebas || !isCheckedEntrevista || nombreCandidato === ''"
+            [disabled]="!disabledFechas.actualizacionPerfil || !disabledFechas.busquedaCandidatos || !disabledFechas.entrevista || !disabledFechas.pruebas || !disabledFechas.referencias || !disabledFechas.elaboracionInforme || !disabledFechas.entregaJefe || !disabledFechas.entrevistaJefatura || !disabledFechas.tomaDecisiones || !disabledFechas.candidatoSeleccionado || !disabledFechas.procesoContratacion || !disabledFechas.finProcesoContratacion || candidatoLleno"
           >
             <i class="fas fa-check-circle"></i> Completar Tarea
           </button>
         </div>
-        
+
         <!-- <div *ngIf="existeMatenedores" class="col-md-12 text-end">
           <button type="button" (click)="openModal('dialogReasignarUsuario')" class="btn btn-info me-2 mt-1">
             <i class="fas fa-redo"></i> Reasignar

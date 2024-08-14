@@ -8,6 +8,7 @@ import { UtilService } from "src/app/services/util/util.service";
 import { CrearNivelesAprobacionService } from "./crear-niveles-aprobacion.service";
 import { compileNgModule } from "@angular/compiler";
 import { NivelesAprobacionService } from "../niveles-aprobacion/niveles-aprobacion.service";
+import { forkJoin } from "rxjs";
 
 @Component({
   selector: "app-crear-niveles-aprobacion",
@@ -22,7 +23,7 @@ export class CrearNivelesAprobacionComponent implements OnInit {
   public dataTipoRuta: any[] = [];
   public dataNivelDireccion: any[] = [];
   public dataNivelAprobacion: any[] = [];
-  modelo: DatosNivelesAprobacion = new DatosNivelesAprobacion();
+  // modelo: DatosNivelesAprobacion = new DatosNivelesAprobacion();
   selected_tiposolicitud: number | string;
   selected_tipomotivo: number | string;
   selected_accion: number | string;
@@ -135,8 +136,8 @@ export class CrearNivelesAprobacionComponent implements OnInit {
 
   ngOnInit() {
     this.ObtenerServicioTipoSolicitud();
-    this.ObtenerServicioTipoMotivo();
-    this.ObtenerServicioAccion();
+    // this.ObtenerServicioTipoMotivo();
+    // this.ObtenerServicioAccion();
     // this.ObtenerServicioRuta();
     this.ObtenerServicioTipoRuta();
     this.ObtenerServicioNivelDireccion();
@@ -165,44 +166,75 @@ export class CrearNivelesAprobacionComponent implements OnInit {
     }
   }
 
-  onChangeTipoSolicitud(idTipoSolicitud: number) {
-    this.codigoTipoSolicitud = this.dataTipoSolicitudes.filter((data) => data.id == this.modelo.idTipoSolicitud)[0]?.codigoTipoSolicitud;
+  // onChangeTipoSolicitud(idTipoSolicitud: number) {
+  //   this.codigoTipoSolicitud = this.dataTipoSolicitudes.filter((data) => data.id == this.modelo.idTipoSolicitud)[0]?.codigoTipoSolicitud;
 
-    this.tipoSolicitudSeleccionada = idTipoSolicitud;
-    // this.desactivarTipoMotivoYAccion = this.restrictionsIds.includes(this.tipoSolicitudSeleccionada);
-    this.desactivarTipoMotivoYAccion = this.restrictionsIds.includes(this.codigoTipoSolicitud);
+  //   this.tipoSolicitudSeleccionada = idTipoSolicitud;
+  //   // this.desactivarTipoMotivoYAccion = this.restrictionsIds.includes(this.tipoSolicitudSeleccionada);
+  //   this.desactivarTipoMotivoYAccion = this.restrictionsIds.includes(this.codigoTipoSolicitud);
+
+  //   if (this.desactivarTipoMotivoYAccion) {
+  //     this.modelo.tipoMotivo = "";
+  //     this.modelo.idTipoMotivo = 0;
+  //     this.modelo.accion = "";
+  //     this.modelo.idAccion = 0;
+  //   }
+
+  //   if (!this.dataAccionesPorTipoSolicitud[idTipoSolicitud]) {
+  //     this.mantenimientoService
+  //       .getAccionesPorTipoSolicitud(idTipoSolicitud)
+  //       .subscribe({
+  //         next: (response) => {
+  //           this.dataAccionesPorTipoSolicitud[idTipoSolicitud] = response;
+  //         },
+  //         error: (error: HttpErrorResponse) => {
+  //           this.utilService.modalResponse(error.error, "error");
+  //         },
+  //       });
+  //   }
+
+  //   if (!this.dataTiposMotivosPorTipoSolicitud[idTipoSolicitud]) {
+  //     this.mantenimientoService
+  //       .getTiposMotivosPorTipoSolicitud(idTipoSolicitud)
+  //       .subscribe({
+  //         next: (response) => {
+  //           this.dataTiposMotivosPorTipoSolicitud[idTipoSolicitud] = response;
+  //         },
+  //         error: (error: HttpErrorResponse) => {
+  //           this.utilService.modalResponse(error.error, "error");
+  //         },
+  //       });
+  //   }
+  // }
+
+  onChangeTipoSolicitud() {
+    const codigoTipoSolicitud = this.dataTipoSolicitudes.find((data) => data.id == this.modelHead.idTipoSolicitud)!.codigoTipoSolicitud;
+
+    this.desactivarTipoMotivoYAccion = this.restrictionsIds.includes(codigoTipoSolicitud);
 
     if (this.desactivarTipoMotivoYAccion) {
-      this.modelo.tipoMotivo = "";
-      this.modelo.idTipoMotivo = 0;
-      this.modelo.accion = "";
-      this.modelo.idAccion = 0;
+      this.modelHead.idTipoMotivo = 0;
+      this.modelHead.idTipoMotivo = 0;
+      this.modelHead.idAccion = 0;
+      this.modelHead.idAccion = 0;
     }
 
-    if (!this.dataAccionesPorTipoSolicitud[idTipoSolicitud]) {
-      this.mantenimientoService
-        .getAccionesPorTipoSolicitud(idTipoSolicitud)
-        .subscribe({
-          next: (response) => {
-            this.dataAccionesPorTipoSolicitud[idTipoSolicitud] = response;
-          },
-          error: (error: HttpErrorResponse) => {
-            this.utilService.modalResponse(error.error, "error");
-          },
-        });
-    }
+    if (!this.desactivarTipoMotivoYAccion) {
+      forkJoin([this.mantenimientoService.getTiposMotivosPorTipoSolicitud(this.modelHead.idTipoSolicitud), this.mantenimientoService.getAccionesPorTipoSolicitud(this.modelHead.idTipoSolicitud)]).subscribe({
+        next: ([tipoMotivo, accion]) => {
+          this.dataTipoMotivo = tipoMotivo
+            .filter(data => data.estado === "A")
+            .map((r) => ({
+              id: r.id,
+              descripcion: r.tipoMotivo,
+            }));
 
-    if (!this.dataTiposMotivosPorTipoSolicitud[idTipoSolicitud]) {
-      this.mantenimientoService
-        .getTiposMotivosPorTipoSolicitud(idTipoSolicitud)
-        .subscribe({
-          next: (response) => {
-            this.dataTiposMotivosPorTipoSolicitud[idTipoSolicitud] = response;
-          },
-          error: (error: HttpErrorResponse) => {
-            this.utilService.modalResponse(error.error, "error");
-          },
-        });
+          this.dataAccion = accion.map((r) => ({
+            id: r.id,
+            descripcion: r.accion,
+          }));
+        }
+      });
     }
   }
 

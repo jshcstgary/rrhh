@@ -104,11 +104,11 @@ export class NivelesAprobacionComponent implements OnInit {
     tipoSolicitud: "",
     nivelDireccion: "",
     tipoRuta: "",
-    tipoAccion: ""
+    accion: ""
   };
   public dataTipoMotivo: any[] = [];
   public dataTipoRuta: any[] = [];
-  public dataTipoAccion: any[] = [];
+  public dataAccion: any[] = [];
   public dataTipoSolicitudes: any[] = [];
   public dataNivelDireccion: any[] = [];
 
@@ -138,7 +138,7 @@ export class NivelesAprobacionComponent implements OnInit {
     this.ObtenerServicioNivelDireccion();
     this.ObtenerServicioTipoMotivo();
     this.ObtenerServicioTipoRuta();
-    this.ObtenerServicioTipoAccion();
+    this.ObtenerServicioAccion();
     // this.getDataToTable();
   }
 
@@ -249,7 +249,7 @@ export class NivelesAprobacionComponent implements OnInit {
 
     this.utilService.openLoadingSpinner("Cargando información, espere por favor...");
 
-    this.nivelesAprobacionService.filterNivelesAprobaciones(this.dataFilterNivelesAprobacion.tipoSolicitud, this.dataFilterNivelesAprobacion.tipoMotivo, this.dataFilterNivelesAprobacion.nivelDireccion, this.dataFilterNivelesAprobacion.tipoRuta, this.dataFilterNivelesAprobacion.tipoAccion).subscribe({
+    this.nivelesAprobacionService.filterNivelesAprobaciones(this.dataFilterNivelesAprobacion.tipoSolicitud, this.dataFilterNivelesAprobacion.tipoMotivo, this.dataFilterNivelesAprobacion.nivelDireccion, this.dataFilterNivelesAprobacion.tipoRuta, this.dataFilterNivelesAprobacion.accion).subscribe({
       next: (response) => {
         if (response.totalRegistros === 0) {
           this.dataTable = [];
@@ -304,21 +304,11 @@ export class NivelesAprobacionComponent implements OnInit {
           }
         });
 
-        console.log(this.nivelesAprobacion);
-
-        // this.nivelesAprobacionService.nivelesAprobacion = [
-        //   {
-        //     ...dataTable,
-        //     tipoRuta: tipoRutaColumn,
-        //     tipoSolicitud: this.dataTipoSolicitudes.find(data => data.id === this.dataFilterNivelesAprobacion.tipoSolicitud).descripcion
-        //   }
-        // ];
-
         this.dataTable = [
           {
             ...dataTable,
             tipoRuta: tipoRutaColumn,
-            tipoSolicitud: this.dataTipoSolicitudes.find(data => data.id === this.dataFilterNivelesAprobacion.tipoSolicitud).descripcion
+            tipoSolicitud: this.dataTipoSolicitudes.find(data => data.id.toString() === this.dataFilterNivelesAprobacion.tipoSolicitud).descripcion
           }
         ];
 
@@ -421,14 +411,14 @@ export class NivelesAprobacionComponent implements OnInit {
     });
   }
 
-  ObtenerServicioTipoAccion() {
-    return this.mantenimientoService.getTipoAccion().subscribe({
+  ObtenerServicioAccion() {
+    return this.mantenimientoService.getAccion().subscribe({
       next: (response) => {
-        this.dataTipoAccion = response
+        this.dataAccion = response
           .filter(({ estado }) => estado === "A")
           .map((r) => ({
             id: r.id,
-            descripcion: r.tipoAccion,
+            descripcion: r.accion,
           }));
       },
       error: (error: HttpErrorResponse) => {

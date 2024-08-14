@@ -3,14 +3,64 @@
     <div class="col-md-3 mb-3">
       <label class="azul mb-1">Tipo de Solicitud</label>
 
+      <select class="form-select" [(ngModel)]="dataFilterNivelesAprobacion.tipoSolicitud" (change)="onChangeTipoSolicitud()">
+        <option *ngFor="let tipoSolicitud of dataTipoSolicitudes" [value]="tipoSolicitud.id">
+          {{ tipoSolicitud.id }} - {{ tipoSolicitud.descripcion }}
+        </option>
+      </select>
+    </div>
+
+    <div class="col-md-3 mb-3">
+      <label class="azul mb-1">Nive de Dirección</label>
+
+      <select class="form-select" [(ngModel)]="dataFilterNivelesAprobacion.nivelDireccion">
+        <option *ngFor="let nivelDireccion of dataNivelDireccion" [value]="nivelDireccion">
+          {{ nivelDireccion }}
+        </option>
+      </select>
+    </div>
+
+    <div class="col-md-3 mb-3">
+      <label class="azul mb-1">Tipo Motivo</label>
+
+      <select class="form-select" [(ngModel)]="dataFilterNivelesAprobacion.tipoMotivo">
+        <option *ngFor="let tipoMotivo of dataTipoMotivo" [value]="tipoMotivo.id">
+          {{ tipoMotivo.id }} - {{ tipoMotivo.descripcion }}
+        </option>
+      </select>
+    </div>
+
+    <div class="col-md-3 mb-3">
+      <label class="azul mb-1">Tipo de Ruta</label>
+
+      <select class="form-select" [(ngModel)]="dataFilterNivelesAprobacion.tipoRuta">
+        <option *ngFor="let tipoRuta of dataTipoRuta" [value]="tipoRuta.id">
+          {{ tipoRuta.descripcion }}
+        </option>
+      </select>
+    </div>
+
+    <div class="col-md-3 mb-3">
+      <label class="azul mb-1">Acción</label>
+
+      <select class="form-select" [(ngModel)]="dataFilterNivelesAprobacion.accion">
+        <option *ngFor="let accion of dataAccion" [value]="accion.id">
+          {{ accion.descripcion }}
+        </option>
+      </select>
+    </div>
+
+    <!-- <div class="col-md-3 mb-3">
+      <label class="azul mb-1">Tipo de Solicitud</label>
+
       <ng-select [(ngModel)]="dataFilterNivelesAprobacion.tipoSolicitud" name="tipo-solicitud" placeholder="Seleccione" (change)="onChangeTipoSolicitud()">
         <ng-option *ngFor="let car of dataTipoSolicitudes" [value]="car.id">
           {{ car.id }} - {{ car.descripcion }}
         </ng-option>
       </ng-select>
-    </div>
+    </div> -->
 
-    <div class="col-md-3 mb-3">
+    <!-- <div class="col-md-3 mb-3">
       <label class="azul mb-1">Nivel de Direccion</label>
 
       <ng-select [(ngModel)]="dataFilterNivelesAprobacion.nivelDireccion" name="id_trabajador" placeholder="Seleccione">
@@ -18,9 +68,9 @@
           {{ data }}
         </ng-option>
       </ng-select>
-    </div>
+    </div> -->
 
-    <div class="col-md-3 mb-3">
+    <!-- <div class="col-md-3 mb-3">
       <label class="azul mb-1">Tipo Motivo</label>
 
       <ng-select [(ngModel)]="dataFilterNivelesAprobacion.tipoMotivo" name="id_producto" placeholder="Seleccione" [disabled]="tipoMotivoDeshablitado">
@@ -28,9 +78,9 @@
           {{ car.id }} - {{ car.descripcion }}
         </ng-option>
       </ng-select>
-    </div>
+    </div> -->
 
-    <div class="col-md-3 mb-3">
+    <!-- <div class="col-md-3 mb-3">
       <label class="azul mb-1">Tipo de Ruta</label>
 
       <ng-select [(ngModel)]="dataFilterNivelesAprobacion.tipoRuta" name="id_trabajador" placeholder="Seleccione">
@@ -38,9 +88,9 @@
           {{ data.descripcion }}
         </ng-option>
       </ng-select>
-    </div>
+    </div> -->
 
-    <div class="col-md-3 mb-3">
+    <!-- <div class="col-md-3 mb-3">
       <label class="azul mb-1">Tipo de Acción</label>
 
       <ng-select [(ngModel)]="dataFilterNivelesAprobacion.tipoAccion" name="id_trabajador" placeholder="Seleccione">
@@ -48,7 +98,7 @@
           {{ data.descripcion }}
         </ng-option>
       </ng-select>
-    </div>
+    </div> -->
 
     <div *ngIf="this.controlsPermissions[pageControlPermission.ButtonBuscar].visualizar" class="col-md-3 ms-auto align-self-center">
       <div class="text-end">
