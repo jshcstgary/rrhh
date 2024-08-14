@@ -24,13 +24,13 @@ export class NivelesAprobacionService {
   }
 
   // Con headers
-  public filterNivelesAprobaciones(idTipoSolicitud: string, idTipoMotivo:string, idNivelDireccion:string, idTipoRuta:string, idTipoAccion:string): Observable<IConsultaNivelesAprobacionResponse> {
+  public filterNivelesAprobaciones(idTipoSolicitud: string, idTipoMotivo:string, idNivelDireccion:string, idTipoRuta:string, idAccion:string): Observable<IConsultaNivelesAprobacionResponse> {
     const fromObject: any = {
       id_tipo_sol: idTipoSolicitud,
       id_tip_mot: idTipoMotivo,
       IdNivelDireccion: idNivelDireccion,
-      idTipoRuta,
-      idTipoAccion
+      id_tip_ruta: idTipoRuta === "" ? 10000 : idTipoRuta,
+      id_accion: idAccion === "" ? 10000 : idAccion
     };
 
     const httpParams: HttpParamsOptions = { fromObject } as HttpParamsOptions;
@@ -40,31 +40,4 @@ export class NivelesAprobacionService {
       }
     );
   }
-
-  /*
-
-    public filterNivelesAprobaciones(
-  idTipoSolicitud: any,
-  idTipoMotivo: any,
-  idNivelDireccion: any
-): Observable<IConsultaNivelesAprobacionResponse> {
-  const headers = new HttpHeaders().set('IdNivelDireccion', idNivelDireccion);
-  return this.http.get<IConsultaNivelesAprobacionResponse>(
-    `${this.apiUrlNivelAprobacion}/${idTipoSolicitud}/${idTipoMotivo}`,
-    { headers: headers }
-  );
-}
-
-  */
-
-  // Sin headers
-  /*public filterNivelesAprobaciones(
-    idTipoSolicitud: any,
-    idTipoMotivo: any,
-    idNivelDireccion: any
-  ): Observable<IConsultaNivelesAprobacionResponse> {
-    return this.http.get<IConsultaNivelesAprobacionResponse>(
-      `${this.apiUrlNivelAprobacion}/${idTipoSolicitud}/${idTipoMotivo}/${idNivelDireccion}`
-    );
-  }*/
 }

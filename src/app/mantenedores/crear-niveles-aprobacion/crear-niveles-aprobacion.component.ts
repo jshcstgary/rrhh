@@ -40,44 +40,47 @@ export class CrearNivelesAprobacionComponent implements OnInit {
     idNivelDireccion: ""
   };
 
-  public nivelesAprobacion = {
-    nivelAprobacion1: {
-      idNivelAprobacionRuta: "",
-      idTipoRuta: 0,
-      idRuta: 0,
-      estado: true
-    },
-    nivelAprobacion2: {
-      idNivelAprobacionRuta: "",
-      idTipoRuta: 0,
-      idRuta: 0,
-      estado: true
-    },
-    nivelAprobacion3: {
-      idNivelAprobacionRuta: "",
-      idTipoRuta: 0,
-      idRuta: 0,
-      estado: true
-    },
-    nivelAprobacion4: {
-      idNivelAprobacionRuta: "",
-      idTipoRuta: 0,
-      idRuta: 0,
-      estado: true
-    },
-    nivelAprobacionRRHH: {
-      idNivelAprobacionRuta: "",
-      idTipoRuta: 0,
-      idRuta: 0,
-      estado: true
-    },
-    nivelAprobacionComite: {
-      idNivelAprobacionRuta: "",
-      idTipoRuta: 0,
-      idRuta: 0,
-      estado: true
-    }
-  };
+  public idNivelesAprobacionRuta: {
+    [key: string]: string;
+  } = {};
+  // public nivelesAprobacion = {
+  //   nivelAprobacion1: {
+  //     idNivelAprobacionRuta: "",
+  //     idTipoRuta: 0,
+  //     idRuta: 0,
+  //     estado: true
+  //   },
+  //   nivelAprobacion2: {
+  //     idNivelAprobacionRuta: "",
+  //     idTipoRuta: 0,
+  //     idRuta: 0,
+  //     estado: true
+  //   },
+  //   nivelAprobacion3: {
+  //     idNivelAprobacionRuta: "",
+  //     idTipoRuta: 0,
+  //     idRuta: 0,
+  //     estado: true
+  //   },
+  //   nivelAprobacion4: {
+  //     idNivelAprobacionRuta: "",
+  //     idTipoRuta: 0,
+  //     idRuta: 0,
+  //     estado: true
+  //   },
+  //   nivelAprobacionRRHH: {
+  //     idNivelAprobacionRuta: "",
+  //     idTipoRuta: 0,
+  //     idRuta: 0,
+  //     estado: true
+  //   },
+  //   nivelAprobacionComite: {
+  //     idNivelAprobacionRuta: "",
+  //     idTipoRuta: 0,
+  //     idRuta: 0,
+  //     estado: true
+  //   }
+  // };
 
   public desactivarTipoMotivoYAccion = false;
 
@@ -85,8 +88,6 @@ export class CrearNivelesAprobacionComponent implements OnInit {
   public restrictionsIds: any[] = ["RG", "CF", "AP"];
 
   public tipoSolicitudSeleccionada: any;
-
-  public tipoRutaSeleccionada: any;
 
   public dataTiposMotivosPorTipoSolicitud: { [idSolicitud: number]: any[] } =
     {};
@@ -113,50 +114,49 @@ export class CrearNivelesAprobacionComponent implements OnInit {
     });
   }
 
-  getNivelById() {
-    this.utilService.openLoadingSpinner("Cargando información, espere por favor...");
+  // getNivelById() {
+  //   this.utilService.openLoadingSpinner("Cargando información, espere por favor...");
 
-    this.serviceNivelesAprobacion.getNivelById(this.id_edit).subscribe((data) => {
-      this.modelo = {
-        ...data,
-        estado: data.estado === "A"
-      };
+  //   this.serviceNivelesAprobacion.getNivelById(this.id_edit).subscribe((data) => {
+  //     this.modelo = {
+  //       ...data,
+  //       estado: data.estado === "A"
+  //     };
 
-      this.desactivarTipoMotivoYAccion = this.restrictionsIds.includes(this.modelo.idTipoSolicitud);
+  //     this.desactivarTipoMotivoYAccion = this.restrictionsIds.includes(this.modelo.idTipoSolicitud);
 
-      this.onChangeTipoSolicitud(this.modelo.idTipoSolicitud);
+  //     this.onChangeTipoSolicitud(this.modelo.idTipoSolicitud);
 
-      this.onChangeTipoRuta(this.modelo.idTipoRuta);
+  //     this.onChangeTipoRuta(this.modelo.idTipoRuta);
 
-      this.utilService.closeLoadingSpinner();
-    });
-  }
+  //     this.utilService.closeLoadingSpinner();
+  //   });
+  // }
 
   ngOnInit() {
     this.ObtenerServicioTipoSolicitud();
     this.ObtenerServicioTipoMotivo();
     this.ObtenerServicioAccion();
-    this.ObtenerServicioRuta();
+    // this.ObtenerServicioRuta();
     this.ObtenerServicioTipoRuta();
     this.ObtenerServicioNivelDireccion();
     this.ObtenerServicioNivelAprobacion();
-    if (this.id_edit !== undefined) {
-      this.getNivelById();
-    }
+    // if (this.id_edit !== undefined) {
+    //   this.getNivelById();
+    // }
   }
 
-  onChangeTipoRuta(idTipoRuta: number) {
-    /*public dataTipoSolicitudes: any[] = [
-        { id: 1, descripcion: "Requisición de Personal" },
-        { id: 2, descripcion: "Contratación de Familiares" },
-        { id: 3, descripcion: "Reingreso de personal" },
-        { id: 4, descripcion: "Acción de Personal" },
-      ];*/
-    this.tipoRutaSeleccionada = idTipoRuta;
-    if (!this.dataRutasPorTipoRuta[idTipoRuta]) {
-      this.mantenimientoService.getRutasPorTipoRuta(idTipoRuta).subscribe({
+  onChangeTipoRuta() {
+    if (!this.dataRutasPorTipoRuta[this.modelHead.idTipoRuta]) {
+      this.mantenimientoService.getRutasPorTipoRuta(this.modelHead.idTipoRuta).subscribe({
         next: (response) => {
-          this.dataRutasPorTipoRuta[idTipoRuta] = response;
+          this.dataRuta = response;
+
+          this.idNivelesAprobacionRuta = {};
+
+          this.dataRuta.forEach(data => {
+            this.idNivelesAprobacionRuta[data.id] = "";
+          });
         },
         error: (error: HttpErrorResponse) => {
           this.utilService.modalResponse(error.error, "error");
@@ -256,10 +256,12 @@ export class CrearNivelesAprobacionComponent implements OnInit {
   ObtenerServicioRuta() {
     return this.mantenimientoService.getRuta().subscribe({
       next: (response) => {
-        this.dataRuta = response.map((r) => ({
-          id: r.id,
-          descripcion: r.ruta,
-        })); //verificar la estructura mmunoz
+        this.dataRuta = response
+          .filter(({ estado }) => estado === "A")
+          .map((r) => ({
+            id: r.id,
+            descripcion: r.ruta,
+          }));
       },
       error: (error: HttpErrorResponse) => {
         this.utilService.modalResponse(error.error, "error");
@@ -377,45 +379,40 @@ export class CrearNivelesAprobacionComponent implements OnInit {
   }
 
   public validateNivelesAprobacion(): boolean {
-    return Object.values(this.nivelesAprobacion).some(({ idNivelAprobacionRuta }) => idNivelAprobacionRuta !== "");
+    return Object.values(this.idNivelesAprobacionRuta).some((idNivelAprobacionRuta) => idNivelAprobacionRuta !== "");
   }
 
   procesarNivelAprobacion() {
-    const nivelesAprobacion = Object.values(this.nivelesAprobacion)
-      .filter(({ idNivelAprobacionRuta }) => idNivelAprobacionRuta !== "")
-      .map(nivelAprobacion => {
+    const nivelesAprobacion = Object.entries(this.idNivelesAprobacionRuta)
+      .filter(([_, value]) => value !== "")
+      .map(([key, value]) => {
         let modelo: DatosNivelesAprobacion = new DatosNivelesAprobacion();
 
         modelo = {
           ...modelo,
           ...this.modelHead,
-          ...nivelAprobacion,
+          idRuta: parseInt(key),
+          idNivelAprobacionRuta: value,
           estado: "A"
         };
 
         return modelo;
       });
 
-    console.log(nivelesAprobacion);
+    this.serviceNivelesAprobacion.guardarNivelesAprobacion(nivelesAprobacion).subscribe({
+      next: () => {
+        this.utilService.closeLoadingSpinner();
 
-    // this.route.params.subscribe((params) => {
-    //   this.serviceNivelesAprobacion.guardarNivelAprobacion(nivelesAprobacion).subscribe({
-    //     next: (response) => {
-    //       this.utilService.closeLoadingSpinner();
+        this.utilService.modalResponse("Datos ingresados correctamente", "success");
 
-    //       this.utilService.modalResponse("Datos ingresados correctamente", "success");
-
-    //       setTimeout(() => {
-    //         this.router.navigate(["/mantenedores/niveles-aprobacion"]);
-    //       }, 2000);
-    //     },
-    //     error: (error: HttpErrorResponse) => {
-    //       this.utilService.modalResponse(error.error, "error");
-    //     }
-    //   });
-    // });
-
-    return;
+        setTimeout(() => {
+          this.router.navigate(["/mantenedores/niveles-aprobacion"]);
+        }, 2000);
+      },
+      error: (error: HttpErrorResponse) => {
+        this.utilService.modalResponse(error.error, "error");
+      }
+    });
 
     // this.utilService.openLoadingSpinner("Guardando información, espere por favor...");
 
@@ -459,13 +456,5 @@ export class CrearNivelesAprobacionComponent implements OnInit {
     //     this.utilService.modalResponse(error.error, "error");
     //   }
     // });
-  }
-
-  public onChangeNivelAprobacion({ idRuta, idTipoRuta, nivelAprobacionProperty }: { nivelAprobacionProperty: string, idTipoRuta: number, idRuta: string }): void {
-    this.nivelesAprobacion[nivelAprobacionProperty] = {
-      ...this.nivelesAprobacion[nivelAprobacionProperty],
-      idTipoRuta,
-      idRuta
-    }
   }
 }

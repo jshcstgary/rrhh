@@ -25,44 +25,47 @@ export class EditarNivelesAprobacionComponent {
 
   public desactivarTipoMotivoYAccion: boolean = false;
 
-  public nivelesAprobacion = {
-    nivelAprobacion1: {
-      idNivelAprobacionRuta: "",
-      idTipoRuta: 0,
-      idRuta: 0,
-      estado: false
-    },
-    nivelAprobacion2: {
-      idNivelAprobacionRuta: "",
-      idTipoRuta: 0,
-      idRuta: 0,
-      estado: false
-    },
-    nivelAprobacion3: {
-      idNivelAprobacionRuta: "",
-      idTipoRuta: 0,
-      idRuta: 0,
-      estado: false
-    },
-    nivelAprobacion4: {
-      idNivelAprobacionRuta: "",
-      idTipoRuta: 0,
-      idRuta: 0,
-      estado: false
-    },
-    nivelAprobacionRRHH: {
-      idNivelAprobacionRuta: "",
-      idTipoRuta: 0,
-      idRuta: 0,
-      estado: false
-    },
-    nivelAprobacionComite: {
-      idNivelAprobacionRuta: "",
-      idTipoRuta: 0,
-      idRuta: 0,
-      estado: false
-    }
-  };
+  public idNivelesAprobacionRuta: {
+    [key: string]: string;
+  } = {};
+  // public nivelesAprobacion = {
+  //   nivelAprobacion1: {
+  //     idNivelAprobacionRuta: "",
+  //     idTipoRuta: 0,
+  //     idRuta: 0,
+  //     estado: false
+  //   },
+  //   nivelAprobacion2: {
+  //     idNivelAprobacionRuta: "",
+  //     idTipoRuta: 0,
+  //     idRuta: 0,
+  //     estado: false
+  //   },
+  //   nivelAprobacion3: {
+  //     idNivelAprobacionRuta: "",
+  //     idTipoRuta: 0,
+  //     idRuta: 0,
+  //     estado: false
+  //   },
+  //   nivelAprobacion4: {
+  //     idNivelAprobacionRuta: "",
+  //     idTipoRuta: 0,
+  //     idRuta: 0,
+  //     estado: false
+  //   },
+  //   nivelAprobacionRRHH: {
+  //     idNivelAprobacionRuta: "",
+  //     idTipoRuta: 0,
+  //     idRuta: 0,
+  //     estado: false
+  //   },
+  //   nivelAprobacionComite: {
+  //     idNivelAprobacionRuta: "",
+  //     idTipoRuta: 0,
+  //     idRuta: 0,
+  //     estado: false
+  //   }
+  // };
 
   public modelHead = {
     idTipoSolicitud: 0,
@@ -87,8 +90,8 @@ export class EditarNivelesAprobacionComponent {
   private getSelectValues(): void {
     this.utilService.openLoadingSpinner("Cargando información, espere por favor...");
 
-    forkJoin([this.mantenimientoService.getTipoSolicitud(), this.mantenimientoService.getRuta(), this.mantenimientoService.getTipoRuta(), this.mantenimientoService.getNivelesPorTipo("ND"), this.mantenimientoService.getCatalogo("RBPNA")]).subscribe({
-      next: ([tipoSolicitud, ruta, tipoRuta, nivelDireccion, nivelAprobacion]) => {
+    forkJoin([this.mantenimientoService.getTipoSolicitud(), this.mantenimientoService.getRuta(), this.mantenimientoService.getTipoRuta(), this.mantenimientoService.getTipoMotivo(), this.mantenimientoService.getAccion(), this.mantenimientoService.getNivelesPorTipo("ND"), this.mantenimientoService.getCatalogo("RBPNA")]).subscribe({
+      next: ([tipoSolicitud, ruta, tipoRuta, tipoMotivo, accion, nivelDireccion, nivelAprobacion]) => {
         this.dataTipoSolicitudes = tipoSolicitud.tipoSolicitudType
           .filter(data => data.estado === "A")
           .map((r) => ({
@@ -97,22 +100,26 @@ export class EditarNivelesAprobacionComponent {
             codigoTipoSolicitud: r.codigoTipoSolicitud
           }));
 
-        // this.dataTipoMotivo = tipoMotivo
-        //   .filter(data => data.estado === "A")
-        //   .map((r) => ({
-        //     id: r.id,
-        //     descripcion: r.tipoMotivo,
-        //   }));
+        this.dataTipoMotivo = tipoMotivo
+          .filter(data => data.estado === "A")
+          .map((r) => ({
+            id: r.id,
+            descripcion: r.tipoMotivo,
+          }));
 
-        // this.dataAccion = accion.map((r) => ({
-        //   id: r.id,
-        //   descripcion: r.accion,
-        // }));
+        this.dataAccion = accion
+          .filter(({ estado }) => estado === "A")
+          .map((r) => ({
+            id: r.id,
+            descripcion: r.accion,
+          }));
 
-        this.dataRuta = ruta.map((r) => ({
-          id: r.id,
-          descripcion: r.ruta,
-        }));
+        this.dataRuta = ruta
+          .filter(({ estado }) => estado === "A")
+          .map((r) => ({
+            id: r.id,
+            descripcion: r.ruta,
+          }));
 
         this.dataTipoRuta = tipoRuta.tipoRutaType
           .filter(({ estado }) => estado === "A")
@@ -134,97 +141,131 @@ export class EditarNivelesAprobacionComponent {
   }
 
   private getNivelesById() {
-    this.serviceNivelesAprobacion.getNivelesById(this.id_edit).subscribe((data) => {
-      this.modelHead.idTipoSolicitud = data[0].idTipoSolicitud;
-      this.modelHead.idTipoRuta = data[0].idTipoRuta;
-      this.modelHead.idNivelDireccion = data[0].idNivelDireccion;
+    this.serviceNivelesAprobacion.getNivelesById(this.id_edit).subscribe(({ nivelAprobacionType }) => {
+      this.modelHead.idTipoSolicitud = nivelAprobacionType[0].idTipoSolicitud;
+      this.modelHead.idTipoRuta = nivelAprobacionType[0].idTipoRuta;
+      this.modelHead.idNivelDireccion = nivelAprobacionType[0].idNivelDireccion;
+      this.modelHead.idTipoMotivo = nivelAprobacionType[0].idTipoMotivo;
+      this.modelHead.idAccion = nivelAprobacionType[0].idAccion;
 
       const codigoTipoSolicitud = this.dataTipoSolicitudes.find(data => data.id === this.modelHead.idTipoSolicitud)!.codigoTipoSolicitud;
       const restricted = this.restrictionsIds.includes(codigoTipoSolicitud);
 
       this.desactivarTipoMotivoYAccion = restricted;
 
-      if (!this.desactivarTipoMotivoYAccion) {
-        forkJoin([this.mantenimientoService.getTipoMotivo(), this.mantenimientoService.getAccion()]).subscribe({
-          next: ([tipoMotivo, accion]) => {
-            this.dataTipoMotivo = tipoMotivo
-              .filter(data => data.estado === "A")
-              .map((r) => ({
-                id: r.id,
-                descripcion: r.tipoMotivo,
-              }));
+      // if (!this.desactivarTipoMotivoYAccion) {
+      //   forkJoin([this.mantenimientoService.getTipoMotivo(), this.mantenimientoService.getAccion()]).subscribe({
+      //     next: ([tipoMotivo, accion]) => {
+      //       this.dataTipoMotivo = tipoMotivo
+      //         .filter(data => data.estado === "A")
+      //         .map((r) => ({
+      //           id: r.id,
+      //           descripcion: r.tipoMotivo,
+      //         }));
 
-            this.dataAccion = accion.map((r) => ({
-              id: r.id,
-              descripcion: r.accion,
-            }));
+      //       this.dataAccion = accion.map((r) => ({
+      //         id: r.id,
+      //         descripcion: r.accion,
+      //       }));
 
-            this.fillTable(data);
+      //       this.fillTable(nivelAprobacionType);
 
-            this.validateData();
-          }
-        });
-      } else {
-        this.fillTable(data);
+      //       this.validateData();
+      //     }
+      //   });
+      // } else {
+        this.fillTable(nivelAprobacionType);
 
         this.validateData();
-      }
+      // }
     });
   }
 
   private fillTable(nivelesAprobaciones: any) {
-    nivelesAprobaciones.forEach(({ idNivelAprobacionRuta, ruta, tipoRuta }) => {
-      if (ruta.includes("1")) {
-        this.nivelesAprobacion.nivelAprobacion1.idNivelAprobacionRuta = idNivelAprobacionRuta;
-        this.nivelesAprobacion.nivelAprobacion1.estado = true;
-        this.nivelesAprobacion.nivelAprobacion1.idRuta = ruta;
-        this.nivelesAprobacion.nivelAprobacion1.idTipoRuta = tipoRuta;
-      }
+    // nivelesAprobaciones.forEach(({ idNivelAprobacionRuta, ruta, tipoRuta }) => {
+    //   if (ruta.includes("1")) {
+    //     this.nivelesAprobacion.nivelAprobacion1.idNivelAprobacionRuta = idNivelAprobacionRuta;
+    //     this.nivelesAprobacion.nivelAprobacion1.estado = true;
+    //     this.nivelesAprobacion.nivelAprobacion1.idRuta = ruta;
+    //     this.nivelesAprobacion.nivelAprobacion1.idTipoRuta = tipoRuta;
+    //   }
 
-      if (ruta.includes("2")) {
-        this.nivelesAprobacion.nivelAprobacion2.idNivelAprobacionRuta = idNivelAprobacionRuta;
-        this.nivelesAprobacion.nivelAprobacion2.estado = true;
-        this.nivelesAprobacion.nivelAprobacion2.idRuta = ruta;
-        this.nivelesAprobacion.nivelAprobacion2.idTipoRuta = tipoRuta;
-      }
+    //   if (ruta.includes("2")) {
+    //     this.nivelesAprobacion.nivelAprobacion2.idNivelAprobacionRuta = idNivelAprobacionRuta;
+    //     this.nivelesAprobacion.nivelAprobacion2.estado = true;
+    //     this.nivelesAprobacion.nivelAprobacion2.idRuta = ruta;
+    //     this.nivelesAprobacion.nivelAprobacion2.idTipoRuta = tipoRuta;
+    //   }
 
-      if (ruta.includes("3")) {
-        this.nivelesAprobacion.nivelAprobacion3.idNivelAprobacionRuta = idNivelAprobacionRuta;
-        this.nivelesAprobacion.nivelAprobacion3.estado = true;
-        this.nivelesAprobacion.nivelAprobacion3.idRuta = ruta;
-        this.nivelesAprobacion.nivelAprobacion3.idTipoRuta = tipoRuta;
-      }
+    //   if (ruta.includes("3")) {
+    //     this.nivelesAprobacion.nivelAprobacion3.idNivelAprobacionRuta = idNivelAprobacionRuta;
+    //     this.nivelesAprobacion.nivelAprobacion3.estado = true;
+    //     this.nivelesAprobacion.nivelAprobacion3.idRuta = ruta;
+    //     this.nivelesAprobacion.nivelAprobacion3.idTipoRuta = tipoRuta;
+    //   }
 
-      if (ruta.includes("4")) {
-        this.nivelesAprobacion.nivelAprobacion4.idNivelAprobacionRuta = idNivelAprobacionRuta;
-        this.nivelesAprobacion.nivelAprobacion4.estado = true;
-        this.nivelesAprobacion.nivelAprobacion4.idRuta = ruta;
-        this.nivelesAprobacion.nivelAprobacion4.idTipoRuta = tipoRuta;
-      }
+    //   if (ruta.includes("4")) {
+    //     this.nivelesAprobacion.nivelAprobacion4.idNivelAprobacionRuta = idNivelAprobacionRuta;
+    //     this.nivelesAprobacion.nivelAprobacion4.estado = true;
+    //     this.nivelesAprobacion.nivelAprobacion4.idRuta = ruta;
+    //     this.nivelesAprobacion.nivelAprobacion4.idTipoRuta = tipoRuta;
+    //   }
 
-      if (ruta.toUpperCase().includes("RRHH")) {
-        this.nivelesAprobacion.nivelAprobacionRRHH.idNivelAprobacionRuta = idNivelAprobacionRuta;
-        this.nivelesAprobacion.nivelAprobacionRRHH.estado = true;
-        this.nivelesAprobacion.nivelAprobacionRRHH.idRuta = ruta;
-        this.nivelesAprobacion.nivelAprobacionRRHH.idTipoRuta = tipoRuta;
-      }
+    //   if (ruta.toUpperCase().includes("RRHH")) {
+    //     this.nivelesAprobacion.nivelAprobacionRRHH.idNivelAprobacionRuta = idNivelAprobacionRuta;
+    //     this.nivelesAprobacion.nivelAprobacionRRHH.estado = true;
+    //     this.nivelesAprobacion.nivelAprobacionRRHH.idRuta = ruta;
+    //     this.nivelesAprobacion.nivelAprobacionRRHH.idTipoRuta = tipoRuta;
+    //   }
 
-      if (ruta.toUpperCase().includes("REMUNER")) {
-        this.nivelesAprobacion.nivelAprobacionComite.idNivelAprobacionRuta = idNivelAprobacionRuta;
-        this.nivelesAprobacion.nivelAprobacionComite.estado = true;
-        this.nivelesAprobacion.nivelAprobacionComite.idRuta = ruta;
-        this.nivelesAprobacion.nivelAprobacionComite.idTipoRuta = tipoRuta;
-      }
-    });
+    //   if (ruta.toUpperCase().includes("REMUNER")) {
+    //     this.nivelesAprobacion.nivelAprobacionComite.idNivelAprobacionRuta = idNivelAprobacionRuta;
+    //     this.nivelesAprobacion.nivelAprobacionComite.estado = true;
+    //     this.nivelesAprobacion.nivelAprobacionComite.idRuta = ruta;
+    //     this.nivelesAprobacion.nivelAprobacionComite.idTipoRuta = tipoRuta;
+    //   }
+    // });
 
     this.utilService.closeLoadingSpinner();
   }
 
-  public onChangeTipoSolicitud() {
-    const codigoTipoSolicitud = this.dataTipoSolicitudes.find(data => data.id.toString() === this.modelHead.idTipoSolicitud)!.codigoTipoSolicitud;
-    const restricted = this.restrictionsIds.includes(codigoTipoSolicitud);
+  // public onChangeTipoSolicitud() {
+  //   const codigoTipoSolicitud = this.dataTipoSolicitudes.find(data => data.id.toString() === this.modelHead.idTipoSolicitud)!.codigoTipoSolicitud;
+  //   const restricted = this.restrictionsIds.includes(codigoTipoSolicitud);
 
-    this.desactivarTipoMotivoYAccion = restricted;
+  //   this.desactivarTipoMotivoYAccion = restricted;
+
+  //   if (!this.desactivarTipoMotivoYAccion) {
+  //     forkJoin([this.mantenimientoService.getTipoMotivo(), this.mantenimientoService.getAccion()]).subscribe({
+  //       next: ([tipoMotivo, accion]) => {
+  //         this.dataTipoMotivo = tipoMotivo
+  //           .filter(data => data.estado === "A")
+  //           .map((r) => ({
+  //             id: r.id,
+  //             descripcion: r.tipoMotivo,
+  //           }));
+
+  //         this.dataAccion = accion.map((r) => ({
+  //           id: r.id,
+  //           descripcion: r.accion,
+  //         }));
+  //       }
+  //     });
+  //   }
+  // }
+
+  onChangeTipoSolicitud() {
+    const codigoTipoSolicitud = this.dataTipoSolicitudes.find((data) => data.id == this.modelHead.idTipoSolicitud)!.codigoTipoSolicitud;
+
+    // this.desactivarTipoMotivoYAccion = this.restrictionsIds.includes(this.tipoSolicitudSeleccionada);
+    this.desactivarTipoMotivoYAccion = this.restrictionsIds.includes(codigoTipoSolicitud);
+
+    if (this.desactivarTipoMotivoYAccion) {
+      this.modelHead.idTipoMotivo = 0;
+      this.modelHead.idTipoMotivo = 0;
+      this.modelHead.idAccion = 0;
+      this.modelHead.idAccion = 0;
+    }
 
     if (!this.desactivarTipoMotivoYAccion) {
       forkJoin([this.mantenimientoService.getTipoMotivo(), this.mantenimientoService.getAccion()]).subscribe({
@@ -246,22 +287,36 @@ export class EditarNivelesAprobacionComponent {
   }
 
   procesarNivelAprobacion() {
-    const nivelesAprobacion = Object.values(this.nivelesAprobacion)
-      .filter(({ idNivelAprobacionRuta }) => idNivelAprobacionRuta !== "")
-      .map(nivelAprobacion => {
+    const nivelesAprobacion = Object.entries(this.idNivelesAprobacionRuta)
+      .filter(([_, value]) => value !== "")
+      .map(([key, value]) => {
         let modelo: DatosNivelesAprobacion = new DatosNivelesAprobacion();
 
         modelo = {
           ...modelo,
           ...this.modelHead,
-          ...nivelAprobacion,
+          idRuta: parseInt(key),
+          idNivelAprobacionRuta: value,
           estado: "A"
         };
 
         return modelo;
       });
 
-    console.log(nivelesAprobacion);
+    this.serviceNivelesAprobacion.guardarNivelesAprobacion(nivelesAprobacion).subscribe({
+      next: () => {
+        this.utilService.closeLoadingSpinner();
+
+        this.utilService.modalResponse("Datos ingresados correctamente", "success");
+
+        setTimeout(() => {
+          this.router.navigate(["/mantenedores/niveles-aprobacion"]);
+        }, 2000);
+      },
+      error: (error: HttpErrorResponse) => {
+        this.utilService.modalResponse(error.error, "error");
+      }
+    });
 
     // this.serviceNivelesAprobacion.actualizarNivelAprobacion(nivelesAprobacion).subscribe({
     //   next: () => {
@@ -305,6 +360,7 @@ export class EditarNivelesAprobacionComponent {
   }
 
   public validateNivelesAprobacion(): boolean {
-    return Object.values(this.nivelesAprobacion).some(({ idNivelAprobacionRuta }) => idNivelAprobacionRuta !== "");
+    return true;
+    // return Object.values(this.nivelesAprobacion).some(({ idNivelAprobacionRuta }) => idNivelAprobacionRuta !== "");
   }
 }

@@ -49,10 +49,10 @@ export class HorizontalSidebarComponent {
   public sidebarnavItems: RouteInfo[] = [];
   path = "";
   navbar_bg = {
-    "background-image": "url(../../../assets/images/background/navbar-bg.png)",
-    "background-repeat": "no-repeat",
-    "background-size": "cover",
-    "background-position": "center",
+    // "background-image": "url(../../../assets/images/background/navbar-bg.png)",
+    // "background-repeat": "no-repeat",
+    // "background-size": "cover",
+    // "background-position": "center",
     // "backgrond-color": "#262863",
     "height": "100%"
   };
@@ -157,13 +157,12 @@ export class HorizontalSidebarComponent {
     if (window.innerWidth < 1024) {
       sidebarNavUl.style.backgroundImage = "none";
     } else {
-      sidebarNavUl.style.backgroundImage = "url(../../../assets/images/background/navbar-bg.png)";
-      // sidebarNavUl.style.backgroundColor = "#262863";
-      // sidebarNavUl.style.color = "white";
+      // sidebarNavUl.style.backgroundImage = "url(../../../assets/images/background/navbar-bg.png)";
+      sidebarNavUl.style.backgroundColor = "#262863";
     }
   };
-  public dropdownButtonClasses: string[] =
-    VerticalNavigationData.dropdownButtonClasses;
+  // public dropdownButtonClasses: string[] = VerticalNavigationData.dropdownButtonClasses;
+  public dropdownButtonClasses: string[] = ["text-light"];
   public userDropdownOptions: IDropdownOptions = VerticalNavigationData.userDropdownOptions;
 
   constructor(

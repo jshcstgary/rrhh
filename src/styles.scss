@@ -40,8 +40,14 @@ a.link:focus {
 }
 
 
-.sidebar-nav ul .sidebar-item.active>.sidebar-link {
-  color: #0056B3 !important;
+.sidebar-nav > ul > .sidebar-item {
+  &.active > a.sidebar-link {
+    color: white !important;
+  }
+
+  & > a.sidebar-link {
+    color: white !important;
+  }
 }
 
 
