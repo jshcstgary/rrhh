@@ -43,6 +43,7 @@ import { ReingresoPersonalComponent } from './reingreso-personal/reingreso-perso
 import { DialogBuscarEmpleadosFamiliaresComponent } from "./registrar-familiares/dialog-buscar-empleados-familiares/dialog-buscar-empleados-familiares.component";
 import { DialogBuscarEmpleadosReingresoComponent } from "./reingreso-personal/dialog-buscar-empleados-reingreso/dialog-buscar-empleados-reingreso.component";
 import { TrazabilidadSolicitudComponent } from './trazabilidad-solicitud/trazabilidad-solicitud.component';
+import { DirectivesModule } from "../directives/directives.module";
 
 @NgModule({
   declarations: [
@@ -88,6 +89,7 @@ import { TrazabilidadSolicitudComponent } from './trazabilidad-solicitud/trazabi
     MatDatepickerModule,
     MatNativeDateModule,
     ReactiveFormsModule,
+    DirectivesModule
   ],
   exports: [
     RevisarSolicitudComponent

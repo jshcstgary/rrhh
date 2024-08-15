@@ -643,10 +643,11 @@
 
       <div class="row mb-3">
         <div class="col-md-3 me-2">
-          <label class="input-group-text label-estilo" for="nombre-candidato">Nombre del candidato seleccionado</label>
+          <label class="input-group-text label-estilo"
+          for="nombre-candidato">Nombre del candidato seleccionado</label>
         </div>
         <div class="col-md-4">
-          <input type="text" name="nombre-candidato" placeholder="Nombre del candidato" [(ngModel)]="nombreCandidato"
+          <input type="text" appValidateAlphanumeric name="nombre-candidato" placeholder="Nombre del candidato" [(ngModel)]="nombreCandidato"
             class="form-control" id="nombre-candidato" />
         </div>
       </div>

@@ -615,16 +615,10 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
       this.mantenimientoService.getDataEmpleadosEvolutionPorId(datosEmpleado.codigoPosicionReportaA).subscribe({
         next: (response) => {
           if (response.evType.length === 0) {
-            Swal.fire({
-              text: "No se encontró registro",
-              icon: "info",
-              confirmButtonColor: "rgb(227, 199, 22)",
-              confirmButtonText: "Sí",
-            });
 
-            this.clearModel();
-            this.keySelected = "";
-            this.dataAprobacionesPorPosicion = {};
+          this.model.jefeInmediatoSuperior =  "";
+          this.model.puestoJefeInmediato =  "";
+          this.codigoReportaA =  "";
 
             return;
           }
@@ -714,9 +708,11 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
 		tipoValue = this.model.subledger;
     } else if (tipo === "nombreCompleto") {
 		tipoValue = this.model.nombreCompleto;
-    } else {
+    } else if (tipo === "descrPosicion"){
 		tipoValue = this.model.descrPosicion;
-	}
+	  } else {
+      tipoValue = this.model.codigoPosicion;
+    }
 
     this.mantenimientoService.getDataEmpleadosEvolutionPorId(tipoValue).subscribe({
       next: (response) => {
@@ -744,14 +740,16 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
           this.onSelectItem('codigoPosicion',this.eventSearch);
         } else if (tipo === "subledger") {
           this.subledgers = [...new Set(this.dataEmpleadoEvolution.map((empleado) => empleado.subledger))];
-          this.nombres = [...new Set(this.dataEmpleadoEvolution.map((empleado) => empleado.nombreCompleto))];
           this.eventSearch.item=this.dataEmpleadoEvolution[0].subledger;
           this.onSelectItem('subledger',this.eventSearch);
         } else if (tipo === "nombreCompleto") {
-          this.subledgers = [...new Set(this.dataEmpleadoEvolution.map((empleado) => empleado.subledger))];
           this.nombres = [...new Set(this.dataEmpleadoEvolution.map((empleado) => empleado.nombreCompleto))];
           this.eventSearch.item=this.dataEmpleadoEvolution[0].nombreCompleto;
           this.onSelectItem('nombreCompleto',this.eventSearch);
+        } else if (tipo === "descrPosicion") {
+          this.descripcionPosiciones = [...new Set(this.dataEmpleadoEvolution.map((empleado) => empleado.descrPosicion))];
+          this.eventSearch.item=this.dataEmpleadoEvolution[0].descrPosicion;
+          this.onSelectItem('descrPosicion',this.eventSearch);
         } else {
           this.codigosPosicion = [...new Set(this.dataEmpleadoEvolution.map((empleado) => empleado.codigoPosicion))];
           this.descripcionPosiciones = [...new Set(this.dataEmpleadoEvolution.map((empleado) => empleado.descrPosicion))];

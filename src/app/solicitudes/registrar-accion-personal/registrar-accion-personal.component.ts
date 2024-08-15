@@ -620,14 +620,12 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
   getDataEmpleadosEvolution(tipo: string) {
     let tipoValue: string = "";
 
-    if (tipo === "codigoPosicion") {
-      tipoValue = this.model.codigoPosicion;
-    } else if (tipo === "subledger") {
+    if (tipo === "subledger") {
       tipoValue = this.model.subledger;
     } else if (tipo === "nombreCompleto") {
       tipoValue = this.model.nombreCompleto;
     } else {
-      tipoValue = this.model.descrPosicion;
+      tipoValue = this.model.nombreCompleto;
     }
 
     this.mantenimientoService.getDataEmpleadosEvolutionPorId(tipoValue).subscribe({
@@ -651,11 +649,9 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
 
         if (tipo === "subledger") {
           this.subledgers = [...new Set(this.dataEmpleadoEvolution.map((empleado) => empleado.subledger))];
-          this.nombres = [...new Set(this.dataEmpleadoEvolution.map((empleado) => empleado.nombreCompleto))];
-          this.eventSearch.item = this.dataEmpleadoEvolution[0].codigoPosicion;
-          this.onSelectItem('subledger', this.subledger);
+          this.eventSearch.item = this.dataEmpleadoEvolution[0].subledger;
+          this.onSelectItem('subledger', this.eventSearch);
         } else if (tipo === "nombreCompleto") {
-          this.subledgers = [...new Set(this.dataEmpleadoEvolution.map((empleado) => empleado.subledger))];
           this.nombres = [...new Set(this.dataEmpleadoEvolution.map((empleado) => empleado.nombreCompleto))];
           this.eventSearch.item = this.dataEmpleadoEvolution[0].nombreCompleto;
           this.onSelectItem('nombreCompleto', this.eventSearch);
@@ -710,16 +706,9 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
       this.mantenimientoService.getDataEmpleadosEvolutionPorId(datosEmpleado.codigoPosicionReportaA).subscribe({
         next: (response) => {
           if (response.evType.length === 0) {
-            Swal.fire({
-              text: "No se encontró registro",
-              icon: "info",
-              confirmButtonColor: "rgb(227, 199, 22)",
-              confirmButtonText: "Sí",
-            });
-
-            this.clearModel();
-            this.keySelected = "";
-            this.dataAprobacionesPorPosicion = {};
+            this.model.jefeInmediatoSuperior =  "";
+            this.model.puestoJefeInmediato =  "";
+            this.codigoReportaA =  "";
 
             return;
           }
