@@ -50,6 +50,7 @@ import { PageControlPermiso } from "src/app/types/page-control-permiso.type";
 import { Control } from "src/app/types/permiso.type";
 import { ConsultaSolicitudesService } from "./consulta-solicitudes.service";
 import { ConsultaGraficosData } from "./consulta-grafico.data";
+import { DatePipe } from "@angular/common";
 //import { StarterService } from "src/app/starter/starter.service";
 
 // const DATA_SAMPLE = {
@@ -210,6 +211,7 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
   today = this.calendar.getToday();
 
   public dataTipoSolicitudes: any[] = [];
+  public dataTipoSolicitudesModal: any[] = [];
   public dataTipoMotivo: any[] = [];
   public dataTipoAccion: any[] = [];
   public data_estado: any[] = [];
@@ -263,6 +265,7 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
   selected_producto: number;
   selected_tipo_solicitud: number;
   selected_estado: number;
+  public fechaHastaFinal: Date;
   public dataFilterSolicitudes = new DataFilterSolicitudes();
   public searchInputFilter: string="";
   data_empresas = [{ idEmpresa: "01", name: "Reybanpac" }];
@@ -697,13 +700,21 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
     return this.mantenimientoService.getTipoSolicitud().subscribe({
       next: (response: any) => {
         this.dataTipoSolicitudes = response.tipoSolicitudType
-          .filter((r) => r.estado === "A" && (r.codigoTipoSolicitud === "RP" || r.codigoTipoSolicitud === "AP" || r.codigoTipoSolicitud === "DP"))
+          .filter((r) => r.estado === "A" && (r.codigoTipoSolicitud === "RP" || r.codigoTipoSolicitud === "AP" || r.codigoTipoSolicitud === "RG" || r.codigoTipoSolicitud === "CF" || r.codigoTipoSolicitud === "DP"))
           .map((r) => ({
             id: r.id,
             descripcion: r.tipoSolicitud,
             codigoTipoSolicitud: r.codigoTipoSolicitud,
             estado: r.estado
           }));
+        this.dataTipoSolicitudesModal=response.tipoSolicitudType
+        .filter((r) => r.estado === "A" && (r.codigoTipoSolicitud === "RP" || r.codigoTipoSolicitud === "AP" || r.codigoTipoSolicitud === "DP"))
+        .map((r) => ({
+          id: r.id,
+          descripcion: r.tipoSolicitud,
+          codigoTipoSolicitud: r.codigoTipoSolicitud,
+          estado: r.estado
+        }));
       },
       error: (error: HttpErrorResponse) => {
         this.utilService.modalResponse(error.error, "error");
@@ -773,6 +784,11 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 
     if (this.dataFilterSolicitudes.fechaHasta !== undefined && this.dataFilterSolicitudes.fechaHasta !== null) {
       data.fechaHasta = this.formatFecha(this.dataFilterSolicitudes, "fechaHasta");
+    }
+
+    if (this.dataFilterSolicitudes.fechaDesde !== undefined && this.dataFilterSolicitudes.fechaDesde !== null && this.dataFilterSolicitudes.fechaHasta !== undefined && this.dataFilterSolicitudes.fechaHasta !== null && data.fechaDesde === data.fechaHasta) {
+     this.dataFilterSolicitudes.fechaHasta.day=this.dataFilterSolicitudes.fechaHasta.day+1;
+     data.fechaHasta = this.formatFecha(this.dataFilterSolicitudes, "fechaHasta");
     }
 
     this.getDataToTableFilter(data);
@@ -869,11 +885,12 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
           const detalles = solicitudes.detalleSolicitudType.find((detalle) => detalle.idSolicitud === solicitud.idSolicitud);
 
           detalles.estado = solicitud.estado;
-
+          solicitud.fechaCreacion=new DatePipe('en-CO').transform( solicitud.fechaCreacion, 'dd/MM/yyyy');;
           return {
             ...solicitud,
             ...detalles
           };
+
         });
 
         // Ordenar la data por fechaCreacion de forma descendente
@@ -890,7 +907,9 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
         this.utilService.closeLoadingSpinner();
       },
       error: (error: HttpErrorResponse) => {
+
         this.dataTable = [];
+
         this.utilService.modalResponse(
           "No existen registros para esta búsqueda",
           "error"
@@ -953,6 +972,7 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
         // Combinar las solicitudes y los detalles de la solicitud
         const data = solicitudes.solicitudType.map((solicitud) => {
           const detalles = detallesSolicitud.detalleSolicitudType.find((detalle) => detalle.idSolicitud === solicitud.idSolicitud);
+          solicitud.fechaCreacion=new DatePipe('en-CO').transform( solicitud.fechaCreacion, 'dd/MM/yyyy');;
 
           return {
             ...solicitud,

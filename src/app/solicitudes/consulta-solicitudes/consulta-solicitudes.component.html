@@ -263,7 +263,7 @@
                       onChangeTipoSolicitud(solicitud.idTipoSolicitud)
                     " required>
                     <option value="" hidden>Selecccione</option>
-                    <option *ngFor="let baseDeDatos of dataTipoSolicitudes" [value]="baseDeDatos.id">
+                    <option *ngFor="let baseDeDatos of dataTipoSolicitudesModal" [value]="baseDeDatos.id">
                       {{ baseDeDatos.descripcion }}
                     </option>
                   </select>

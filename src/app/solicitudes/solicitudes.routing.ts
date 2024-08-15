@@ -163,13 +163,13 @@ export const SolicitudesRoutes: Routes = [
         path: "registrar-candidato/:id/:idSolicitud",
         component: RegistrarCandidatoComponent,
         data: {
-          title: "Seleccion de Candidato",
+          title: "Selección de Candidato",
           urls: [
             {
               title: "Solicitudes"
             },
             {
-              title: "Seleccion de Candidato"
+              title: "Selección de Candidato"
             }
           ],
         },

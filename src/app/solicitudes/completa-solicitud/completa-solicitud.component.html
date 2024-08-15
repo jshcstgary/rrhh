@@ -586,7 +586,7 @@
       <div class="row mt-4">
         <div class="col-md-4">
           <div class="mb-4">
-            <a> <h3 class="sol-danger">Atención de los probadores</h3></a>
+            <a> <h3 class="sol-danger">Atención de los Aprobadores</h3></a>
           </div>
         </div>
         <div class="col-md-8">
@@ -718,7 +718,7 @@
         >Decisión a tomar
     </label>
 
-    <div class="" role="group" aria-label="Basic example" id="desicion">
+     <div class="d-flex gap-3" role="group" aria-label="Basic example" id="desicion">
       <button type="button" class="btn" [ngClass]="{'btn-primary btn-unselected': !isSelected('aprobar'), 'btn-selected': isSelected('aprobar')}" (click)="process('aprobar')" value="aprobar">Aprobar</button>
 
       <button type="button" class="btn" [ngClass]="{'btn-primary btn-unselected': !isSelected('rechazar'), 'btn-selected': isSelected('rechazar')}" (click)="process('rechazar')" value="rechazar">Cancelar</button>

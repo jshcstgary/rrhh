@@ -75,7 +75,7 @@
       </div>
 
       <div [id]="'collapse' + i" class="accordion-collapse collapse"
-        [ngClass]="{ show: nivelItem.estadoAprobacion.toUpperCase().includes('PORREVISAR') }"
+        [ngClass]="{ show: (nivelItem.estadoAprobacion.toUpperCase().includes('PORREVISAR')||nivelItem.estadoAprobacion.toUpperCase().includes('PENDIENTE')||nivelItem.estadoAprobacion.toUpperCase().includes('DEVOLVER')||nivelItem.estadoAprobacion.toUpperCase().includes('ESPERA')||nivelItem.estadoAprobacion.toUpperCase().includes('RECHAZA')) && nivelItem.codigoPosicionAprobador !== '' }"
         data-bs-parent="#accordionExample">
         <div class="row">
           <div class="col">
@@ -84,7 +84,17 @@
 
               <span id="lvl1descripcion" name="" style="color: black; font-size: 14px">{{ nivelItem.usuarioAprobador !==
                 "" && nivelItem.usuarioAprobador !== undefined && nivelItem.usuarioAprobador !== null ?
-                (nivelItem.estadoAprobacion.toUpperCase() === "APROBAR" ? "Aprobado" : nivelItem.estadoAprobacion) : "No
+                (nivelItem.estadoAprobacion.toUpperCase() === "APROBAR" ? "Aprobado" : nivelItem.estadoAprobacion.toUpperCase().includes("PORREVISAR") ? "Por Revisar" : nivelItem.estadoAprobacion.toUpperCase().includes("ESPERA") ? "En Espera" : nivelItem.estadoAprobacion.toUpperCase() === "DEVOLVER" ? "Devuelto" : nivelItem.estadoAprobacion.toUpperCase().includes("PENDIENTE") ? "Por Revisar" : nivelItem.estadoAprobacion.toUpperCase().includes("RECHAZA") ? "Cancelado" : nivelItem.estadoAprobacion) : "No
+                aplica" }}</span>
+            </div>
+          </div>
+          <div class="col">
+            <div class="input-group">
+              <label>Comentario: </label>
+
+              <span id="lvl1descripcion" name="" style="color: black; font-size: 14px">{{ nivelItem.usuarioAprobador !==
+                "" && nivelItem.usuarioAprobador !== undefined && nivelItem.usuarioAprobador !== null ?
+                (nivelItem.comentario) : "No
                 aplica" }}</span>
             </div>
           </div>

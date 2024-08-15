@@ -1406,6 +1406,9 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
         next: (res) => {
           this.solicitudes.modelDetalleAprobaciones.estadoAprobacion = this.buttonValue;
           this.solicitudes.modelDetalleAprobaciones.comentario = this.textareaContent;
+          if(this.buttonValue.toUpperCase().includes("ESPERA")){
+            this.solicitudes.modelDetalleAprobaciones.comentario = this.textareaContent + " - FechaMaximaEspera: "+this.selectedDate.toISOString().split("T")[0];
+          }
           this.solicitudes.guardarDetallesAprobacionesSolicitud(this.solicitudes.modelDetalleAprobaciones).subscribe({
             next: (res) => {
             }
@@ -1464,7 +1467,7 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
                       if(this.id_solicitud_by_params.includes("RG")){
                         const htmlString = "<!DOCTYPE html>\r\n<html lang=\"es\">\r\n\r\n<head>\r\n  <meta charset=\"UTF-8\">\r\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n  <title>Document<\/title>\r\n<\/head>\r\n\r\n<body>\r\n  <h2>Estimados<\/h2>\r\n  <h3>APROBADORES<\/h3>\r\n\r\n  <P>La Solicitud de {TIPO_SOLICITUD} {ID_SOLICITUD} para la posici\u00F3n de {DESCRIPCION_POSICION} se cambio a estado en Espera con la fecha maxima {FECHA_MAXIMA_ESPERA}<\/P>\r\n\r\n  <p>\r\n    <b>\r\n      Favor ingresar al siguiente enlace: <a href=\"{URL_APROBACION}\">{URL_APROBACION}<\/a>\r\n      <br>\r\n      <br>\r\n      Gracias por su atenci\u00F3n.\r\n    <\/b>\r\n  <\/p>\r\n<\/body>\r\n\r\n<\/html>\r\n";
                        
-                        const modifiedHtmlString = htmlString.replace("{NOMBRE_APROBADOR}", this.aprobacion.aprobador.usuario).replace("{TIPO_SOLICITUD}", this.solicitudRG.tipoSolicitud).replace("{ID_SOLICITUD}", this.solicitudRG.idSolicitud).replace("{DESCRIPCION_POSICION}", this.detalleSolicitudRG.descripcionPosicion).replace("{FECHA_MAXIMA_ESPERA}", this.selectedDate.toISOString()).replace(new RegExp("{URL_APROBACION}", "g"), `${portalWorkFlow}solicitudes/trazabilidad/${this.id_solicitud_by_params}`);
+                        const modifiedHtmlString = htmlString.replace("{NOMBRE_APROBADOR}", this.aprobacion.aprobador.usuario).replace("{TIPO_SOLICITUD}", this.solicitudRG.tipoSolicitud).replace("{ID_SOLICITUD}", this.solicitudRG.idSolicitud).replace("{DESCRIPCION_POSICION}", this.detalleSolicitudRG.descripcionPosicion).replace("{FECHA_MAXIMA_ESPERA}", this.selectedDate.toISOString().split("T")[0]).replace(new RegExp("{URL_APROBACION}", "g"), `${portalWorkFlow}solicitudes/trazabilidad/${this.id_solicitud_by_params}`);
             
                         this.emailVariables = {
                           de: "emisor",
@@ -1485,7 +1488,7 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
                       }else{
                         const htmlString = "<!DOCTYPE html>\r\n<html lang=\"es\">\r\n\r\n<head>\r\n  <meta charset=\"UTF-8\">\r\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n  <title>Document<\/title>\r\n<\/head>\r\n\r\n<body>\r\n  <h2>Estimados<\/h2>\r\n  <h3>APROBADORES<\/h3>\r\n\r\n  <P>La Solicitud de {TIPO_SOLICITUD} {ID_SOLICITUD} para la posici\u00F3n de {DESCRIPCION_POSICION} se cambio a estado en Espera con la fecha maxima {FECHA_MAXIMA_ESPERA}<\/P>\r\n\r\n  <p>\r\n    <b>\r\n      Favor ingresar al siguiente enlace: <a href=\"{URL_APROBACION}\">{URL_APROBACION}<\/a>\r\n      <br>\r\n      <br>\r\n      Gracias por su atenci\u00F3n.\r\n    <\/b>\r\n  <\/p>\r\n<\/body>\r\n\r\n<\/html>\r\n";
                        
-                        const modifiedHtmlString = htmlString.replace("{NOMBRE_APROBADOR}", this.aprobacion.aprobador.usuario).replace("{TIPO_SOLICITUD}", this.solicitud.tipoSolicitud).replace("{ID_SOLICITUD}", this.solicitud.idSolicitud).replace("{DESCRIPCION_POSICION}", this.detalleSolicitud.descripcionPosicion).replace("{FECHA_MAXIMA_ESPERA}", this.selectedDate.toISOString()).replace(new RegExp("{URL_APROBACION}", "g"), `${portalWorkFlow}solicitudes/trazabilidad/${this.id_solicitud_by_params}`);
+                        const modifiedHtmlString = htmlString.replace("{NOMBRE_APROBADOR}", this.aprobacion.aprobador.usuario).replace("{TIPO_SOLICITUD}", this.solicitud.tipoSolicitud).replace("{ID_SOLICITUD}", this.solicitud.idSolicitud).replace("{DESCRIPCION_POSICION}", this.detalleSolicitud.descripcionPosicion).replace("{FECHA_MAXIMA_ESPERA}", this.selectedDate.toISOString().split("T")[0]).replace(new RegExp("{URL_APROBACION}", "g"), `${portalWorkFlow}solicitudes/trazabilidad/${this.id_solicitud_by_params}`);
             
                         this.emailVariables = {
                           de: "emisor",
@@ -1538,7 +1541,7 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
                         }else{
                           const htmlString = "<!DOCTYPE html>\r\n<html lang=\"es\">\r\n\r\n<head>\r\n  <meta charset=\"UTF-8\">\r\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n  <title>Document<\/title>\r\n<\/head>\r\n\r\n<body>\r\n  <h2>Estimados<\/h2>\r\n  <h3>APROBADORES<\/h3>\r\n\r\n  <P>Se le informa que ha sido devuelta la solucitud {ID_SOLICITUD} - {TIPO_SOLICITUD} <\/P>\r\n\r\n  <p>\r\n    <b>\r\n      Favor ingresar al siguiente enlace: <a href=\"{URL_APROBACION}\">{URL_APROBACION}<\/a>\r\n      <br>\r\n      <br>\r\n      Gracias por su atenci\u00F3n.\r\n    <\/b>\r\n  <\/p>\r\n<\/body>\r\n\r\n<\/html>\r\n";
                          
-                          const modifiedHtmlString = htmlString.replace("{NOMBRE_APROBADOR}", this.aprobacion.aprobador.usuario).replace("{TIPO_SOLICITUD}", this.solicitud.tipoSolicitud).replace("{ID_SOLICITUD}", this.solicitud.idSolicitud).replace("{DESCRIPCION_POSICION}", this.detalleSolicitud.descripcionPosicion).replace("{FECHA_MAXIMA_ESPERA}", this.selectedDate.toISOString()).replace(new RegExp("{URL_APROBACION}", "g"), `${portalWorkFlow}tareas/consulta-tareas`);
+                          const modifiedHtmlString = htmlString.replace("{NOMBRE_APROBADOR}", this.aprobacion.aprobador.usuario).replace("{TIPO_SOLICITUD}", this.solicitud.tipoSolicitud).replace("{ID_SOLICITUD}", this.solicitud.idSolicitud).replace("{DESCRIPCION_POSICION}", this.detalleSolicitud.descripcionPosicion).replace(new RegExp("{URL_APROBACION}", "g"), `${portalWorkFlow}tareas/consulta-tareas`);
               
                           this.emailVariables = {
                             de: "emisor",
@@ -1597,7 +1600,7 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
                           }else{
                             const htmlString = "<!DOCTYPE html>\r\n<html lang=\"es\">\r\n\r\n<head>\r\n  <meta charset=\"UTF-8\">\r\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n  <title>Document<\/title>\r\n<\/head>\r\n\r\n<body>\r\n  <h2>Estimados<\/h2>\r\n  <h3>APROBADORES<\/h3>\r\n\r\n  <P>Se le informa que ha sido rechazada la solucitud {ID_SOLICITUD} - {TIPO_SOLICITUD} <\/P>\r\n\r\n  <p>\r\n    <b>\r\n      Favor ingresar al siguiente enlace: <a href=\"{URL_APROBACION}\">{URL_APROBACION}<\/a>\r\n      <br>\r\n      <br>\r\n      Gracias por su atenci\u00F3n.\r\n    <\/b>\r\n  <\/p>\r\n<\/body>\r\n\r\n<\/html>\r\n";
                            
-                            const modifiedHtmlString = htmlString.replace("{NOMBRE_APROBADOR}", this.aprobacion.aprobador.usuario).replace("{TIPO_SOLICITUD}", this.solicitud.tipoSolicitud).replace("{ID_SOLICITUD}", this.solicitud.idSolicitud).replace("{DESCRIPCION_POSICION}", this.detalleSolicitud.descripcionPosicion).replace("{FECHA_MAXIMA_ESPERA}", this.selectedDate.toISOString()).replace(new RegExp("{URL_APROBACION}", "g"), `${portalWorkFlow}tareas/consulta-tareas`);
+                            const modifiedHtmlString = htmlString.replace("{NOMBRE_APROBADOR}", this.aprobacion.aprobador.usuario).replace("{TIPO_SOLICITUD}", this.solicitud.tipoSolicitud).replace("{ID_SOLICITUD}", this.solicitud.idSolicitud).replace("{DESCRIPCION_POSICION}", this.detalleSolicitud.descripcionPosicion).replace(new RegExp("{URL_APROBACION}", "g"), `${portalWorkFlow}tareas/consulta-tareas`);
                 
                             this.emailVariables = {
                               de: "emisor",
@@ -1919,7 +1922,7 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
     if (this.taskType_Activity == environment.taskType_Revisar) { //APROBADORES DINAMICOS
 
       variables.atencionRevision = { value: this.buttonValue };
-      variables.comentariosAtencion = { value: this.datosAprobadores.nivelDireccion + ': ' + this.textareaContent };
+      variables.comentariosAtencion = { value:'Usuario:' + localStorage.getItem(LocalStorageKeys.IdLogin)+' - Nivel de Dirección:'+ this.datosAprobadores.nivelDireccion + ' - Comentario:' + this.textareaContent };
 
       //RQ_GRRHH_RevisarSolicitud
 
@@ -1939,7 +1942,7 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
         value: `${portalWorkFlow}solicitudes/revisar-solicitud/${this.idDeInstancia}/${this.id_solicitud_by_params}`
       };
       variables.atencionRevisionGerente = { value: this.buttonValue };
-      variables.comentariosAtencionGerenteRRHH = { value: this.textareaContent };
+      variables.comentariosAtencionGerenteRRHH = { value:'Usuario:' + localStorage.getItem(LocalStorageKeys.IdLogin)+' - Nivel de Dirección:'+ this.datosAprobadores.nivelDireccion + ' - Comentario:' + this.textareaContent };
 
     } else if (this.taskType_Activity == environment.taskType_CREM
       || this.taskType_Activity == environment.taskType_AP_Remuneraciones
@@ -1951,7 +1954,7 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
 
 
       variables.atencionRevisionRemuneraciones = { value: this.buttonValue };
-      variables.comentariosAtencionRemuneraciones = { value: this.textareaContent };
+      variables.comentariosAtencionRemuneraciones = { value:'Usuario:' + localStorage.getItem(LocalStorageKeys.IdLogin)+' - Nivel de Dirección:'+ this.datosAprobadores.nivelDireccion + ' - Comentario:' + this.textareaContent };
 
 
       /*
@@ -2070,12 +2073,10 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
 
     this.solicitudes.guardarDetallesAprobacionesSolicitud(this.solicitudes.modelDetalleAprobaciones).subscribe({
       next: (res) => {
-        Swal.fire({
-          text: "Datos guardados",
-          icon: "success",
-          confirmButtonColor: "rgb(227, 199, 22)",
-          confirmButtonText: "Ok",
-        });
+        this.utilService.modalResponse(
+          `Datos Guardados Correctamente`,
+          "success"
+        );
 
         this.disabledComplete = false;
         /*this.utilService.modalResponse(

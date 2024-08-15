@@ -1270,6 +1270,119 @@
 
         </div>
         <div *ngIf="model.tipoProceso !== ''">
+          <!--Comentarios de aprobadores en seleccion de candidato-->
+
+          <div class="row mt-4">
+            <div class="col-md-4">
+              <div class="mb-4">
+                <a>
+                  <h3 class="sol-danger">Atención de la Solicitud</h3>
+                </a>
+              </div>
+            </div>
+            <div class="col-md-8">
+              <hr />
+            </div>
+          </div>
+      <div class="row mt-2">
+        <div class="col">
+          <div *ngFor="let item of dataComentariosAprobaciones; let i = index" class="row mt-2 align-items-center">
+            <div class="col-auto">
+              <label
+                *ngIf="i === 0"
+                class="input-group-text adjustable-label"
+                for="lcomentariodinamico"
+              >
+                Aprobadores dinámicos
+              </label>
+              <label
+                *ngIf="i !== 0"
+                class="input-group-text hidden-label"
+                for="lcomentariodinamico"
+              >
+                Aprobadores dinámicos
+              </label>
+            </div>
+            <div class="col">
+              <span
+                id="lcomentariodinamico"
+                name=""
+                style="color: black; font-size: 14px;"
+              >
+                {{
+                  item.text !== "" &&
+                  item.text !== undefined &&
+                  item.text != null
+                    ? item.text
+                    : "No hay comentario"
+                }}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row mt-2">
+        <div class="col">
+          <div class="input-group mb-3">
+            <label
+              class="input-group-text adjustable-label2"
+              for="lcomentariorrhh"
+            >
+                 Gerente de RRHH Corporativo
+            </label>
+            &nbsp;
+            <div *ngFor="let item of dataComentariosAprobacionesRRHH">
+              &nbsp;
+              <span
+                id="lcomentariorrhh"
+                name=""
+                style="color: black; font-size: 14px;"
+                >{{
+                  item.text !== "" &&
+                  item.text !== undefined &&
+                  item.text != null
+                    ? item.text
+                    : "No hay comentario"
+                }}</span
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="row mt-2">
+        <div class="col">
+          <div class="input-group mb-3">
+            <label
+              class="input-group-text adjustable-label2"
+              for="comitederemuneraciones"
+            >
+              Comité de Remuneraciones
+            </label>
+            &nbsp;
+            <div *ngFor="let item of dataComentariosAprobacionesCREM">
+              &nbsp;
+              <span
+                id="lcomentariocrem"
+                name=""
+                style="color: black; font-size: 14px;"
+                >{{
+                  item.text !== "" &&
+                  item.text !== undefined &&
+                  item.text != null
+                    ? item.text
+                    : "No hay comentario"
+                }}</span
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+     <!--Fin de Comentarios -->
         <div class="row mt-4">
           <div class="col-md-4">
             <div class="mb-4">

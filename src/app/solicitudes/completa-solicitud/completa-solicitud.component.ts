@@ -24,7 +24,7 @@ import { StarterService } from "src/app/starter/starter.service";
 import { ConsultaTareasService } from "src/app/tareas/consulta-tareas/consulta-tareas.service";
 import { Permiso } from "src/app/types/permiso.type";
 import Swal from "sweetalert2";
-import { environment } from "../../../environments/environment";
+import { environment, portalWorkFlow } from "../../../environments/environment";
 import { CamundaRestService } from "../../camunda-rest.service";
 import { CompleteTaskComponent } from "../general/complete-task.component";
 import { RegistrarCandidatoService } from "../registrar-candidato/registrar-candidato.service";
@@ -338,9 +338,19 @@ export class CompletaSolicitudComponent extends CompleteTaskComponent {
       status: "A",
     },
   ];
+  public dataAprobacionesPorPosicionAPS: any = [];
+  public aprobacion: any;
+
   public minDateValidation = new Date();
   public maxDateValidation = addDays(new Date(), 365);
-
+  emailVariables = {
+    de: "",
+    para: "",
+    alias: "",
+    asunto: "",
+    cuerpo: "",
+    password: ""
+  };
 
   public success: false;
   public params: any;
@@ -1121,6 +1131,102 @@ export class CompletaSolicitudComponent extends CompleteTaskComponent {
               });
 
             });
+
+            if(this.solicitud.estadoSolicitud.includes("1"))//ESTADO APROBADO
+            {
+              this.solicitudes
+              .obtenerNivelesAprobacionRegistrados(this.id_solicitud_by_params)
+               .subscribe({
+                next: (responseAPS) => {
+
+                  this.dataAprobacionesPorPosicionAPS = responseAPS.nivelAprobacionPosicionType;
+                  this.aprobacion = this.dataAprobacionesPorPosicionAPS.find(elemento => elemento.nivelAprobacionType.nivelAprobacionRuta.toUpperCase().includes("JEFATURA"));
+                  if(this.aprobacion.aprobador.usuario===null || this.aprobacion.aprobador.usuario==='' || this.aprobacion.aprobador.usuario===undefined ){
+                  this.aprobacion = this.dataAprobacionesPorPosicionAPS.find(elemento => elemento.nivelAprobacionType.nivelAprobacionRuta.toUpperCase().includes("GERENCIA"));
+                  }
+                    const htmlString = "<!DOCTYPE html>\r\n<html lang=\"es\">\r\n\r\n<head>\r\n  <meta charset=\"UTF-8\">\r\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n  <title>Document<\/title>\r\n<\/head>\r\n\r\n<body>\r\n  <h2>Estimad@<\/h2>\r\n  <h3>{NOMBRE_APROBADOR}<\/h3>\r\n\r\n  <P>Por favor su ayuda realizando la encuesta por la Aprobación de la Solicitud de {TIPO_SOLICITUD} {ID_SOLICITUD} para la posici\u00F3n de {DESCRIPCION_POSICION}<\/P>\r\n\r\n  <p>\r\n    <b>\r\n      Favor ingresar al siguiente enlace: <a href=\"{URL_APROBACION}\">{URL_APROBACION}<\/a>\r\n      <br>\r\n      <br>\r\n      Gracias por su atenci\u00F3n.\r\n    <\/b>\r\n  <\/p>\r\n<\/body>\r\n\r\n<\/html>\r\n";
+                   
+                    const modifiedHtmlString = htmlString.replace("{NOMBRE_APROBADOR}", this.aprobacion.aprobador.usuario).replace("{TIPO_SOLICITUD}", this.solicitud.tipoSolicitud).replace("{ID_SOLICITUD}", this.solicitud.idSolicitud).replace("{DESCRIPCION_POSICION}", this.detalleSolicitud.descripcionPosicion).replace(new RegExp("{URL_APROBACION}", "g"), `${portalWorkFlow}solicitudes/trazabilidad/${this.id_solicitud_by_params}`);
+        
+                    this.emailVariables = {
+                      de: "emisor",
+                      para: this.aprobacion.aprobador.correo,
+                      // alias: this.solicitudes.modelDetalleAprobaciones.correo,
+                      alias: "Notificación 1",
+                      asunto: `Notificación de Encuesta - Solicitud - ${this.solicitud.tipoSolicitud} ${this.solicitud.idSolicitud}`,
+                      cuerpo: modifiedHtmlString,
+                      password: "password"
+                    };
+                    this.solicitudes.sendEmail(this.emailVariables).subscribe({
+                      next: () => {
+                      },
+                      error: (error) => {
+                        console.error(error);
+                      }
+                    });
+                }});
+                         }else if(this.solicitud.estadoSolicitud.includes("2"))//ESTADO ESPERA
+            {
+              this.solicitudes
+              .obtenerNivelesAprobacionRegistrados(this.id_solicitud_by_params)
+               .subscribe({
+                next: (responseAPS) => {
+
+                  this.dataAprobacionesPorPosicionAPS = responseAPS.nivelAprobacionPosicionType;
+                  this.aprobacion = this.dataAprobacionesPorPosicionAPS.find(elemento => elemento.nivelAprobacionType.nivelAprobacionRuta.toUpperCase().includes("REGISTRARSOLICITUD"));
+                    const htmlString = "<!DOCTYPE html>\r\n<html lang=\"es\">\r\n\r\n<head>\r\n  <meta charset=\"UTF-8\">\r\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n  <title>Document<\/title>\r\n<\/head>\r\n\r\n<body>\r\n  <h2>Estimados<\/h2>\r\n  <h3>APROBADORES<\/h3>\r\n\r\n  <P>La Solicitud de {TIPO_SOLICITUD} {ID_SOLICITUD} para la posici\u00F3n de {DESCRIPCION_POSICION} se cambio a estado en Espera con la fecha maxima {FECHA_MAXIMA_ESPERA}<\/P>\r\n\r\n  <p>\r\n    <b>\r\n      Favor ingresar al siguiente enlace: <a href=\"{URL_APROBACION}\">{URL_APROBACION}<\/a>\r\n      <br>\r\n      <br>\r\n      Gracias por su atenci\u00F3n.\r\n    <\/b>\r\n  <\/p>\r\n<\/body>\r\n\r\n<\/html>\r\n";
+                   
+                    const modifiedHtmlString = htmlString.replace("{NOMBRE_APROBADOR}", this.aprobacion.aprobador.usuario).replace("{TIPO_SOLICITUD}", this.solicitud.tipoSolicitud).replace("{ID_SOLICITUD}", this.solicitud.idSolicitud).replace("{DESCRIPCION_POSICION}", this.detalleSolicitud.descripcionPosicion).replace("{FECHA_MAXIMA_ESPERA}", this.selectedDate.toISOString().split("T")[0]).replace(new RegExp("{URL_APROBACION}", "g"), `${portalWorkFlow}solicitudes/trazabilidad/${this.id_solicitud_by_params}`);
+        
+                    this.emailVariables = {
+                      de: "emisor",
+                      para: this.aprobacion.aprobador.correo,
+                      // alias: this.solicitudes.modelDetalleAprobaciones.correo,
+                      alias: "Notificación 1",
+                      asunto: `Solicitud en Estado en Espera - ${this.solicitud.tipoSolicitud} ${this.solicitud.idSolicitud}`,
+                      cuerpo: modifiedHtmlString,
+                      password: "password"
+                    };
+                    this.solicitudes.sendEmail(this.emailVariables).subscribe({
+                      next: () => {
+                      },
+                      error: (error) => {
+                        console.error(error);
+                      }
+                    });
+                }});
+             
+              }else if(this.solicitud.estadoSolicitud.includes("5"))//ESTADO CANCELADO
+                {
+                 this.solicitudes
+                  .obtenerNivelesAprobacionRegistrados(this.id_solicitud_by_params)
+                   .subscribe({
+                    next: (responseAPS) => {
+                      this.dataAprobacionesPorPosicionAPS = responseAPS.nivelAprobacionPosicionType;
+                      this.aprobacion = this.dataAprobacionesPorPosicionAPS.find(elemento => elemento.nivelAprobacionType.nivelAprobacionRuta.toUpperCase().includes("REGISTRARSOLICITUD"));
+                      
+                        const htmlString = "<!DOCTYPE html>\r\n<html lang=\"es\">\r\n\r\n<head>\r\n  <meta charset=\"UTF-8\">\r\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n  <title>Document<\/title>\r\n<\/head>\r\n\r\n<body>\r\n  <h2>Estimados<\/h2>\r\n  <h3>APROBADORES<\/h3>\r\n\r\n  <P>Se le informa que ha sido rechazada la solucitud {ID_SOLICITUD} - {TIPO_SOLICITUD} <\/P>\r\n\r\n  <p>\r\n    <b>\r\n      Favor ingresar al siguiente enlace: <a href=\"{URL_APROBACION}\">{URL_APROBACION}<\/a>\r\n      <br>\r\n      <br>\r\n      Gracias por su atenci\u00F3n.\r\n    <\/b>\r\n  <\/p>\r\n<\/body>\r\n\r\n<\/html>\r\n";
+                       
+                        const modifiedHtmlString = htmlString.replace("{NOMBRE_APROBADOR}", this.aprobacion.aprobador.usuario).replace("{TIPO_SOLICITUD}", this.solicitud.tipoSolicitud).replace("{ID_SOLICITUD}", this.solicitud.idSolicitud).replace("{DESCRIPCION_POSICION}", this.detalleSolicitud.descripcionPosicion).replace(new RegExp("{URL_APROBACION}", "g"), `${portalWorkFlow}tareas/consulta-tareas`);
+            
+                        this.emailVariables = {
+                          de: "emisor",
+                          para: this.aprobacion.aprobador.correo,
+                          // alias: this.solicitudes.modelDetalleAprobaciones.correo,
+                          alias: "Notificación 1",
+                          asunto: `Notificación por rechazo de ${this.solicitud.tipoSolicitud} ${this.solicitud.idSolicitud}`,
+                          cuerpo: modifiedHtmlString,
+                          password: "password"
+                        };
+                        this.solicitudes.sendEmail(this.emailVariables).subscribe({
+                          next: () => {
+                          },
+                          error: (error) => {
+                            console.error(error);
+                          }
+                        });
+                    }});
+            }
 
 
           this.utilService.closeLoadingSpinner();

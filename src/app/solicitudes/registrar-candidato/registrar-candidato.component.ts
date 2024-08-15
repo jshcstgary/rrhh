@@ -1390,13 +1390,6 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
 
             this.saveDetalleAprobaciones()
 
-            Swal.fire({
-              text: "Datos actualizados con éxito",
-              icon: "success",
-              confirmButtonColor: "rgb(227, 199, 22)",
-              confirmButtonText: "Sí"
-            });
-
             this.tipoProcesoSaved = this.model.tipoProceso;
             this.disabledTipoProceso = this.tipoProcesoSaved !== "";
 
@@ -1413,6 +1406,10 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
             this.disabledFechas.procesoContratacion = this.fechas.procesoContratacion !== null && this.fechas.procesoContratacion !== "";
             this.disabledFechas.finProcesoContratacion = this.fechas.finProcesoContratacion !== null && this.fechas.finProcesoContratacion !== "";
 
+            this.utilService.modalResponse(
+              `Datos Guardados Correctamente`,
+              "success"
+            );
             setTimeout(() => {
               window.location.reload();
             }, 3000);

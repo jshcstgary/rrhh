@@ -1313,7 +1313,7 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
     if(this.selectedOption.toUpperCase().includes("SI")){
       this.solicitud.estadoSolicitud = "AN";
     }else{
-      this.solicitud.estadoSolicitud === "No" ? "4" : "AN";
+      this.solicitud.estadoSolicitud = "4";
     }
 
     if(!this.solicitud.estadoSolicitud.includes("AN") && this.detalleNivelAprobacion.length > 0){
