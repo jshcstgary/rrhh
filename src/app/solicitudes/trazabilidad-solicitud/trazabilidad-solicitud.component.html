@@ -49,15 +49,27 @@
 
       <div class="col-md-4 my-3">
         <div class="row">
-          <div class="label-estilo col-4">Fecha de Finalización</div>
+          <div class="label-estilo col-4">Fecha de Actualización</div>
 
           <div class="col-8">{{ solicitud.fechaActualizacion | date:'dd/MM/yyyy' }}</div>
         </div>
       </div>
     </div>
   </div>
-
+  <div class="mb-4">
+    <a>
+      <h3 class="sol-danger">Atención de Solicitud</h3>
+    </a>
+  </div>
   <div class="accordion" id="accordionExample">
+    <div class="row" style="align-items: center; justify-content: space-around">
+      <div class="sol-danger col">{{ "Ruta" }}</div>
+
+      <div class="sol-danger col">{{ "Aprobadores" }}</div>
+
+      <div class="sol-danger col">{{ "Nivel de Aprobación Ruta" }}</div>
+      <div class="sol-danger col">{{ "Fecha" }}</div>
+    </div>
     <div *ngFor="let nivelItem of dataDetalleAprobadorSolicitud; let i = index" class="accordion-item">
       <div class="accordion-header">
         <button class="accordion-button" type="button" data-bs-toggle="collapse" [attr.data-bs-target]="'#collapse' + i"
@@ -70,6 +82,7 @@
               nivelItem.usuarioAprobador : "No aplica" }}</div>
 
             <div class="col">{{ nivelItem.nivelAprobacionRuta }}</div>
+            <div class="col">{{ nivelItem.fechaModificacion | date: "dd/MM/YYYY HH:mm:ss" }}</div>
           </div>
         </button>
       </div>
