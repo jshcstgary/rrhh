@@ -1922,7 +1922,7 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
     if (this.taskType_Activity == environment.taskType_Revisar) { //APROBADORES DINAMICOS
 
       variables.atencionRevision = { value: this.buttonValue };
-      variables.comentariosAtencion = { value:'Usuario:' + localStorage.getItem(LocalStorageKeys.IdLogin)+' - Nivel de Dirección:'+ this.datosAprobadores.nivelDireccion + ' - Comentario:' + this.textareaContent };
+      variables.comentariosAtencion = { value: localStorage.getItem(LocalStorageKeys.IdLogin)+' - '+ this.datosAprobadores.nivelDireccion + ' - ' + this.textareaContent };
 
       //RQ_GRRHH_RevisarSolicitud
 
@@ -1942,7 +1942,7 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
         value: `${portalWorkFlow}solicitudes/revisar-solicitud/${this.idDeInstancia}/${this.id_solicitud_by_params}`
       };
       variables.atencionRevisionGerente = { value: this.buttonValue };
-      variables.comentariosAtencionGerenteRRHH = { value:'Usuario:' + localStorage.getItem(LocalStorageKeys.IdLogin)+' - Nivel de Dirección:'+ this.datosAprobadores.nivelDireccion + ' - Comentario:' + this.textareaContent };
+      variables.comentariosAtencionGerenteRRHH = { value: localStorage.getItem(LocalStorageKeys.IdLogin)+' - '+ this.datosAprobadores.nivelDireccion + ' - ' + this.textareaContent };
 
     } else if (this.taskType_Activity == environment.taskType_CREM
       || this.taskType_Activity == environment.taskType_AP_Remuneraciones
@@ -1954,7 +1954,7 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
 
 
       variables.atencionRevisionRemuneraciones = { value: this.buttonValue };
-      variables.comentariosAtencionRemuneraciones = { value:'Usuario:' + localStorage.getItem(LocalStorageKeys.IdLogin)+' - Nivel de Dirección:'+ this.datosAprobadores.nivelDireccion + ' - Comentario:' + this.textareaContent };
+      variables.comentariosAtencionRemuneraciones = { value: localStorage.getItem(LocalStorageKeys.IdLogin)+' - '+ this.datosAprobadores.nivelDireccion + ' - ' + this.textareaContent };
 
 
       /*
