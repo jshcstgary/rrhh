@@ -911,6 +911,33 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
           this.model.correo = this.detalleSolicitud.correo;
           this.model.fechaIngreso = this.detalleSolicitud.fechaIngreso;
           this.codigoReportaA = this.detalleSolicitud.jefeSolicitante;
+
+          if(this.solicitud.estadoSolicitud === "DV") //Devuelto
+          {
+            this.mantenimientoService.getDataEmpleadosEvolutionPorId(this.detalleSolicitud.codigoPosicion).subscribe({
+              next: (response) => {
+                if (response.evType.length === 0) {
+      
+                  this.sueldoEmpleado.sueldo = this.detalleSolicitud.sueldo;
+                  this.sueldoEmpleado.variableMensual =this.detalleSolicitud.sueldoVariableMensual;
+                  this.sueldoEmpleado.variableTrimestral =this.detalleSolicitud.sueldoVariableTrimestral;
+                  this.sueldoEmpleado.variableSemestral = this.detalleSolicitud.sueldoVariableSemestral;
+                  this.sueldoEmpleado.variableAnual  = this.detalleSolicitud.sueldoVariableAnual;
+
+                  return;
+                }
+                this.sueldoEmpleado.sueldo = response.evType[0].sueldo;
+                this.sueldoEmpleado.variableMensual =response.evType[0].sueldoVariableMensual;
+                this.sueldoEmpleado.variableTrimestral =response.evType[0].sueldoVariableTrimestral;
+                this.sueldoEmpleado.variableSemestral = response.evType[0].sueldoVariableSemestral;
+                this.sueldoEmpleado.variableAnual  = response.evType[0].sueldoVariableAnual;
+
+              },
+              error: (error: HttpErrorResponse) => {
+                this.utilService.modalResponse(error.error, "error");
+              },
+            });
+          }
         }
 
         this.loadingComplete++;
@@ -1146,7 +1173,6 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
 
     this.solicitud.unidadNegocio = this.model.unidadNegocio;
     this.solicitud.idUnidadNegocio = this.model.unidadNegocio;
-    this.solicitud.estadoSolicitud = "2";
 
     this.solicitudes
       .actualizarSolicitud(this.solicitud)
@@ -1303,7 +1329,6 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
 
       return;
     }
-
     this.utilService.openLoadingSpinner("Completando Tarea, espere por favor...");
 
     let variables = this.generateVariablesFromFormFields();

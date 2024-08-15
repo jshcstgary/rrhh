@@ -263,18 +263,19 @@ export class ConsultaTareasComponent implements OnInit {
 
 		switch (tarea.solicitudes[0].tasK_DEF_KEY) {
 		case environment.taskType_Registrar:
-			if (tarea.solicitudes[0].tipoSolicitud.toUpperCase().includes("REQUISI")) {
-				this.router.navigate([
-					"/solicitudes/registrar-solicitud",
-					ids[1],
-					ids[0],
-					]);
-			} else{
+			if (tarea.solicitudes[0].tipoSolicitud.toUpperCase().includes("ACCION")
+			|| tarea.solicitudes[0].tipoSolicitud.toUpperCase().includes("ACCIÓN")) {
 				this.router.navigate([
 					`/solicitudes/accion-personal/registrar-solicitud`,
 					ids[1],
 					ids[0]
 				]);
+			} else{
+				this.router.navigate([
+					"/solicitudes/registrar-solicitud",
+					ids[1],
+					ids[0],
+					]);
 			}
 			break;
 		

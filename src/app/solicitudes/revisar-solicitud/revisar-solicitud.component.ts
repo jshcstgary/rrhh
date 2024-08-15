@@ -941,10 +941,9 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
         this.viewInputs = response.detalleSolicitudType[0].codigo === "100" ? false : true;
 
         if (id.toUpperCase().includes("AP")) {
-
           this.totalRegistrosDetallesolicitud = response.totalRegistros;
-
           const detalleActual = response.detalleSolicitudType.find(detalle => detalle.idDetalleSolicitud === 1);
+          this.detalleSolicitud=detalleActual;
           this.model.codigoPosicion = detalleActual.codigoPosicion;
           this.model.descrPosicion = detalleActual.descripcionPosicion;
           this.model.subledger = detalleActual.subledger;
@@ -981,7 +980,7 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
 
           if (response.totalRegistros === 2) {
             const detallePropuestos = response.detalleSolicitudType.find(detalle => detalle.idDetalleSolicitud === 2);
-            this.detalleSolicitud = response.detalleSolicitudType.find(detalle => detalle.idDetalleSolicitud === 2);;
+            this.detalleSolicitud=detallePropuestos;
             this.modelPropuestos.codigoPosicion = detallePropuestos.codigoPosicion;
             this.modelPropuestos.descrPosicion = detallePropuestos.descripcionPosicion;
             this.modelPropuestos.subledger = detallePropuestos.subledger;
