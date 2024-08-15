@@ -615,16 +615,10 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
       this.mantenimientoService.getDataEmpleadosEvolutionPorId(datosEmpleado.codigoPosicionReportaA).subscribe({
         next: (response) => {
           if (response.evType.length === 0) {
-            Swal.fire({
-              text: "No se encontró registro",
-              icon: "info",
-              confirmButtonColor: "rgb(227, 199, 22)",
-              confirmButtonText: "Sí",
-            });
 
-            this.clearModel();
-            this.keySelected = "";
-            this.dataAprobacionesPorPosicion = {};
+          this.model.jefeInmediatoSuperior =  "";
+          this.model.puestoJefeInmediato =  "";
+          this.codigoReportaA =  "";
 
             return;
           }
@@ -714,9 +708,11 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
 		tipoValue = this.model.subledger;
     } else if (tipo === "nombreCompleto") {
 		tipoValue = this.model.nombreCompleto;
-    } else {
+    } else if (tipo === "descrPosicion"){
 		tipoValue = this.model.descrPosicion;
-	}
+	  } else {
+      tipoValue = this.model.codigoPosicion;
+    }
 
     this.mantenimientoService.getDataEmpleadosEvolutionPorId(tipoValue).subscribe({
       next: (response) => {
@@ -744,14 +740,16 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
           this.onSelectItem('codigoPosicion',this.eventSearch);
         } else if (tipo === "subledger") {
           this.subledgers = [...new Set(this.dataEmpleadoEvolution.map((empleado) => empleado.subledger))];
-          this.nombres = [...new Set(this.dataEmpleadoEvolution.map((empleado) => empleado.nombreCompleto))];
           this.eventSearch.item=this.dataEmpleadoEvolution[0].subledger;
           this.onSelectItem('subledger',this.eventSearch);
         } else if (tipo === "nombreCompleto") {
-          this.subledgers = [...new Set(this.dataEmpleadoEvolution.map((empleado) => empleado.subledger))];
           this.nombres = [...new Set(this.dataEmpleadoEvolution.map((empleado) => empleado.nombreCompleto))];
           this.eventSearch.item=this.dataEmpleadoEvolution[0].nombreCompleto;
           this.onSelectItem('nombreCompleto',this.eventSearch);
+        } else if (tipo === "descrPosicion") {
+          this.descripcionPosiciones = [...new Set(this.dataEmpleadoEvolution.map((empleado) => empleado.descrPosicion))];
+          this.eventSearch.item=this.dataEmpleadoEvolution[0].descrPosicion;
+          this.onSelectItem('descrPosicion',this.eventSearch);
         } else {
           this.codigosPosicion = [...new Set(this.dataEmpleadoEvolution.map((empleado) => empleado.codigoPosicion))];
           this.descripcionPosiciones = [...new Set(this.dataEmpleadoEvolution.map((empleado) => empleado.descrPosicion))];
@@ -913,6 +911,33 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
           this.model.correo = this.detalleSolicitud.correo;
           this.model.fechaIngreso = this.detalleSolicitud.fechaIngreso;
           this.codigoReportaA = this.detalleSolicitud.jefeSolicitante;
+
+          if(this.solicitud.estadoSolicitud === "DV") //Devuelto
+          {
+            this.mantenimientoService.getDataEmpleadosEvolutionPorId(this.detalleSolicitud.codigoPosicion).subscribe({
+              next: (response) => {
+                if (response.evType.length === 0) {
+      
+                  this.sueldoEmpleado.sueldo = this.detalleSolicitud.sueldo;
+                  this.sueldoEmpleado.variableMensual =this.detalleSolicitud.sueldoVariableMensual;
+                  this.sueldoEmpleado.variableTrimestral =this.detalleSolicitud.sueldoVariableTrimestral;
+                  this.sueldoEmpleado.variableSemestral = this.detalleSolicitud.sueldoVariableSemestral;
+                  this.sueldoEmpleado.variableAnual  = this.detalleSolicitud.sueldoVariableAnual;
+
+                  return;
+                }
+                this.sueldoEmpleado.sueldo = response.evType[0].sueldo;
+                this.sueldoEmpleado.variableMensual =response.evType[0].sueldoVariableMensual;
+                this.sueldoEmpleado.variableTrimestral =response.evType[0].sueldoVariableTrimestral;
+                this.sueldoEmpleado.variableSemestral = response.evType[0].sueldoVariableSemestral;
+                this.sueldoEmpleado.variableAnual  = response.evType[0].sueldoVariableAnual;
+
+              },
+              error: (error: HttpErrorResponse) => {
+                this.utilService.modalResponse(error.error, "error");
+              },
+            });
+          }
         }
 
         this.loadingComplete++;
@@ -1148,7 +1173,6 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
 
     this.solicitud.unidadNegocio = this.model.unidadNegocio;
     this.solicitud.idUnidadNegocio = this.model.unidadNegocio;
-    this.solicitud.estadoSolicitud = "2";
 
     this.solicitudes
       .actualizarSolicitud(this.solicitud)
@@ -1305,7 +1329,6 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
 
       return;
     }
-
     this.utilService.openLoadingSpinner("Completando Tarea, espere por favor...");
 
     let variables = this.generateVariablesFromFormFields();

@@ -620,14 +620,12 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
   getDataEmpleadosEvolution(tipo: string) {
     let tipoValue: string = "";
 
-    if (tipo === "codigoPosicion") {
-      tipoValue = this.model.codigoPosicion;
-    } else if (tipo === "subledger") {
+    if (tipo === "subledger") {
       tipoValue = this.model.subledger;
     } else if (tipo === "nombreCompleto") {
       tipoValue = this.model.nombreCompleto;
     } else {
-      tipoValue = this.model.descrPosicion;
+      tipoValue = this.model.nombreCompleto;
     }
 
     this.mantenimientoService.getDataEmpleadosEvolutionPorId(tipoValue).subscribe({
@@ -651,11 +649,9 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
 
         if (tipo === "subledger") {
           this.subledgers = [...new Set(this.dataEmpleadoEvolution.map((empleado) => empleado.subledger))];
-          this.nombres = [...new Set(this.dataEmpleadoEvolution.map((empleado) => empleado.nombreCompleto))];
-          this.eventSearch.item = this.dataEmpleadoEvolution[0].codigoPosicion;
-          this.onSelectItem('subledger', this.subledger);
+          this.eventSearch.item = this.dataEmpleadoEvolution[0].subledger;
+          this.onSelectItem('subledger', this.eventSearch);
         } else if (tipo === "nombreCompleto") {
-          this.subledgers = [...new Set(this.dataEmpleadoEvolution.map((empleado) => empleado.subledger))];
           this.nombres = [...new Set(this.dataEmpleadoEvolution.map((empleado) => empleado.nombreCompleto))];
           this.eventSearch.item = this.dataEmpleadoEvolution[0].nombreCompleto;
           this.onSelectItem('nombreCompleto', this.eventSearch);
@@ -710,16 +706,9 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
       this.mantenimientoService.getDataEmpleadosEvolutionPorId(datosEmpleado.codigoPosicionReportaA).subscribe({
         next: (response) => {
           if (response.evType.length === 0) {
-            Swal.fire({
-              text: "No se encontró registro",
-              icon: "info",
-              confirmButtonColor: "rgb(227, 199, 22)",
-              confirmButtonText: "Sí",
-            });
-
-            this.clearModel();
-            this.keySelected = "";
-            this.dataAprobacionesPorPosicion = {};
+            this.model.jefeInmediatoSuperior =  "";
+            this.model.puestoJefeInmediato =  "";
+            this.codigoReportaA =  "";
 
             return;
           }
@@ -930,14 +919,13 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
 
         if (response.detalleSolicitudType[0].codigoPosicion > 0) {
           this.RegistrarsolicitudCompletada=true;
-          this.sueldoEmpleado.sueldo = this.detalleSolicitud.sueldo;
-          this.sueldoEmpleado.variableMensual =this.detalleSolicitud.sueldoVariableMensual;
-          this.sueldoEmpleado.variableTrimestral =this.detalleSolicitud.sueldoVariableTrimestral;
-          this.sueldoEmpleado.variableSemestral = this.detalleSolicitud.sueldoVariableSemestral;
-          this.sueldoEmpleado.variableAnual  = this.detalleSolicitud.sueldoVariableAnual;
-        }
-
+        
         const detalleActual = response.detalleSolicitudType.find(detalle => detalle.idDetalleSolicitud === 1);
+        this.sueldoEmpleado.sueldo = detalleActual.sueldo;
+        this.sueldoEmpleado.variableMensual =detalleActual.sueldoVariableMensual;
+        this.sueldoEmpleado.variableTrimestral =detalleActual.sueldoVariableTrimestral;
+        this.sueldoEmpleado.variableSemestral = detalleActual.sueldoVariableSemestral;
+        this.sueldoEmpleado.variableAnual  = detalleActual.sueldoVariableAnual;
 
         this.model.codigoPosicion = detalleActual.codigoPosicion;
         this.model.descrPosicion = detalleActual.descripcionPosicion;
@@ -970,7 +958,7 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
         this.codigoReportaA = detalleActual.jefeSolicitante;
         this.nivelDireccionDatoPropuesto = detalleActual.nivelDireccion;
         this.viewInputs = detalleActual.codigo === "100" ? true : false;
-
+      }
         if (response.totalRegistros === 2) {
           const detallePropuestos = response.detalleSolicitudType.find(detalle => detalle.idDetalleSolicitud === 2);
 
@@ -1155,11 +1143,11 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
   }
 
   async onSubmit() {
-    const regexp = /^[0-9.,]+$/.test(this.model.sueldo);
-    const regexp1 = /^[0-9.,]+$/.test(this.model.sueldoMensual);
-    const regexp2 = /^[0-9.,]+$/.test(this.model.sueldoTrimestral);
-    const regexp3 = /^[0-9.,]+$/.test(this.model.sueldoSemestral);
-    const regexp4 = /^[0-9.,]+$/.test(this.model.sueldoAnual);
+    const regexp = /^[0-9.,]+$/.test(this.modelPropuestos.sueldo);
+    const regexp1 = /^[0-9.,]+$/.test(this.modelPropuestos.sueldoMensual);
+    const regexp2 = /^[0-9.,]+$/.test(this.modelPropuestos.sueldoTrimestral);
+    const regexp3 = /^[0-9.,]+$/.test(this.modelPropuestos.sueldoSemestral);
+    const regexp4 = /^[0-9.,]+$/.test(this.modelPropuestos.sueldoAnual);
 
     if(!regexp || !regexp1 || !regexp2 || !regexp3 || !regexp4 ){
       Swal.fire({
@@ -1172,11 +1160,11 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
 
     }
 
-    if(parseFloat(this.sueldoEmpleado.sueldo) < parseFloat(this.model.sueldo)
-      || parseFloat(this.sueldoEmpleado.variableMensual) < parseFloat(this.model.sueldoMensual)
-      || parseFloat(this.sueldoEmpleado.variableTrimestral) < parseFloat(this.model.sueldoTrimestral)
-      || parseFloat(this.sueldoEmpleado.variableSemestral) < parseFloat(this.model.sueldoSemestral)
-      || parseFloat(this.sueldoEmpleado.variableAnual) < parseFloat(this.model.sueldoAnual)
+    if(parseFloat(this.sueldoEmpleado.sueldo) < parseFloat(this.modelPropuestos.sueldo)
+      || parseFloat(this.sueldoEmpleado.variableMensual) < parseFloat(this.modelPropuestos.sueldoMensual)
+      || parseFloat(this.sueldoEmpleado.variableTrimestral) < parseFloat(this.modelPropuestos.sueldoTrimestral)
+      || parseFloat(this.sueldoEmpleado.variableSemestral) < parseFloat(this.modelPropuestos.sueldoSemestral)
+      || parseFloat(this.sueldoEmpleado.variableAnual) < parseFloat(this.modelPropuestos.sueldoAnual)
     ){
       Swal.fire({
         text: "No se puede registrar valores variables mayores a los obtenidos del sistema",
@@ -1606,11 +1594,11 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
 
   onCompletar() {
     if (this.selectedOption === "No") {
-      const regexp = /^[0-9.,]+$/.test(this.model.sueldo);
-      const regexp1 = /^[0-9.,]+$/.test(this.model.sueldoMensual);
-      const regexp2 = /^[0-9.,]+$/.test(this.model.sueldoTrimestral);
-      const regexp3 = /^[0-9.,]+$/.test(this.model.sueldoSemestral);
-      const regexp4 = /^[0-9.,]+$/.test(this.model.sueldoAnual);
+      const regexp = /^[0-9.,]+$/.test(this.modelPropuestos.sueldo);
+      const regexp1 = /^[0-9.,]+$/.test(this.modelPropuestos.sueldoMensual);
+      const regexp2 = /^[0-9.,]+$/.test(this.modelPropuestos.sueldoTrimestral);
+      const regexp3 = /^[0-9.,]+$/.test(this.modelPropuestos.sueldoSemestral);
+      const regexp4 = /^[0-9.,]+$/.test(this.modelPropuestos.sueldoAnual);
 
       if(!regexp || !regexp1 || !regexp2 || !regexp3 || !regexp4 ){
         Swal.fire({
@@ -1623,11 +1611,11 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
 
       }
 
-      if(parseFloat(this.sueldoEmpleado.sueldo) < parseFloat(this.model.sueldo)
-        || parseFloat(this.sueldoEmpleado.variableMensual) < parseFloat(this.model.sueldoMensual)
-        || parseFloat(this.sueldoEmpleado.variableTrimestral) < parseFloat(this.model.sueldoTrimestral)
-        || parseFloat(this.sueldoEmpleado.variableSemestral) < parseFloat(this.model.sueldoSemestral)
-        || parseFloat(this.sueldoEmpleado.variableAnual) < parseFloat(this.model.sueldoAnual)
+      if(parseFloat(this.sueldoEmpleado.sueldo) < parseFloat(this.modelPropuestos.sueldo)
+        || parseFloat(this.sueldoEmpleado.variableMensual) < parseFloat(this.modelPropuestos.sueldoMensual)
+        || parseFloat(this.sueldoEmpleado.variableTrimestral) < parseFloat(this.modelPropuestos.sueldoTrimestral)
+        || parseFloat(this.sueldoEmpleado.variableSemestral) < parseFloat(this.modelPropuestos.sueldoSemestral)
+        || parseFloat(this.sueldoEmpleado.variableAnual) < parseFloat(this.modelPropuestos.sueldoAnual)
       ) {
         Swal.fire({
           text: "No se puede Enviar Solicitud: Valores variables mayores a los obtenidos del sistema",
@@ -1653,7 +1641,7 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
     if(this.selectedOption.toUpperCase().includes("SI")){
       this.solicitud.estadoSolicitud = "AN";
     }else{
-      this.solicitud.estadoSolicitud === "No" ? "4" : "AN";
+      this.solicitud.estadoSolicitud = "4";
     }
 
     if(!this.solicitud.estadoSolicitud.includes("AN") && this.detalleNivelAprobacion.length > 0){
@@ -1786,8 +1774,7 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
 
     this.solicitud.unidadNegocio = this.model.unidadNegocio;
     this.solicitud.idUnidadNegocio = this.model.unidadNegocio;
-    this.solicitud.estadoSolicitud = "2";
-    console.log("this.solicitud: ", this.solicitud);
+
     this.solicitudes
       .actualizarSolicitud(this.solicitud)
       .subscribe((responseSolicitud) => {

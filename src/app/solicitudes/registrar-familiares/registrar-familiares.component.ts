@@ -1513,7 +1513,7 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
             this.solicitud.unidadNegocio = this.model.unidadNegocio;
             this.solicitud.idUnidadNegocio = this.model.unidadNegocio;
 
-            this.solicitud.estadoSolicitud === "No" ? "4" : "AN";
+            this.solicitud.estadoSolicitud = "4";
 
             console.log("this.solicitud: ", this.solicitud);
             this.solicitudes.actualizarSolicitud(this.solicitud).subscribe({
