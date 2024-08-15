@@ -3,10 +3,10 @@
     <div class="col-md-3 mb-3">
       <label class="azul mb-1">Tipo de Solicitud</label>
 
-      <select class="form-select" [(ngModel)]="dataFilterNivelesAprobacion.tipoSolicitud" (change)="onChangeTipoSolicitud()">
-        <option *ngFor="let tipoSolicitud of dataTipoSolicitudes" [value]="tipoSolicitud.id">
-          {{ tipoSolicitud.id }} - {{ tipoSolicitud.descripcion }}
-        </option>
+      <select class="form-select" [(ngModel)]="dataFilterNivelesAprobacion.tipoSolicitud"(change)="onChangeTipoSolicitud()">
+        <option value="" disabled selected hidden>Seleccione...</option>
+
+        <option *ngFor="let tipoSolicitud of dataTipoSolicitudes" [value]="tipoSolicitud.id">{{ tipoSolicitud.id }} - {{ tipoSolicitud.descripcion }}</option>
       </select>
     </div>
 
@@ -14,9 +14,9 @@
       <label class="azul mb-1">Nive de Dirección</label>
 
       <select class="form-select" [(ngModel)]="dataFilterNivelesAprobacion.nivelDireccion">
-        <option *ngFor="let nivelDireccion of dataNivelDireccion" [value]="nivelDireccion">
-          {{ nivelDireccion }}
-        </option>
+        <option value="" disabled selected hidden>Seleccione...</option>
+
+        <option *ngFor="let nivelDireccion of dataNivelDireccion" [value]="nivelDireccion">{{ nivelDireccion }}</option>
       </select>
     </div>
 
@@ -24,9 +24,9 @@
       <label class="azul mb-1">Tipo Motivo</label>
 
       <select class="form-select" [(ngModel)]="dataFilterNivelesAprobacion.tipoMotivo">
-        <option *ngFor="let tipoMotivo of dataTipoMotivo" [value]="tipoMotivo.id">
-          {{ tipoMotivo.id }} - {{ tipoMotivo.descripcion }}
-        </option>
+        <option value="" disabled selected hidden>Seleccione...</option>
+
+        <option *ngFor="let tipoMotivo of dataTipoMotivo" [value]="tipoMotivo.id">{{ tipoMotivo.id }} - {{ tipoMotivo.descripcion }}</option>
       </select>
     </div>
 
@@ -34,9 +34,9 @@
       <label class="azul mb-1">Tipo de Ruta</label>
 
       <select class="form-select" [(ngModel)]="dataFilterNivelesAprobacion.tipoRuta">
-        <option *ngFor="let tipoRuta of dataTipoRuta" [value]="tipoRuta.id">
-          {{ tipoRuta.descripcion }}
-        </option>
+        <option value="" disabled selected hidden>Seleccione...</option>
+
+        <option *ngFor="let tipoRuta of dataTipoRuta" [value]="tipoRuta.id">{{ tipoRuta.descripcion }}</option>
       </select>
     </div>
 
@@ -44,61 +44,11 @@
       <label class="azul mb-1">Acción</label>
 
       <select class="form-select" [(ngModel)]="dataFilterNivelesAprobacion.accion">
-        <option *ngFor="let accion of dataAccion" [value]="accion.id">
-          {{ accion.descripcion }}
-        </option>
+        <option value="" disabled selected hidden>Seleccione...</option>
+
+        <option *ngFor="let accion of dataAccion" [value]="accion.id">{{ accion.descripcion }}</option>
       </select>
     </div>
-
-    <!-- <div class="col-md-3 mb-3">
-      <label class="azul mb-1">Tipo de Solicitud</label>
-
-      <ng-select [(ngModel)]="dataFilterNivelesAprobacion.tipoSolicitud" name="tipo-solicitud" placeholder="Seleccione" (change)="onChangeTipoSolicitud()">
-        <ng-option *ngFor="let car of dataTipoSolicitudes" [value]="car.id">
-          {{ car.id }} - {{ car.descripcion }}
-        </ng-option>
-      </ng-select>
-    </div> -->
-
-    <!-- <div class="col-md-3 mb-3">
-      <label class="azul mb-1">Nivel de Direccion</label>
-
-      <ng-select [(ngModel)]="dataFilterNivelesAprobacion.nivelDireccion" name="id_trabajador" placeholder="Seleccione">
-        <ng-option *ngFor="let data of dataNivelDireccion" [value]="data">
-          {{ data }}
-        </ng-option>
-      </ng-select>
-    </div> -->
-
-    <!-- <div class="col-md-3 mb-3">
-      <label class="azul mb-1">Tipo Motivo</label>
-
-      <ng-select [(ngModel)]="dataFilterNivelesAprobacion.tipoMotivo" name="id_producto" placeholder="Seleccione" [disabled]="tipoMotivoDeshablitado">
-        <ng-option *ngFor="let car of dataTipoMotivo" [value]="car.id">
-          {{ car.id }} - {{ car.descripcion }}
-        </ng-option>
-      </ng-select>
-    </div> -->
-
-    <!-- <div class="col-md-3 mb-3">
-      <label class="azul mb-1">Tipo de Ruta</label>
-
-      <ng-select [(ngModel)]="dataFilterNivelesAprobacion.tipoRuta" name="id_trabajador" placeholder="Seleccione">
-        <ng-option *ngFor="let data of dataTipoRuta" [value]="data.id">
-          {{ data.descripcion }}
-        </ng-option>
-      </ng-select>
-    </div> -->
-
-    <!-- <div class="col-md-3 mb-3">
-      <label class="azul mb-1">Tipo de Acción</label>
-
-      <ng-select [(ngModel)]="dataFilterNivelesAprobacion.tipoAccion" name="id_trabajador" placeholder="Seleccione">
-        <ng-option *ngFor="let data of dataTipoAccion" [value]="data.id">
-          {{ data.descripcion }}
-        </ng-option>
-      </ng-select>
-    </div> -->
 
     <div *ngIf="this.controlsPermissions[pageControlPermission.ButtonBuscar].visualizar" class="col-md-3 ms-auto align-self-center">
       <div class="text-end">
@@ -110,14 +60,6 @@
   </div>
 
   <div class="row">
-    <!-- <div class="col-md-3 align-self-center">
-      <div class="form-check form-switch ps-0 mb-0">
-        <input class="form-check-input ms-0 me-2" type="checkbox" role="switch" id="active-records" [checked]="activeRecords" (change)="onChangeActiveRecordsCheckbox($event)">
-
-        <label class="form-check-label fs-6" for="active-records">{{ activeRecords ? "Activos" : "Inactivos" }}</label>
-      </div>
-    </div> -->
-
     <div class="col-md-3 offset-md-9">
       <form>
         <div class="mb-3">
@@ -136,7 +78,48 @@
   </div>
 
   <!-- <table-component overflowX="auto" [columns]="columnsTable2" [dataTable]="dataTable" [contexto]="this" onSaveRowTable="onSaveRowTable" [totalRows]="activeRecords ? dataTableActive.length : dataTableInactive.length" onChangePagination="onChangePaginationTable" onCancelEditRowTable="onCancelEditRowTable" [rowsPerPageValue]="rowsPerPageTable" [page]="pageNumberTable" clickOnActionRow="onRowActionClicked" [allowCloneButton]="false" tableWidth="150%"></table-component> -->
-  <table-component [fixedLastColumn]="true" overflowX="auto" [columns]="columnsTable2" [dataTable]="dataTable" [contexto]="this" onSaveRowTable="onSaveRowTable" [totalRows]="activeRecords ? dataTableActive.length : dataTableInactive.length" onChangePagination="onChangePaginationTable" onCancelEditRowTable="onCancelEditRowTable" [rowsPerPageValue]="rowsPerPageTable" [page]="pageNumberTable" clickOnActionRow="onRowActionClicked" [allowCloneButton]="false" tableWidth="150%"></table-component>
+  <!-- <table-component [fixedLastColumn]="true" overflowX="auto" [columns]="columnsTable2" [dataTable]="dataTable"
+    [contexto]="this" onSaveRowTable="onSaveRowTable"
+    [totalRows]="activeRecords ? dataTableActive.length : dataTableInactive.length"
+    onChangePagination="onChangePaginationTable" onCancelEditRowTable="onCancelEditRowTable"
+    [rowsPerPageValue]="rowsPerPageTable" [page]="pageNumberTable" clickOnActionRow="onRowActionClicked"
+    [allowCloneButton]="false" tableWidth="150%"></table-component> -->
+
+  <div class="mt-3" [ngClass]="{'no-table': dataTable.length === 0, 'with-table': dataTable.length !== 0}">
+    <table *ngIf="dataTable.length !== 0; else noTable">
+      <thead>
+        <tr>
+          <th class="text-center">Tipo de ruta</th>
+
+          <th class="text-center">Tipo de solicitud</th>
+
+          <th *ngFor="let ruta of rutasTableHeader" class="text-center">{{ ruta.descripcion }}</th>
+
+          <th class="text-center">Acciones</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let data of dataTable; let i = index">
+          <td>Tipo de ruta</td>
+
+          <td>Tipo de solicitud</td>
+
+          <td *ngFor="let ruta of rutasTableHeader">{{ showData(data, ruta) }}</td>
+
+          <td class="text-center">
+            <i tabindex="0" class="material-icons text-info cursor-pointer action-icon" (click)="onRowActionClicked(i)">edit</i>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <ng-template #noTable>
+      <div class="d-flex h-100 justify-content-center align-items-center">
+        <p>Sin datos que mostrar, relice un filtro de búsqueda</p>
+      </div>
+    </ng-template>
+  </div>
 </div>
 
 <!--

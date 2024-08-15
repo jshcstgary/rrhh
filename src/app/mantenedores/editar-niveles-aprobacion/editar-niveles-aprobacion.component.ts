@@ -21,6 +21,7 @@ export class EditarNivelesAprobacionComponent {
   public dataTipoRuta: any[] = [];
   public dataNivelesDireccion: any[] = [];
   public dataNivelAprobacion: any[] = [];
+  public nivelesAprobacion: any[] = [];
   // public dataTable: any[] = [];
 
   public desactivarTipoMotivoYAccion: boolean = false;
@@ -144,6 +145,8 @@ export class EditarNivelesAprobacionComponent {
 
   private getNivelesById() {
     this.serviceNivelesAprobacion.getNivelesById(this.id_edit).subscribe(({ nivelAprobacionType }) => {
+      this.nivelesAprobacion = nivelAprobacionType;
+
       this.modelHead.idTipoSolicitud = nivelAprobacionType[0].idTipoSolicitud;
       this.modelHead.idTipoRuta = nivelAprobacionType[0].idTipoRuta;
       this.modelHead.idNivelDireccion = nivelAprobacionType[0].idNivelDireccion;
@@ -264,16 +267,19 @@ export class EditarNivelesAprobacionComponent {
     // this.desactivarTipoMotivoYAccion = this.restrictionsIds.includes(this.tipoSolicitudSeleccionada);
     this.desactivarTipoMotivoYAccion = this.restrictionsIds.includes(codigoTipoSolicitud);
 
-    if (this.desactivarTipoMotivoYAccion) {
-      this.modelHead.idTipoMotivo = 0;
-      this.modelHead.idTipoMotivo = 0;
-      this.modelHead.idAccion = 0;
-      this.modelHead.idAccion = 0;
+    this.modelHead = {
+      ...this.modelHead,
+      idTipoMotivo: 0,
+      idAccion: 0,
     }
+    // if (this.desactivarTipoMotivoYAccion) {
+    // }
 
     if (!this.desactivarTipoMotivoYAccion) {
       forkJoin([this.mantenimientoService.getTipoMotivo(), this.mantenimientoService.getAccion()]).subscribe({
         next: ([tipoMotivo, accion]) => {
+          console.log(tipoMotivo);
+          console.log(accion);
           this.dataTipoMotivo = tipoMotivo
             .filter(data => data.estado === "A")
             .map((r) => ({
@@ -281,10 +287,12 @@ export class EditarNivelesAprobacionComponent {
               descripcion: r.tipoMotivo,
             }));
 
-          this.dataAccion = accion.map((r) => ({
-            id: r.id,
-            descripcion: r.accion,
-          }));
+          this.dataAccion = accion
+            .filter(data => data.estado === "A")
+            .map((r) => ({
+              id: r.id,
+              descripcion: r.accion,
+            }));
         }
       });
     }
@@ -300,6 +308,10 @@ export class EditarNivelesAprobacionComponent {
 
           this.dataRuta.forEach(data => {
             this.idNivelesAprobacionRuta[data.id] = "";
+          });
+
+          this.nivelesAprobacion.forEach(data => {
+            this.idNivelesAprobacionRuta[data.idRuta] = data.nivelAprobacionRuta;
           });
         },
         error: (error: HttpErrorResponse) => {
@@ -317,7 +329,7 @@ export class EditarNivelesAprobacionComponent {
 
         modelo = {
           ...modelo,
-          ...this.modelHead,
+          // ...this.modelHead,
           idRuta: parseInt(key),
           idNivelAprobacionRuta: value,
           estado: "A"

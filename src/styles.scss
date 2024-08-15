@@ -132,26 +132,11 @@ body {
   }
 }
 
-.fixed-col {
-  position: -webkit-sticky; /* Para navegadores WebKit como Safari */
-  position: sticky;
-  left: 0;
-  background-color: #f4f4f4; /* Color de fondo para distinguir la columna fija */
-  z-index: 1; /* Asegura que la columna quede encima del resto del contenido */
-}
-
-thead th.fixed-col {
-  position: -webkit-sticky; /* Para navegadores WebKit como Safari */
-  position: sticky;
-  top: 0;
-  z-index: 2; /* Asegura que el encabezado fijo quede encima del resto del contenido */
-}
-
 .fixed-col-end {
   position: sticky;
   right: 0;
   background-color: #efefef !important;
-  z-index: 10000;
+  z-index: 2;
 }
 
 thead th.fixed-col-end {
@@ -160,5 +145,5 @@ thead th.fixed-col-end {
   color: white;
   top: 0;
   right: 0;
-  z-index: 10000;
+  z-index: 2;
 }

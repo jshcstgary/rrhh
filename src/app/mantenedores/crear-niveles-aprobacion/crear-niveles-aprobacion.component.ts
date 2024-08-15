@@ -285,21 +285,21 @@ export class CrearNivelesAprobacionComponent implements OnInit {
     });
   }
 
-  ObtenerServicioRuta() {
-    return this.mantenimientoService.getRuta().subscribe({
-      next: (response) => {
-        this.dataRuta = response
-          .filter(({ estado }) => estado === "A")
-          .map((r) => ({
-            id: r.id,
-            descripcion: r.ruta,
-          }));
-      },
-      error: (error: HttpErrorResponse) => {
-        this.utilService.modalResponse(error.error, "error");
-      },
-    });
-  }
+  // ObtenerServicioRuta() {
+  //   return this.mantenimientoService.getRuta().subscribe({
+  //     next: (response) => {
+  //       this.dataRuta = response
+  //         .filter(({ estado }) => estado === "A")
+  //         .map((r) => ({
+  //           id: r.id,
+  //           descripcion: r.ruta,
+  //         }));
+  //     },
+  //     error: (error: HttpErrorResponse) => {
+  //       this.utilService.modalResponse(error.error, "error");
+  //     },
+  //   });
+  // }
 
   ObtenerServicioTipoRuta() {
     return this.mantenimientoService.getTipoRuta().subscribe({

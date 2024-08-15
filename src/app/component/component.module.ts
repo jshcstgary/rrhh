@@ -21,8 +21,8 @@ import { TooltipComponent } from "./tooltip/tooltip.component";
     NgbModule,
     FormsModule,
     ColorPickerModule,
-	NgSelectModule,
-	DirectivesModule
+    NgSelectModule,
+    DirectivesModule
   ],
   declarations: [
     TooltipComponent,
