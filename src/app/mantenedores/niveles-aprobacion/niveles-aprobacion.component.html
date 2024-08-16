@@ -1,144 +1,148 @@
 <div class="p-3">
-  <div class="row mb-3">
-    <div class="col-md-3 mb-3">
-      <label class="azul mb-1">Tipo de Solicitud</label>
+	<div class="row mb-3">
+		<div class="col-md-3 mb-3">
+			<label class="azul mb-1">Tipo de Solicitud</label>
 
-      <select class="form-select" [(ngModel)]="dataFilterNivelesAprobacion.tipoSolicitud"(change)="onChangeTipoSolicitud()">
-        <option value="" disabled selected hidden>Seleccione...</option>
+			<select class="form-select" [(ngModel)]="dataFilterNivelesAprobacion.tipoSolicitud"(change)="onChangeTipoSolicitud()">
+				<option value="" disabled selected hidden>Seleccione...</option>
 
-        <option *ngFor="let tipoSolicitud of dataTipoSolicitudes" [value]="tipoSolicitud.id">{{ tipoSolicitud.id }} - {{ tipoSolicitud.descripcion }}</option>
-      </select>
-    </div>
+				<option *ngFor="let tipoSolicitud of dataTipoSolicitudes" [value]="tipoSolicitud.id">{{ tipoSolicitud.id }} - {{ tipoSolicitud.descripcion }}</option>
+			</select>
+		</div>
 
-    <div class="col-md-3 mb-3">
-      <label class="azul mb-1">Nive de Dirección</label>
+		<div class="col-md-3 mb-3">
+			<label class="azul mb-1">Nive de Dirección</label>
 
-      <select class="form-select" [(ngModel)]="dataFilterNivelesAprobacion.nivelDireccion">
-        <option value="" disabled selected hidden>Seleccione...</option>
+			<select class="form-select" [(ngModel)]="dataFilterNivelesAprobacion.nivelDireccion">
+				<option value="" disabled selected hidden>Seleccione...</option>
 
-        <option *ngFor="let nivelDireccion of dataNivelDireccion" [value]="nivelDireccion">{{ nivelDireccion }}</option>
-      </select>
-    </div>
+				<option *ngFor="let nivelDireccion of dataNivelDireccion" [value]="nivelDireccion">{{ nivelDireccion }}</option>
+			</select>
+		</div>
 
-    <div class="col-md-3 mb-3">
-      <label class="azul mb-1">Tipo Motivo</label>
+		<div class="col-md-3 mb-3">
+			<label class="azul mb-1">Tipo Motivo</label>
 
-      <select class="form-select" [(ngModel)]="dataFilterNivelesAprobacion.tipoMotivo">
-        <option value="" disabled selected hidden>Seleccione...</option>
+			<select class="form-select" [(ngModel)]="dataFilterNivelesAprobacion.tipoMotivo">
+				<option value="" disabled selected hidden>Seleccione...</option>
 
-        <option *ngFor="let tipoMotivo of dataTipoMotivo" [value]="tipoMotivo.id">{{ tipoMotivo.id }} - {{ tipoMotivo.descripcion }}</option>
-      </select>
-    </div>
+				<option *ngFor="let tipoMotivo of dataTipoMotivo" [value]="tipoMotivo.id">{{ tipoMotivo.id }} - {{ tipoMotivo.descripcion }}</option>
+			</select>
+		</div>
 
-    <div class="col-md-3 mb-3">
-      <label class="azul mb-1">Tipo de Ruta</label>
+		<div class="col-md-3 mb-3">
+			<label class="azul mb-1">Tipo de Ruta</label>
 
-      <select class="form-select" [(ngModel)]="dataFilterNivelesAprobacion.tipoRuta">
-        <option value="" disabled selected hidden>Seleccione...</option>
+			<select class="form-select" [(ngModel)]="dataFilterNivelesAprobacion.tipoRuta">
+				<option value="" disabled selected hidden>Seleccione...</option>
 
-        <option *ngFor="let tipoRuta of dataTipoRuta" [value]="tipoRuta.id">{{ tipoRuta.descripcion }}</option>
-      </select>
-    </div>
+				<option *ngFor="let tipoRuta of dataTipoRuta" [value]="tipoRuta.id">{{ tipoRuta.descripcion }}</option>
+			</select>
+		</div>
 
-    <div class="col-md-3 mb-3">
-      <label class="azul mb-1">Acción</label>
+		<div class="col-md-3 mb-3">
+			<label class="azul mb-1">Acción</label>
 
-      <select class="form-select" [(ngModel)]="dataFilterNivelesAprobacion.accion">
-        <option value="" disabled selected hidden>Seleccione...</option>
+			<select class="form-select" [(ngModel)]="dataFilterNivelesAprobacion.accion">
+				<option value="" disabled selected hidden>Seleccione...</option>
 
-        <option *ngFor="let accion of dataAccion" [value]="accion.id">{{ accion.descripcion }}</option>
-      </select>
-    </div>
+				<option *ngFor="let accion of dataAccion" [value]="accion.id">{{ accion.descripcion }}</option>
+			</select>
+		</div>
 
-    <div *ngIf="this.controlsPermissions[pageControlPermission.ButtonBuscar].visualizar" class="col-md-3 ms-auto align-self-center">
-      <div class="text-end">
-        <button (click)="getDataToTableFilter()" type="button" class="btn btn-info">
-          <i class="fas fa-filter"></i> Buscar
-        </button>
-      </div>
-    </div>
-  </div>
+		<div *ngIf="this.controlsPermissions[pageControlPermission.ButtonBuscar].visualizar" class="col-md-3 ms-auto align-self-center">
+			<div class="text-end">
+				<button (click)="getDataToTableFilter()" type="button" class="btn btn-info">
+					<i class="fas fa-filter"></i> Buscar
+				</button>
+			</div>
+		</div>
+	</div>
 
-  <div class="row">
-    <div class="col-md-3 offset-md-9">
-      <form>
-        <div class="mb-3">
-          <div class="text-end">
-            <button *ngIf="this.controlsPermissions[pageControlPermission.ButtonAgregar].visualizar" type="button" (click)="pageCrear()" class="btn btn-info me-3">
-              <i class="fas fa-plus"></i> Agregar
-            </button>
+	<div class="row">
+		<div class="col-md-3 offset-md-9">
+			<form>
+				<div class="mb-3">
+					<div class="text-end">
+						<button *ngIf="this.controlsPermissions[pageControlPermission.ButtonAgregar].visualizar" type="button" (click)="pageCrear()" class="btn btn-info me-3">
+							<i class="fas fa-plus"></i> Agregar
+						</button>
 
-            <button *ngIf="this.controlsPermissions[pageControlPermission.ButtonExportar].visualizar" type="submit" class="btn btn-outline-info">
-              <i class="fas fa-file-excel"></i> Exportar
-            </button>
-          </div>
-        </div>
-      </form>
-    </div>
-  </div>
+						<button *ngIf="this.controlsPermissions[pageControlPermission.ButtonExportar].visualizar" type="submit" class="btn btn-outline-info">
+							<i class="fas fa-file-excel"></i> Exportar
+						</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
 
-  <!-- <table-component overflowX="auto" [columns]="columnsTable2" [dataTable]="dataTable" [contexto]="this" onSaveRowTable="onSaveRowTable" [totalRows]="activeRecords ? dataTableActive.length : dataTableInactive.length" onChangePagination="onChangePaginationTable" onCancelEditRowTable="onCancelEditRowTable" [rowsPerPageValue]="rowsPerPageTable" [page]="pageNumberTable" clickOnActionRow="onRowActionClicked" [allowCloneButton]="false" tableWidth="150%"></table-component> -->
-  <!-- <table-component [fixedLastColumn]="true" overflowX="auto" [columns]="columnsTable2" [dataTable]="dataTable"
-    [contexto]="this" onSaveRowTable="onSaveRowTable"
-    [totalRows]="activeRecords ? dataTableActive.length : dataTableInactive.length"
-    onChangePagination="onChangePaginationTable" onCancelEditRowTable="onCancelEditRowTable"
-    [rowsPerPageValue]="rowsPerPageTable" [page]="pageNumberTable" clickOnActionRow="onRowActionClicked"
-    [allowCloneButton]="false" tableWidth="150%"></table-component> -->
+	<!-- <table-component overflowX="auto" [columns]="columnsTable2" [dataTable]="dataTable" [contexto]="this" onSaveRowTable="onSaveRowTable" [totalRows]="activeRecords ? dataTableActive.length : dataTableInactive.length" onChangePagination="onChangePaginationTable" onCancelEditRowTable="onCancelEditRowTable" [rowsPerPageValue]="rowsPerPageTable" [page]="pageNumberTable" clickOnActionRow="onRowActionClicked" [allowCloneButton]="false" tableWidth="150%"></table-component> -->
+	<!-- <table-component [fixedLastColumn]="true" overflowX="auto" [columns]="columnsTable2" [dataTable]="dataTable"
+		[contexto]="this" onSaveRowTable="onSaveRowTable"
+		[totalRows]="activeRecords ? dataTableActive.length : dataTableInactive.length"
+		onChangePagination="onChangePaginationTable" onCancelEditRowTable="onCancelEditRowTable"
+		[rowsPerPageValue]="rowsPerPageTable" [page]="pageNumberTable" clickOnActionRow="onRowActionClicked"
+		[allowCloneButton]="false" tableWidth="150%"></table-component> -->
 
-  <div class="mt-3" [ngClass]="{'no-table': dataTable.length === 0, 'with-table': dataTable.length !== 0}">
-    <table *ngIf="dataTable.length !== 0; else noTable">
-      <thead>
-        <tr>
-          <th class="text-center">Tipo de ruta</th>
+	<div class="mt-3" [ngClass]="{'no-table': dataTable.length === 0, 'with-table': dataTable.length !== 0}">
+		<table *ngIf="dataTable.length !== 0; else noTable">
+			<thead>
+				<tr>
+					<th class="text-center">Tipo de solicitud</th>
 
-          <th class="text-center">Tipo de solicitud</th>
+					<th class="text-center">Tipo de ruta</th>
 
-          <th *ngFor="let ruta of rutasTableHeader" class="text-center">{{ ruta.descripcion }}</th>
+					<th class="text-center">Tipo Motivo</th>
 
-          <th class="text-center">Acciones</th>
-        </tr>
-      </thead>
+					<th *ngFor="let ruta of dataRuta" class="text-center">{{ ruta.descripcion }}</th>
 
-      <tbody>
-        <tr *ngFor="let data of dataTable; let i = index">
-          <td>Tipo de ruta</td>
+					<th class="text-center">Acciones</th>
+				</tr>
+			</thead>
 
-          <td>Tipo de solicitud</td>
+			<tbody>
+				<tr *ngFor="let data of dataTable; let i = index">
+					<td>{{ mostrarTipoSolicitud() }}</td>
 
-          <td *ngFor="let ruta of rutasTableHeader">{{ showData(data, ruta) }}</td>
+					<td>{{ data[0].tipoRuta }}</td>
 
-          <td class="text-center">
-            <i tabindex="0" class="material-icons text-info cursor-pointer action-icon" (click)="onRowActionClicked(i)">edit</i>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+					<td>{{ mostrarTipoMotivo(data[0].idTipoMotivo) }}</td>
 
-    <ng-template #noTable>
-      <div class="d-flex h-100 justify-content-center align-items-center">
-        <p>Sin datos que mostrar, relice un filtro de búsqueda</p>
-      </div>
-    </ng-template>
-  </div>
+					<td *ngFor="let ruta of dataRuta">{{ showData(data, ruta) }}</td>
+
+					<td class="text-center">
+						<i tabindex="0" class="material-icons text-info cursor-pointer action-icon" (click)="onRowActionClicked(i)">edit</i>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+
+		<ng-template #noTable>
+			<div class="d-flex h-100 justify-content-center align-items-center">
+				<p>Sin datos que mostrar, relice un filtro de búsqueda</p>
+			</div>
+		</ng-template>
+	</div>
 </div>
 
 <!--
 
 666(onChangeActiveRecordsCheckbox)="onChangeActiveRecordsCheckbox($event)" -->
 <!-- <plantilla-b-component [dataFilterNivelesAprobacion]="dataFilterNivelesAprobacion" [dataTipoMotivo]="dataTipoMotivo"
-  [dataTipoSolicitudes]="dataTipoSolicitudes" [dataNivelDireccion]="dataNivelDireccion" *ngIf="hasFiltered"
-  [columnsTable]="columnsTable" [originalDataTable]="activeRecords ? dataTableActive : dataTableInactive"
-  [placeholderHeaderInputText]="'Buscar niveles de aprobacion...'" [contexto]="this" keyNameTable="id"
-  clickOnActionRow="onRowActionClicked" clickOnFilter="filterDataTable" clickOnPageCrear="pageCrear"
-  [IdRowToClone]="IdRowToClone" colIdToDisable="id" titleReport="NIVELES DE APROBACION" [codigoReport]="codigoReporte"
-  [showFilterTipoSolicitud]="this.controlsPermissions[pageControlPermission.FiltroTipoSolicitud].visualizar"
-  [disabledFilterTipoSolicitud]="!this.controlsPermissions[pageControlPermission.FiltroTipoSolicitud].habilitar"
-  [showFilterTipoMotivo]="this.controlsPermissions[pageControlPermission.FiltroTipoMotivo].visualizar"
-  [disabledFilterTipoMotivo]="!this.controlsPermissions[pageControlPermission.FiltroTipoMotivo].habilitar"
-  [showFilterNivelDireccion]="this.controlsPermissions[pageControlPermission.FiltroNivelDireccion].visualizar"
-  [disabledFilterNivelDireccion]="!this.controlsPermissions[pageControlPermission.FiltroNivelDireccion].habilitar"
-  [showButtonBuscar]="this.controlsPermissions[pageControlPermission.ButtonBuscar].visualizar"
-  [showCreateButton]="this.controlsPermissions[pageControlPermission.ButtonAgregar].visualizar"
-  [showButtonExportar]="this.controlsPermissions[pageControlPermission.ButtonExportar].visualizar"
-  [activeRecordsCheckbox]="activeRecords">
+	[dataTipoSolicitudes]="dataTipoSolicitudes" [dataNivelDireccion]="dataNivelDireccion" *ngIf="hasFiltered"
+	[columnsTable]="columnsTable" [originalDataTable]="activeRecords ? dataTableActive : dataTableInactive"
+	[placeholderHeaderInputText]="'Buscar niveles de aprobacion...'" [contexto]="this" keyNameTable="id"
+	clickOnActionRow="onRowActionClicked" clickOnFilter="filterDataTable" clickOnPageCrear="pageCrear"
+	[IdRowToClone]="IdRowToClone" colIdToDisable="id" titleReport="NIVELES DE APROBACION" [codigoReport]="codigoReporte"
+	[showFilterTipoSolicitud]="this.controlsPermissions[pageControlPermission.FiltroTipoSolicitud].visualizar"
+	[disabledFilterTipoSolicitud]="!this.controlsPermissions[pageControlPermission.FiltroTipoSolicitud].habilitar"
+	[showFilterTipoMotivo]="this.controlsPermissions[pageControlPermission.FiltroTipoMotivo].visualizar"
+	[disabledFilterTipoMotivo]="!this.controlsPermissions[pageControlPermission.FiltroTipoMotivo].habilitar"
+	[showFilterNivelDireccion]="this.controlsPermissions[pageControlPermission.FiltroNivelDireccion].visualizar"
+	[disabledFilterNivelDireccion]="!this.controlsPermissions[pageControlPermission.FiltroNivelDireccion].habilitar"
+	[showButtonBuscar]="this.controlsPermissions[pageControlPermission.ButtonBuscar].visualizar"
+	[showCreateButton]="this.controlsPermissions[pageControlPermission.ButtonAgregar].visualizar"
+	[showButtonExportar]="this.controlsPermissions[pageControlPermission.ButtonExportar].visualizar"
+	[activeRecordsCheckbox]="activeRecords">
 </plantilla-b-component> -->
