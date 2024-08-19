@@ -197,7 +197,7 @@ export class LoginComponent {
       codigoRecurso: "PWFCAMUMET",
       usuario: this.user,
       password: btoa(this.password),
-      isAutenticacionLocal: false,
+      isAutenticacionLocal: true,
     };
 
     this.loginService.login(loginRequest).subscribe({
