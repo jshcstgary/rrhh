@@ -1,257 +1,256 @@
 stages:
-
-  - build
-  - deploy_dev
-  - deploy_QA
-  - sonarqube-check-angular
-  - dependencycheck
-  - release
-  - security_scan
+    - build
+    - deploy_dev
+    - deploy_QA
+    - sonarqube-check-angular
+    - dependencycheck
+    - release
+    - security_scan
 
 variables:
-  GIT_SUBMODULE_STRATEGY: recursive
+    GIT_SUBMODULE_STRATEGY: recursive
 
 before_script:
-  - echo "Setting up...-"
+    - echo "Setting up...-"
 
 build:
-  stage: build
-  script:
-    #- docker --version
-    # - apk add --update git
-    - echo "$CI_COMMIT_REF_NAME"
-    - echo "$BRANCH_NAME"
-    - BRANCH_NAME=$(echo $CI_COMMIT_REF_NAME | tr '[:upper:]' '[:lower:]')
-    - DOCKER_TAG="$DOCKERHUB_USERNAME/$REPOSITORY:$CI_PROJECT_NAME-$BRANCH_NAME"
-    #- DOCKER_TAG="$DOCKERHUB_USERNAME/$REPOSITORY:$CI_PROJECT_NAME-1.0.0"
-    #- docker build --build-arg ENVIRONMENT=QA -t myapp:dev .
-    - docker build -f DockerfileQA -t "$DOCKER_TAG" .
-  only:
-     - QA
-  tags:
-    - docker
+    stage: build
+    script:
+        #- docker --version
+        # - apk add --update git
+        - echo "$CI_COMMIT_REF_NAME"
+        - echo "$BRANCH_NAME"
+        - BRANCH_NAME=$(echo $CI_COMMIT_REF_NAME | tr '[:upper:]' '[:lower:]')
+        # - DOCKER_TAG="$DOCKERHUB_USERNAME/$REPOSITORY:$CI_PROJECT_NAME-$BRANCH_NAME"
+        - DOCKER_TAG="$DOCKERHUB_USERNAME/$REPOSITORY:$CI_PROJECT_NAME-1.0.0"
+        #- docker build --build-arg ENVIRONMENT=QA -t myapp:dev .
+        - docker build -f DockerfileQA -t "$DOCKER_TAG" .
+    only:
+        - QA
+    tags:
+        - docker
 buildQA:
-  stage: build
-  script:
-    #- docker --version
-    # - apk add --update git
-    - echo "$CI_COMMIT_REF_NAME"
-    - echo "$BRANCH_NAME"
-    - BRANCH_NAME=$(echo $CI_COMMIT_REF_NAME | tr '[:upper:]' '[:lower:]')
-    - DOCKER_TAG="$DOCKERHUB_USERNAME/$REPOSITORY:$CI_PROJECT_NAME-$BRANCH_NAME"
-    #- DOCKER_TAG="$DOCKERHUB_USERNAME/$REPOSITORY:$CI_PROJECT_NAME-1.0.0"
-    #- docker build --build-arg ENVIRONMENT=QA -t myapp:dev .
-    - docker build -t "$DOCKER_TAG" .
-  only:
-    - dev-mmunoz
-  tags:
-    - docker
+    stage: build
+    script:
+        #- docker --version
+        # - apk add --update git
+        - echo "$CI_COMMIT_REF_NAME"
+        - echo "$BRANCH_NAME"
+        - BRANCH_NAME=$(echo $CI_COMMIT_REF_NAME | tr '[:upper:]' '[:lower:]')
+        # - DOCKER_TAG="$DOCKERHUB_USERNAME/$REPOSITORY:$CI_PROJECT_NAME-$BRANCH_NAME"
+        - DOCKER_TAG="$DOCKERHUB_USERNAME/$REPOSITORY:$CI_PROJECT_NAME-1.0.0"
+        #- docker build --build-arg ENVIRONMENT=QA -t myapp:dev .
+        - docker build -t "$DOCKER_TAG" .
+    only:
+        - dev-mmunoz
+    tags:
+        - docker
 
 create_issue:
-  stage: sonarqube-check-angular
-  script:
-    - apk add --update jq curl
-    - 'curl --request POST --header "PRIVATE-TOKEN: $TOKEN_GITLAB" --data "title=incidencia &description= $CI_COMMIT_REF_NAME incidencia registrada en el portal no se logro desplegar el aplicativo, favor revisar " "http://10.35.2.181/api/v4/projects/$CI_PROJECT_ID/issues"'
-    #- '12curl --request POST --header "PRIVATE-TOKEN: glpat-yjznHyN-JC6JvSUs88Fs" --data "title=TituloDeTuIssue&description=DescripcionDeTuIssue" "http://10.35.2.181/api/v4/projects/12/issues"'
-  only:
-    - dev
-  tags:
-    - dev-mmunoz
-  when: on_failure
+    stage: sonarqube-check-angular
+    script:
+        - apk add --update jq curl
+        - 'curl --request POST --header "PRIVATE-TOKEN: $TOKEN_GITLAB" --data "title=incidencia &description= $CI_COMMIT_REF_NAME incidencia registrada en el portal no se logro desplegar el aplicativo, favor revisar " "http://10.35.2.181/api/v4/projects/$CI_PROJECT_ID/issues"'
+        #- '12curl --request POST --header "PRIVATE-TOKEN: glpat-yjznHyN-JC6JvSUs88Fs" --data "title=TituloDeTuIssue&description=DescripcionDeTuIssue" "http://10.35.2.181/api/v4/projects/12/issues"'
+    only:
+        - dev
+    tags:
+        - dev-mmunoz
+    when: on_failure
 
 deploy_dev:
-  stage: deploy_dev
-  script:
-    - echo "Deploying to production...-."
-    - archivo_json="src/environments/environment.ts"
-    - apk add --update jq
-    - archivo_ts="src/environments/environment.ts"
-    - PORT=$(awk '/port:/ {print $2}' "$archivo_ts" | tr -d ',')
+    stage: deploy_dev
+    script:
+        - echo "Deploying to production...-."
+        - archivo_json="src/environments/environment.ts"
+        - apk add --update jq
+        - archivo_ts="src/environments/environment.ts"
+        - PORT=$(awk '/port:/ {print $2}' "$archivo_ts" | tr -d ',')
 
-    - echo "$PORT"
-    - BRANCH_NAME=$(echo $CI_COMMIT_REF_NAME | tr '[:upper:]' '[:lower:]')
-    - DOCKER_TAG="$DOCKERHUB_USERNAME/$REPOSITORY:$CI_PROJECT_NAME-$BRANCH_NAME"
-    #- DOCKER_TAG="$DOCKERHUB_USERNAME/$REPOSITORY:$CI_PROJECT_NAME-1.0.0"
-    - CONTAINER_NAME="$CI_PROJECT_NAME-$BRANCH_NAME"
-    #- CONTAINER_NAME="$CI_PROJECT_NAME-1.0.0"
-    - docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD
-    - docker push "$DOCKER_TAG"
-    - apk add --update sshpass
-    - if [ ! -x "$(command -v ssh-agent)" ]; then apk add --update openssh; fi
-    - eval $(ssh-agent -s)
-    - mkdir -p "$HOME/.ssh"
-    - touch "$HOME/.ssh/known_hosts"
-    - chmod 644 "$HOME/.ssh/known_hosts"
-    - ssh-keyscan -H "$SERVER_IP" >> "$HOME/.ssh/known_hosts"
-    #- echo "$DOCKERHUB_PASSWORD" | sshpass -p "$SERVER_PASSWORD" ssh $SERVER_USER@$SERVER_IP
-    #  "docker login -u $DOCKERHUB_USERNAME --password-stdin"
-    - sshpass -p "$SERVER_PASSWORD" ssh $SERVER_USER@$SERVER_IP "docker pull $DOCKER_TAG"
-    - CONTAINER_ID=$(sshpass -p $SERVER_PASSWORD ssh $SERVER_USER@$SERVER_IP "docker
-      ps -q -f \"name=$CONTAINER_NAME\"")
-    - |
-      if [ -n "$CONTAINER_ID" ]; then
-       echo "$CONTAINER_NAME"
-       sshpass -p $SERVER_PASSWORD ssh $SERVER_USER@$SERVER_IP "docker stop $CONTAINER_NAME && docker rm $CONTAINER_NAME"
-      else
-        echo "El contenedor no existe, no se requiere detenerlo."
-      fi
-    - CONTAINER_ID_PUERTO=$(sshpass -p $SERVER_PASSWORD ssh $SERVER_USER@$SERVER_IP
-      "docker ps -q --filter "publish=$PORT"")
-    - |
-      if [ -n "$CONTAINER_ID_PUERTO" ]; then
-       echo "$CONTAINER_ID_PUERTO"
-       sshpass -p $SERVER_PASSWORD ssh $SERVER_USER@$SERVER_IP "docker stop $CONTAINER_ID_PUERTO && docker rm $CONTAINER_ID_PUERTO"
-      else
-        echo "El contenedor no existe, no se requiere detenerlo."
-      fi
-    - sshpass -p "$SERVER_PASSWORD" ssh $SERVER_USER@$SERVER_IP "docker run -d --name
-      $CONTAINER_NAME -p $PORT:80 $DOCKER_TAG"
-  environment:
-    name: production
-    url: https://example.com
-  only:
-    - dev-mmunoz
-  tags:
-    - docker
+        - echo "$PORT"
+        - BRANCH_NAME=$(echo $CI_COMMIT_REF_NAME | tr '[:upper:]' '[:lower:]')
+        # - DOCKER_TAG="$DOCKERHUB_USERNAME/$REPOSITORY:$CI_PROJECT_NAME-$BRANCH_NAME"
+        - DOCKER_TAG="$DOCKERHUB_USERNAME/$REPOSITORY:$CI_PROJECT_NAME-1.0.0"
+        # - CONTAINER_NAME="$CI_PROJECT_NAME-$BRANCH_NAME"
+        - CONTAINER_NAME="$CI_PROJECT_NAME-1.0.0"
+        - docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD
+        - docker push "$DOCKER_TAG"
+        - apk add --update sshpass
+        - if [ ! -x "$(command -v ssh-agent)" ]; then apk add --update openssh; fi
+        - eval $(ssh-agent -s)
+        - mkdir -p "$HOME/.ssh"
+        - touch "$HOME/.ssh/known_hosts"
+        - chmod 644 "$HOME/.ssh/known_hosts"
+        - ssh-keyscan -H "$SERVER_IP" >> "$HOME/.ssh/known_hosts"
+        #- echo "$DOCKERHUB_PASSWORD" | sshpass -p "$SERVER_PASSWORD" ssh $SERVER_USER@$SERVER_IP
+        #  "docker login -u $DOCKERHUB_USERNAME --password-stdin"
+        - sshpass -p "$SERVER_PASSWORD" ssh $SERVER_USER@$SERVER_IP "docker pull $DOCKER_TAG"
+        - CONTAINER_ID=$(sshpass -p $SERVER_PASSWORD ssh $SERVER_USER@$SERVER_IP "docker
+          ps -q -f \"name=$CONTAINER_NAME\"")
+        - |
+            if [ -n "$CONTAINER_ID" ]; then
+             echo "$CONTAINER_NAME"
+             sshpass -p $SERVER_PASSWORD ssh $SERVER_USER@$SERVER_IP "docker stop $CONTAINER_NAME && docker rm $CONTAINER_NAME"
+            else
+              echo "El contenedor no existe, no se requiere detenerlo."
+            fi
+        - CONTAINER_ID_PUERTO=$(sshpass -p $SERVER_PASSWORD ssh $SERVER_USER@$SERVER_IP
+          "docker ps -q --filter "publish=$PORT"")
+        - |
+            if [ -n "$CONTAINER_ID_PUERTO" ]; then
+             echo "$CONTAINER_ID_PUERTO"
+             sshpass -p $SERVER_PASSWORD ssh $SERVER_USER@$SERVER_IP "docker stop $CONTAINER_ID_PUERTO && docker rm $CONTAINER_ID_PUERTO"
+            else
+              echo "El contenedor no existe, no se requiere detenerlo."
+            fi
+        - sshpass -p "$SERVER_PASSWORD" ssh $SERVER_USER@$SERVER_IP "docker run -d --name
+          $CONTAINER_NAME -p $PORT:80 $DOCKER_TAG"
+    environment:
+        name: production
+        url: https://example.com
+    only:
+        - dev-mmunoz
+    tags:
+        - docker
 security_scan:
-  stage: security_scan
-  image: owasp/zap2docker-stable:latest
-  script:
-    - apt-get update -qy && apt-get install -y python3 python3-pip
-    - pip3 install --upgrade zapcli
-    - /home/zap/.local/bin/zap-cli
-    - /home/zap/.local/bin/zap-cli -p 9091 start
-    - sleep 30
-    - /home/zap/.local/bin/zap-cli -p 9091 status
-    - cat /home/zap/zap.out
-    - curl -X GET http://127.0.0.1:9091
-    - curl -X GET http://127.0.0.1:9091/JSON/core/view/version/
+    stage: security_scan
+    image: owasp/zap2docker-stable:latest
+    script:
+        - apt-get update -qy && apt-get install -y python3 python3-pip
+        - pip3 install --upgrade zapcli
+        - /home/zap/.local/bin/zap-cli
+        - /home/zap/.local/bin/zap-cli -p 9091 start
+        - sleep 30
+        - /home/zap/.local/bin/zap-cli -p 9091 status
+        - cat /home/zap/zap.out
+        - curl -X GET http://127.0.0.1:9091
+        - curl -X GET http://127.0.0.1:9091/JSON/core/view/version/
 
-    - curl -v http://10.35.3.175:$PORT
-    - /home/zap/.local/bin/zap-cli -p 9090 status
-    - /home/zap/.local/bin/zap-cli -p 9090 quick-scan "https://www.google.com" -l High -r
-      /home/zap/.local/bin/zap-cli -p 9090 quick-scan "https://www.google.com" -l High -r
+        - curl -v http://10.35.3.175:$PORT
+        - /home/zap/.local/bin/zap-cli -p 9090 status
+        - /home/zap/.local/bin/zap-cli -p 9090 quick-scan "https://www.google.com" -l High -r
+          /home/zap/.local/bin/zap-cli -p 9090 quick-scan "https://www.google.com" -l High -r
 
-    - /home/zap/.local/bin/zap-cli -p 9090 spider http://10.35.3.175:$PORT
-    - /home/zap/.local/bin/zap-cli -p 9090 active-scan -r http://10.35.3.175:$PORT
-    - zap-cli active-scan --recursive --start
-    - zap-cli report -o reports/zap_report.html -f html
-    - zap-cli report -o reports/zap_report.xml -f xml
+        - /home/zap/.local/bin/zap-cli -p 9090 spider http://10.35.3.175:$PORT
+        - /home/zap/.local/bin/zap-cli -p 9090 active-scan -r http://10.35.3.175:$PORT
+        - zap-cli active-scan --recursive --start
+        - zap-cli report -o reports/zap_report.html -f html
+        - zap-cli report -o reports/zap_report.xml -f xml
 
-  #script:
-  #  - apt-get update -qy && apt-get install -y python3 python3-pip
-  #  - pip3 install --upgrade zapcli
-  #  - /home/zap/.local/bin/zap-cli -p 9090 start
-  #  - sleep 30
-  #
-  #  - /home/zap/.local/bin/zap-cli -p 9090 status
-  #  - /home/zap/.local/bin/zap-cli -p 9090 status about
-  #  - /home/zap/.local/bin/zap-cli -p 9090 report -o /path/to/report.html
+    #script:
+    #  - apt-get update -qy && apt-get install -y python3 python3-pip
+    #  - pip3 install --upgrade zapcli
+    #  - /home/zap/.local/bin/zap-cli -p 9090 start
+    #  - sleep 30
+    #
+    #  - /home/zap/.local/bin/zap-cli -p 9090 status
+    #  - /home/zap/.local/bin/zap-cli -p 9090 status about
+    #  - /home/zap/.local/bin/zap-cli -p 9090 report -o /path/to/report.html
 
-  #  - /home/zap/.local/bin/zap-cli -p 9090 active-scan --help
+    #  - /home/zap/.local/bin/zap-cli -p 9090 active-scan --help
 
-  #  - /home/zap/.local/bin/zap-cli -p 9090 active-scan -r http://10.35.3.175:8070
-  tags:
-    - docker
-  only:
-    - master
+    #  - /home/zap/.local/bin/zap-cli -p 9090 active-scan -r http://10.35.3.175:8070
+    tags:
+        - docker
+    only:
+        - master
 release_job:
-  stage: release
-  image: registry.gitlab.com/gitlab-org/release-cli:latest
-  script:
-    - echo "runnings release_job for $TAG"
+    stage: release
+    image: registry.gitlab.com/gitlab-org/release-cli:latest
+    script:
+        - echo "runnings release_job for $TAG"
 
-  release: # See https://docs.gitlab.com/ee/ci/yaml/#release for available properties
-    tag_name: "v0.$CI_PIPELINE_IID" # The version is incremented per pipeline.
-    description: "v0.$CI_PIPELINE_IID"
-    ref: "$CI_COMMIT_SHA"
-  tags:
-    - docker
-  only:
-    - master
+    release: # See https://docs.gitlab.com/ee/ci/yaml/#release for available properties
+        tag_name: "v0.$CI_PIPELINE_IID" # The version is incremented per pipeline.
+        description: "v0.$CI_PIPELINE_IID"
+        ref: "$CI_COMMIT_SHA"
+    tags:
+        - docker
+    only:
+        - master
 
 sonarqube-check-angular:
-  stage: sonarqube-check-angular
-  image: node:18 # Utiliza una imagen de Node.js
-  variables:
-    SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar"
-  cache:
-    key: "${CI_JOB_NAME}"
-    paths:
-      - .sonar/cache
-  script:
-      - "apt-get update"
-      - "apt-get install --yes --no-install-recommends openjdk-17-jre"
-      - "dotnet tool install --global dotnet-sonarscanner"
-      - "export PATH=\"$PATH:$HOME/.dotnet/tools\""
-      - "dotnet sonarscanner begin /k:\"Portal\" /d:sonar.token=\"$SONAR_TOKEN\" /d:\"sonar.host.url=$SONAR_HOST_URL\" "
-      - "dotnet build"
-      - "dotnet sonarscanner end /d:sonar.token=\"$SONAR_TOKEN\""
-    #- sonar-scanner-4.6.2.2472-linux/bin/sonar-scanner -X -Dsonar.host.url=$SONAR_HOST_URL -Dsonar.login=sqa_15534268ab9819f422079d7df136a3de8bf605d1 -Dsonar.projectKey=Portal -Dsonar.projectName="Portal" -Dsonar.projectVersion=1.0 -Dsonar.sources=src -Dsonar.exclusions=**/node_modules/**,**/*.spec.ts -Dsonar.sourceEncoding=UTF-8 -Dsonar.javascript.lcov.reportPaths=coverage/lcov-report -Dsonar.qualitygate.wait=false
+    stage: sonarqube-check-angular
+    image: node:18 # Utiliza una imagen de Node.js
+    variables:
+        SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar"
+    cache:
+        key: "${CI_JOB_NAME}"
+        paths:
+            - .sonar/cache
+    script:
+        - "apt-get update"
+        - "apt-get install --yes --no-install-recommends openjdk-17-jre"
+        - "dotnet tool install --global dotnet-sonarscanner"
+        - 'export PATH="$PATH:$HOME/.dotnet/tools"'
+        - 'dotnet sonarscanner begin /k:"Portal" /d:sonar.token="$SONAR_TOKEN" /d:"sonar.host.url=$SONAR_HOST_URL" '
+        - "dotnet build"
+        - 'dotnet sonarscanner end /d:sonar.token="$SONAR_TOKEN"'
+        #- sonar-scanner-4.6.2.2472-linux/bin/sonar-scanner -X -Dsonar.host.url=$SONAR_HOST_URL -Dsonar.login=sqa_15534268ab9819f422079d7df136a3de8bf605d1 -Dsonar.projectKey=Portal -Dsonar.projectName="Portal" -Dsonar.projectVersion=1.0 -Dsonar.sources=src -Dsonar.exclusions=**/node_modules/**,**/*.spec.ts -Dsonar.sourceEncoding=UTF-8 -Dsonar.javascript.lcov.reportPaths=coverage/lcov-report -Dsonar.qualitygate.wait=false
 
-  only:
-    - master
-  tags:
-    - docker
+    only:
+        - master
+    tags:
+        - docker
 dependencycheck:
-  stage: dependencycheck
-  image:
-    name: owasp/dependency-check
-    entrypoint: [""]
-  script:
-    - echo "dependcy"
-    #- /usr/share/dependency-check/bin/dependency-check.sh --project "Test" --out . --scan . --enableExperimental --failOnCVSS 7 --nvdApiKey "ebc05a84-5668-4dd1-959f-4bad02725714" -l dependency-check.log --format HTML
+    stage: dependencycheck
+    image:
+        name: owasp/dependency-check
+        entrypoint: [""]
+    script:
+        - echo "dependcy"
+        #- /usr/share/dependency-check/bin/dependency-check.sh --project "Test" --out . --scan . --enableExperimental --failOnCVSS 7 --nvdApiKey "ebc05a84-5668-4dd1-959f-4bad02725714" -l dependency-check.log --format HTML
 
-  only:
-    - master
+    only:
+        - master
 
 deploy_QA:
-  stage: deploy_QA
-  script:
-    - echo "Deploying to production...-."
-    - archivo_json="src/environments/environment.prod.ts"
-    - apk add --update jq
-    - archivo_ts="src/environments/environment.prod.ts"
-    - PORT=$(awk '/port:/ {print $2}' "$archivo_ts" | tr -d ',')
+    stage: deploy_QA
+    script:
+        - echo "Deploying to production...-."
+        - archivo_json="src/environments/environment.prod.ts"
+        - apk add --update jq
+        - archivo_ts="src/environments/environment.prod.ts"
+        - PORT=$(awk '/port:/ {print $2}' "$archivo_ts" | tr -d ',')
 
-    - echo "$PORT"
-    - BRANCH_NAME=$(echo $CI_COMMIT_REF_NAME | tr '[:upper:]' '[:lower:]')
-    - DOCKER_TAG="$DOCKERHUB_USERNAME/$REPOSITORY:$CI_PROJECT_NAME-$BRANCH_NAME"
-    - CONTAINER_NAME="$CI_PROJECT_NAME-$BRANCH_NAME"
-    - docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD
-    - docker push "$DOCKER_TAG"
-    - apk add --update sshpass
-    - if [ ! -x "$(command -v ssh-agent)" ]; then apk add --update openssh; fi
-    - eval $(ssh-agent -s)
-    - mkdir -p "$HOME/.ssh"
-    - touch "$HOME/.ssh/known_hosts"
-    - chmod 644 "$HOME/.ssh/known_hosts"
-    - ssh-keyscan -H "$SERVER_IP" >> "$HOME/.ssh/known_hosts"
-    - echo "$DOCKERHUB_PASSWORD" | sshpass -p "$SERVER_PASSWORD" ssh $SERVER_USER@$SERVER_IP
-      "docker login -u $DOCKERHUB_USERNAME --password-stdin"
-    - sshpass -p "$SERVER_PASSWORD" ssh $SERVER_USER@$SERVER_IP "docker pull $DOCKER_TAG"
-    - CONTAINER_ID=$(sshpass -p $SERVER_PASSWORD ssh $SERVER_USER@$SERVER_IP "docker
-      ps -q -f \"name=$CONTAINER_NAME\"")
-    - |
-      if [ -n "$CONTAINER_ID" ]; then
-       echo "$CONTAINER_NAME"
-       sshpass -p $SERVER_PASSWORD ssh $SERVER_USER@$SERVER_IP "docker stop $CONTAINER_NAME && docker rm $CONTAINER_NAME"
-      else
-        echo "El contenedor no existe, no se requiere detenerlo."
-      fi
-    - CONTAINER_ID_PUERTO=$(sshpass -p $SERVER_PASSWORD ssh $SERVER_USER@$SERVER_IP
-      "docker ps -q --filter "publish=$PORT"")
-    - |
-      if [ -n "$CONTAINER_ID_PUERTO" ]; then
-       echo "$CONTAINER_ID_PUERTO"
-       sshpass -p $SERVER_PASSWORD ssh $SERVER_USER@$SERVER_IP "docker stop $CONTAINER_ID_PUERTO && docker rm $CONTAINER_ID_PUERTO"
-      else
-        echo "El contenedor no existe, no se requiere detenerlo."
-      fi
-    - sshpass -p "$SERVER_PASSWORD" ssh $SERVER_USER@$SERVER_IP "docker run -d --name
-      $CONTAINER_NAME -p $PORT:80 $DOCKER_TAG"
-  environment:
-    name: production
-    url: https://example.com
-  only:
-    - QA
+        - echo "$PORT"
+        - BRANCH_NAME=$(echo $CI_COMMIT_REF_NAME | tr '[:upper:]' '[:lower:]')
+        - DOCKER_TAG="$DOCKERHUB_USERNAME/$REPOSITORY:$CI_PROJECT_NAME-$BRANCH_NAME"
+        - CONTAINER_NAME="$CI_PROJECT_NAME-$BRANCH_NAME"
+        - docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD
+        - docker push "$DOCKER_TAG"
+        - apk add --update sshpass
+        - if [ ! -x "$(command -v ssh-agent)" ]; then apk add --update openssh; fi
+        - eval $(ssh-agent -s)
+        - mkdir -p "$HOME/.ssh"
+        - touch "$HOME/.ssh/known_hosts"
+        - chmod 644 "$HOME/.ssh/known_hosts"
+        - ssh-keyscan -H "$SERVER_IP" >> "$HOME/.ssh/known_hosts"
+        - echo "$DOCKERHUB_PASSWORD" | sshpass -p "$SERVER_PASSWORD" ssh $SERVER_USER@$SERVER_IP
+          "docker login -u $DOCKERHUB_USERNAME --password-stdin"
+        - sshpass -p "$SERVER_PASSWORD" ssh $SERVER_USER@$SERVER_IP "docker pull $DOCKER_TAG"
+        - CONTAINER_ID=$(sshpass -p $SERVER_PASSWORD ssh $SERVER_USER@$SERVER_IP "docker
+          ps -q -f \"name=$CONTAINER_NAME\"")
+        - |
+            if [ -n "$CONTAINER_ID" ]; then
+             echo "$CONTAINER_NAME"
+             sshpass -p $SERVER_PASSWORD ssh $SERVER_USER@$SERVER_IP "docker stop $CONTAINER_NAME && docker rm $CONTAINER_NAME"
+            else
+              echo "El contenedor no existe, no se requiere detenerlo."
+            fi
+        - CONTAINER_ID_PUERTO=$(sshpass -p $SERVER_PASSWORD ssh $SERVER_USER@$SERVER_IP
+          "docker ps -q --filter "publish=$PORT"")
+        - |
+            if [ -n "$CONTAINER_ID_PUERTO" ]; then
+             echo "$CONTAINER_ID_PUERTO"
+             sshpass -p $SERVER_PASSWORD ssh $SERVER_USER@$SERVER_IP "docker stop $CONTAINER_ID_PUERTO && docker rm $CONTAINER_ID_PUERTO"
+            else
+              echo "El contenedor no existe, no se requiere detenerlo."
+            fi
+        - sshpass -p "$SERVER_PASSWORD" ssh $SERVER_USER@$SERVER_IP "docker run -d --name
+          $CONTAINER_NAME -p $PORT:80 $DOCKER_TAG"
+    environment:
+        name: production
+        url: https://example.com
+    only:
+        - QA
