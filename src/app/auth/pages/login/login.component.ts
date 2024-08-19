@@ -101,6 +101,7 @@ export class LoginComponent {
 
     this.loginService.getPerfilesUsuario(getPerfileRequest).subscribe({
       next: (response) => {
+        this.perfilUsuario=response;
         if (this.perfilUsuario.length === 0) {
           Swal.fire({
             text: "Usuario no encontrado",
