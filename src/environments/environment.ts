@@ -4,75 +4,75 @@ const base = "http://10.35.3.162"; //base de servicios local
 const baseRBP = "http://192.168.44.180"; //base de servicios RBP http://10.35.3.162
 const baseG = "http://181.188.224.250:18043"; //base de servicios api gateway
 
-const pruebas_locales: boolean = false; //Varialbe boleana para las pruebas locales y pruebas en el ambiente del cliente
+const pruebas_locales: boolean = true; //Varialbe boleana para las pruebas locales y pruebas en el ambiente del cliente
 
 // export const portalWorkFlow: string = "http://10.35.3.162:4200/";
 
-export const portalWorkFlow: string = "http://192.168.44.180:4200/";
+export const portalWorkFlow: string = pruebas_locales ? "http://10.35.3.162:4200/" : "http://192.168.44.180:4200/";
 
 export const appCode: string = "46";
 export const resourceCode: string = "PWFCAMUMET";
 
 export const environment = {
-  port: "4200",
-  production: false,
-  modalConfirmation: false,
-  reporteUS: pruebas_locales ? `${base}:8091/v1/us/reporte` : `${baseRBP}:50063/v1/us/reporte`,
+	port: "4200",
+	production: false,
+	modalConfirmation: false,
+	reporteUS: pruebas_locales ? `${base}:8091/v1/us/reporte` : `${baseRBP}:50063/v1/us/reporte`,
 
-  // Angular UI app is associated with below BPMN process key
-  procesName: "process_modelo",
+	// Angular UI app is associated with below BPMN process key
+	procesName: "process_modelo",
 
-  // Task type 1 - Register - the value maps to the id attribute 'Registrar Solicitud' from bpmn
-  // taskType_Registrar: "Activity_1pkw55i",
+	// Task type 1 - Register - the value maps to the id attribute 'Registrar Solicitud' from bpmn
+	// taskType_Registrar: "Activity_1pkw55i",
 
-  taskType_Registrar: "RP_RegistrarSolicitud",
+	taskType_Registrar: "RP_RegistrarSolicitud",
 
-  // Task type 2 - Review   - the value maps to the id attribute 'Revisar Solicitud' from bpmn
-  // taskType_Revisar: "Activity_0wf5xb7",
+	// Task type 2 - Review   - the value maps to the id attribute 'Revisar Solicitud' from bpmn
+	// taskType_Revisar: "Activity_0wf5xb7",
 
-  taskType_Revisar: "Dinamico_RevisarSolicitud",
+	taskType_Revisar: "Dinamico_RevisarSolicitud",
 
-  taskType_RRHH: "RQ_GRRHH_RevisarSolicitud",
+	taskType_RRHH: "RQ_GRRHH_RevisarSolicitud",
 
-  taskType_Notificar: "Activity_1bql112",
+	taskType_Notificar: "Activity_1bql112",
 
-  taskType_CREM: "RQ_CREM_RevisarSolicitud",
+	taskType_CREM: "RQ_CREM_RevisarSolicitud",
 
-  taskType_RegistrarCandidato: "RP_RegistrarSeleccionCandidato",
+	taskType_RegistrarCandidato: "RP_RegistrarSeleccionCandidato",
 
-  taskType_CompletarRequisicion: "RP_CompletarRequisicion",
+	taskType_CompletarRequisicion: "RP_CompletarRequisicion",
 
-  taskType_CF: "CF_RegistrarSolicitud",
+	taskType_CF: "CF_RegistrarSolicitud",
 
-  taskType_CF_RRHH: "CF_RevisarSolicitudGerente",
+	taskType_CF_RRHH: "CF_RevisarSolicitudGerente",
 
-  taskType_CF_Remuneraciones: "CF_RevisarSolicitudRemuneraciones",
+	taskType_CF_Remuneraciones: "CF_RevisarSolicitudRemuneraciones",
 
-  taskType_RG: "RG_RegistrarSolicitud",
+	taskType_RG: "RG_RegistrarSolicitud",
 
-  taskType_RGC_RRHH: "RG_ComentariosJefeRRHH",
+	taskType_RGC_RRHH: "RG_ComentariosJefeRRHH",
 
-  taskType_RGC_ULTIMO_JEFE: "RG_ComentariosUltimoJefe",
+	taskType_RGC_ULTIMO_JEFE: "RG_ComentariosUltimoJefe",
 
-  taskType_RG_Jefe_Solicitante: "RG_ComentariosJefeSolicitante",
+	taskType_RG_Jefe_Solicitante: "RG_ComentariosJefeSolicitante",
 
-  taskType_RG_RRHH: "RG_RevisarSolicitudGerente",
+	taskType_RG_RRHH: "RG_RevisarSolicitudGerente",
 
-  taskType_RG_Remuneraciones: "RG_RevisarSolicitudRemuneraciones",
+	taskType_RG_Remuneraciones: "RG_RevisarSolicitudRemuneraciones",
 
-  taskType_AP_RV: "SB_RevisionSolicitudAP",
+	taskType_AP_RV: "SB_RevisionSolicitudAP",
 
-  taskType_AP_Registrar: "AP_RegistrarSolicitud",
+	taskType_AP_Registrar: "AP_RegistrarSolicitud",
 
-  taskType_AP_RRHH: "AP_RevisarSolicitudGerente",
+	taskType_AP_RRHH: "AP_RevisarSolicitudGerente",
 
-  taskType_AP_Remuneraciones: "AP_RevisarSolicitudRemuneraciones",
+	taskType_AP_Remuneraciones: "AP_RevisarSolicitudRemuneraciones",
 
-  taskType_AP_Completar: "AP_CompletarSolicitud",
+	taskType_AP_Completar: "AP_CompletarSolicitud",
 
 
 	//Servicios de workflow
-	camundaUrl: pruebas_locales ? `${baseRBP}:8290/` : `${baseC}/`,
+	camundaUrl: pruebas_locales ? `${baseC}/` : `${baseRBP}:8290/`,
 	// camundaUrl: `${baseG}/`,
 	//camundaUrl: `${baseRBP}:8290/`,
 	// camundaUrl: `localhost:8080/`,
@@ -148,10 +148,10 @@ export const environment = {
 	// comentarioServiceES: `${baseG}/v1/es/comentarios`,
 
 	loginES: pruebas_locales ? `${base}:8308/api/us/integracion-seguridad/iguana/obtenercredenciales` : `${baseRBP}:8308/api/us/integracion-seguridad/obtenercredenciales`,
-	
+
 	perfilUsuarioES: pruebas_locales ? `${base}:8308/api/us/integracion-seguridad/perfil-usuario` : `${baseRBP}:8308/api/us/integracion-seguridad/perfil-usuario`,
 	/*
-  
+
 	mantenedores
 	http://10.35.3.162:8068/v1/es/tiposolicitud  ok
 	http://10.35.3.162:8069/v1/es/tiporuta       ok
@@ -160,29 +160,29 @@ export const environment = {
 	http://10.35.3.162:8072/v1/es/tipomotivo
 	http://10.35.3.162:8073/v1/es/accion         no
 	http://10.35.3.162:8074/v1/es/tipoaccion
-  
+
 	niveles de aprobación
 	http://10.35.3.162:8000/v1/es/nivelesaprobacion
 	http://10.35.3.162:8000/swagger/index.html
-  
-  
+
+
 	servicio solicitud y detalle solicitud
 	http://10.35.3.162:8001/swagger/index.html
-  
+
 	servicio tarea y variable de proceso histórico de camunda
 	http://10.35.3.162:8002/swagger/index.html
-  
+
 	Api para consultar los catalogos de niveles de Aprobación
 	http://10.35.3.162:8053/v1/es/item-catalogo/codigo/RBPNA
 	Api para consultar los catalogos de Niveles de Dirección
 	http://10.35.3.162:8053/v1/es/item-catalogo/codigo/RBPND
-  
+
 	Api que devuelve empresas
 	http://10.35.3.175:8506/swagger/index.html
-  
+
 	servicio de la vista
 	exempleadojaff --> http://10.35.3.162:8400/swagger/index.html
-  
+
 	*/
 
 };
