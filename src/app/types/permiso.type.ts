@@ -1,6 +1,6 @@
 export type LoginRequest = {
   codigoAplicacion: string;
-  codigoEmpresa: string;
+  codigoPerfil: string;
   codigoRecurso: string;
   usuario: string;
   password: string;
@@ -14,6 +14,14 @@ export type Perfil = {
   nombres: string;
   email: string;
   vistas: Permiso[];
+};
+
+export type PerfilUsuarioResponse = PerfilUsuario[];
+
+export type PerfilUsuario = {
+  scg_per_codigo: string;
+  scg_per_descripcion: string;
+  message: string;
 };
 
 export type Permiso = {

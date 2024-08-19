@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable, of } from "rxjs";
 import { LocalStorageKeys } from "src/app/enums/local-storage-keys.enum";
-import { LoginRequest, Perfil } from "src/app/types/permiso.type";
+import { LoginRequest, Perfil, PerfilUsuarioResponse } from "src/app/types/permiso.type";
 import { environment } from "src/environments/environment";
 
 @Injectable({
@@ -10,8 +10,13 @@ import { environment } from "src/environments/environment";
 })
 export class LoginServices {
   private loginUrl: string = environment.loginES;
+  private perfilUrl: string = environment.perfilUsuarioES;
 
   constructor(private http: HttpClient) {}
+
+  public getPerfilesUsuario(PerfilBody: LoginRequest): Observable<PerfilUsuarioResponse> {
+    return this.http.post<PerfilUsuarioResponse>(`${this.perfilUrl}`, PerfilBody);
+  }
 
   public login(loginBody: LoginRequest): Observable<Perfil> {
     return this.http.post<Perfil>(`${this.loginUrl}`, loginBody);
