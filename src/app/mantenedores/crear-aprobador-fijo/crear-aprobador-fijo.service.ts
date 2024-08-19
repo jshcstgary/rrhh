@@ -2,46 +2,53 @@ import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { LocalStorageKeys } from "src/app/enums/local-storage-keys.enum";
+import { convertTimeZonedDate } from "src/app/services/util/dates.util";
 import { environment } from "src/environments/environment";
 
 @Injectable({
-  providedIn: "root",
+	providedIn: "root",
 })
 export class CrearAprobadorFijoService {
-  private apiUrlNivelAprobacion = environment.nivelAprobacionServiceES;
-  private nivelAprobacionRefreshServiceES =
-    environment.nivelAprobacionRefreshServiceES;
-  private apiUrlAprobadoresFijos = environment.aprobadoresFijosServiceES;
+	// private apiUrlNivelAprobacion = environment.nivelAprobacionServiceES;
+	// private nivelAprobacionRefreshServiceES = environment.nivelAprobacionRefreshServiceES;
+	private apiUrlAprobadoresFijos = environment.aprobadoresFijosServiceES;
 
-  constructor(private http: HttpClient) {}
+	constructor(private http: HttpClient) { }
 
-  public guardarAprobadorFijo(request: any): Observable<any> {
-    request.fechA_CREACION=new Date();
-    request.fechA_MODIFICACION=new Date();
-    //request.usuariO_CREACION=localStorage.getItem(LocalStorageKeys.IdLogin);
-   // request.usuariO_MODIFICACION=null;
-    return this.http.post<any>(this.apiUrlAprobadoresFijos, request);
-  }
+	public guardarAprobadorFijo(request: any): Observable<any> {
+		request.fechA_CREACION = new Date();
+		request.usuariO_CREACION = localStorage.getItem(LocalStorageKeys.IdLogin);
+		request.fechA_MODIFICACION = null;
 
-  public guardarNivelAprobacion(request: any): Observable<any> {
-  request.fechaCreacion=new Date();
-  request.fechaActualizacion=new Date();
-  request.usuarioCreacion=localStorage.getItem(LocalStorageKeys.IdLogin);
-  request.usuarioActualizacion=null;
-    return this.http.post<any>(this.apiUrlNivelAprobacion, request);
-  }
+		convertTimeZonedDate(request.fechA_CREACION);
 
-  public actualizarNivelAprobacion(request: any): Observable<any> {
-    request.fechaActualizacion=new Date();
-    request.usuarioActualizacion=localStorage.getItem(LocalStorageKeys.IdLogin);
-    return this.http.put<any>(this.apiUrlNivelAprobacion, request);
-  }
+		return this.http.post<any>(this.apiUrlAprobadoresFijos, request);
+	}
 
-  public getNivelById(id: number): Observable<any> {
-    return this.http.get<any>(`${this.apiUrlNivelAprobacion}/${id}`);
-  }
+	// public guardarNivelAprobacion(request: any): Observable<any> {
+	// 	console.log("2");
+	// 	request.fechaCreacion = new Date();
+	// 	request.fechaActualizacion = new Date();
+	// 	request.usuarioCreacion = localStorage.getItem(LocalStorageKeys.IdLogin);
+	// 	request.usuarioActualizacion = null;
 
-  refrescarNivelesAprobaciones(): Observable<any> {
-    return this.http.get<any>(`${this.nivelAprobacionRefreshServiceES}`);
-  }
+	// 	return this.http.post<any>(this.apiUrlNivelAprobacion, request);
+	// }
+
+	// public actualizarNivelAprobacion(request: any): Observable<any> {
+	// 	request.fechA_MODIFICACION = new Date();
+	// 	request.usuariO_MODIFICACION = localStorage.getItem(LocalStorageKeys.IdLogin);
+
+	// 	convertTimeZonedDate(request.usuariO_MODIFICACION);
+
+	// 	return this.http.put<any>(this.apiUrlNivelAprobacion, request);
+	// }
+
+	// public getNivelById(id: number): Observable<any> {
+	// 	return this.http.get<any>(`${this.apiUrlNivelAprobacion}/${id}`);
+	// }
+
+	// refrescarNivelesAprobaciones(): Observable<any> {
+	// 	return this.http.get<any>(`${this.nivelAprobacionRefreshServiceES}`);
+	// }
 }

@@ -1,155 +1,95 @@
-<!--Modal Crer Solicittud-->
-
 <div class="row">
-  <div class="col-lg-12">
-    <div class="card">
-      <div>
-        <h2 class="card-body text-start">
-          <div class="row">
-            <div class="col-md-8">
-              <div class="mb-3">
-                <h3 class="sol-danger">
-                  <a routerLink="/mantenedores/aprobadores-fijos">
-                    <i class="bi bi-arrow-left-circle azul"></i> Mantenimiento de Aprobadores Fijos
-                  </a>
-                </h3>
-              </div>
-            </div>
+	<div class="col-lg-12">
+		<div class="card">
+			<div>
+				<h2 class="card-body text-start">
+					<div class="row">
+						<div class="col-md-8">
+							<div class="mb-3">
+								<h3 class="sol-danger">
+									<a routerLink="/mantenedores/aprobadores-fijos"> <i class="bi bi-arrow-left-circle azul"></i> Mantenimiento de Aprobadores Fijos </a>
+								</h3>
+							</div>
+						</div>
 
-            <div class="col-md-4 text-end">
-              <button type="button" class="mr-10 fz-14 btn btn-info btn-icon-end" aria-label="Close" aria-label="Close"
-                (click)="guardarAprobadorFijo()" [disabled]="disableButton">
-                <i class="fas fa-save"></i> Guardar
-              </button>
-            </div>
-          </div>
+						<div class="col-md-4 text-end">
+							<button type="button" class="mr-10 fz-14 btn btn-info btn-icon-end" aria-label="Close" aria-label="Close" (click)="guardarAprobadorFijo()" [disabled]="disableButton"><i class="fas fa-save"></i> Guardar</button>
+						</div>
+					</div>
 
-          <div class="row" style="
-              padding-top: 20px;
-              display: flex;
-              justify-content: start;
-              margin: 10px;
-            ">
-            <div class="col-md-12" style="width: 75%">
-              <div class="input-group mb-3">
-                <label class="input-group-text" for="codigoposicion" style="color: black; font-size: 14px; width: 45%">
-                  Correo del Empleado
-                </label>
-                &nbsp;
-                <input type="text" name="correo-empleado" [(ngModel)]="modelo.correo"
-                  style="color: black; font-size: 14px; width: 30%" class="form-control" id="correo-empleado"
-                  placeholder="Ingrese Correo del Empleado a Buscar" aria-describedby="inputGroupPrepend" required />
-                <button class="btn btn-light" type="button" (click)="getDataEmpleadosEvolution('correo')">
-                  <i class="ti-search"></i>
-                </button>
-              </div>
-            </div>
-          </div>
-          <div class="row" style="
-              padding-top: 20px;
-              display: flex;
-              justify-content: start;
-              margin: 10px;
-            ">
-            <div class="col-md-12" style="width: 75%">
-              <div class="input-group mb-3">
-                <label class="input-group-text" for="subledger" style="color: black; font-size: 14px; width: 45%">
-                  Subledger
-                </label>
-                &nbsp;
-                <input type="text" name="subledger" [(ngModel)]="modelo.subleger"
-                  style="color: black; font-size: 14px; width: 30%" class="form-control" id="subledger"
-                  placeholder="Ingrese Subledger del Empleado a Buscar" aria-describedby="inputGroupPrepend" required />
-                <button class="btn btn-light" type="button" (click)="getDataEmpleadosEvolution('subledger')">
-                  <i class="ti-search"></i>
-                </button>
-              </div>
-            </div>
-          </div>
-          <div class="row" style="
-              padding-top: 20px;
-              display: flex;
-              justify-content: start;
-              margin: 10px;
-            ">
-            <div class="col-md-12" style="width: 75%">
-              <div class="input-group mb-3">
-                <label class="input-group-text" for="nombreempleado" style="color: black; font-size: 14px; width: 45%">
-                  Nombre del Empleado
-                </label>
-                &nbsp;
-                <input type="text" name="nombreempleado" [(ngModel)]="modelo.nombre"
-                  style="color: black; font-size: 14px; width: 30%" [ngbTypeahead]="searchNombreCompleto"
-                  (selectItem)="onSelectItem('nombreCompleto', $event)" class="form-control" id="nombreempleado"
-                  placeholder="Ingrese Nombre o Apellido del Empleado a Buscar" aria-describedby="inputGroupPrepend" required />
+					<div class="row" style="padding-top: 20px; display: flex; justify-content: start; margin: 10px">
+						<div class="col-md-12" style="width: 75%">
+							<div class="input-group mb-3">
+								<label class="input-group-text" for="codigoposicion" style="color: black; font-size: 14px; width: 45%"> Correo del Empleado </label>
+								&nbsp;
+								<input type="text" name="correo-empleado" [(ngModel)]="modelo.correo" style="color: black; font-size: 14px; width: 30%" class="form-control" id="correo-empleado" placeholder="Ingrese Correo del Empleado a Buscar" aria-describedby="inputGroupPrepend" required />
+								<button class="btn btn-light" type="button" (click)="getDataEmpleadosEvolution('correo')">
+									<i class="ti-search"></i>
+								</button>
+							</div>
+						</div>
+					</div>
+					<div class="row" style="padding-top: 20px; display: flex; justify-content: start; margin: 10px">
+						<div class="col-md-12" style="width: 75%">
+							<div class="input-group mb-3">
+								<label class="input-group-text" for="subledger" style="color: black; font-size: 14px; width: 45%"> Subledger </label>
+								&nbsp;
+								<input type="text" name="subledger" [(ngModel)]="modelo.subleger" style="color: black; font-size: 14px; width: 30%" class="form-control" id="subledger" placeholder="Ingrese Subledger del Empleado a Buscar" aria-describedby="inputGroupPrepend" required />
+								<button class="btn btn-light" type="button" (click)="getDataEmpleadosEvolution('subledger')">
+									<i class="ti-search"></i>
+								</button>
+							</div>
+						</div>
+					</div>
+					<div class="row" style="padding-top: 20px; display: flex; justify-content: start; margin: 10px">
+						<div class="col-md-12" style="width: 75%">
+							<div class="input-group mb-3">
+								<label class="input-group-text" for="nombreempleado" style="color: black; font-size: 14px; width: 45%"> Nombre del Empleado </label>
+								&nbsp;
+								<input type="text" name="nombreempleado" [(ngModel)]="modelo.nombre" style="color: black; font-size: 14px; width: 30%" [ngbTypeahead]="searchNombreCompleto" (selectItem)="onSelectItem('nombreCompleto', $event)" class="form-control" id="nombreempleado" placeholder="Ingrese Nombre o Apellido del Empleado a Buscar" aria-describedby="inputGroupPrepend" required />
 
-                <button class="btn btn-light" type="button" (click)="getDataEmpleadosEvolution('nombreEmpleado')">
-                  <i class="ti-search"></i>
-                </button>
-              </div>
-            </div>
-          </div>
-          
-          <div class="row" style="
-              padding-top: 20px;
-              display: flex;
-              justify-content: start;
-              margin: 10px;
-            ">
-            <div class="col-md-12" style="width: 75%">
-              <div class="input-group mb-3">
-                <label class="input-group-text" for="descripcionPosicion"
-                  style="color: black; font-size: 14px; width: 45%">Descripción posición</label>
-                <span id="descripcionPosicion" name="" style="color: black; font-size: 14px; margin: auto auto"
-                  class="text-center">{{ modelo.descripcioN_POSICION }}</span>
-              </div>
-            </div>
-          </div>
+								<button class="btn btn-light" type="button" (click)="getDataEmpleadosEvolution('nombreEmpleado')">
+									<i class="ti-search"></i>
+								</button>
+							</div>
+						</div>
+					</div>
 
-          <div class="row" style="
-              padding-top: 20px;
-              display: flex;
-              justify-content: start;
-              margin: 10px;
-            ">
-            <div class="col-md-12" style="width: 75%">
-              <div class="input-group mb-3">
-                <label class="input-group-text" for="nivelDireccion"
-                  style="color: black; font-size: 14px; width: 45%">Nivel de Aprobación</label>
-                <select [(ngModel)]="modelo.niveL_DIRECCION" id="tiposolicitud" name="tiposolicitud" class="form-select"
-                  style="font-size: 14px" required>
-                  <option value="" hidden>Selecccione</option>
-                  <option value="Gerente de RRHH Corporativo">
-                    Gerente de RRHH Corporativo
-                  </option>
-                  <option value="Comité de Remuneraciones">
-                    Comité de Remuneraciones
-                  </option>
-                </select>
-              </div>
-            </div>
-          </div>
+					<div class="row" style="padding-top: 20px; display: flex; justify-content: start; margin: 10px">
+						<div class="col-md-12" style="width: 75%">
+							<div class="input-group mb-3">
+								<label class="input-group-text" for="descripcionPosicion" style="color: black; font-size: 14px; width: 45%">Descripción posición</label>
+								<span id="descripcionPosicion" name="" style="color: black; font-size: 14px; margin: auto auto" class="text-center">{{ modelo.descripcioN_POSICION }}</span>
+							</div>
+						</div>
+					</div>
 
-          <div class="row" style="
-              padding-top: 20px;
-              display: flex;
-              justify-content: start;
-              margin: 10px;
-            ">
-            <div class="col-md-12" style="width: 75%">
-              <div class="input-group mb-3">
-                <label class="input-group-text" for="estado"
-                  style="color: black; font-size: 14px; width: 45%">Estado</label>
-                &nbsp;
-                <div class="form-check form-switch">
-                  <input class="form-check-input" type="checkbox" required id="estado" [(ngModel)]="modelo.estado"
-                    name="estado" checked />
-                </div>
-              </div>
-            </div>
-          </div>
-        </h2>
-      </div>
-    </div>
-  </div>
+					<div class="row" style="padding-top: 20px; display: flex; justify-content: start; margin: 10px">
+						<div class="col-md-12" style="width: 75%">
+							<div class="input-group mb-3">
+								<label class="input-group-text" for="nivelDireccion" style="color: black; font-size: 14px; width: 45%">Nivel de Aprobación</label>
+								<select [(ngModel)]="modelo.niveL_DIRECCION" id="tiposolicitud" name="tiposolicitud" class="form-select" style="font-size: 14px" required>
+									<option value="" hidden>Selecccione</option>
+									<option value="Gerente de RRHH Corporativo">Gerente de RRHH Corporativo</option>
+									<option value="Comité de Remuneraciones">Comité de Remuneraciones</option>
+								</select>
+							</div>
+						</div>
+					</div>
+
+					<div class="row" style="padding-top: 20px; display: flex; justify-content: start; margin: 10px">
+						<div class="col-md-12" style="width: 75%">
+							<div class="input-group mb-3">
+								<label class="input-group-text" for="estado" style="color: black; font-size: 14px; width: 45%">Estado</label>
+								&nbsp;
+								<div class="form-check form-switch">
+									<input class="form-check-input" type="checkbox" required id="estado" [(ngModel)]="modelo.estado" name="estado" checked />
+								</div>
+							</div>
+						</div>
+					</div>
+				</h2>
+			</div>
+		</div>
+	</div>
 </div>

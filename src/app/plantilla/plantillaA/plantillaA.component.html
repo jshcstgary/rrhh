@@ -1,50 +1,31 @@
 <div class="card p-3 bg-white">
-  <form-component class="mb-2" *ngIf="filterFormInputs.length > 0" [formItems]="filterFormInputs"
-    [formName]="'headerFilter'" [containsSearchButton]="filterFormContainsSearchButton"
-    [searchButtonProps]="filterFormSearchButtonProps" [onChangeFormFunction]="onChangeHeaderFilterForm"
-    [contexto]="contexto"></form-component>
+	<form-component class="mb-2" *ngIf="filterFormInputs.length > 0" [formItems]="filterFormInputs" [formName]="'headerFilter'" [containsSearchButton]="filterFormContainsSearchButton" [searchButtonProps]="filterFormSearchButtonProps" [onChangeFormFunction]="onChangeHeaderFilterForm" [contexto]="contexto"></form-component>
 
-  <div class="row">
-    <div class="col-md-4">
-      <input-component [id]="'searchInputFilter'" [showfilterInput]="showFilterTipoSolicitud"
-        [disabled]="disabledFilterTipoSolicitud" [type]="'string'" [placeholder]="placeholderHeaderInputText"
-        [buttonIcon]="'ti-search'" buttonFunction="filterStringInTable" onChangeFunction="filterStringInTable"
-        [contexto]="this"></input-component>
-    </div>
+	<div class="row">
+		<div class="col-md-4">
+			<input-component [id]="'searchInputFilter'" [showfilterInput]="showFilterTipoSolicitud" [disabled]="disabledFilterTipoSolicitud" [type]="'string'" [placeholder]="placeholderHeaderInputText" [buttonIcon]="'ti-search'" buttonFunction="filterStringInTable" onChangeFunction="filterStringInTable" [contexto]="this"></input-component>
+		</div>
 
-    <div class="col-md-2 d-flex align-items-center">
-      <div class="form-check form-switch ps-0 mb-0">
-        <input class="form-check-input ms-0 me-2" type="checkbox" role="switch" id="active-records"
-          [checked]="activeRecordsCheckbox" (change)="onChangeActiveRecordsCheck($event)">
+		<div class="col-md-2 d-flex align-items-center">
+			<div class="form-check form-switch ps-0 mb-0">
+				<input class="form-check-input ms-0 me-2" type="checkbox" role="switch" id="active-records" [checked]="activeRecordsCheckbox" (change)="onChangeActiveRecordsCheck($event)" />
 
-        <label class="form-check-label fs-6" for="active-records">{{ activeRecordsCheckbox ? "Activos" : "Inactivos"
-          }}</label>
-      </div>
-    </div>
+				<label class="form-check-label fs-6" for="active-records">{{ activeRecordsCheckbox ? "Activos" : "Inactivos" }}</label>
+			</div>
+		</div>
 
-    <div class="text-end" [ngClass]="{'col-md-4': showButtonExportar, 'col-md-6': !showButtonExportar}"
-      *ngIf="showCreateButton">
-      <button type="button" class="btn btn-info" (click)="onCreateRow()">
-        <i class="fas fa-plus"></i> Agregar
-      </button>
-    </div>
+		<div class="text-end" [ngClass]="{ 'col-md-4': showButtonExportar, 'col-md-6': !showButtonExportar }" *ngIf="showCreateButton">
+			<button type="button" class="btn btn-info" (click)="onCreateRow()"><i class="fas fa-plus"></i> Agregar</button>
+		</div>
 
-    <div class="col-md-2 text-end" *ngIf="showButtonExportar"
-      [ngClass]="{'col-md-2': showCreateButton, 'col-md-6': !showCreateButton}">
-      <dropdown-component [options]="dropdownOptionsExport" [textButton]="textButtonDropdowm"
-        [buttonClasses]="dropdownButtonClasses" [iconButton]="'fas fa-file-pdf'" [contexto]="this"
-        onDropDownClickFunction="isAnyRowCheckedInTable"></dropdown-component>
-    </div>
-  </div>
+		<div class="col-md-2 text-end" *ngIf="showButtonExportar" [ngClass]="{ 'col-md-2': showCreateButton, 'col-md-6': !showCreateButton }">
+			<dropdown-component [options]="dropdownOptionsExport" [textButton]="textButtonDropdowm" [buttonClasses]="dropdownButtonClasses" [iconButton]="'fas fa-file-pdf'" [contexto]="this" onDropDownClickFunction="isAnyRowCheckedInTable"></dropdown-component>
+		</div>
+	</div>
 
-  <div class="row mt-3">
-    <div class="col">
-      <table-component [tableName]="mainTableName" [columns]="columnsTable" [dataTable]="dataToTable" [contexto]="this"
-        onSaveRowTable="onSaveRowTable" [tableWidth]="tableWidth" [inputsEditRow]="tableInputsEditRow"
-        [totalRows]="totalRowsInTable" onChangePagination="onChangePaginationTable"
-        onCancelEditRowTable="onCancelEditRowTable" [rowsPerPageValue]="rowsPerPageTable" [page]="pageNumberTable"
-        clickOnActionRow="clickOnActionTable" [allowCloneButton]="allowCloneButtonOnTable" [onRowChange]="onRowChange"
-        onChangeEditRowFunction="onChangeEditRowTableFunction"></table-component>
-    </div>
-  </div>
+	<div class="row mt-3">
+		<div class="col">
+			<table-component [tableName]="mainTableName" [columns]="columnsTable" [dataTable]="dataToTable" [contexto]="this" onSaveRowTable="onSaveRowTable" [tableWidth]="tableWidth" [inputsEditRow]="tableInputsEditRow" [totalRows]="totalRowsInTable" onChangePagination="onChangePaginationTable" onCancelEditRowTable="onCancelEditRowTable" [rowsPerPageValue]="rowsPerPageTable" [page]="pageNumberTable" clickOnActionRow="clickOnActionTable" [allowCloneButton]="allowCloneButtonOnTable" [onRowChange]="onRowChange" onChangeEditRowFunction="onChangeEditRowTableFunction"></table-component>
+		</div>
+	</div>
 </div>

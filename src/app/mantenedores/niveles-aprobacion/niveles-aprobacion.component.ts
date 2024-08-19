@@ -111,11 +111,11 @@ export class NivelesAprobacionComponent implements OnInit {
 	public codigoReporte: reportCodeEnum = reportCodeEnum.MANTENIMIENTO_TIPO_RUTA;
 	public hasFiltered: boolean = true;
 	public dataFilterNivelesAprobacion = {
-		tipoMotivo: "",
-		tipoSolicitud: "",
-		nivelDireccion: "",
-		tipoRuta: "",
-		accion: ""
+		tipoMotivo: null,
+		tipoSolicitud: null,
+		nivelDireccion: null,
+		tipoRuta: null,
+		accion: null
 	};
 	public dataTipoMotivo: any[] = [];
 	public dataTipoRuta: any[] = [];
@@ -180,6 +180,7 @@ export class NivelesAprobacionComponent implements OnInit {
 	}
 
 	getDataToTableFilter() {
+		console.log(this.dataFilterNivelesAprobacion.tipoSolicitud);
 		if (this.dataFilterNivelesAprobacion.tipoSolicitud === "" || this.dataFilterNivelesAprobacion.nivelDireccion === "") {
 			Swal.fire({
 				text: "Seleccione al menos un tipo de solicitud y un nivel de dirección",
@@ -357,7 +358,7 @@ export class NivelesAprobacionComponent implements OnInit {
 
 			this.tipoMotivoDeshablitado = true;
 		} else {
-			this.dataFilterNivelesAprobacion.tipoMotivo = "";
+			this.dataFilterNivelesAprobacion.tipoMotivo = null;
 
 			this.tipoMotivoDeshablitado = false;
 		}
@@ -384,6 +385,8 @@ export class NivelesAprobacionComponent implements OnInit {
 	}
 
 	mostrarTipoMotivo(idTipoMotivo: number) {
-		return this.dataTipoMotivo.find(data => data.id === idTipoMotivo).descripcion;
+		const tipoMotivo = this.dataTipoMotivo.find(data => data.id === idTipoMotivo);
+
+		return tipoMotivo === undefined ? "-" : tipoMotivo.descripcion;
 	}
 }

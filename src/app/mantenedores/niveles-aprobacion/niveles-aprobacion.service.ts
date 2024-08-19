@@ -28,9 +28,9 @@ export class NivelesAprobacionService {
 		const fromObject: any = {
 			id_tipo_sol: idTipoSolicitud,
 			IdNivelDireccion: idNivelDireccion,
-			id_tip_mot: idTipoMotivo === "" ? 10000 : idTipoMotivo,
-			id_tip_ruta: idTipoRuta === "" ? 10000 : idTipoRuta,
-			id_accion: idAccion === "" ? 10000 : idAccion
+			id_tip_mot: idTipoMotivo === null ? 10000 : idTipoMotivo,
+			id_tip_ruta: idTipoRuta === null ? 10000 : idTipoRuta,
+			id_accion: idAccion === null ? 10000 : idAccion
 		};
 
 		const httpParams: HttpParamsOptions = { fromObject } as HttpParamsOptions;

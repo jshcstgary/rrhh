@@ -1,12 +1,2 @@
-<plantilla-a-component [columnsTable]="columnsTable"
-  [originalDataTable]="activeRecords ? dataTableActive : dataTableInactive"
-  [placeholderHeaderInputText]="'Buscar Accion...'" [contexto]="this" [tableInputsEditRow]="tableInputsEditRow"
-  keyNameTable="id" [colsToFilterByText]="colsToFilterByText" [defaultEmptyRowTable]="defaultEmptyRowTable"
-  [IdRowToClone]="IdRowToClone" [colIdToDisable]="['id', 'tipoSolicitudId']" titleReport="Acciones"
-  [codigoReport]="codigoReporte"
-  [showFilterTipoSolicitud]="this.controlsPermissions[pageControlPermission.FiltroTipoSolicitud].visualizar"
-  [disabledFilterTipoSolicitud]="!this.controlsPermissions[pageControlPermission.FiltroTipoSolicitud].habilitar"
-  [showCreateButton]="this.controlsPermissions[pageControlPermission.ButtonAgregar].visualizar"
-  [showButtonExportar]="this.controlsPermissions[pageControlPermission.ButtonExportar].visualizar"
-  (onChangeActiveRecordsCheckbox)="onChangeActiveRecordsCheckbox($event)" [activeRecordsCheckbox]="activeRecords">
+<plantilla-a-component [columnsTable]="columnsTable" [originalDataTable]="activeRecords ? dataTableActive : dataTableInactive" [placeholderHeaderInputText]="'Buscar Accion...'" [contexto]="this" [tableInputsEditRow]="tableInputsEditRow" keyNameTable="id" [colsToFilterByText]="colsToFilterByText" [defaultEmptyRowTable]="defaultEmptyRowTable" [IdRowToClone]="IdRowToClone" [colIdToDisable]="['id', 'tipoSolicitudId']" titleReport="Acciones" [codigoReport]="codigoReporte" [showFilterTipoSolicitud]="this.controlsPermissions[pageControlPermission.FiltroTipoSolicitud].visualizar" [disabledFilterTipoSolicitud]="!this.controlsPermissions[pageControlPermission.FiltroTipoSolicitud].habilitar" [showCreateButton]="this.controlsPermissions[pageControlPermission.ButtonAgregar].visualizar" [showButtonExportar]="this.controlsPermissions[pageControlPermission.ButtonExportar].visualizar" (onChangeActiveRecordsCheckbox)="onChangeActiveRecordsCheckbox($event)" [activeRecordsCheckbox]="activeRecords">
 </plantilla-a-component>
