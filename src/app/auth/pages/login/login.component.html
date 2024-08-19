@@ -46,9 +46,9 @@
             <div *ngIf="isLoadingPerfil" class="col-sm-12 col-md-12">
                 <div class="form-group">
                 <label class="control-label col-form-label azul">Perfiles del Usuario</label>
-                <ng-select #inputSelectHacienda [(ngModel)]="perfilCodigo" name="empresa"
+                <ng-select #inputSelectHacienda [(ngModel)]="perfilCodigo"
                   placeholder="Seleccione">
-                  <ng-option *ngFor="let data of perfilUsuario" [value]="data">{{ data.scg_per_codigo + " - " + data.scg_per_descripcion }}</ng-option>
+                  <ng-option *ngFor="let data of perfilUsuario" [value]="data.scg_per_codigo">{{ data.scg_per_codigo + " - " + data.scg_per_descripcion }}</ng-option>
                 </ng-select>
               </div>
               </div>
