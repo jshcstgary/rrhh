@@ -27,7 +27,7 @@ export class LoginComponent {
   public password: string = "";
 
   public isLoading: boolean = false;
-  public perfilCodigo: PerfilUsuario;
+  public perfilCodigo: string="";
   public isLoadingPerfil: boolean = false;
   public perfilUsuario: PerfilUsuarioResponse;
   public perfilUsuarioError: PerfilUsuarioResponse = [{
@@ -98,9 +98,9 @@ export class LoginComponent {
       password: btoa(this.password),
       isAutenticacionLocal: false,
     };
-
     this.loginService.getPerfilesUsuario(getPerfileRequest).subscribe({
       next: (response) => {
+        this.perfilUsuario=response;
         if (this.perfilUsuario.length === 0) {
           Swal.fire({
             text: "Usuario no encontrado",
@@ -149,6 +149,7 @@ export class LoginComponent {
         confirmButtonText: "Ok",
         });
       }
+      console.log(this.perfilUsuario);
         console.error(err);
 
         localStorage.removeItem(LocalStorageKeys.IdLogin);
@@ -181,7 +182,8 @@ export class LoginComponent {
     }
 
     this.isLoading = true;
-    if (this.perfilCodigo===null||this.perfilCodigo===undefined) {
+    console.log(this.perfilCodigo);
+    if (this.perfilCodigo === null||this.perfilCodigo===undefined||this.perfilCodigo==="") {
       Swal.fire({
         text: "Seleccione un Perfil de Usuario",
         icon: "info",
@@ -193,7 +195,7 @@ export class LoginComponent {
     }
     const loginRequest: LoginRequest = {
       codigoAplicacion: appCode,
-      codigoPerfil: this.perfilCodigo.scg_per_codigo,
+      codigoPerfil: this.perfilCodigo,
       codigoRecurso: "PWFCAMUMET",
       usuario: this.user,
       password: btoa(this.password),
