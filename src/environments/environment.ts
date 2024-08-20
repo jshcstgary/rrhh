@@ -4,7 +4,7 @@ const base = "http://10.35.3.162"; //base de servicios local
 const baseRBP = "http://192.168.44.180"; //base de servicios RBP http://10.35.3.162
 const baseG = "http://181.188.224.250:18043"; //base de servicios api gateway
 
-const pruebas_locales: boolean = false; //Varialbe boleana para las pruebas locales y pruebas en el ambiente del cliente
+const pruebas_locales: boolean = true; //Varialbe boleana para las pruebas locales y pruebas en el ambiente del cliente
 
 // export const portalWorkFlow: string = "http://10.35.3.162:4200/";
 
@@ -150,39 +150,4 @@ export const environment = {
 	loginES: pruebas_locales ? `${base}:8308/api/us/integracion-seguridad/iguana/obtenercredenciales` : `${baseRBP}:8308/api/us/integracion-seguridad/obtenercredenciales`,
 
 	perfilUsuarioES: pruebas_locales ? `${base}:8308/api/us/integracion-seguridad/perfil-usuario` : `${baseRBP}:8308/api/us/integracion-seguridad/perfil-usuario`,
-	/*
-
-	mantenedores
-	http://10.35.3.162:8068/v1/es/tiposolicitud  ok
-	http://10.35.3.162:8069/v1/es/tiporuta       ok
-	http://10.35.3.162:8070/v1/es/tipoproceso    no
-	http://10.35.3.162:8071/v1/es/ruta
-	http://10.35.3.162:8072/v1/es/tipomotivo
-	http://10.35.3.162:8073/v1/es/accion         no
-	http://10.35.3.162:8074/v1/es/tipoaccion
-
-	niveles de aprobación
-	http://10.35.3.162:8000/v1/es/nivelesaprobacion
-	http://10.35.3.162:8000/swagger/index.html
-
-
-	servicio solicitud y detalle solicitud
-	http://10.35.3.162:8001/swagger/index.html
-
-	servicio tarea y variable de proceso histórico de camunda
-	http://10.35.3.162:8002/swagger/index.html
-
-	Api para consultar los catalogos de niveles de Aprobación
-	http://10.35.3.162:8053/v1/es/item-catalogo/codigo/RBPNA
-	Api para consultar los catalogos de Niveles de Dirección
-	http://10.35.3.162:8053/v1/es/item-catalogo/codigo/RBPND
-
-	Api que devuelve empresas
-	http://10.35.3.175:8506/swagger/index.html
-
-	servicio de la vista
-	exempleadojaff --> http://10.35.3.162:8400/swagger/index.html
-
-	*/
-
 };
