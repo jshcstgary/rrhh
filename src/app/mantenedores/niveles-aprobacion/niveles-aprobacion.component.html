@@ -20,7 +20,7 @@
 			<label class="azul mb-1">Tipo Motivo</label>
 
 			<ng-select [(ngModel)]="dataFilterNivelesAprobacion.tipoMotivo" placeholder="Seleccione" [disabled]="tipoMotivoDeshablitado">
-				<ng-option *ngFor="let tipoMotivo of dataTipoMotivo" [value]="tipoMotivo">{{ tipoMotivo.id }} - {{ tipoMotivo.descripcion }}</ng-option>
+				<ng-option *ngFor="let tipoMotivo of dataTipoMotivo" [value]="tipoMotivo.id">{{ tipoMotivo.id }} - {{ tipoMotivo.descripcion }}</ng-option>
 			</ng-select>
 		</div>
 
