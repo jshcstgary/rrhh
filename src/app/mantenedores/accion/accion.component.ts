@@ -155,7 +155,14 @@ export class AccionComponent implements OnInit {
 						tipoSolicitudFormatted:
 							this.formatTipoSolicitudEstaciones(accionResponse),
 					}))
-					.sort((a, b) => a.accion.localeCompare(b.accion));
+					// .sort((a, b) => a.accion.localeCompare(b.accion));
+					.sort((a, b) => {
+						if (a.tipoSolicitudId === b.tipoSolicitudId) {
+							return (a.tipoSolicitudId as number) - (b.tipoSolicitudId as number);
+						}
+
+						return (a.tipoSolicitudId as number) - (b.tipoSolicitudId as number);
+					});
 
 				this.dataTableActive = this.dataTable.filter(data => data.estado);
 				this.dataTableInactive = this.dataTable.filter(data => !data.estado);

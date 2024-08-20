@@ -33,11 +33,11 @@ export class CrearNivelesAprobacionComponent implements OnInit {
 	public aprobadorFijoTipoRuta: any = {};
 
 	public modelHead = {
-		idTipoSolicitud: 0,
-		idTipoMotivo: 0,
-		idAccion: 0,
-		idTipoRuta: 0,
-		idNivelDireccion: ""
+		idTipoSolicitud: null,
+		idTipoMotivo: null,
+		idAccion: null,
+		idTipoRuta: null,
+		idNivelDireccion: null
 	};
 
 	public idNivelesAprobacionRuta: {
@@ -358,7 +358,8 @@ export class CrearNivelesAprobacionComponent implements OnInit {
 	}
 
 	public validateData(): boolean {
-		const tipoSolicitud = this.dataTipoSolicitudes.find(data => data.id.toString() === this.modelHead.idTipoSolicitud);
+		console.log(this.modelHead.idTipoSolicitud);
+		const tipoSolicitud = this.dataTipoSolicitudes.find(data => data.id === this.modelHead.idTipoSolicitud);
 
 		if (tipoSolicitud === undefined) {
 			return true;
@@ -367,17 +368,17 @@ export class CrearNivelesAprobacionComponent implements OnInit {
 		const codigoSolicitudIncluded = this.restrictionsIds.includes(tipoSolicitud.codigoTipoSolicitud);
 
 		if (codigoSolicitudIncluded) {
-			this.modelHead.idAccion = 0;
-			this.modelHead.idTipoMotivo = 0;
+			this.modelHead.idAccion = null;
+			this.modelHead.idTipoMotivo = null;
 
 			this.desactivarTipoMotivoYAccion = true;
 
-			return !codigoSolicitudIncluded || this.modelHead.idNivelDireccion === '' || this.modelHead.idTipoRuta === 0 || this.modelHead.idTipoSolicitud === 0;
+			return !codigoSolicitudIncluded || this.modelHead.idNivelDireccion === null || this.modelHead.idTipoRuta === null || this.modelHead.idTipoSolicitud === null;
 		}
 
 		this.desactivarTipoMotivoYAccion = false;
 
-		return this.modelHead.idAccion === 0 || this.modelHead.idNivelDireccion === '' || this.modelHead.idTipoMotivo === 0 || this.modelHead.idTipoRuta === 0 || this.modelHead.idTipoSolicitud === 0;
+		return this.modelHead.idAccion === null || this.modelHead.idNivelDireccion === null || this.modelHead.idTipoMotivo === null || this.modelHead.idTipoRuta === null || this.modelHead.idTipoSolicitud === null;
 	}
 
 	public validateNivelesAprobacion(): boolean {

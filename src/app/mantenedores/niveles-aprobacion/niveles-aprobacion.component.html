@@ -9,7 +9,7 @@
 		</div>
 
 		<div class="col-md-3 mb-3">
-			<label class="azul mb-1">Nive de Dirección</label>
+			<label class="azul mb-1">Nivel de Dirección</label>
 
 			<ng-select [(ngModel)]="dataFilterNivelesAprobacion.nivelDireccion" placeholder="Seleccione">
 				<ng-option *ngFor="let nivelDireccion of dataNivelDireccion" [value]="nivelDireccion">{{ nivelDireccion }}</ng-option>
@@ -62,6 +62,8 @@
 	</div>
 
 	<div class="mt-3" [ngClass]="{ 'no-table': dataTable.length === 0, 'with-table': dataTable.length !== 0 }">
+		Los encabezados son la ruta
+
 		<table *ngIf="dataTable.length !== 0; else noTable">
 			<thead>
 				<tr>

@@ -210,6 +210,7 @@ export class NivelesAprobacionComponent implements OnInit {
 					.filter(data => data.estado === "A")
 					.sort((a, b) => a.idNivelAprobacion - b.idNivelAprobacion)
 					.reduce((acc, obj) => {
+						// const grupo = acc.find(g => g[0].idTipoMotivo === obj.idTipoMotivo || g[0].idTipoSolicitud === obj.idTipoSolicitud || g[0].nivelDireccion === obj.nivelDireccion || g[0].idAccion === obj.idAccion);
 						const grupo = acc.find(g => g[0].idTipoMotivo === obj.idTipoMotivo);
 
 						if (grupo) {

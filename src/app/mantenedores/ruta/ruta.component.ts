@@ -156,7 +156,14 @@ export class RutaComponent implements OnInit {
 						estado: accionResponse.estado === "A",
 						tipoRutaFormatted: this.formatTipoRutaEstaciones(accionResponse),
 					}))
-					.sort((a, b) => a.ruta.localeCompare(b.ruta));
+					// .sort((a, b) => a.ruta.localeCompare(b.ruta));
+					.sort((a, b) => {
+						if (a.idTipoRuta === b.idTipoRuta) {
+							return a.ruta.localeCompare(b.ruta);
+						}
+
+						return (a.idTipoRuta as number) - (b.idTipoRuta as number);
+					});
 
 				this.dataTableActive = this.dataTable.filter(data => data.estado);
 				this.dataTableInactive = this.dataTable.filter(data => !data.estado);

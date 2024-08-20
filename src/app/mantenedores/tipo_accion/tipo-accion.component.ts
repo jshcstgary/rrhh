@@ -158,9 +158,16 @@ export class TipoAccionComponent implements OnInit {
 					.map((accionResponse) => ({
 						...accionResponse,
 						estado: accionResponse.estado === "A",
-						tipoSolicitudFormatted: this.formatTipoSolicitudEstaciones(accionResponse),
+						tipoSolicitudFormatted: this.formatTipoSolicitudEstaciones(accionResponse)
 					}))
-					.sort((a, b) => a.tipoAccion.localeCompare(b.tipoAccion));
+					// .sort((a, b) => a.tipoAccion.localeCompare(b.tipoAccion));
+					.sort((a, b) => {
+						if (a.tipoSolicitudId === b.tipoSolicitudId) {
+							return a.tipoAccion.localeCompare(b.tipoAccion);
+						}
+
+						return (a.tipoSolicitudId as number) - (b.tipoSolicitudId as number);
+					});
 
 				this.dataTableActive = this.dataTable.filter(data => data.estado);
 				this.dataTableInactive = this.dataTable.filter(data => !data.estado);

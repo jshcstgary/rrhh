@@ -157,7 +157,14 @@ export class TipoProcesoComponent implements OnInit {
 						estado: procesoResponse.estado === "A",
 						tipoSolicitudFormatted: this.formatTipoSolicitudEstaciones(procesoResponse),
 					}))
-					.sort((a, b) => a.tipoProceso.localeCompare(b.tipoProceso));
+					// .sort((a, b) => a.tipoProceso.localeCompare(b.tipoProceso));
+					.sort((a, b) => {
+						if (a.tipoSolicitudId === b.tipoSolicitudId) {
+							return a.tipoProceso.localeCompare(b.tipoProceso);
+						}
+
+						return (a.tipoSolicitudId as number) - (b.tipoSolicitudId as number);
+					});
 
 				this.dataTableActive = this.dataTable.filter(data => data.estado);
 				this.dataTableInactive = this.dataTable.filter(data => !data.estado);

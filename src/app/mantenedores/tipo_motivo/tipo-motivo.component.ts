@@ -160,7 +160,14 @@ export class TipoMotivoComponent implements OnInit {
 						estado: motivoResponse.estado === "A",
 						tipoSolicitudFormatted: this.formatTipoSolicitudEstaciones(motivoResponse),
 					}))
-					.sort((a, b) => a.tipoMotivo.localeCompare(b.tipoMotivo));
+					// .sort((a, b) => a.tipoMotivo.localeCompare(b.tipoMotivo));
+					.sort((a, b) => {
+						if (a.tipoSolicitudId === b.tipoSolicitudId) {
+							return a.tipoMotivo.localeCompare(b.tipoMotivo);
+						}
+
+						return (a.tipoSolicitudId as number) - (b.tipoSolicitudId as number);
+					});
 
 				this.dataTableActive = this.dataTable.filter(data => data.estado);
 				this.dataTableInactive = this.dataTable.filter(data => !data.estado);
