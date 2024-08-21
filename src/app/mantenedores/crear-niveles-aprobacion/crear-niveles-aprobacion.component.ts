@@ -179,11 +179,12 @@ export class CrearNivelesAprobacionComponent implements OnInit {
 
 		this.desactivarTipoMotivoYAccion = this.restrictionsIds.includes(codigoTipoSolicitud);
 
+		console.log(this.desactivarTipoMotivoYAccion);
 		if (this.desactivarTipoMotivoYAccion) {
 			this.modelHead.idTipoMotivo = 0;
-			this.modelHead.idTipoMotivo = 0;
+			// this.modelHead.idTipoMotivo = 0;
 			this.modelHead.idAccion = 0;
-			this.modelHead.idAccion = 0;
+			// this.modelHead.idAccion = 0;
 		}
 
 		if (!this.desactivarTipoMotivoYAccion) {

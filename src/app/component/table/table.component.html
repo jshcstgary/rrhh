@@ -5,7 +5,7 @@
 				<th [ngClass]="{ 'fixed-col-end': columns.length === i + 1 && fixedLastColumn }" *ngFor="let head of columns; let i = index" [ngStyle]="{ width: head.type === 'actions' && !showActionColumn ? 0 : head.width }">
 					<div *ngIf="head.type === 'actions' && !showActionColumn; else columnShowed"></div>
 					<ng-template #columnShowed>
-						<div *ngIf="head.type === undefined; else cabeceraEspecial" class="d-flex justify-content-between cursor-pointer" (click)="onChangeShort(i, head.dataIndex)">
+						<div *ngIf="head.type === undefined; else cabeceraEspecial" class="d-flex justify-content-between cursor-pointer" [ngClass]="{'cursor-pointer': head.sortActive}" (click)="head.sortActive ? onChangeShort(i, head.dataIndex) : null">
 							{{ head.title }}
 							<i
 								class="fa"

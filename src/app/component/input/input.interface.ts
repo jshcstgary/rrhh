@@ -26,28 +26,12 @@ export interface ISelectOption {
 
 export type ISelectOptions = ISelectOption[];
 
-export type InputComponentType =
-	| "string"
-	| "number"
-	| "color"
-	| "select"
-	| "toggle"
-	| "money"
-	| "checkbox"
-	| "date"
-	| "year"
-	| "time"
-	| "visualization";
+export type InputComponentType = "string" | "number" | "color" | "select" | "toggle" | "money" | "checkbox" | "date" | "year" | "time" | "visualization";
 
 export type IInputsComponent = IInputComponent[];
 
 export type labelPositionType = "vertical" | "horizontal";
 
-export type allowedKeyType =
-	| "alphanumeric"
-	| "special character"
-	| "notzero"
-	| 'isAllowedDescription'
-	| "space";
+export type allowedKeyType = "alphanumeric" | "special character" | "notzero" | 'isAllowedDescription' | "space";
 
 export type allowedKeysType = allowedKeyType[];

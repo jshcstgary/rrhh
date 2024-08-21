@@ -285,7 +285,8 @@ export class CrearAprobadorFijoComponent implements OnInit {
 				let fechaEnFormatoISO = fechaActual.toISOString();
 
 				this.modelo.iD_APROBADOR = 1;
-				this.modelo.niveL_DIRECCION = "Gerente de RRHH Corporativo";
+				// this.modelo.niveL_DIRECCION = "Gerente de RRHH Corporativo";
+				this.modelo.niveL_DIRECCION = "";
 				this.modelo.codigO_POSICION = this.dataEmpleadoEvolution[0].codigoPosicion;
 				this.modelo.subleger = this.dataEmpleadoEvolution[0].subledger;
 				this.modelo.nombre = this.dataEmpleadoEvolution[0].nombreCompleto;
@@ -307,13 +308,20 @@ export class CrearAprobadorFijoComponent implements OnInit {
 					return;
 				}
 
-
-				this.disableButton = false;
+				// this.validateData();
 			},
 			error: (error: HttpErrorResponse) => {
 				this.utilService.modalResponse(error.error, "error");
 			},
 		});
+	}
+
+	public validateData(): boolean {
+		console.log(this.modelo.subleger);
+		console.log(this.modelo.nombre);
+		console.log(this.modelo.correo);
+		console.log(this.modelo.niveL_DIRECCION);
+		return this.modelo.subleger === "" || this.modelo.nombre === "" || this.modelo.correo === "" || this.modelo.niveL_DIRECCION === "";
 	}
 
 	// searchCorreoEmpleado: OperatorFunction<string, readonly string[]> = (

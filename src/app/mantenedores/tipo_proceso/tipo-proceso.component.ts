@@ -21,6 +21,7 @@ import Swal from "sweetalert2";
 import { TipoprocesoData } from "./tipo-proceso.data";
 import { ITipoproceso, ITipoprocesoTable } from "./tipo-proceso.interface";
 import { TipoProcesoService } from "./tipo-proceso.service";
+import { removeExtraSpaces } from "src/app/services/util/text.util";
 
 @Component({
 	templateUrl: "./tipo-proceso.component.html",
@@ -158,12 +159,21 @@ export class TipoProcesoComponent implements OnInit {
 						tipoSolicitudFormatted: this.formatTipoSolicitudEstaciones(procesoResponse),
 					}))
 					// .sort((a, b) => a.tipoProceso.localeCompare(b.tipoProceso));
+					// .sort((a, b) => {
+					// 	if (a.tipoSolicitudId === b.tipoSolicitudId) {
+					// 		return a.tipoProceso.localeCompare(b.tipoProceso);
+					// 	}
+
+					// 	return (a.tipoSolicitudId as number) - (b.tipoSolicitudId as number);
+					// });
 					.sort((a, b) => {
-						if (a.tipoSolicitudId === b.tipoSolicitudId) {
-							return a.tipoProceso.localeCompare(b.tipoProceso);
+						const tipoSolicitudComparacion = a.tipoSolicitudFormatted.localeCompare(b.tipoSolicitudFormatted);
+						
+						if (tipoSolicitudComparacion !== 0) {
+							return tipoSolicitudComparacion;
 						}
 
-						return (a.tipoSolicitudId as number) - (b.tipoSolicitudId as number);
+						return a.tipoProceso.localeCompare(b.tipoProceso);
 					});
 
 				this.dataTableActive = this.dataTable.filter(data => data.estado);
@@ -207,6 +217,7 @@ export class TipoProcesoComponent implements OnInit {
 
 		// rowData = { ...rowData, estado: rowData.estado ? "A" : "I" };
 		rowData.estado = rowData.estado === "A" || rowData.estado === true ? "A" : "I";
+		rowData.tipoProceso = removeExtraSpaces(rowData.tipoProceso);
 
 		if (rowData.key) {
 			/* Actualizar */

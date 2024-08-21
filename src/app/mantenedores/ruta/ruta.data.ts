@@ -22,7 +22,7 @@ export const TiporutaData: IRutaData = {
 			dataIndex: "idTipoRuta",
 			width: "300px",
 			dataIndexesToJoin: ["tipoRutaFormatted"],
-			sortActive: true,
+			// sortActive: true,
 			colType: "string",
 		},
 		{
@@ -41,13 +41,7 @@ export const TiporutaData: IRutaData = {
 					id: "editOnTable",
 					tooltip: "Editar",
 					showed: true
-				},
-				{
-					materialIcon: "content_copy",
-					id: "cloneOnTable",
-					tooltip: "Duplicar",
-					showed: true
-				},
+				}
 			],
 		},
 	],
@@ -68,11 +62,20 @@ export const TiporutaData: IRutaData = {
 		},
 		{
 			id: "ruta",
-			type: "string",
-			maxLength: 30,
+			type: "select",
 			required: true,
-			inputMessageError: "Ingrese la descripción",
+			disabled: false,
+			placeholder: "Seleccione",
+			inputMessageError: "Seleccione",
+			options: [],
 		},
+		// {
+		// 	id: "ruta",
+		// 	type: "string",
+		// 	maxLength: 30,
+		// 	required: true,
+		// 	inputMessageError: "Ingrese la descripción",
+		// },
 		{
 			id: "estado",
 			type: "toggle",

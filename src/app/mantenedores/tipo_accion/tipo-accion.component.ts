@@ -24,6 +24,7 @@ import {
 	ITipoaccionTable
 } from "./tipo-accion.interface";
 import { TipoAccionService } from "./tipo-accion.service";
+import { removeExtraSpaces } from "src/app/services/util/text.util";
 
 @Component({
 	templateUrl: "./tipo-accion.component.html",
@@ -161,12 +162,21 @@ export class TipoAccionComponent implements OnInit {
 						tipoSolicitudFormatted: this.formatTipoSolicitudEstaciones(accionResponse)
 					}))
 					// .sort((a, b) => a.tipoAccion.localeCompare(b.tipoAccion));
+					// .sort((a, b) => {
+					// 	if (a.tipoSolicitudId === b.tipoSolicitudId) {
+					// 		return a.tipoAccion.localeCompare(b.tipoAccion);
+					// 	}
+
+					// 	return (a.tipoSolicitudId as number) - (b.tipoSolicitudId as number);
+					// });
 					.sort((a, b) => {
-						if (a.tipoSolicitudId === b.tipoSolicitudId) {
-							return a.tipoAccion.localeCompare(b.tipoAccion);
+						const tipoSolicitudComparacion = a.tipoSolicitudFormatted.localeCompare(b.tipoSolicitudFormatted);
+						
+						if (tipoSolicitudComparacion !== 0) {
+							return tipoSolicitudComparacion;
 						}
 
-						return (a.tipoSolicitudId as number) - (b.tipoSolicitudId as number);
+						return a.tipoAccion.localeCompare(b.tipoAccion);
 					});
 
 				this.dataTableActive = this.dataTable.filter(data => data.estado);
@@ -210,6 +220,7 @@ export class TipoAccionComponent implements OnInit {
 
 		// rowData = { ...rowData, estado: rowData.estado ? "A" : "I" };
 		rowData.estado = rowData.estado === "A" || rowData.estado === true ? "A" : "I";
+		rowData.tipoAccion = removeExtraSpaces(rowData.tipoAccion);
 
 		if (rowData.key) {
 			/* Actualizar */

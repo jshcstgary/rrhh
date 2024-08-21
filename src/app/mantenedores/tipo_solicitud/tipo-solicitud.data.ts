@@ -40,13 +40,7 @@ export const TiposolicitudData: ITiposolicitudData = {
 					id: "editOnTable",
 					tooltip: "Editar",
 					showed: true
-				},
-				{
-					materialIcon: "content_copy",
-					id: "cloneOnTable",
-					tooltip: "Duplicar",
-					showed: true
-				},
+				}
 			],
 		},
 	],

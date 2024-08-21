@@ -17,6 +17,7 @@ import Swal from "sweetalert2";
 import { TiporutaData } from "./tipo-ruta.data";
 import { ITiporuta, ITiporutaTable } from "./tipo-ruta.interface";
 import { TipoRutaService } from "./tipo-ruta.service";
+import { removeExtraSpaces } from "src/app/services/util/text.util";
 
 @Component({
 	templateUrl: "./tipo-ruta.component.html",
@@ -153,6 +154,7 @@ export class TipoRutaComponent implements OnInit {
 
 		// rowData = { ...rowData, estado: rowData.estado ? "A" : "I" };
 		rowData.estado = rowData.estado === "A" || rowData.estado === true ? "A" : "I";
+		rowData.tipoRuta = removeExtraSpaces(rowData.tipoRuta);
 
 		if (rowData.key) {
 			/* Actualizar */

@@ -21,6 +21,7 @@ import Swal from "sweetalert2";
 import { AccionData } from "./accion.data";
 import { IAccion, IAccionTable } from "./accion.interface";
 import { AccionService } from "./accion.service";
+import { removeExtraSpaces } from "src/app/services/util/text.util";
 
 @Component({
 	templateUrl: "./accion.component.html",
@@ -156,12 +157,21 @@ export class AccionComponent implements OnInit {
 							this.formatTipoSolicitudEstaciones(accionResponse),
 					}))
 					// .sort((a, b) => a.accion.localeCompare(b.accion));
+					// .sort((a, b) => {
+					// 	if (a.tipoSolicitudId === b.tipoSolicitudId) {
+					// 		return (a.tipoSolicitudId as number) - (b.tipoSolicitudId as number);
+					// 	}
+
+					// 	return (a.tipoSolicitudId as number) - (b.tipoSolicitudId as number);
+					// });
 					.sort((a, b) => {
-						if (a.tipoSolicitudId === b.tipoSolicitudId) {
-							return (a.tipoSolicitudId as number) - (b.tipoSolicitudId as number);
+						const tipoSolicitudComparacion = a.tipoSolicitudFormatted.localeCompare(b.tipoSolicitudFormatted);
+						
+						if (tipoSolicitudComparacion !== 0) {
+							return tipoSolicitudComparacion;
 						}
 
-						return (a.tipoSolicitudId as number) - (b.tipoSolicitudId as number);
+						return a.accion.localeCompare(b.accion);
 					});
 
 				this.dataTableActive = this.dataTable.filter(data => data.estado);
@@ -205,6 +215,7 @@ export class AccionComponent implements OnInit {
 
 		// rowData = { ...rowData, estado: rowData.estado ? "A" : "I" };
 		rowData.estado = rowData.estado === "A" || rowData.estado === true ? "A" : "I";
+		rowData.accion = removeExtraSpaces(rowData.accion);
 
 		if (rowData.key) {
 			/* Actualizar */

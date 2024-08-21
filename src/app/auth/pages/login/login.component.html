@@ -1,74 +1,53 @@
 <div class="login-container">
-  <div class="login-card">
-    <div class="login-title">Bienvenido al</div>
-    <div class="login-subtitle">SISTEMA DE WORKFLOW DE RR.HH.</div>
-    <div class="row px-4">
-      <div class="col-sm-12 col-md-12">
-        <div class="card">
-          <div class="card-body">
-            <div class="row">
-              <div class="col-sm-12 col-md-12">
-                <div class="form-group">
-                  <label for="usuario" class="control-label col-form-label azul"
-                    >Usuario</label
-                  >
-                  <input
-                    required
-                    type="text"
-                    [(ngModel)]="user"
-                    class="form-control"
-                    id="usuario"
-                  />
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-sm-12 col-md-12">
-                <div class="form-group">
-                  <label
-                    for="contrasena"
-                    class="control-label col-form-label azul"
-                    >Contraseña</label
-                    >
-                  <!-- [(ngModel)]="Session.Usuario" -->
-                  <input
-                    required
-                    (click)="getPerfilesUsuario()"
-                    type="password"
-                    class="form-control"
-                    [(ngModel)]="password"
-                    id="contrasena"
-                  />
-                </div>
-              </div>
-            </div>
-            <div class="row">
-            <div *ngIf="isLoadingPerfil" class="col-sm-12 col-md-12">
-                <div class="form-group">
-                <label class="control-label col-form-label azul">Perfiles del Usuario</label>
-                <ng-select #inputSelectHacienda [(ngModel)]="perfilCodigo"
-                  placeholder="Seleccione">
-                  <ng-option *ngFor="let data of perfilUsuario" [value]="data.scg_per_codigo">{{ data.scg_per_codigo + " - " + data.scg_per_descripcion }}</ng-option>
-                </ng-select>
-              </div>
-              </div>
-            </div>
-            <div class="row mt-5">
-              <div class="col-sm-12 col-md-12">
-                <div class="form-group">
-                  <button
-                    class="btn btn-warning w-100 login-button"
-                    (click)="signIn()"
-                    [disabled]="isLoading"
-                  >
-                    {{isLoading ? "Espere, por favor..." : "Iniciar Sesión"}}
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+	<div class="login-card">
+		<div class="login-title">Bienvenido al</div>
+		<div class="login-subtitle">SISTEMA DE WORKFLOW DE RR.HH.</div>
+		<div class="row px-4">
+			<div class="col-sm-12 col-md-12">
+				<div class="card">
+					<div class="card-body">
+						<div class="row">
+							<div class="col-sm-12 col-md-12">
+								<div class="form-group">
+									<label for="usuario" class="control-label col-form-label azul">Usuario</label>
+									<input required (blur)="getPerfilesUsuario()" type="text" [(ngModel)]="user" class="form-control" id="usuario" />
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-sm-12 col-md-12">
+								<div class="form-group">
+									<label for="contrasena" class="control-label col-form-label azul">Contraseña</label>
+									<!-- [(ngModel)]="Session.Usuario" -->
+									<input required type="password" class="form-control"
+										[(ngModel)]="password" id="contrasena" />
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div *ngIf="isLoadingPerfil" class="col-sm-12 col-md-12">
+								<div class="form-group">
+									<label class="control-label col-form-label azul">Perfiles del Usuario</label>
+									<ng-select #inputSelectHacienda [(ngModel)]="perfilCodigo" placeholder="Seleccione">
+										<ng-option *ngFor="let data of perfilUsuario" [value]="data.scg_per_codigo">{{
+											data.scg_per_codigo + " - " + data.scg_per_descripcion }}</ng-option>
+									</ng-select>
+								</div>
+							</div>
+						</div>
+						<div class="row mt-5">
+							<div class="col-sm-12 col-md-12">
+								<div class="form-group">
+									<button class="btn btn-warning w-100 login-button" (click)="signIn()"
+										[disabled]="isLoading">
+										{{isLoading ? "Espere, por favor..." : "Iniciar Sesión"}}
+									</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>

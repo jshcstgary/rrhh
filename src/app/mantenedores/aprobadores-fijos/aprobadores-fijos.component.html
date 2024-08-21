@@ -1,13 +1,1 @@
-<plantilla-e-component [dataFilterNivelesAprobacion]="dataFilterNivelesAprobacion" [dataTipoMotivo]="dataTipoMotivo"
-  [dataTipoSolicitudes]="dataTipoSolicitudes" [dataNivelDireccion]="dataNivelDireccion" *ngIf="hasFiltered"
-  [columnsTable]="columnsTable" [originalDataTable]="activeRecords ? dataTableActive : dataTableInactive"
-  [placeholderHeaderInputText]="'Buscar aprobadores fijos...'" [contexto]="this" keyNameTable="id"
-  [colsToFilterByText]="colsToFilterByText" clickOnActionRow="onRowActionClicked" clickOnFilter="filterDataTable"
-  clickOnPageCrear="pageCrear" [IdRowToClone]="IdRowToClone" colIdToDisable="id" titleReport="APROBADOR FIJO"
-  [codigoReport]="codigoReporte"
-  [showFilterTipoSolicitud]="this.controlsPermissions[pageControlPermission.FiltroTipoSolicitud].visualizar"
-  [disabledFilterTipoSolicitud]="!this.controlsPermissions[pageControlPermission.FiltroTipoSolicitud].habilitar"
-  [showCreateButton]="this.controlsPermissions[pageControlPermission.ButtonAgregar].visualizar"
-  [showButtonExportar]="this.controlsPermissions[pageControlPermission.ButtonExportar].visualizar"
-  (onChangeActiveRecordsCheckbox)="onChangeActiveRecordsCheckbox($event)" [activeRecordsCheckbox]="activeRecords">
-</plantilla-e-component>
+<plantilla-e-component [dataFilterNivelesAprobacion]="dataFilterNivelesAprobacion" [dataTipoMotivo]="dataTipoMotivo" [dataTipoSolicitudes]="dataTipoSolicitudes" [dataNivelDireccion]="dataNivelDireccion" *ngIf="hasFiltered" [columnsTable]="columnsTable" [originalDataTable]="activeRecords ? dataTableActive : dataTableInactive" [placeholderHeaderInputText]="'Buscar Aprobadores Fijos...'" [contexto]="this" keyNameTable="id" [colsToFilterByText]="colsToFilterByText" clickOnActionRow="onRowActionClicked" clickOnFilter="filterDataTable" clickOnPageCrear="pageCrear" [IdRowToClone]="IdRowToClone" colIdToDisable="id" titleReport="APROBADOR FIJO" [codigoReport]="codigoReporte" [showFilterTipoSolicitud]="this.controlsPermissions[pageControlPermission.FiltroTipoSolicitud].visualizar" [disabledFilterTipoSolicitud]="!this.controlsPermissions[pageControlPermission.FiltroTipoSolicitud].habilitar" [showCreateButton]="this.controlsPermissions[pageControlPermission.ButtonAgregar].visualizar" [showButtonExportar]="this.controlsPermissions[pageControlPermission.ButtonExportar].visualizar" (onChangeActiveRecordsCheckbox)="onChangeActiveRecordsCheckbox($event)" [activeRecordsCheckbox]="activeRecords"></plantilla-e-component>

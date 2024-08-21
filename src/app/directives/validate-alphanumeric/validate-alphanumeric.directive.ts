@@ -20,4 +20,15 @@ export class ValidateAlphanumericDirective {
 			event.preventDefault();
 		}
 	}
+
+	@HostListener("input", ["$event"])
+	onInput(event: Event) {
+		const input = event.target as HTMLInputElement;
+		const sanitizedValue = input.value.replace(/[^a-zA-Z0-9áéíóúÁÉÍÓÚñÑ ]/g, "");
+
+		if (sanitizedValue !== input.value) {
+			input.value = sanitizedValue;
+			event.preventDefault();
+		}
+	}
 }

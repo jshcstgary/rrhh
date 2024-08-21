@@ -21,6 +21,7 @@ import Swal from "sweetalert2";
 import { TiporutaData } from "./ruta.data";
 import { IRuta, IRutaTable } from "./ruta.interface";
 import { RutaService } from "./ruta.service";
+import { removeExtraSpaces } from "src/app/services/util/text.util";
 
 @Component({
 	templateUrl: "./ruta.component.html",
@@ -131,9 +132,37 @@ export class RutaComponent implements OnInit {
 			next: (response) => {
 				const comboTipoRuta = this.inputService.formatDataToOptionsValueInLabel(response.tipoRutaType.filter(data => data.estado === "A"), "tipoRuta", "id");
 
+				const rutas = [
+					{
+						label: "Primer Nivel de Aprobación",
+						value: "Primer Nivel de Aprobación"
+					},
+					{
+						label: "Segundo Nivel de Aprobación",
+						value: "Segundo Nivel de Aprobación"
+					},
+					{
+						label: "Tercer Nivel de Aprobación",
+						value: "Tercer Nivel de Aprobación"
+					},
+					{
+						label: "Cuarto Nivel de Aprobación",
+						value: "Cuarto Nivel de Aprobación"
+					},
+					{
+						label: "Gerente Corportivo de RR.HH.",
+						value: "Gerente Corportivo de RR.HH."
+					},
+					{
+						label: "Comité de Remuneraciones",
+						value: "Comité de Remuneraciones"
+					},
+				];
+
 				this.dataTipoRuta = response.tipoRutaType;
 
 				this.tableInputsEditRow = this.formService.changeValuePropFormById("idTipoRuta", this.tableInputsEditRow, "options", comboTipoRuta);
+				this.tableInputsEditRow = this.formService.changeValuePropFormById("ruta", this.tableInputsEditRow, "options", rutas);
 
 				this.getDataToTable();
 			},
@@ -157,12 +186,21 @@ export class RutaComponent implements OnInit {
 						tipoRutaFormatted: this.formatTipoRutaEstaciones(accionResponse),
 					}))
 					// .sort((a, b) => a.ruta.localeCompare(b.ruta));
+					// .sort((a, b) => {
+					// 	if (a.idTipoRuta === b.idTipoRuta) {
+					// 		return a.ruta.localeCompare(b.ruta);
+					// 	}
+
+					// 	return (a.idTipoRuta as number) - (b.idTipoRuta as number);
+					// });
 					.sort((a, b) => {
-						if (a.idTipoRuta === b.idTipoRuta) {
-							return a.ruta.localeCompare(b.ruta);
+						const tipoSolicitudComparacion = a.tipoRutaFormatted.localeCompare(b.tipoRutaFormatted);
+						
+						if (tipoSolicitudComparacion !== 0) {
+							return tipoSolicitudComparacion;
 						}
 
-						return (a.idTipoRuta as number) - (b.idTipoRuta as number);
+						return a.ruta.localeCompare(b.ruta);
 					});
 
 				this.dataTableActive = this.dataTable.filter(data => data.estado);
@@ -206,6 +244,7 @@ export class RutaComponent implements OnInit {
 
 		// rowData = { ...rowData, estado: rowData.estado ? "A" : "I" };
 		rowData.estado = rowData.estado === "A" || rowData.estado === true ? "A" : "I";
+		rowData.ruta = removeExtraSpaces(rowData.ruta);
 
 		if (rowData.key) {
 			/* Actualizar */

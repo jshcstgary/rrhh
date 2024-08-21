@@ -24,6 +24,7 @@ import {
 	ITipomotivoTable
 } from "./tipo-motivo.interface";
 import { TipoMotivoService } from "./tipo-motivo.service";
+import { removeExtraSpaces } from "src/app/services/util/text.util";
 
 @Component({
 	templateUrl: "./tipo-motivo.component.html",
@@ -138,6 +139,7 @@ export class TipoMotivoComponent implements OnInit {
 				this.dataTipoSolicitudes = response.tipoSolicitudType;
 
 				this.tableInputsEditRow = this.formService.changeValuePropFormById("tipoSolicitudId", this.tableInputsEditRow, "options", comboTipoSolicitud);
+				console.log(this.tableInputsEditRow);
 
 				this.getDataToTable();
 			},
@@ -161,12 +163,21 @@ export class TipoMotivoComponent implements OnInit {
 						tipoSolicitudFormatted: this.formatTipoSolicitudEstaciones(motivoResponse),
 					}))
 					// .sort((a, b) => a.tipoMotivo.localeCompare(b.tipoMotivo));
+					// .sort((a, b) => {
+					// 	if (a.tipoSolicitudId === b.tipoSolicitudId) {
+					// 		return a.tipoMotivo.localeCompare(b.tipoMotivo);
+					// 	}
+
+					// 	return (a.tipoSolicitudId as number) - (b.tipoSolicitudId as number);
+					// });
 					.sort((a, b) => {
-						if (a.tipoSolicitudId === b.tipoSolicitudId) {
-							return a.tipoMotivo.localeCompare(b.tipoMotivo);
+						const tipoSolicitudComparacion = a.tipoSolicitudFormatted.localeCompare(b.tipoSolicitudFormatted);
+						
+						if (tipoSolicitudComparacion !== 0) {
+							return tipoSolicitudComparacion;
 						}
 
-						return (a.tipoSolicitudId as number) - (b.tipoSolicitudId as number);
+						return a.tipoMotivo.localeCompare(b.tipoMotivo);
 					});
 
 				this.dataTableActive = this.dataTable.filter(data => data.estado);
@@ -210,6 +221,7 @@ export class TipoMotivoComponent implements OnInit {
 
 		// rowData = { ...rowData, estado: rowData.estado ? "A" : "I" };
 		rowData.estado = rowData.estado === "A" || rowData.estado === true ? "A" : "I";
+		rowData.tipoMotivo = removeExtraSpaces(rowData.tipoMotivo);
 
 		if (rowData.key) {
 			/* Actualizar */
