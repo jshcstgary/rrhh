@@ -1,0 +1,47 @@
+<div class="p-2 buscar-aprobador-fijo-modal">
+	<div class="input-group my-2">
+		<input type="text" class="form-control" [placeholder]="'Ingrese ' + textPlaceholder">
+	
+		<button class="btn btn-info">Buscar</button>
+	</div>
+	
+	<div class="class-container my-2 p-1">
+		<table>
+			<thead>
+				<tr>
+					<th></th>
+					<th>ID</th>
+					<th>Nombre</th>
+					<th>Subledger</th>
+					<th>Correo</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>
+						<input class="form-check-input" type="radio" name="usuarioAprobador" (change)="seleccionarUsuario(1)">
+					</td>
+					<td>1</td>
+					<td>Miguel Castillo</td>
+					<td>0987654321</td>
+					<td>miguel.castillo@email.com</td>
+				</tr>
+				<tr>
+					<td>
+						<input class="form-check-input" type="radio" name="usuarioAprobador" (change)="seleccionarUsuario(2)">
+					</td>
+					<td>2</td>
+					<td>Joshua Castillo</td>
+					<td>124567890</td>
+					<td>joshua.castillo@email.com</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+	<div class="my-2 d-flex justify-content-end align-items-center gap-2">
+		<button class="btn btn-outline-primary" type="button" (click)="onClose()">Cerrar</button>
+
+		<button class="btn btn-primary" type="button">Seleccionar</button>
+	</div>
+</div>

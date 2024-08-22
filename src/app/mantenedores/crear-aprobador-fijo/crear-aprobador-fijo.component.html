@@ -25,11 +25,12 @@
 
 								&nbsp;
 
-								<input type="text" name="subledger" [(ngModel)]="modelo.subleger" style="color: black; font-size: 14px; width: 30%" class="form-control" id="subledger" placeholder="Ingrese Subledger del Empleado a Buscar" aria-describedby="inputGroupPrepend" required />
+								<!-- <input type="text" name="subledger" [(ngModel)]="modelo.subleger" style="color: black; font-size: 14px; width: 30%" class="form-control" id="subledger" placeholder="Ingrese Subledger del Empleado a Buscar" aria-describedby="inputGroupPrepend" required /> -->
+								<input type="text" name="subledger" [(ngModel)]="modelo.subleger" style="color: black; font-size: 14px; width: 30%" class="form-control" id="subledger" placeholder="Ingrese Subledger del Empleado a Buscar" (click)="openModal()" required />
 
-								<button class="btn btn-light" type="button" (click)="getDataEmpleadosEvolution('subledger')">
+								<!-- <button class="btn btn-light" type="button" (click)="getDataEmpleadosEvolution('subledger')">
 									<i class="ti-search"></i>
-								</button>
+								</button> -->
 							</div>
 						</div>
 					</div>

@@ -9,6 +9,8 @@ import { MantenimientoService } from "src/app/services/mantenimiento/mantenimien
 import { UtilService } from "src/app/services/util/util.service";
 import Swal from "sweetalert2";
 import { CrearAprobadorFijoService } from "./crear-aprobador-fijo.service";
+import { BuscarAprobadorFijoComponent } from "../buscar-aprobador-fijo/buscar-aprobador-fijo.component";
+import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
 	selector: "app-crear-aprobador-fijo",
@@ -220,7 +222,8 @@ export class CrearAprobadorFijoComponent implements OnInit {
 		private route: ActivatedRoute,
 		private mantenimientoService: MantenimientoService,
 		private utilService: UtilService,
-		private crearAprobadorFijoService: CrearAprobadorFijoService
+		private crearAprobadorFijoService: CrearAprobadorFijoService,
+		private modalService: NgbModal,
 	) {
 		this.config.notFoundText = "Custom not found";
 		this.config.appendTo = "body";
@@ -317,11 +320,61 @@ export class CrearAprobadorFijoComponent implements OnInit {
 	}
 
 	public validateData(): boolean {
-		console.log(this.modelo.subleger);
-		console.log(this.modelo.nombre);
-		console.log(this.modelo.correo);
-		console.log(this.modelo.niveL_DIRECCION);
 		return this.modelo.subleger === "" || this.modelo.nombre === "" || this.modelo.correo === "" || this.modelo.niveL_DIRECCION === "";
+	}
+
+	public openModal() {
+		const modalRef = this.modalService
+			.open(BuscarAprobadorFijoComponent, {
+				backdrop: "static",
+				keyboard: false
+			});
+
+		modalRef.componentInstance.textPlaceholder = "subledger";
+			// .result.then(
+			// 	(result) => {
+			// 		if (result?.action === "close") {
+			// 			return;
+			// 		}
+
+			// 		if (result?.data) {
+			// 			const data: IEmpleadoData = result.data;
+
+			// 			const dtoFamiliares: FamiliaresCandidatos = {
+			// 				idSolicitud: this.id_solicitud_by_params,
+			// 				nombreEmpleado: data.nombreCompleto,
+			// 				// fechaCreacion: new Date(data.fechaIngresogrupo) ?? new Date(),
+			// 				fechaCreacion: new Date(),
+			// 				cargo: data.nombreCargo,
+			// 				unidad: data.unidadNegocio,
+			// 				departamento: data.departamento,
+			// 				localidad: data.localidad,
+			// 				parentesco: "",
+			// 				codigoPosicion: data.codigoPosicion,
+			// 				fechaModificacion: new Date(),
+			// 				descripcionPosicion: data.descrPosicion,
+			// 				subledger: data.subledger,
+			// 				estado: "A",
+			// 				usuarioCreacion: this.solicitud.usuarioCreacion,
+			// 				usuarioModificacion: this.solicitud.usuarioActualizacion
+			// 			};
+
+			// 			this.mantenimientoService.guardarFamiliaresCandidato(dtoFamiliares).subscribe({
+			// 				next: () => {
+			// 					this.addNewRow(dtoFamiliares);
+
+			// 					this.utilService.modalResponse("Familiar ingresado correctamente", "success");
+			// 				},
+			// 				error: (err) => {
+			// 					console.error(err);
+			// 				}
+			// 			});
+			// 		}
+			// 	},
+			// 	(reason) => {
+			// 		console.log(`Dismissed with: ${reason}`);
+			// 	}
+			// );
 	}
 
 	// searchCorreoEmpleado: OperatorFunction<string, readonly string[]> = (

@@ -26,6 +26,7 @@ import { EditarAprobadorFijoComponent } from "./editar-aprobador-fijo/editar-apr
 import { NgbTypeaheadModule } from "@ng-bootstrap/ng-bootstrap";
 import { ReasignarTareasUsuariosComponent } from "./reasignar-tareas-usuarios/reasignar-tareas-usuarios.component";
 import { EditarNivelesAprobacionComponent } from './editar-niveles-aprobacion/editar-niveles-aprobacion.component';
+import { BuscarAprobadorFijoComponent } from './buscar-aprobador-fijo/buscar-aprobador-fijo.component';
 
 
 @NgModule({
@@ -44,7 +45,8 @@ import { EditarNivelesAprobacionComponent } from './editar-niveles-aprobacion/ed
 		EditarAprobadorFijoComponent,
 		ReasignarTareasUsuariosComponent,
 		CrearNivelesAprobacionComponent,
-		EditarNivelesAprobacionComponent
+		EditarNivelesAprobacionComponent,
+  BuscarAprobadorFijoComponent
 	],
 	imports: [
 		RouterModule.forChild(MantenedoresRoutes),
