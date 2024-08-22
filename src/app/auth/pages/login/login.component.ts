@@ -28,6 +28,8 @@ export class LoginComponent {
 
   public isLoading: boolean = false;
   public perfilCodigo: string="";
+  public perfilCodigoSeleccionado: PerfilUsuario;
+
   public isLoadingPerfil: boolean = false;
   public perfilUsuario: PerfilUsuarioResponse;
   public perfilUsuarioError: PerfilUsuarioResponse = [{
@@ -113,10 +115,13 @@ export class LoginComponent {
           localStorage.removeItem(LocalStorageKeys.IdUsuario);
           localStorage.removeItem(LocalStorageKeys.Permisos);
           localStorage.removeItem(LocalStorageKeys.Reloaded);
+          localStorage.removeItem(LocalStorageKeys.Perfiles);
+          localStorage.removeItem(LocalStorageKeys.Perfil);
 
           this.isLoading = false;
           return;
         }
+        localStorage.setItem(LocalStorageKeys.Perfiles, JSON.stringify(this.perfilUsuario));
         this.isLoading = false;
         this.isLoadingPerfil=true;
 
@@ -140,6 +145,9 @@ export class LoginComponent {
         this.perfilUsuarioError[3].message="Exito";
 
         this.perfilUsuario=this.perfilUsuarioError;
+        console.log(this.perfilUsuario);
+        localStorage.setItem(LocalStorageKeys.Perfiles, JSON.stringify(this.perfilUsuario));
+
         this.isLoadingPerfil=true;
        }else{
         Swal.fire({
@@ -148,6 +156,8 @@ export class LoginComponent {
         confirmButtonColor: "rgb(227, 199, 22)",
         confirmButtonText: "Ok",
         });
+        localStorage.removeItem(LocalStorageKeys.Perfiles);
+        localStorage.removeItem(LocalStorageKeys.Perfil);
       }
       console.log(this.perfilUsuario);
         console.error(err);
@@ -182,7 +192,6 @@ export class LoginComponent {
     }
 
     this.isLoading = true;
-    console.log(this.perfilCodigo);
     if (this.perfilCodigo === null||this.perfilCodigo===undefined||this.perfilCodigo==="") {
       Swal.fire({
         text: "Seleccione un Perfil de Usuario",
@@ -202,6 +211,8 @@ export class LoginComponent {
       isAutenticacionLocal: true,
     };
 
+    this.perfilCodigoSeleccionado=JSON.parse(localStorage.getItem(LocalStorageKeys.Perfiles)).find(data => data.scg_per_codigo === this.perfilCodigo);
+    localStorage.setItem(LocalStorageKeys.Perfil, this.perfilCodigoSeleccionado.scg_per_descripcion);
     this.loginService.login(loginRequest).subscribe({
       next: ({ codigo, nombres, apellidos, email, vistas }: Perfil) => {
         if (vistas.length === 0 || nombres === "" || apellidos === "" || email == "" || codigo === "") {
@@ -216,6 +227,8 @@ export class LoginComponent {
           localStorage.removeItem(LocalStorageKeys.IdUsuario);
           localStorage.removeItem(LocalStorageKeys.Permisos);
           localStorage.removeItem(LocalStorageKeys.Reloaded);
+          localStorage.removeItem(LocalStorageKeys.Perfil);
+          localStorage.removeItem(LocalStorageKeys.Perfiles)
 
           this.isLoading = false;
 

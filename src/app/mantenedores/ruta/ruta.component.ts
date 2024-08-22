@@ -74,6 +74,7 @@ export class RutaComponent implements OnInit {
 	public IdRowToClone: string = null;
 	public defaultEmptyRowTable: IRutaTable = TiporutaData.defaultEmptyRowTable;
 	public dataTipoRuta: any[] = [];
+	public rutas: any[] = [];
 	public codigoReporte: reportCodeEnum =
 		reportCodeEnum.MANTENIMIENTO_RUTA;
 	constructor(
@@ -131,38 +132,19 @@ export class RutaComponent implements OnInit {
 		return this.mantenimientoService.getTipoRuta().subscribe({
 			next: (response) => {
 				const comboTipoRuta = this.inputService.formatDataToOptionsValueInLabel(response.tipoRutaType.filter(data => data.estado === "A"), "tipoRuta", "id");
-
-				const rutas = [
-					{
-						label: "Primer Nivel de Aprobación",
-						value: "Primer Nivel de Aprobación"
-					},
-					{
-						label: "Segundo Nivel de Aprobación",
-						value: "Segundo Nivel de Aprobación"
-					},
-					{
-						label: "Tercer Nivel de Aprobación",
-						value: "Tercer Nivel de Aprobación"
-					},
-					{
-						label: "Cuarto Nivel de Aprobación",
-						value: "Cuarto Nivel de Aprobación"
-					},
-					{
-						label: "Gerente Corportivo de RR.HH.",
-						value: "Gerente Corportivo de RR.HH."
-					},
-					{
-						label: "Comité de Remuneraciones",
-						value: "Comité de Remuneraciones"
-					},
-				];
+				this.mantenimientoService.getCatalogo("RBPNR").subscribe({
+					next: (res) => {
+						this.rutas = res.itemCatalogoTypes.map((r) => ({
+							label: r.valor,
+							value: r.valor,
+						}));
+						this.tableInputsEditRow = this.formService.changeValuePropFormById("ruta", this.tableInputsEditRow, "options", this.rutas);
+					}
+				});
 
 				this.dataTipoRuta = response.tipoRutaType;
 
 				this.tableInputsEditRow = this.formService.changeValuePropFormById("idTipoRuta", this.tableInputsEditRow, "options", comboTipoRuta);
-				this.tableInputsEditRow = this.formService.changeValuePropFormById("ruta", this.tableInputsEditRow, "options", rutas);
 
 				this.getDataToTable();
 			},

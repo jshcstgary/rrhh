@@ -112,7 +112,7 @@ export class ReasignarTareasUsuariosComponent implements OnInit {
   }
 
   async ngOnInit(): Promise<void> {
-    
+	localStorage.removeItem(LocalStorageKeys.Reloaded);
     const idUsuario = await this._route.snapshot.queryParamMap.get("idUsuario");
 
     if (idUsuario !== null && idUsuario !== undefined) {

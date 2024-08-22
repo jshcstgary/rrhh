@@ -317,8 +317,8 @@ export class EditarNivelesAprobacionComponent {
 		const codigoSolicitudIncluded = this.restrictionsIds.includes(tipoSolicitud.codigoTipoSolicitud);
 
 		if (codigoSolicitudIncluded) {
-			this.modelHead.idAccion = null;
-			this.modelHead.idTipoMotivo = null;
+			this.modelHead.idAccion = 0;
+			this.modelHead.idTipoMotivo = 0;
 
 			this.desactivarTipoMotivoYAccion = true;
 

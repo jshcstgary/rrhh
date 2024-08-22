@@ -369,8 +369,8 @@ export class CrearNivelesAprobacionComponent implements OnInit {
 		const codigoSolicitudIncluded = this.restrictionsIds.includes(tipoSolicitud.codigoTipoSolicitud);
 
 		if (codigoSolicitudIncluded) {
-			this.modelHead.idAccion = null;
-			this.modelHead.idTipoMotivo = null;
+			this.modelHead.idAccion = 0;
+			this.modelHead.idTipoMotivo = 0;
 
 			this.desactivarTipoMotivoYAccion = true;
 
@@ -387,7 +387,7 @@ export class CrearNivelesAprobacionComponent implements OnInit {
 	}
 
 	procesarNivelAprobacion() {
-		const nivelesAprobacion = Object.entries(this.idNivelesAprobacionRuta)
+				const nivelesAprobacion = Object.entries(this.idNivelesAprobacionRuta)
 			.filter(([_, value]) => value !== "")
 			.map(([key, value]) => {
 				let modelo: DatosNivelesAprobacion = new DatosNivelesAprobacion();

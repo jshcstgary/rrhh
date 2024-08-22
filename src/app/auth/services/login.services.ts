@@ -27,6 +27,9 @@ export class LoginServices {
     localStorage.removeItem(LocalStorageKeys.IdUsuario);
     localStorage.removeItem(LocalStorageKeys.Permisos);
     localStorage.removeItem(LocalStorageKeys.Reloaded);
+    localStorage.removeItem(LocalStorageKeys.Perfiles);
+    localStorage.removeItem(LocalStorageKeys.Perfil);
+
 
     return of(true);
   }

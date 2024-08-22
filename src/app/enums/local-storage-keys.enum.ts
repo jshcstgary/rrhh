@@ -2,5 +2,9 @@ export enum LocalStorageKeys {
   IdUsuario = "idUsuario",
   Permisos = "permisos",
   IdLogin = "idLogin",
-  Reloaded = "reloaded"
+  Reloaded = "reloaded",
+  Perfiles = "perfiles",
+  Perfil = "perfil"
+
+
 }

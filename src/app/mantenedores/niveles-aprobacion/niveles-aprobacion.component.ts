@@ -17,6 +17,7 @@ import Swal from "sweetalert2";
 import { CrearNivelesAprobacionService } from "../crear-niveles-aprobacion/crear-niveles-aprobacion.service";
 import { NivelesAprobacionData, NivelesAprobacionData2 } from "./niveles-aprobacion.data";
 import { NivelesAprobacionService } from "./niveles-aprobacion.service";
+import { LocalStorageKeys } from "src/app/enums/local-storage-keys.enum";
 
 @Component({
 	selector: "app-niveles-aprobacion",
@@ -34,6 +35,7 @@ export class NivelesAprobacionComponent implements OnInit {
 	tipoMotivoDeshablitado: boolean = false;
 
 	public restrictionsIds: any[] = ["RG", "CF", "AP"];
+	private isRequisicionPersonal: boolean =true;
 
 	public controlsPermissions: PageControlPermiso = {
 		[NivelAprobacionPageControlPermission.FiltroTipoSolicitud]: {
@@ -138,6 +140,7 @@ export class NivelesAprobacionComponent implements OnInit {
 	}
 
 	ngOnInit(): void {
+		localStorage.removeItem(LocalStorageKeys.Reloaded);
 		this.columnsTable[this.columnsTable.length - 1].actions.forEach(action => {
 			if (action.id === "editOnTable") {
 				action.showed = this.controlsPermissions[NivelAprobacionPageControlPermission.ButtonEditar].visualizar
@@ -206,11 +209,28 @@ export class NivelesAprobacionComponent implements OnInit {
 					return;
 				}
 
-				this.dataTable = response.nivelAprobacionType
+				if(this.isRequisicionPersonal){
+					this.dataTable = response.nivelAprobacionType
 					.filter(data => data.estado === "A")
 					.sort((a, b) => a.idNivelAprobacion - b.idNivelAprobacion)
 					.reduce((acc, obj) => {
-						// const grupo = acc.find(g => g[0].idTipoMotivo === obj.idTipoMotivo || g[0].idTipoSolicitud === obj.idTipoSolicitud || g[0].nivelDireccion === obj.nivelDireccion || g[0].idAccion === obj.idAccion);
+					//	const grupo = acc.find(g => g[0].idTipoMotivo === obj.idTipoMotivo || g[0].idTipoSolicitud === obj.idTipoSolicitud || g[0].nivelDireccion === obj.nivelDireccion || g[0].idAccion === obj.idAccion);
+						const grupo = acc.find(g => g[0].idTipoMotivo === obj.idTipoMotivo && g[0].idTipoRuta === obj.idTipoRuta);
+
+						if (grupo) {
+							grupo.push(obj);
+						} else {
+							acc.push([obj]);
+						}
+
+						return acc;
+					}, [] as any[][]);
+				}else{
+					this.dataTable = response.nivelAprobacionType
+					.filter(data => data.estado === "A")
+					.sort((a, b) => a.idNivelAprobacion - b.idNivelAprobacion)
+					.reduce((acc, obj) => {
+					//	const grupo = acc.find(g => g[0].idTipoMotivo === obj.idTipoMotivo || g[0].idTipoSolicitud === obj.idTipoSolicitud || g[0].nivelDireccion === obj.nivelDireccion || g[0].idAccion === obj.idAccion);
 						const grupo = acc.find(g => g[0].idTipoRuta === obj.idTipoRuta);
 
 						if (grupo) {
@@ -221,7 +241,9 @@ export class NivelesAprobacionComponent implements OnInit {
 
 						return acc;
 					}, [] as any[][]);
-				console.log(structuredClone(this.dataTable));
+				}
+
+				
 
 				this.utilService.closeLoadingSpinner();
 			},
@@ -356,9 +378,10 @@ export class NivelesAprobacionComponent implements OnInit {
 
 		if (this.restrictionsIds.includes(tipoSolicitud.codigoTipoSolicitud)) {
 			this.dataFilterNivelesAprobacion.tipoMotivo = "10000";
-
 			this.tipoMotivoDeshablitado = true;
+			this.isRequisicionPersonal = false;
 		} else {
+			this.isRequisicionPersonal = true;
 			this.dataFilterNivelesAprobacion.tipoMotivo = null;
 
 			this.tipoMotivoDeshablitado = false;

@@ -15,6 +15,7 @@ import { PageControlPermiso } from "src/app/types/page-control-permiso.type";
 import { Control } from "src/app/types/permiso.type";
 import { AprobadoresFijosData } from "./aprobadores-fijos.data";
 import { AprobadoresFijosService } from "./aprobadores-fijos.service";
+import { LocalStorageKeys } from "src/app/enums/local-storage-keys.enum";
 
 @Component({
 	selector: "app-aprobadores-fijos",
@@ -80,6 +81,7 @@ export class AprobadoresFijosComponent implements OnInit {
 	}
 
 	ngOnInit(): void {
+		localStorage.removeItem(LocalStorageKeys.Reloaded);
 		this.utilService.openLoadingSpinner("Cargando información. Espere por favor...");
 
 		this.columnsTable[this.columnsTable.length - 1].actions.forEach(action => {
