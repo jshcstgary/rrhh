@@ -1,353 +1,227 @@
 <div class="row">
-  <!-- ==================================-->
-  <!-- ======= Basic Nav ===== -->
-  <!-- ==================================-->
-  <div class="col-12">
-    <div class="card data-container">
-      <!-- <div class="p-3">
-        <h4 class="card-title mb-0">Basic Nav</h4>
-      </div>-->
-      <div class="card-body border-top">
-        <ul ngbNav #nav="ngbNav" [(activeId)]="active" class="nav-pills">
-          <li [ngbNavItem]="1">
-            <button ngbNavLink>Resumen</button>
-            <ng-template ngbNavContent>
-              <div class="row justify-content-between">
-                <div class="col-md-6">
-                  <ngx-charts-advanced-pie-chart [view]="[600, 200]" label="Total completadas" [scheme]="colorScheme6"
-                    [results]="solicitudesCompletadas" [gradient]="gradient6" (select)="onSelect6($event)"
-                    (activate)="onActivate6($event)" (deactivate)="onDeactivate6($event)">
-                  </ngx-charts-advanced-pie-chart>
-                </div>
+	<div class="col-12">
+		<div class="card data-container">
+			<div class="card-body border-top">
+				<ul ngbNav #nav="ngbNav" [(activeId)]="active" class="nav-pills">
+					<li [ngbNavItem]="1">
+						<button ngbNavLink>Resumen</button>
 
-                <div class="col-md-6">
-                  <ngx-charts-advanced-pie-chart [view]="[600, 200]" label="Total pendientes" [scheme]="colorScheme6"
-                    [results]="solicitudesPendientes" [gradient]="gradient6" (select)="onSelect6($event)"
-                    (activate)="onActivate6($event)" (deactivate)="onDeactivate6($event)">
-                  </ngx-charts-advanced-pie-chart>
-                </div>
-              </div>
+						<ng-template ngbNavContent>
+							<div class="row justify-content-between">
+								<div class="col-md-6">
+									<ngx-charts-advanced-pie-chart [view]="[600, 200]" label="Total completadas" [scheme]="colorScheme6" [results]="solicitudesCompletadas" [gradient]="gradient6" (select)="onSelect6($event)" (activate)="onActivate6($event)" (deactivate)="onDeactivate6($event)"></ngx-charts-advanced-pie-chart>
+								</div>
 
-              <plantilla-c-component [dataFilterNivelesAprobacion]="dataFilterNivelesAprobacion"
-                [dataTipoMotivo]="dataTipoMotivo" [dataTipoSolicitudes]="dataTipoSolicitudes"
-                [dataNivelDireccion]="dataNivelDireccion" [dataTipoAccion]="dataTipoAccion"
-                [selected_empresa]="selected_empresa" [selected_producto]="selected_producto"
-                [selected_tipo_solicitud]="selected_tipo_solicitud" [selected_estado]="selected_estado"
-                [data_empresas]="data_empresas" [data_productos]="dataUnidadesNegocio" [data_estado]="data_estado"
-                [model]="model" *ngIf="hasFiltered" [columnsTable]="columnsTableGraphic"
-                [originalDataTable]="solicitudesTipo" [placeholderHeaderInputText]="'Buscar niveles de aprobacion...'"
-                [contexto]="this" keyNameTable="id" clickOnActionRow="onRowActionGraphics"
-                clickOnFilter="filterDataTable" clickOnMostrarModalCrearSolicitudes="mostrarModalCrearSolicitudes"
-                clickOnToggleDisabled="toggleDisabled" clickOnPageCrear="pageCrear" [IdRowToClone]="IdRowToClone"
-                colIdToDisable="id" titleReport="NIVELES DE APROBACION" [codigoReport]="codigoReporte">
-              </plantilla-c-component>
-            </ng-template>
-          </li>
-          <li [ngbNavItem]="2">
-            <button ngbNavLink>Consultas</button>
-            <ng-template ngbNavContent>
-              <div class="form-body">
-                <div *ngIf="controlsPermissions[pageControlPermission.FiltroUnidadNegocio].visualizar"
-                  class="col-md-3">
-                  <div class="mb-3">
-                    <label class="azul">Nº de Solicitud</label>
-                    <input type="text" name="searchInputFilter" [(ngModel)]="searchInputFilter"
-                    style="color: black; font-size: 14px; width: 80%" class="form-control" id="searchInputFilter"
-                     placeholder="Ingrese Nº de Solicitud a Buscar" />
-                  </div>
-                </div>
-                <div class="row">
-                  <div *ngIf="controlsPermissions[pageControlPermission.FiltroEmpresa].visualizar" class="col-md-3">
-                    <div class="mb-3">
-                      <label class="azul">Empresa</label>
-                      <ng-select [disabled]="!controlsPermissions[pageControlPermission.FiltroEmpresa].habilitar || searchInputFilter!==''"
-                        #inputSelectHacienda [(ngModel)]="dataFilterSolicitudes.empresa" name="empresa"
-                        placeholder="Seleccione">
-                        <ng-option *ngFor="let data of dataEmpresa" [value]="data">{{ data }}</ng-option>
-                      </ng-select>
-                    </div>
-                  </div>
-                  <div *ngIf="controlsPermissions[pageControlPermission.FiltroUnidadNegocio].visualizar"
-                    class="col-md-3">
-                    <div class="mb-3">
-                      <label class="azul">Unidad de Negocio</label>
-                      <ng-select [disabled]="!controlsPermissions[pageControlPermission.FiltroUnidadNegocio].habilitar || searchInputFilter!==''"
-                        #inputSelectProducto [(ngModel)]="dataFilterSolicitudes.unidadNegocio" name="unidadNegocio"
-                        placeholder="Seleccione">
-                        <ng-option *ngFor="let data of dataUnidadesNegocio" [value]="data">{{ data }}</ng-option>
-                      </ng-select>
-                    </div>
-                  </div>
-                  <div [hidden]="!controlsPermissions[pageControlPermission.FiltroFechaDesde].visualizar"
-                    class="col-md-3">
-                    <div class="mb-3">
-                      <label class="azul">Fecha Creación Desde</label>
-                      <div class="input-group">
-                        <input #inputDateFechaDesde
-                          [disabled]="!controlsPermissions[pageControlPermission.FiltroFechaDesde].habilitar || searchInputFilter!==''"
-                          class="form-control" placeholder="yyyy-mm-dd" name="fechaDesde"
-                          [(ngModel)]="dataFilterSolicitudes.fechaDesde" ngbDatepicker
-                          [footerTemplate]="footerTemplateFechaDesde" #fechaDesde="ngbDatepicker" />
-                        <button class="btn btn-outline-secondary bi bi-calendar3" (click)="fechaDesde.toggle()"
-                          type="button">
-                          <i-feather class="feather-sm" name="calendar"></i-feather>
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                  <div [hidden]="!controlsPermissions[pageControlPermission.FiltroFechaDesde].visualizar"
-                    class="col-md-3">
-                    <div class="mb-3">
-                      <label class="azul">Fecha Creación Hasta</label>
-                      <div class="input-group">
-                        <input #inputDateFechaHasta
-                          [disabled]="!controlsPermissions[pageControlPermission.FiltroFechaHasta].habilitar || searchInputFilter!==''"
-                          class="form-control" placeholder="yyyy-mm-dd" name="fechaHasta"
-                          [(ngModel)]="dataFilterSolicitudes.fechaHasta" ngbDatepicker
-                          [footerTemplate]="footerTemplateFechaHasta" #fechaHasta="ngbDatepicker" />
-                        <button class="btn btn-outline-secondary bi bi-calendar3" (click)="fechaHasta.toggle()"
-                          type="button">
-                          <i-feather class="feather-sm" name="calendar"></i-feather>
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                  <div *ngIf="controlsPermissions[pageControlPermission.FiltroTipoSolicitud].visualizar"
-                    class="col-md-4">
-                    <div class="mb-3">
-                      <label class="azul">Tipo de Solicitud</label>
-                      <ng-select #inputSelectLabor
-                        [disabled]="!controlsPermissions[pageControlPermission.FiltroTipoSolicitud].habilitar || searchInputFilter!==''"
-                        [(ngModel)]="dataFilterSolicitudes.idTipoSolicitud" name="idTipoSolicitud"
-                        placeholder="Seleccione">
-                        <ng-option *ngFor="let data of dataTipoSolicitudes" [value]="data.id">{{ data.id }} - {{
-                          data.descripcion }}</ng-option>
-                      </ng-select>
-                    </div>
-                  </div>
+								<div class="col-md-6">
+									<ngx-charts-advanced-pie-chart [view]="[600, 200]" label="Total pendientes" [scheme]="colorScheme6" [results]="solicitudesPendientes" [gradient]="gradient6" (select)="onSelect6($event)" (activate)="onActivate6($event)" (deactivate)="onDeactivate6($event)"></ngx-charts-advanced-pie-chart>
+								</div>
+							</div>
 
-                  <div *ngIf="controlsPermissions[pageControlPermission.FiltroEstado].visualizar" class="col-md-3">
-                    <div class="mb-3">
-                      <label class="azul">Estado</label>
-                      <ng-select #inputSelectTrabajador
-                        [disabled]="!controlsPermissions[pageControlPermission.FiltroEstado].habilitar || searchInputFilter!==''"
-                        [(ngModel)]="dataFilterSolicitudes.estado" name="id_trabajador" placeholder="Seleccione">
-                        <ng-option *ngFor="let data of data_estado" [value]="data.codigo">{{ data.codigo }} - {{
-                          data.descripcion }}</ng-option>
-                      </ng-select>
-                    </div>
-                  </div>
+							<plantilla-c-component [dataFilterNivelesAprobacion]="dataFilterNivelesAprobacion" [dataTipoMotivo]="dataTipoMotivo" [dataTipoSolicitudes]="dataTipoSolicitudes" [dataNivelDireccion]="dataNivelDireccion" [dataTipoAccion]="dataTipoAccion" [selected_empresa]="selected_empresa" [selected_producto]="selected_producto" [selected_tipo_solicitud]="selected_tipo_solicitud" [selected_estado]="selected_estado" [data_empresas]="data_empresas" [data_productos]="dataUnidadesNegocio" [data_estado]="data_estado" [model]="model" *ngIf="hasFiltered" [columnsTable]="columnsTableGraphic" [originalDataTable]="solicitudesTipo" [placeholderHeaderInputText]="'Buscar niveles de aprobacion...'" [contexto]="this" keyNameTable="id" clickOnActionRow="onRowActionGraphics" clickOnFilter="filterDataTable" clickOnMostrarModalCrearSolicitudes="mostrarModalCrearSolicitudes" clickOnToggleDisabled="toggleDisabled" clickOnPageCrear="pageCrear" [IdRowToClone]="IdRowToClone" colIdToDisable="id" titleReport="NIVELES DE APROBACION" [codigoReport]="codigoReporte"></plantilla-c-component>
+						</ng-template>
+					</li>
+					<li [ngbNavItem]="2">
+						<button ngbNavLink>Consultas</button>
 
-                  <div class="col-md-5">
-                    <div class="mb-3">
-                      <div class="text-end">
-                        <button #buttonSearch *ngIf="controlsPermissions[pageControlPermission.ButtonBuscar].visualizar"
-                          (click)="filterDataTable()" type="submit" class="btn btn-info me-2">
-                          <i class="fas fa-filter"></i> Buscar
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <ng-template #footerTemplateFechaDesde>
-                <hr class="my-0" />
-                <button class="btn btn-primary btn-sm m-2 float-start" (click)="clearStartDate()">
-                  clear
-                </button>
-                <button class="btn btn-secondary btn-sm m-2 float-end" (click)="fechaDesde.close()">
-                  Close
-                </button>
-              </ng-template>
+						<ng-template ngbNavContent>
+							<div class="form-body">
+								<div *ngIf="controlsPermissions[pageControlPermission.FiltroUnidadNegocio].visualizar" class="col-md-3">
+									<div class="mb-3">
+										<label class="azul">Nº de Solicitud</label>
+										<input type="text" name="searchInputFilter" [(ngModel)]="searchInputFilter" style="color: black; font-size: 14px; width: 80%" class="form-control" id="searchInputFilter" placeholder="Ingrese Nº de Solicitud a Buscar" />
+									</div>
+								</div>
+								<div class="row">
+									<div *ngIf="controlsPermissions[pageControlPermission.FiltroEmpresa].visualizar" class="col-md-3">
+										<div class="mb-3">
+											<label class="azul">Empresa</label>
+											<ng-select [disabled]="!controlsPermissions[pageControlPermission.FiltroEmpresa].habilitar || searchInputFilter!==''" #inputSelectHacienda [(ngModel)]="dataFilterSolicitudes.empresa" name="empresa" placeholder="Seleccione">
+												<ng-option *ngFor="let data of dataEmpresa" [value]="data">{{ data }}</ng-option>
+											</ng-select>
+										</div>
+									</div>
+									<div *ngIf="controlsPermissions[pageControlPermission.FiltroUnidadNegocio].visualizar" class="col-md-3">
+										<div class="mb-3">
+											<label class="azul">Unidad de Negocio</label>
+											<ng-select [disabled]="!controlsPermissions[pageControlPermission.FiltroUnidadNegocio].habilitar || searchInputFilter!==''" #inputSelectProducto [(ngModel)]="dataFilterSolicitudes.unidadNegocio" name="unidadNegocio" placeholder="Seleccione">
+												<ng-option *ngFor="let data of dataUnidadesNegocio" [value]="data">{{ data }}</ng-option>
+											</ng-select>
+										</div>
+									</div>
+									<div [hidden]="!controlsPermissions[pageControlPermission.FiltroFechaDesde].visualizar" class="col-md-3">
+										<div class="mb-3">
+											<label class="azul">Fecha Creación Desde</label>
+											<div class="input-group">
+												<input #inputDateFechaDesde [disabled]="!controlsPermissions[pageControlPermission.FiltroFechaDesde].habilitar || searchInputFilter!==''" class="form-control" placeholder="yyyy-mm-dd" name="fechaDesde" [(ngModel)]="dataFilterSolicitudes.fechaDesde" ngbDatepicker [footerTemplate]="footerTemplateFechaDesde" #fechaDesde="ngbDatepicker" />
+												<button class="btn btn-outline-secondary bi bi-calendar3" (click)="fechaDesde.toggle()" type="button">
+													<i-feather class="feather-sm" name="calendar"></i-feather>
+												</button>
+											</div>
+										</div>
+									</div>
+									<div [hidden]="!controlsPermissions[pageControlPermission.FiltroFechaDesde].visualizar" class="col-md-3">
+										<div class="mb-3">
+											<label class="azul">Fecha Creación Hasta</label>
+											<div class="input-group">
+												<input #inputDateFechaHasta [disabled]="!controlsPermissions[pageControlPermission.FiltroFechaHasta].habilitar || searchInputFilter!==''" class="form-control" placeholder="yyyy-mm-dd" name="fechaHasta" [(ngModel)]="dataFilterSolicitudes.fechaHasta" ngbDatepicker [footerTemplate]="footerTemplateFechaHasta" #fechaHasta="ngbDatepicker" />
+												<button class="btn btn-outline-secondary bi bi-calendar3" (click)="fechaHasta.toggle()" type="button">
+													<i-feather class="feather-sm" name="calendar"></i-feather>
+												</button>
+											</div>
+										</div>
+									</div>
+									<div *ngIf="controlsPermissions[pageControlPermission.FiltroTipoSolicitud].visualizar" class="col-md-4">
+										<div class="mb-3">
+											<label class="azul">Tipo de Solicitud</label>
+											<ng-select #inputSelectLabor [disabled]="!controlsPermissions[pageControlPermission.FiltroTipoSolicitud].habilitar || searchInputFilter!==''" [(ngModel)]="dataFilterSolicitudes.idTipoSolicitud" name="idTipoSolicitud" placeholder="Seleccione">
+												<ng-option *ngFor="let data of dataTipoSolicitudes" [value]="data.id">{{ data.id }} - {{ data.descripcion }}</ng-option>
+											</ng-select>
+										</div>
+									</div>
 
-              <ng-template #footerTemplateFechaHasta>
-                <hr class="my-0" />
-                <button class="btn btn-primary btn-sm m-2 float-start" (click)="clearEndDate()">
-                  clear
-                </button>
-                <button class="btn btn-secondary btn-sm m-2 float-end" (click)="fechaHasta.close()">
-                  Close
-                </button>
-              </ng-template>
+									<div *ngIf="controlsPermissions[pageControlPermission.FiltroEstado].visualizar" class="col-md-3">
+										<div class="mb-3">
+											<label class="azul">Estado</label>
+											<ng-select #inputSelectTrabajador [disabled]="!controlsPermissions[pageControlPermission.FiltroEstado].habilitar || searchInputFilter!==''" [(ngModel)]="dataFilterSolicitudes.estado" name="id_trabajador" placeholder="Seleccione">
+												<ng-option *ngFor="let data of data_estado" [value]="data.codigo">{{ data.codigo }} - {{ data.descripcion }}</ng-option>
+											</ng-select>
+										</div>
+									</div>
 
-              <form>
-                <div class="row">
-                  <div class="col-md-4"></div>
-                  <div class="col-md-8">
-                    <div class="mb-3">
-                      <div class="text-end">
-                        <button type="button"
-                          *ngIf="controlsPermissions[pageControlPermission.ButtonAgregar].visualizar"
-                          (click)="mostrarModalCrearSolicitudes()" class="btn btn-info me-2">
-                          <i class="fas fa-plus"></i> Agregar
-                        </button>
-                        <button type="button"
-                          *ngIf="controlsPermissions[pageControlPermission.ButtonReasignar].visualizar"
-                          (click)="PageCrear()" class="btn btn-info me-2">
-                          <i class="fas fa-redo"></i> Reasignar
-                        </button>
-                        <button type="submit"
-                          *ngIf="false"
-                          [disabled]="dataTable.length === 0" class="btn btn-outline-info me-2">
-                          <i class="fas fa-file-excel"></i> Exportar
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </form>
-              <plantilla-c-component [fixedLastColumnOnTable]="true" overflowX="auto" tableWidth="250%" [dataFilterNivelesAprobacion]="dataFilterNivelesAprobacion"
-                [dataTipoMotivo]="dataTipoMotivo" [dataTipoSolicitudes]="dataTipoSolicitudes"
-                [dataNivelDireccion]="dataNivelDireccion" [dataTipoAccion]="dataTipoAccion"
-                [selected_empresa]="selected_empresa" [selected_producto]="selected_producto"
-                [selected_tipo_solicitud]="selected_tipo_solicitud" [selected_estado]="selected_estado"
-                [data_empresas]="data_empresas" [data_productos]="dataUnidadesNegocio" [data_estado]="data_estado"
-                [model]="model" *ngIf="hasFiltered" [columnsTable]="columnsTable" [originalDataTable]="dataTable"
-                [placeholderHeaderInputText]="'Buscar niveles de aprobacion...'" [contexto]="this" keyNameTable="id"
-                clickOnActionRow="onRowActionClicked" clickOnFilter="filterDataTable"
-                clickOnMostrarModalCrearSolicitudes="mostrarModalCrearSolicitudes"
-                clickOnToggleDisabled="toggleDisabled" clickOnPageCrear="pageCrear" [IdRowToClone]="IdRowToClone"
-                colIdToDisable="id" titleReport="NIVELES DE APROBACION" [codigoReport]="codigoReporte">
-              </plantilla-c-component>
-            </ng-template>
-          </li>
-        </ul>
+									<div class="col-md-5">
+										<div class="mb-3">
+											<div class="text-end">
+												<button #buttonSearch *ngIf="controlsPermissions[pageControlPermission.ButtonBuscar].visualizar" (click)="filterDataTable()" type="submit" class="btn btn-info me-2">
+													<i class="fas fa-filter"></i> Buscar
+												</button>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<ng-template #footerTemplateFechaDesde>
+								<hr class="my-0" />
+								<button class="btn btn-primary btn-sm m-2 float-start" (click)="clearStartDate()">clear</button>
+								<button class="btn btn-secondary btn-sm m-2 float-end" (click)="fechaDesde.close()">Close</button>
+							</ng-template>
 
-        <div [ngbNavOutlet]="nav" class="mt-2"></div>
-        <!-- <div class="bg-light p-3 rounded"></div> -->
-        <!--<div class="bg-light p-3 rounded">Active: {{ active }}</div>-->
-      </div>
-    </div>
-  </div>
+							<ng-template #footerTemplateFechaHasta>
+								<hr class="my-0" />
+								<button class="btn btn-primary btn-sm m-2 float-start" (click)="clearEndDate()">clear</button>
+								<button class="btn btn-secondary btn-sm m-2 float-end" (click)="fechaHasta.close()">Close</button>
+							</ng-template>
+
+							<form>
+								<div class="row">
+									<div class="col-md-4"></div>
+
+									<div class="col-md-8">
+										<div class="mb-3">
+											<div class="text-end">
+												<button type="button" *ngIf="controlsPermissions[pageControlPermission.ButtonAgregar].visualizar" (click)="mostrarModalCrearSolicitudes()" class="btn btn-info me-2">
+													<i class="fas fa-plus"></i> Agregar
+												</button>
+												<button type="button" *ngIf="controlsPermissions[pageControlPermission.ButtonReasignar].visualizar" (click)="PageCrear()" class="btn btn-info me-2">
+													<i class="fas fa-redo"></i> Reasignar
+												</button>
+												<button type="submit" *ngIf="false" [disabled]="dataTable.length === 0" class="btn btn-outline-info me-2">
+													<i class="fas fa-file-excel"></i> Exportar
+												</button>
+											</div>
+										</div>
+									</div>
+								</div>
+							</form>
+							<plantilla-c-component [fixedLastColumnOnTable]="true" overflowX="auto" tableWidth="250%" [dataFilterNivelesAprobacion]="dataFilterNivelesAprobacion" [dataTipoMotivo]="dataTipoMotivo" [dataTipoSolicitudes]="dataTipoSolicitudes" [dataNivelDireccion]="dataNivelDireccion" [dataTipoAccion]="dataTipoAccion" [selected_empresa]="selected_empresa" [selected_producto]="selected_producto" [selected_tipo_solicitud]="selected_tipo_solicitud" [selected_estado]="selected_estado" [data_empresas]="data_empresas" [data_productos]="dataUnidadesNegocio" [data_estado]="data_estado" [model]="model" *ngIf="hasFiltered" [columnsTable]="columnsTable" [originalDataTable]="dataTable" [placeholderHeaderInputText]="'Buscar niveles de aprobacion...'" [contexto]="this" keyNameTable="id" clickOnActionRow="onRowActionClicked" clickOnFilter="filterDataTable" clickOnMostrarModalCrearSolicitudes="mostrarModalCrearSolicitudes" clickOnToggleDisabled="toggleDisabled" clickOnPageCrear="pageCrear" [IdRowToClone]="IdRowToClone" colIdToDisable="id" titleReport="NIVELES DE APROBACION" [codigoReport]="codigoReporte">
+							</plantilla-c-component>
+						</ng-template>
+					</li>
+				</ul>
+
+				<div [ngbNavOutlet]="nav" class="mt-2"></div>
+			</div>
+		</div>
+	</div>
 </div>
 <!--Modal Crer Solicittud-->
 <ng-template #myModalSolicitudes let-modal>
-  <div class="row">
-    <div class="col-lg-12 content">
-      <div class="card">
-        <div>
-          <h2 class="card-body text-start">
-            <div class="row">
-              <div class="col-md-6">
-                <b style="
-                    color: rgb(227, 199, 22);
-                    font-size: xx-large;
-                    margin: 20px;
-                  ">Crear Solicitud</b>
-              </div>
+	<div class="row">
+		<div class="col-lg-12 content">
+			<div class="card">
+				<div>
+					<h2 class="card-body text-start">
+						<div class="row">
+							<div class="col-md-6">
+								<b style="color: rgb(227, 199, 22); font-size: xx-large; margin: 20px;">Crear Solicitud</b>
+							</div>
 
-              <div class="col-md-6 text-end">
-                <button style="margin: 10px; color: black" type="button" (click)="modal.dismiss('Cross click')"
-                  class="mr-10 fz-14 btn btn-outline-secondary btn-icon-end">
-                  Cancelar
-                </button>
+							<div class="col-md-6 text-end">
+								<button style="margin: 10px; color: black" type="button"(click)="modal.dismiss('Cross click')"class="mr-10 fz-14 btn btn-outline-secondary btn-icon-end">Cancelar</button>
 
-                <button type="button" class="mr-10 fz-14 btn btn-info btn-icon-end" (click)="CrearInstanciaSolicitud()"
-                  aria-label="Close" aria-label="Close"
-                  [disabled]="solicitud.idTipoSolicitud === null || (desactivarTipoMotivo && solicitud.idTipoMotivo === 0) || (desactivarTipoAccion && solicitud.idTipoAccion === 0)">
-                  <i class="fas fa-save"></i> Guardar
-                </button>
-              </div>
-            </div>
-            <div class="row" style="
-                padding-top: 20px;
-                display: flex;
-                justify-content: start;
-                margin: 10px;
-              ">
-              <div class="col-md-12">
-                <div class="input-group mb-3">
-                  <label class="input-group-text" for="tiposolicitud">Tipo Solicitud</label>
-                  <select id="tiposolicitud" name="tiposolicitud" class="form-select" style="font-size: 14px"
-                    [(ngModel)]="solicitud.idTipoSolicitud" (ngModelChange)="
-                      onChangeTipoSolicitud(solicitud.idTipoSolicitud)
-                    " required>
-                    <option value="" hidden>Selecccione</option>
-                    <option *ngFor="let baseDeDatos of dataTipoSolicitudesModal" [value]="baseDeDatos.id">
-                      {{ baseDeDatos.descripcion }}
-                    </option>
-                  </select>
-                </div>
-              </div>
-            </div>
-            <div class="row" style="
-                padding-top: 20px;
-                display: flex;
-                justify-content: start;
-                margin: 10px;
-              " *ngIf="desactivarTipoMotivo">
-              <div class="col-md-12">
-                <div class="input-group mb-3">
-                  <label class="input-group-text" for="tipomotivo">Tipo de Motivo</label>
-                  <select id="tipomotivo" name="tipomotivo" class="form-select" style="font-size: 14px"
-                    [(ngModel)]="solicitud.idTipoMotivo" (ngModelChange)="onChangeTipoMotivo(solicitud.idTipoMotivo)"
-                    required>
-                    <option value="" hidden>Selecccione</option>
-                    <option *ngFor="
-                        let baseDeDatos of dataTiposMotivosPorTipoSolicitud[
-                          tipoSolicitudSeleccionada
-                        ]
-                      " [value]="baseDeDatos.id">
-                      {{ baseDeDatos.tipoMotivo }}
-                    </option>
-                  </select>
-                </div>
-              </div>
-            </div>
-            <div class="row" style="
-                padding-top: 20px;
-                display: flex;
-                justify-content: start;
-                margin: 10px;
-              " *ngIf="desactivarTipoAccion">
-              <div class="col-md-12">
-                <div class="col-md-12">
-                  <div class="input-group mb-3">
-                    <label class="input-group-text" for="tipocumplimiento">Tipo de Acción</label>
-                    <select id="tipocumplimiento" name="tipocumplimiento" class="form-select" style="font-size: 14px"
-                      [(ngModel)]="solicitud.idTipoAccion" (ngModelChange)="onChangeTipoMotivo(solicitud.idTipoAccion)"
-                      required>
-                      <option value="" hidden>Selecccione</option>
-                      <option *ngFor="
-							let baseDeDatos of dataTiposAccionesPorTipoSolicitud[
-							tipoSolicitudSeleccionada
-							]
-						" [value]="baseDeDatos.id">
-                        {{ baseDeDatos.tipoAccion }}
-                      </option>
-                    </select>
-                  </div>
-                </div>
-              </div>
-            </div>
+								<button type="button" class="mr-10 fz-14 btn btn-info btn-icon-end" (click)="CrearInstanciaSolicitud()" aria-label="Close" aria-label="Close" [disabled]="solicitud.idTipoSolicitud === null || (desactivarTipoMotivo && solicitud.idTipoMotivo === 0) || (desactivarTipoAccion && solicitud.idTipoAccion === 0)">
+									<i class="fas fa-save"></i> Guardar
+								</button>
+							</div>
+						</div>
+						<div class="row" style="padding-top: 20px; display: flex; justify-content: start; margin: 10px;">
+							<div class="col-md-12">
+								<div class="input-group mb-3">
+									<label class="input-group-text" for="tiposolicitud">Tipo Solicitud</label>
+									<select id="tiposolicitud" name="tiposolicitud" class="form-select" style="font-size: 14px" [(ngModel)]="solicitud.idTipoSolicitud" (ngModelChange)="onChangeTipoSolicitud(solicitud.idTipoSolicitud)" required>
+										<option value="" hidden>Selecccione</option>
+										<option *ngFor="let baseDeDatos of dataTipoSolicitudesModal" [value]="baseDeDatos.id">{{ baseDeDatos.descripcion }}</option>
+									</select>
+								</div>
+							</div>
+						</div>
+						<div class="row" style="padding-top: 20px; display: flex; justify-content: start; margin: 10px;" *ngIf="desactivarTipoMotivo">
+							<div class="col-md-12">
+								<div class="input-group mb-3">
+									<label class="input-group-text" for="tipomotivo">Tipo de Motivo</label>
+									<select id="tipomotivo" name="tipomotivo" class="form-select" style="font-size: 14px" [(ngModel)]="solicitud.idTipoMotivo" (ngModelChange)="onChangeTipoMotivo(solicitud.idTipoMotivo)" required>
+										<option value="" hidden>Selecccione</option>
+										<option *ngFor="let baseDeDatos of dataTiposMotivosPorTipoSolicitud[tipoSolicitudSeleccionada]" [value]="baseDeDatos.id">{{ baseDeDatos.tipoMotivo }}</option>
+									</select>
+								</div>
+							</div>
+						</div>
+						<div class="row" style="padding-top: 20px; display: flex; justify-content: start; margin: 10px;" *ngIf="desactivarTipoAccion">
+							<div class="col-md-12">
+								<div class="col-md-12">
+									<div class="input-group mb-3">
+										<label class="input-group-text" for="tipocumplimiento">Tipo de Acción</label>
 
-            <div class="row" style="
-                padding-top: 20px;
-                display: flex;
-                justify-content: start;
-                margin: 10px;
-              " [hidden]="!submitted">
-              <div *ngIf="this.getCreatedId() === 'No se ha creado Id de Proceso'">
-                <p>Proceso no ha sido iniciado.</p>
-                <code>{{ this.getCreatedId() }}</code>
-                <br />
-                <p class="lead mt-3">
-                  Intente crear la solicitud Nuevamente........</p>
-              </div>
-              <div *ngIf="this.getCreatedId() !== 'No se ha creado Id de Proceso'">
-                <p>Proceso ha sido iniciado.</p>
-                <code>{{ this.getCreatedId() }}</code>
-                <br />
-                <p class="lead mt-3">
-                  Será redireccionado en un momento........
-                </p>
-              </div>
-            </div>
-          </h2>
-        </div>
-      </div>
-    </div>
-  </div>
+										<select id="tipocumplimiento" name="tipocumplimiento" class="form-select" style="font-size: 14px" [(ngModel)]="solicitud.idTipoAccion" (ngModelChange)="onChangeTipoMotivo(solicitud.idTipoAccion)" required>
+											<option value="" hidden>Selecccione</option>
+											<option *ngFor="let baseDeDatos of dataTiposAccionesPorTipoSolicitud[tipoSolicitudSeleccionada]" [value]="baseDeDatos.id">{{ baseDeDatos.tipoAccion }}</option>
+										</select>
+									</div>
+								</div>
+							</div>
+						</div>
 
+						<div class="row" style="padding-top: 20px; display: flex; justify-content: start; margin: 10px;" [hidden]="!submitted">
+							<div *ngIf="this.getCreatedId() === 'No se ha creado Id de Proceso'">
+								<p>Proceso no ha sido iniciado.</p>
+								<code>{{ this.getCreatedId() }}</code>
+								<br />
+								<p class="lead mt-3">
+									Intente crear la solicitud Nuevamente........
+								</p>
+							</div>
+							<div *ngIf="this.getCreatedId() !== 'No se ha creado Id de Proceso'">
+								<p>Proceso ha sido iniciado.</p>
+								<code>{{ this.getCreatedId() }}</code>
+								<br />
+								<p class="lead mt-3">
+									Será redireccionado en un momento........
+								</p>
+							</div>
+						</div>
+					</h2>
+				</div>
+			</div>
+		</div>
+	</div>
 </ng-template>
 <!--End Modal Crear Solicitud-->

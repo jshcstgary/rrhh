@@ -5,7 +5,7 @@ import { Router } from "@angular/router";
 import { NgSelectModule } from "@ng-select/ng-select";
 import { Session } from "../../interfaces/session.interface";
 // import { PermisoService } from "../../../../modules/util/services/permiso.service";
-import { Subject } from "rxjs";
+import { debounceTime, Subject } from "rxjs";
 // import { UtilService } from "../../../../modules/util/services/util.service";
 import { PageCodes } from "src/app/enums/codes.enum";
 import { LocalStorageKeys } from "src/app/enums/local-storage-keys.enum";
@@ -16,252 +16,257 @@ import Swal from "sweetalert2";
 import { LoginServices } from "../../services/login.services";
 import { UtilService } from "src/app/services/util/util.service";
 @Component({
-  selector: "app-login",
-  standalone: true,
-  imports: [CommonModule, NgSelectModule, FormsModule],
-  templateUrl: "./login.component.html",
-  styleUrls: ["./login.component.scss"],
+	selector: "app-login",
+	standalone: true,
+	imports: [CommonModule, NgSelectModule, FormsModule],
+	templateUrl: "./login.component.html",
+	styleUrls: ["./login.component.scss"],
 })
 export class LoginComponent {
-  public user: string = "";
-  public password: string = "";
+	public user: string = "";
+	public password: string = "";
 
-  public isLoading: boolean = false;
-  public perfilCodigo: string="";
-  public perfilCodigoSeleccionado: PerfilUsuario;
+	public isLoading: boolean = false;
+	public perfilCodigo: string = "";
+	public perfilCodigoSeleccionado: PerfilUsuario;
 
-  public isLoadingPerfil: boolean = false;
-  public perfilUsuario: PerfilUsuarioResponse;
-  public perfilUsuarioError: PerfilUsuarioResponse = [{
-    scg_per_codigo: "",
-    scg_per_descripcion: "",
-    message: "",
-  },{
-    scg_per_codigo: "",
-    scg_per_descripcion: "",
-    message: "",
-  },{
-    scg_per_codigo: "",
-    scg_per_descripcion: "",
-    message: "",
-  },{
-    scg_per_codigo: "",
-    scg_per_descripcion: "",
-    message: "",
-  }];
-  private perfilUrl: string = environment.loginES;
+	public isLoadingPerfil: boolean = false;
+	public perfilUsuario: PerfilUsuarioResponse;
+	public perfilUsuarioError: PerfilUsuarioResponse = [{
+		scg_per_codigo: "",
+		scg_per_descripcion: "",
+		message: "",
+	}, {
+		scg_per_codigo: "",
+		scg_per_descripcion: "",
+		message: "",
+	}, {
+		scg_per_codigo: "",
+		scg_per_descripcion: "",
+		message: "",
+	}, {
+		scg_per_codigo: "",
+		scg_per_descripcion: "",
+		message: "",
+	}];
+	private perfilUrl: string = environment.loginES;
 
+	// private searchSubject: Subject<string> = new Subject();
 
-  Session: Session;
-  private unsubscribeService = new Subject<void>();
-  constructor(
-    private router: Router,
-    private starterService: StarterService,
-    private loginService: LoginServices,
-    // private permisosService: PermisoService,
+	Session: Session;
+	private unsubscribeService = new Subject<void>();
+	constructor(
+		private router: Router,
+		private starterService: StarterService,
+		private loginService: LoginServices,
+		// private permisosService: PermisoService,
 		private utilService: UtilService
-  ) {
-    this.Session = {
-      Perfil: "",
-      IdEmpresa: "",
-      Localidad: "",
-      Token: "",
-      Usuario: "",
-      Perfiles: [],
-      // Programas: [],
-      Perfile: [],
-    };
-  }
+	) {
+		this.Session = {
+			Perfil: "",
+			IdEmpresa: "",
+			Localidad: "",
+			Token: "",
+			Usuario: "",
+			Perfiles: [],
+			// Programas: [],
+			Perfile: [],
+		};
 
-  ngOnDestroy(): void {
-    this.unsubscribeService.next();
-    this.unsubscribeService.complete();
-  }
+		// this.searchSubject
+		// 	.pipe(
+		// 		debounceTime(5000) // 300 ms de retraso
+		// 	)
+		// 	.subscribe(value => {
+		// 		// this.result = value;
+		// 		// console.log('Valor después de debounce:', value);
 
-  public getPerfilesUsuario() {
-    if (this.user === "") {
-      Swal.fire({
-        text: "Ingrese el Usuario",
-        icon: "info",
-        confirmButtonColor: "rgb(227, 199, 22)",
-        confirmButtonText: "Ok",
-      });
+		// 		this.getPerfilesUsuario();
+		// 	});
+	}
 
-      return;
-    }
+	ngOnDestroy(): void {
+		this.unsubscribeService.next();
+		this.unsubscribeService.complete();
+	}
 
-    this.isLoading = true;
+	public getPerfilesUsuario() {
+		if (this.user === "") {
+			Swal.fire({
+				text: "Ingrese el Usuario",
+				icon: "info",
+				confirmButtonColor: "rgb(227, 199, 22)",
+				confirmButtonText: "Ok",
+			});
 
-    const getPerfileRequest: LoginRequest = {
-      codigoAplicacion: appCode,
-      codigoPerfil: "",
-      codigoRecurso: "PWFCAMUMET",
-      usuario: this.user,
-      password: btoa(this.password),
-      isAutenticacionLocal: false,
-    };
-    this.loginService.getPerfilesUsuario(getPerfileRequest).subscribe({
-      next: (response) => {
-        this.perfilUsuario=response;
-        if (this.perfilUsuario.length === 0) {
-          Swal.fire({
-            text: "Usuario no encontrado",
-            icon: "error",
-            confirmButtonColor: "rgb(227, 199, 22)",
-            confirmButtonText: "Ok",
-          });
+			return;
+		}
 
-          localStorage.removeItem(LocalStorageKeys.IdLogin);
-          localStorage.removeItem(LocalStorageKeys.IdUsuario);
-          localStorage.removeItem(LocalStorageKeys.Permisos);
-          localStorage.removeItem(LocalStorageKeys.Reloaded);
-          localStorage.removeItem(LocalStorageKeys.Perfiles);
-          localStorage.removeItem(LocalStorageKeys.Perfil);
+		this.isLoading = true;
 
-          this.isLoading = false;
-          return;
-        }
-        localStorage.setItem(LocalStorageKeys.Perfiles, JSON.stringify(this.perfilUsuario));
-        this.isLoading = false;
-        this.isLoadingPerfil=true;
+		const getPerfileRequest: LoginRequest = {
+			codigoAplicacion: appCode,
+			codigoPerfil: "",
+			codigoRecurso: "PWFCAMUMET",
+			usuario: this.user,
+			password: btoa(this.password),
+			isAutenticacionLocal: false,
+		};
+		this.loginService.getPerfilesUsuario(getPerfileRequest).subscribe({
+			next: (response) => {
+				this.perfilUsuario = response;
+				if (this.perfilUsuario.length === 0) {
+					Swal.fire({
+						text: "Usuario no encontrado",
+						icon: "error",
+						confirmButtonColor: "rgb(227, 199, 22)",
+						confirmButtonText: "Ok",
+					});
 
-      },
-      error: (err) => {
-        if(this.perfilUrl.toUpperCase().includes("IGUANA")){
-        this.perfilUsuarioError[0].scg_per_codigo="0001";
-        this.perfilUsuarioError[0].scg_per_descripcion="Admin";
-        this.perfilUsuarioError[0].message="Exito";
+					localStorage.removeItem(LocalStorageKeys.IdLogin);
+					localStorage.removeItem(LocalStorageKeys.IdUsuario);
+					localStorage.removeItem(LocalStorageKeys.Permisos);
+					localStorage.removeItem(LocalStorageKeys.Reloaded);
+					localStorage.removeItem(LocalStorageKeys.Perfiles);
+					localStorage.removeItem(LocalStorageKeys.Perfil);
 
-        this.perfilUsuarioError[1].scg_per_codigo="0002";
-        this.perfilUsuarioError[1].scg_per_descripcion="Iniciador";
-        this.perfilUsuarioError[1].message="Exito";
+					this.isLoading = false;
+					return;
+				}
+				localStorage.setItem(LocalStorageKeys.Perfiles, JSON.stringify(this.perfilUsuario));
+				this.isLoading = false;
+				this.isLoadingPerfil = true;
 
-        this.perfilUsuarioError[2].scg_per_codigo="0003";
-        this.perfilUsuarioError[2].scg_per_descripcion="Aprobador";
-        this.perfilUsuarioError[2].message="Exito";
+			},
+			error: (err) => {
+				if (this.perfilUrl.toUpperCase().includes("IGUANA")) {
+					this.perfilUsuarioError[0].scg_per_codigo = "0001";
+					this.perfilUsuarioError[0].scg_per_descripcion = "Admin";
+					this.perfilUsuarioError[0].message = "Exito";
 
-        this.perfilUsuarioError[3].scg_per_codigo="0004";
-        this.perfilUsuarioError[3].scg_per_descripcion="Aprobador Fijo";
-        this.perfilUsuarioError[3].message="Exito";
+					this.perfilUsuarioError[1].scg_per_codigo = "0002";
+					this.perfilUsuarioError[1].scg_per_descripcion = "Iniciador";
+					this.perfilUsuarioError[1].message = "Exito";
 
-        this.perfilUsuario=this.perfilUsuarioError;
-        console.log(this.perfilUsuario);
-        localStorage.setItem(LocalStorageKeys.Perfiles, JSON.stringify(this.perfilUsuario));
+					this.perfilUsuarioError[2].scg_per_codigo = "0003";
+					this.perfilUsuarioError[2].scg_per_descripcion = "Aprobador";
+					this.perfilUsuarioError[2].message = "Exito";
 
-        this.isLoadingPerfil=true;
-       }else{
-        Swal.fire({
-        text: "Usuario no es valido",
-        icon: "error",
-        confirmButtonColor: "rgb(227, 199, 22)",
-        confirmButtonText: "Ok",
-        });
-        localStorage.removeItem(LocalStorageKeys.Perfiles);
-        localStorage.removeItem(LocalStorageKeys.Perfil);
-      }
-      console.log(this.perfilUsuario);
-        console.error(err);
+					this.perfilUsuarioError[3].scg_per_codigo = "0004";
+					this.perfilUsuarioError[3].scg_per_descripcion = "Aprobador Fijo";
+					this.perfilUsuarioError[3].message = "Exito";
 
-        localStorage.removeItem(LocalStorageKeys.IdLogin);
-        localStorage.removeItem(LocalStorageKeys.IdUsuario);
-        localStorage.removeItem(LocalStorageKeys.Permisos);
-        localStorage.removeItem(LocalStorageKeys.Reloaded);
+					this.perfilUsuario = this.perfilUsuarioError;
+					console.log(this.perfilUsuario);
+					localStorage.setItem(LocalStorageKeys.Perfiles, JSON.stringify(this.perfilUsuario));
 
-        this.isLoading = false;
+					this.isLoadingPerfil = true;
+				} else {
+					Swal.fire({
+						text: "Usuario no es valido",
+						icon: "error",
+						confirmButtonColor: "rgb(227, 199, 22)",
+						confirmButtonText: "Ok",
+					});
+					localStorage.removeItem(LocalStorageKeys.Perfiles);
+					localStorage.removeItem(LocalStorageKeys.Perfil);
+				}
+				console.log(this.perfilUsuario);
+				console.error(err);
 
-       /* Swal.fire({
-          text: "No se pudo obtener el usuario",
-          icon: "error",
-          confirmButtonColor: "rgb(227, 199, 22)",
-          confirmButtonText: "Ok",
-        });*/
-      }
-    });
-  }
+				localStorage.removeItem(LocalStorageKeys.IdLogin);
+				localStorage.removeItem(LocalStorageKeys.IdUsuario);
+				localStorage.removeItem(LocalStorageKeys.Permisos);
+				localStorage.removeItem(LocalStorageKeys.Reloaded);
 
-  public signIn() {
-    if (this.user === "" || this.password === "") {
-      Swal.fire({
-        text: "Ingrese las credenciales",
-        icon: "info",
-        confirmButtonColor: "rgb(227, 199, 22)",
-        confirmButtonText: "Ok",
-      });
+				this.isLoading = false;
+			}
+		});
+	}
 
-      return;
-    }
+	public signIn() {
+		if (this.user === "" || this.password === "") {
+			Swal.fire({
+				text: "Ingrese las credenciales",
+				icon: "info",
+				confirmButtonColor: "rgb(227, 199, 22)",
+				confirmButtonText: "Ok",
+			});
 
-    this.isLoading = true;
-    if (this.perfilCodigo === null||this.perfilCodigo===undefined||this.perfilCodigo==="") {
-      Swal.fire({
-        text: "Seleccione un Perfil de Usuario",
-        icon: "info",
-        confirmButtonColor: "rgb(227, 199, 22)",
-        confirmButtonText: "Ok",
-      });
-      this.isLoading=false;
-      return;
-    }
-    const loginRequest: LoginRequest = {
-      codigoAplicacion: appCode,
-      codigoPerfil: this.perfilCodigo,
-      codigoRecurso: "PWFCAMUMET",
-      usuario: this.user,
-      password: btoa(this.password),
-      isAutenticacionLocal: true,
-    };
+			return;
+		}
 
-    this.perfilCodigoSeleccionado=JSON.parse(localStorage.getItem(LocalStorageKeys.Perfiles)).find(data => data.scg_per_codigo === this.perfilCodigo);
-    localStorage.setItem(LocalStorageKeys.Perfil, this.perfilCodigoSeleccionado.scg_per_descripcion);
-    this.loginService.login(loginRequest).subscribe({
-      next: ({ codigo, nombres, apellidos, email, vistas }: Perfil) => {
-        if (vistas.length === 0 || nombres === "" || apellidos === "" || email == "" || codigo === "") {
-          Swal.fire({
-            text: "Usuario o Contraseña Invalida",
-            icon: "error",
-            confirmButtonColor: "rgb(227, 199, 22)",
-            confirmButtonText: "Ok",
-          });
+		this.isLoading = true;
+		if (this.perfilCodigo === null || this.perfilCodigo === undefined || this.perfilCodigo === "") {
+			Swal.fire({
+				text: "Seleccione un Perfil de Usuario",
+				icon: "info",
+				confirmButtonColor: "rgb(227, 199, 22)",
+				confirmButtonText: "Ok",
+			});
+			this.isLoading = false;
+			return;
+		}
+		const loginRequest: LoginRequest = {
+			codigoAplicacion: appCode,
+			codigoPerfil: this.perfilCodigo,
+			codigoRecurso: "PWFCAMUMET",
+			usuario: this.user,
+			password: btoa(this.password),
+			isAutenticacionLocal: true,
+		};
 
-          localStorage.removeItem(LocalStorageKeys.IdLogin);
-          localStorage.removeItem(LocalStorageKeys.IdUsuario);
-          localStorage.removeItem(LocalStorageKeys.Permisos);
-          localStorage.removeItem(LocalStorageKeys.Reloaded);
-          localStorage.removeItem(LocalStorageKeys.Perfil);
-          localStorage.removeItem(LocalStorageKeys.Perfiles)
+		this.perfilCodigoSeleccionado = JSON.parse(localStorage.getItem(LocalStorageKeys.Perfiles)).find(data => data.scg_per_codigo === this.perfilCodigo);
+		localStorage.setItem(LocalStorageKeys.Perfil, this.perfilCodigoSeleccionado.scg_per_descripcion);
+		this.loginService.login(loginRequest).subscribe({
+			next: ({ codigo, nombres, apellidos, email, vistas }: Perfil) => {
+				if (vistas.length === 0 || nombres === "" || apellidos === "" || email == "" || codigo === "") {
+					Swal.fire({
+						text: "Usuario o Contraseña Invalida",
+						icon: "error",
+						confirmButtonColor: "rgb(227, 199, 22)",
+						confirmButtonText: "Ok",
+					});
 
-          this.isLoading = false;
+					localStorage.removeItem(LocalStorageKeys.IdLogin);
+					localStorage.removeItem(LocalStorageKeys.IdUsuario);
+					localStorage.removeItem(LocalStorageKeys.Permisos);
+					localStorage.removeItem(LocalStorageKeys.Reloaded);
+					localStorage.removeItem(LocalStorageKeys.Perfil);
+					localStorage.removeItem(LocalStorageKeys.Perfiles)
 
-          return;
-        }
+					this.isLoading = false;
 
-        localStorage.setItem(LocalStorageKeys.IdLogin, codigo);
-        localStorage.setItem(LocalStorageKeys.IdUsuario, email);
-        localStorage.setItem(LocalStorageKeys.Permisos, JSON.stringify(vistas));
+					return;
+				}
 
-        this.isLoading = false;
+				localStorage.setItem(LocalStorageKeys.IdLogin, codigo);
+				localStorage.setItem(LocalStorageKeys.IdUsuario, email);
+				localStorage.setItem(LocalStorageKeys.Permisos, JSON.stringify(vistas));
 
-        const isTasksEnabled: boolean = vistas.some(vista => vista.codigo === PageCodes.Tareas);
+				this.isLoading = false;
 
-        this.router.navigate(["/solicitudes/consulta-solicitudes"]);
-      },
-      error: (err) => {
-        console.error(err);
+				const isTasksEnabled: boolean = vistas.some(vista => vista.codigo === PageCodes.Tareas);
 
-        localStorage.removeItem(LocalStorageKeys.IdLogin);
-        localStorage.removeItem(LocalStorageKeys.IdUsuario);
-        localStorage.removeItem(LocalStorageKeys.Permisos);
-        localStorage.removeItem(LocalStorageKeys.Reloaded);
+				this.router.navigate(["/solicitudes/consulta-solicitudes"]);
+			},
+			error: (err) => {
+				console.error(err);
 
-        this.isLoading = false;
+				localStorage.removeItem(LocalStorageKeys.IdLogin);
+				localStorage.removeItem(LocalStorageKeys.IdUsuario);
+				localStorage.removeItem(LocalStorageKeys.Permisos);
+				localStorage.removeItem(LocalStorageKeys.Reloaded);
 
-        Swal.fire({
-          text: "No se pudo obtener el usuario",
-          icon: "error",
-          confirmButtonColor: "rgb(227, 199, 22)",
-          confirmButtonText: "Ok",
-        });
-      }
-    });
-  }
+				this.isLoading = false;
+
+				Swal.fire({
+					text: "No se pudo obtener el usuario",
+					icon: "error",
+					confirmButtonColor: "rgb(227, 199, 22)",
+					confirmButtonText: "Ok",
+				});
+			}
+		});
+	}
 }

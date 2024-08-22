@@ -11,6 +11,7 @@
 								<div class="form-group">
 									<label for="usuario" class="control-label col-form-label azul">Usuario</label>
 									<input required (blur)="getPerfilesUsuario()" type="text" [(ngModel)]="user" class="form-control" id="usuario" />
+									<!-- <input required type="text" [(ngModel)]="user" class="form-control" id="usuario" (ngModelChange)="getPerfilesUsuario()" /> -->
 								</div>
 							</div>
 						</div>
@@ -19,8 +20,7 @@
 								<div class="form-group">
 									<label for="contrasena" class="control-label col-form-label azul">Contraseña</label>
 									<!-- [(ngModel)]="Session.Usuario" -->
-									<input required type="password" class="form-control"
-										[(ngModel)]="password" id="contrasena" />
+									<input required type="password" class="form-control" [(ngModel)]="password" id="contrasena" />
 								</div>
 							</div>
 						</div>

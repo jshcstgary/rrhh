@@ -914,6 +914,7 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 		//this.ObtenerServicioEstado();
 
 		this.utilService.openLoadingSpinner("Cargando información, espere por favor...");
+
 		this.mantenimientoService.getCatalogo("RBPEST").subscribe({
 			next: (response) => {
 				this.data_estado = response.itemCatalogoTypes.map((r) => ({
@@ -936,7 +937,7 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 							// Combinar las solicitudes y los detalles de la solicitud
 							const data = solicitudes.solicitudType.map((solicitud) => {
 								const detalles = detallesSolicitud.detalleSolicitudType.find((detalle) => detalle.idSolicitud === solicitud.idSolicitud);
-								solicitud.fechaCreacion = new DatePipe('en-CO').transform(solicitud.fechaCreacion, 'dd/MM/yyyy');;
+								solicitud.fechaCreacion = new DatePipe('en-CO').transform(solicitud.fechaCreacion, 'dd/MM/yyyy HH:mm:ss');
 
 								return {
 									...solicitud,
