@@ -18,6 +18,7 @@ export class CrearNivelesAprobacionComponent implements OnInit {
 	public dataTipoMotivo: any[] = [];
 	public dataAccion: any[] = [];
 	public dataRuta: any[] = [];
+	public dataRutaIndex: any[] = [];
 	public dataTipoRuta: any[] = [];
 	public dataNivelDireccion: any[] = [];
 	public dataNivelAprobacion: any[] = [];
@@ -43,6 +44,7 @@ export class CrearNivelesAprobacionComponent implements OnInit {
 	public idNivelesAprobacionRuta: {
 		[key: string]: string;
 	} = {};
+	public idNivelesAprobacionRuta2: any[]=[];
 	// public nivelesAprobacion = {
 	//   nivelAprobacion1: {
 	//     idNivelAprobacionRuta: "",
@@ -157,9 +159,12 @@ export class CrearNivelesAprobacionComponent implements OnInit {
 							this.dataRuta.push(...response);
 
 							this.idNivelesAprobacionRuta = {};
+							this.idNivelesAprobacionRuta2 = [];
 
-							this.dataRuta.forEach(data => {
+							this.dataRuta.forEach((data, index) => {
+								data.indice=index;
 								this.idNivelesAprobacionRuta[data.id] = "";
+								this.idNivelesAprobacionRuta2.push(data);
 							});
 						},
 						error: (error: HttpErrorResponse) => {
@@ -359,7 +364,6 @@ export class CrearNivelesAprobacionComponent implements OnInit {
 	}
 
 	public validateData(): boolean {
-		console.log(this.modelHead.idTipoSolicitud);
 		const tipoSolicitud = this.dataTipoSolicitudes.find(data => data.id === this.modelHead.idTipoSolicitud);
 
 		if (tipoSolicitud === undefined) {
@@ -387,22 +391,20 @@ export class CrearNivelesAprobacionComponent implements OnInit {
 	}
 
 	procesarNivelAprobacion() {
-				const nivelesAprobacion = Object.entries(this.idNivelesAprobacionRuta)
-			.filter(([_, value]) => value !== "")
+		const nivelesAprobacion = Object.entries(this.idNivelesAprobacionRuta)
+			//.filter(([_, value]) => value !== "")
 			.map(([key, value]) => {
 				let modelo: DatosNivelesAprobacion = new DatosNivelesAprobacion();
-
 				modelo = {
 					...modelo,
 					...this.modelHead,
 					idRuta: parseInt(key),
+					tipoMotivo: this.idNivelesAprobacionRuta2.filter((x) => x.id===parseInt(key))[0].indice.toString(),
 					idNivelAprobacionRuta: value,
 					estado: "A"
 				};
-
 				return modelo;
 			});
-
 		this.serviceNivelesAprobacion.guardarNivelesAprobacion(nivelesAprobacion).subscribe({
 			next: () => {
 				this.utilService.closeLoadingSpinner();
