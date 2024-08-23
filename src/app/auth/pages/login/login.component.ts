@@ -233,7 +233,7 @@ export class LoginComponent {
 					localStorage.removeItem(LocalStorageKeys.Permisos);
 					localStorage.removeItem(LocalStorageKeys.Reloaded);
 					localStorage.removeItem(LocalStorageKeys.Perfil);
-					localStorage.removeItem(LocalStorageKeys.Perfiles)
+					localStorage.removeItem(LocalStorageKeys.Perfiles);
 
 					this.isLoading = false;
 
@@ -257,6 +257,8 @@ export class LoginComponent {
 				localStorage.removeItem(LocalStorageKeys.IdUsuario);
 				localStorage.removeItem(LocalStorageKeys.Permisos);
 				localStorage.removeItem(LocalStorageKeys.Reloaded);
+        localStorage.removeItem(LocalStorageKeys.Perfil);
+				localStorage.removeItem(LocalStorageKeys.Perfiles);
 
 				this.isLoading = false;
 
