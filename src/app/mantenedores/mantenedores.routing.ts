@@ -8,7 +8,6 @@ import { CrearNivelesAprobacionComponent } from "./crear-niveles-aprobacion/crea
 import { EditarAprobadorFijoComponent } from "./editar-aprobador-fijo/editar-aprobador-fijo.component";
 import { EstadosComponent } from "./estados/estados.component";
 import { NivelesAprobacionComponent } from "./niveles-aprobacion/niveles-aprobacion.component";
-import { ReasignarTareasUsuariosComponent } from "./reasignar-tareas-usuarios/reasignar-tareas-usuarios.component";
 import { RutaComponent } from "./ruta/ruta.component";
 import { TipoAccionComponent } from "./tipo_accion/tipo-accion.component";
 import { TipoMotivoComponent } from "./tipo_motivo/tipo-motivo.component";
@@ -259,24 +258,7 @@ export const MantenedoresRoutes: Routes = [
 						},
 					],
 				},
-			},
-			{
-				path: "reasignar-tareas-usuarios",
-				canActivate: [routeAccessGuard],
-				component: ReasignarTareasUsuariosComponent,
-				data: {
-					code: PageCodes.AprobadorFijo,
-					title: "Reasignar Usuarios",
-					urls: [
-						{
-							title: "Mantenimiento"
-						},
-						{
-							title: "Reasignar Usuarios"
-						}
-					],
-				},
-			},
+			}
 		],
 	},
 ];

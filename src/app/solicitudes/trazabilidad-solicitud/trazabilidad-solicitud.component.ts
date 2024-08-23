@@ -13,11 +13,11 @@ import { SolicitudesService } from '../registrar-solicitud/solicitudes.service';
 export class TrazabilidadSolicitudComponent {
 	public solicitud = new Solicitud();
 
-	public keySelected: string;
-
 	public dataDetalleAprobadorSolicitud = [];
 
 	private idSolicitudParam: string = "";
+
+	public indexToShow: number = -1;
 
 	constructor(private route: ActivatedRoute, private solicitudes: SolicitudesService, private utilService: UtilService) {
 		this.route.paramMap.subscribe((params) => {
@@ -30,10 +30,13 @@ export class TrazabilidadSolicitudComponent {
 
 		try {
 			const solicitudResponse = await lastValueFrom(this.solicitudes.getSolicitudById(this.idSolicitudParam));
+
 			this.solicitud = solicitudResponse
 
 			if (this.solicitud !== null) {
 				const nivelesAprobacionResponse = await lastValueFrom(this.solicitudes.getDetalleAprobadoresSolicitudesById(this.solicitud.idSolicitud));
+
+				this.indexToShow = nivelesAprobacionResponse.detalleAprobadorSolicitud.findIndex(({ estadoAprobacion, codigoPosicionAprobador }) => !estadoAprobacion.toUpperCase().includes("APROBA") && !estadoAprobacion.toUpperCase().includes("CREADO") && codigoPosicionAprobador !== "");
 
 				this.dataDetalleAprobadorSolicitud = nivelesAprobacionResponse.detalleAprobadorSolicitud;
 			}
@@ -45,19 +48,4 @@ export class TrazabilidadSolicitudComponent {
 			this.utilService.modalResponse(error.error, "error");
 		}
 	}
-
-	// private getSolicitudById(id: any): void {
-	// 	this.solicitudes.getSolicitudById(id).subscribe({
-	// 		next: (response: any) => {
-	// 			this.solicitud = response;
-
-	// 			this.utilService.closeLoadingSpinner();
-	// 		},
-	// 		error: (error: HttpErrorResponse) => {
-	// 			this.utilService.modalResponse(error.error, "error");
-	// 		},
-	// 	});
-	// }
-
-
 }

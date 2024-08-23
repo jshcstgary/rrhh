@@ -16,224 +16,244 @@ import { RegistrarComentarioSalidaRRHHComponent } from "./registrar-comentario-s
 import { RegistrarFamiliaresComponent } from "./registrar-familiares/registrar-familiares.component";
 import { ReingresoPersonalComponent } from "./reingreso-personal/reingreso-personal.component";
 import { TrazabilidadSolicitudComponent } from "./trazabilidad-solicitud/trazabilidad-solicitud.component";
+import { routeAccessGuard } from "../guards/route-access.guard";
+import { ReasignarTareasUsuariosComponent } from "../mantenedores/reasignar-tareas-usuarios/reasignar-tareas-usuarios.component";
+import { PageCodes } from "../enums/codes.enum";
 
 export const SolicitudesRoutes: Routes = [
-  {
-    path: "",
-    children: [
-      {
-        path: "consulta-solicitudes",
-        component: ConsultaSolicitudesComponent,
-        data: {
-          code: "wf_consulta_solicitudes",
-          title: "Solicitudes",
-          urls: [
-            {
-              title: "Solicitudes"
-            },
-            {
-              title: "Consulta Solicitudes"
-            }
-          ],
-        },
-      },
-      {
-        path: "registrar-solicitud/:id/:idSolicitud",
-        component: RegistrarSolicitudComponent,
-        data: {
-          title: "Registrar Solicitud",
-          code: "wf_registrar_solicitudes",
-          urls: [
-            {
-              title: "Solicitudes"
-            },
-            {
-              title: "Registrar Solicitud"
-            }
-          ],
-        },
-      },
-      {
-        path: "detalle-solicitud/:id",
-        component: DetalleSolicitudComponent,
-        data: {
-          title: "Solicitud",
-          code: "wf_registrar_solicitudes",
-          urls: [
-            {
-              title: "Solicitudes"
-            },
-            {
-              title: "Solicitud"
-            }
-          ],
-        },
-      },
-      {
-        path: "revisar-solicitud/:id/:idSolicitud",
-        component: RevisarSolicitudComponent,
-        data: {
-          title: "Revisión de Solicitud",
-          urls: [
-            {
-              title: "Solicitudes"
-            },
-            {
-              title: "Revisión de Solicitud"
-            }
-          ],
-        },
-      },
-      {
-        path: "registrar-familiares/:id/:idSolicitud",
-        component: RegistrarFamiliaresComponent,
-        data: {
-          title: "Registrar familiar",
-          urls: [
-            {
-              title: "Solicitudes"
-            },
-            {
-              title: "Contratación de Familiares"
-            }
-          ],
-        },
-      },
-      {
-        path: "reingreso-personal/:id/:idSolicitud",
-        component: ReingresoPersonalComponent,
-        data: {
-          title: "Reingreso de personal",
-          urls: [
-            {
-              title: "Solicitudes"
-            },
-            {
-              title: "Reingreso de personal"
-            }
-          ],
-        },
-      },
-      {
-        path: "reingreso-personal/registro-comentarios/:id/:idSolicitud",
-        component: RegistrarComentarioSalidaJefeComponent,
-        data: {
-          title: "Registro de Comentarios",
-          urls: [
-            {
-              title: "Solicitudes"
-            },
-            {
-              title: "Registro de Comentarios"
-            }
-          ],
-        },
-      },
-      {
-        path: "reingreso-personal/registro-comentarios-rrhh/:id/:idSolicitud",
-        component: RegistrarComentarioSalidaRRHHComponent,
-        data: {
-          title: "Registro de Comentarios h18",
-          urls: [
-            {
-              title: "Solicitudes"
-            },
-            {
-              title: "Registro de Comentarios"
-            }
-          ],
-        },
-      },
-      {
-        path: "reingreso-personal/registrar-comentarios-solicitante/:id/:idSolicitud",
-        component: RegistrarComentarioReingresoComponent,
-        data: {
-          title: "Registro de Comentarios h19",
-          urls: [
-            {
-              title: "Solicitudes"
-            },
-            {
-              title: "Registro de Comentarios H19"
-            }
-          ],
-        },
-      },
-      {
-        path: "registrar-candidato/:id/:idSolicitud",
-        component: RegistrarCandidatoComponent,
-        data: {
-          title: "Selección de Candidato",
-          urls: [
-            {
-              title: "Solicitudes"
-            },
-            {
-              title: "Selección de Candidato"
-            }
-          ],
-        },
-      },
-      {
-        path: 'accion-personal/registrar-solicitud/:id/:idSolicitud',
-        component: RegistrarAccionPersonalComponent,
-        data: {
-          title: "Accion de Personal",
-          urls: [
-            {
-              title: 'Accion',
-            },
-            {
-              title: 'Accion de Personal'
-            }
-          ]
-        }
-      },
-      {
-        path: 'accion-personal/completar-solicitud/:id/:idSolicitud',
-        component: CompletarAccionPersonalComponent,
-        data: {
-          title: "Completar solicitud",
-          urls: [
-            {
-              title: 'Accion',
-            },
-            {
-              title: 'Accion de Personal'
-            }
-          ]
-        }
-      },
-      {
-        path: "trazabilidad/:idSolicitud",
-        component: TrazabilidadSolicitudComponent,
-        data: {
-          title: "Trazabilidad de la Solicitud",
-          urls: [
-            {
-              title: "Solicitudes"
-            },
-            {
-              title: "Trazabilidad de la Solicitud"
-            }
-          ],
-        },
-      },
-      {
-        path: "completa-solicitud/:id/:idSolicitud",
-        component: CompletaSolicitudComponent,
-        data: {
-          title: "Completar Solicitud",
-          urls: [
-            {
-              title: "Solicitudes"
-            },
-            {
-              title: "Completar Solicitud"
-            }
-          ],
-        },
-      },
-    ],
-  },
+	{
+		path: "",
+		children: [
+			{
+				path: "consulta-solicitudes",
+				component: ConsultaSolicitudesComponent,
+				data: {
+					code: "wf_consulta_solicitudes",
+					title: "Solicitudes",
+					urls: [
+						{
+							title: "Solicitudes"
+						},
+						{
+							title: "Consulta Solicitudes"
+						}
+					],
+				},
+			},
+			{
+				path: "registrar-solicitud/:id/:idSolicitud",
+				component: RegistrarSolicitudComponent,
+				data: {
+					title: "Registrar Solicitud",
+					code: "wf_registrar_solicitudes",
+					urls: [
+						{
+							title: "Solicitudes"
+						},
+						{
+							title: "Registrar Solicitud"
+						}
+					],
+				},
+			},
+			{
+				path: "detalle-solicitud/:id",
+				component: DetalleSolicitudComponent,
+				data: {
+					title: "Solicitud",
+					code: "wf_registrar_solicitudes",
+					urls: [
+						{
+							title: "Solicitudes"
+						},
+						{
+							title: "Solicitud"
+						}
+					],
+				},
+			},
+			{
+				path: "revisar-solicitud/:id/:idSolicitud",
+				component: RevisarSolicitudComponent,
+				data: {
+					title: "Revisión de Solicitud",
+					urls: [
+						{
+							title: "Solicitudes"
+						},
+						{
+							title: "Revisión de Solicitud"
+						}
+					],
+				},
+			},
+			{
+				path: "registrar-familiares/:id/:idSolicitud",
+				component: RegistrarFamiliaresComponent,
+				data: {
+					title: "Registrar familiar",
+					urls: [
+						{
+							title: "Solicitudes"
+						},
+						{
+							title: "Contratación de Familiares"
+						}
+					],
+				},
+			},
+			{
+				path: "reingreso-personal/:id/:idSolicitud",
+				component: ReingresoPersonalComponent,
+				data: {
+					title: "Reingreso de personal",
+					urls: [
+						{
+							title: "Solicitudes"
+						},
+						{
+							title: "Reingreso de personal"
+						}
+					],
+				},
+			},
+			{
+				path: "reingreso-personal/registro-comentarios/:id/:idSolicitud",
+				component: RegistrarComentarioSalidaJefeComponent,
+				data: {
+					title: "Registro de Comentarios",
+					urls: [
+						{
+							title: "Solicitudes"
+						},
+						{
+							title: "Registro de Comentarios"
+						}
+					],
+				},
+			},
+			{
+				path: "reingreso-personal/registro-comentarios-rrhh/:id/:idSolicitud",
+				component: RegistrarComentarioSalidaRRHHComponent,
+				data: {
+					title: "Registro de Comentarios h18",
+					urls: [
+						{
+							title: "Solicitudes"
+						},
+						{
+							title: "Registro de Comentarios"
+						}
+					],
+				},
+			},
+			{
+				path: "reingreso-personal/registrar-comentarios-solicitante/:id/:idSolicitud",
+				component: RegistrarComentarioReingresoComponent,
+				data: {
+					title: "Registro de Comentarios h19",
+					urls: [
+						{
+							title: "Solicitudes"
+						},
+						{
+							title: "Registro de Comentarios H19"
+						}
+					],
+				},
+			},
+			{
+				path: "registrar-candidato/:id/:idSolicitud",
+				component: RegistrarCandidatoComponent,
+				data: {
+					title: "Selección de Candidato",
+					urls: [
+						{
+							title: "Solicitudes"
+						},
+						{
+							title: "Selección de Candidato"
+						}
+					],
+				},
+			},
+			{
+				path: 'accion-personal/registrar-solicitud/:id/:idSolicitud',
+				component: RegistrarAccionPersonalComponent,
+				data: {
+					title: "Accion de Personal",
+					urls: [
+						{
+							title: 'Accion',
+						},
+						{
+							title: 'Accion de Personal'
+						}
+					]
+				}
+			},
+			{
+				path: 'accion-personal/completar-solicitud/:id/:idSolicitud',
+				component: CompletarAccionPersonalComponent,
+				data: {
+					title: "Completar solicitud",
+					urls: [
+						{
+							title: 'Accion',
+						},
+						{
+							title: 'Accion de Personal'
+						}
+					]
+				}
+			},
+			{
+				path: "trazabilidad/:idSolicitud",
+				component: TrazabilidadSolicitudComponent,
+				data: {
+					title: "Trazabilidad de la Solicitud",
+					urls: [
+						{
+							title: "Solicitudes"
+						},
+						{
+							title: "Trazabilidad de la Solicitud"
+						}
+					],
+				},
+			},
+			{
+				path: "completa-solicitud/:id/:idSolicitud",
+				component: CompletaSolicitudComponent,
+				data: {
+					title: "Completar Solicitud",
+					urls: [
+						{
+							title: "Solicitudes"
+						},
+						{
+							title: "Completar Solicitud"
+						}
+					],
+				},
+			},
+			{
+				path: "reasignar-tareas-usuarios",
+				canActivate: [routeAccessGuard],
+				component: ReasignarTareasUsuariosComponent,
+				data: {
+					code: PageCodes.AprobadorFijo,
+					title: "Reasignar Usuarios",
+					urls: [
+						{
+							title: "Solicitudes"
+						},
+						{
+							title: "Reasignar Usuarios"
+						}
+					],
+				},
+			}
+		],
+	},
 ];

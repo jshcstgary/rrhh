@@ -1,7 +1,7 @@
 <div class="p-3">
 	<div class="row mb-3">
 		<div class="col-md-3 mb-3">
-			<label class="azul mb-1">Tipo de Solicitud</label>
+			<label class="azul mb-1">Tipo de Solicitud <span class="obligatorio">(Obligatorio)</span></label>
 
 			<ng-select [(ngModel)]="dataFilterNivelesAprobacion.tipoSolicitud" (change)="onChangeTipoSolicitud()" placeholder="Seleccione">
 				<ng-option *ngFor="let tipoSolicitud of dataTipoSolicitudes" [value]="tipoSolicitud.id">{{ tipoSolicitud.id }} - {{ tipoSolicitud.descripcion }}</ng-option>
@@ -9,7 +9,7 @@
 		</div>
 
 		<div class="col-md-3 mb-3">
-			<label class="azul mb-1">Nivel de Dirección</label>
+			<label class="azul mb-1">Nivel de Dirección <span class="obligatorio">(Obligatorio)</span></label>
 
 			<ng-select [(ngModel)]="dataFilterNivelesAprobacion.nivelDireccion" placeholder="Seleccione">
 				<ng-option *ngFor="let nivelDireccion of dataNivelDireccion" [value]="nivelDireccion">{{ nivelDireccion }}</ng-option>
@@ -62,8 +62,6 @@
 	</div>
 
 	<div class="mt-3" [ngClass]="{ 'no-table': dataTable.length === 0, 'with-table': dataTable.length !== 0 }">
-		Los encabezados son la ruta
-
 		<table *ngIf="dataTable.length !== 0; else noTable">
 			<thead>
 				<tr>

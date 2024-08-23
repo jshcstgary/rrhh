@@ -344,10 +344,12 @@ export class CrearNivelesAprobacionComponent implements OnInit {
 		console.log("Executing ObtenerServicioNivelAprobacion() method");
 		return this.mantenimientoService.getCatalogo("RBPNA").subscribe({
 			next: (res) => {
-				this.dataNivelAprobacion = res.itemCatalogoTypes.map((r) => ({
-					id: r.codigo,
-					descripcion: r.valor,
-				}));
+				this.dataNivelAprobacion = res.itemCatalogoTypes
+					.map((r) => ({
+						id: r.codigo,
+						descripcion: r.valor,
+					}))
+					.sort((a, b) => a.descripcion.toUpperCase().localeCompare(b.descripcion.toUpperCase()));
 			}
 			// return this.mantenimientoService.getCatalogoRBPNA().subscribe({
 			//   next: (response) => {

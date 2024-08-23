@@ -47,7 +47,7 @@ import { DetalleSolicitud } from "src/app/eschemas/DetalleSolicitud";
 import { PermisoService } from "src/app/services/permiso/permiso.service";
 import { StarterService } from "src/app/starter/starter.service";
 import { PageControlPermiso } from "src/app/types/page-control-permiso.type";
-import { Control } from "src/app/types/permiso.type";
+import { Control, Permiso } from "src/app/types/permiso.type";
 import { ConsultaGraficosData } from "./consulta-grafico.data";
 import { ConsultaSolicitudesService } from "./consulta-solicitudes.service";
 
@@ -364,6 +364,12 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 
 	PageCrear() {
 		this.router.navigate(["/solicitudes/crear-tipo-solicitud"]);
+	}
+
+	public mostrarBotonResignar(): boolean {
+		const permisos: Permiso[] = JSON.parse(localStorage.getItem(LocalStorageKeys.Permisos)!);
+
+		return permisos.some(({ codigo }) => codigo === PageCodes.Mantenedores);
 	}
 
 	fillData(res: any) {

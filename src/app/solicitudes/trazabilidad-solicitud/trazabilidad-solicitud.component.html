@@ -56,11 +56,13 @@
 			</div>
 		</div>
 	</div>
+
 	<div class="mb-4">
-		<a>
-			<h3 class="sol-danger">Atención de Solicitud</h3>
-		</a>
+		<h3 class="sol-danger">
+			Atención de Solicitud
+		</h3>
 	</div>
+
 	<div class="accordion" id="accordionExample">
 		<div class="row" style="align-items: center; justify-content: space-around">
 			<div class="sol-danger col">{{ "Ruta" }}</div>
@@ -68,57 +70,40 @@
 			<div class="sol-danger col">{{ "Aprobadores" }}</div>
 
 			<div class="sol-danger col">{{ "Nivel de Aprobación Ruta" }}</div>
+
 			<div class="sol-danger col">{{ "Fecha" }}</div>
 		</div>
+
 		<div *ngFor="let nivelItem of dataDetalleAprobadorSolicitud; let i = index" class="accordion-item">
 			<div class="accordion-header">
-				<button class="accordion-button" type="button" data-bs-toggle="collapse"
-					[attr.data-bs-target]="'#collapse' + i" aria-expanded="true" [attr.aria-controls]="'collapse' + i"
-					style="display: block">
+				<button class="accordion-button" type="button" data-bs-toggle="collapse" [attr.data-bs-target]="'#collapse' + i" aria-expanded="true" [attr.aria-controls]="'collapse' + i" style="display: block">
 					<div class="row" style="align-items: center; justify-content: space-around">
 						<div class="col">{{ nivelItem.ruta }}</div>
 
-						<div class="col">{{ nivelItem.usuarioAprobador !== "" && nivelItem.usuarioAprobador !==
-							undefined &&
-							nivelItem.usuarioAprobador !== null ? nivelItem.codigoPosicionAprobador + " - " +
-							nivelItem.usuarioAprobador : "No aplica" }}</div>
+						<div class="col">{{ nivelItem.usuarioAprobador !== "" && nivelItem.usuarioAprobador !== undefined && nivelItem.usuarioAprobador !== null ? nivelItem.codigoPosicionAprobador + " - " + nivelItem.usuarioAprobador : "No aplica" }}</div>
 
 						<div class="col">{{ nivelItem.nivelAprobacionRuta }}</div>
+
 						<div class="col">{{ nivelItem.fechaModificacion | date: "dd/MM/YYYY HH:mm:ss" }}</div>
 					</div>
 				</button>
 			</div>
 
-			<div [id]="'collapse' + i" class="accordion-collapse collapse"
-				[ngClass]="{ show: (nivelItem.estadoAprobacion.toUpperCase().includes('PORREVISAR')||nivelItem.estadoAprobacion.toUpperCase().includes('PENDIENTE')||nivelItem.estadoAprobacion.toUpperCase().includes('DEVOLVER')||nivelItem.estadoAprobacion.toUpperCase().includes('ESPERA')||nivelItem.estadoAprobacion.toUpperCase().includes('RECHAZA')) && nivelItem.codigoPosicionAprobador !== '' }"
-				data-bs-parent="#accordionExample">
+			<div [id]="'collapse' + i" class="accordion-collapse collapse" [ngClass]="{ show: i === indexToShow }" data-bs-parent="#accordionExample">
 				<div class="row">
 					<div class="col">
 						<div class="input-group">
 							<label>Estado: </label>
 
-							<span id="lvl1descripcion" name="" style="color: black; font-size: 14px">{{
-								nivelItem.usuarioAprobador !==
-								"" && nivelItem.usuarioAprobador !== undefined && nivelItem.usuarioAprobador !== null ?
-								(nivelItem.estadoAprobacion.toUpperCase() === "APROBAR" ? "Aprobado" :
-								nivelItem.estadoAprobacion.toUpperCase().includes("PORREVISAR") ? "Por Revisar" :
-								nivelItem.estadoAprobacion.toUpperCase().includes("ESPERA") ? "En Espera" :
-								nivelItem.estadoAprobacion.toUpperCase() === "DEVOLVER" ? "Devuelto" :
-								nivelItem.estadoAprobacion.toUpperCase().includes("PENDIENTE") ? "Por Revisar" :
-								nivelItem.estadoAprobacion.toUpperCase().includes("RECHAZA") ? "Cancelado" :
-								nivelItem.estadoAprobacion) : "No
-								aplica" }}</span>
+							<span id="lvl1descripcion" name="" style="color: black; font-size: 14px">{{ nivelItem.usuarioAprobador !== "" && nivelItem.usuarioAprobador !== undefined && nivelItem.usuarioAprobador !== null ? (nivelItem.estadoAprobacion.toUpperCase() === "APROBAR" ? "Aprobado" : nivelItem.estadoAprobacion.toUpperCase().includes("PORREVISAR") ? "Por Revisar" : nivelItem.estadoAprobacion.toUpperCase().includes("ESPERA") ? "En Espera" : nivelItem.estadoAprobacion.toUpperCase() === "DEVOLVER" ? "Devuelto" : nivelItem.estadoAprobacion.toUpperCase().includes("PENDIENTE") ? "Por Revisar" : nivelItem.estadoAprobacion.toUpperCase().includes("RECHAZA") ? "Cancelado" : nivelItem.estadoAprobacion) : "No aplica" }}</span>
 						</div>
 					</div>
+
 					<div class="col">
 						<div class="input-group">
 							<label>Comentario: </label>
 
-							<span id="lvl1descripcion" name="" style="color: black; font-size: 14px">{{
-								nivelItem.usuarioAprobador !==
-								"" && nivelItem.usuarioAprobador !== undefined && nivelItem.usuarioAprobador !== null ?
-								(nivelItem.comentario) : "No
-								aplica" }}</span>
+							<span id="lvl1descripcion" name="" style="color: black; font-size: 14px">{{ nivelItem.usuarioAprobador !== "" && nivelItem.usuarioAprobador !== undefined && nivelItem.usuarioAprobador !== null ? (nivelItem.comentario) : "No aplica" }}</span>
 						</div>
 					</div>
 				</div>

@@ -1,47 +1,56 @@
 <div class="p-2 buscar-aprobador-fijo-modal">
-	<div class="input-group my-2">
-		<input type="text" class="form-control" [placeholder]="'Ingrese ' + textPlaceholder">
+	<form class="input-group my-2" [formGroup]="myForm" (ngSubmit)="onSubmit()">
+		<input type="text" class="form-control" formControlName="searchInput" [placeholder]="'Ingrese ' + textPlaceholder">
 	
-		<button class="btn btn-info">Buscar</button>
-	</div>
+		<button type="submit" class="btn btn-info" [disabled]="myForm.invalid">Buscar</button>
+	</form>
+
+	<hr>
 	
-	<div class="class-container my-2 p-1">
-		<table>
+	<div class="table-container my-2 p-1 pt-0">
+		<table *ngIf="empleados.length !== 0; else emptyEmpleados">
 			<thead>
 				<tr>
 					<th></th>
-					<th>ID</th>
-					<th>Nombre</th>
+
 					<th>Subledger</th>
+
+					<th>Nombre</th>
+
 					<th>Correo</th>
+
+					<th>Cargo</th>
 				</tr>
 			</thead>
 			<tbody>
-				<tr>
+				<tr *ngFor="let empleado of empleados">
 					<td>
-						<input class="form-check-input" type="radio" name="usuarioAprobador" (change)="seleccionarUsuario(1)">
+						<input class="form-check-input" type="radio" name="usuarioAprobador" (change)="seleccionarUsuario(empleado)">
 					</td>
-					<td>1</td>
-					<td>Miguel Castillo</td>
-					<td>0987654321</td>
-					<td>miguel.castillo@email.com</td>
-				</tr>
-				<tr>
-					<td>
-						<input class="form-check-input" type="radio" name="usuarioAprobador" (change)="seleccionarUsuario(2)">
-					</td>
-					<td>2</td>
-					<td>Joshua Castillo</td>
-					<td>124567890</td>
-					<td>joshua.castillo@email.com</td>
+
+					<td>{{ empleado.subledger }}</td>
+
+					<td>{{ empleado.nombreCompleto }}</td>
+
+					<td>{{ empleado.correo }}</td>
+
+					<td>{{ empleado.nombreCargo }}</td>
 				</tr>
 			</tbody>
 		</table>
+
+		<ng-template #emptyEmpleados>
+			<div class="empty-empleados">
+				<p>Realice una búsqueda</p>
+			</div>
+		</ng-template>
 	</div>
+
+	<hr>
 
 	<div class="my-2 d-flex justify-content-end align-items-center gap-2">
 		<button class="btn btn-outline-primary" type="button" (click)="onClose()">Cerrar</button>
 
-		<button class="btn btn-primary" type="button">Seleccionar</button>
+		<button class="btn btn-primary" type="button" [disabled]="empleadoSeleccionado === null" (click)="onSeleccionar()">Confirmar</button>
 	</div>
 </div>

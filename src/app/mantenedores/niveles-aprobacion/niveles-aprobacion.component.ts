@@ -119,6 +119,7 @@ export class NivelesAprobacionComponent implements OnInit {
 		tipoRuta: null,
 		accion: null
 	};
+	private noIdTipoMotivo: string = "";
 	public dataTipoMotivo: any[] = [];
 	public dataTipoRuta: any[] = [];
 	public dataAccion: any[] = [];
@@ -183,8 +184,7 @@ export class NivelesAprobacionComponent implements OnInit {
 	}
 
 	getDataToTableFilter() {
-		console.log(this.dataFilterNivelesAprobacion.tipoSolicitud);
-		if (this.dataFilterNivelesAprobacion.tipoSolicitud === "" || this.dataFilterNivelesAprobacion.nivelDireccion === "") {
+		if (this.dataFilterNivelesAprobacion.tipoSolicitud === null || this.dataFilterNivelesAprobacion.nivelDireccion === null) {
 			Swal.fire({
 				text: "Seleccione al menos un tipo de solicitud y un nivel de dirección",
 				icon: "info",
@@ -377,11 +377,13 @@ export class NivelesAprobacionComponent implements OnInit {
 		}
 
 		if (this.restrictionsIds.includes(tipoSolicitud.codigoTipoSolicitud)) {
-			this.dataFilterNivelesAprobacion.tipoMotivo = "10000";
+			// this.dataFilterNivelesAprobacion.tipoMotivo = null;
+			this.noIdTipoMotivo = "10000";
 			this.tipoMotivoDeshablitado = true;
 			this.isRequisicionPersonal = false;
 		} else {
 			this.isRequisicionPersonal = true;
+			this.noIdTipoMotivo = "";
 			this.dataFilterNivelesAprobacion.tipoMotivo = null;
 
 			this.tipoMotivoDeshablitado = false;

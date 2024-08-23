@@ -3,49 +3,50 @@ import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { environment } from "src/environments/environment";
 import { IConsultaAprobadoresFijosResponse } from "./aprobadores-fijos.interface";
+import { SearchApprover } from "src/app/eschemas/AprobadorFijo";
 
 @Injectable({
-  providedIn: "root",
+	providedIn: "root",
 })
 export class AprobadoresFijosService {
-  private apiUrlNivelAprobacion = environment.nivelAprobacionServiceES;
+	private apiUrlNivelAprobacion = environment.nivelAprobacionServiceES;
 
-  private apiUrlAprobadoresFijos = environment.aprobadoresFijosServiceES;
+	private apiUrlAprobadoresFijos = environment.aprobadoresFijosServiceES;
 
-  constructor(private http: HttpClient) {}
+	constructor(private http: HttpClient) { }
 
-  public obtenerNiveleAprobaciones(): Observable<IConsultaAprobadoresFijosResponse> {
-    return this.http.get<IConsultaAprobadoresFijosResponse>(
-      `${this.apiUrlNivelAprobacion}`
-    );
-  }
+	public obtenerNiveleAprobaciones(): Observable<IConsultaAprobadoresFijosResponse> {
+		return this.http.get<IConsultaAprobadoresFijosResponse>(
+			`${this.apiUrlNivelAprobacion}`
+		);
+	}
 
-  public obtenerAprobadoresFijos(): Observable<IConsultaAprobadoresFijosResponse> {
-    return this.http.get<IConsultaAprobadoresFijosResponse>(
-      `${this.apiUrlAprobadoresFijos}`
-    );
-  }
+	public obtenerAprobadoresFijos(): Observable<IConsultaAprobadoresFijosResponse> {
+		return this.http.get<IConsultaAprobadoresFijosResponse>(
+			`${this.apiUrlAprobadoresFijos}`
+		);
+	}
 
-  public obtenerAprobadorFijoById(id: any): Observable<any> {
-    return this.http.get<any>(`${this.apiUrlAprobadoresFijos}/${id}`);
-  }
+	public obtenerAprobadorFijoById(id: any): Observable<any> {
+		return this.http.get<any>(`${this.apiUrlAprobadoresFijos}/${id}`);
+	}
 
-  public actualizarAprobadorFijo(request: any): Observable<any> {
-    return this.http.put<any>(this.apiUrlAprobadoresFijos, request);
-  }
+	public actualizarAprobadorFijo(request: any): Observable<any> {
+		return this.http.put<any>(this.apiUrlAprobadoresFijos, request);
+	}
 
-  public guardarAprobadorFijo(request: any): Observable<any> {
-    return this.http.post<any>(this.apiUrlAprobadoresFijos, request);
-  }
+	public guardarAprobadorFijo(request: any): Observable<any> {
+		return this.http.post<any>(this.apiUrlAprobadoresFijos, request);
+	}
 
-  // /vl/es/n lesa probacion/{ IdTi poS01i citud}/ {Id TipoMot ivo}/ {IdNive1Di recc ion}
-  public filterNivelesAprobaciones(
-    idTipoSolicitud: any,
-    idTipoMotivo: any,
-    idNivelDireccion: any
-  ): Observable<IConsultaAprobadoresFijosResponse> {
-    return this.http.get<IConsultaAprobadoresFijosResponse>(
-      `${this.apiUrlNivelAprobacion}/${idTipoSolicitud}/${idTipoMotivo}/${idNivelDireccion}`
-    );
-  }
+	// /vl/es/n lesa probacion/{ IdTi poS01i citud}/ {Id TipoMot ivo}/ {IdNive1Di recc ion}
+	public filterNivelesAprobaciones(idTipoSolicitud: any, idTipoMotivo: any, idNivelDireccion: any): Observable<IConsultaAprobadoresFijosResponse> {
+		return this.http.get<IConsultaAprobadoresFijosResponse>(
+			`${this.apiUrlNivelAprobacion}/${idTipoSolicitud}/${idTipoMotivo}/${idNivelDireccion}`
+		);
+	}
+
+	public searchApprovers(textSearch: string): Observable<any> {
+		return this.http.get<any>(`${this.apiUrlAprobadoresFijos}/nombre/${textSearch}`);
+	}
 }

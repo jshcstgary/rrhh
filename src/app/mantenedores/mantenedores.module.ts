@@ -5,7 +5,7 @@ import { TableService } from "./ngtable/ngtable.service";
 import { ComponentsModule } from "../component/component.module";
 import { PlantillaModule } from "../plantilla/plantilla.module";
 import { NgSelectModule } from "@ng-select/ng-select";
-import { FormsModule } from "@angular/forms";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { CommonModule, NgFor, NgIf } from "@angular/common";
 import { CatalogoViewComponent } from "../services/catalogo/catalogo.component";
 import { TipoSolicitudComponent } from "./tipo_solicitud/tipo-solicitud.component";
@@ -46,7 +46,7 @@ import { BuscarAprobadorFijoComponent } from './buscar-aprobador-fijo/buscar-apr
 		ReasignarTareasUsuariosComponent,
 		CrearNivelesAprobacionComponent,
 		EditarNivelesAprobacionComponent,
-  BuscarAprobadorFijoComponent
+		BuscarAprobadorFijoComponent
 	],
 	imports: [
 		RouterModule.forChild(MantenedoresRoutes),
@@ -59,6 +59,7 @@ import { BuscarAprobadorFijoComponent } from './buscar-aprobador-fijo/buscar-apr
 		NgFor,
 		CommonModule,
 		CatalogoViewComponent,
+		ReactiveFormsModule
 	],
 	providers: [TableService],
 })

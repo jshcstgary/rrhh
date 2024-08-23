@@ -38,7 +38,7 @@ export const ConsultaSolicitudesData: IConsultaSolicitudesData = {
 			colType: "string",
 		},
 		{
-			title: "Descripción de la Posicón",
+			title: "Descripción de la Posición",
 			dataIndex: "descripcionPosicion",
 			colType: "string",
 		},
@@ -53,7 +53,7 @@ export const ConsultaSolicitudesData: IConsultaSolicitudesData = {
 			colType: "string",
 		},
 		{
-			title: "Nombre de Empleado",
+			title: "Nombre del Empleado",
 			dataIndex: "nombreEmpleado",
 			sortActive: true,
 			colType: "string",

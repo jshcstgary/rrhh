@@ -19,7 +19,7 @@ export const ROUTES: RouteInfo[] = [
 				extralink: false,
 				codigo: "wf_consulta_solicitudes",
 				submenu: [],
-			},
+			}
 		],
 	},
 	{
@@ -141,17 +141,17 @@ export const ROUTES: RouteInfo[] = [
 				extralink: false,
 				codigo: "wf_aprobadores_fijos",
 				submenu: [],
-			},
-			{
-				path: "/mantenedores/reasignar-tareas-usuarios",
-				title: "Reasignar Usuario",
-				icon: "",
-				class: "",
-				ddclass: "",
-				extralink: false,
-				codigo: "wf_niveles_aprobacion",
-				submenu: [],
 			}
+			// {
+			// 	path: "/mantenedores/reasignar-tareas-usuarios",
+			// 	title: "Reasignar Usuario",
+			// 	icon: "",
+			// 	class: "",
+			// 	ddclass: "",
+			// 	extralink: false,
+			// 	codigo: "wf_niveles_aprobacion",
+			// 	submenu: [],
+			// }
 		],
 	},
 ];
