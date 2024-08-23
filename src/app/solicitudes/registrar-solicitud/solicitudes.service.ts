@@ -184,6 +184,34 @@ export class SolicitudesService {
     );
   }
 
+  public obtenerAprobacionesPorPosicionRuta(
+    idTipoSolicitud: any,
+    idTipoMotivo: any,
+    codigoPosicion: any,
+    idNivelDireccion: any,
+    idTipoRuta: any,
+    filtro: string
+  ): Observable<IAprobacionesPosicion> {
+    const headers = new HttpHeaders({
+      idNivelDireccion: idNivelDireccion,
+    });
+
+    const myObject: any = {
+      id_tipo_sol: idTipoSolicitud,
+      id_tip_mot: idTipoMotivo,
+      cod_pos: codigoPosicion,
+      IdNivelDireccion: idNivelDireccion,
+      IdTipoRuta: idTipoRuta,
+      filter: filtro
+    };
+    const httpParams: HttpParamsOptions = { fromObject: myObject } as HttpParamsOptions;
+
+    return this.http.get<IAprobacionesPosicion>(`${this.apiUrlNivelAprobacion}/aprobacionesporposicionruta`, {
+        params: new HttpParams(httpParams)
+      }
+    );
+  }
+
   public obtenerTareasPorInstanciaRaiz(
     idDeInstanciaRaiz: string
   ): Observable<ITareasResponse> {

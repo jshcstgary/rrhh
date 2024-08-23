@@ -355,6 +355,8 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
 	public loadingComplete = 0;
 	public primerNivelAprobacion: string = "";
 	public aprobacion: any;
+	public unidadNegocioEmp: string;
+  	public dataTipoRutaEmp: any[] = [];
 
 	nombresEmpleados: string[] = [];
 
@@ -606,11 +608,12 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
 
 	obtenerAprobacionesPorPosicion() {
 		return this.solicitudes
-			.obtenerAprobacionesPorPosicion(
+			.obtenerAprobacionesPorPosicionRuta(
 				this.solicitud.idTipoSolicitud,
 				this.solicitud.idTipoMotivo,
 				this.model.codigoPosicion,
 				this.model.nivelDir,
+				this.dataTipoRutaEmp[0].id,
 				"A"
 			)
 			.subscribe({
@@ -631,11 +634,12 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
 
 	obtenerAprobacionesPorPosicionAPS() {
 		return this.solicitudes
-			.obtenerAprobacionesPorPosicion(
+			.obtenerAprobacionesPorPosicionRuta(
 				this.solicitud.idTipoSolicitud,
 				this.solicitud.idTipoMotivo,
 				this.model.codigoPosicion,
 				this.model.nivelDir,
+				this.dataTipoRutaEmp[0].id,
 				"APS"
 			)
 			.subscribe({
@@ -659,11 +663,12 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
 
 	obtenerAprobacionesPorPosicionAPD() {
 		return this.solicitudes
-			.obtenerAprobacionesPorPosicion(
+			.obtenerAprobacionesPorPosicionRuta(
 				this.solicitud.idTipoSolicitud,
 				this.solicitud.idTipoMotivo,
 				this.model.codigoPosicion,
 				this.model.nivelDir,
+				this.dataTipoRutaEmp[0].id,
 				"APD"
 			)
 			.subscribe({
@@ -956,6 +961,95 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
 			next: (response: any) => {
 				this.detalleSolicitud = response.detalleSolicitudType[0];
 				if (this.detalleSolicitud.codigoPosicion.length > 0) {
+					this.unidadNegocioEmp=this.detalleSolicitud.unidadNegocio;
+					if(this.unidadNegocioEmp.toUpperCase().includes("AREAS") || this.unidadNegocioEmp.toUpperCase().includes("ÁREAS"))
+						{
+						 this.mantenimientoService.getTipoRuta().subscribe({
+						   next: (response) => {
+							 this.dataTipoRutaEmp = response.tipoRutaType
+							   .filter(({ estado }) => estado === "A")
+							   .filter(({ tipoRuta }) => tipoRuta.toUpperCase().includes("CORPORATIV"))
+							   .map((r) => ({
+								 id: r.id,
+								 descripcion: r.tipoRuta,
+							   }));
+							   this.loadingComplete++;
+
+							   // tveas, si incluye el id, debo mostrarlos (true)
+							   this.mostrarTipoJustificacionYMision = this.restrictionsIds.includes(
+								   this.solicitud.idTipoMotivo
+							   );
+			   
+							   this.mostrarSubledger = this.restrictionsSubledgerIds.includes(
+								   this.solicitud.idTipoMotivo
+							   );
+			   
+							   this.keySelected =
+								   this.solicitud.idTipoSolicitud +
+								   "_" +
+								   this.solicitud.idTipoMotivo +
+								   "_" +
+								   this.model.nivelDir;
+							   if (!this.dataAprobacionesPorPosicion[this.keySelected]) {
+								   this.getNivelesAprobacion();
+								   if (this.model.codigoPosicion.trim().length > 0) {
+									   this.obtenerAprobacionesPorPosicionAPS();
+									   this.obtenerAprobacionesPorPosicionAPD();
+								   }
+			   
+								   console.log("aprobadores dinamicos", this.dataAprobadoresDinamicos);
+								   let variables = this.generateVariablesFromFormFields();
+								   console.log("variables prueba ruta", variables);
+							   }				
+						   },
+						   error: (error: HttpErrorResponse) => {
+							 this.utilService.modalResponse(error.error, "error");
+						   },
+						 });
+						}else{
+						 this.mantenimientoService.getTipoRuta().subscribe({
+						   next: (response) => {
+							 this.dataTipoRutaEmp = response.tipoRutaType
+							   .filter(({ estado }) => estado === "A")
+							   .filter(({ tipoRuta }) => tipoRuta.toUpperCase()==="UNIDADES")
+							   .map((r) => ({
+								 id: r.id,
+								 descripcion: r.tipoRuta,
+							   }));
+							   this.loadingComplete++;
+
+				// tveas, si incluye el id, debo mostrarlos (true)
+				this.mostrarTipoJustificacionYMision = this.restrictionsIds.includes(
+					this.solicitud.idTipoMotivo
+				);
+
+				this.mostrarSubledger = this.restrictionsSubledgerIds.includes(
+					this.solicitud.idTipoMotivo
+				);
+
+				this.keySelected =
+					this.solicitud.idTipoSolicitud +
+					"_" +
+					this.solicitud.idTipoMotivo +
+					"_" +
+					this.model.nivelDir;
+				if (!this.dataAprobacionesPorPosicion[this.keySelected]) {
+					this.getNivelesAprobacion();
+					if (this.model.codigoPosicion.trim().length > 0) {
+						this.obtenerAprobacionesPorPosicionAPS();
+						this.obtenerAprobacionesPorPosicionAPD();
+					}
+
+			    	let variables = this.generateVariablesFromFormFields();
+					console.log("variables prueba ruta", variables);
+				}
+							   				
+						   },
+						   error: (error: HttpErrorResponse) => {
+							 this.utilService.modalResponse(error.error, "error");
+						   },
+						 });
+						}
 					this.model.codigoPosicion = this.detalleSolicitud.codigoPosicion;
 					this.model.descrPosicion = this.detalleSolicitud.descripcionPosicion;
 					this.model.subledger = this.detalleSolicitud.subledger;
@@ -990,37 +1084,7 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
 				this.detalleSolicitud.idSolicitud = response.idSolicitud;
 				this.detalleSolicitud.unidadNegocio = response.unidadNegocio;*/ //comentado mmunoz
 				//console.log("DATA DETALLE SOLICITUD BY ID: ", this.detalleSolicitud);
-				this.loadingComplete++;
-
-				// tveas, si incluye el id, debo mostrarlos (true)
-				this.mostrarTipoJustificacionYMision = this.restrictionsIds.includes(
-					this.solicitud.idTipoMotivo
-				);
-
-				this.mostrarSubledger = this.restrictionsSubledgerIds.includes(
-					this.solicitud.idTipoMotivo
-				);
-
-				this.keySelected =
-					this.solicitud.idTipoSolicitud +
-					"_" +
-					this.solicitud.idTipoMotivo +
-					"_" +
-					this.model.nivelDir;
-				if (!this.dataAprobacionesPorPosicion[this.keySelected]) {
-					this.getNivelesAprobacion();
-					if (this.model.codigoPosicion.trim().length > 0) {
-						this.obtenerAprobacionesPorPosicionAPS();
-						this.obtenerAprobacionesPorPosicionAPD();
-					}
-
-					console.log("aprobadores dinamicos", this.dataAprobadoresDinamicos);
-					// const jsonArrayString = JSON.stringify(this.dataAprobadoresDinamicos);
-					// console.log("conversion aprobadores dinamicos", jsonArrayString);
-					//console.log("Ruta", this.dataRuta);
-					let variables = this.generateVariablesFromFormFields();
-					console.log("variables prueba ruta", variables);
-				}
+				
 
 				//console.log("aprobacion: ",aprobacion);
 				/* console.log(`Elemento en la posición Miguel1 ${this.keySelected}:`, this.dataAprobacionesPorPosicion[this.keySelected][0].nivelAprobacionType.idNivelAprobacion);
@@ -1365,15 +1429,13 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
 					next: (aprobador) => {
 						aprobadoractual = aprobador.nivelAprobacion?.value;
 						this.solicitudes
-							.obtenerAprobacionesPorPosicion(this.solicitud.idTipoSolicitud, this.solicitud.idTipoMotivo, this.model.codigoPosicion, this.model.nivelDir, 'APS')
+							.obtenerAprobacionesPorPosicionRuta(this.solicitud.idTipoSolicitud, this.solicitud.idTipoMotivo, this.model.codigoPosicion, this.model.nivelDir,this.dataTipoRutaEmp[0].id, 'APS')
 							.subscribe({
 								next: (responseAPS) => {
 									this.dataAprobacionesPorPosicionAPS = responseAPS.nivelAprobacionPosicionType;
 									this.aprobacion = this.dataAprobacionesPorPosicionAPS.find(elemento => elemento.aprobador.nivelDireccion.toUpperCase().includes(aprobadoractual));
 									if (aprobadoractual !== undefined) {
-										console.log(this.dataAprobacionesPorPosicionAPS);
-										console.log(this.aprobacion);
-
+		
 										if (this.aprobacion.aprobador.nivelDireccion.trim() !== null) {
 											this.solicitudes.modelDetalleAprobaciones.id_Solicitud = this.solicitud.idSolicitud;
 											this.solicitudes.modelDetalleAprobaciones.id_NivelAprobacion = this.aprobacion.nivelAprobacionType.idNivelAprobacion;
@@ -1734,20 +1796,24 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
 
 
 			this.solicitudes
-				.obtenerAprobacionesPorPosicion(
+				.obtenerAprobacionesPorPosicionRuta(
 					this.solicitud.idTipoSolicitud,
 					this.solicitud.idTipoMotivo,
 					this.detalleSolicitud.codigoPosicion,
-					this.detalleSolicitud.nivelDireccion, 'A'
+					this.detalleSolicitud.nivelDireccion, 
+					this.dataTipoRutaEmp[0].id,
+					'A'
 				)
 				.subscribe({
 					next: (response) => {
 						this.solicitudes
-							.obtenerAprobacionesPorPosicion(
+							.obtenerAprobacionesPorPosicionRuta(
 								this.solicitud.idTipoSolicitud,
 								this.solicitud.idTipoMotivo,
 								this.model.codigoPosicion,
-								this.model.nivelDir, 'APD'
+								this.model.nivelDir,
+								this.dataTipoRutaEmp[0].id,
+								 'APD'
 							)
 							.subscribe({
 								next: (responseAPD) => {

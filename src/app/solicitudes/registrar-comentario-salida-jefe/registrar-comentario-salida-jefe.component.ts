@@ -134,7 +134,8 @@ export class RegistrarComentarioSalidaJefeComponent extends CompleteTaskComponen
 
   public detalleSolicitud = new DetalleSolicitud();
   public detalleSolicitudRG = new DetalleSolicitud();
-
+  public unidadNegocioEmp: string;
+  public dataTipoRutaEmp: any[] = [];
   public solicitud = new Solicitud();
   public solicitudRG = new Solicitud();
 
@@ -840,6 +841,60 @@ export class RegistrarComentarioSalidaJefeComponent extends CompleteTaskComponen
           }
         } else if (id.toUpperCase().includes("RG")) {
           if (this.detalleSolicitudRG.codigoPosicion.length > 0) {
+            this.unidadNegocioEmp=this.detalleSolicitudRG.unidadNegocio;
+      if(this.unidadNegocioEmp.toUpperCase().includes("AREAS") || this.unidadNegocioEmp.toUpperCase().includes("ÁREAS"))
+        {
+         this.mantenimientoService.getTipoRuta().subscribe({
+           next: (response) => {
+             this.dataTipoRutaEmp = response.tipoRutaType
+               .filter(({ estado }) => estado === "A")
+               .filter(({ tipoRuta }) => tipoRuta.toUpperCase().includes("CORPORATIV"))
+               .map((r) => ({
+                 id: r.id,
+                 descripcion: r.tipoRuta,
+               }));
+               this.keySelected = this.solicitud.idTipoSolicitud + "_" + this.solicitud.idTipoMotivo + "_" + this.model.nivelDir;
+
+               if (!this.dataAprobacionesPorPosicion[this.keySelected]) {
+                 this.getNivelesAprobacion();
+   
+                 if (this.model.codigoPosicion.trim().length > 0) {
+                   this.obtenerAprobacionesPorPosicionAPS();
+                   this.obtenerAprobacionesPorPosicionAPD();
+                 }
+               }
+           },
+           error: (error: HttpErrorResponse) => {
+             this.utilService.modalResponse(error.error, "error");
+           },
+         });
+        }else{
+         this.mantenimientoService.getTipoRuta().subscribe({
+           next: (response) => {
+             this.dataTipoRutaEmp = response.tipoRutaType
+               .filter(({ estado }) => estado === "A")
+               .filter(({ tipoRuta }) => tipoRuta.toUpperCase()==="UNIDADES")
+               .map((r) => ({
+                 id: r.id,
+                 descripcion: r.tipoRuta,
+               }));
+               this.keySelected = this.solicitud.idTipoSolicitud + "_" + this.solicitud.idTipoMotivo + "_" + this.model.nivelDir;
+
+               if (!this.dataAprobacionesPorPosicion[this.keySelected]) {
+                 this.getNivelesAprobacion();
+   
+                 if (this.model.codigoPosicion.trim().length > 0) {
+                   this.obtenerAprobacionesPorPosicionAPS();
+                   this.obtenerAprobacionesPorPosicionAPD();
+                 }
+               }
+
+           },
+           error: (error: HttpErrorResponse) => {
+             this.utilService.modalResponse(error.error, "error");
+           },
+         });
+        }
             this.modelRG.codigoPosicion = this.detalleSolicitudRG.codigoPosicion;
             this.modelRG.puestoJefeInmediato = this.detalleSolicitudRG.puestoJefeInmediato;
             this.modelRG.jefeInmediatoSuperior = this.detalleSolicitudRG.jefeInmediatoSuperior;
@@ -869,16 +924,7 @@ export class RegistrarComentarioSalidaJefeComponent extends CompleteTaskComponen
             this.modelRG.fechaIngreso = (this.detalleSolicitudRG.fechaIngreso as string).split("T")[0];
             this.remuneracion = Number(this.modelRG.sueldoAnual) / 12 + Number(this.modelRG.sueldoSemestral) / 6 + Number(this.modelRG.sueldoTrimestral) / 3 + Number(this.modelRG.sueldoMensual);
 
-            this.keySelected = this.solicitud.idTipoSolicitud + "_" + this.solicitud.idTipoMotivo + "_" + this.model.nivelDir;
-
-            if (!this.dataAprobacionesPorPosicion[this.keySelected]) {
-              this.getNivelesAprobacion();
-
-              if (this.model.codigoPosicion.trim().length > 0) {
-                this.obtenerAprobacionesPorPosicionAPS();
-                this.obtenerAprobacionesPorPosicionAPD();
-              }
-            }
+            
           }
         }
 
@@ -896,11 +942,12 @@ export class RegistrarComentarioSalidaJefeComponent extends CompleteTaskComponen
   getNivelesAprobacion() {
     if (this.solicitudRG !== null) {
        this.solicitudes
-          .obtenerAprobacionesPorPosicion(
+          .obtenerAprobacionesPorPosicionRuta(
             this.solicitudRG.idTipoSolicitud,
             this.solicitudRG.idTipoMotivo,
             this.modelRG.codigoPosicion,
-            this.modelRG.nivelDir, 'A'
+            this.modelRG.nivelDir,
+            this.dataTipoRutaEmp[0].id, 'A'
           )
           .subscribe({
             next: (responseA) => {
@@ -909,11 +956,13 @@ export class RegistrarComentarioSalidaJefeComponent extends CompleteTaskComponen
               },
 
               this.solicitudes
-          .obtenerAprobacionesPorPosicion(
+          .obtenerAprobacionesPorPosicionRuta(
             this.solicitudRG.idTipoSolicitud,
             this.solicitudRG.idTipoMotivo,
             this.modelRG.codigoPosicion,
-            this.modelRG.nivelDir, 'APD'
+            this.modelRG.nivelDir, 
+            this.dataTipoRutaEmp[0].id,
+            'APD'
           )
           .subscribe({
             next: (responseAPD) => {
@@ -994,7 +1043,7 @@ export class RegistrarComentarioSalidaJefeComponent extends CompleteTaskComponen
 
   obtenerAprobacionesPorPosicionAPS() {
     return this.solicitudes
-      .obtenerAprobacionesPorPosicion(this.solicitudRG.idTipoSolicitud, this.solicitudRG.idTipoMotivo, this.modelRG.codigoPosicion, this.modelRG.nivelDir, 'APS')
+      .obtenerAprobacionesPorPosicionRuta(this.solicitudRG.idTipoSolicitud, this.solicitudRG.idTipoMotivo, this.modelRG.codigoPosicion, this.modelRG.nivelDir,this.dataTipoRutaEmp[0].id, 'APS')
       .subscribe({
         next: (response) => {
           this.dataTipoRuta.length = 0;
@@ -1014,7 +1063,7 @@ export class RegistrarComentarioSalidaJefeComponent extends CompleteTaskComponen
 
   obtenerAprobacionesPorPosicionAPD() {
     return this.solicitudes
-      .obtenerAprobacionesPorPosicion(this.solicitudRG.idTipoSolicitud, this.solicitudRG.idTipoMotivo, this.modelRG.codigoPosicion, this.modelRG.nivelDir, 'APD')
+      .obtenerAprobacionesPorPosicionRuta(this.solicitudRG.idTipoSolicitud, this.solicitudRG.idTipoMotivo, this.modelRG.codigoPosicion, this.modelRG.nivelDir,this.dataTipoRutaEmp[0].id, 'APD')
       .subscribe({
         next: (response) => {
           this.dataAprobadoresDinamicos.length = 0;
@@ -1083,7 +1132,7 @@ export class RegistrarComentarioSalidaJefeComponent extends CompleteTaskComponen
 
     if (this.taskType_Activity == environment.taskType_RG_Jefe_Solicitante) {
       this.solicitudes
-      .obtenerAprobacionesPorPosicion(this.solicitudRG.idTipoSolicitud, this.solicitudRG.idTipoMotivo, this.modelRG.codigoPosicion, this.modelRG.nivelDir, 'APS')
+      .obtenerAprobacionesPorPosicionRuta(this.solicitudRG.idTipoSolicitud, this.solicitudRG.idTipoMotivo, this.modelRG.codigoPosicion, this.modelRG.nivelDir,this.dataTipoRutaEmp[0].id, 'APS')
       .subscribe({
         next: (response) => {
           this.dataAprobadoresDinamicos.length = 0;

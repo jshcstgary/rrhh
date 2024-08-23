@@ -59,7 +59,7 @@ export class HorizontalSidebarComponent {
 
   public permisos: Permiso[] = JSON.parse(localStorage.getItem(LocalStorageKeys.Permisos)) || [];
   //public pagesToSearch: ISelectOptions = [];
-  public userName: string = "User: " + localStorage.getItem(LocalStorageKeys.IdLogin) + " - Perfil:"+ localStorage.getItem(LocalStorageKeys.Perfil);
+  public userName: string = "User: " + localStorage.getItem(LocalStorageKeys.IdLogin) + " - Perfil: "+ localStorage.getItem(LocalStorageKeys.Perfil);
   public profile: string = "Supervisor";
   public profiles: IDropdownOptions = [
     { id: "administracion", name: "Administracion" },

@@ -154,7 +154,8 @@ export class CompletaSolicitudComponent extends CompleteTaskComponent {
   public keySelected: any;
 
   public detalleSolicitud = new DetalleSolicitud();
-
+  public unidadNegocioEmp: string;
+  public dataTipoRutaEmp: any[] = [];
   public solicitud = new Solicitud();
 
   public titulo: string = "Formulario De Registro";
@@ -658,11 +659,13 @@ export class CompletaSolicitudComponent extends CompleteTaskComponent {
 
   obtenerAprobacionesPorPosicion() {
     return this.solicitudes
-      .obtenerAprobacionesPorPosicion(
+      .obtenerAprobacionesPorPosicionRuta(
         this.solicitud.idTipoSolicitud,
         this.solicitud.idTipoMotivo,
         this.model.codigoPosicion,
-        this.model.nivelDir, 'A'
+        this.model.nivelDir, 
+        this.dataTipoRutaEmp[0].id,
+        'A'
       )
       .subscribe({
         next: (response) => {
@@ -926,31 +929,84 @@ export class CompletaSolicitudComponent extends CompleteTaskComponent {
             this.textareaContent = this.detalleSolicitud.valor;
             this.selectedDate = new Date(this.detalleSolicitud.fechaSalida);
           }   
+          this.unidadNegocioEmp=this.detalleSolicitud.unidadNegocio;
+          if(this.unidadNegocioEmp.toUpperCase().includes("AREAS") || this.unidadNegocioEmp.toUpperCase().includes("ÁREAS"))
+            {
+             this.mantenimientoService.getTipoRuta().subscribe({
+               next: (response) => {
+                 this.dataTipoRutaEmp = response.tipoRutaType
+                   .filter(({ estado }) => estado === "A")
+                   .filter(({ tipoRuta }) => tipoRuta.toUpperCase().includes("CORPORATIV"))
+                   .map((r) => ({
+                     id: r.id,
+                     descripcion: r.tipoRuta,
+                   }));
+                   this.loadingComplete++;
 
+                // tveas, si incluye el id, debo mostrarlos (true)
+                this.mostrarTipoJustificacionYMision = this.restrictionsIds.includes(
+                  this.solicitud.idTipoMotivo
+                );
 
-        }
+                this.mostrarSubledger = this.restrictionsSubledgerIds.includes(
+                  this.solicitud.idTipoMotivo
+                );
 
-        this.loadingComplete++;
+                this.keySelected =
+                  this.solicitud.idTipoSolicitud +
+                  "_" +
+                  this.solicitud.idTipoMotivo +
+                  "_" +
+                  this.model.nivelDir;
+                if (!this.dataAprobacionesPorPosicion[this.keySelected]) {
+                  this.getNivelesAprobacion();
 
-        // tveas, si incluye el id, debo mostrarlos (true)
-        this.mostrarTipoJustificacionYMision = this.restrictionsIds.includes(
-          this.solicitud.idTipoMotivo
-        );
+                  this.obtenerComentariosAtencionPorInstanciaRaiz();
+                }
+               },
+               error: (error: HttpErrorResponse) => {
+                 this.utilService.modalResponse(error.error, "error");
+               },
+             });
+            }else{
+             this.mantenimientoService.getTipoRuta().subscribe({
+               next: (response) => {
+                 this.dataTipoRutaEmp = response.tipoRutaType
+                   .filter(({ estado }) => estado === "A")
+                   .filter(({ tipoRuta }) => tipoRuta.toUpperCase().includes("UNIDAD"))
+                   .map((r) => ({
+                     id: r.id,
+                     descripcion: r.tipoRuta,
+                   }));
+                   this.loadingComplete++;
 
-        this.mostrarSubledger = this.restrictionsSubledgerIds.includes(
-          this.solicitud.idTipoMotivo
-        );
+                   // tveas, si incluye el id, debo mostrarlos (true)
+                   this.mostrarTipoJustificacionYMision = this.restrictionsIds.includes(
+                     this.solicitud.idTipoMotivo
+                   );
+           
+                   this.mostrarSubledger = this.restrictionsSubledgerIds.includes(
+                     this.solicitud.idTipoMotivo
+                   );
+           
+                   this.keySelected =
+                     this.solicitud.idTipoSolicitud +
+                     "_" +
+                     this.solicitud.idTipoMotivo +
+                     "_" +
+                     this.model.nivelDir;
+                   if (!this.dataAprobacionesPorPosicion[this.keySelected]) {
+                     this.getNivelesAprobacion();
+           
+                     this.obtenerComentariosAtencionPorInstanciaRaiz();
+                   }
+               },
+               error: (error: HttpErrorResponse) => {
+                 this.utilService.modalResponse(error.error, "error");
+               },
+             });
+            }
 
-        this.keySelected =
-          this.solicitud.idTipoSolicitud +
-          "_" +
-          this.solicitud.idTipoMotivo +
-          "_" +
-          this.model.nivelDir;
-        if (!this.dataAprobacionesPorPosicion[this.keySelected]) {
-          this.getNivelesAprobacion();
-
-          this.obtenerComentariosAtencionPorInstanciaRaiz();
         }
 
       },
