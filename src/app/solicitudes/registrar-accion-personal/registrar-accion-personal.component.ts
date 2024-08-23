@@ -180,6 +180,8 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
 
   public dataAprobacionesPorPosicionAPS: any = [];
   public dataAprobacionesPorPosicionAPD: any = [];
+  public unidadNegocioEmp: string;
+  public dataTipoRutaEmp: any[] = [];
 
   public dataTipoRuta: any[] = [];
 
@@ -726,13 +728,52 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
       this.modelPropuestos.fechaIngreso = structuredClone(this.model.fechaIngresogrupo);
       this.detalleSolicitudPropuestos.movilizacion = "0";
       this.detalleSolicitudPropuestos.alimentacion = "0";
+      this.unidadNegocioEmp=datosEmpleado.unidadNegocio;
+      if(this.unidadNegocioEmp.toUpperCase().includes("AREAS") || this.unidadNegocioEmp.toUpperCase().includes("ÁREAS"))
+        {
+         this.mantenimientoService.getTipoRuta().subscribe({
+           next: (response) => {
+             this.dataTipoRutaEmp = response.tipoRutaType
+               .filter(({ estado }) => estado === "A")
+               .filter(({ tipoRuta }) => tipoRuta.toUpperCase().includes("CORPORATIV"))
+               .map((r) => ({
+                 id: r.id,
+                 descripcion: r.tipoRuta,
+               }));
+               this.keySelected = `${this.solicitud.idTipoSolicitud}_${this.solicitud.idTipoMotivo}_${this.model.codigoPosicion}_${this.model.nivelDir}`;
 
-      this.keySelected = `${this.solicitud.idTipoSolicitud}_${this.solicitud.idTipoMotivo}_${this.model.codigoPosicion}_${this.model.nivelDir}`;
+               if (!this.dataAprobacionesPorPosicion[this.keySelected]) {
+                 this.obtenerAprobacionesPorPosicion();
+               }
+           },
+           error: (error: HttpErrorResponse) => {
+             this.utilService.modalResponse(error.error, "error");
+           },
+         });
+        }else{
+         this.mantenimientoService.getTipoRuta().subscribe({
+           next: (response) => {
+             this.dataTipoRutaEmp = response.tipoRutaType
+               .filter(({ estado }) => estado === "A")
+               .filter(({ tipoRuta }) => tipoRuta.toUpperCase()==="UNIDADES")
+               .map((r) => ({
+                 id: r.id,
+                 descripcion: r.tipoRuta,
+               }));
+               
+            this.keySelected = `${this.solicitud.idTipoSolicitud}_${this.solicitud.idTipoMotivo}_${this.model.codigoPosicion}_${this.model.nivelDir}`;
 
-      console.log(!this.dataAprobacionesPorPosicion[this.keySelected]);
-      if (!this.dataAprobacionesPorPosicion[this.keySelected]) {
-        this.obtenerAprobacionesPorPosicion();
-      }
+            console.log(!this.dataAprobacionesPorPosicion[this.keySelected]);
+            if (!this.dataAprobacionesPorPosicion[this.keySelected]) {
+              this.obtenerAprobacionesPorPosicion();
+            }
+
+           },
+           error: (error: HttpErrorResponse) => {
+             this.utilService.modalResponse(error.error, "error");
+           },
+         });
+        }
     } else {
       let tempSearch = valor;
       this.model = new RegistrarData();
@@ -958,6 +999,85 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
         this.codigoReportaA = detalleActual.jefeSolicitante;
         this.nivelDireccionDatoPropuesto = detalleActual.nivelDireccion;
         this.viewInputs = detalleActual.codigo === "100" ? true : false;
+        this.unidadNegocioEmp=detalleActual.unidadNegocio;
+        if(this.unidadNegocioEmp.toUpperCase().includes("AREAS") || this.unidadNegocioEmp.toUpperCase().includes("ÁREAS"))
+          {
+           this.mantenimientoService.getTipoRuta().subscribe({
+             next: (response) => {
+               this.dataTipoRutaEmp = response.tipoRutaType
+                 .filter(({ estado }) => estado === "A")
+                 .filter(({ tipoRuta }) => tipoRuta.toUpperCase().includes("CORPORATIV"))
+                 .map((r) => ({
+                   id: r.id,
+                   descripcion: r.tipoRuta,
+                 }));
+                 this.loadingComplete++;
+
+                 this.mostrarTipoJustificacionYMision = this.restrictionsIds.includes(
+                   this.solicitud.idTipoMotivo
+                 );
+
+                 this.mostrarSubledger = this.restrictionsSubledgerIds.includes(
+                   this.solicitud.idTipoMotivo
+                 );
+
+               this.keySelected = `${this.solicitud.idTipoSolicitud}_${this.solicitud.idTipoMotivo}_${this.model.nivelDir}`;
+
+               if (!this.dataAprobacionesPorPosicion[this.keySelected]) {
+                 this.getNivelesAprobacion();
+
+                 if (this.model.codigoPosicion.trim().length > 0) {
+                   this.obtenerAprobacionesPorPosicionAPS();
+                   this.obtenerAprobacionesPorPosicionAPD();
+                   console.log("SI LLEGA");
+                 }
+
+                 let variables = this.generateVariablesFromFormFields();
+               }
+             },
+             error: (error: HttpErrorResponse) => {
+               this.utilService.modalResponse(error.error, "error");
+             },
+           });
+          }else{
+           this.mantenimientoService.getTipoRuta().subscribe({
+             next: (response) => {
+               this.dataTipoRutaEmp = response.tipoRutaType
+                 .filter(({ estado }) => estado === "A")
+                 .filter(({ tipoRuta }) => tipoRuta.toUpperCase().includes("UNIDAD"))
+                 .map((r) => ({
+                   id: r.id,
+                   descripcion: r.tipoRuta,
+                 }));
+                 this.loadingComplete++;
+
+                 this.mostrarTipoJustificacionYMision = this.restrictionsIds.includes(
+                   this.solicitud.idTipoMotivo
+                 );
+
+                 this.mostrarSubledger = this.restrictionsSubledgerIds.includes(
+                   this.solicitud.idTipoMotivo
+                 );
+
+               this.keySelected = `${this.solicitud.idTipoSolicitud}_${this.solicitud.idTipoMotivo}_${this.model.nivelDir}`;
+
+               if (!this.dataAprobacionesPorPosicion[this.keySelected]) {
+                 this.getNivelesAprobacion();
+
+                 if (this.model.codigoPosicion.trim().length > 0) {
+                   this.obtenerAprobacionesPorPosicionAPS();
+                   this.obtenerAprobacionesPorPosicionAPD();
+                   console.log("SI LLEGA");
+                 }
+
+                 let variables = this.generateVariablesFromFormFields();
+               }
+             },
+             error: (error: HttpErrorResponse) => {
+               this.utilService.modalResponse(error.error, "error");
+             },
+           });
+          }
       }
         if (response.totalRegistros === 2) {
           const detallePropuestos = response.detalleSolicitudType.find(detalle => detalle.idDetalleSolicitud === 2);
@@ -993,32 +1113,88 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
           this.detalleSolicitudPropuestos.movilizacion = detallePropuestos.movilizacion;
           this.detalleSolicitudPropuestos.alimentacion = detallePropuestos.alimentacion;
           this.codigoReportaA = detallePropuestos.jefeSolicitante;
+          this.unidadNegocioEmp=detallePropuestos.unidadNegocio;
+          if(this.unidadNegocioEmp.toUpperCase().includes("AREAS") || this.unidadNegocioEmp.toUpperCase().includes("ÁREAS"))
+            {
+             this.mantenimientoService.getTipoRuta().subscribe({
+               next: (response) => {
+                 this.dataTipoRutaEmp = response.tipoRutaType
+                   .filter(({ estado }) => estado === "A")
+                   .filter(({ tipoRuta }) => tipoRuta.toUpperCase().includes("CORPORATIV"))
+                   .map((r) => ({
+                     id: r.id,
+                     descripcion: r.tipoRuta,
+                   }));
+                   this.loadingComplete++;
+
+                  this.mostrarTipoJustificacionYMision = this.restrictionsIds.includes(
+                    this.solicitud.idTipoMotivo
+                  );
+
+                  this.mostrarSubledger = this.restrictionsSubledgerIds.includes(
+                    this.solicitud.idTipoMotivo
+                  );
+
+                this.keySelected = `${this.solicitud.idTipoSolicitud}_${this.solicitud.idTipoMotivo}_${this.model.nivelDir}`;
+
+                if (!this.dataAprobacionesPorPosicion[this.keySelected]) {
+                  this.getNivelesAprobacion();
+
+                  if (this.model.codigoPosicion.trim().length > 0) {
+                    this.obtenerAprobacionesPorPosicionAPS();
+                    this.obtenerAprobacionesPorPosicionAPD();
+                    console.log("SI LLEGA");
+                  }
+
+                  let variables = this.generateVariablesFromFormFields();
+                }
+               },
+               error: (error: HttpErrorResponse) => {
+                 this.utilService.modalResponse(error.error, "error");
+               },
+             });
+            }else{
+             this.mantenimientoService.getTipoRuta().subscribe({
+               next: (response) => {
+                 this.dataTipoRutaEmp = response.tipoRutaType
+                   .filter(({ estado }) => estado === "A")
+                   .filter(({ tipoRuta }) => tipoRuta.toUpperCase().includes("UNIDAD"))
+                   .map((r) => ({
+                     id: r.id,
+                     descripcion: r.tipoRuta,
+                   }));
+                   this.loadingComplete++;
+
+                   this.mostrarTipoJustificacionYMision = this.restrictionsIds.includes(
+                     this.solicitud.idTipoMotivo
+                   );
+           
+                   this.mostrarSubledger = this.restrictionsSubledgerIds.includes(
+                     this.solicitud.idTipoMotivo
+                   );
+           
+                   this.keySelected = `${this.solicitud.idTipoSolicitud}_${this.solicitud.idTipoMotivo}_${this.model.nivelDir}`;
+           
+                   if (!this.dataAprobacionesPorPosicion[this.keySelected]) {
+                     this.getNivelesAprobacion();
+           
+                     if (this.model.codigoPosicion.trim().length > 0) {
+                       this.obtenerAprobacionesPorPosicionAPS();
+                       this.obtenerAprobacionesPorPosicionAPD();
+                       console.log("SI LLEGA");
+                     }
+           
+                     let variables = this.generateVariablesFromFormFields();
+                   }
+               },
+               error: (error: HttpErrorResponse) => {
+                 this.utilService.modalResponse(error.error, "error");
+               },
+             });
+            }
 
         }
 
-        this.loadingComplete++;
-
-        this.mostrarTipoJustificacionYMision = this.restrictionsIds.includes(
-          this.solicitud.idTipoMotivo
-        );
-
-        this.mostrarSubledger = this.restrictionsSubledgerIds.includes(
-          this.solicitud.idTipoMotivo
-        );
-
-        this.keySelected = `${this.solicitud.idTipoSolicitud}_${this.solicitud.idTipoMotivo}_${this.model.nivelDir}`;
-
-        if (!this.dataAprobacionesPorPosicion[this.keySelected]) {
-          this.getNivelesAprobacion();
-
-          if (this.model.codigoPosicion.trim().length > 0) {
-            this.obtenerAprobacionesPorPosicionAPS();
-            this.obtenerAprobacionesPorPosicionAPD();
-            console.log("SI LLEGA");
-          }
-
-          let variables = this.generateVariablesFromFormFields();
-        }
       },
       error: (error: HttpErrorResponse) => {
         this.utilService.modalResponse(error.error, "error");
@@ -1028,7 +1204,7 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
 
   obtenerAprobacionesPorPosicion() {
     return this.solicitudes
-      .obtenerAprobacionesPorPosicion(this.solicitud.idTipoSolicitud, this.solicitud.idTipoMotivo, this.model.codigoPosicion, this.model.nivelDir, 'A')
+      .obtenerAprobacionesPorPosicionRuta(this.solicitud.idTipoSolicitud, this.solicitud.idTipoMotivo, this.model.codigoPosicion, this.model.nivelDir,this.dataTipoRutaEmp[0].id, 'A')
       .subscribe({
         next: (response) => {
           this.dataAprobacionesPorPosicion[this.keySelected] = response.nivelAprobacionPosicionType;
@@ -1044,15 +1220,16 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
 
   getNivelesAprobacion() {
     if (this.model.codigoPosicion !== "" && this.model.codigoPosicion !== undefined && this.model.codigoPosicion != null) {
-      this.solicitudes.obtenerAprobacionesPorPosicion(this.solicitud.idTipoSolicitud, this.solicitud.idTipoMotivo, this.model.codigoPosicion, this.nivelDireccionDatoPropuesto, 'A')
+      this.solicitudes.obtenerAprobacionesPorPosicionRuta(this.solicitud.idTipoSolicitud, this.solicitud.idTipoMotivo, this.model.codigoPosicion, this.nivelDireccionDatoPropuesto,this.dataTipoRutaEmp[0].id, 'A')
         .subscribe({
           next: (response) => {
             this.solicitudes
-            .obtenerAprobacionesPorPosicion(
+            .obtenerAprobacionesPorPosicionRuta(
               this.solicitud.idTipoSolicitud,
               this.solicitud.idTipoMotivo,
               this.model.codigoPosicion,
-              this.model.nivelDir, 'APD'
+              this.model.nivelDir,
+              this.dataTipoRutaEmp[0].id, 'APD'
             )
             .subscribe({
               next: (responseAPD) => {
@@ -1081,11 +1258,12 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
 
   obtenerAprobacionesPorPosicionAPS() {
     return this.solicitudes
-      .obtenerAprobacionesPorPosicion(
+      .obtenerAprobacionesPorPosicionRuta(
         this.solicitud.idTipoSolicitud,
         this.solicitud.idTipoMotivo,
         this.model.codigoPosicion,
         this.model.nivelDir,
+        this.dataTipoRutaEmp[0].id,
         "APS"
       )
       .subscribe({
@@ -1110,11 +1288,13 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
 
   obtenerAprobacionesPorPosicionAPD() {
     return this.solicitudes
-      .obtenerAprobacionesPorPosicion(
+      .obtenerAprobacionesPorPosicionRuta(
         this.solicitud.idTipoSolicitud,
         this.solicitud.idTipoMotivo,
         this.model.codigoPosicion,
-        this.model.nivelDir, 'APD'
+        this.model.nivelDir, 
+        this.dataTipoRutaEmp[0].id,
+        'APD'
       )
       .subscribe({
         next: (response) => {
@@ -1464,7 +1644,7 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
           next: (aprobador) => {
             aprobadoractual = aprobador.nivelAprobacion?.value;
                 this.solicitudes
-                .obtenerAprobacionesPorPosicion(this.solicitud.idTipoSolicitud, this.solicitud.idTipoMotivo, this.model.codigoPosicion, this.model.nivelDir, 'APS')
+                .obtenerAprobacionesPorPosicionRuta(this.solicitud.idTipoSolicitud, this.solicitud.idTipoMotivo, this.model.codigoPosicion, this.model.nivelDir,this.dataTipoRutaEmp[0].id, 'APS')
                 .subscribe({
                   next: (responseAPS) => {
                     this.dataAprobacionesPorPosicionAPS = responseAPS.nivelAprobacionPosicionType;

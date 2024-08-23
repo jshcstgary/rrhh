@@ -383,6 +383,8 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
 
 	public dataNivelDireccion: any[] = [];
 	public suggestions: string[] = [];
+	public unidadNegocioEmp: string;
+	public dataTipoRutaEmp: any[] = [];
 
 	public idDeInstancia: any;
 
@@ -768,11 +770,13 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
 
 	obtenerAprobacionesPorPosicion() {
 		return this.solicitudes
-			.obtenerAprobacionesPorPosicion(
+			.obtenerAprobacionesPorPosicionRuta(
 				this.solicitud.idTipoSolicitud,
 				this.solicitud.idTipoMotivo,
 				this.model.codigoPosicion,
-				this.model.nivelDir, 'A'
+				this.model.nivelDir,
+				this.dataTipoRutaEmp[0].id,
+				 'A'
 			)
 			.subscribe({
 				next: (response) => {
@@ -1007,6 +1011,74 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
 			next: (response: any) => {
 				this.detalleSolicitud = response.detalleSolicitudType[0];
 				if (this.detalleSolicitud.codigoPosicion.length > 0) {
+					this.unidadNegocioEmp=this.detalleSolicitud.unidadNegocio;
+      if(this.unidadNegocioEmp.toUpperCase().includes("AREAS") || this.unidadNegocioEmp.toUpperCase().includes("ÁREAS"))
+        {
+         this.mantenimientoService.getTipoRuta().subscribe({
+           next: (response) => {
+             this.dataTipoRutaEmp = response.tipoRutaType
+               .filter(({ estado }) => estado === "A")
+               .filter(({ tipoRuta }) => tipoRuta.toUpperCase().includes("CORPORATIV"))
+               .map((r) => ({
+                 id: r.id,
+                 descripcion: r.tipoRuta,
+               }));
+               this.loadingComplete++;
+
+				// tveas, si incluye el id, debo mostrarlos (true)
+				this.mostrarTipoJustificacionYMision = this.restrictionsIds.includes(
+					this.solicitud.idTipoMotivo
+				);
+
+				this.mostrarSubledger = this.restrictionsSubledgerIds.includes(
+					this.solicitud.idTipoMotivo
+				);
+
+				this.keySelected = `${this.solicitud.idTipoSolicitud}_${this.solicitud.idTipoMotivo}_${this.model.nivelDir}`;
+				if (!this.dataAprobacionesPorPosicion[this.keySelected]) {
+					this.getNivelesAprobacion();
+
+					this.obtenerComentariosAtencionPorInstanciaRaiz();
+				}
+           },
+           error: (error: HttpErrorResponse) => {
+             this.utilService.modalResponse(error.error, "error");
+           },
+         });
+        }else{
+         this.mantenimientoService.getTipoRuta().subscribe({
+           next: (response) => {
+             this.dataTipoRutaEmp = response.tipoRutaType
+               .filter(({ estado }) => estado === "A")
+               .filter(({ tipoRuta }) => tipoRuta.toUpperCase()==="UNIDADES")
+               .map((r) => ({
+                 id: r.id,
+                 descripcion: r.tipoRuta,
+               }));
+               this.loadingComplete++;
+
+				// tveas, si incluye el id, debo mostrarlos (true)
+				this.mostrarTipoJustificacionYMision = this.restrictionsIds.includes(
+					this.solicitud.idTipoMotivo
+				);
+
+				this.mostrarSubledger = this.restrictionsSubledgerIds.includes(
+					this.solicitud.idTipoMotivo
+				);
+
+				this.keySelected = `${this.solicitud.idTipoSolicitud}_${this.solicitud.idTipoMotivo}_${this.model.nivelDir}`;
+				if (!this.dataAprobacionesPorPosicion[this.keySelected]) {
+					this.getNivelesAprobacion();
+
+					this.obtenerComentariosAtencionPorInstanciaRaiz();
+				}
+
+           },
+           error: (error: HttpErrorResponse) => {
+             this.utilService.modalResponse(error.error, "error");
+           },
+         });
+        }
 					this.model.codigoPosicion = this.detalleSolicitud.codigoPosicion;
 					this.model.descrPosicion = this.detalleSolicitud.descripcionPosicion;
 					this.model.subledger = this.detalleSolicitud.subledger;
@@ -1031,24 +1103,6 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
 					this.model.sueldoAnual = this.detalleSolicitud.sueldoVariableAnual
 					this.model.correo = this.detalleSolicitud.correo;
 					this.model.fechaIngreso = this.detalleSolicitud.fechaIngreso;
-				}
-
-				this.loadingComplete++;
-
-				// tveas, si incluye el id, debo mostrarlos (true)
-				this.mostrarTipoJustificacionYMision = this.restrictionsIds.includes(
-					this.solicitud.idTipoMotivo
-				);
-
-				this.mostrarSubledger = this.restrictionsSubledgerIds.includes(
-					this.solicitud.idTipoMotivo
-				);
-
-				this.keySelected = `${this.solicitud.idTipoSolicitud}_${this.solicitud.idTipoMotivo}_${this.model.nivelDir}`;
-				if (!this.dataAprobacionesPorPosicion[this.keySelected]) {
-					this.getNivelesAprobacion();
-
-					this.obtenerComentariosAtencionPorInstanciaRaiz();
 				}
 
 			},
@@ -1668,11 +1722,12 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
 
 
 			this.solicitudes
-				.obtenerAprobacionesPorPosicion(
+				.obtenerAprobacionesPorPosicionRuta(
 					this.solicitud.idTipoSolicitud,
 					this.solicitud.idTipoMotivo,
 					this.detalleSolicitud.codigoPosicion,
-					this.detalleSolicitud.nivelDireccion, 'A'
+					this.detalleSolicitud.nivelDireccion,
+					this.dataTipoRutaEmp[0].id, 'A'
 				)
 				.subscribe({
 					next: (response) => {
