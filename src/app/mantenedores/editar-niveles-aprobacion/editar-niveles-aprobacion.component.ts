@@ -291,7 +291,7 @@ export class EditarNivelesAprobacionComponent {
 			});
 
 		console.log(nivelesAprobacion);
-		this.serviceNivelesAprobacion.guardarNivelesAprobacion(nivelesAprobacion).subscribe({
+		this.serviceNivelesAprobacion.actualizarNivelesAprobacion(nivelesAprobacion).subscribe({
 			next: () => {
 				this.utilService.closeLoadingSpinner();
 
