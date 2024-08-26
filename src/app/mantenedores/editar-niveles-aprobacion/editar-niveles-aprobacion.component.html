@@ -31,7 +31,6 @@
 						<div class="col-md-6 mb-3">
 							<label class="azul mb-1">Tipo Motivo</label>
 
-							<!-- <select class="form-select" [(ngModel)]="modelHead.idTipoMotivo" [disabled]="desactivarTipoMotivoYAccion" disabled> -->
 							<ng-select [(ngModel)]="modelHead.idTipoMotivo" placeholder="Seleccione" disabled>
 								<ng-option *ngFor="let baseDeDatos of dataTipoMotivo" [value]="baseDeDatos.id">{{ baseDeDatos.descripcion }}</ng-option>
 							</ng-select>
@@ -40,7 +39,6 @@
 						<div class="col-md-6 mb-3">
 							<label class="azul mb-1">Acción</label>
 
-							<!-- <select class="form-select" [(ngModel)]="modelHead.idAccion" [disabled]="desactivarTipoMotivoYAccion" disabled> -->
 							<ng-select [(ngModel)]="modelHead.idAccion" placeholder="Seleccione" disabled>
 								<ng-option *ngFor="let baseDeDatos of dataAccion" [value]="baseDeDatos.id">{{ baseDeDatos.descripcion }}</ng-option>
 							</ng-select>
@@ -63,7 +61,7 @@
 						</div>
 					</div>
 
-					<div class="mt-3" [ngClass]="{ 'no-table': modelHead.idTipoRuta === null || dataRuta.length === 0, 'with-table': modelHead.idTipoRuta !== null }">
+					<div class="mt-3" [ngClass]="{ 'no-table': modelHead.idTipoRuta === null || dataRuta.length === 0, 'with-table': modelHead.idTipoRuta !== 0 }">
 						<table *ngIf="modelHead.idTipoRuta !== 0 && dataRuta.length !== 0; else noTable">
 							<!-- ! ES LA RUTA -->
 							<thead>
@@ -76,12 +74,6 @@
 							<tbody>
 								<tr>
 									<td *ngFor="let ruta of dataRuta">
-										<!-- <select class="form-select mb-3" [(ngModel)]="idNivelesAprobacionRuta[ruta.id]" placeholder="Seleccione">
-											<option value="" disabled selected hidden>Seleccione...</option>
-
-											<option *ngFor="let item of dataNivelAprobacion" [value]="item.id">{{ item.descripcion }}</option>
-										</select> -->
-
 										<ng-select [(ngModel)]="idNivelesAprobacionRuta[ruta.id]" placeholder="Seleccione">
 											<ng-option *ngFor="let item of dataNivelAprobacion" [value]="item.id">{{ item.descripcion }}</ng-option>
 										</ng-select>

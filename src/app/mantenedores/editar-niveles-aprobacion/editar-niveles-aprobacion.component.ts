@@ -132,7 +132,8 @@ export class EditarNivelesAprobacionComponent {
 				this.dataNivelAprobacion = nivelAprobacion.itemCatalogoTypes.map((r) => ({
 					id: r.codigo,
 					descripcion: r.valor,
-				}));
+				}))
+				.sort((a, b) => a.descripcion.toUpperCase().localeCompare(b.descripcion.toUpperCase()));
 
 				this.getNivelesById();
 			}

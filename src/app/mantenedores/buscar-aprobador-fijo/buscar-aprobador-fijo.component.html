@@ -20,14 +20,6 @@
 					<th>Correo</th>
 
 					<th>Cargo</th>
-
-					<th>Subledger</th>
-
-					<th>Nombre</th>
-
-					<th>Correo</th>
-
-					<th>Cargo</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -35,14 +27,6 @@
 					<td>
 						<input class="form-check-input" type="radio" [value]="empleado" [checked]="empleadoSeleccionado === empleado" (change)="$event.stopPropagation(); seleccionarUsuario(empleado)">
 					</td>
-
-					<td>{{ empleado.subledger }}</td>
-
-					<td>{{ empleado.nombreCompleto }}</td>
-
-					<td>{{ empleado.correo }}</td>
-
-					<td>{{ empleado.nombreCargo }}</td>
 
 					<td>{{ empleado.subledger }}</td>
 

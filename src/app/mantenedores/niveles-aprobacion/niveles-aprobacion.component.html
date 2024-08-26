@@ -63,14 +63,6 @@
 
 	<div class="mt-3" [ngClass]="{ 'no-table': dataTable.length === 0, 'with-table': dataTable.length !== 0 }">
 		<table *ngIf="dataTable.length !== 0; else noTable">
-			<!-- <colgroup>
-				<col style="width: 100px;">
-				<col style="width: 150px;">
-				<col style="width: 200px;">
-				<col style="width: 200px;">
-				<col style="width: 200px;">
-			</colgroup> -->
-			
 			<thead>
 				<tr>
 					<th class="text-center">Tipo de solicitud</th>
