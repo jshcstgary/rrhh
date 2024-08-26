@@ -10,7 +10,6 @@ import { CrearAprobadorFijoService } from "./crear-aprobador-fijo.service";
 import { BuscarAprobadorFijoComponent } from "../buscar-aprobador-fijo/buscar-aprobador-fijo.component";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { format } from "date-fns";
-import { ModalBuscadorComponent } from "src/app/shared/modal-buscador/modal-buscador.component";
 
 @Component({
 	selector: "app-crear-aprobador-fijo",

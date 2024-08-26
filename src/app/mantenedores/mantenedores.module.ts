@@ -27,7 +27,6 @@ import { NgbTypeaheadModule } from "@ng-bootstrap/ng-bootstrap";
 import { ReasignarTareasUsuariosComponent } from "./reasignar-tareas-usuarios/reasignar-tareas-usuarios.component";
 import { EditarNivelesAprobacionComponent } from './editar-niveles-aprobacion/editar-niveles-aprobacion.component';
 import { BuscarAprobadorFijoComponent } from './buscar-aprobador-fijo/buscar-aprobador-fijo.component';
-import { ModalBuscadorComponent } from "../shared/modal-buscador/modal-buscador.component";
 
 
 @NgModule({
@@ -60,8 +59,7 @@ import { ModalBuscadorComponent } from "../shared/modal-buscador/modal-buscador.
 		NgFor,
 		CommonModule,
 		CatalogoViewComponent,
-		ReactiveFormsModule,
-		ModalBuscadorComponent
+		ReactiveFormsModule
 	],
 	providers: [TableService],
 })
