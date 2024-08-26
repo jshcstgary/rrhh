@@ -211,39 +211,37 @@ export class NivelesAprobacionComponent implements OnInit {
 
 				if(this.isRequisicionPersonal){
 					this.dataTable = response.nivelAprobacionType
-					.filter(data => data.estado === "A")
-					.sort((a, b) => a.idNivelAprobacion - b.idNivelAprobacion)
-					.reduce((acc, obj) => {
-					//	const grupo = acc.find(g => g[0].idTipoMotivo === obj.idTipoMotivo || g[0].idTipoSolicitud === obj.idTipoSolicitud || g[0].nivelDireccion === obj.nivelDireccion || g[0].idAccion === obj.idAccion);
-						const grupo = acc.find(g => g[0].idTipoMotivo === obj.idTipoMotivo && g[0].idTipoRuta === obj.idTipoRuta);
+						.filter(data => data.estado === "A")
+						// .sort((a, b) => a.idNivelAprobacion - b.idNivelAprobacion)
+						.reduce((acc, obj) => {
+						//	const grupo = acc.find(g => g[0].idTipoMotivo === obj.idTipoMotivo || g[0].idTipoSolicitud === obj.idTipoSolicitud || g[0].nivelDireccion === obj.nivelDireccion || g[0].idAccion === obj.idAccion);
+							const grupo = acc.find(g => g[0].idTipoMotivo === obj.idTipoMotivo && g[0].idTipoRuta === obj.idTipoRuta);
 
-						if (grupo) {
-							grupo.push(obj);
-						} else {
-							acc.push([obj]);
-						}
+							if (grupo) {
+								grupo.push(obj);
+							} else {
+								acc.push([obj]);
+							}
 
-						return acc;
-					}, [] as any[][]);
-				}else{
+							return acc;
+						}, [] as any[][]);
+				} else {
 					this.dataTable = response.nivelAprobacionType
-					.filter(data => data.estado === "A")
-					.sort((a, b) => a.idNivelAprobacion - b.idNivelAprobacion)
-					.reduce((acc, obj) => {
-					//	const grupo = acc.find(g => g[0].idTipoMotivo === obj.idTipoMotivo || g[0].idTipoSolicitud === obj.idTipoSolicitud || g[0].nivelDireccion === obj.nivelDireccion || g[0].idAccion === obj.idAccion);
-						const grupo = acc.find(g => g[0].idTipoRuta === obj.idTipoRuta);
+						.filter(data => data.estado === "A")
+						// .sort((a, b) => a.idNivelAprobacion - b.idNivelAprobacion)
+						.reduce((acc, obj) => {
+						//	const grupo = acc.find(g => g[0].idTipoMotivo === obj.idTipoMotivo || g[0].idTipoSolicitud === obj.idTipoSolicitud || g[0].nivelDireccion === obj.nivelDireccion || g[0].idAccion === obj.idAccion);
+							const grupo = acc.find(g => g[0].idTipoRuta === obj.idTipoRuta);
 
-						if (grupo) {
-							grupo.push(obj);
-						} else {
-							acc.push([obj]);
-						}
+							if (grupo) {
+								grupo.push(obj);
+							} else {
+								acc.push([obj]);
+							}
 
-						return acc;
-					}, [] as any[][]);
+							return acc;
+						}, [] as any[][]);
 				}
-
-				
 
 				this.utilService.closeLoadingSpinner();
 			},

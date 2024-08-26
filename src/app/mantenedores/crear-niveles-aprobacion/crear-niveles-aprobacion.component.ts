@@ -116,36 +116,11 @@ export class CrearNivelesAprobacionComponent implements OnInit {
 		});
 	}
 
-	// getNivelById() {
-	//   this.utilService.openLoadingSpinner("Cargando información, espere por favor...");
-
-	//   this.serviceNivelesAprobacion.getNivelById(this.id_edit).subscribe((data) => {
-	//     this.modelo = {
-	//       ...data,
-	//       estado: data.estado === "A"
-	//     };
-
-	//     this.desactivarTipoMotivoYAccion = this.restrictionsIds.includes(this.modelo.idTipoSolicitud);
-
-	//     this.onChangeTipoSolicitud(this.modelo.idTipoSolicitud);
-
-	//     this.onChangeTipoRuta(this.modelo.idTipoRuta);
-
-	//     this.utilService.closeLoadingSpinner();
-	//   });
-	// }
-
 	ngOnInit() {
 		this.ObtenerServicioTipoSolicitud();
-		// this.ObtenerServicioTipoMotivo();
-		// this.ObtenerServicioAccion();
-		// this.ObtenerServicioRuta();
 		this.ObtenerServicioTipoRuta();
 		this.ObtenerServicioNivelDireccion();
 		this.ObtenerServicioNivelAprobacion();
-		// if (this.id_edit !== undefined) {
-		//   this.getNivelById();
-		// }
 	}
 
 	onChangeTipoRuta() {
@@ -162,7 +137,7 @@ export class CrearNivelesAprobacionComponent implements OnInit {
 							this.idNivelesAprobacionRuta2 = [];
 
 							this.dataRuta.forEach((data, index) => {
-								data.indice=index;
+								data.indice = index;
 								this.idNivelesAprobacionRuta[data.id] = "";
 								this.idNivelesAprobacionRuta2.push(data);
 							});
@@ -351,17 +326,6 @@ export class CrearNivelesAprobacionComponent implements OnInit {
 					}))
 					.sort((a, b) => a.descripcion.toUpperCase().localeCompare(b.descripcion.toUpperCase()));
 			}
-			// return this.mantenimientoService.getCatalogoRBPNA().subscribe({
-			//   next: (response) => {
-			//     this.dataNivelAprobacion = response.itemCatalogoTypes.map((r) => ({
-			//       id: r.codigo,
-			//       descripcion: r.valor,
-			//     })); //verificar la estructura mmunoz
-			//   },
-			//   error: (error: HttpErrorResponse) => {
-			//     this.utilService.modalResponse(error.error, "error");
-			//   }
-			// }),
 		});
 	}
 
@@ -407,6 +371,7 @@ export class CrearNivelesAprobacionComponent implements OnInit {
 				};
 				return modelo;
 			});
+
 		this.serviceNivelesAprobacion.guardarNivelesAprobacion(nivelesAprobacion).subscribe({
 			next: () => {
 				this.utilService.closeLoadingSpinner();
@@ -422,48 +387,5 @@ export class CrearNivelesAprobacionComponent implements OnInit {
 				this.utilService.modalResponse("Ya existe un Nivel de Aprobación para esta configuración.", "error");
 			}
 		});
-
-		// this.utilService.openLoadingSpinner("Guardando información, espere por favor...");
-
-		// const modelo = {
-		//   ...this.modelo,
-		//   estado: this.modelo.estado ? "A" : "I",
-		// };
-
-		// if (this.id_edit === undefined) {
-		//   this.route.params.subscribe((params) => {
-		//     this.serviceNivelesAprobacion.guardarNivelAprobacion(modelo).subscribe({
-		//       next: (response) => {
-		//         this.utilService.closeLoadingSpinner();
-
-		//         this.utilService.modalResponse("Datos ingresados correctamente", "success");
-
-		//         setTimeout(() => {
-		//           this.router.navigate(["/mantenedores/niveles-aprobacion"]);
-		//         }, 1600);
-		//       },
-		//       error: (error: HttpErrorResponse) => {
-		//         this.utilService.modalResponse(error.error, "error");
-		//       }
-		//     });
-		//   });
-
-		//   return;
-		// }
-
-		// this.serviceNivelesAprobacion.actualizarNivelAprobacion(modelo).subscribe({
-		//   next: (response) => {
-		//     this.utilService.closeLoadingSpinner();
-
-		//     this.utilService.modalResponse("Datos actualizados correctamente", "success");
-
-		//     setTimeout(() => {
-		//       this.router.navigate(["/mantenedores/niveles-aprobacion"]);
-		//     }, 1600);
-		//   },
-		//   error: (error: HttpErrorResponse) => {
-		//     this.utilService.modalResponse(error.error, "error");
-		//   }
-		// });
 	}
 }

@@ -45,6 +45,7 @@ import { RegistrarFamiliaresComponent } from "./registrar-familiares/registrar-f
 import { DialogBuscarEmpleadosReingresoComponent } from "./reingreso-personal/dialog-buscar-empleados-reingreso/dialog-buscar-empleados-reingreso.component";
 import { ReingresoPersonalComponent } from "./reingreso-personal/reingreso-personal.component";
 import { TrazabilidadSolicitudComponent } from "./trazabilidad-solicitud/trazabilidad-solicitud.component";
+import { BuscarEmpleadoComponent } from "./buscar-empleado/buscar-empleado.component";
 
 @NgModule({
 	declarations: [
@@ -64,6 +65,7 @@ import { TrazabilidadSolicitudComponent } from "./trazabilidad-solicitud/trazabi
 		DialogBuscarEmpleadosFamiliaresComponent,
 		DialogBuscarEmpleadosReingresoComponent,
 		TrazabilidadSolicitudComponent,
+		BuscarEmpleadoComponent
 	],
 	imports: [
 		RouterModule.forChild(SolicitudesRoutes),
