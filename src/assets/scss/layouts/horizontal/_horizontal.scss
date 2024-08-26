@@ -160,8 +160,9 @@ This is for the horizontal layout
 
 		.left-sidebar {
 			width: 100%;
-			height: auto;
-			position: relative;
+			height: 64px;
+			position: fixed;
+			top: 0;
 			padding-top: 0px;
 			z-index: 45;
 			transition: 0s;

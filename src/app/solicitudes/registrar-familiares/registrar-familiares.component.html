@@ -1,78 +1,84 @@
 <form (ngSubmit)="onSubmit()" #SolicitudForm="ngForm" #solicitudForm="ngForm">
 	<div class="card">
 		<h2 class="card-body text-start">
-			<div class="row justify-around">
-				<div class="col">
-					<div class="mb-3">
-						<a routerLink="/tareas/consulta-tareas">
+			<div class="header-solicitud">
+				<div class="row justify-around">
+					<div class="col">
+						<div class="mb-3">
 							<h3 class="sol-danger">
-								<i class="bi bi-arrow-left-circle azul"></i>
-								{{ solicitud.idSolicitud }}
+								<a routerLink="/tareas/consulta-tareas"> <i class="bi bi-arrow-left-circle azul"></i> {{ solicitud.idSolicitud }} </a>
 							</h3>
-						</a>
+						</div>
+					</div>
+
+					<div class="col text-end">
+						<!-- <button *ngIf="existeMatenedores" type="button" (click)="openModal('dialogReasignarUsuario')"class="btn btn-info me-2 mt-1">
+							<i class="fas fa-redo"></i> Reasignar
+						</button> -->
+
+						<button *ngIf="!existeMatenedores || existe" type="button" (click)="onSubmit()" class="btn btn-info me-2 mt-1" aria-label="Close" [disabled]="justificacionCF === '' || (dataTableDatosFamiliares.length === 0 && faltaParentezco())"><i class="fas fa-save"></i> Guardar</button>
+
+						<button *ngIf="!existeMatenedores || existe" type="button" (click)="onCompletar()" class="btn btn-info me-2 mt-1" [disabled]="justificacionCF === '' || (dataTableDatosFamiliares.length === 0 && faltaParentezco())"><i class="fas fa-check-circle"></i> Completar Tarea</button>
 					</div>
 				</div>
-				<div class="col text-end">
-					<button *ngIf="existeMatenedores" type="button" (click)="openModal('dialogReasignarUsuario')"class="btn btn-info me-2 mt-1">
-						<i class="fas fa-redo"></i> Reasignar
-					</button>
 
-					<button *ngIf="!existeMatenedores || existe" type="button" (click)="onSubmit()" class="btn btn-info me-2 mt-1" aria-label="Close" [disabled]="justificacionCF === '' || (dataTableDatosFamiliares.length === 0 && faltaParentezco())">
-						<i class="fas fa-save"></i> Guardar
-					</button>
+				<div class="row mt-4">
+					<div class="col-md-4">
+						<div class="input-group mb-3">
+							<label class="input-group-text label-estilo" for="origin">Creado por:</label>
 
-					<button *ngIf="!existeMatenedores || existe" type="button" (click)="onCompletar()" class="btn btn-info me-2 mt-1" [disabled]="justificacionCF === '' || (dataTableDatosFamiliares.length === 0 && faltaParentezco())">
-						<i class="fas fa-check-circle"></i> Completar Tarea
-					</button>
+							<span id="origin" name="" style="color: black; font-size: 14px" class="text-start">{{ solicitud.usuarioCreacion }}</span>
+						</div>
+					</div>
+
+					<div class="col-md-4">
+						<div class="input-group mb-3">
+							<label class="input-group-text label-estilo" for="unidadnegocio">Fecha:</label>
+
+							<span id="date" name="" style="color: black; font-size: 14px" class="text-start">{{ solicitud.fechaCreacion | date : "yyyy/MM/dd" }}</span>
+						</div>
+					</div>
+
+					<div class="col-md-4">
+						<div class="input-group mb-3">
+							<label class="input-group-text label-estilo" for="unidadnegocio">Nro. Solicitud:</label>
+
+							<span id="solicitud" name="" style="color: black; font-size: 14px" class="text-start">{{ solicitud.idSolicitud }}</span>
+						</div>
+					</div>
 				</div>
 
+				<hr>
 			</div>
-			<div class="row mt-4">
-				<div class="col-md-4">
-					<div class="input-group mb-3">
-						<label class="input-group-text label-estilo" for="origin">Creado por:</label>
-						<span id="origin" name="" style="color: black; font-size: 14px" class="text-start">{{ solicitud.usuarioCreacion }}</span>
-					</div>
-				</div>
-				<div class="col-md-4">
-					<div class="input-group mb-3">
-						<label class="input-group-text label-estilo" for="unidadnegocio">Fecha:</label>
-						<span id="date" name="" style="color: black; font-size: 14px" class="text-start">{{ solicitud.fechaCreacion | date:'yyyy/MM/dd' }}</span>
-					</div>
-				</div>
-				<div class="col-md-4">
-					<div class="input-group mb-3">
-						<label class="input-group-text label-estilo" for="unidadnegocio">Nro. Solicitud:</label>
-						<span id="solicitud" name="" style="color: black; font-size: 14px" class="text-start">{{ solicitud.idSolicitud }}</span>
-					</div>
-				</div>
-			</div>
 
-			<div class="row mt-4">
+			<div class="row after-header-solicitud">
 				<div class="col-md-4">
 					<div class="mb-4">
-						<a>
-							<h3 class="sol-danger">Información de persona a contratar</h3>
-						</a>
+						<h3 class="sol-danger">Información de persona a contratar</h3>
 					</div>
 				</div>
+
 				<div class="col-md-8">
 					<hr />
 				</div>
 			</div>
+
 			<div class="row">
 				<div class="col-md-3">
 					<div class="input-group mb-3">
 						<label class="input-group-text label-estilo" for="tipoSolicitud">Nro de Solicitud de Requisicion</label>
+
 						&nbsp;
 					</div>
 				</div>
+
 				<div class="col-md-6">
 					<div class="input-group mb-3">
 						<span #mivar id="tipoSolicitud" name="idTipoSolicitud" style="color: black; font-size: 14px" class="text-start">{{ idSolicitudRP }}</span>
 					</div>
 				</div>
 			</div>
+
 			<div class="row">
 				<div class="col-md-3">
 					<div class="input-group mb-3">
@@ -86,16 +92,16 @@
 					</div>
 				</div>
 			</div>
+
 			<div class="row">
 				<div class="col-md-6"></div>
 			</div>
 
 			<div class="row">
 				<div class="col-md-3">
-					<label class="input-group-text label-estilo" for="codigoposicion">
-						Nombre del candidato seleccionado
-					</label>
+					<label class="input-group-text label-estilo" for="codigoposicion">Nombre del candidato seleccionado</label>
 				</div>
+
 				<div class="col-md-6">
 					<div class="input-group mb-3">
 						<span #mivar id="tipoSolicitud" name="idTipoSolicitud" style="color: black; font-size: 14px" class="text-start">{{ nombreCompletoCandidato }}</span>
@@ -107,12 +113,15 @@
 				<div class="col-md-7">
 					<div class="input-group mb-3">
 						<label class="input-group-text label-estilo" for="compania">Compañía</label>
+
 						<span id="compania" name="" style="color: black; font-size: 14px" class="text-start">{{ model.compania }}</span>
 					</div>
 				</div>
+
 				<div class="col-md">
 					<div class="input-group mb-3">
 						<label class="input-group-text label-estilo" for="unidadnegocio">Unidad de negocio</label>
+
 						<span id="unidadnegocio" name="" style="color: black; font-size: 14px" class="text-start">{{ model.unidadNegocio }}</span>
 					</div>
 				</div>
@@ -122,12 +131,15 @@
 				<div class="col-md-7">
 					<div class="input-group mb-3">
 						<label class="input-group-text label-estilo" for="departamento">Departamento</label>
+
 						<span id="departamento" name="" style="color: black; font-size: 14px" class="text-start">{{ model.departamento }}</span>
 					</div>
 				</div>
+
 				<div class="col-md">
 					<div class="input-group mb-3">
 						<label class="input-group-text label-estilo" for="tipocargo">Localidad</label>
+
 						<span id="cargo" name="" style="color: black; font-size: 14px" class="text-start">{{ model.localidad }}</span>
 					</div>
 				</div>
@@ -137,12 +149,15 @@
 				<div class="col-md-7">
 					<div class="input-group mb-3">
 						<label class="input-group-text label-estilo" for="localidadzona">Cargo</label>
+
 						<span id="localidadzona" name="" style="color: black; font-size: 14px" class="text-start">{{ "Prueba" }}</span>
 					</div>
 				</div>
+
 				<div class="col-md">
 					<div class="input-group mb-3">
 						<label class="input-group-text label-estilo" for="niveldirección">Tipo de contrato</label>
+
 						<span id="niveldirección" name="" style="color: black; font-size: 14px" class="text-start">{{ "Especial" }}</span>
 					</div>
 				</div>
@@ -152,6 +167,7 @@
 				<div class="col-md-7">
 					<div class="input-group mb-3">
 						<label class="input-group-text label-estilo" for="centrocosto">Jefe solicitante</label>
+
 						<span id="centrocosto" name="" style="color: black; font-size: 14px" class="text-start">{{ "Pedro Ramirez" }}</span>
 					</div>
 				</div>
@@ -161,29 +177,31 @@
 				<div class="col-md-7">
 					<div class="input-group mb-3">
 						<label class="input-group-text label-estilo" for="centrocosto">Responsable de RRHH</label>
+
 						<span id="centrocosto" name="" style="color: black; font-size: 14px" class="text-start">{{ "Juan Garcez" }}</span>
 					</div>
 				</div>
 			</div>
+
 			<div class="row" *ngIf="mostrarTipoJustificacionYMision">
 				<div class="col">
 					<div class="input-group mb-3 contenedor">
 						<label class="input-group-text adjustable-label" for="justificacion">Justificación</label>
+
 						&nbsp;
+
 						<textarea id="justificacion" name="justificacion" [(ngModel)]="model.justificacionCargo" style="color: black; font-size: 14px" required #justificacion="ngModel"></textarea>
 					</div>
 				</div>
 			</div>
 
-			<!-- Datos de familiares que ya laboran en la empresa  -->
 			<div class="row mt-2">
 				<div class="col">
 					<div class="mb-4">
-						<h3 class="sol-danger">
-							Datos de familiares que ya laboran en la empresa
-						</h3>
+						<h3 class="sol-danger">Datos de familiares que ya laboran en la empresa</h3>
 					</div>
 				</div>
+
 				<div class="col">
 					<hr />
 				</div>
@@ -195,6 +213,7 @@
 						<input-component [id]="'searchInputFilter'" [type]="'string'" [buttonIcon]="'ti-search'" buttonFunction="filterStringInTable" onChangeFunction="filterStringInTable" placeholder="Buscar Empleado" [contexto]="this" (click)="openModal('dialogBuscarEmpleados')"></input-component>
 					</div>
 				</div>
+
 				<form>
 					<div class="row mt-3">
 						<table-personalized [columns]="columnsDatosFamiliares" [data]="dataTableDatosFamiliares" [tableWidth]="'100%'" (changeSort)="handleChangeSort($event)" (saveRowData)="handleSaveRowData($event)" (actionClick)="handleActionClick($event)"></table-personalized>
@@ -202,21 +221,20 @@
 				</form>
 			</div>
 
-			<!-- Aprobadores de la solicitud -->
 			<div class="row mt-4">
 				<div class="col-md-4">
 					<div class="mb-4">
-						<a>
-							<h3 class="sol-danger">Aprobadores de la solicitud</h3>
-						</a>
+						<h3 class="sol-danger">Aprobadores de la solicitud</h3>
 					</div>
 				</div>
+
 				<div class="col-md-8">
 					<hr />
 				</div>
 			</div>
+
 			<div class="accordion" id="accordionExample">
-				<div *ngFor=" let nivelItem of dataAprobacionesPorPosicion[keySelected]; let i = index" class="accordion-item">
+				<div *ngFor="let nivelItem of dataAprobacionesPorPosicion[keySelected]; let i = index" class="accordion-item">
 					<div class="accordion-header">
 						<button class="accordion-button" type="button" data-bs-toggle="collapse" [attr.data-bs-target]="'#collapse' + i" aria-expanded="true" [attr.aria-controls]="'collapse' + i" style="display: block">
 							<div class="row" style="align-items: center; justify-content: space-around">

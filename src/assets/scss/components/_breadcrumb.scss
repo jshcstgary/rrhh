@@ -3,41 +3,50 @@
 *******************/
 
 .page-breadcrumb {
-  padding: 15px;
-  background: $white;
+	padding: 15px;
+	position: fixed;
+	top: 64px;
+	width: 100%;
+	z-index: 40;
+	background: $white;
+	height: 64px;
 
-  .breadcrumb-container {
-    max-width: $page-wrapper-max-width;
-    margin-left: auto;
-    margin-right: auto;
-  }
-  .page-title {
-    margin-bottom: 0px;
-    color: $sidebar-text-dark;
-    font-size: 24px;
-    font-style: normal;
-    font-weight: 700;
-    line-height: normal;
-    letter-spacing: 1.2px;
-    margin-left: 5%;
-  }
-  .breadcrumb {
-    padding: 0px;
-    margin: 0px;
-    background: transparent;
-    font-size: 18px;
-    font-style: normal;
-    font-weight: 300;
-    line-height: normal;
-    margin-right: 5%;
-    .breadcrumb-item + .breadcrumb-item::before {
-      content: "\e649";
-      font-family: themify, sans-serif;
-      color: $primary;
-      font-size: 18px;
-    }
-    .breadcrumb-item.active {
-      color: $primary;
-    }
-  }
+	.breadcrumb-container {
+		max-width: $page-wrapper-max-width;
+		margin-left: auto;
+		margin-right: auto;
+	}
+
+	.page-title {
+		margin-bottom: 0px;
+		color: $sidebar-text-dark;
+		font-size: 24px;
+		font-style: normal;
+		font-weight: 700;
+		line-height: normal;
+		letter-spacing: 1.2px;
+		margin-left: 5%;
+	}
+
+	.breadcrumb {
+		padding: 0px;
+		margin: 0px;
+		background: transparent;
+		font-size: 18px;
+		font-style: normal;
+		font-weight: 300;
+		line-height: normal;
+		margin-right: 5%;
+
+		.breadcrumb-item + .breadcrumb-item::before {
+			content: "\e649";
+			font-family: themify, sans-serif;
+			color: $primary;
+			font-size: 18px;
+		}
+
+		.breadcrumb-item.active {
+			color: $primary;
+		}
+	}
 }

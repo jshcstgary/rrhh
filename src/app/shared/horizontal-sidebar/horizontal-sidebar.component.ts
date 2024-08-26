@@ -1,27 +1,27 @@
-import { Component, Output } from "@angular/core";
-import { Router, RouterModule } from "@angular/router";
-import { RouteInfo } from "./horizontal-sidebar.metadata";
-import { HorizontalSidebarService } from "./horizontal-sidebar.service";
-import { TranslateModule } from "@ngx-translate/core";
 import { CommonModule } from "@angular/common";
-import { FeatherModule } from "angular-feather";
-import { IDropdownOptions } from "src/app/component/dropdown/dropdown.interface";
-import { ComponentsModule } from "src/app/component/component.module";
-import { VerticalNavigationData } from "../horizontal-header/horizontal-navigation.data";
+import { Component } from "@angular/core";
 import { MatMenuModule } from "@angular/material/menu";
+import { Router, RouterModule } from "@angular/router";
 import {
 	NgbAccordionModule,
 	NgbCarouselModule,
 	NgbDropdownModule,
 } from "@ng-bootstrap/ng-bootstrap";
+import { TranslateModule } from "@ngx-translate/core";
+import { FeatherModule } from "angular-feather";
 import { NgScrollbarModule } from "ngx-scrollbar";
+import { ComponentsModule } from "src/app/component/component.module";
+import { IDropdownOptions } from "src/app/component/dropdown/dropdown.interface";
+import { VerticalNavigationData } from "../horizontal-header/horizontal-navigation.data";
+import { RouteInfo } from "./horizontal-sidebar.metadata";
+import { HorizontalSidebarService } from "./horizontal-sidebar.service";
 // import { EventEmitter } from "stream";
-import { MatIconModule } from "@angular/material/icon";
 import { ScrollingModule } from "@angular/cdk/scrolling";
-import { Permiso } from "../../types/permiso.type";
-import { LocalStorageKeys } from "src/app/enums/local-storage-keys.enum";
+import { MatIconModule } from "@angular/material/icon";
 import { LoginServices } from "src/app/auth/services/login.services";
+import { LocalStorageKeys } from "src/app/enums/local-storage-keys.enum";
 import { UtilService } from "src/app/services/util/util.service";
+import { Permiso } from "../../types/permiso.type";
 
 @Component({
 	selector: "app-horizontal-sidebar",
@@ -54,7 +54,7 @@ export class HorizontalSidebarComponent {
 
 	public permisos: Permiso[] = JSON.parse(localStorage.getItem(LocalStorageKeys.Permisos)) || [];
 	//public pagesToSearch: ISelectOptions = [];
-	public userName: string = "User: " + localStorage.getItem(LocalStorageKeys.IdLogin) + " - Perfil:" + localStorage.getItem(LocalStorageKeys.Perfil);
+	public userName: string = "User: " + localStorage.getItem(LocalStorageKeys.IdLogin) + " - Perfil: " + localStorage.getItem(LocalStorageKeys.Perfil);
 	public profile: string = "Supervisor";
 	public profiles: IDropdownOptions = [
 		{

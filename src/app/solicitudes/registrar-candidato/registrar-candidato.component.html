@@ -1,703 +1,621 @@
 <form (ngSubmit)="onSubmit()" #SolicitudForm="ngForm" #solicitudForm="ngForm">
-  <div class="card">
-    <h2 class="card-body text-start">
-      <div class="row">
-        <div class="col-md-8">
-          <div class="mb-3">
-            <a routerLink="/tareas/consulta-tareas">
-              <h3 class="sol-danger">
-                <i class="bi bi-arrow-left-circle azul"></i> {{ solicitud.idSolicitud }}
-              </h3>
-            </a>
-          </div>
-        </div>
-
-        <div class="col text-end">
-          <button  *ngIf="existeMatenedores"
-            type="button"
-            (click)="openModal('dialogReasignarUsuario')"
-            class="btn btn-info me-2 mt-1"
-          >
-            <i class="fas fa-redo"></i> Reasignar
-          </button>
-
-          <button  *ngIf="!existeMatenedores || existe"
-            type="button"
-            (click)="saveCandidato()"
-            class="btn btn-info me-2 mt-1"
-            aria-label="Close"
-            [disabled]="model.tipoProceso === '' && tipoProcesoSaved === ''"
-          >
-            <i class="fas fa-save"></i> Guardar
-          </button>
-          <button  *ngIf="!existeMatenedores || existe"
-            type="button"
-            (click)="onCompletar()"
-            class="btn btn-info me-2 mt-1"
-            [disabled]="!disabledFechas.actualizacionPerfil || !disabledFechas.busquedaCandidatos || !disabledFechas.entrevista || !disabledFechas.pruebas || !disabledFechas.referencias || !disabledFechas.elaboracionInforme || !disabledFechas.entregaJefe || !disabledFechas.entrevistaJefatura || !disabledFechas.tomaDecisiones || !disabledFechas.candidatoSeleccionado || !disabledFechas.procesoContratacion || !disabledFechas.finProcesoContratacion || candidatoLleno"
-          >
-            <i class="fas fa-check-circle"></i> Completar Tarea
-          </button>
-        </div>
-
-        <!-- <div *ngIf="existeMatenedores" class="col-md-12 text-end">
-          <button type="button" (click)="openModal('dialogReasignarUsuario')" class="btn btn-info me-2 mt-1">
-            <i class="fas fa-redo"></i> Reasignar
-          </button>
-        </div>
-
-        <div *ngIf="!existeMatenedores || existe" class="col-md-4 text-end d-flex justify-content-end align-items-center">
-          <button type="button" class="btn btn-info me-2 d-flex align-items-center justify-content-center button-custom"
-            aria-label="Close" (click)="saveCandidato()"
-            [disabled]="model.tipoProceso === '' && tipoProcesoSaved === ''">
-            <i class="fas fa-save me-2 icon-size"></i> Guardar
-          </button>
-
-          <button type="button" (click)="onCompletar()"
-            class="btn btn-info me-2 d-flex align-items-center justify-content-center button-custom"
-            [disabled]="!isCheckedPerfil || !isCheckedBusquedaCandidato || !isCheckedFinContratacion || !isCheckedProcesoContratacion || !isCheckedCandidatoSeleccionado || !isCheckedTomaDecisiones || !isCheckedEntrevistaJefatura || !isCheckedEntregaJefe || !isCheckedElaboracionInforme || !isCheckedReferencias || !isCheckedPruebas || !isCheckedEntrevista || nombreCandidato === ''">
-            <i class="fas fa-check-circle me-2 icon-size"></i> Completar Tarea
-          </button>
-        </div> -->
-      </div>
-
-      <div class="row mt-4">
-        <div class="col-md-4">
-          <div class="input-group mb-3">
-            <label class="label-estilo" for="origin">Creado por:</label>
-            <span id="origin" name="" style="color: black; font-size: 14px" class="text-start">{{
-              solicitud.usuarioCreacion }}</span>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <div class="input-group mb-3">
-            <label class="label-estilo" for="unidadnegocio">Fecha:</label>
-            <span id="date" name="" style="color: black; font-size: 14px" class="text-start">{{
-              this.solicitud.fechaCreacion | date : "yyyy/MM/dd" }}</span>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <div class="input-group mb-3">
-            <label class="label-estilo" for="unidadnegocio">Nro. Solicitud:</label>
-            <span id="solicitud" name="" style="color: black; font-size: 14px" class="text-start">{{
-              solicitud.idSolicitud }}</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="row mt-4">
-        <div class="col-md-3">
-          <div class="mb-4">
-            <a>
-              <h3 class="sol-danger">Información general</h3>
-            </a>
-          </div>
-        </div>
-        <div class="col-md-9">
-          <hr />
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md-6">
-          <div class="input-group mb-3">
-            <label class="input-group-text label-estilo" for="tipoSolicitud">Tipo de solicitud</label>
-            &nbsp;
-            <span #mivar id="tipoSolicitud" name="idTipoSolicitud" style="color: black; font-size: 14px; "
-              class="text-start">{{ solicitud.tipoSolicitud }}</span>
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div class="input-group mb-3">
-            <label class="input-group-text label-estilo" for="tipomotivo">Tipo de motivo</label>
-            &nbsp;
-            <span id="tipomotivo" name="tipomotivo" style="color: black; font-size: 14px; " class="text-start">{{
-              solicitud.tipoMotivo }}</span>
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md-6">
-          <div class="input-group">
-            <label class="input-group-text label-estilo" for="codigoposicion">
-              Código de posición
-            </label>
-            &nbsp;
-            &nbsp;
-            <span id="codigoposicion" name="codigoposicion" style="color: black; font-size: 14px; "
-              class="text-start">{{ model.codigoPosicion }}</span>
-
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div class="input-group mb-3">
-            <label class="input-group-text label-estilo" for="descripcionposicion">Descripción de posición</label>
-            &nbsp;
-            <span id="descripcionposicion" name="descripcionposicion" style="color: black; font-size: 14px; "
-              class="text-start">{{ model.descrPosicion }}</span>
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md-6">
-          <div class="input-group mb-3">
-            <label class="input-group-text label-estilo" for="subledger">
-              Subledger
-            </label>
-            &nbsp;
-            <span id="subledger" name="subledger" style="color: black; font-size: 14px; " class="text-start">{{
-              model.subledger }}</span>
-          </div>
-        </div>
-
-        <div class="col-md-6">
-          <div class="input-group mb-3">
-            <label class="input-group-text label-estilo" for="nombreempleado">
-              Empleado
-            </label>
-            &nbsp;
-            <span id="nombreempleado" name="nombreempleado" style="color: black; font-size: 14px; "
-              class="text-start">{{ model.nombreCompleto }}</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col-md-6">
-          <div class="input-group mb-3">
-            <label class="input-group-text label-estilo" for="compania">Compañía</label>
-            <span id="compania" name="" style="color: black; font-size: 14px; " class="text-start">{{ model.compania
-              }}</span>
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div class="input-group mb-3">
-            <label class="input-group-text label-estilo" for="unidadnegocio">Unidad de negocio</label>
-            <span id="unidadnegocio" name="" style="color: black; font-size: 14px; " class="text-start">{{
-              model.unidadNegocio }}</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col-md-6">
-          <div class="input-group mb-3">
-            <label class="input-group-text label-estilo" for="departamento">Área/Departamento</label>
-            <span id="departamento" name="" style="color: black; font-size: 14px; " class="text-start">{{
-              model.departamento }}</span>
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div class="input-group mb-3">
-            <label class="input-group-text label-estilo" for="tipocargo">Tipo de cargo</label>
-            <span id="cargo" name="" style="color: black; font-size: 14px; " class="text-start">{{ model.nombreCargo
-              }}</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col-md-6">
-          <div class="input-group mb-3">
-            <label class="input-group-text label-estilo" for="localidadzona">Localidad/Zona</label>
-            <span id="localidadzona" name="" style="color: black; font-size: 14px; " class="text-start">{{
-              model.localidad }}</span>
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div class="input-group mb-3">
-            <label class="input-group-text label-estilo" for="niveldirección">Nivel de dirección</label>
-            <span id="niveldirección" name="" style="color: black; font-size: 14px; " class="text-start">{{
-              model.nivelDir }}</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col-md-6">
-          <div class="input-group mb-3">
-            <label class="input-group-text label-estilo" for="centrocosto">Centro de costo</label>
-            <span id="centrocosto" name="" style="color: black; font-size: 14px; " class="text-start">{{ model.nomCCosto
-              }}</span>
-          </div>
-        </div>
-        <div class="col-md-6" *ngIf="mostrarTipoJustificacionYMision">
-          <div class="input-group mb-3">
-            <label class="input-group-text label-estilo" for="misioncargo">Misión del cargo</label>
-            <span id="misioncargo" name="misioncargo" style="color: black; font-size: 14px; " class="text-start">{{
-              model.misionCargo }}</span>
-
-          </div>
-        </div>
-      </div>
-      <div class="row" *ngIf="mostrarTipoJustificacionYMision">
-        <div class="col">
-          <div class="input-group mb-3 contenedor">
-            <label class="input-group-text label-estilo2" for="justificacion">Justificación</label>
-            &nbsp;
-            <span id="justificacion" name="justificacion" style="color: black; font-size: 14px; " class="text-start">{{
-              model.justificacionCargo }}</span>
-          </div>
-        </div>
-      </div>
-      <div class="row mt-4">
-        <div class="col-md-4">
-          <div class="mb-4">
-            <a>
-              <h3 class="sol-danger">Funciones y responsabilidades</h3>
-            </a>
-          </div>
-        </div>
-        <div class="col-md-8">
-          <hr />
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col-md-6">
-          <div class="input-group mb-3">
-            <label class="input-group-text label-estilo" for="reporta">Reporta a</label>
-            &nbsp;
-            <span id="reporta" name="" style="color: black; font-size: 14px; " class="text-start">{{ model.reportaA }}
-            </span>
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div class="input-group mb-3">
-            <label class="input-group-text label-estilo" for="supervisaa">Supervisa a</label>
-            &nbsp;
-            <span id="supervisaa" name="" style="color: black; font-size: 14px; " class="text-start">{{ model.supervisaA
-              }}</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col-md-6">
-          <div class="input-group mb-3">
-            <label class="input-group-text label-estilo" for="tipocontrato">Tipo de contrato</label>
-            &nbsp;
-            <span id="tipocontrato" name="tipocontrato" style="color: black; font-size: 14px; " class="text-start">{{
-              model.tipoContrato }}</span>
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div class="input-group mb-3">
-            <label class="input-group-text label-estilo" for="nivelRepa">Nivel de reporte</label>
-            &nbsp;
-            <span id="nivelRepa" name="" style="color: black; font-size: 14px; " class="text-start">{{ model.nivelRepa
-              }}</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col-md-6">
-          <div class="input-group mb-3">
-            <label class="input-group-text label-estilo" for="sueldo">Sueldo</label>
-            &nbsp;
-            <span id="sueldo" name="sueldo" style="color: black; font-size: 14px; " class="text-start">{{ model.sueldo
-              }}</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="row mt-4">
-        <div class="col-md-4">
-          <div class="mb-4">
-            <a>
-              <h3 class="sol-danger">Tipo de variable</h3>
-            </a>
-          </div>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col-md-6">
-          <div class="input-group mb-3">
-            <label class="input-group-text label-estilo" for="mensual">Mensual</label>
-            &nbsp;
-            <span id="mensual" name="mensual" style="color: black; font-size: 14px; " class="text-start">{{
-              model.sueldoMensual }}</span>
-
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div class="input-group mb-3">
-            <label class="input-group-text label-estilo" for="trimestral">Trimestral</label>
-            &nbsp;
-            <span id="trimestral" name="trimestral" style="color: black; font-size: 14px; " class="text-start">{{
-              model.sueldoTrimestral }}</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col-md-6">
-          <div class="input-group mb-3">
-            <label class="input-group-text label-estilo" for="semestral">Semestral</label>
-            &nbsp;
-            <span id="semestral" name="semestral" style="color: black; font-size: 14px; " class="text-start">{{
-              model.sueldoSemestral }}</span>
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div class="input-group mb-3">
-            <label class="input-group-text label-estilo" for="anual">Anual</label>
-            &nbsp;
-            <span id="anual" name="anual" style="color: black; font-size: 14px; " class="text-start">{{
-              model.sueldoAnual }}</span>
-          </div>
-        </div>
-      </div>
-
-
-      <div class="row mt-4">
-        <div class="col-md-4">
-          <div class="mb-4">
-            <a>
-              <h3 class="sol-danger">Atención de los Aprobadores</h3>
-            </a>
-          </div>
-        </div>
-        <div class="col-md-8">
-          <hr />
-        </div>
-      </div>
-
-      <!--Comentarios de aprobadores en seleccion de candidato-->
-
-      <div class="row mt-2">
-        <div class="col">
-          <div *ngFor="let item of dataComentariosAprobaciones; let i = index" class="row mt-2 align-items-center">
-            <div class="col-auto">
-              <label *ngIf="i === 0" class="input-group-text adjustable-label" for="lcomentariodinamico">
-                Aprobadores dinámicos
-              </label>
-              <label *ngIf="i !== 0" class="input-group-text hidden-label" for="lcomentariodinamico">
-                Aprobadores dinámicos
-              </label>
-            </div>
-            <div class="col">
-              <span id="lcomentariodinamico" name="" style="color: black; font-size: 14px;">
-                {{
-                item.text !== "" &&
-                item.text !== undefined &&
-                item.text != null
-                ? item.text
-                : "No hay comentario"
-                }}
-              </span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="row mt-2">
-        <div class="col">
-          <div class="input-group mb-3">
-            <label class="input-group-text adjustable-label2" for="lcomentariorrhh">
-              Gerente de RRHH Corporativo
-            </label>
-            &nbsp;
-
-            <div *ngFor="let item of dataComentariosAprobacionesRRHH">
-              &nbsp;
-              <span id="lcomentariorrhh" name="" style="color: black; font-size: 14px;">{{
-                item.text !== "" &&
-                item.text !== undefined &&
-                item.text != null
-                ? item.text
-                : "No hay comentario"
-                }}</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="row mt-2">
-        <div class="col">
-          <div class="input-group mb-3">
-            <label class="input-group-text adjustable-label2" for="comitederemuneraciones">
-              Comité de Remuneraciones
-            </label>
-            &nbsp;
-            <span id="comitederemuneraciones" name="" style="color: black; font-size: 14px; " class="text-start">{{
-              detalleSolicitud.comiteRemuneraciones }}</span>
-            <div *ngFor="let item of dataComentariosAprobacionesCREM">
-              &nbsp;
-              <span id="lcomentariocrem" name="" style="color: black; font-size: 14px;">{{
-                item.text !== "" &&
-                item.text !== undefined &&
-                item.text != null
-                ? item.text
-                : "No hay comentario"
-                }}</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-
-      <!--Fin de Comentarios -->
-      <div class="row mt-4">
-        <div class="col-md-4">
-          <div class="mb-4">
-            <a>
-              <h3 class="sol-danger">Selección de Candidato</h3>
-            </a>
-          </div>
-        </div>
-        <div class="col-md-8">
-          <hr />
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col-md-6">
-          <div class="input-group mb-3">
-            <label class="input-group-text label-estilo" for="tipoSolicitud">Tipo Proceso</label>
-            &nbsp;
-
-
-            <select *ngIf="tipoProcesoSaved === ''; else tipoProceso" id="tipoproceso" name="tipoproceso"
-              class="form-select" style="font-size: 14px" [(ngModel)]="model.tipoProceso"
-              (change)="onChangeTipoProceso($event)" required [disabled]="disabledTipoProceso">
-              <option value="">Seleccione...</option>
-
-              <option *ngFor="let dato of dataTipoProceso; let i = index" [value]="dato.descripcion"
-                [selected]="i > 0 && model.tipoProceso === dato.descripcion">
-                {{dato.descripcion}}
-              </option>
-            </select>
-
-            <ng-template #tipoProceso>
-              <span>{{ model.tipoProceso }}</span>
-            </ng-template>
-
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div class="input-group mb-3">
-            <label class="input-group-text label-estilo2" for="flexSwitchCheckChecked">Tipo de fuente</label>
-            &nbsp;
-
-            <div class="form-check form-switch checkbox-container">
-              <label class="form-check-label" for="flexSwitchCheckChecked">Interno</label>
-              <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" name="flexSwitchCheckChecked"
-                [(ngModel)]="isChecked" (change)="toggleDivVisibility($event)">
-              <label class="form-check-label" for="flexSwitchCheckChecked">Externo</label>
-            </div>
-
-          </div>
-        </div>
-      </div>
-
-
-
-      <!--Fila Fuente externa-->
-
-      <div class="row" *ngIf="isDivVisible">
-        <div class="col-md-6">
-          <div class="input-group mb-3">
-            <label class="input-group-text label-estilo">Fuente Externa</label>
-            &nbsp;
-
-            <select id="selectOptions" [(ngModel)]="selectedOption" name="selectOptions" class="form-select"
-              style="font-size: 14px" required>
-              <option value="">Seleccione...</option>
-
-              <option *ngFor="let option of options" [value]="option.descripcion">
-                {{ option.descripcion }}
-              </option>
-            </select>
-
-
-          </div>
-        </div>
-
-      </div>
-
-
-
-      <!--Fin Fuente externa-->
-
-      <!--Inicio seleccion de candidato-->
-
-      <!--Columnas con tres campos por fila-->
-      <!--<div class="container mt-4">-->
-      <div class="row">
-        <div class="col-md-4 d-flex align-items-center">
-          <input id="input1" type="checkbox" [(ngModel)]="isCheckedPerfil" (change)="onCheckboxChangeCandidato($event)"
-            name="checkPerfil" [disabled]="disabledFechas.actualizacionPerfil">
-          <label for="input1" class="input-group-text adjustable-label">Actualización del perfil</label>
-          <input type="text" class="form-control" [value]="fechas.actualizacionPerfil" name="perfil" readonly>
-        </div>
-
-        <div class="col-md-4 d-flex align-items-center">
-          <input id="input2" type="checkbox" [(ngModel)]="isCheckedBusquedaCandidato"
-            (change)="onCheckboxChangeCandidato($event)" name="checkBusquedaCandidato"
-            [disabled]="disabledFechas.busquedaCandidatos">
-          <label for="input2" class="input-group-text adjustable-label">Busqueda de candidatos</label>
-          <input type="text" class="form-control" [value]="fechas.busquedaCandidatos" name="busquedaCandidato" readonly>
-        </div>
-
-        <div class="col-md-4 d-flex align-items-center">
-          <input id="input3" type="checkbox" [(ngModel)]="isCheckedEntrevista"
-            (change)="onCheckboxChangeCandidato($event)" name="checkEntrevista" [disabled]="disabledFechas.entrevista">
-          <label for="input3" class="input-group-text adjustable-label">Entrevista de RR.HH.</label>
-          <input type="text" class="form-control" [value]="fechas.entrevista" readonly>
-        </div>
-      </div>
-      <!--</div>-->
-
-
-      <!--<div class="container mt-4">-->
-      <div class="row">
-        <div class="col-md-4 d-flex align-items-center">
-          <input id="input4" type="checkbox" [(ngModel)]="isCheckedPruebas" (change)="onCheckboxChangeCandidato($event)"
-            name="checkPruebas" [disabled]="disabledFechas.pruebas">
-          <label for="input4" class="input-group-text adjustable-label">Pruebas</label>
-          <input type="text" class="form-control" [value]="fechas.pruebas" readonly>
-        </div>
-
-        <div class="col-md-4 d-flex align-items-center">
-          <input id="input5" type="checkbox" [(ngModel)]="isCheckedReferencias"
-            (change)="onCheckboxChangeCandidato($event)" name="checkReferencias"
-            [disabled]="disabledFechas.referencias">
-          <label for="input5" class="input-group-text adjustable-label">Referencias</label>
-          <input type="text" class="form-control" [value]="fechas.referencias" readonly>
-        </div>
-
-        <div class="col-md-4 d-flex align-items-center">
-          <input id="input6" type="checkbox" [(ngModel)]="isCheckedElaboracionInforme"
-            (change)="onCheckboxChangeCandidato($event)" name="checkElaboracionInforme"
-            [disabled]="disabledFechas.elaboracionInforme">
-          <label for="input6" class="input-group-text adjustable-label">Elaboración de informe</label>
-          <input type="text" class="form-control" [value]="fechas.elaboracionInforme" readonly>
-        </div>
-      </div>
-      <!--</div>-->
-
-
-      <!--<div class="container mt-4">-->
-      <div class="row">
-        <div class="col-md-4 d-flex align-items-center">
-          <input id="input7" type="checkbox" [(ngModel)]="isCheckedEntregaJefe"
-            (change)="onCheckboxChangeCandidato($event)" name="checkEntregaJefe"
-            [disabled]="disabledFechas.entregaJefe">
-          <label for="input7" class="input-group-text adjustable-label">Entrega al jefe solicitante</label>
-          <input type="text" class="form-control" [value]="fechas.entregaJefe" readonly>
-        </div>
-
-        <div class="col-md-4 d-flex align-items-center">
-          <input id="input8" type="checkbox" [(ngModel)]="isCheckedEntrevistaJefatura"
-            (change)="onCheckboxChangeCandidato($event)" name="checkEntrevistaJefatura"
-            [disabled]="disabledFechas.entrevistaJefatura">
-          <label for="input8" class="input-group-text adjustable-label">Entrevista por jefatura</label>
-          <input type="text" class="form-control" [value]="fechas.entrevistaJefatura" readonly>
-        </div>
-
-        <div class="col-md-4 d-flex align-items-center">
-          <input id="input9" type="checkbox" [(ngModel)]="isCheckedTomaDecisiones"
-            (change)="onCheckboxChangeCandidato($event)" name="checkTomaDecisiones"
-            [disabled]="disabledFechas.tomaDecisiones">
-          <label for="input9" class="input-group-text adjustable-label">Toma de decisiones</label>
-          <input type="text" class="form-control" [value]="fechas.tomaDecisiones" readonly>
-        </div>
-      </div>
-      <!--</div>-->
-
-      <!--<div class="container mt-4">-->
-      <div class="row">
-        <div class="col-md-4 d-flex ">
-          <input id="input10" type="checkbox" [(ngModel)]="isCheckedCandidatoSeleccionado"
-            (change)="onCheckboxChangeCandidato($event)" name="checkCandidatoSeleccionado"
-            [disabled]="disabledFechas.candidatoSeleccionado">
-          <label for="input10" class="input-group-text adjustable-label">Candidato seleccionado</label>
-          <input type="text" class="form-control" [value]="fechas.candidatoSeleccionado" readonly>
-        </div>
-        <div class="col-md-4 d-flex ">
-          <input id="input11" type="checkbox" [(ngModel)]="isCheckedProcesoContratacion"
-            (change)="onCheckboxChangeCandidato($event)" name="checkProcesoContratacion"
-            [disabled]="disabledFechas.procesoContratacion">
-          <label for="input11" class="input-group-text adjustable-label">Proceso de contratación</label>
-          <input type="text" class="form-control" [value]="fechas.procesoContratacion" readonly>
-        </div>
-
-      </div>
-      <!--</div>-->
-
-      <!--<div class="container mt-4">-->
-      <div class="row">
-        <div class="col-md-4 d-flex align-items-center">
-          <input id="input12" type="checkbox" [(ngModel)]="isCheckedFinContratacion"
-            (change)="onCheckboxChangeCandidato($event)" name="checkFinContratacion"
-            [disabled]="disabledFechas.finProcesoContratacion">
-          <label for="input12" class="input-group-text adjustable-label">Fin del proceso de selección y de
-            contración</label>
-          <input type="text" class="form-control" [value]="fechas.finProcesoContratacion" readonly>
-        </div>
-
-      </div>
-      <!--</div>-->
-
-      <div class="row mb-3">
-        <div class="col-md-3 me-2">
-          <label class="input-group-text label-estilo"
-          for="nombre-candidato">Nombre del candidato seleccionado</label>
-        </div>
-        <div class="col-md-4">
-          <input type="text" appValidateAlphanumeric name="nombre-candidato" placeholder="Nombre del candidato" [(ngModel)]="nombreCandidato"
-            class="form-control" id="nombre-candidato" />
-        </div>
-      </div>
-
-      <!--Fin Seleccion de candidato-->
-      <div class="row mt-4">
-        <div class="col-md-4">
-          <div class="mb-4">
-            <a>
-              <h3 class="sol-danger">Reingreso</h3>
-            </a>
-          </div>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col-md-4 d-flex ">
-          <label for="input1" class="input-group-text adjustable-label">Inicio de proceso</label>
-          <input id="input1" type="text" class="form-control" readonly [value]="fechas.reingreso">
-        </div>
-
-        <div class="col-md-4 d-flex ">
-          <label for="input2" class="input-group-text adjustable-label">Fin de proceso</label>
-          <input id="input2" type="text" class="form-control" readonly [value]="fechas.finProceso">
-        </div>
-
-      </div>
-
-      <div class="row mt-4">
-        <div class="col-md-4">
-          <div class="mb-4">
-            <a>
-              <h3 class="sol-danger">Contratación de familiares</h3>
-            </a>
-          </div>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col-md-4 d-flex ">
-          <label for="input1" class="input-group-text adjustable-label">Inicio de proceso</label>
-          <input id="input1" type="text" class="form-control" readonly [value]="fechas.contratacionFamiliares">
-        </div>
-        <div class="col-md-4 d-flex ">
-          <label for="input2" class="input-group-text adjustable-label">Fin de proceso</label>
-          <input id="input2" type="text" class="form-control" readonly [value]="fechas.finProcesoFamiliares">
-        </div>
-
-      </div>
-
-    </h2>
-  </div>
+	<div class="card">
+		<h2 class="card-body text-start">
+			<div class="header-solicitud">
+				<div class="row">
+					<div class="col-md-8">
+						<div class="mb-3">
+							<h3 class="sol-danger">
+								<a routerLink="/tareas/consulta-tareas"> <i class="bi bi-arrow-left-circle azul"></i> {{ solicitud.idSolicitud }} </a>
+							</h3>
+						</div>
+					</div>
+
+					<div class="col text-end">
+						<!-- <button *ngIf="existeMatenedores" type="button" (click)="openModal('dialogReasignarUsuario')" class="btn btn-info me-2 mt-1"><i class="fas fa-redo"></i> Reasignar</button> -->
+
+						<button *ngIf="!existeMatenedores || existe" type="button" (click)="saveCandidato()" class="btn btn-info me-2 mt-1" aria-label="Close" [disabled]="model.tipoProceso === '' && tipoProcesoSaved === ''"><i class="fas fa-save"></i> Guardar</button>
+
+						<button *ngIf="!existeMatenedores || existe" type="button" (click)="onCompletar()" class="btn btn-info me-2 mt-1" [disabled]="!disabledFechas.actualizacionPerfil || !disabledFechas.busquedaCandidatos || !disabledFechas.entrevista || !disabledFechas.pruebas || !disabledFechas.referencias || !disabledFechas.elaboracionInforme || !disabledFechas.entregaJefe || !disabledFechas.entrevistaJefatura || !disabledFechas.tomaDecisiones || !disabledFechas.candidatoSeleccionado || !disabledFechas.procesoContratacion || !disabledFechas.finProcesoContratacion || candidatoLleno"><i class="fas fa-check-circle"></i> Completar Tarea</button>
+					</div>
+				</div>
+
+				<div class="row mt-4">
+					<div class="col-md-4">
+						<div class="input-group mb-3">
+							<label class="label-estilo" for="origin">Creado por:</label>
+
+							<span id="origin" name="" style="color: black; font-size: 14px" class="text-start">{{ solicitud.usuarioCreacion }}</span>
+						</div>
+					</div>
+
+					<div class="col-md-4">
+						<div class="input-group mb-3">
+							<label class="label-estilo" for="unidadnegocio">Fecha:</label>
+
+							<span id="date" name="" style="color: black; font-size: 14px" class="text-start">{{ this.solicitud.fechaCreacion | date : "yyyy/MM/dd" }}</span>
+						</div>
+					</div>
+
+					<div class="col-md-4">
+						<div class="input-group mb-3">
+							<label class="label-estilo" for="unidadnegocio">Nro. Solicitud:</label>
+
+							<span id="solicitud" name="" style="color: black; font-size: 14px" class="text-start">{{ solicitud.idSolicitud }}</span>
+						</div>
+					</div>
+				</div>
+
+				<hr />
+			</div>
+
+			<div class="row after-header-solicitud">
+				<div class="col-md-3">
+					<div class="mb-4">
+						<h3 class="sol-danger">Información general</h3>
+					</div>
+				</div>
+
+				<div class="col-md-9">
+					<hr />
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-md-6">
+					<div class="input-group mb-3">
+						<label class="input-group-text label-estilo" for="tipoSolicitud">Tipo de solicitud</label>
+
+						&nbsp;
+
+						<span #mivar id="tipoSolicitud" name="idTipoSolicitud" style="color: black; font-size: 14px" class="text-start">{{ solicitud.tipoSolicitud }}</span>
+					</div>
+				</div>
+
+				<div class="col-md-6">
+					<div class="input-group mb-3">
+						<label class="input-group-text label-estilo" for="tipomotivo">Tipo de motivo</label>
+
+						&nbsp;
+
+						<span id="tipomotivo" name="tipomotivo" style="color: black; font-size: 14px" class="text-start">{{ solicitud.tipoMotivo }}</span>
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-md-6">
+					<div class="input-group">
+						<label class="input-group-text label-estilo" for="codigoposicion"> Código de posición </label>
+
+						&nbsp; &nbsp;
+
+						<span id="codigoposicion" name="codigoposicion" style="color: black; font-size: 14px" class="text-start">{{ model.codigoPosicion }}</span>
+					</div>
+				</div>
+
+				<div class="col-md-6">
+					<div class="input-group mb-3">
+						<label class="input-group-text label-estilo" for="descripcionposicion">Descripción de posición</label>
+
+						&nbsp;
+
+						<span id="descripcionposicion" name="descripcionposicion" style="color: black; font-size: 14px" class="text-start">{{ model.descrPosicion }}</span>
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-md-6">
+					<div class="input-group mb-3">
+						<label class="input-group-text label-estilo" for="subledger"> Subledger </label>
+
+						&nbsp;
+
+						<span id="subledger" name="subledger" style="color: black; font-size: 14px" class="text-start">{{ model.subledger }}</span>
+					</div>
+				</div>
+
+				<div class="col-md-6">
+					<div class="input-group mb-3">
+						<label class="input-group-text label-estilo" for="nombreempleado"> Empleado </label>
+
+						&nbsp;
+
+						<span id="nombreempleado" name="nombreempleado" style="color: black; font-size: 14px" class="text-start">{{ model.nombreCompleto }}</span>
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-md-6">
+					<div class="input-group mb-3">
+						<label class="input-group-text label-estilo" for="compania">Compañía</label>
+
+						<span id="compania" name="" style="color: black; font-size: 14px" class="text-start">{{ model.compania }}</span>
+					</div>
+				</div>
+
+				<div class="col-md-6">
+					<div class="input-group mb-3">
+						<label class="input-group-text label-estilo" for="unidadnegocio">Unidad de negocio</label>
+
+						<span id="unidadnegocio" name="" style="color: black; font-size: 14px" class="text-start">{{ model.unidadNegocio }}</span>
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-md-6">
+					<div class="input-group mb-3">
+						<label class="input-group-text label-estilo" for="departamento">Área/Departamento</label>
+
+						<span id="departamento" name="" style="color: black; font-size: 14px" class="text-start">{{ model.departamento }}</span>
+					</div>
+				</div>
+
+				<div class="col-md-6">
+					<div class="input-group mb-3">
+						<label class="input-group-text label-estilo" for="tipocargo">Tipo de cargo</label>
+
+						<span id="cargo" name="" style="color: black; font-size: 14px" class="text-start">{{ model.nombreCargo }}</span>
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-md-6">
+					<div class="input-group mb-3">
+						<label class="input-group-text label-estilo" for="localidadzona">Localidad/Zona</label>
+
+						<span id="localidadzona" name="" style="color: black; font-size: 14px" class="text-start">{{ model.localidad }}</span>
+					</div>
+				</div>
+
+				<div class="col-md-6">
+					<div class="input-group mb-3">
+						<label class="input-group-text label-estilo" for="niveldirección">Nivel de dirección</label>
+
+						<span id="niveldirección" name="" style="color: black; font-size: 14px" class="text-start">{{ model.nivelDir }}</span>
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-md-6">
+					<div class="input-group mb-3">
+						<label class="input-group-text label-estilo" for="centrocosto">Centro de costo</label>
+
+						<span id="centrocosto" name="" style="color: black; font-size: 14px" class="text-start">{{ model.nomCCosto }}</span>
+					</div>
+				</div>
+
+				<div class="col-md-6" *ngIf="mostrarTipoJustificacionYMision">
+					<div class="input-group mb-3">
+						<label class="input-group-text label-estilo" for="misioncargo">Misión del cargo</label>
+
+						<span id="misioncargo" name="misioncargo" style="color: black; font-size: 14px" class="text-start">{{ model.misionCargo }}</span>
+					</div>
+				</div>
+			</div>
+
+			<div class="row" *ngIf="mostrarTipoJustificacionYMision">
+				<div class="col">
+					<div class="input-group mb-3 contenedor">
+						<label class="input-group-text label-estilo2" for="justificacion">Justificación</label>
+
+						&nbsp;
+
+						<span id="justificacion" name="justificacion" style="color: black; font-size: 14px" class="text-start">{{ model.justificacionCargo }}</span>
+					</div>
+				</div>
+			</div>
+
+			<div class="row mt-4">
+				<div class="col-md-4">
+					<div class="mb-4">
+						<h3 class="sol-danger">Funciones y responsabilidades</h3>
+					</div>
+				</div>
+
+				<div class="col-md-8">
+					<hr />
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-md-6">
+					<div class="input-group mb-3">
+						<label class="input-group-text label-estilo" for="reporta">Reporta a</label>
+
+						&nbsp;
+
+						<span id="reporta" name="" style="color: black; font-size: 14px" class="text-start">{{ model.reportaA }} </span>
+					</div>
+				</div>
+
+				<div class="col-md-6">
+					<div class="input-group mb-3">
+						<label class="input-group-text label-estilo" for="supervisaa">Supervisa a</label>
+
+						&nbsp;
+
+						<span id="supervisaa" name="" style="color: black; font-size: 14px" class="text-start">{{ model.supervisaA }}</span>
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-md-6">
+					<div class="input-group mb-3">
+						<label class="input-group-text label-estilo" for="tipocontrato">Tipo de contrato</label>
+
+						&nbsp;
+
+						<span id="tipocontrato" name="tipocontrato" style="color: black; font-size: 14px" class="text-start">{{ model.tipoContrato }}</span>
+					</div>
+				</div>
+
+				<div class="col-md-6">
+					<div class="input-group mb-3">
+						<label class="input-group-text label-estilo" for="nivelRepa">Nivel de reporte</label>
+
+						&nbsp;
+
+						<span id="nivelRepa" name="" style="color: black; font-size: 14px" class="text-start">{{ model.nivelRepa }}</span>
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-md-6">
+					<div class="input-group mb-3">
+						<label class="input-group-text label-estilo" for="sueldo">Sueldo</label>
+
+						&nbsp;
+
+						<span id="sueldo" name="sueldo" style="color: black; font-size: 14px" class="text-start">{{ model.sueldo }}</span>
+					</div>
+				</div>
+			</div>
+
+			<div class="row mt-4">
+				<div class="col-md-4">
+					<div class="mb-4">
+						<h3 class="sol-danger">Tipo de variable</h3>
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-md-6">
+					<div class="input-group mb-3">
+						<label class="input-group-text label-estilo" for="mensual">Mensual</label>
+
+						&nbsp;
+
+						<span id="mensual" name="mensual" style="color: black; font-size: 14px" class="text-start">{{ model.sueldoMensual }}</span>
+					</div>
+				</div>
+
+				<div class="col-md-6">
+					<div class="input-group mb-3">
+						<label class="input-group-text label-estilo" for="trimestral">Trimestral</label>
+
+						&nbsp;
+
+						<span id="trimestral" name="trimestral" style="color: black; font-size: 14px" class="text-start">{{ model.sueldoTrimestral }}</span>
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-md-6">
+					<div class="input-group mb-3">
+						<label class="input-group-text label-estilo" for="semestral">Semestral</label>
+
+						&nbsp;
+
+						<span id="semestral" name="semestral" style="color: black; font-size: 14px" class="text-start">{{ model.sueldoSemestral }}</span>
+					</div>
+				</div>
+
+				<div class="col-md-6">
+					<div class="input-group mb-3">
+						<label class="input-group-text label-estilo" for="anual">Anual</label>
+
+						&nbsp;
+
+						<span id="anual" name="anual" style="color: black; font-size: 14px" class="text-start">{{ model.sueldoAnual }}</span>
+					</div>
+				</div>
+			</div>
+
+			<div class="row mt-4">
+				<div class="col-md-4">
+					<div class="mb-4">
+						<h3 class="sol-danger">Atención de los Aprobadores</h3>
+					</div>
+				</div>
+
+				<div class="col-md-8">
+					<hr />
+				</div>
+			</div>
+
+			<div class="row mt-2">
+				<div class="col">
+					<div *ngFor="let item of dataComentariosAprobaciones; let i = index" class="row mt-2 align-items-center">
+						<div class="col-auto">
+							<label *ngIf="i === 0" class="input-group-text adjustable-label" for="lcomentariodinamico"> Aprobadores dinámicos </label>
+
+							<label *ngIf="i !== 0" class="input-group-text hidden-label" for="lcomentariodinamico"> Aprobadores dinámicos </label>
+						</div>
+
+						<div class="col">
+							<span id="lcomentariodinamico" name="" style="color: black; font-size: 14px">{{ item.text !== "" && item.text !== undefined && item.text != null ? item.text : "No hay comentario" }}</span>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="row mt-2">
+				<div class="col">
+					<div class="input-group mb-3">
+						<label class="input-group-text adjustable-label2" for="lcomentariorrhh"> Gerente de RRHH Corporativo </label>
+
+						&nbsp;
+
+						<div *ngFor="let item of dataComentariosAprobacionesRRHH">
+							&nbsp;
+
+							<span id="lcomentariorrhh" name="" style="color: black; font-size: 14px">{{ item.text !== "" && item.text !== undefined && item.text != null ? item.text : "No hay comentario" }}</span>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="row mt-2">
+				<div class="col">
+					<div class="input-group mb-3">
+						<label class="input-group-text adjustable-label2" for="comitederemuneraciones"> Comité de Remuneraciones </label>
+
+						&nbsp;
+
+						<span id="comitederemuneraciones" name="" style="color: black; font-size: 14px" class="text-start">{{ detalleSolicitud.comiteRemuneraciones }}</span>
+
+						<div *ngFor="let item of dataComentariosAprobacionesCREM">
+							&nbsp;
+
+							<span id="lcomentariocrem" name="" style="color: black; font-size: 14px">{{ item.text !== "" && item.text !== undefined && item.text != null ? item.text : "No hay comentario" }}</span>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="row mt-4">
+				<div class="col-md-4">
+					<div class="mb-4">
+						<h3 class="sol-danger">Selección de Candidato</h3>
+					</div>
+				</div>
+
+				<div class="col-md-8">
+					<hr />
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-md-6">
+					<div class="input-group mb-3">
+						<label class="input-group-text label-estilo" for="tipoSolicitud">Tipo Proceso</label>
+
+						&nbsp;
+
+						<select *ngIf="tipoProcesoSaved === ''; else tipoProceso" id="tipoproceso" name="tipoproceso" class="form-select" style="font-size: 14px" [(ngModel)]="model.tipoProceso" (change)="onChangeTipoProceso($event)" required [disabled]="disabledTipoProceso">
+							<option value="">Seleccione...</option>
+
+							<option *ngFor="let dato of dataTipoProceso; let i = index" [value]="dato.descripcion" [selected]="i > 0 && model.tipoProceso === dato.descripcion">{{ dato.descripcion }}</option>
+						</select>
+
+						<ng-template #tipoProceso>
+							<span>{{ model.tipoProceso }}</span>
+						</ng-template>
+					</div>
+				</div>
+
+				<div class="col-md-6">
+					<div class="input-group mb-3">
+						<label class="input-group-text label-estilo2" for="flexSwitchCheckChecked">Tipo de fuente</label>
+
+						&nbsp;
+
+						<div class="form-check form-switch checkbox-container">
+							<label class="form-check-label" for="flexSwitchCheckChecked">Interno</label>
+
+							<input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" name="flexSwitchCheckChecked" [(ngModel)]="isChecked" (change)="toggleDivVisibility($event)" />
+
+							<label class="form-check-label" for="flexSwitchCheckChecked">Externo</label>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="row" *ngIf="isDivVisible">
+				<div class="col-md-6">
+					<div class="input-group mb-3">
+						<label class="input-group-text label-estilo">Fuente Externa</label>
+
+						&nbsp;
+
+						<select id="selectOptions" [(ngModel)]="selectedOption" name="selectOptions" class="form-select" style="font-size: 14px" required>
+							<option value="">Seleccione...</option>
+
+							<option *ngFor="let option of options" [value]="option.descripcion">{{ option.descripcion }}</option>
+						</select>
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-md-4 d-flex align-items-center">
+					<input id="input1" type="checkbox" [(ngModel)]="isCheckedPerfil" (change)="onCheckboxChangeCandidato($event)" name="checkPerfil" [disabled]="disabledFechas.actualizacionPerfil" />
+
+					<label for="input1" class="input-group-text adjustable-label">Actualización del perfil</label>
+
+					<input type="text" class="form-control" [value]="fechas.actualizacionPerfil" name="perfil" readonly />
+				</div>
+
+				<div class="col-md-4 d-flex align-items-center">
+					<input id="input2" type="checkbox" [(ngModel)]="isCheckedBusquedaCandidato" (change)="onCheckboxChangeCandidato($event)" name="checkBusquedaCandidato" [disabled]="disabledFechas.busquedaCandidatos" />
+
+					<label for="input2" class="input-group-text adjustable-label">Busqueda de candidatos</label>
+
+					<input type="text" class="form-control" [value]="fechas.busquedaCandidatos" name="busquedaCandidato" readonly />
+				</div>
+
+				<div class="col-md-4 d-flex align-items-center">
+					<input id="input3" type="checkbox" [(ngModel)]="isCheckedEntrevista" (change)="onCheckboxChangeCandidato($event)" name="checkEntrevista" [disabled]="disabledFechas.entrevista" />
+
+					<label for="input3" class="input-group-text adjustable-label">Entrevista de RR.HH.</label>
+
+					<input type="text" class="form-control" [value]="fechas.entrevista" readonly />
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-md-4 d-flex align-items-center">
+					<input id="input4" type="checkbox" [(ngModel)]="isCheckedPruebas" (change)="onCheckboxChangeCandidato($event)" name="checkPruebas" [disabled]="disabledFechas.pruebas" />
+
+					<label for="input4" class="input-group-text adjustable-label">Pruebas</label>
+
+					<input type="text" class="form-control" [value]="fechas.pruebas" readonly />
+				</div>
+
+				<div class="col-md-4 d-flex align-items-center">
+					<input id="input5" type="checkbox" [(ngModel)]="isCheckedReferencias" (change)="onCheckboxChangeCandidato($event)" name="checkReferencias" [disabled]="disabledFechas.referencias" />
+
+					<label for="input5" class="input-group-text adjustable-label">Referencias</label>
+
+					<input type="text" class="form-control" [value]="fechas.referencias" readonly />
+				</div>
+
+				<div class="col-md-4 d-flex align-items-center">
+					<input id="input6" type="checkbox" [(ngModel)]="isCheckedElaboracionInforme" (change)="onCheckboxChangeCandidato($event)" name="checkElaboracionInforme" [disabled]="disabledFechas.elaboracionInforme" />
+
+					<label for="input6" class="input-group-text adjustable-label">Elaboración de informe</label>
+
+					<input type="text" class="form-control" [value]="fechas.elaboracionInforme" readonly />
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-md-4 d-flex align-items-center">
+					<input id="input7" type="checkbox" [(ngModel)]="isCheckedEntregaJefe" (change)="onCheckboxChangeCandidato($event)" name="checkEntregaJefe" [disabled]="disabledFechas.entregaJefe" />
+
+					<label for="input7" class="input-group-text adjustable-label">Entrega al jefe solicitante</label>
+
+					<input type="text" class="form-control" [value]="fechas.entregaJefe" readonly />
+				</div>
+
+				<div class="col-md-4 d-flex align-items-center">
+					<input id="input8" type="checkbox" [(ngModel)]="isCheckedEntrevistaJefatura" (change)="onCheckboxChangeCandidato($event)" name="checkEntrevistaJefatura" [disabled]="disabledFechas.entrevistaJefatura" />
+
+					<label for="input8" class="input-group-text adjustable-label">Entrevista por jefatura</label>
+
+					<input type="text" class="form-control" [value]="fechas.entrevistaJefatura" readonly />
+				</div>
+
+				<div class="col-md-4 d-flex align-items-center">
+					<input id="input9" type="checkbox" [(ngModel)]="isCheckedTomaDecisiones" (change)="onCheckboxChangeCandidato($event)" name="checkTomaDecisiones" [disabled]="disabledFechas.tomaDecisiones" />
+
+					<label for="input9" class="input-group-text adjustable-label">Toma de decisiones</label>
+
+					<input type="text" class="form-control" [value]="fechas.tomaDecisiones" readonly />
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-md-4 d-flex">
+					<input id="input10" type="checkbox" [(ngModel)]="isCheckedCandidatoSeleccionado" (change)="onCheckboxChangeCandidato($event)" name="checkCandidatoSeleccionado" [disabled]="disabledFechas.candidatoSeleccionado" />
+
+					<label for="input10" class="input-group-text adjustable-label">Candidato seleccionado</label>
+
+					<input type="text" class="form-control" [value]="fechas.candidatoSeleccionado" readonly />
+				</div>
+
+				<div class="col-md-4 d-flex">
+					<input id="input11" type="checkbox" [(ngModel)]="isCheckedProcesoContratacion" (change)="onCheckboxChangeCandidato($event)" name="checkProcesoContratacion" [disabled]="disabledFechas.procesoContratacion" />
+
+					<label for="input11" class="input-group-text adjustable-label">Proceso de contratación</label>
+
+					<input type="text" class="form-control" [value]="fechas.procesoContratacion" readonly />
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-md-4 d-flex align-items-center">
+					<input id="input12" type="checkbox" [(ngModel)]="isCheckedFinContratacion" (change)="onCheckboxChangeCandidato($event)" name="checkFinContratacion" [disabled]="disabledFechas.finProcesoContratacion" />
+
+					<label for="input12" class="input-group-text adjustable-label">Fin del proceso de selección y de contración</label>
+
+					<input type="text" class="form-control" [value]="fechas.finProcesoContratacion" readonly />
+				</div>
+			</div>
+
+			<div class="row mb-3">
+				<div class="col-md-3 me-2">
+					<label class="input-group-text label-estilo" for="nombre-candidato">Nombre del candidato seleccionado</label>
+				</div>
+
+				<div class="col-md-4">
+					<input type="text" appValidateAlphanumeric name="nombre-candidato" placeholder="Nombre del candidato" [(ngModel)]="nombreCandidato" class="form-control" id="nombre-candidato" />
+				</div>
+			</div>
+
+			<div class="row mt-4">
+				<div class="col-md-4">
+					<div class="mb-4">
+						<h3 class="sol-danger">Reingreso</h3>
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-md-4 d-flex">
+					<label for="input1" class="input-group-text adjustable-label">Inicio de proceso</label>
+
+					<input id="input1" type="text" class="form-control" readonly [value]="fechas.reingreso" />
+				</div>
+
+				<div class="col-md-4 d-flex">
+					<label for="input2" class="input-group-text adjustable-label">Fin de proceso</label>
+
+					<input id="input2" type="text" class="form-control" readonly [value]="fechas.finProceso" />
+				</div>
+			</div>
+
+			<div class="row mt-4">
+				<div class="col-md-4">
+					<div class="mb-4">
+						<h3 class="sol-danger">Contratación de familiares</h3>
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-md-4 d-flex">
+					<label for="input1" class="input-group-text adjustable-label">Inicio de proceso</label>
+
+					<input id="input1" type="text" class="form-control" readonly [value]="fechas.contratacionFamiliares" />
+				</div>
+
+				<div class="col-md-4 d-flex">
+					<label for="input2" class="input-group-text adjustable-label">Fin de proceso</label>
+
+					<input id="input2" type="text" class="form-control" readonly [value]="fechas.finProcesoFamiliares" />
+				</div>
+			</div>
+		</h2>
+	</div>
 </form>

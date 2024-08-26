@@ -2,9 +2,7 @@
 	<div class="col">
 		<div>
 			<h3>
-				<a routerLink="/solicitudes/consulta-solicitudes" class="sol-danger">
-					<i class="bi bi-arrow-left-circle azul"></i> {{ solicitud.idSolicitud }}
-				</a>
+				<a routerLink="/solicitudes/consulta-solicitudes" class="sol-danger"> <i class="bi bi-arrow-left-circle azul"></i> {{ solicitud.idSolicitud }} </a>
 			</h3>
 		</div>
 	</div>
@@ -23,7 +21,7 @@
 				<div class="row">
 					<div class="label-estilo col-4">Fecha de Creación</div>
 
-					<div class="col-8">{{ solicitud.fechaCreacion | date:'dd/MM/yyyy' }}</div>
+					<div class="col-8">{{ solicitud.fechaCreacion | date : "dd/MM/yyyy" }}</div>
 				</div>
 			</div>
 
@@ -51,16 +49,14 @@
 				<div class="row">
 					<div class="label-estilo col-4">Fecha de Actualización</div>
 
-					<div class="col-8">{{ solicitud.fechaActualizacion | date:'dd/MM/yyyy' }}</div>
+					<div class="col-8">{{ solicitud.fechaActualizacion | date : "dd/MM/yyyy" }}</div>
 				</div>
 			</div>
 		</div>
 	</div>
 
 	<div class="mb-4">
-		<h3 class="sol-danger">
-			Atención de Solicitud
-		</h3>
+		<h3 class="sol-danger">Atención de Solicitud</h3>
 	</div>
 
 	<div class="accordion" id="accordionExample">
@@ -84,7 +80,7 @@
 
 						<div class="col">{{ nivelItem.nivelAprobacionRuta }}</div>
 
-						<div class="col">{{ nivelItem.fechaModificacion | date: "dd/MM/YYYY HH:mm:ss" }}</div>
+						<div class="col">{{ nivelItem.fechaModificacion | date : "dd/MM/YYYY HH:mm:ss" }}</div>
 					</div>
 				</button>
 			</div>
@@ -103,7 +99,7 @@
 						<div class="input-group">
 							<label>Comentario: </label>
 
-							<span id="lvl1descripcion" name="" style="color: black; font-size: 14px">{{ nivelItem.usuarioAprobador !== "" && nivelItem.usuarioAprobador !== undefined && nivelItem.usuarioAprobador !== null ? (nivelItem.comentario) : "No aplica" }}</span>
+							<span id="lvl1descripcion" name="" style="color: black; font-size: 14px">{{ nivelItem.usuarioAprobador !== "" && nivelItem.usuarioAprobador !== undefined && nivelItem.usuarioAprobador !== null ? nivelItem.comentario : "No aplica" }}</span>
 						</div>
 					</div>
 				</div>
