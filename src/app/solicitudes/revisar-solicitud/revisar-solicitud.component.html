@@ -5,23 +5,26 @@
 				<div class="row">
 					<div class="col-md-8">
 						<div class="mb-3">
-							<a routerLink="/tareas/consulta-tareas">
-								<h3 class="sol-danger">
+							<h3 class="sol-danger">
+								<a routerLink="/tareas/consulta-tareas">
 									<i class="bi bi-arrow-left-circle azul"></i> {{ id_solicitud_by_params }}
-								</h3>
-							</a>
+								</a>
+							</h3>
 						</div>
 					</div>
+
 					<div class="col-md-4 text-end">
 						<button *ngIf="existeMatenedores" type="button" (click)="openModal('dialogReasignarUsuario')"
 							class="btn btn-info me-2 mt-1">
 							<i class="fas fa-redo"></i> Reasignar
 						</button>
+
 						<button *ngIf="!existeMatenedores || existe" type="button" class="btn btn-info me-2 mt-1"
 							(click)="saveDetalleAprobaciones()"
 							[disabled]="textareaContent === '' && (buttonValue === 'devolver' || buttonValue === 'rechazar')">
 							<i class="fas fa-save"></i> Guardar
 						</button>
+
 						<button *ngIf="!existeMatenedores || existe" type="button" (click)="onCompletar()"
 							class="btn btn-info me-2 mt-1" [disabled]="disabledComplete">
 							<i class="fas fa-check-circle  icon-size"></i> Completar Tarea
