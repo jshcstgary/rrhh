@@ -1,6 +1,6 @@
 <div class="p-2 buscar-aprobador-fijo-modal">
 	<form class="input-group my-2" [formGroup]="myForm" (ngSubmit)="onSubmit()">
-		<input type="text" class="form-control" formControlName="searchInput" [placeholder]="'Ingrese ' + textPlaceholder">
+		<input type="text" class="form-control" formControlName="searchInput" placeholder="Ingrese subledger, nombre o correo del empleado">
 	
 		<button type="submit" class="btn btn-info" [disabled]="myForm.invalid">Buscar</button>
 	</form>
@@ -20,13 +20,29 @@
 					<th>Correo</th>
 
 					<th>Cargo</th>
+
+					<th>Subledger</th>
+
+					<th>Nombre</th>
+
+					<th>Correo</th>
+
+					<th>Cargo</th>
 				</tr>
 			</thead>
 			<tbody>
-				<tr *ngFor="let empleado of empleados">
+				<tr *ngFor="let empleado of empleados" class="cursor-pointer empleado-fila" [ngClass]="{selected: empleadoSeleccionado === empleado}" (click)="seleccionarUsuario(empleado)">
 					<td>
-						<input class="form-check-input" type="radio" name="usuarioAprobador" (change)="seleccionarUsuario(empleado)">
+						<input class="form-check-input" type="radio" [value]="empleado" [checked]="empleadoSeleccionado === empleado" (change)="$event.stopPropagation(); seleccionarUsuario(empleado)">
 					</td>
+
+					<td>{{ empleado.subledger }}</td>
+
+					<td>{{ empleado.nombreCompleto }}</td>
+
+					<td>{{ empleado.correo }}</td>
+
+					<td>{{ empleado.nombreCargo }}</td>
 
 					<td>{{ empleado.subledger }}</td>
 

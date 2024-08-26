@@ -10,6 +10,7 @@ import { CrearAprobadorFijoService } from "./crear-aprobador-fijo.service";
 import { BuscarAprobadorFijoComponent } from "../buscar-aprobador-fijo/buscar-aprobador-fijo.component";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { format } from "date-fns";
+import { ModalBuscadorComponent } from "src/app/shared/modal-buscador/modal-buscador.component";
 
 @Component({
 	selector: "app-crear-aprobador-fijo",
@@ -29,14 +30,16 @@ export class CrearAprobadorFijoComponent {
 		return this.modelo.subleger === "" || this.modelo.nombre === "" || this.modelo.correo === "" || this.modelo.niveL_DIRECCION === "";
 	}
 
-	public openModal(textPlaceholder: string) {
+	public openModal() {
 		const modalRef = this.modalService
 			.open(BuscarAprobadorFijoComponent, {
+			// .open(ModalBuscadorComponent, {
 				backdrop: "static",
 				keyboard: false
 			});
 
-		modalRef.componentInstance.textPlaceholder = textPlaceholder;
+		// modalRef.componentInstance.inputSearchPlaceholder = "Ingrese subledger, nombre o correo del empleado...";
+		// modalRef.componentInstance.tableData = [];
 
 		modalRef.result.then(
 			(result) => {
@@ -106,7 +109,7 @@ export class CrearAprobadorFijoComponent {
 					}, 1600);
 				},
 				error: (error: HttpErrorResponse) => {
-					this.utilService.modalResponse("Registro ya existente para el Tipo de Solicitud, Tipo Motivo, Tipo Ruta y Nivel de Dirección seleccionados", "error");
+					this.utilService.modalResponse(error.error, "error");
 				}
 			});
 		});

@@ -418,7 +418,8 @@ export class CrearNivelesAprobacionComponent implements OnInit {
 				}, 2000);
 			},
 			error: (error: HttpErrorResponse) => {
-				this.utilService.modalResponse(error.error, "error");
+				// this.utilService.modalResponse(error.error, "error");
+				this.utilService.modalResponse("Ya existe un Nivel de Aprobación para esta configuración.", "error");
 			}
 		});
 

@@ -193,7 +193,9 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
 
 	public RegistrarsolicitudCompletada = false;
 
-	public restrictionsIds: any[] = ["1", "2", 1, 2];
+	// public restrictionsIds: any[] = ["1", "2", 1, 2];
+	// public restrictionsIds: any[] = ["RG", "CF", "AP"];
+	public restrictionsIds: any[] = ["NUEVO", "EVENTUAL"];
 
 	public restrictionsSubledgerIds: any[] = ["4", 4];
 
@@ -1041,8 +1043,9 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
 				}
 
 				this.loadingComplete++;
-
-				this.mostrarTipoJustificacionYMision = this.restrictionsIds.includes(this.solicitud.idTipoMotivo);
+				
+				// this.mostrarTipoJustificacionYMision = this.restrictionsIds.includes(this.solicitud.idTipoMotivo);
+				this.mostrarTipoJustificacionYMision = this.restrictionsIds.includes(this.solicitud.tipoMotivo.toUpperCase()) && this.solicitud.idSolicitud.toUpperCase().includes("RP");
 
 				this.mostrarSubledger = this.restrictionsSubledgerIds.includes(this.solicitud.idTipoMotivo);
 			},

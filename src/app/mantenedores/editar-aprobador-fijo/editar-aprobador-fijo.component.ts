@@ -77,49 +77,46 @@ export class EditarAprobadorFijoComponent implements OnInit {
 	}
 
 	public openModal(textPlaceholder: string) {
-		const modalRef = this.modalService
+		this.modalService
 			.open(BuscarAprobadorFijoComponent, {
 				backdrop: "static",
 				keyboard: false
-			});
-
-		modalRef.componentInstance.textPlaceholder = textPlaceholder;
-
-		modalRef.result.then(
-			(result) => {
-				if (result?.action === "close") {
-					return;
+			})
+			.result.then(
+				(result) => {
+					if (result?.action === "close") {
+						return;
+					}
+	
+					if (result?.data === undefined) {
+						return;
+					}
+	
+					console.log(result?.data);
+					const epelado = result?.data;
+	
+					const currentdate: string = format(new Date(), "dd-MM-yyyy HH:mm:ss");
+	
+					this.modelo.iD_APROBADOR = 1;
+					this.modelo.codigO_POSICION = epelado.codigoPosicion;
+					this.modelo.subleger = epelado.subledger;
+					this.modelo.nombre = epelado.nombreCompleto;
+					this.modelo.codigO_POSICION_REPORTA_A = "N/A";
+					this.modelo.reportA_A = epelado.reportaA;
+					this.modelo.estado = true;
+					this.modelo.fechA_CREACION = currentdate;
+					this.modelo.fechA_MODIFICACION = currentdate;
+					this.modelo.usuariO_CREACION = currentdate;
+					this.modelo.usuariO_MODIFICACION = currentdate;
+					this.modelo.descripcioN_POSICION = epelado.descrPosicion;
+					this.modelo.supervisA_A = "N/A";
+					this.modelo.niveL_REPORTE = epelado.nivelReporte;
+					this.modelo.correo = epelado.correo
+				},
+				(reason) => {
+					console.log(`Dismissed with: ${reason}`);
 				}
-
-				if (result?.data === undefined) {
-					return;
-				}
-
-				console.log(result?.data);
-				const epelado = result?.data;
-
-				const currentdate: string = format(new Date(), "dd-MM-yyyy HH:mm:ss");
-
-				this.modelo.iD_APROBADOR = 1;
-				this.modelo.codigO_POSICION = epelado.codigoPosicion;
-				this.modelo.subleger = epelado.subledger;
-				this.modelo.nombre = epelado.nombreCompleto;
-				this.modelo.codigO_POSICION_REPORTA_A = "N/A";
-				this.modelo.reportA_A = epelado.reportaA;
-				this.modelo.estado = true;
-				this.modelo.fechA_CREACION = currentdate;
-				this.modelo.fechA_MODIFICACION = currentdate;
-				this.modelo.usuariO_CREACION = currentdate;
-				this.modelo.usuariO_MODIFICACION = currentdate;
-				this.modelo.descripcioN_POSICION = epelado.descrPosicion;
-				this.modelo.supervisA_A = "N/A";
-				this.modelo.niveL_REPORTE = epelado.nivelReporte;
-				this.modelo.correo = epelado.correo
-			},
-			(reason) => {
-				console.log(`Dismissed with: ${reason}`);
-			}
-		);
+			);
 	}
 
 	actualizarAprobadorFijo() {

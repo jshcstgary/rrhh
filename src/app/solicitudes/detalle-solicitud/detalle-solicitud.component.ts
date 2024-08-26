@@ -17,7 +17,7 @@ import { UtilService } from "src/app/services/util/util.service";
 import { columnsDatosFamiliares } from "src/app/solicitudes/revisar-solicitud/registrar-familiares.data";
 import { ConsultaTareasService } from "src/app/tareas/consulta-tareas/consulta-tareas.service";
 import Swal from "sweetalert2";
-import { environment } from "../../../environments/environment";
+import { codigosSolicitudReporte, environment } from "../../../environments/environment";
 import { CamundaRestService } from "../../camunda-rest.service";
 import { CompleteTaskComponent } from "../general/complete-task.component";
 import { RegistrarCandidatoService } from "../registrar-candidato/registrar-candidato.service";
@@ -1479,31 +1479,18 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 	}
 
 	public exportar(): void {
-		if (this.solicitud.idSolicitud.toUpperCase().includes("RP")) {
-			this.exportarRequisicionPersonal();
-		} else if (this.solicitud.idSolicitud.toUpperCase().includes("CF")) {
-			this.exportarContratacionFamiliar();
-		} else if (this.solicitud.idSolicitud.toUpperCase().includes("RG")) {
-			this.exportarReingresoPersonal();
-		} else if (this.solicitud.idSolicitud.toUpperCase().includes("AP")) {
-			this.exportarAccionPersonal();
-		}
-	}
-
-	private exportarRequisicionPersonal(): void {
 		const backgroundCellColor: [number, number, number] = [218, 238, 243];
 		const textColor: [number, number, number] = [56, 95, 147];
 		const lineColor: [number, number, number] = [149, 179, 215];
 
-		const doc = new jsPDF();
+		const doc: jsPDF = new jsPDF();
 
-		// Esquina de la hoja
-		autoTable(doc, {
+		const esquinaDeHoja = {
 			theme: "plain",
 			body: [
 				[
 					{
-						content: `RR.HH.: ${this.solicitud.idSolicitud}`,
+						content: "",
 						styles: {
 							halign: "right",
 							fontStyle: "bold"
@@ -1511,15 +1498,14 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 					}
 				],
 			]
-		});
+		};
 
-		// Títutlo
-		autoTable(doc, {
+		const tituloDeHoja = {
 			theme: "plain",
 			body: [
 				[
 					{
-						content: "REQUERIMIENTO DE PERSONAL",
+						content: "",
 						styles: {
 							halign: "center",
 							fontSize: 20,
@@ -1529,7 +1515,69 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 					}
 				],
 			]
-		});
+		};
+		
+		if (this.solicitud.idSolicitud.toUpperCase().includes("RP")) {
+			esquinaDeHoja.body[0][0].content = codigosSolicitudReporte.requisicionPersonal;
+			tituloDeHoja.body[0][0].content = "REQUERIMIENTO DE PERSONAL";
+			
+			this.exportarRequisicionPersonal(doc, esquinaDeHoja, tituloDeHoja, backgroundCellColor, textColor, lineColor);
+		} else if (this.solicitud.idSolicitud.toUpperCase().includes("CF")) {
+			esquinaDeHoja.body[0][0].content = codigosSolicitudReporte.contratacionFamiliares;
+			tituloDeHoja.body[0][0].content = "CONTRATACIÓN DE FAMILIAR";
+			
+			this.exportarContratacionFamiliar(doc, esquinaDeHoja, tituloDeHoja, backgroundCellColor, textColor, lineColor);
+		} else if (this.solicitud.idSolicitud.toUpperCase().includes("RG")) {
+			esquinaDeHoja.body[0][0].content = codigosSolicitudReporte.reingresoPersonal;
+			tituloDeHoja.body[0][0].content = "REINGRESO DE PERSONAL";
+			
+			this.exportarReingresoPersonal(doc, esquinaDeHoja, tituloDeHoja, backgroundCellColor, textColor, lineColor);
+		} else if (this.solicitud.idSolicitud.toUpperCase().includes("AP")) {
+			esquinaDeHoja.body[0][0].content = codigosSolicitudReporte.accionPersonal;
+			tituloDeHoja.body[0][0].content = "ACCIÓN DE PERSONAL";
+
+			this.exportarAccionPersonal(doc, esquinaDeHoja, tituloDeHoja, backgroundCellColor, textColor, lineColor);
+		}
+	}
+
+	private exportarRequisicionPersonal(doc: jsPDF, esquinaDeHoja: any, tituloDeHoja: any, backgroundCellColor: [number, number, number], textColor: [number, number, number], lineColor: [number, number, number]): void {
+		// const doc = new jsPDF();
+
+		// Esquina de la hoja
+		// autoTable(doc, {
+		// 	theme: "plain",
+		// 	body: [
+		// 		[
+		// 			{
+		// 				content: codigosSolicitudReporte.requisicionPersonal,
+		// 				styles: {
+		// 					halign: "right",
+		// 					fontStyle: "bold"
+		// 				}
+		// 			}
+		// 		],
+		// 	]
+		// });
+		autoTable(doc, esquinaDeHoja);
+
+		// Títutlo
+		// autoTable(doc, {
+		// 	theme: "plain",
+		// 	body: [
+		// 		[
+		// 			{
+		// 				content: "REQUERIMIENTO DE PERSONAL",
+		// 				styles: {
+		// 					halign: "center",
+		// 					fontSize: 20,
+		// 					fontStyle: "bold",
+		// 					textColor
+		// 				}
+		// 			}
+		// 		],
+		// 	]
+		// });
+		autoTable(doc, tituloDeHoja);
 
 		// Encabezado de la solicitud
 		autoTable(doc, {
@@ -1797,46 +1845,44 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 		doc.save(`${this.solicitud.idSolicitud}-${format(new Date(), "dd-MM-yyyy")}.pdf`)
 	}
 
-	private exportarContratacionFamiliar(): void {
-		const backgroundCellColor: [number, number, number] = [218, 238, 243];
-		const textColor: [number, number, number] = [56, 95, 147];
-		const lineColor: [number, number, number] = [149, 179, 215];
-
-		const doc = new jsPDF();
+	private exportarContratacionFamiliar(doc: jsPDF, esquinaDeHoja: any, tituloDeHoja: any, backgroundCellColor: [number, number, number], textColor: [number, number, number], lineColor: [number, number, number]): void {
+		// const doc = new jsPDF();
 
 		// Esquina de la hoja
-		autoTable(doc, {
-			theme: "plain",
-			body: [
-				[
-					{
-						content: `RR.HH.: ${this.solicitud.idSolicitud}`,
-						styles: {
-							halign: "right",
-							fontStyle: "bold"
-						}
-					}
-				],
-			]
-		});
+		// autoTable(doc, {
+		// 	theme: "plain",
+		// 	body: [
+		// 		[
+		// 			{
+		// 				content: codigosSolicitudReporte.contratacionFamiliares,
+		// 				styles: {
+		// 					halign: "right",
+		// 					fontStyle: "bold"
+		// 				}
+		// 			}
+		// 		],
+		// 	]
+		// });
+		autoTable(doc, esquinaDeHoja);
 
 		// Títutlo
-		autoTable(doc, {
-			theme: "plain",
-			body: [
-				[
-					{
-						content: "CONTRATACIÓN DE FAMILIAR",
-						styles: {
-							halign: "center",
-							fontSize: 20,
-							fontStyle: "bold",
-							textColor
-						}
-					}
-				],
-			]
-		});
+		// autoTable(doc, {
+		// 	theme: "plain",
+		// 	body: [
+		// 		[
+		// 			{
+		// 				content: "CONTRATACIÓN DE FAMILIAR",
+		// 				styles: {
+		// 					halign: "center",
+		// 					fontSize: 20,
+		// 					fontStyle: "bold",
+		// 					textColor
+		// 				}
+		// 			}
+		// 		],
+		// 	]
+		// });
+		autoTable(doc, tituloDeHoja);
 
 		// Encabezado de la solicitud
 		autoTable(doc, {
@@ -2100,49 +2146,47 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 		doc.save(`${this.solicitud.idSolicitud}-${format(new Date(), "dd-MM-yyyy")}.pdf`)
 	}
 
-	private exportarReingresoPersonal(): void {
-		const backgroundCellColor: [number, number, number] = [218, 238, 243];
-		const textColor: [number, number, number] = [56, 95, 147];
-		const lineColor: [number, number, number] = [149, 179, 215];
-
+	private exportarReingresoPersonal(doc: jsPDF, esquinaDeHoja: any, tituloDeHoja: any, backgroundCellColor: [number, number, number], textColor: [number, number, number], lineColor: [number, number, number]): void {
 		const variableMaxima = Math.max(...[parseInt(this.model.sueldoAnual), parseInt(this.model.sueldoMensual), parseInt(this.model.sueldoSemestral), parseInt(this.model.sueldoTrimestral)]);
 		const variableMaximaRG = Math.max(...[parseInt(this.modelRG.sueldoAnual), parseInt(this.modelRG.sueldoMensual), parseInt(this.modelRG.sueldoSemestral), parseInt(this.modelRG.sueldoTrimestral)]);
 
-		const doc = new jsPDF();
+		// const doc = new jsPDF();
 
 		// Esquina de la hoja
-		autoTable(doc, {
-			theme: "plain",
-			body: [
-				[
-					{
-						content: `RR.HH.: ${this.solicitud.idSolicitud}`,
-						styles: {
-							halign: "right",
-							fontStyle: "bold"
-						}
-					}
-				],
-			]
-		});
+		// autoTable(doc, {
+		// 	theme: "plain",
+		// 	body: [
+		// 		[
+		// 			{
+		// 				content: codigosSolicitudReporte.reingresoPersonal,
+		// 				styles: {
+		// 					halign: "right",
+		// 					fontStyle: "bold"
+		// 				}
+		// 			}
+		// 		],
+		// 	]
+		// });
+		autoTable(doc, esquinaDeHoja);
 
 		// Títutlo
-		autoTable(doc, {
-			theme: "plain",
-			body: [
-				[
-					{
-						content: "REINGRESO DE PERSONAL",
-						styles: {
-							halign: "center",
-							fontSize: 20,
-							fontStyle: "bold",
-							textColor
-						}
-					}
-				],
-			]
-		});
+		// autoTable(doc, {
+		// 	theme: "plain",
+		// 	body: [
+		// 		[
+		// 			{
+		// 				content: "REINGRESO DE PERSONAL",
+		// 				styles: {
+		// 					halign: "center",
+		// 					fontSize: 20,
+		// 					fontStyle: "bold",
+		// 					textColor
+		// 				}
+		// 			}
+		// 		],
+		// 	]
+		// });
+		autoTable(doc, tituloDeHoja);
 
 		// Encabezado de la solicitud
 		autoTable(doc, {
@@ -2505,49 +2549,47 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 		doc.save(`${this.solicitud.idSolicitud}-${format(new Date(), "dd-MM-yyyy")}.pdf`)
 	}
 
-	private exportarAccionPersonal(): void {
-		const backgroundCellColor: [number, number, number] = [218, 238, 243];
-		const textColor: [number, number, number] = [56, 95, 147];
-		const lineColor: [number, number, number] = [149, 179, 215];
-
+	private exportarAccionPersonal(doc: jsPDF, esquinaDeHoja: any, tituloDeHoja: any, backgroundCellColor: [number, number, number], textColor: [number, number, number], lineColor: [number, number, number]): void {
 		const variableMaxima = Math.max(...[parseInt(this.model.sueldoAnual), parseInt(this.model.sueldoMensual), parseInt(this.model.sueldoSemestral), parseInt(this.model.sueldoTrimestral)]);
 		const variableMaximaPropuestos = Math.max(...[parseInt(this.modelPropuestos.sueldoAnual), parseInt(this.modelPropuestos.sueldoMensual), parseInt(this.modelPropuestos.sueldoSemestral), parseInt(this.modelPropuestos.sueldoTrimestral)]);
 
-		const doc = new jsPDF();
+		// const doc = new jsPDF();
 
 		// Esquina de la hoja
-		autoTable(doc, {
-			theme: "plain",
-			body: [
-				[
-					{
-						content: `RR.HH.: ${this.solicitud.idSolicitud}`,
-						styles: {
-							halign: "right",
-							fontStyle: "bold"
-						}
-					}
-				],
-			]
-		});
+		// autoTable(doc, {
+		// 	theme: "plain",
+		// 	body: [
+		// 		[
+		// 			{
+		// 				content: codigosSolicitudReporte.accionPersonal,
+		// 				styles: {
+		// 					halign: "right",
+		// 					fontStyle: "bold"
+		// 				}
+		// 			}
+		// 		],
+		// 	]
+		// });
+		autoTable(doc, esquinaDeHoja);
 
 		// Títutlo
-		autoTable(doc, {
-			theme: "plain",
-			body: [
-				[
-					{
-						content: "ACCIÓN DE PERSONAL",
-						styles: {
-							halign: "center",
-							fontSize: 20,
-							fontStyle: "bold",
-							textColor
-						}
-					}
-				],
-			]
-		});
+		// autoTable(doc, {
+		// 	theme: "plain",
+		// 	body: [
+		// 		[
+		// 			{
+		// 				content: "ACCIÓN DE PERSONAL",
+		// 				styles: {
+		// 					halign: "center",
+		// 					fontSize: 20,
+		// 					fontStyle: "bold",
+		// 					textColor
+		// 				}
+		// 			}
+		// 		],
+		// 	]
+		// });
+		autoTable(doc, tituloDeHoja);
 
 		// Encabezado de la solicitud
 		autoTable(doc, {
