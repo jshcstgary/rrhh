@@ -28,6 +28,20 @@ export class CrearNivelesAprobacionService {
 		return this.http.post<any>(`${this.apiUrlNivelAprobacion}/post_arreglo`, request);
 	}
 
+	public actualizarNivelesAprobacion(request: any[]): Observable<any> {
+		request.forEach(data => {
+			data.fechaCreacion = new Date(),
+				data.fechaActualizacion = new Date();
+			data.usuarioCreacion = localStorage.getItem(LocalStorageKeys.IdLogin);
+			data.usuarioActualizacion = localStorage.getItem(LocalStorageKeys.IdLogin);
+
+			convertTimeZonedDate(data.fechaCreacion);
+			convertTimeZonedDate(data.fechaActualizacion);
+		})
+
+		return this.http.post<any>(`${this.apiUrlNivelAprobacion}/put_arreglo`, request);
+	}
+
 	public guardarNivelAprobacion(request: any): Observable<any> {
 		request.fechaCreacion = new Date(),
 			request.fechaActualizacion = new Date();
