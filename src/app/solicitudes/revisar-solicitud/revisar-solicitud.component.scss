@@ -1,32 +1,32 @@
 .autocomplete-items {
-  border: 1px solid #d4d4d4;
-  border-bottom: none;
-  border-top: none;
-  z-index: 99;
-  /*position the autocomplete items to be the same width as the container:*/
-  top: 100%;
-  left: 0;
-  right: 0;
+	border: 1px solid #d4d4d4;
+	border-bottom: none;
+	border-top: none;
+	z-index: 99;
+	/*position the autocomplete items to be the same width as the container:*/
+	top: 100%;
+	left: 0;
+	right: 0;
 }
 
 .suggestion-item {
-  padding: 10px;
-  cursor: pointer;
-  background-color: #fff;
-  border-bottom: 1px solid #d4d4d4;
+	padding: 10px;
+	cursor: pointer;
+	background-color: #fff;
+	border-bottom: 1px solid #d4d4d4;
 }
 
 .suggestion-item:hover {
-  /*when hovering an item:*/
-  background-color: #e9e9e9;
+	/*when hovering an item:*/
+	background-color: #e9e9e9;
 }
 
 .form-control {
-  width: 300px;
+	width: 300px;
 }
 
 .header-accordion {
-  background-color: white !important
+	background-color: white !important;
 }
 
 // .accordion-item {
@@ -35,121 +35,120 @@
 
 .accordion-button,
 .accordion-button.collapsed {
-  border: none !important;
-  box-shadow: none !important;
+	border: none !important;
+	box-shadow: none !important;
 }
 
 textarea {
-  width: 40%;
-  // height: 200px;
-  padding: 10px;
-  border: 1px solid #e2dfdf;
-  box-sizing: border-box;
+	width: 40%;
+	// height: 200px;
+	padding: 10px;
+	border: 1px solid #e2dfdf;
+	box-sizing: border-box;
 }
 
 .ngb-typeahead-window .dropdown-item.active {
-  background-color: gold;
-  /* Cambia el color de fondo a dorado */
+	background-color: gold;
+	/* Cambia el color de fondo a dorado */
 }
 
 .dropdown-menu {
-  width: 300px;
-  /* Ajusta el ancho según tus necesidades */
+	width: 300px;
+	/* Ajusta el ancho según tus necesidades */
 }
 
-
 .label-estilo {
-  color: #0056B3;
-  font-size: 16px;
-  width: 45%;
-  background-color: white;
-  font-weight: 500;
-  border-style: none;
+	color: #0056b3;
+	font-size: 16px;
+	width: 45%;
+	background-color: white;
+	font-weight: 500;
+	border-style: none;
 }
 
 .label-estilo2 {
-  color: #0056B3;
-  font-size: 16px;
-  width: 22%;
-  background-color: white;
-  font-weight: 500;
-  border-style: none;
+	color: #0056b3;
+	font-size: 16px;
+	width: 22%;
+	background-color: white;
+	font-weight: 500;
+	border-style: none;
 }
 
 /* aqui van los estilos de Atencion de solicitud*/
 
 .process-request {
-  display: flex;
-  align-items: center;
+	display: flex;
+	align-items: center;
 }
 
 .title {
-  margin-right: 10px;
-  font-weight: bold;
-  color: #1a73e8;
+	margin-right: 10px;
+	font-weight: bold;
+	color: #1a73e8;
 }
 
 .buttons {
-  display: flex;
+	display: flex;
 }
 
 .mat-button-toggle-checked {
-  background-color: #005cb2 !important;
-  color: white !important;
+	background-color: #005cb2 !important;
+	color: white !important;
 }
 
 .mat-button-toggle {
-  margin-right: 0px;
+	margin-right: 0px;
 }
 
 .mat-button-toggle:last-child {
-  margin-right: 0;
+	margin-right: 0;
 }
 
 .mat-button-toggle:nth-child(4) {
-  background-color: #0067d1;
-  color: white;
+	background-color: #0067d1;
+	color: white;
 }
 
 //text area de observacion
 
 .responsive-container {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  margin: 20px;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	margin: 20px;
 }
 
 .sol-danger {
-
-  color: #C69D08;
-  font-size: 23px;
-  font-weight: 500;
+	color: #c69d08;
+	font-size: 23px;
+	font-weight: 500;
+	margin: 0;
 }
 
 /* Aumenta el tamaño del icono */
 .icon-size {
-  font-size: 1.25rem;
-  /* Ajusta el tamaño del icono */
+	font-size: 1.25rem;
+	/* Ajusta el tamaño del icono */
 }
 
 .btn-unselected {
-  background-color: lighten(#003a7a, 30%);
-  border-color: lighten(#003a7a, 30%);
+	background-color: lighten(#003a7a, 30%);
+	border-color: lighten(#003a7a, 30%);
 
-  &:hover {
-    box-shadow: 0 8px 15px rgba(0, 86, 179, 0.3);
-    background-color: lighten(#003a7a, 20%);
-    border-color: lighten(#003a7a, 20%);
-  }
+	&:hover {
+		box-shadow: 0 8px 15px rgba(0, 86, 179, 0.3);
+		background-color: lighten(#003a7a, 20%);
+		border-color: lighten(#003a7a, 20%);
+	}
 }
 
 .btn-selected {
-  background-color: lighten(green, 10%);
-  color: white;
+	background-color: lighten(green, 10%);
+	color: white;
 
-  &:hover {
-    box-shadow: 0 8px 15px rgba(0, 86, 179, 0.3);
-    background-color: lighten(green, 5%);
-  }
+	&:hover {
+		box-shadow: 0 8px 15px rgba(0, 86, 179, 0.3);
+		background-color: lighten(green, 5%);
+	}
 }

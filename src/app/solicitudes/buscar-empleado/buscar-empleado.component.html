@@ -1,6 +1,6 @@
 <div class="p-2 buscar-aprobador-fijo-modal">
 	<form class="input-group my-2" [formGroup]="myForm" (ngSubmit)="onSubmit()">
-		<input type="text" class="form-control" formControlName="searchInput" placeholder="Ingrese subledger, nombre o correo del empleado">
+		<input type="text" class="form-control" formControlName="searchInput" placeholder="Ingrese código de posición, subledger, nombre o correo del empleado">
 	
 		<button type="submit" class="btn btn-info" [disabled]="myForm.invalid">Buscar</button>
 	</form>
@@ -12,14 +12,22 @@
 			<thead>
 				<tr>
 					<th></th>
-
-					<th>Subledger</th>
+					
+					<th>Código de Posición</th>
+					
+					<th>Posición</th>
 
 					<th>Nombre</th>
+					
+					<th>Compañía</th>
 
-					<th>Correo</th>
+					<th>Unidad de Negocio</th>
 
-					<th>Cargo</th>
+					<th>Área/Departamento</th>
+
+					<th>Localidad/Zona</th>
+
+					<th>Centro de Costo</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -27,12 +35,20 @@
 					<td>
 						<input class="form-check-input" type="radio" [value]="empleado" [checked]="empleadoSeleccionado === empleado" (change)="$event.stopPropagation(); seleccionarUsuario(empleado)">
 					</td>
-
-					<td>{{ empleado.subledger }}</td>
+					
+					<td>{{ empleado.codigoPosicion }}</td>
+					
+					<td>{{ empleado.descrPosicion }}</td>
 
 					<td>{{ empleado.nombreCompleto }}</td>
 
-					<td>{{ empleado.correo }}</td>
+					<td>{{ empleado.compania }}</td>
+
+					<td>{{ empleado.unidadNegocio }}</td>
+
+					<td>{{ empleado.departamento }}</td>
+
+					<td>{{ empleado.localidad }}</td>
 
 					<td>{{ empleado.nombreCargo }}</td>
 				</tr>

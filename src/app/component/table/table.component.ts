@@ -405,9 +405,9 @@ export class TableComponent implements OnInit, OnChanges {
 		this.contexto[this.onCancelEditRowTable]();
 	}
 	/**
-	 * Función para ejecutar la accion de la fila
+	 * Función para ejecutar la acción de la fila
 	 *
-	 * @param id id de la accion
+	 * @param id id de la acción
 	 * @param key identificador de la fila
 	 */
 	public clickOnAction(id: string, key: string, tooltip: string, id_edit: any) {

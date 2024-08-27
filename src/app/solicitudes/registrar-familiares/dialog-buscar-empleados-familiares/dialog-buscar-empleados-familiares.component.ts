@@ -1,6 +1,7 @@
 import { HttpErrorResponse } from "@angular/common/http";
 import { Component, inject } from "@angular/core";
 import { NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
+import { format } from "date-fns";
 import { Observable, OperatorFunction, debounceTime, distinctUntilChanged, map } from "rxjs";
 import {
 	EvType,
@@ -47,13 +48,19 @@ export class DialogBuscarEmpleadosFamiliaresComponent {
 	}
 
 	getFormattedDate(dateValue: Date): string {
-		const date: Date = new Date(dateValue);
+		if (isNaN(new Date(dateValue).getTime())) {
+			return "";
+		}
+		
+		return format(new Date(dateValue), "yyyy-MM-dd");
+		
+		// const date: Date = new Date(dateValue);
 
-		const day = date.getDate().toString().padStart(2, '0');
-		const month = String(date.getMonth() + 1).padStart(2, '0'); // Enero es 0!
-		const year = date.getFullYear();
+		// const day = date.getDate().toString().padStart(2, '0');
+		// const month = String(date.getMonth() + 1).padStart(2, '0'); // Enero es 0!
+		// const year = date.getFullYear();
 
-		return `${year}-${month}-${day}`;
+		// return `${year}-${month}-${day}`;
 	}
 
 	onClose() {
@@ -132,7 +139,7 @@ export class DialogBuscarEmpleadosFamiliaresComponent {
 			descrPosicion: "",
 			codigoPuesto: "",
 			descrPuesto: "",
-			fechaIngresogrupo: new Date(),
+			fechaIngresogrupo: new Date(""),
 			grupoPago: "",
 			reportaA: "",
 			localidad: "",

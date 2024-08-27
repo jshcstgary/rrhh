@@ -181,13 +181,13 @@ export const SolicitudesRoutes: Routes = [
 				path: 'accion-personal/registrar-solicitud/:id/:idSolicitud',
 				component: RegistrarAccionPersonalComponent,
 				data: {
-					title: "Accion de Personal",
+					title: "Acción de Personal",
 					urls: [
 						{
-							title: 'Accion',
+							title: 'Acción',
 						},
 						{
-							title: 'Accion de Personal'
+							title: 'Acción de Personal'
 						}
 					]
 				}
@@ -199,10 +199,10 @@ export const SolicitudesRoutes: Routes = [
 					title: "Completar solicitud",
 					urls: [
 						{
-							title: 'Accion',
+							title: 'Acción',
 						},
 						{
-							title: 'Accion de Personal'
+							title: 'Acción de Personal'
 						}
 					]
 				}
