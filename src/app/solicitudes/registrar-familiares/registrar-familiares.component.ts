@@ -1291,11 +1291,6 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
 		this.submitted = true;
 		let idInstancia = this.solicitudDataInicial.idInstancia;
 
-		console.log(
-			"this.solicitudDataInicial.idInstancia: ",
-			this.solicitudDataInicial.idInstancia
-		);
-
 		let extra = {
 			idEmpresa: this.model.compania,
 			empresa: this.model.compania,
@@ -1304,8 +1299,8 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
 			idUnidadNegocio: this.model.unidadNegocio,
 		};
 
-		this.solicitud.empresa = this.model.idEmpresa;
-		this.solicitud.idEmpresa = this.model.idEmpresa;
+		this.solicitud.empresa = this.model.compania;
+		this.solicitud.idEmpresa = this.model.compania;
 
 		this.solicitud.unidadNegocio = this.model.unidadNegocio;
 		this.solicitud.idUnidadNegocio = this.model.unidadNegocio;

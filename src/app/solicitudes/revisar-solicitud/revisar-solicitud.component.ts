@@ -37,6 +37,7 @@ import { DialogBuscarEmpleadosFamiliaresComponent } from "../registrar-familiare
 import { SolicitudesService } from "../registrar-solicitud/solicitudes.service";
 import { ComentarioSalidaJefeService } from './comentario-salida-jefe.service';
 import { addDays } from "date-fns";
+import { convertTimeZonedDate } from "src/app/services/util/dates.util";
 
 interface DialogComponents {
 	dialogBuscarEmpleados: Type<DialogBuscarEmpleadosFamiliaresComponent>;
@@ -1394,10 +1395,15 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
 				if (this.buttonValue.toUpperCase().includes("ESPERA")) {
 					this.solicitudes.modelDetalleAprobaciones.comentario = this.textareaContent + " - FechaMaximaEspera: " + this.selectedDate.toISOString().split("T")[0];
 				}
+
+				this.solicitudes.modelDetalleAprobaciones.fechaModificacion = new Date();
+				convertTimeZonedDate(this.solicitudes.modelDetalleAprobaciones.fechaModificacion);
+				
 				this.solicitudes.guardarDetallesAprobacionesSolicitud(this.solicitudes.modelDetalleAprobaciones).subscribe({
 					next: (res) => {
 					}
 				});
+
 				if (this.id_solicitud_by_params.includes("RG")) {
 					this.solicitud = this.solicitudRG;
 				}

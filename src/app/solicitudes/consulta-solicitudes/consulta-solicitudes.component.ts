@@ -50,6 +50,7 @@ import { PageControlPermiso } from "src/app/types/page-control-permiso.type";
 import { Control, Permiso } from "src/app/types/permiso.type";
 import { ConsultaGraficosData } from "./consulta-grafico.data";
 import { ConsultaSolicitudesService } from "./consulta-solicitudes.service";
+import { convertTimeZonedDate } from "src/app/services/util/dates.util";
 
 //import { single} from './chartData';
 declare var require: any;
@@ -398,8 +399,11 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 		this.solicitudes.modelDetalleAprobaciones.correo = res.evType[0].correo;
 		this.solicitudes.modelDetalleAprobaciones.usuarioCreacion = res.evType[0].nombreCompleto;
 		this.solicitudes.modelDetalleAprobaciones.usuarioModificacion = res.evType[0].nombreCompleto;
-		this.solicitudes.modelDetalleAprobaciones.fechaCreacion = new Date().toISOString();
-		this.solicitudes.modelDetalleAprobaciones.fechaModificacion = new Date().toISOString();
+		this.solicitudes.modelDetalleAprobaciones.fechaCreacion = new Date();
+		this.solicitudes.modelDetalleAprobaciones.fechaModificacion = new Date();
+
+		convertTimeZonedDate(this.solicitudes.modelDetalleAprobaciones.fechaCreacion);
+		convertTimeZonedDate(this.solicitudes.modelDetalleAprobaciones.fechaModificacion);
 	}
 
 	//Crear Solicitud
@@ -454,6 +458,11 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 								next: (res) => {
 									this.solicitud.usuarioCreacion = res.evType[0].nombreCompleto;
 									this.solicitud.usuarioActualizacion = res.evType[0].nombreCompleto;
+									this.solicitud.fechaActualizacion = new Date();
+									this.solicitud.fechaCreacion = new Date();
+
+									convertTimeZonedDate(this.solicitud.fechaActualizacion);
+									convertTimeZonedDate(this.solicitud.fechaCreacion);
 
 									this.solicitudes.guardarSolicitud(this.solicitud).subscribe({
 										next: (responseSolicitud) => {
