@@ -18,6 +18,7 @@ import { TiporutaData } from "./tipo-ruta.data";
 import { ITiporuta, ITiporutaTable } from "./tipo-ruta.interface";
 import { TipoRutaService } from "./tipo-ruta.service";
 import { removeExtraSpaces } from "src/app/services/util/text.util";
+import { DatePipe } from "@angular/common";
 
 @Component({
 	templateUrl: "./tipo-ruta.component.html",
@@ -119,6 +120,7 @@ export class TipoRutaComponent implements OnInit {
 					.map((tipoRutaResponse) => ({
 						...tipoRutaResponse,
 						estado: tipoRutaResponse.estado === "A",
+						fechaActualizacion: new DatePipe('en-CO').transform(tipoRutaResponse.fechaActualizacion, "dd/MM/yyyy HH:mm:ss")
 					}))
 					.sort((a, b) => a.tipoRuta.localeCompare(b.tipoRuta));
 

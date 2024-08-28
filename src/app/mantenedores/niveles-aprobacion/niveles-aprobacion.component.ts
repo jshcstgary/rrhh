@@ -197,7 +197,7 @@ export class NivelesAprobacionComponent implements OnInit {
 
 		this.utilService.openLoadingSpinner("Cargando información, espere por favor...");
 
-		this.nivelesAprobacionService.filterNivelesAprobaciones(this.dataFilterNivelesAprobacion.tipoSolicitud, this.dataFilterNivelesAprobacion.tipoMotivo, this.dataFilterNivelesAprobacion.nivelDireccion, this.dataFilterNivelesAprobacion.tipoRuta, this.dataFilterNivelesAprobacion.accion).subscribe({
+		this.nivelesAprobacionService.filterNivelesAprobaciones(this.dataFilterNivelesAprobacion.tipoSolicitud ?? 10000, this.dataFilterNivelesAprobacion.tipoMotivo, this.dataFilterNivelesAprobacion.nivelDireccion, this.dataFilterNivelesAprobacion.tipoRuta, this.dataFilterNivelesAprobacion.accion).subscribe({
 			next: (response) => {
 				if (response.totalRegistros === 0) {
 					this.dataTable = [];
@@ -212,9 +212,7 @@ export class NivelesAprobacionComponent implements OnInit {
 				if(this.isRequisicionPersonal){
 					this.dataTable = response.nivelAprobacionType
 						.filter(data => data.estado === "A")
-						// .sort((a, b) => a.idNivelAprobacion - b.idNivelAprobacion)
 						.reduce((acc, obj) => {
-						//	const grupo = acc.find(g => g[0].idTipoMotivo === obj.idTipoMotivo || g[0].idTipoSolicitud === obj.idTipoSolicitud || g[0].nivelDireccion === obj.nivelDireccion || g[0].idAccion === obj.idAccion);
 							const grupo = acc.find(g => g[0].idTipoMotivo === obj.idTipoMotivo && g[0].idTipoRuta === obj.idTipoRuta);
 
 							if (grupo) {
@@ -228,9 +226,7 @@ export class NivelesAprobacionComponent implements OnInit {
 				} else {
 					this.dataTable = response.nivelAprobacionType
 						.filter(data => data.estado === "A")
-						// .sort((a, b) => a.idNivelAprobacion - b.idNivelAprobacion)
 						.reduce((acc, obj) => {
-						//	const grupo = acc.find(g => g[0].idTipoMotivo === obj.idTipoMotivo || g[0].idTipoSolicitud === obj.idTipoSolicitud || g[0].nivelDireccion === obj.nivelDireccion || g[0].idAccion === obj.idAccion);
 							const grupo = acc.find(g => g[0].idTipoRuta === obj.idTipoRuta);
 
 							if (grupo) {

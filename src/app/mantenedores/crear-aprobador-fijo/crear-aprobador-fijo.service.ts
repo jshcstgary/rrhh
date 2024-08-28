@@ -18,9 +18,11 @@ export class CrearAprobadorFijoService {
 	public guardarAprobadorFijo(request: any): Observable<any> {
 		request.fechA_CREACION = new Date();
 		request.usuariO_CREACION = localStorage.getItem(LocalStorageKeys.IdLogin);
-		request.fechA_MODIFICACION = null;
+		request.fechA_MODIFICACION = new Date();
+		request.usuariO_MODIFICACION = localStorage.getItem(LocalStorageKeys.IdLogin);
 
 		convertTimeZonedDate(request.fechA_CREACION);
+		convertTimeZonedDate(request.fechA_MODIFICACION);
 
 		return this.http.post<any>(this.apiUrlAprobadoresFijos, request);
 	}

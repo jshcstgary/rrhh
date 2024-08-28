@@ -25,6 +25,7 @@ import {
 } from "./tipo-motivo.interface";
 import { TipoMotivoService } from "./tipo-motivo.service";
 import { removeExtraSpaces } from "src/app/services/util/text.util";
+import { DatePipe } from "@angular/common";
 
 @Component({
 	templateUrl: "./tipo-motivo.component.html",
@@ -161,15 +162,8 @@ export class TipoMotivoComponent implements OnInit {
 						...motivoResponse,
 						estado: motivoResponse.estado === "A",
 						tipoSolicitudFormatted: this.formatTipoSolicitudEstaciones(motivoResponse),
+						fechaActualizacion: new DatePipe('en-CO').transform(motivoResponse.fechaActualizacion, "dd/MM/yyyy HH:mm:ss")
 					}))
-					// .sort((a, b) => a.tipoMotivo.localeCompare(b.tipoMotivo));
-					// .sort((a, b) => {
-					// 	if (a.tipoSolicitudId === b.tipoSolicitudId) {
-					// 		return a.tipoMotivo.localeCompare(b.tipoMotivo);
-					// 	}
-
-					// 	return (a.tipoSolicitudId as number) - (b.tipoSolicitudId as number);
-					// });
 					.sort((a, b) => {
 						const tipoSolicitudComparacion = a.tipoSolicitudFormatted.localeCompare(b.tipoSolicitudFormatted);
 						

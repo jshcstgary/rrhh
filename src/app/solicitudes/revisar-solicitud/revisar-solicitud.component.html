@@ -29,7 +29,7 @@
 
 				<div class="row mt-4">
 					<div class="col-md-4">
-						<div class="input-group mb-3 aling-items-center">
+						<div class="input-group mb-3 align-items-center">
 							<label class="label-estilo" for="origin">Creado por:</label>
 
 							<span id="origin" name="" style="color: black; font-size: 14px" class="text-start">{{ solicitud.usuarioCreacion }}</span>
@@ -37,7 +37,7 @@
 					</div>
 
 					<div class="col-md-4">
-						<div class="input-group mb-3 aling-items-center">
+						<div class="input-group mb-3 align-items-center">
 							<label class="label-estilo" for="unidadnegocio">Fecha:</label>
 
 							<span id="date" name="" style="color: black; font-size: 14px" class="text-start">{{ solicitud.fechaCreacion | date : "yyyy/MM/dd" }}</span>
@@ -45,7 +45,7 @@
 					</div>
 
 					<div class="col-md-4">
-						<div class="input-group mb-3 aling-items-center">
+						<div class="input-group mb-3 align-items-center">
 							<label class="label-estilo" for="unidadnegocio">Nro. Solicitud:</label>
 
 							<span id="solicitud" name="" style="color: black; font-size: 14px" class="text-start">{{ id_solicitud_by_params }}</span>
@@ -74,7 +74,7 @@
 
 				<div class="row">
 					<div class="col-md-3">
-						<div class="input-group mb-3 aling-items-center">
+						<div class="input-group mb-3 align-items-center">
 							<label class="input-group-text label-estilo" for="tipoSolicitud">Nro de Solicitud de Requisicion</label>
 
 							&nbsp;
@@ -82,7 +82,7 @@
 					</div>
 
 					<div class="col-md-6">
-						<div class="input-group mb-3 aling-items-center">
+						<div class="input-group mb-3 align-items-center">
 							<span #mivar id="tipoSolicitud" name="idTipoSolicitud" style="color: black; font-size: 14px" class="text-start">{{ idSolicitudRP }}</span>
 						</div>
 					</div>
@@ -90,13 +90,13 @@
 
 				<div class="row">
 					<div class="col-md-3">
-						<div class="input-group mb-3 aling-items-center">
+						<div class="input-group mb-3 align-items-center">
 							<label class="input-group-text label-estilo" for="tipoSolicitud">Justificacion*</label>
 						</div>
 					</div>
 
 					<div class="col-md-7">
-						<div class="input-group mb-3 aling-items-center">
+						<div class="input-group mb-3 align-items-center">
 							<textarea name="descripcionposicion" [(ngModel)]="model.justificacionCargo" style="color: black; font-size: 14px; width: 100%; resize: none" class="form-control" id="descripcionposicion" rows="3" required readonly></textarea>
 						</div>
 					</div>
@@ -112,7 +112,7 @@
 					</div>
 
 					<div class="col-md-6">
-						<div class="input-group mb-3 aling-items-center">
+						<div class="input-group mb-3 align-items-center">
 							<span #mivar id="tipoSolicitud" name="idTipoSolicitud" style="color: black; font-size: 14px" class="text-start">{{ nombreCompletoCandidato }}</span>
 						</div>
 					</div>
@@ -120,7 +120,7 @@
 
 				<div class="row">
 					<div class="col-md-12">
-						<div class="input-group mb-3 aling-items-center">
+						<div class="input-group mb-3 align-items-center">
 							<label class="input-group-text label-estilo2" for="compania">Compañía</label>
 
 							<span id="compania" name="" style="color: black; font-size: 14px" class="text-start">{{ model.compania
@@ -131,7 +131,7 @@
 				
 				<div class="row">
 					<div class="col-md-7">
-						<div class="input-group mb-3 aling-items-center">
+						<div class="input-group mb-3 align-items-center">
 							<label class="input-group-text label-estilo" for="unidadnegocio">Unidad de negocio</label>
 	
 							<span id="unidadnegocio" name="" style="color: black; font-size: 14px" class="text-start">{{ model.unidadNegocio }}</span>
@@ -139,7 +139,7 @@
 					</div>
 
 					<div class="col-md">
-						<div class="input-group mb-3 aling-items-center">
+						<div class="input-group mb-3 align-items-center">
 							<label class="input-group-text label-estilo" for="departamento">Departamento</label>
 
 							<span id="departamento" name="" style="color: black; font-size: 14px" class="text-start">{{ model.departamento }}</span>
@@ -149,7 +149,7 @@
 				
 				<div class="row">
 					<div class="col-md-7">
-						<div class="input-group mb-3 aling-items-center">
+						<div class="input-group mb-3 align-items-center">
 							<label class="input-group-text label-estilo" for="tipocargo">Localidad</label>
 	
 							<span id="cargo" name="" style="color: black; font-size: 14px" class="text-start">{{ model.localidad }}</span>
@@ -157,7 +157,7 @@
 					</div>
 
 					<div class="col-md">
-						<div class="input-group mb-3 aling-items-center">
+						<div class="input-group mb-3 align-items-center">
 							<label class="input-group-text label-estilo" for="localidadzona">Cargo</label>
 
 							<span id="localidadzona" name="" style="color: black; font-size: 14px" class="text-start">{{ model.nombreCargo }}</span>
@@ -167,7 +167,7 @@
 				
 				<div class="row">
 					<div class="col-md-7">
-						<div class="input-group mb-3 aling-items-center">
+						<div class="input-group mb-3 align-items-center">
 							<label class="input-group-text label-estilo" for="niveldirección">Tipo de contrato</label>
 							<span id="niveldirección" name="" style="color: black; font-size: 14px"
 
@@ -176,7 +176,7 @@
 					</div>
 
 					<div class="col-md">
-						<div class="input-group mb-3 aling-items-center">
+						<div class="input-group mb-3 align-items-center">
 							<label class="input-group-text label-estilo" for="centrocosto">Jefe solicitante</label>
 							<span id="centrocosto" name="" style="color: black; font-size: 14px" class="text-start">{{
 								solicitud.usuarioCreacion }}</span>
@@ -186,7 +186,7 @@
 
 				<div class="row">
 					<div class="col-md-7">
-						<div class="input-group mb-3 aling-items-center">
+						<div class="input-group mb-3 align-items-center">
 							<label class="input-group-text label-estilo" for="centrocosto">Responsable de RRHH</label>
 							<span id="centrocosto" name="" style="color: black; font-size: 14px" class="text-start">{{ solicitud.usuarioCreacion }}</span>
 						</div>
@@ -383,7 +383,7 @@
 				<div class="row mb-2">
 					<div class="col-md-1"></div>
 					<div class="col-md-7">
-						<div class="input-group mb-3 aling-items-center">
+						<div class="input-group mb-3 align-items-center">
 							<label class="input-group label-estilo" for="tipoSolicitud">Nro Solicitud de
 								Requisicion</label>
 							&nbsp;
@@ -395,7 +395,7 @@
 				<div class="row mt-3">
 					<div class="col-md-1"></div>
 					<div class="col-md-7">
-						<div class="input-group mb-3 aling-items-center">
+						<div class="input-group mb-3 align-items-center">
 							<label class="input-group label-estilo" for="tipoMotivo">Apellidos y nombres
 								completos</label>
 							&nbsp;
@@ -408,13 +408,13 @@
 				<div class="row mt-3">
 					<div class="col-md-1"></div>
 					<div class="col-md-3">
-						<div class="input-group mb-3 aling-items-center">
+						<div class="input-group mb-3 align-items-center">
 							<label class="input-group label-estilo" for="observaciones">Observaciones</label>
 						</div>
 					</div>
 
 					<div class="col-md-7">
-						<div class="input-group mb-3 aling-items-center">
+						<div class="input-group mb-3 align-items-center">
 							<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px;"
 								class="text-start">{{detalleSolicitudRG.justificacion}}</span>
 						</div>
@@ -440,7 +440,7 @@
 				<div class="row" *ngIf="solicitud">
 					<div class="col-md-1"></div>
 					<div class="col-md-10">
-						<div class="input-group mb-3 aling-items-center">
+						<div class="input-group mb-3 align-items-center">
 							<label class="input-group label-estilo" for="tipoMotivo">Empleado</label>
 							&nbsp;
 							<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px;"
@@ -468,7 +468,7 @@
 				<div class="row mt-4">
 					<div class="col-md-1"></div>
 					<div class="col">
-						<div class="input-group mb-3 aling-items-center">
+						<div class="input-group mb-3 align-items-center">
 							<label class="input-group label-estilo2" for="tipoMotivo">Compañía</label>
 							&nbsp;
 							<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px;"
@@ -481,7 +481,7 @@
 				<div class="row mt-4 mb-4">
 					<div class="col-md-1"></div>
 					<div class="col">
-						<div class="input-group mb-3 aling-items-center">
+						<div class="input-group mb-3 align-items-center">
 							<label class="input-group label-estilo" for="tipoMotivo">Compañía</label>
 							&nbsp;
 							<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px;"
@@ -490,7 +490,7 @@
 						</div>
 					</div>
 					<div class="col">
-						<div class="input-group mb-3 aling-items-center">
+						<div class="input-group mb-3 align-items-center">
 							<label class="input-group label-estilo" for="tipoMotivo">Sueldo</label>
 							&nbsp;
 							<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px;"
@@ -501,7 +501,7 @@
 				
 				<div class="row mt-4 mb-4">
 					<div class="col">
-						<div class="input-group mb-3 aling-items-center">
+						<div class="input-group mb-3 align-items-center">
 							<label class="input-group label-estilo" for="tipoMotivo">Sueldo</label>
 							&nbsp;
 							<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px;"
@@ -528,7 +528,7 @@
 				<div class="row mt-4">
 					<div class="col-md-1"></div>
 					<div class="col">
-						<div class="input-group mb-3 aling-items-center">
+						<div class="input-group mb-3 align-items-center">
 							<label class="input-group label-estilo" for="tipoMotivo">Mensual</label>
 							&nbsp;
 							<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px;"
@@ -536,7 +536,7 @@
 						</div>
 					</div>
 					<div class="col">
-						<div class="input-group mb-3 aling-items-center">
+						<div class="input-group mb-3 align-items-center">
 							<label class="input-group label-estilo" for="tipoMotivo">Mensual</label>
 							&nbsp;
 							<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px;"
@@ -547,7 +547,7 @@
 				<div class="row mt-4">
 					<div class="col-md-1"></div>
 					<div class="col">
-						<div class="input-group mb-3 aling-items-center">
+						<div class="input-group mb-3 align-items-center">
 							<label class="input-group label-estilo" for="tipoMotivo">Trimestral</label>
 							&nbsp;
 							<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px;"
@@ -555,7 +555,7 @@
 						</div>
 					</div>
 					<div class="col">
-						<div class="input-group mb-3 aling-items-center">
+						<div class="input-group mb-3 align-items-center">
 							<label class="input-group label-estilo" for="tipoMotivo">Trimestral</label>
 							&nbsp;
 							<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px;"
@@ -566,7 +566,7 @@
 				<div class="row mt-4">
 					<div class="col-md-1"></div>
 					<div class="col">
-						<div class="input-group mb-3 aling-items-center">
+						<div class="input-group mb-3 align-items-center">
 							<label class="input-group label-estilo" for="tipoMotivo">Semestral</label>
 							&nbsp;
 							<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px;"
@@ -574,7 +574,7 @@
 						</div>
 					</div>
 					<div class="col">
-						<div class="input-group mb-3 aling-items-center">
+						<div class="input-group mb-3 align-items-center">
 							<label class="input-group label-estilo" for="tipoMotivo">Semestral</label>
 							&nbsp;
 							<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px;"
@@ -585,7 +585,7 @@
 				<div class="row mt-4">
 					<div class="col-md-1"></div>
 					<div class="col">
-						<div class="input-group mb-3 aling-items-center">
+						<div class="input-group mb-3 align-items-center">
 							<label class="input-group label-estilo" for="tipoMotivo">Anual</label>
 							&nbsp;
 							<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px;"
@@ -594,7 +594,7 @@
 					</div>
 					<div class="col">
 
-						<div class="input-group mb-3 aling-items-center">
+						<div class="input-group mb-3 align-items-center">
 							<label class="input-group label-estilo" for="tipoMotivo">Anual</label>
 							&nbsp;
 							<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px;"
@@ -605,7 +605,7 @@
 				<div class="row mt-4">
 					<div class="col-md-1"></div>
 					<div class="col">
-						<div class="input-group mb-3 aling-items-center">
+						<div class="input-group mb-3 align-items-center">
 							<label class="input-group label-estilo" for="tipoMotivo">Remuneración mensual</label>
 							&nbsp;
 							<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px;"
@@ -615,7 +615,7 @@
 					</div>
 					<div class="col">
 
-						<div class="input-group mb-3 aling-items-center">
+						<div class="input-group mb-3 align-items-center">
 							<label class="input-group label-estilo" for="tipoMotivo">Remuneración mensual</label>
 							&nbsp;
 							<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px;"
@@ -627,7 +627,7 @@
 				<div class="row mt-4">
 					<div class="col-md-1"></div>
 					<div class="col">
-						<div class="input-group mb-3 aling-items-center">
+						<div class="input-group mb-3 align-items-center">
 							<label class="input-group label-estilo" for="tipoMotivo">Puesto</label>
 							&nbsp;
 							<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px;"
@@ -635,7 +635,7 @@
 						</div>
 					</div>
 					<div class="col">
-						<div class="input-group mb-3 aling-items-center">
+						<div class="input-group mb-3 align-items-center">
 							<label class="input-group label-estilo" for="tipoMotivo">Puesto</label>
 							&nbsp;
 							<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px;"
@@ -646,7 +646,7 @@
 				<div class="row mt-4">
 					<div class="col-md-1"></div>
 					<div class="col">
-						<div class="input-group mb-3 aling-items-center">
+						<div class="input-group mb-3 align-items-center">
 							<label class="input-group label-estilo" for="tipoMotivo">Unidad de Negocio</label>
 							&nbsp;
 							<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px;"
@@ -654,7 +654,7 @@
 						</div>
 					</div>
 					<div class="col">
-						<div class="input-group mb-3 aling-items-center">
+						<div class="input-group mb-3 align-items-center">
 							<label class="input-group label-estilo" for="tipoMotivo">Unidad de Negocio</label>
 							&nbsp;
 							<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px;"
@@ -665,7 +665,7 @@
 				<div class="row mt-4">
 					<div class="col-md-1"></div>
 					<div class="col">
-						<div class="input-group mb-3 aling-items-center">
+						<div class="input-group mb-3 align-items-center">
 							<label class="input-group label-estilo" for="tipoMotivo">Departamento</label>
 							&nbsp;
 							<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px;"
@@ -673,7 +673,7 @@
 						</div>
 					</div>
 					<div class="col">
-						<div class="input-group mb-3 aling-items-center">
+						<div class="input-group mb-3 align-items-center">
 							<label class="input-group label-estilo" for="tipoMotivo">Departamento</label>
 							&nbsp;
 							<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px;"
@@ -684,7 +684,7 @@
 				<div class="row mt-4">
 					<div class="col-md-1"></div>
 					<div class="col">
-						<div class="input-group mb-3 aling-items-center">
+						<div class="input-group mb-3 align-items-center">
 							<label class="input-group label-estilo" for="tipoMotivo">Localidad</label>
 							&nbsp;
 							<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px;"
@@ -692,7 +692,7 @@
 						</div>
 					</div>
 					<div class="col">
-						<div class="input-group mb-3 aling-items-center">
+						<div class="input-group mb-3 align-items-center">
 							<label class="input-group label-estilo" for="tipoMotivo">Localidad</label>
 							&nbsp;
 							<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px;"
@@ -703,7 +703,7 @@
 				<div class="row mt-4" *ngIf="solicitudRG">
 					<div class="col-md-1"></div>
 					<div class="col">
-						<div class="input-group mb-3 aling-items-center">
+						<div class="input-group mb-3 align-items-center">
 							<label class="input-group label-estilo" for="tipoMotivo">Jefe Inmediato Superior</label>
 							&nbsp;
 							<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px;"
@@ -712,7 +712,7 @@
 						</div>
 					</div>
 					<div class="col">
-						<div class="input-group mb-3 aling-items-center">
+						<div class="input-group mb-3 align-items-center">
 							<label class="input-group label-estilo" for="tipoMotivo">Jefe Inmediato Superior</label>
 							&nbsp;
 							<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px;"
@@ -725,7 +725,7 @@
 				<div class="row mt-4">
 					<div class="col-md-1"></div>
 					<div class="col">
-						<div class="input-group mb-3 aling-items-center">
+						<div class="input-group mb-3 align-items-center">
 							<label class="input-group label-estilo" for="tipoMotivo">Puesto Jefe In Superior</label>
 							&nbsp;
 							<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px;"
@@ -734,7 +734,7 @@
 						</div>
 					</div>
 					<div class="col">
-						<div class="input-group mb-3 aling-items-center">
+						<div class="input-group mb-3 align-items-center">
 							<label class="input-group label-estilo" for="tipoMotivo">Puesto Jefe Inmediato</label>
 							&nbsp;
 							<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px;"
@@ -746,7 +746,7 @@
 				<div class="row mt-4">
 					<div class="col-md-1"></div>
 					<div class="col">
-						<div class="input-group mb-3 aling-items-center">
+						<div class="input-group mb-3 align-items-center">
 							<label class="input-group label-estilo" for="jeferef">Jefe Referencia</label>
 							&nbsp;
 							<span id="jeferef" name="jeferef" style="color: black; font-size: 14px;"
@@ -755,7 +755,7 @@
 						</div>
 					</div>
 					<div class="col">
-						<div class="input-group mb-3 aling-items-center">
+						<div class="input-group mb-3 align-items-center">
 							<label class="input-group label-estilo" for="respon">Responsable RRHH</label>
 							&nbsp;
 							<span id="respon" name="respon" style="color: black; font-size: 14px;"
@@ -766,7 +766,7 @@
 				<div class="row mt-4">
 					<div class="col-md-1"></div>
 					<div class="col">
-						<div class="input-group mb-3 aling-items-center">
+						<div class="input-group mb-3 align-items-center">
 							<label class="input-group label-estilo" for="tipoMotivo">Puesto Referencia</label>
 							&nbsp;
 							<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px;"
@@ -787,7 +787,7 @@
 				<div class="row mt-4">
 					<div class="col-md-1"></div>
 					<div class="col-md-6">
-						<div class="input-group mb-3 aling-items-center">
+						<div class="input-group mb-3 align-items-center">
 							<label class="input-group label-estilo" for="tipoMotivo">Fecha de Ingreso</label>
 							&nbsp;
 							<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px;"
@@ -798,7 +798,7 @@
 				<div class="row mt-4">
 					<div class="col-md-1"></div>
 					<div class="col-md-6">
-						<div class="input-group mb-3 aling-items-center">
+						<div class="input-group mb-3 align-items-center">
 							<label class="input-group label-estilo" for="tipoMotivo">Fecha de Salida</label>
 							&nbsp;
 							<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px;"
@@ -809,7 +809,7 @@
 				<div class="row mt-4">
 					<div class="col-md-1"></div>
 					<div class="col-md-6">
-						<div class="input-group mb-3 aling-items-center">
+						<div class="input-group mb-3 align-items-center">
 							<label class="input-group label-estilo" for="responRight">Responsable RRHH</label>
 							&nbsp;
 							<span id="responRight" name="responRight" style="color: black; font-size: 14px;"
@@ -913,7 +913,7 @@
 
 					<div class="row mb-2">
 						<div class="col-md-10">
-							<div class="input-group mb-3 aling-items-center">
+							<div class="input-group mb-3 align-items-center">
 								<label class="input-group label-estilo" for="tipoSolicitud">Jefe Anterior o Jefe de
 									Referencia</label>
 								&nbsp;
@@ -925,7 +925,7 @@
 					</div>
 					<div class="row mt-3">
 						<div class="col-md-10">
-							<div class="input-group mb-3 aling-items-center">
+							<div class="input-group mb-3 align-items-center">
 								<label class="input-group label-estilo" for="tipoMotivo">Puesto</label>
 								&nbsp;
 								<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px;"
@@ -950,7 +950,7 @@
 
 					<div class="row mt-3">
 						<div class="col-md-10">
-							<div class="input-group mb-3 aling-items-center">
+							<div class="input-group mb-3 align-items-center">
 								<label class="input-group label-estilo" for="tipoMotivo">Fecha</label>
 								&nbsp;
 								<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px;"
@@ -979,7 +979,7 @@
 
 					<div class="row mb-2">
 						<div class="col-md-10">
-							<div class="input-group mb-3 aling-items-center">
+							<div class="input-group mb-3 align-items-center">
 								<label class="input-group label-estilo" for="tipoSolicitud">Forma de Salida</label>
 								&nbsp;
 
@@ -991,7 +991,7 @@
 					</div>
 					<div class="row mt-3">
 						<div class="col-md-10">
-							<div class="input-group mb-3 aling-items-center">
+							<div class="input-group mb-3 align-items-center">
 								<label class="input-group label-estilo" for="tipoMotivo">Causa real de salida</label>
 								&nbsp;
 								<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px;"
@@ -1002,7 +1002,7 @@
 					</div>
 					<div class="row mt-3">
 						<div class="col-md-10">
-							<div class="input-group mb-3 aling-items-center">
+							<div class="input-group mb-3 align-items-center">
 								<label class="input-group label-estilo" for="tipoMotivo">Fecha</label>
 								&nbsp;
 								<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px;"
@@ -1028,7 +1028,7 @@
 					</div>
 					<div class="row mb-2">
 						<div class="col-md-10">
-							<div class="input-group mb-3 aling-items-center">
+							<div class="input-group mb-3 align-items-center">
 								<label class="input-group label-estilo" for="tipoSolicitud">Nombre del Jefe
 									Solicitante</label>
 								&nbsp;
@@ -1040,7 +1040,7 @@
 					</div>
 					<div class="row mt-3">
 						<div class="col-md-10">
-							<div class="input-group mb-3 aling-items-center">
+							<div class="input-group mb-3 align-items-center">
 								<label class="input-group label-estilo" for="tipoMotivo">Puesto</label>
 								&nbsp;
 								<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px;"
@@ -1050,7 +1050,7 @@
 						</div>
 					</div>
 					<div class="col-md-10">
-						<div class="input-group mb-3 aling-items-center">
+						<div class="input-group mb-3 align-items-center">
 							<label class="input-group label-estilo" for="tipoSolicitud">Comentarios (por qué considera
 								el
 								reingreso)*</label>
@@ -1062,7 +1062,7 @@
 					</div>
 					<div class="row mt-3">
 						<div class="col-md-10">
-							<div class="input-group mb-3 aling-items-center">
+							<div class="input-group mb-3 align-items-center">
 								<label class="input-group label-estilo" for="tipoMotivo">Fecha</label>
 								&nbsp;
 								<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px;"
@@ -1174,162 +1174,136 @@
 					<div class="details-content">
 						<div class="row">
 							<div class="col-md-6">
-								<div class="input-group mb-3 aling-items-center">
-									<label class="input-group-text label-estilo" for="tipoSolicitud">Tipo de
-										solicitud</label>
-									&nbsp;
-									<span #mivar id="tipoSolicitud" name="idTipoSolicitud"
-										style="color: black; font-size: 14px; " class="text-start">{{
-										solicitud.tipoSolicitud }}</span>
+								<div class="input-group mb-3 align-items-center">
+									<label class="input-group-text label-estilo" for="tipoSolicitud">Tipo desolicitud</label>
+
+									<span #mivar id="tipoSolicitud" name="idTipoSolicitud" style="color: black; font-size: 14px;" class="text-start">{{ solicitud.tipoSolicitud }}</span>
 								</div>
 							</div>
+
 							<div class="col-md-6">
-								<div class="input-group mb-3 aling-items-center">
+								<div class="input-group mb-3 align-items-center">
 									<label class="input-group-text label-estilo" for="tipomotivo">Tipo de motivo</label>
-									&nbsp;
-									<span id="tipomotivo" name="tipomotivo" style="color: black; font-size: 14px; "
-										class="text-start">{{
-										solicitud.tipoMotivo }}</span>
+
+									<span id="tipomotivo" name="tipomotivo" style="color: black; font-size: 14px;" class="text-start">{{ solicitud.tipoMotivo }}</span>
 								</div>
 							</div>
 						</div>
 
 						<div class="row">
 							<div class="col-md-6">
-								<div class="input-group">
-									<label class="input-group-text label-estilo" for="codigoposicion">
-										Código de posición
-									</label>
-									&nbsp;
-									<span id="codigoposicion" name="codigoposicion" style="color: black; font-size: 14px; "
-										class="text-start">{{ model.codigoPosicion }}</span>
+								<div class="input-group mb-3 align-items-center">
+									<label class="input-group-text label-estilo" for="codigoposicion">Código de posición</label>
+
+									<span id="codigoposicion" name="codigoposicion" style="color: black; font-size: 14px;" class="text-start">{{ model.codigoPosicion }}</span>
 								</div>
 							</div>
+
 							<div class="col-md-6">
-								<div class="input-group mb-3 aling-items-center">
-									<label class="input-group-text label-estilo" for="descripcionposicion">Descripción de
-										posición</label>
-									&nbsp;
-									<span id="descripcionposicion" name="descripcionposicion"
-										style="color: black; font-size: 14px; " class="text-start">{{ model.descrPosicion
-										}}</span>
+								<div class="input-group mb-3 align-items-center">
+									<label class="input-group-text label-estilo" for="descripcionposicion">Descripción de posición</label>
+
+									<span id="descripcionposicion" name="descripcionposicion" style="color: black; font-size: 14px;" class="text-start">{{ model.descrPosicion }}</span>
 								</div>
 							</div>
 						</div>
 
 						<div class="row" *ngIf="mostrarSubledger">
 							<div class="col-md-6">
-								<div class="input-group mb-3 aling-items-center">
-									<label class="input-group-text label-estilo" for="subledger">
-										Subledger
-									</label>
-									&nbsp;
-									<span id="subledger" name="subledger" style="color: black; font-size: 14px; "
-										class="text-start">{{
-										model.subledger }}</span>
+								<div class="input-group mb-3 align-items-center">
+									<label class="input-group-text label-estilo" for="subledger">Subledger</label>
+
+									<span id="subledger" name="subledger" style="color: black; font-size: 14px;" class="text-start">{{ model.subledger }}</span>
 								</div>
 							</div>
 
 							<div class="col-md-6" *ngIf="mostrarSubledger">
-								<div class="input-group mb-3 aling-items-center">
-									<label class="input-group-text label-estilo" for="nombreempleado">
-										Empleado
-									</label>
-									&nbsp;
-									<span id="nombreempleado" name="nombreempleado" style="color: black; font-size: 14px; "
-										class="text-start">{{ model.nombreCompleto }}</span>
+								<div class="input-group mb-3 align-items-center">
+									<label class="input-group-text label-estilo" for="nombreempleado">Empleado</label>
+
+									<span id="nombreempleado" name="nombreempleado" style="color: black; font-size: 14px;" class="text-start">{{ model.nombreCompleto }}</span>
 								</div>
 							</div>
 						</div>
 
 						<div class="row">
 							<div class="col-md-12">
-								<div class="input-group mb-3 aling-items-center">
+								<div class="input-group mb-3 align-items-center">
 									<label class="input-group-text label-estilo2" for="compania">Compañía</label>
 
-									<span id="compania" name="" style="color: black; font-size: 14px; " class="text-start">{{ model.compania }}</span>
+									<span id="compania" name="" style="color: black; font-size: 14px;" class="text-start">{{ model.compania }}</span>
 								</div>
 							</div>
 						</div>
 						
 						<div class="row">
 							<div class="col-md-6">
-								<div class="input-group mb-3 aling-items-center">
-									<label class="input-group-text label-estilo" for="unidadnegocio">Unidad de
-										negocio</label>
-									<span id="unidadnegocio" name="" style="color: black; font-size: 14px; "
-										class="text-start">{{
-										model.unidadNegocio }}</span>
+								<div class="input-group mb-3 align-items-center">
+									<label class="input-group-text label-estilo" for="unidadnegocio">Unidad de negocio</label>
+
+									<span id="unidadnegocio" name="" style="color: black; font-size: 14px;" class="text-start">{{ model.unidadNegocio }}</span>
 								</div>
 							</div>
+
 							<div class="col-md-6">
-								<div class="input-group mb-3 aling-items-center">
-									<label class="input-group-text label-estilo"
-										for="departamento">Área/Departamento</label>
-									<span id="departamento" name="" style="color: black; font-size: 14px; "
-										class="text-start">{{
-										model.departamento }}</span>
+								<div class="input-group mb-3 align-items-center">
+									<label class="input-group-text label-estilo" for="departamento">Área/Departamento</label>
+
+									<span id="departamento" name="" style="color: black; font-size: 14px;" class="text-start">{{ model.departamento }}</span>
 								</div>
 							</div>
 						</div>
 						
 						<div class="row">
 							<div class="col-md-6">
-								<div class="input-group mb-3 aling-items-center">
+								<div class="input-group mb-3 align-items-center">
 									<label class="input-group-text label-estilo" for="tipocargo">Tipo de cargo</label>
-									<span id="cargo" name="" style="color: black; font-size: 14px; " class="text-start">{{
-										model.nombreCargo
-										}}</span>
+
+									<span id="cargo" name="" style="color: black; font-size: 14px;" class="text-start">{{ model.nombreCargo }}</span>
 								</div>
 							</div>
+
 							<div class="col-md-6">
-								<div class="input-group mb-3 aling-items-center">
+								<div class="input-group mb-3 align-items-center">
 									<label class="input-group-text label-estilo" for="localidadzona">Localidad/Zona</label>
-									<span id="localidadzona" name="" style="color: black; font-size: 14px; "
-										class="text-start">{{
-										model.localidad }}</span>
+
+									<span id="localidadzona" name="" style="color: black; font-size: 14px;" class="text-start">{{ model.localidad }}</span>
 								</div>
 							</div>
 						</div>
 						
 						<div class="row">
 							<div class="col-md-6">
-								<div class="input-group mb-3 aling-items-center">
-									<label class="input-group-text label-estilo" for="niveldirección">Nivel de
-										dirección</label>
-									<span id="niveldirección" name="" style="color: black; font-size: 14px; "
-										class="text-start">{{
-										model.nivelDir }}</span>
+								<div class="input-group mb-3 align-items-center">
+									<label class="input-group-text label-estilo" for="niveldirección">Nivel de dirección</label>
+
+									<span id="niveldirección" name="" style="color: black; font-size: 14px;" class="text-start">{{ model.nivelDir }}</span>
 								</div>
 							</div>
+
 							<div class="col-md-6">
-								<div class="input-group mb-3 aling-items-center">
+								<div class="input-group mb-3 align-items-center">
 									<label class="input-group-text label-estilo" for="centrocosto">Centro de costo</label>
-									<span id="centrocosto" name="" style="color: black; font-size: 14px; "
-										class="text-start">{{
-										model.nomCCosto
-										}}</span>
+
+									<span id="centrocosto" name="" style="color: black; font-size: 14px;" class="text-start">{{ model.nomCCosto }}</span>
 								</div>
 							</div>
 						</div>
 
 						<div class="row" *ngIf="mostrarTipoJustificacionYMision">
 							<div class="col-md-6" *ngIf="mostrarTipoJustificacionYMision">
-								<div class="input-group mb-3 aling-items-center">
+								<div class="input-group mb-3 align-items-center">
 									<label class="input-group-text label-estilo" for="misioncargo">Misión del cargo</label>
-									&nbsp;
-									<span id="misioncargo" name="misioncargo" style="color: black; font-size: 14px; "
-										class="text-start">{{
-										model.misionCargo }}</span>
+
+									<span id="misioncargo" name="misioncargo" style="color: black; font-size: 14px;" class="text-start">{{ model.misionCargo }}</span>
 								</div>
 							</div>
+
 							<div class="col">
 								<div class="input-group mb-3 contenedor">
 									<label class="input-group-text label-estilo2" for="justificacion">Justificación</label>
-									&nbsp;
-									<span id="justificacion" name="justificacion" style="color: black; font-size: 14px; "
-										class="text-start">{{
-										model.justificacionCargo }}</span>
+
+									<span id="justificacion" name="justificacion" style="color: black; font-size: 14px;" class="text-start">{{ model.justificacionCargo }}</span>
 								</div>
 							</div>
 						</div>
@@ -1356,10 +1330,10 @@
 					<div class="details-content">
 						<div class="row">
 							<div class="col-md-12">
-								<div class="input-group mb-3 aling-items-center">
+								<div class="input-group mb-3 align-items-center">
 									<label class="input-group-text label-estilo2" for="reporta">Reporta a</label>
-									&nbsp;
-									<span id="reporta" name="" style="color: black; font-size: 14px; " class="text-start">{{ model.reportaA }}
+
+									<span id="reporta" name="" style="color: black; font-size: 14px;" class="text-start">{{ model.reportaA }}
 									</span>
 								</div>
 							</div>
@@ -1367,32 +1341,36 @@
 					
 						<div class="row">
 							<div class="col-md-6">
-								<div class="input-group mb-3 aling-items-center">
+								<div class="input-group mb-3 align-items-center">
 									<label class="input-group-text label-estilo" for="nivelRepa">Nivel de reporte</label>
-									&nbsp;
-									<span id="nivelRepa" name="" style="color: black; font-size: 14px; " class="text-start">{{ model.nivelRepa }}</span>
+
+									<span id="nivelRepa" name="" style="color: black; font-size: 14px;" class="text-start">{{ model.nivelRepa }}</span>
 								</div>
 							</div>
+
 							<div class="col-md-6">
-								<div class="input-group mb-3 aling-items-center">
+								<div class="input-group mb-3 align-items-center">
 									<label class="input-group-text label-estilo" for="tipocontrato">Tipo de contrato</label>
-									<span id="tipocontrato" name="tipocontrato" style="color: black; font-size: 14px; " class="text-start">{{ model.tipoContrato }}</span>
+
+									<span id="tipocontrato" name="tipocontrato" style="color: black; font-size: 14px;" class="text-start">{{ model.tipoContrato }}</span>
 								</div>
 							</div>
 						</div>
 					
 						<div class="row">
 							<div class="col-md-6">
-								<div class="input-group mb-3 aling-items-center">
+								<div class="input-group mb-3 align-items-center">
 									<label class="input-group-text label-estilo" for="supervisaa">Supervisa a</label>
-									&nbsp;
-									<span id="supervisaa" name="" style="color: black; font-size: 14px; " class="text-start">{{ model.supervisaA }}</span>
+
+									<span id="supervisaa" name="" style="color: black; font-size: 14px;" class="text-start">{{ model.supervisaA }}</span>
 								</div>
 							</div>
+
 							<div class="col-md-6">
-								<div class="input-group mb-3 aling-items-center">
+								<div class="input-group mb-3 align-items-center">
 									<label class="input-group-text label-estilo" for="sueldo">Sueldo</label>
-									<span id="sueldo" name="sueldo" style="color: black; font-size: 14px; " class="text-start">$ {{ model.sueldo | number : "1.2-2" }}</span>
+
+									<span id="sueldo" name="sueldo" style="color: black; font-size: 14px;" class="text-start">$ {{ model.sueldo | number : "1.2-2" }}</span>
 								</div>
 							</div>
 						</div>
@@ -1419,30 +1397,37 @@
 					<div class="details-content">
 						<div class="row">
 							<div class="col-md-6">
-								<div class="input-group mb-3 aling-items-center">
+								<div class="input-group mb-3 align-items-center">
 									<label class="input-group-text label-estilo" for="mensual">Mensual</label>
-									<span id="mensual" name="mensual" style="color: black; font-size: 14px; " class="text-start">$ {{ model.sueldoMensual | number : "1.2-2" }}</span>
+
+									<span id="mensual" name="mensual" style="color: black; font-size: 14px;" class="text-start">$ {{ model.sueldoMensual | number : "1.2-2" }}</span>
 								</div>
 							</div>
+
 							<div class="col-md-6">
-								<div class="input-group mb-3 aling-items-center">
+								<div class="input-group mb-3 align-items-center">
 									<label class="input-group-text label-estilo" for="trimestral">Trimestral</label>
-									<span id="trimestral" name="trimestral" style="color: black; font-size: 14px; " class="text-start">$ {{ model.sueldoTrimestral | number : "1.2-2" }}</span>
+
+									<span id="trimestral" name="trimestral" style="color: black; font-size: 14px;" class="text-start">$ {{ model.sueldoTrimestral | number : "1.2-2" }}</span>
 								</div>
 							</div>
 						</div>
 		
 						<div class="row">
+
 							<div class="col-md-6">
-								<div class="input-group mb-3 aling-items-center">
+								<div class="input-group mb-3 align-items-center">
 									<label class="input-group-text label-estilo" for="semestral">Semestral</label>
-									<span id="semestral" name="semestral" style="color: black; font-size: 14px; " class="text-start">$ {{ model.sueldoSemestral | number : "1.2-2" }}</span>
+
+									<span id="semestral" name="semestral" style="color: black; font-size: 14px;" class="text-start">$ {{ model.sueldoSemestral | number : "1.2-2" }}</span>
 								</div>
 							</div>
+
 							<div class="col-md-6">
-								<div class="input-group mb-3 aling-items-center">
+								<div class="input-group mb-3 align-items-center">
 									<label class="input-group-text label-estilo" for="anual">Anual</label>
-									<span id="anual" name="anual" style="color: black; font-size: 14px; " class="text-start">$ {{ model.sueldoAnual | number : "1.2-2" }}</span>
+
+									<span id="anual" name="anual" style="color: black; font-size: 14px;" class="text-start">$ {{ model.sueldoAnual | number : "1.2-2" }}</span>
 								</div>
 							</div>
 						</div>
@@ -1522,13 +1507,9 @@
 
 					<div class="details-content">
 						<div class="row">
-							<div class="col-md-6">
-								<div class="input-group mb-3"
-									style="display: flex; align-items: center; flex-wrap: nowrap;">
-									<label class="input-group-text label-estilo" for="nivelaprobacion" style="margin-right: 10px; white-space: nowrap;">Nivel de aprobación</label>
-
-									<span id="nivelaprobacion" name="nivelaprobacion" style="color: black; font-size: 14px; margin-right: 10px; white-space: nowrap;">
-									</span>
+							<div class="col-md-12">
+								<div class="input-group mb-3 align-items-center" style="display: flex; align-items: center; flex-wrap: nowrap;">
+									<label class="input-group-text label-estilo2" for="nivelaprobacion" style="margin-right: 10px; white-space: nowrap;">Nivel de aprobación</label>
 
 									<span id="descripcionPosicion" name="descripcionPosicion" style="color: #0056B3; font-size: 14px; margin-right: 10px; white-space: nowrap;">{{ datosAprobadores.descripcionPosicion }}</span>
 
@@ -1538,8 +1519,8 @@
 						</div>
 		
 						<div class="row">
-							<div class="col">
-								<div class="input-group mb-3 contenedor">
+							<div class="col-md-12">
+								<div class="input-group mb-3 align-items-center">
 									<label class="input-group-text label-estilo2" for="desicion">Decisión a tomar</label>
 		
 									<div class="d-flex gap-3" role="group" aria-label="Basic example" id="desicion">
@@ -1557,11 +1538,10 @@
 						</div>
 		
 						<div class="row">
-							<div class="col">
-								<div class="input-group mb-3 contenedor">
+							<div class="col-md-12">
+								<div class="input-group mb-3 align-items-center">
 									<label class="input-group-text label-estilo2" for="observacion">{{observaciontexto}}</label>
 
-									&nbsp;
 
 									<textarea [(ngModel)]="textareaContent" id="observacion" name="observacion" #observacion="ngModel" [required]="isRequired" style="color: black; font-size: 14px" [placeholder]="campoObligatorio"></textarea>
 								</div>
@@ -1575,7 +1555,7 @@
 			<div *ngIf="mostrarAccionPersonal" class="after-header-solicitud">
 				<div class="row mt-4">
 					<div class="col-md-5">
-						<div class="input-group mb-3 aling-items-center">
+						<div class="input-group mb-3 align-items-center">
 							<label class="input-group label-estilo" for="tipoMotivo">Nombre de Empleado</label>
 							&nbsp;
 							<!-- <input type="text" name="nombreCompleto" [(ngModel)]="model.nombreCompleto"
@@ -1593,7 +1573,7 @@
 					</div>
 					<div class="col-md-1"></div>
 					<div class="col-md-5">
-						<div class="input-group mb-3 aling-items-center">
+						<div class="input-group mb-3 align-items-center">
 							<label class="input-group label-estilo" for="tipoMotivo">Subledger</label>
 							&nbsp;
 							<!-- <input type="text" name="subledger" [(ngModel)]="model.subledger"
@@ -1645,7 +1625,7 @@
 
 						<div class="row">
 							<div class="col-12">
-								<div class="input-group mb-3 aling-items-center">
+								<div class="input-group mb-3 align-items-center">
 									<label class="input-group label-estilo" for="tipoSolicitud">Fecha de Ingreso</label>
 									&nbsp;
 									<span #mivar id="tipoSolicitud" name="tipoSolicitud"

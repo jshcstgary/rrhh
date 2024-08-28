@@ -16,9 +16,6 @@ export class EditarAprobadorFijoService {
 	constructor(private http: HttpClient) { }
 
 	public actualizarAprobadorFijo(request: any): Observable<any> {
-		// request.fechA_MODIFICACION = new Date();
-		// request.usuariO_MODIFICACION=localStorage.getItem(LocalStorageKeys.IdLogin);
-
 		request.fechA_MODIFICACION = new Date();
 		request.usuariO_MODIFICACION = localStorage.getItem(LocalStorageKeys.IdLogin);
 

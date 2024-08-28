@@ -22,6 +22,7 @@ import { AccionData } from "./accion.data";
 import { IAccion, IAccionTable } from "./accion.interface";
 import { AccionService } from "./accion.service";
 import { removeExtraSpaces } from "src/app/services/util/text.util";
+import { DatePipe } from "@angular/common";
 
 @Component({
 	templateUrl: "./accion.component.html",
@@ -153,17 +154,9 @@ export class AccionComponent implements OnInit {
 					.map((accionResponse) => ({
 						...accionResponse,
 						estado: accionResponse.estado === "A",
-						tipoSolicitudFormatted:
-							this.formatTipoSolicitudEstaciones(accionResponse),
+						tipoSolicitudFormatted: this.formatTipoSolicitudEstaciones(accionResponse),
+						fechaActualizacion: new DatePipe('en-CO').transform(accionResponse.fechaActualizacion, "dd/MM/yyyy HH:mm:ss")
 					}))
-					// .sort((a, b) => a.accion.localeCompare(b.accion));
-					// .sort((a, b) => {
-					// 	if (a.tipoSolicitudId === b.tipoSolicitudId) {
-					// 		return (a.tipoSolicitudId as number) - (b.tipoSolicitudId as number);
-					// 	}
-
-					// 	return (a.tipoSolicitudId as number) - (b.tipoSolicitudId as number);
-					// });
 					.sort((a, b) => {
 						const tipoSolicitudComparacion = a.tipoSolicitudFormatted.localeCompare(b.tipoSolicitudFormatted);
 						
@@ -251,7 +244,7 @@ export class AccionComponent implements OnInit {
 					});
 				},
 				error: (error: HttpErrorResponse) =>
-					this.utilService.modalResponse(error.error, "error"),
+					this.utilService.modalResponse("Acción existente.", "error"),
 			});
 		}
 	}

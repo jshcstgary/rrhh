@@ -22,6 +22,7 @@ import { TipoprocesoData } from "./tipo-proceso.data";
 import { ITipoproceso, ITipoprocesoTable } from "./tipo-proceso.interface";
 import { TipoProcesoService } from "./tipo-proceso.service";
 import { removeExtraSpaces } from "src/app/services/util/text.util";
+import { DatePipe } from "@angular/common";
 
 @Component({
 	templateUrl: "./tipo-proceso.component.html",
@@ -157,15 +158,8 @@ export class TipoProcesoComponent implements OnInit {
 						...procesoResponse,
 						estado: procesoResponse.estado === "A",
 						tipoSolicitudFormatted: this.formatTipoSolicitudEstaciones(procesoResponse),
+						fechaActualizacion: new DatePipe('en-CO').transform(procesoResponse.fechaActualizacion, "dd/MM/yyyy HH:mm:ss")
 					}))
-					// .sort((a, b) => a.tipoProceso.localeCompare(b.tipoProceso));
-					// .sort((a, b) => {
-					// 	if (a.tipoSolicitudId === b.tipoSolicitudId) {
-					// 		return a.tipoProceso.localeCompare(b.tipoProceso);
-					// 	}
-
-					// 	return (a.tipoSolicitudId as number) - (b.tipoSolicitudId as number);
-					// });
 					.sort((a, b) => {
 						const tipoSolicitudComparacion = a.tipoSolicitudFormatted.localeCompare(b.tipoSolicitudFormatted);
 						

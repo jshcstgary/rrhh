@@ -16,6 +16,8 @@ import { Control } from "src/app/types/permiso.type";
 import { AprobadoresFijosData } from "./aprobadores-fijos.data";
 import { AprobadoresFijosService } from "./aprobadores-fijos.service";
 import { LocalStorageKeys } from "src/app/enums/local-storage-keys.enum";
+import { format } from "date-fns";
+import { DatePipe } from "@angular/common";
 
 @Component({
 	selector: "app-aprobadores-fijos",
@@ -163,13 +165,12 @@ export class AprobadoresFijosComponent implements OnInit {
 		return this.aprobadoresFijosService.obtenerAprobadoresFijos().subscribe({
 			next: (response) => {
 				this.dataTable = response.aprobadoresFijos
-					.map(
-						(aprobadoresFijosResponse) => ({
-							...aprobadoresFijosResponse,
-							id: aprobadoresFijosResponse.iD_APROBADOR,
-							estado: aprobadoresFijosResponse.estado === "A",
-						})
-					)
+					.map((aprobadoresFijosResponse) => ({
+						...aprobadoresFijosResponse,
+						id: aprobadoresFijosResponse.iD_APROBADOR,
+						estado: aprobadoresFijosResponse.estado === "A",
+						fechA_MODIFICACION: new DatePipe('en-CO').transform(aprobadoresFijosResponse.fechA_MODIFICACION, "dd/MM/yyyy")
+					}))
 					// .sort((a, b) => a.niveL_DIRECCION.localeCompare(b.niveL_DIRECCION));
 					.sort((a, b) => a.iD_APROBADOR - b.iD_APROBADOR);
 

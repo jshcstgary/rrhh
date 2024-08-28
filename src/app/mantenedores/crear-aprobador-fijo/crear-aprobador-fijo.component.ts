@@ -103,7 +103,7 @@ export class CrearAprobadorFijoComponent {
 					}, 1600);
 				},
 				error: (error: HttpErrorResponse) => {
-					this.utilService.modalResponse(error.error, "error");
+					this.utilService.modalResponse(`Ya existe un registro para el Nivel de Aprobación: ${model.niveL_DIRECCION}.`, "error");
 				}
 			});
 		});

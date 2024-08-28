@@ -2,10 +2,16 @@ import { IColumnsTable } from "src/app/component/table/table.interface";
 
 export const AprobadoresFijosData: IConsultaAprobadoresFijosData = {
 	columns: [
+		// {
+		// 	title: "Identificador",
+		// 	dataIndex: "iD_APROBADOR",
+		// 	align: "center",
+		// 	sortActive: true,
+		// 	colType: "string",
+		// },
 		{
-			title: "Identificador",
-			dataIndex: "iD_APROBADOR",
-			align: "center",
+			title: "Nombre",
+			dataIndex: "nombre",
 			sortActive: true,
 			colType: "string",
 		},
@@ -24,6 +30,12 @@ export const AprobadoresFijosData: IConsultaAprobadoresFijosData = {
 		{
 			title: "Descripción posición",
 			dataIndex: "descripcioN_POSICION",
+			sortActive: true,
+			colType: "string",
+		},
+		{
+			title: "Fecha",
+			dataIndex: "fechA_MODIFICACION",
 			sortActive: true,
 			colType: "string",
 		},

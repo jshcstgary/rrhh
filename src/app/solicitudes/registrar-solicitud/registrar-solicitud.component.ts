@@ -239,17 +239,7 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
 	codigosPosicion: string[] = [];
 	jsonResult: string;
 
-	constructor(
-		route: ActivatedRoute,
-		router: Router,
-		camundaRestService: CamundaRestService,
-		private mantenimientoService: MantenimientoService,
-		private solicitudes: SolicitudesService,
-		private utilService: UtilService,
-		private consultaTareasService: ConsultaTareasService,
-		private starterService: StarterService,
-		private modalService: NgbModal
-	) {
+	constructor(route: ActivatedRoute, router: Router, camundaRestService: CamundaRestService, private mantenimientoService: MantenimientoService, private solicitudes: SolicitudesService, private utilService: UtilService, private consultaTareasService: ConsultaTareasService, private starterService: StarterService, private modalService: NgbModal) {
 		super(route, router, camundaRestService);
 
 		this.searchSubject.pipe(debounceTime(0)).subscribe(({ campo, valor }) => {
@@ -266,7 +256,6 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
 			this.id_solicitud_by_params = params.get("idSolicitud");
 			this.idDeInstancia = params.get("id");
 		});
-
 
 		this.verifyData();
 	}
@@ -321,21 +310,6 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
 	onSelectionChange() {
 		console.log(this.selectedOption);
 	}
-
-	// searchNombreCompleto: OperatorFunction<string, readonly string[]> = (
-	//   text$: Observable<string>
-	// ) =>
-	//   text$.pipe(
-	//     debounceTime(200),
-	//     distinctUntilChanged(),
-	//     map((term) =>
-	//       term.length < 1
-	//         ? []
-	//         : this.nombresEmpleados
-	//           .filter((v) => v.toLowerCase().indexOf(term.toLowerCase()) > -1)
-	//           .slice(0, 10)
-	//     )
-	//   );
 
 	loadDataCamunda() {
 		this.route.queryParamMap.subscribe((qParams) => {
@@ -1007,7 +981,16 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
 	}
 
 	async ngOnInit() {
-
+		console.log(this.RegistrarsolicitudCompletada);
+		if (!this.RegistrarsolicitudCompletada) {
+			await Swal.fire({
+				text: "Solicitud guardada, puede proceder a enviarla.",
+				icon: "info",
+				confirmButtonColor: "rgb(227, 199, 22)",
+				confirmButtonText: "Ok",
+				timer: 10000
+			});
+		}
 	}
 
 	ObtenerServicioNivelDireccion() {
@@ -2155,10 +2138,7 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
 						this.dataAprobacionesPorPosicion[this.keySelected] = response.nivelAprobacionPosicionType;
 					},
 					error: (error: HttpErrorResponse) => {
-						this.utilService.modalResponse(
-							"No existen niveles de aprobación para este empleado",
-							"error"
-						);
+						this.utilService.modalResponse("No existen niveles de aprobación para este empleado", "error");
 					},
 				});
 

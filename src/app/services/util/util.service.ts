@@ -21,7 +21,7 @@ export class UtilService {
 
 	constructor(private http: HttpClient) { }
 
-	private modalTimeToHide: number = 2000;
+	private modalTimeToHide: number = 4000;
 	/**
 	 * Función para copiar el texto al clipboard
 	 *
@@ -78,6 +78,8 @@ export class UtilService {
 		columnas: string[],
 		contenidoColumnas: string[][]
 	) {
+		this.openLoadingSpinner("Obteniendo documento...");
+		
 		const reporteDetail: IUtilReporteDetail = {
 			fechaReporte: new Date().toLocaleString(),
 			codigoReporte: codigoReporte,
@@ -105,6 +107,8 @@ export class UtilService {
 					});
 					const url = window.URL.createObjectURL(blob);
 					window.open(url, "_blank");
+
+					this.closeLoadingSpinner();
 				},
 				error: (error: HttpErrorResponse) =>
 					this.modalResponse(error.error, "error"),

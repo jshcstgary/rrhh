@@ -85,7 +85,7 @@
 						<span *ngIf="solicitud.tipoMotivo === 'Reemplazo'; else editablePosition" id="descripcionposicion" name="descripcionposicion" style="color: black; font-size: 14px" class="text-start">{{ model.codigoPosicion }}</span>
 
 						<ng-template #editablePosition>
-							<input type="text" name="codigoposicion" [(ngModel)]="model.codigoPosicion" style="color: black; font-size: 14px; width: 30%" class="form-control" id="codigoposicion" aria-describedby="inputGroupPrepend" required #codigoposicion="ngModel" placeholder="Ingrese código" (click)="openModal()" />
+							<input type="text" name="codigoposicion" [(ngModel)]="model.codigoPosicion" style="color: black; font-size: 14px; width: 30%" class="form-control" id="codigoposicion" aria-describedby="inputGroupPrepend" required #codigoposicion="ngModel" placeholder="Ingrese código" (click)="openModal()" readonly />
 						</ng-template>
 					</div>
 				</div>
@@ -97,7 +97,7 @@
 						<span *ngIf="solicitud.tipoMotivo === 'Reemplazo'; else editableDescPosition" id="descripcionposicion" name="descripcionposicion" style="color: black; font-size: 14px" class="text-start">{{ model.descrPosicion }}</span>
 
 						<ng-template #editableDescPosition>
-							<input type="text" name="descripcion-posicion" [(ngModel)]="model.descrPosicion" style="color: black; font-size: 14px; width: 30%" class="form-control text-start" id="descripcionPosicion" aria-describedby="inputGroupPrepend" required #descripcionPosicion="ngModel" placeholder="Ingrese descripcion posicion" (click)="openModal()" />
+							<input type="text" name="descripcion-posicion" [(ngModel)]="model.descrPosicion" style="color: black; font-size: 14px; width: 30%" class="form-control text-start" id="descripcionPosicion" aria-describedby="inputGroupPrepend" required #descripcionPosicion="ngModel" placeholder="Ingrese descripcion posicion" (click)="openModal()" readonly />
 						</ng-template>
 					</div>
 				</div>
@@ -198,8 +198,8 @@
 
 			<div class="row" *ngIf="mostrarTipoJustificacionYMision">
 				<div class="col-md-12">
-					<div class="input-group mb-3 contenedor">
-						<label class="input-group-text adjustable-label" for="justificacion">Justificación <span style="color: red">*</span></label>
+					<div class="input-group mb-3">
+						<label class="input-group-text label-estilo2" for="justificacion">Justificación <span style="color: red">*</span></label>
 
 						<textarea class="form-control" id="justificacion" name="justificacion" placeholder="Campo obligatorio" [(ngModel)]="model.justificacionCargo" style="color: black; font-size: 14px" required #justificacion="ngModel"></textarea>
 					</div>
@@ -220,7 +220,7 @@
 
 			<div class="row">
 				<div class="col-md-12">
-					<div class="input-group mb-3">
+					<div class="input-group mb-3 align-items-center">
 						<label class="input-group-text label-estilo2" for="reporta">Reporta a</label>
 
 						<span id="reporta" name="" style="color: black; font-size: 14px">{{ model.reportaA }}</span>
@@ -230,7 +230,7 @@
 			
 			<div class="row">
 				<div class="col-md-6">
-					<div class="input-group mb-3">
+					<div class="input-group mb-3 align-items-center">
 						<label class="input-group-text label-estilo" for="nivelRepa">Nivel de reporte</label>
 
 						<span id="nivelRepa" name="" style="color: black; font-size: 14px" class="text-start">{{ model.nivelRepa }}</span>
@@ -238,7 +238,7 @@
 				</div>
 
 				<div class="col-md-6">
-					<div class="input-group mb-3">
+					<div class="input-group mb-3 align-items-center">
 						<label class="input-group-text label-estilo" for="tipocontrato">Tipo de contrato</label>
 
 						<select id="tipocontrato" name="tipocontrato" class="form-select" [(ngModel)]="model.tipoContrato" style="font-size: 14px" required>
@@ -254,7 +254,7 @@
 			
 			<div class="row">
 				<div class="col-md-6">
-					<div class="input-group mb-3">
+					<div class="input-group mb-3 align-items-center">
 						<label class="input-group-text label-estilo" for="supervisaa">Supervisa a</label>
 
 						<span id="supervisaa" name="" style="color: black; font-size: 14px" class="text-start">{{ model.supervisaA }}</span>
@@ -262,14 +262,14 @@
 				</div>
 
 				<div class="col-md-6">
-					<div class="input-group mb-3">
-						<label class="input-group-text label-estilo" for="sueldo">Sueldo</label>
+					<div class="input-group mb-3 align-items-center">
+						<div class="d-flex justify-content-between align-items-center input-group-text label-estilo">
+							<label class="" for="sueldo">Sueldo</label>
 
-						<div class="d-flex gap-2 align-items-center">
 							<span class="fs-6">$</span>
-
-							<input [(ngModel)]="model.sueldo" type="text" mask="separator.2" [leadZero]="true" name="sueldo" class="form-control" id="sueldo" />
 						</div>
+
+						<input [(ngModel)]="model.sueldo" type="text" mask="separator.2" [leadZero]="true" name="sueldo" class="form-control" id="sueldo" />
 					</div>
 				</div>
 			</div>
@@ -284,52 +284,52 @@
 
 			<div class="row">
 				<div class="col-md-6">
-					<div class="input-group mb-3">
-						<label class="input-group-text label-estilo" for="mensual">Mensual</label>
+					<div class="input-group mb-3 align-items-center">
+						<div class="d-flex justify-content-between align-items-center input-group-text label-estilo">
+							<label class="" for="sueldo">Mensual</label>
 
-						<div class="d-flex gap-2 align-items-center">
 							<span class="fs-6">$</span>
-
-							<input [(ngModel)]="model.sueldoMensual" type="text" mask="separator.2" [leadZero]="true" name="mensual" class="form-control" id="mensual" />
 						</div>
+
+						<input [(ngModel)]="model.sueldoMensual" type="text" mask="separator.2" [leadZero]="true" name="mensual" class="form-control" id="mensual" />
 					</div>
 				</div>
 
 				<div class="col-md-6">
-					<div class="input-group mb-3">
-						<label class="input-group-text label-estilo" for="trimestral">Trimestral</label>
+					<div class="input-group mb-3 align-items-center">
+						<div class="d-flex justify-content-between align-items-center input-group-text label-estilo">
+							<label class="" for="sueldo">Trimestral</label>
 
-						<div class="d-flex gap-2 align-items-center">
 							<span class="fs-6">$</span>
-
-							<input [(ngModel)]="model.sueldoTrimestral" type="text" mask="separator.2" [leadZero]="true" name="trimestral" class="form-control" id="trimestral" />
 						</div>
+
+						<input [(ngModel)]="model.sueldoTrimestral" type="text" mask="separator.2" [leadZero]="true" name="trimestral" class="form-control" id="trimestral" />
 					</div>
 				</div>
 			</div>
 
 			<div class="row">
 				<div class="col-md-6">
-					<div class="input-group mb-3">
-						<label class="input-group-text label-estilo" for="semestral">Semestral</label>
+					<div class="input-group mb-3 align-items-center">
+						<div class="d-flex justify-content-between align-items-center input-group-text label-estilo">
+							<label class="" for="sueldo">Semestral</label>
 
-						<div class="d-flex gap-2 align-items-center">
 							<span class="fs-6">$</span>
-
-							<input [(ngModel)]="model.sueldoSemestral" type="text" mask="separator.2" [leadZero]="true" name="semestral" class="form-control" id="semestral" />
 						</div>
+
+						<input [(ngModel)]="model.sueldoSemestral" type="text" mask="separator.2" [leadZero]="true" name="semestral" class="form-control" id="semestral" />
 					</div>
 				</div>
 
 				<div class="col-md-6">
-					<div class="input-group mb-3">
-						<label class="input-group-text label-estilo" for="anual">Anual</label>
+					<div class="input-group mb-3 align-items-center">
+						<div class="d-flex justify-content-between align-items-center input-group-text label-estilo">
+							<label class="" for="sueldo">Anual</label>
 
-						<div class="d-flex gap-2 align-items-center">
 							<span class="fs-6">$</span>
-
-							<input [(ngModel)]="model.sueldoAnual" type="text" mask="separator.2" [leadZero]="true" name="anual" class="form-control" id="anual" />
 						</div>
+
+						<input [(ngModel)]="model.sueldoAnual" type="text" mask="separator.2" [leadZero]="true" name="anual" class="form-control" id="anual" />
 					</div>
 				</div>
 			</div>

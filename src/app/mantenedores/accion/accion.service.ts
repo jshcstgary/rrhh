@@ -27,9 +27,10 @@ export class AccionService {
 
 	public store(request: IAccion): Observable<IAccion> {
 		request.usuarioCreacion = localStorage.getItem(LocalStorageKeys.IdLogin);
-		request.fechaActualizacion = null;
+		request.fechaActualizacion = new Date();
 
 		convertTimeZonedDate(request.fechaCreacion);
+		convertTimeZonedDate(request.fechaActualizacion);
 
 		return this.http.post<IAccion>(this.apiUrl, request);
 	}

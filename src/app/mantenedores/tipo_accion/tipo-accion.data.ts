@@ -1,18 +1,19 @@
 import { IColumnsTable } from "src/app/component/table/table.interface";
 import { ITipoaccionTable } from "./tipo-accion.interface";
 import { IInputsComponent } from "src/app/component/input/input.interface";
+import { DatePipe } from "@angular/common";
 
 export const TipoaccionData: ITipoaccionData = {
 	columns: [
+		// {
+		// 	title: "Código",
+		// 	dataIndex: "id",
+		// 	align: "center",
+		// 	sortActive: true,
+		// 	colType: "number",
+		// },
 		{
-			title: "Código",
-			dataIndex: "id",
-			align: "center",
-			sortActive: true,
-			colType: "number",
-		},
-		{
-			title: "Descripción",
+			title: "Tipo acción",
 			dataIndex: "tipoAccion",
 			sortActive: true,
 			colType: "string",
@@ -22,7 +23,12 @@ export const TipoaccionData: ITipoaccionData = {
 			dataIndex: "tipoSolicitudId",
 			width: "300px",
 			dataIndexesToJoin: ["tipoSolicitudFormatted"],
-			// sortActive: true,
+			colType: "string",
+		},
+		{
+			title: "Fecha",
+			dataIndex: "fechaActualizacion",
+			sortActive: true,
 			colType: "string",
 		},
 		{
@@ -30,7 +36,6 @@ export const TipoaccionData: ITipoaccionData = {
 			dataIndex: "estado",
 			type: "bool",
 		},
-		//PlantillaAData.defaultActions,
 		{
 			title: "Acciones",
 			type: "actions",
@@ -66,6 +71,12 @@ export const TipoaccionData: ITipoaccionData = {
 			maxLength: 30,
 			required: true,
 			inputMessageError: "Ingrese la descripción",
+		},
+		{
+			id: "fechaActualizacion",
+			type: "date",
+			disabled: true,
+			defaultValue: new DatePipe('en-CO').transform(new Date(), "dd/MM/yyyy"),
 		},
 		{
 			id: "tipoSolicitudId",

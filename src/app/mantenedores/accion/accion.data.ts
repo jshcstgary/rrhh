@@ -1,18 +1,20 @@
 import { IColumnsTable } from "src/app/component/table/table.interface";
 import { IAccionTable } from "./accion.interface";
 import { IInputsComponent } from "src/app/component/input/input.interface";
+import { format } from "date-fns";
+import { DatePipe } from "@angular/common";
 
 export const AccionData: IAccionData = {
 	columns: [
+		// {
+		// 	title: "Código",
+		// 	dataIndex: "id",
+		// 	align: "center",
+		// 	sortActive: true,
+		// 	colType: "number",
+		// },
 		{
-			title: "Código",
-			dataIndex: "id",
-			align: "center",
-			sortActive: true,
-			colType: "number",
-		},
-		{
-			title: "Descripción",
+			title: "Acción",
 			dataIndex: "accion",
 			sortActive: true,
 			colType: "string",
@@ -23,6 +25,12 @@ export const AccionData: IAccionData = {
 			width: "300px",
 			dataIndexesToJoin: ["tipoSolicitudFormatted"],
 			// sortActive: true,
+			colType: "string",
+		},
+		{
+			title: "Fecha",
+			dataIndex: "fechaActualizacion",
+			sortActive: true,
 			colType: "string",
 		},
 		{
@@ -75,6 +83,12 @@ export const AccionData: IAccionData = {
 			placeholder: "Seleccione",
 			inputMessageError: "Seleccione",
 			options: [],
+		},
+		{
+			id: "fechaActualizacion",
+			type: "date",
+			disabled: true,
+			defaultValue: new DatePipe('en-CO').transform(new Date(), "dd/MM/yyyy"),
 		},
 		{
 			id: "estado",

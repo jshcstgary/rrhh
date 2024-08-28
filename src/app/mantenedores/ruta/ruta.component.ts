@@ -22,6 +22,7 @@ import { TiporutaData } from "./ruta.data";
 import { IRuta, IRutaTable } from "./ruta.interface";
 import { RutaService } from "./ruta.service";
 import { removeExtraSpaces } from "src/app/services/util/text.util";
+import { DatePipe } from "@angular/common";
 
 @Component({
 	templateUrl: "./ruta.component.html",
@@ -162,19 +163,12 @@ export class RutaComponent implements OnInit {
 		return this.RutasService.index().subscribe({
 			next: (response) => {
 				this.dataTable = response
-					.map((accionResponse) => ({
-						...accionResponse,
-						estado: accionResponse.estado === "A",
-						tipoRutaFormatted: this.formatTipoRutaEstaciones(accionResponse),
+					.map((rutaResponse) => ({
+						...rutaResponse,
+						estado: rutaResponse.estado === "A",
+						tipoRutaFormatted: this.formatTipoRutaEstaciones(rutaResponse),
+						fechaActualizacion: new DatePipe('en-CO').transform(rutaResponse.fechaActualizacion, "dd/MM/yyyy HH:mm:ss")
 					}))
-					// .sort((a, b) => a.ruta.localeCompare(b.ruta));
-					// .sort((a, b) => {
-					// 	if (a.idTipoRuta === b.idTipoRuta) {
-					// 		return a.ruta.localeCompare(b.ruta);
-					// 	}
-
-					// 	return (a.idTipoRuta as number) - (b.idTipoRuta as number);
-					// });
 					.sort((a, b) => {
 						const tipoSolicitudComparacion = a.tipoRutaFormatted.localeCompare(b.tipoRutaFormatted);
 						

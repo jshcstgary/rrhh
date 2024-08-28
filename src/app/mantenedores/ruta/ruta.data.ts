@@ -1,18 +1,19 @@
 import { IInputsComponent } from "src/app/component/input/input.interface";
 import { IColumnsTable } from "src/app/component/table/table.interface";
 import { IRutaTable } from "./ruta.interface";
+import { DatePipe } from "@angular/common";
 
 export const TiporutaData: IRutaData = {
 	columns: [
+		// {
+		// 	title: "Código",
+		// 	dataIndex: "id",
+		// 	align: "center",
+		// 	sortActive: true,
+		// 	colType: "number",
+		// },
 		{
-			title: "Código",
-			dataIndex: "id",
-			align: "center",
-			sortActive: true,
-			colType: "number",
-		},
-		{
-			title: "Descripción",
+			title: "Nivel Ruta",
 			dataIndex: "ruta",
 			sortActive: true,
 			colType: "string",
@@ -26,11 +27,16 @@ export const TiporutaData: IRutaData = {
 			colType: "string",
 		},
 		{
+			title: "Fecha",
+			dataIndex: "fechaActualizacion",
+			sortActive: true,
+			colType: "string",
+		},
+		{
 			title: "Estado",
 			dataIndex: "estado",
 			type: "bool",
 		},
-		//PlantillaAData.defaultActions,
 		{
 			title: "Acciones",
 			type: "actions",
@@ -69,16 +75,15 @@ export const TiporutaData: IRutaData = {
 			inputMessageError: "Seleccione",
 			options: [],
 		},
-		// {
-		// 	id: "ruta",
-		// 	type: "string",
-		// 	maxLength: 30,
-		// 	required: true,
-		// 	inputMessageError: "Ingrese la descripción",
-		// },
 		{
 			id: "estado",
 			type: "toggle",
+		},
+		{
+			id: "fechaActualizacion",
+			type: "date",
+			disabled: true,
+			defaultValue: new DatePipe('en-CO').transform(new Date(), "dd/MM/yyyy"),
 		},
 		{
 			id: "idTipoRuta",

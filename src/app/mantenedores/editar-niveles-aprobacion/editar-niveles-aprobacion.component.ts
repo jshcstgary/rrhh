@@ -10,6 +10,7 @@ import { CrearNivelesAprobacionService } from '../crear-niveles-aprobacion/crear
 @Component({
 	selector: 'app-editar-niveles-aprobacion',
 	templateUrl: './editar-niveles-aprobacion.component.html',
+	// styleUrls: ['../crear-niveles-aprobacion/crear-niveles-aprobacion.component.scss']
 	styleUrls: ['./editar-niveles-aprobacion.component.scss']
 })
 export class EditarNivelesAprobacionComponent {
@@ -184,31 +185,6 @@ export class EditarNivelesAprobacionComponent {
 		});
 	}
 
-	// public onChangeTipoSolicitud() {
-	//   const codigoTipoSolicitud = this.dataTipoSolicitudes.find(data => data.id.toString() === this.modelHead.idTipoSolicitud)!.codigoTipoSolicitud;
-	//   const restricted = this.restrictionsIds.includes(codigoTipoSolicitud);
-
-	//   this.desactivarTipoMotivoYAccion = restricted;
-
-	//   if (!this.desactivarTipoMotivoYAccion) {
-	//     forkJoin([this.mantenimientoService.getTipoMotivo(), this.mantenimientoService.getAccion()]).subscribe({
-	//       next: ([tipoMotivo, accion]) => {
-	//         this.dataTipoMotivo = tipoMotivo
-	//           .filter(data => data.estado === "A")
-	//           .map((r) => ({
-	//             id: r.id,
-	//             descripcion: r.tipoMotivo,
-	//           }));
-
-	//         this.dataAccion = accion.map((r) => ({
-	//           id: r.id,
-	//           descripcion: r.accion,
-	//         }));
-	//       }
-	//     });
-	//   }
-	// }
-
 	onChangeTipoSolicitud() {
 		const codigoTipoSolicitud = this.dataTipoSolicitudes.find((data) => data.id == this.modelHead.idTipoSolicitud)!.codigoTipoSolicitud;
 
@@ -309,6 +285,10 @@ export class EditarNivelesAprobacionComponent {
 	}
 
 	public validateData(): boolean {
+		if (Object.values(this.modelHead).some(value => value === null)) {
+			return true;
+		}
+		
 		const tipoSolicitud = this.dataTipoSolicitudes.find(data => data.id.toString() === this.modelHead.idTipoSolicitud.toString());
 
 		if (tipoSolicitud === undefined) {
@@ -328,7 +308,9 @@ export class EditarNivelesAprobacionComponent {
 
 		this.desactivarTipoMotivoYAccion = false;
 
-		return this.modelHead.idAccion === 0 || this.modelHead.idNivelDireccion === null || this.modelHead.idTipoMotivo === null || this.modelHead.idTipoRuta === null || this.modelHead.idTipoSolicitud === null;
+		this.utilService.closeLoadingSpinner();
+
+		return this.modelHead.idAccion === null || this.modelHead.idNivelDireccion === null || this.modelHead.idTipoMotivo === null || this.modelHead.idTipoRuta === null || this.modelHead.idTipoSolicitud === null;
 	}
 
 	public validateNivelesAprobacion(): boolean {

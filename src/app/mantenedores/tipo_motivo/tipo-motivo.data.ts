@@ -1,18 +1,19 @@
 import { IInputsComponent } from "src/app/component/input/input.interface";
 import { IColumnsTable } from "src/app/component/table/table.interface";
 import { ITipomotivoTable } from "./tipo-motivo.interface";
+import { DatePipe } from "@angular/common";
 
 export const TipomotivoData: ITipomotivoData = {
 	columns: [
+		// {
+		// 	title: "Código",
+		// 	dataIndex: "id",
+		// 	align: "center",
+		// 	sortActive: true,
+		// 	colType: "number",
+		// },
 		{
-			title: "Código",
-			dataIndex: "id",
-			align: "center",
-			sortActive: true,
-			colType: "number",
-		},
-		{
-			title: "Descripción",
+			title: "Tipo motivo",
 			dataIndex: "tipoMotivo",
 			sortActive: true,
 			colType: "string",
@@ -22,17 +23,14 @@ export const TipomotivoData: ITipomotivoData = {
 			dataIndex: "tipoSolicitudId",
 			width: "300px",
 			dataIndexesToJoin: ["tipoSolicitudFormatted"],
-			// sortActive: true,
 			colType: "string",
 		},
-		// {
-		// 	title: "Tipo de solicitud",
-		// 	dataIndex: "tipoSolicitudFormatted",
-		// 	width: "300px",
-		// 	// dataIndexesToJoin: ["tipoSolicitudFormatted"],
-		// 	sortActive: true,
-		// 	colType: "string",
-		// },
+		{
+			title: "Fecha",
+			dataIndex: "fechaActualizacion",
+			sortActive: true,
+			colType: "string",
+		},
 		{
 			title: "Estado",
 			dataIndex: "estado",
@@ -74,6 +72,12 @@ export const TipomotivoData: ITipomotivoData = {
 			maxLength: 30,
 			required: true,
 			inputMessageError: "Ingrese la descripción",
+		},
+		{
+			id: "fechaActualizacion",
+			type: "date",
+			disabled: true,
+			defaultValue: new DatePipe('en-CO').transform(new Date(), "dd/MM/yyyy"),
 		},
 		{
 			id: "tipoSolicitudId",
