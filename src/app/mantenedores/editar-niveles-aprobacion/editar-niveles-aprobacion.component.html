@@ -47,7 +47,7 @@
 						<div class="col-md-6 mb-3">
 							<label class="azul mb-1">Tipo de Ruta</label>
 
-							<ng-select [(ngModel)]="modelHead.idTipoRuta" placeholder="Seleccione" (change)="onChangeTipoRuta()" disabled>
+							<ng-select [(ngModel)]="modelHead.idTipoRuta" placeholder="Seleccione" (change)="onChangeTipoRuta()">
 								<ng-option *ngFor="let baseDeDatos of dataTipoRuta" [value]="baseDeDatos.id">{{ baseDeDatos.descripcion }}</ng-option>
 							</ng-select>
 						</div>

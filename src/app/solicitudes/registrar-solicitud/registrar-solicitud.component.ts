@@ -981,16 +981,6 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
 	}
 
 	async ngOnInit() {
-		console.log(this.RegistrarsolicitudCompletada);
-		if (!this.RegistrarsolicitudCompletada) {
-			await Swal.fire({
-				text: "Solicitud guardada, puede proceder a enviarla.",
-				icon: "info",
-				confirmButtonColor: "rgb(227, 199, 22)",
-				confirmButtonText: "Ok",
-				timer: 10000
-			});
-		}
 	}
 
 	ObtenerServicioNivelDireccion() {
@@ -1094,6 +1084,16 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
 					this.sueldoEmpleado.variableAnual = this.detalleSolicitud.sueldoVariableAnual;
 
 					this.RegistrarsolicitudCompletada = true;
+
+					if (this.RegistrarsolicitudCompletada) {
+						Swal.fire({
+							text: "Solicitud guardada, puede proceder a enviarla.",
+							icon: "info",
+							confirmButtonColor: "rgb(227, 199, 22)",
+							confirmButtonText: "Ok",
+							timer: 30000
+						});
+					}
 
 					this.model.codigoPosicion = this.detalleSolicitud.codigoPosicion;
 					this.model.descrPosicion = this.detalleSolicitud.descripcionPosicion;

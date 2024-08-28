@@ -69,8 +69,18 @@ export const ConsultaSolicitudesData: IConsultaSolicitudesData = {
 			colType: "string",
 		},
 		{
+			title: "Nivel de Dirección Aprobador",
+			dataIndex: "cargoReferencia",
+			colType: "string",
+		},
+		{
 			title: "Fecha Creación",
 			dataIndex: "fechaCreacion",
+			colType: "string",
+		},
+		{
+			title: "Fecha Modificación",
+			dataIndex: "fechaActualizacion",
 			colType: "string",
 		},
 		{

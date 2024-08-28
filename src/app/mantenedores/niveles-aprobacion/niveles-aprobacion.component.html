@@ -1,18 +1,18 @@
 <div class="p-3">
 	<div class="row mb-3">
 		<div class="col-md-3 mb-3">
-			<label class="azul mb-1">Tipo de Solicitud <span class="obligatorio">(Obligatorio)</span></label>
-
-			<ng-select [(ngModel)]="dataFilterNivelesAprobacion.tipoSolicitud" (change)="onChangeTipoSolicitud()" placeholder="Seleccione">
-				<ng-option *ngFor="let tipoSolicitud of dataTipoSolicitudes" [value]="tipoSolicitud.id">{{ tipoSolicitud.id }} - {{ tipoSolicitud.descripcion }}</ng-option>
+			<label class="azul mb-1">Nivel de Dirección <span class="obligatorio">(Obligatorio)</span></label>
+			
+			<ng-select [(ngModel)]="dataFilterNivelesAprobacion.nivelDireccion" placeholder="Seleccione">
+				<ng-option *ngFor="let nivelDireccion of dataNivelDireccion" [value]="nivelDireccion">{{ nivelDireccion }}</ng-option>
 			</ng-select>
 		</div>
 
 		<div class="col-md-3 mb-3">
-			<label class="azul mb-1">Nivel de Dirección <span class="obligatorio">(Obligatorio)</span></label>
+			<label class="azul mb-1">Tipo de Solicitud</label>
 
-			<ng-select [(ngModel)]="dataFilterNivelesAprobacion.nivelDireccion" placeholder="Seleccione">
-				<ng-option *ngFor="let nivelDireccion of dataNivelDireccion" [value]="nivelDireccion">{{ nivelDireccion }}</ng-option>
+			<ng-select [(ngModel)]="dataFilterNivelesAprobacion.tipoSolicitud" (change)="onChangeTipoSolicitud()" placeholder="Seleccione">
+				<ng-option *ngFor="let tipoSolicitud of dataTipoSolicitudes" [value]="tipoSolicitud.id">{{ tipoSolicitud.id }} - {{ tipoSolicitud.descripcion }}</ng-option>
 			</ng-select>
 		</div>
 
@@ -73,13 +73,14 @@
 
 					<th *ngFor="let ruta of dataRuta" class="text-center">{{ ruta.descripcion }}</th>
 
-					<th class="text-center">Acciones</th>
+					<th class="text-center fixed-col-end">Acciones</th>
 				</tr>
 			</thead>
 
 			<tbody>
 				<tr *ngFor="let data of dataTable; let i = index">
-					<td>{{ mostrarTipoSolicitud() }}</td>
+					<!-- <td>{{ mostrarTipoSolicitud() }}</td> -->
+					<td>{{ data[0].tipoSolicitud }}</td>
 
 					<td>{{ data[0].tipoRuta }}</td>
 
@@ -87,7 +88,7 @@
 
 					<td *ngFor="let ruta of dataRuta">{{ showData(data, ruta) }}</td>
 
-					<td class="text-center">
+					<td class="text-center fixed-col-end">
 						<i tabindex="0" class="material-icons text-info cursor-pointer action-icon" (click)="onRowActionClicked(i)">edit</i>
 					</td>
 				</tr>

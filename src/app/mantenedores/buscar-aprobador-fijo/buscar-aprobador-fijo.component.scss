@@ -22,11 +22,9 @@ table {
 	width: 100%;
 	box-shadow: 0px 4px 4px 0px #00000040;
 	border-radius: $border-table-radius;
-	// overflow: hidden;
 }
 
 th {
-	// background-color: #0056b34d;
 	background-color: #b2cce8;
 	/* Letra */
 	color: #0056b3;
@@ -36,12 +34,16 @@ th {
 	line-height: $line-height;
 	/* estilos de celda */
 	height: 44px;
+	text-align: center;
 	padding: $cell-padding;
-	min-width: 200px;
+	word-wrap: break-word;
+	min-width: 200;
 	max-width: 300px;
+
 	position: sticky;
 	top: 0;
-	left: 0;
+	// left: 0;
+	width: 100%;
 	z-index: 10;
 }
 
@@ -50,12 +52,13 @@ td {
 	font-style: $font-style;
 	font-weight: 500;
 	line-height: $line-height;
+	word-wrap: break-word;
 	height: 64px;
 	padding: $cell-padding;
 	border-bottom: 0.5px solid #506385;
 	// background-color: #fff;
 	color: #182844;
-	min-width: 200px;
+	min-width: 200;
 	max-width: 300px;
 }
 

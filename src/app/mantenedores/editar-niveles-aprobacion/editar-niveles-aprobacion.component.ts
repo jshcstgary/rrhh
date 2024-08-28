@@ -251,6 +251,8 @@ export class EditarNivelesAprobacionComponent {
 	}
 
 	procesarNivelAprobacion() {
+		this.utilService.openLoadingSpinner("Cargando información, espere por favor...");
+
 		const nivelesAprobacion = Object.entries(this.idNivelesAprobacionRuta)
 			.filter(([_, value]) => value !== "")
 			.map(([key, value]) => {
@@ -267,7 +269,6 @@ export class EditarNivelesAprobacionComponent {
 				return modelo;
 			});
 
-		console.log(nivelesAprobacion);
 		this.serviceNivelesAprobacion.actualizarNivelesAprobacion(nivelesAprobacion).subscribe({
 			next: () => {
 				this.utilService.closeLoadingSpinner();

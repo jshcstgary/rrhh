@@ -137,9 +137,25 @@ body {
 	}
 }
 
+.fixed-col-start {
+	position: sticky;
+	left: 0px;
+	background-color: #efefef !important;
+	z-index: 2;
+}
+
+thead th.fixed-col-start {
+	position: sticky;
+	background-color: rgba(0, 86, 179) !important;
+	color: white;
+	top: 0;
+	left: 0px;
+	z-index: 2;
+}
+
 .fixed-col-end {
 	position: sticky;
-	right: 0;
+	right: -1px;
 	background-color: #efefef !important;
 	z-index: 2;
 }
@@ -149,7 +165,7 @@ thead th.fixed-col-end {
 	background-color: rgba(0, 86, 179) !important;
 	color: white;
 	top: 0;
-	right: 0;
+	right: -1px;
 	z-index: 2;
 }
 

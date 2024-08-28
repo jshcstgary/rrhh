@@ -953,6 +953,7 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 							const data = solicitudes.solicitudType.map((solicitud) => {
 								const detalles = detallesSolicitud.detalleSolicitudType.find((detalle) => detalle.idSolicitud === solicitud.idSolicitud);
 								solicitud.fechaCreacion = new DatePipe('en-CO').transform(solicitud.fechaCreacion, 'dd/MM/yyyy HH:mm:ss');
+								solicitud.fechaActualizacion = new DatePipe('en-CO').transform(solicitud.fechaActualizacion, 'dd/MM/yyyy HH:mm:ss');
 
 								return {
 									...solicitud,

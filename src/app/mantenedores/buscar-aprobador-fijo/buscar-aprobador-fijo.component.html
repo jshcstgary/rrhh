@@ -7,7 +7,7 @@
 
 	<hr>
 	
-	<div class="table-container my-2 p-1 pt-0">
+	<div class="table-container my-2 pr-1 pb-1">
 		<table *ngIf="empleados.length !== 0; else emptyEmpleados">
 			<thead>
 				<tr>
@@ -28,7 +28,7 @@
 			</thead>
 			<tbody>
 				<tr *ngFor="let empleado of empleados" class="cursor-pointer empleado-fila" [ngClass]="{selected: empleadoSeleccionado === empleado}" (click)="seleccionarUsuario(empleado)">
-					<td>
+					<td class="p-0">
 						<input class="form-check-input" type="radio" [value]="empleado" [checked]="empleadoSeleccionado === empleado" (change)="$event.stopPropagation(); seleccionarUsuario(empleado)">
 					</td>
 

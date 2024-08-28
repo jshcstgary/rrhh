@@ -26,11 +26,11 @@ export class NivelesAprobacionService {
 	// Con headers
 	public filterNivelesAprobaciones(idTipoSolicitud: string, idTipoMotivo: string, idNivelDireccion: string, idTipoRuta: string, idAccion: string): Observable<IConsultaNivelesAprobacionResponse> {
 		const fromObject: any = {
-			id_tipo_sol: idTipoSolicitud,
+			id_tipo_sol: idTipoSolicitud ?? 10000,
 			IdNivelDireccion: idNivelDireccion,
-			id_tip_mot: idTipoMotivo === null ? 10000 : idTipoMotivo,
-			id_tip_ruta: idTipoRuta === null ? 10000 : idTipoRuta,
-			id_accion: idAccion === null ? 10000 : idAccion
+			id_tip_mot: idTipoMotivo ?? 10000,
+			id_tip_ruta: idTipoRuta ?? 10000,
+			id_accion: idAccion ?? 10000
 		};
 
 		const httpParams: HttpParamsOptions = { fromObject } as HttpParamsOptions;
