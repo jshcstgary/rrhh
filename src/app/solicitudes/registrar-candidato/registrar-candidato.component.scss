@@ -1,150 +1,165 @@
 .autocomplete-items {
-  border: 1px solid #d4d4d4;
-  border-bottom: none;
-  border-top: none;
-  z-index: 99;
-  /*position the autocomplete items to be the same width as the container:*/
-  top: 100%;
-  left: 0;
-  right: 0;
+	border: 1px solid #d4d4d4;
+	border-bottom: none;
+	border-top: none;
+	z-index: 99;
+	/*position the autocomplete items to be the same width as the container:*/
+	top: 100%;
+	left: 0;
+	right: 0;
 }
 
 .suggestion-item {
-  padding: 10px;
-  cursor: pointer;
-  background-color: #fff;
-  border-bottom: 1px solid #d4d4d4;
+	padding: 10px;
+	cursor: pointer;
+	background-color: #fff;
+	border-bottom: 1px solid #d4d4d4;
 }
 
 .suggestion-item:hover {
-  /*when hovering an item:*/
-  background-color: #e9e9e9;
+	/*when hovering an item:*/
+	background-color: #e9e9e9;
 }
 
-.form-control { width: 300px; }
-
-.header-accordion {background-color: white !important}
-
-.accordion-button, .accordion-button.collapsed {
-  border: none !important;
-  box-shadow: none !important;
+.form-control {
+	width: 300px;
 }
+
+.header-accordion {
+	background-color: white !important
+}
+
+.accordion-button,
+.accordion-button.collapsed {
+	border: none !important;
+	box-shadow: none !important;
+}
+
 textarea {
-  width: 40%;
-  // height: 200px;
-  padding: 10px;
-  border: 1px solid #e2dfdf;
-  box-sizing: border-box;
+	width: 40%;
+	// height: 200px;
+	padding: 10px;
+	border: 1px solid #e2dfdf;
+	box-sizing: border-box;
 }
+
 .ngb-typeahead-window .dropdown-item.active {
-  background-color: gold; /* Cambia el color de fondo a dorado */
+	background-color: gold;
+	/* Cambia el color de fondo a dorado */
 }
 
 .dropdown-menu {
-  width: 300px; /* Ajusta el ancho según tus necesidades */
+	width: 300px;
+	/* Ajusta el ancho según tus necesidades */
 }
 
 .checkbox-container {
-  display: flex;
-  align-items: center;
+	display: flex;
+	align-items: center;
 }
 
 .checkbox-container .form-check-label:first-of-type {
-  margin-right: 60px;
+	margin-right: 60px;
 }
 
 .checkbox-container .form-check-label:last-of-type {
-  margin-left: 10px;
+	margin-left: 10px;
 }
 
-.label-estilo{
-  color: #0056B3;
-   font-size: 16px;
-   width: 45%;
-   background-color: white;
-   font-weight:500;
-   border-style: none;
+.label-estilo {
+	color: #0056B3;
+	font-size: 16px;
+	width: 45%;
+	background-color: white;
+	font-weight: 500;
+	border-style: none;
 }
 
-.label-estilo2{
-  color: #0056B3;
-   font-size: 16px;
-   width: 22%;
-   background-color: white;
-   font-weight:500;
-   border-style: none;
-   word-wrap: break-word;
-   white-space: normal;
-   text-align: left;
+.label-estilo2 {
+	color: #0056B3;
+	font-size: 16px;
+	width: 22%;
+	background-color: white;
+	font-weight: 500;
+	border-style: none;
+	word-wrap: break-word;
+	white-space: normal;
+	text-align: left;
 }
 
 .adjustable-label {
-  color: #0056B3;
-  font-size: 16px;
-  background-color: white;
-  font-weight:500;
-  border-style: none;
-  width: 45%;         /* Ajusta al 100% del contenedor padre */
-  word-wrap: break-word; /* Permite que las palabras se dividan en el borde del contenedor */
-  white-space: normal;  /* Permite que el texto se ajuste y baje a la siguiente línea */
-  text-align: left;
+	color: #0056B3;
+	font-size: 16px;
+	background-color: white;
+	font-weight: 500;
+	border-style: none;
+	width: 45%;
+	/* Ajusta al 100% del contenedor padre */
+	word-wrap: break-word;
+	/* Permite que las palabras se dividan en el borde del contenedor */
+	white-space: normal;
+	/* Permite que el texto se ajuste y baje a la siguiente línea */
+	text-align: left;
 }
 
-.sol-danger{
+.sol-danger {
 
-  color: #C69D08;
-  font-size: 23px;
-  font-weight: 500;
+	color: #C69D08;
+	font-size: 23px;
+	font-weight: 500;
 }
 
 .hidden-label {
-  visibility: hidden;
+	visibility: hidden;
 }
 
 .row {
-  display: flex;
-  flex-wrap: nowrap;
+	display: flex;
+	flex-wrap: nowrap;
 }
 
 .align-items-center {
-  align-items: center;
+	align-items: center;
 }
 
 .adjustable-label2 {
-  color: #0056B3;
-  background-color: white;
-  font-size: 16px;
-  white-space: normal;
-  word-wrap: break-word;
-  font-weight:500;
-  border-style: none;
-  text-align: left;
-  width: 18%;
- // display: block;
- // min-width: 10px; /* Ajusta este valor según sea necesario */
+	color: #0056B3;
+	background-color: white;
+	font-size: 16px;
+	white-space: normal;
+	word-wrap: break-word;
+	font-weight: 500;
+	border-style: none;
+	text-align: left;
+	width: 18%;
+	// display: block;
+	// min-width: 10px; /* Ajusta este valor según sea necesario */
 
 }
 
 /* Define un tamaño estándar para los botones */
 .button-custom {
-  padding: 8px 16px; /* Ajusta el padding superior/inferior y derecho/izquierdo */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 45px; /* Ajusta la altura de los botones */
-  min-width: 120px; /* Ajusta el ancho mínimo de los botones */
-  font-size: 0.875rem; /* Tamaño de la fuente del texto */
+	padding: 8px 16px;
+	/* Ajusta el padding superior/inferior y derecho/izquierdo */
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 45px;
+	/* Ajusta la altura de los botones */
+	min-width: 120px;
+	/* Ajusta el ancho mínimo de los botones */
+	font-size: 0.875rem;
+	/* Tamaño de la fuente del texto */
 }
 
 /* Aumenta el tamaño del icono */
 .icon-size {
-  font-size: 1.45rem; /* Ajusta el tamaño del icono */
+	font-size: 1.45rem;
+	/* Ajusta el tamaño del icono */
 }
 
 /* Asegura que el icono y el texto estén alineados correctamente */
 .button-custom i {
-  margin-right: 8px; /* Ajusta el margen entre el icono y el texto */
+	margin-right: 8px;
+	/* Ajusta el margen entre el icono y el texto */
 }
-
-
-

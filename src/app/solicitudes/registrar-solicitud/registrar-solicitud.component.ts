@@ -66,6 +66,8 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
 		item: ""
 	};
 
+	existenNivelesAprobacion: boolean = false;
+
 	private readonly NIVEL_APROBACION_GERENCIA_MEDIA: string = "GERENCIA MEDIA";
 	private readonly NIVEL_APROBACION_GERENCIA_UNIDAD: string = "GERENCIA DE UNIDAD O CORPORATIVA";
 	private readonly NIVEL_APROBACION_JEFATURA: string = "JEFATURA";
@@ -449,27 +451,27 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
 			.obtenerAprobacionesPorPosicionRuta(this.solicitud.idTipoSolicitud, this.solicitud.idTipoMotivo, this.model.codigoPosicion, this.model.nivelDir, this.dataTipoRutaEmp[0].id, 'A')
 			.subscribe({
 				next: (response) => {
+					if (response.totalRegistros === 0 || response.totalRegistros === null) {
+						this.utilService.modalResponse("No existe aprobadores de solicitud para los datos ingresados", "error");
+
+						this.existenNivelesAprobacion = false;
+						
+						return;
+					}
+
+					this.existenNivelesAprobacion = true;
+
 					this.dataAprobacionesPorPosicion[this.keySelected] = response.nivelAprobacionPosicionType;
 				},
 				error: (error: HttpErrorResponse) => {
-					this.utilService.modalResponse(
-						"No existe aprobadores de solicitud para los datos ingresados",
-						"error"
-					);
+					this.utilService.modalResponse( "No existe aprobadores de solicitud para los datos ingresados", "error");
 				},
 			});
 	}
 
 	obtenerAprobacionesPorPosicionAPS() {
 		return this.solicitudes
-			.obtenerAprobacionesPorPosicionRuta(
-				this.solicitud.idTipoSolicitud,
-				this.solicitud.idTipoMotivo,
-				this.model.codigoPosicion,
-				this.model.nivelDir,
-				this.dataTipoRutaEmp[0].id,
-				'APS'
-			)
+			.obtenerAprobacionesPorPosicionRuta(this.solicitud.idTipoSolicitud, this.solicitud.idTipoMotivo, this.model.codigoPosicion, this.model.nivelDir, this.dataTipoRutaEmp[0].id, "APS")
 			.subscribe({
 				next: (response) => {
 					this.dataTipoRuta.length = 0;
@@ -481,10 +483,7 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
 					});
 				},
 				error: (error: HttpErrorResponse) => {
-					this.utilService.modalResponse(
-						"No existe aprobadores de solicitud para los datos ingresados",
-						"error"
-					);
+					this.utilService.modalResponse("No existe aprobadores de solicitud para los datos ingresados", "error");
 				},
 			});
 	}
@@ -578,7 +577,6 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
 						return;
 					}
 
-					console.log(result?.data);
 					const empleado = result?.data;
 
 					this.model = structuredClone({

@@ -66,14 +66,11 @@ export class TipoSolicitudComponent implements OnInit {
 	public dataTable: any[] = [];
 	public dataTableActive: any[] = [];
 	public dataTableInactive: any[] = [];
-	public tableInputsEditRow: IInputsComponent =
-		TiposolicitudData.tableInputsEditRow;
+	public tableInputsEditRow: IInputsComponent = TiposolicitudData.tableInputsEditRow;
 	public colsToFilterByText: string[] = TiposolicitudData.colsToFilterByText;
 	public IdRowToClone: string = null;
-	public defaultEmptyRowTable: ITiposolicitudTable =
-		TiposolicitudData.defaultEmptyRowTable;
-	public codigoReporte: reportCodeEnum =
-		reportCodeEnum.MANTENIMIENTO_TIPO_SOLICITUD;
+	public defaultEmptyRowTable: ITiposolicitudTable = TiposolicitudData.defaultEmptyRowTable;
+	public codigoReporte: reportCodeEnum = reportCodeEnum.MANTENIMIENTO_TIPO_SOLICITUD;
 	constructor(
 		private tiposolicitudesService: TipoSolicitudService,
 		private tableService: TableService,

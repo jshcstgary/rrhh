@@ -430,7 +430,6 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 
 		this.solicitud.tipoAccion = this.dataTiposAccionesPorTipoSolicitud[this.solicitud.idTipoSolicitud].filter((data) => data.id == this.solicitud.idTipoAccion)[0]?.tipoAccion;
 
-		// if (result.isConfirmed) {
 		this.utilService.openLoadingSpinner("Creando solicitud, espere por favor.");
 
 		this.route.params.subscribe({

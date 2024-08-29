@@ -32,6 +32,7 @@ import { Permiso } from "src/app/types/permiso.type";
 import Swal from "sweetalert2";
 import { addDays } from "date-fns";
 import { convertTimeZonedDate } from "src/app/services/util/dates.util";
+import { BuscarEmpleadoComponent } from "../buscar-empleado/buscar-empleado.component";
 
 interface DialogComponents {
 	dialogReasignarUsuario: Type<DialogReasignarUsuarioComponent>;
@@ -679,6 +680,7 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
 			this.sueldoEmpleado.variableTrimestral = datosEmpleado.sueldoVariableTrimestral;
 			this.sueldoEmpleado.variableSemestral = datosEmpleado.sueldoVariableSemestral;
 			this.sueldoEmpleado.variableAnual = datosEmpleado.sueldoVariableAnual;
+
 			this.model = Object.assign(
 				{},
 				{
@@ -691,18 +693,19 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
 				}
 			);
 
-			if (this.model.nivelDir.toUpperCase().includes("VICEPRESIDENCIA") ||
-				this.model.nivelDir.toUpperCase().includes("CORPORATIVO") ||
-				this.model.nivelDir.toUpperCase().includes("CORPORATIVA")) {
+			if (this.model.nivelDir.toUpperCase().includes("VICEPRESIDENCIA") || this.model.nivelDir.toUpperCase().includes("CORPORATIVO") || this.model.nivelDir.toUpperCase().includes("CORPORATIVA")) {
 				Swal.fire({
 					text: "Nivel de Dirección no permitido: " + this.model.nivelDir,
 					icon: "info",
 					confirmButtonColor: "rgb(227, 199, 22)",
 					confirmButtonText: "Sí",
 				});
+
 				this.clearModel();
+
 				this.keySelected = "";
 				this.dataAprobacionesPorPosicion = {};
+
 				return;
 			}
 
@@ -715,21 +718,22 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
 
 						return;
 					}
+
 					this.model.jefeInmediatoSuperior = response.evType[0].nombreCompleto;
 					this.model.puestoJefeInmediato = response.evType[0].descrPosicion;
 					this.codigoReportaA = response.evType[0].subledger;
-
-
 				},
 				error: (error: HttpErrorResponse) => {
 					this.utilService.modalResponse(error.error, "error");
 				},
 			});
+
 			this.modelPropuestos = structuredClone(this.model);
 			this.modelPropuestos.fechaIngreso = structuredClone(this.model.fechaIngresogrupo);
 			this.detalleSolicitudPropuestos.movilizacion = "0";
 			this.detalleSolicitudPropuestos.alimentacion = "0";
 			this.unidadNegocioEmp = datosEmpleado.unidadNegocio;
+
 			if (this.unidadNegocioEmp.toUpperCase().includes("AREAS") || this.unidadNegocioEmp.toUpperCase().includes("ÁREAS")) {
 				this.mantenimientoService.getTipoRuta().subscribe({
 					next: (response) => {
@@ -740,7 +744,8 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
 								id: r.id,
 								descripcion: r.tipoRuta,
 							}));
-						this.keySelected = `${this.solicitud.idTipoSolicitud}_${this.solicitud.idTipoMotivo}_${this.model.codigoPosicion}_${this.model.nivelDir}`;
+
+							this.keySelected = `${this.solicitud.idTipoSolicitud}_${this.solicitud.idTipoMotivo}_${this.model.codigoPosicion}_${this.model.nivelDir}`;
 
 						if (!this.dataAprobacionesPorPosicion[this.keySelected]) {
 							this.obtenerAprobacionesPorPosicion();
@@ -763,11 +768,9 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
 
 						this.keySelected = `${this.solicitud.idTipoSolicitud}_${this.solicitud.idTipoMotivo}_${this.model.codigoPosicion}_${this.model.nivelDir}`;
 
-						console.log(!this.dataAprobacionesPorPosicion[this.keySelected]);
 						if (!this.dataAprobacionesPorPosicion[this.keySelected]) {
 							this.obtenerAprobacionesPorPosicion();
 						}
-
 					},
 					error: (error: HttpErrorResponse) => {
 						this.utilService.modalResponse(error.error, "error");
@@ -777,6 +780,7 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
 		} else {
 			let tempSearch = valor;
 			this.model = new RegistrarData();
+
 			if (campo == "codigoPosicion") {
 				this.model.codigoPosicion = tempSearch;
 			} else if (campo == "subledger") {
@@ -854,9 +858,6 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
 				this.detalleSolicitud.idSolicitud =
 					this.solicitudDataInicial.idSolicitud;
 			}
-
-			// console.log("ID editar: ", this.id_edit);
-			// Utiliza el id_edit obtenido
 		});
 
 		this.route.queryParams.subscribe((params: Solicitud) => {
@@ -1732,7 +1733,6 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
 			});
 	}
 
-
 	mapearDetallesAprobadores(nivelAprobacionPosicionType: any[]) {
 		this.starterService.getUser(localStorage.getItem(LocalStorageKeys.IdUsuario)).subscribe({
 			next: (res) => {
@@ -2138,8 +2138,6 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
 		this.submitted = true;
 	}
 
-
-
 	openModalReasignar(componentName: keyof DialogComponents) {
 		console.log("SE ABRIO EL MODAL");
 		this.modalService
@@ -2286,46 +2284,165 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
 
 	}
 
-	openModalReasignarUsuario() {
-		const modelRef = this.modalService.open(dialogComponentList.dialogReasignarUsuario, {
-			ariaLabelledBy: "modal-title",
-		});
+	// openModalReasignarUsuario() {
+	// 	const modelRef = this.modalService.open(dialogComponentList.dialogReasignarUsuario, {
+	// 		ariaLabelledBy: "modal-title",
+	// 	});
 
-		modelRef.componentInstance.idParam = this.solicitud.idSolicitud;
-		modelRef.componentInstance.taskId = this.taskType_Activity;
+	// 	modelRef.componentInstance.idParam = this.solicitud.idSolicitud;
+	// 	modelRef.componentInstance.taskId = this.taskType_Activity;
 
-		modelRef.result.then(
-			(result) => {
-				if (result === "close") {
-					return;
-				}
+	// 	modelRef.result.then(
+	// 		(result) => {
+	// 			if (result === "close") {
+	// 				return;
+	// 			}
 
-				if (result?.data) {
-					Swal.fire({
-						text: result.data,
-						icon: "success",
-						confirmButtonColor: "rgb(227, 199, 22)",
-						confirmButtonText: "Ok",
-					}).then((result) => {
-						if (result.isConfirmed) {
-							this.router.navigate(["/mantenedores/reasignar-tareas-usuarios"]);
-							if (this.submitted) {
-							}
-						}
+	// 			if (result?.data) {
+	// 				Swal.fire({
+	// 					text: result.data,
+	// 					icon: "success",
+	// 					confirmButtonColor: "rgb(227, 199, 22)",
+	// 					confirmButtonText: "Ok",
+	// 				}).then((result) => {
+	// 					if (result.isConfirmed) {
+	// 						this.router.navigate(["/mantenedores/reasignar-tareas-usuarios"]);
+	// 						if (this.submitted) {
+	// 						}
+	// 					}
+	// 				});
+	// 			}
+	// 		},
+	// 		(reason) => {
+	// 			console.log(`Dismissed with: ${reason}`);
+	// 		}
+	// 	);
+	// }
+
+	// indexedModal: Record<keyof DialogComponents, any> = {
+	// 	dialogReasignarUsuario: () => this.openModalReasignarUsuario(),
+	// };
+
+	// openModal(component: keyof DialogComponents) {
+	// 	this.indexedModal[component]();
+	// }
+
+	public openModal() {
+		this.modalService
+			.open(BuscarEmpleadoComponent, {
+				backdrop: "static",
+				keyboard: false
+			})
+			.result.then(
+				(result) => {
+					if (result?.action === "close") {
+						return;
+					}
+
+					if (result?.data === undefined) {
+						return;
+					}
+
+					console.log(result?.data);
+					const empleado = result?.data;
+
+					this.model = structuredClone({
+						...empleado,
+						sueldoMensual: empleado.sueldoVariableMensual,
+						sueldoTrimestral: empleado.sueldoVariableTrimestral,
+						sueldoSemestral: empleado.sueldoVariableSemestral,
+						sueldoAnual: empleado.sueldoVariableAnual
 					});
+
+					if (this.model.nivelDir.toUpperCase().includes("VICEPRESIDENCIA") || this.model.nivelDir.toUpperCase().includes("CORPORATI")) {
+						Swal.fire({
+							text: `Nivel de Dirección no permitido: ${this.model.nivelDir}`,
+							icon: "info",
+							confirmButtonColor: "rgb(227, 199, 22)",
+							confirmButtonText: "Sí",
+						});
+
+						this.clearModel();
+						this.keySelected = "";
+						this.dataAprobacionesPorPosicion = {};
+						
+						return;
+					}
+
+					this.sueldoEmpleado.sueldo = empleado.sueldo;
+					this.sueldoEmpleado.variableMensual = empleado.sueldoVariableMensual;
+					this.sueldoEmpleado.variableTrimestral = empleado.sueldoVariableTrimestral;
+					this.sueldoEmpleado.variableSemestral = empleado.sueldoVariableSemestral;
+					this.sueldoEmpleado.variableAnual = empleado.sueldoVariableAnual;
+
+					this.unidadNegocioEmp = empleado.unidadNegocio;
+
+					if (this.unidadNegocioEmp.toUpperCase().includes("AREAS") || this.unidadNegocioEmp.toUpperCase().includes("ÁREAS")) {
+						this.mantenimientoService.getTipoRuta().subscribe({
+							next: (response) => {
+								this.dataTipoRutaEmp = response.tipoRutaType
+									.filter(({ estado }) => estado === "A")
+									.filter(({ tipoRuta }) => tipoRuta.toUpperCase().includes("CORPORATIV"))
+									.map((r) => ({
+										id: r.id,
+										descripcion: r.tipoRuta,
+									}));
+
+								this.keySelected = `${this.solicitud.idTipoSolicitud}_${this.solicitud.idTipoMotivo}_${this.model.codigoPosicion}_${this.model.nivelDir}`;
+
+								if (!this.dataAprobacionesPorPosicion[this.keySelected]) {
+									this.obtenerAprobacionesPorPosicion();
+								}
+							},
+							error: (error: HttpErrorResponse) => {
+								this.utilService.modalResponse(error.error, "error");
+							},
+						});
+					} else {
+						this.mantenimientoService.getTipoRuta().subscribe({
+							next: (response) => {
+								this.dataTipoRutaEmp = response.tipoRutaType
+									.filter(({ estado }) => estado === "A")
+									.filter(({ tipoRuta }) => tipoRuta.toUpperCase() === "UNIDADES")
+									.map((r) => ({
+										id: r.id,
+										descripcion: r.tipoRuta,
+									}));
+
+									this.keySelected = `${this.solicitud.idTipoSolicitud}_${this.solicitud.idTipoMotivo}_${this.model.codigoPosicion}_${this.model.nivelDir}`;
+
+								if (!this.dataAprobacionesPorPosicion[this.keySelected]) {
+									this.obtenerAprobacionesPorPosicion();
+								}
+							},
+							error: (error: HttpErrorResponse) => {
+								this.utilService.modalResponse(error.error, "error");
+							},
+						});
+					}
+
+					this.mantenimientoService.getDataEmpleadosEvolutionPorId(empleado.codigoPosicionReportaA).subscribe({
+						next: (response) => {
+							if (response.evType.length === 0) {
+								this.model.jefeInmediatoSuperior = "";
+								this.model.puestoJefeInmediato = "";
+								this.codigoReportaA = "";
+
+								return;
+							}
+							
+							this.model.jefeInmediatoSuperior = response.evType[0].nombreCompleto;
+							this.model.puestoJefeInmediato = response.evType[0].descrPosicion;
+							this.codigoReportaA = response.evType[0].subledger;
+						},
+						error: (error: HttpErrorResponse) => {
+							this.utilService.modalResponse(error.error, "error");
+						},
+					});
+				},
+				(reason) => {
+					console.log(`Dismissed with: ${reason}`);
 				}
-			},
-			(reason) => {
-				console.log(`Dismissed with: ${reason}`);
-			}
-		);
-	}
-
-	indexedModal: Record<keyof DialogComponents, any> = {
-		dialogReasignarUsuario: () => this.openModalReasignarUsuario(),
-	};
-
-	openModal(component: keyof DialogComponents) {
-		this.indexedModal[component]();
+			);
 	}
 }

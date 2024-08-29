@@ -54,7 +54,8 @@
 					<div class="text-end">
 						<button *ngIf="this.controlsPermissions[pageControlPermission.ButtonAgregar].visualizar" type="button" (click)="pageCrear()" class="btn btn-info me-3"><i class="fas fa-plus"></i> Agregar</button>
 
-						<button *ngIf="this.controlsPermissions[pageControlPermission.ButtonExportar].visualizar" type="submit" class="btn btn-outline-info"><i class="fas fa-file-excel"></i> Exportar</button>
+						<!-- <button *ngIf="this.controlsPermissions[pageControlPermission.ButtonExportar].visualizar" type="submit" class="btn btn-outline-info"><i class="fas fa-file-excel"></i> Exportar</button> -->
+						<dropdown-component [options]="dropdownOptionsExport" textButton="Exportar" [buttonClasses]="['btn-outline-info']" [iconButton]="'fas fa-file-pdf'" [contexto]="this" onDropDownClickFunction="isAnyRowCheckedInTable"></dropdown-component>
 					</div>
 				</div>
 			</form>
@@ -65,11 +66,13 @@
 		<table *ngIf="dataTable.length !== 0; else noTable">
 			<thead>
 				<tr>
-					<th class="text-center">Tipo de solicitud</th>
+					<th *ngFor="let columnName of columnsTable" class="text-center">{{ columnName.title }}</th>
+					
+					<!-- <th class="text-center">Tipo de solicitud</th>
 
 					<th class="text-center">Tipo de ruta</th>
 
-					<th class="text-center">Tipo Motivo</th>
+					<th class="text-center">Tipo Motivo</th> -->
 
 					<th *ngFor="let ruta of dataRuta" class="text-center">{{ ruta.descripcion }}</th>
 
@@ -85,6 +88,10 @@
 					<td>{{ data[0].tipoRuta }}</td>
 
 					<td>{{ mostrarTipoMotivo(data[0].idTipoMotivo) }}</td>
+
+					<td>{{ data[0].accion }}</td>
+
+					<td>{{ data[0].nivelDireccion }}</td>
 
 					<td *ngFor="let ruta of dataRuta">{{ showData(data, ruta) }}</td>
 

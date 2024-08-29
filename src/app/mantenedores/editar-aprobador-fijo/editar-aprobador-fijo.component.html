@@ -29,7 +29,7 @@
 
 								&nbsp;
 
-								<input type="text" name="subledger" [(ngModel)]="modelo.subleger" style="color: black; font-size: 14px; width: 30%" class="form-control" id="subledger" placeholder="Subledger del Empleado" (click)="openModal('subledger')" required />
+								<input type="text" name="subledger" [(ngModel)]="modelo.subleger" style="color: black; font-size: 14px; width: 30%" class="form-control" id="subledger" placeholder="Subledger del Empleado" (click)="openModal('subledger')" required readonly />
 								<!-- <input type="text" name="subledger" [(ngModel)]="modelo.subleger" style="color: black; font-size: 14px; width: 30%" class="form-control" id="subledger" placeholder="Ingrese Subledger del Empleado a Buscar" aria-describedby="inputGroupPrepend" required /> -->
 								<!-- <button class="btn btn-light" type="button" (click)="getDataEmpleadosEvolution('subledger')">
 									<i class="ti-search"></i>
@@ -45,7 +45,7 @@
 
 								&nbsp;
 
-								<input type="text" name="nombreempleado" [(ngModel)]="modelo.nombre" style="color: black; font-size: 14px; width: 30%" class="form-control" id="nombreempleado" placeholder="Nombre del empleado" (click)="openModal('nombre')" required />
+								<input type="text" name="nombreempleado" [(ngModel)]="modelo.nombre" style="color: black; font-size: 14px; width: 30%" class="form-control" id="nombreempleado" placeholder="Nombre del empleado" (click)="openModal('nombre')" required readonly />
 								<!-- <input type="text" name="nombreempleado" [(ngModel)]="modelo.nombre" style="color: black; font-size: 14px; width: 30%" [ngbTypeahead]="searchNombreCompleto" (selectItem)="onSelectItem('nombreCompleto', $event)" class="form-control" id="nombreempleado" placeholder="Ingrese Nombre o Apellido del Empleado a Buscar" aria-describedby="inputGroupPrepend" required /> -->
 								<!-- <button class="btn btn-light" type="button" (click)="getDataEmpleadosEvolution('nombreEmpleado')">
 									<i class="ti-search"></i>
@@ -71,7 +71,7 @@
 
 								&nbsp;
 
-								<input type="text" name="correoempleado" [(ngModel)]="modelo.correo" style="color: black; font-size: 14px; width: 30%" class="form-control" id="correoempleado" placeholder="Correo del empleado" (click)="openModal('correo')" required />
+								<input type="text" name="correoempleado" [(ngModel)]="modelo.correo" style="color: black; font-size: 14px; width: 30%" class="form-control" id="correoempleado" placeholder="Correo del empleado" (click)="openModal('correo')" required readonly />
 								<!-- <input type="text" name="correo-empleado" [(ngModel)]="modelo.correo" style="color: black; font-size: 14px; width: 30%" class="form-control" id="correo-empleado" placeholder="Ingrese Correo del Empleado a Buscar" aria-describedby="inputGroupPrepend" required /> -->
 
 								<!-- <button class="btn btn-light" type="button" (click)="getDataEmpleadosEvolution('correo')">

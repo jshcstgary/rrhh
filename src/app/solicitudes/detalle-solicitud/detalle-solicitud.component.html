@@ -50,8 +50,10 @@
 				<hr />
 			</div>
 
+			<div class="after-header-solicitud"></div>
+
 			<!-- ! Aqui empieza la condición Formulario FAMILIARES-->
-			<div *ngIf="mostrarFormularioFamiliares" class="after-header-solicitud">
+			<div *ngIf="mostrarFormularioFamiliares">
 				<div class="row mt-4">
 					<div class="col-md-4">
 						<div class="mb-4">
@@ -222,9 +224,71 @@
 						<hr />
 					</div>
 				</div>
+
+				<table-personalized [columns]="columnsDatosFamiliares" [data]="dataTableDatosFamiliares" [tableWidth]="'100%'"> </table-personalized>
+	
+				<div class="row mt-4">
+					<div class="col-md-4">
+						<div class="mb-4">
+							<h3 class="sol-danger">Aprobadores de la solicitud</h3>
+						</div>
+					</div>
+
+					<div class="col-md-8">
+						<hr />
+					</div>
+				</div>
+
+				<div class="accordion" id="accordionExample">
+					<div *ngFor="let nivelItem of dataAprobacionesPorPosicion[keySelected]; let i = index"
+						class="accordion-item">
+						<div class="accordion-header">
+							<button class="accordion-button" type="button" data-bs-toggle="collapse"
+								[attr.data-bs-target]="'#collapse' + i" aria-expanded="true"
+								[attr.aria-controls]="'collapse' + i" style="display: block">
+								<div class="row" style="align-items: center; justify-content: space-around">
+									<div class="col">
+										{{ nivelItem.nivelAprobacionType.ruta }}
+									</div>
+
+									<div class="col">
+										{{ nivelItem.aprobador.usuario !== "" && nivelItem.aprobador.usuario !==
+										undefined && nivelItem.aprobador.usuario != null ?
+										nivelItem.aprobador.codigoPosicion + "-" + nivelItem.aprobador.usuario : "No
+										aplica" }}
+									</div>
+
+									<div class="col">
+										{{ nivelItem.nivelAprobacionType.nivelAprobacionRuta }}
+									</div>
+								</div>
+							</button>
+						</div>
+
+						<div [id]="'collapse' + i" class="accordion-collapse collapse" [ngClass]="{ show: i === 0 }"
+							data-bs-parent="#accordionExample">
+							<div class="row">
+								<div class="col">
+									<div class="input-group">
+										<label for="lvl1descripcion"> Descripción de la posición </label>
+
+										&nbsp;
+
+										<span id="lvl1descripcion" name="" style="color: black; font-size: 14px">
+											{{ nivelItem.aprobador.descripcionPosicion !== "" &&
+											nivelItem.aprobador.descripcionPosicion !== undefined &&
+											nivelItem.aprobador.descripcionPosicion != null ?
+											nivelItem.aprobador.descripcionPosicion : "No aplica" }}
+										</span>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
 
-			<table-personalized *ngIf="mostrarFormularioFamiliares" [columns]="columnsDatosFamiliares"
+			<!-- <table-personalized *ngIf="mostrarFormularioFamiliares" [columns]="columnsDatosFamiliares"
 				[data]="dataTableDatosFamiliares" [tableWidth]="'100%'"> </table-personalized>
 
 			<div *ngIf="mostrarFormularioFamiliares">
@@ -287,10 +351,10 @@
 						</div>
 					</div>
 				</div>
-			</div>
+			</div> -->
 
 			<!-- ! Aqui empieza la condición Formulario Reingreso-->
-			<div *ngIf="mostrarFormularioReingreso" class="after-header-solicitud">
+			<div *ngIf="mostrarFormularioReingreso">
 				<div class="row mt-2">
 					<div class="col-md-3">
 						<div class="mb-4">
@@ -1095,7 +1159,7 @@
 			</div>
 
 			<!-- ! Aquí empieza la condición Formulario Requisición -->
-			<div *ngIf="mostrarRequisicion" class="after-header-solicitud">
+			<div *ngIf="mostrarRequisicion">
 				<div *ngIf="!mostrarFormularioReingreso">
 					<div class="row mt-4">
 						<div class="col-md-3">
@@ -1741,7 +1805,7 @@
 			</div>
 
 			<!-- ! Aquí empieza la condición Formulario Requisición -->
-			<div *ngIf="mostrarAccionPersonal" class="after-header-solicitud">
+			<div *ngIf="mostrarAccionPersonal">
 				<div class="row mt-4">
 					<div class="col-md-5">
 						<div class="input-group mb-3">

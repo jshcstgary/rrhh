@@ -83,8 +83,7 @@ export class PlantillaAComponent implements AfterViewInit, OnInit, OnChanges {
 	public rowsPerPageTable: number = TableComponentData.defaultRowPerPage;
 	public dataToTable: any[] = [];
 	public totalRowsInTable: number = 0;
-	public dropdownOptionsExport: IDropdownOptions =
-		PlantillaAData.dropdownOptionsExport;
+	public dropdownOptionsExport: IDropdownOptions = PlantillaAData.dropdownOptionsExport;
 
 	private textToFilter: string = "";
 	private colIndexSorted: number;
@@ -165,19 +164,19 @@ export class PlantillaAComponent implements AfterViewInit, OnInit, OnChanges {
 			rowsCheckedInTable = this.originalDataTable.map((x) => x.key);
 		}
 
+		const { headerTitles, dataIndexTitles } = this.columnsTable.reduce(
+			(acc, col) => {
+				if (col.title && col.title !== "Acciones") {
+					acc.headerTitles.push(col.title);
 
-		const { headerTitles, dataIndexTitles } = this.columnsTable.reduce((acc, col) => {
-			if (col.title && col.title !== "Acciones") {
-				acc.headerTitles.push(col.title);
+					acc.dataIndexTitles.push({
+						dataIndex: col.dataIndex,
+						dataIndexesToJoin: col.dataIndexesToJoin,
+					});
+				}
 
-				acc.dataIndexTitles.push({
-					dataIndex: col.dataIndex,
-					dataIndexesToJoin: col.dataIndexesToJoin,
-				});
-			}
-
-			return acc;
-		},
+				return acc;
+			},
 			{
 				headerTitles: [],
 				dataIndexTitles: []

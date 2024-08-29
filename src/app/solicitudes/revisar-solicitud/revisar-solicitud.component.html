@@ -56,8 +56,10 @@
 				<hr>
 			</div>
 
+			<div class="after-header-solicitud"></div>
+
 			<!-- ! Aqui empieza la condición Formulario FAMILIARES -->
-			<div *ngIf="mostrarFormularioFamiliares" class="after-header-solicitud">
+			<div *ngIf="mostrarFormularioFamiliares">
 				<div class="row mt-4">
 					<div class="col-md-4">
 						<div class="mb-4">
@@ -216,13 +218,9 @@
 						<hr />
 					</div>
 				</div>
-			</div>
 
-			<table-personalized *ngIf="mostrarFormularioFamiliares" [columns]="columnsDatosFamiliares"
-				[data]="dataTableDatosFamiliares" [tableWidth]="'100%'">
-			</table-personalized>
+				<table-personalized [columns]="columnsDatosFamiliares" [data]="dataTableDatosFamiliares" [tableWidth]="'100%'"></table-personalized>
 
-			<div *ngIf="mostrarFormularioFamiliares">
 				<div class="row mt-4">
 					<div class="col-md-4">
 						<div class="mb-4">
@@ -235,6 +233,7 @@
 						<hr />
 					</div>
 				</div>
+
 				<div class="accordion" id="accordionExample">
 					<div *ngFor="let nivelItem of dataAprobacionesPorPosicion[keySelected]; let i = index" class="accordion-item">
 						<div class="accordion-header">
@@ -287,6 +286,7 @@
 						</div>
 					</div>
 				</div>
+
 				<div class="row mt-4">
 					<div class="col-md-4">
 						<div class="mb-4">
@@ -350,7 +350,6 @@
 					</div>
 				</div>
 
-
 				<div class="row">
 					<div class="col">
 						<div class="input-group mb-3 contenedor">
@@ -365,8 +364,154 @@
 				</div>
 			</div>
 
+			<!-- <table-personalized *ngIf="mostrarFormularioFamiliares" [columns]="columnsDatosFamiliares" [data]="dataTableDatosFamiliares" [tableWidth]="'100%'"></table-personalized> -->
+
+			<!-- <div *ngIf="mostrarFormularioFamiliares">
+				<div class="row mt-4">
+					<div class="col-md-4">
+						<div class="mb-4">
+							<a>
+								<h3 class="sol-danger">Aprobadores de la solicitud</h3>
+							</a>
+						</div>
+					</div>
+					<div class="col-md-8">
+						<hr />
+					</div>
+				</div>
+
+				<div class="accordion" id="accordionExample">
+					<div *ngFor="let nivelItem of dataAprobacionesPorPosicion[keySelected]; let i = index" class="accordion-item">
+						<div class="accordion-header">
+							<button class="accordion-button" type="button" data-bs-toggle="collapse"
+								[attr.data-bs-target]="'#collapse' + i" aria-expanded="true"
+								[attr.aria-controls]="'collapse' + i" style="display: block">
+								<div class="row" style="align-items: center; justify-content: space-around">
+									<div class="col">{{ nivelItem.nivelAprobacionType.ruta }}</div>
+
+									<div class="col">
+										{{
+										nivelItem.aprobador.usuario !== "" &&
+										nivelItem.aprobador.usuario !== undefined &&
+										nivelItem.aprobador.usuario != null
+										? nivelItem.aprobador.codigoPosicion + "-" + nivelItem.aprobador.usuario
+										: "No aplica"
+										}}
+									</div>
+
+									<div class="col">
+										{{ nivelItem.nivelAprobacionType.nivelAprobacionRuta }}
+									</div>
+								</div>
+							</button>
+						</div>
+
+						<div [id]="'collapse' + i" class="accordion-collapse collapse" [ngClass]="{ show: i === 0 }"
+							data-bs-parent="#accordionExample">
+							<div class="row">
+								<div class="col">
+									<div class="input-group">
+										<label for="lvl1descripcion">
+											Descripción de la posición
+										</label>
+
+										&nbsp;
+
+										<span id="lvl1descripcion" name="" style="color: black; font-size: 14px">
+											{{
+											nivelItem.aprobador.descripcionPosicion !== "" &&
+											nivelItem.aprobador.descripcionPosicion !== undefined &&
+											nivelItem.aprobador.descripcionPosicion != null
+											? nivelItem.aprobador.descripcionPosicion
+											: "No aplica"
+											}}
+										</span>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="row mt-4">
+					<div class="col-md-4">
+						<div class="mb-4">
+							<a>
+								<h3 class="sol-danger">Atención de Solicitud</h3>
+							</a>
+						</div>
+					</div>
+					<div class="col-md-8">
+						<hr />
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-md-6">
+						<div class="input-group mb-3" style="display: flex; align-items: center; flex-wrap: nowrap;">
+							<label class="input-group-text label-estilo" for="nivelaprobacion"
+								style="margin-right: 10px; white-space: nowrap;">
+								Nivel de aprobación
+							</label>
+							<span id="nivelaprobacion" name="nivelaprobacion"
+								style="color: black; font-size: 14px; margin-right: 10px; white-space: nowrap;">
+							</span>
+							<span id="descripcionPosicion" name="descripcionPosicion"
+								style="color: #0056B3; font-size: 14px; margin-right: 10px; white-space: nowrap;">
+								{{ datosAprobadores.descripcionPosicion }}
+							</span>
+							<span id="usuarioaprueba" name="usuarioaprueba"
+								style="color: black; font-size: 14px; white-space: nowrap;">
+								{{ datosAprobadores.usuario }}
+							</span>
+						</div>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col">
+						<div class="input-group mb-3 contenedor">
+							<label class="input-group-text label-estilo2" for="desicion">Decisión a tomar
+							</label>
+
+							<div class="d-flex gap-3" role="group" aria-label="Basic example" id="desicion">
+								<button type="button" class="btn" (click)="process('aprobar')"
+									[ngClass]="{'btn-primary btn-unselected': !isSelected('aprobar'), 'btn-selected': isSelected('aprobar')}"
+									value="aprobar">Aprobar</button>
+
+								<button type="button" class="btn"
+									[ngClass]="{'btn-primary btn-unselected': !isSelected('devolver'), 'btn-selected': isSelected('devolver')}"
+									(click)="process('devolver')" value="devolver">Devolver</button>
+
+								<button type="button" class="btn"
+									[ngClass]="{'btn-primary btn-unselected': !isSelected('rechazar'), 'btn-selected': isSelected('rechazar')}"
+									(click)="process('rechazar')" value="rechazar">Cancelar</button>
+
+								<button type="button" class="btn"
+									[ngClass]="{'btn-primary btn-unselected': !isSelected('esperar'), 'btn-selected': isSelected('esperar')}"
+									(click)="process('esperar')" value="esperar">En espera</button>
+							</div>
+
+						</div>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col">
+						<div class="input-group mb-3 contenedor">
+							<label class="input-group-text label-estilo2" for="observacion">{{observaciontexto}}
+							</label>
+							&nbsp;
+							<textarea [(ngModel)]="textareaContent" id="observacion" name="observacion"
+								#observacion="ngModel" [required]="isRequired" style="color: black; font-size: 14px"
+								[placeholder]="campoObligatorio"></textarea>
+						</div>
+					</div>
+				</div>
+			</div> -->
+
 			<!-- ! Aqui empieza la condición Formulario Reingreso -->
-			<div *ngIf="mostrarFormularioReingreso" class="after-header-solicitud">
+			<div *ngIf="mostrarFormularioReingreso">
 				<div class="row mt-2">
 					<div class="col-md-3">
 						<div class="mb-4">
@@ -1151,10 +1296,9 @@
 			</div>
 
 			<!-- ! Aqui empieza la condición Formulario Requisición -->
-			<div *ngIf="mostrarRequisicion" class="after-header-solicitud">
-				<!-- <div *ngIf="!mostrarFormularioReingreso">
-				</div> -->
-				<details class="mt-4">
+			<div *ngIf="mostrarRequisicion">
+				<!-- ! Información general -->
+				<details class="mb-4">
 					<summary>
 						<div class="row">
 							<div class="col-md-4">
@@ -1291,16 +1435,18 @@
 						</div>
 
 						<div class="row" *ngIf="mostrarTipoJustificacionYMision">
-							<div class="col-md-6" *ngIf="mostrarTipoJustificacionYMision">
+							<div class="col-md-6">
 								<div class="input-group mb-3 align-items-center">
 									<label class="input-group-text label-estilo" for="misioncargo">Misión del cargo</label>
 
 									<span id="misioncargo" name="misioncargo" style="color: black; font-size: 14px;" class="text-start">{{ model.misionCargo }}</span>
 								</div>
 							</div>
+						</div>
 
-							<div class="col">
-								<div class="input-group mb-3 contenedor">
+						<div class="row" *ngIf="mostrarTipoJustificacionYMision">
+							<div class="col-md-12">
+								<div class="input-group mb-3 align-items-center">
 									<label class="input-group-text label-estilo2" for="justificacion">Justificación</label>
 
 									<span id="justificacion" name="justificacion" style="color: black; font-size: 14px;" class="text-start">{{ model.justificacionCargo }}</span>
@@ -1310,7 +1456,8 @@
 					</div>
 				</details>
 
-				<details class="mt-4">
+				<!-- ! Funciones y responsabilidades -->
+				<details class="mb-4">
 					<summary>
 						<div class="row">
 							<div class="col-md-4">
@@ -1333,8 +1480,7 @@
 								<div class="input-group mb-3 align-items-center">
 									<label class="input-group-text label-estilo2" for="reporta">Reporta a</label>
 
-									<span id="reporta" name="" style="color: black; font-size: 14px;" class="text-start">{{ model.reportaA }}
-									</span>
+									<span id="reporta" name="" style="color: black; font-size: 14px;" class="text-start">{{ model.reportaA }}</span>
 								</div>
 							</div>
 						</div>
@@ -1377,7 +1523,8 @@
 					</div>
 				</details>
 
-				<details class="mt-4">
+				<!-- ! Tipo de variable -->
+				<details class="mb-4">
 					<summary>
 						<div class="row">
 							<div class="col-md-4">
@@ -1414,7 +1561,6 @@
 						</div>
 		
 						<div class="row">
-
 							<div class="col-md-6">
 								<div class="input-group mb-3 align-items-center">
 									<label class="input-group-text label-estilo" for="semestral">Semestral</label>
@@ -1434,7 +1580,8 @@
 					</div>
 				</details>
 
-				<details class="mt-4">
+				<!-- ! Aprobadores de la solicitud -->
+				<details class="mb-4">
 					<summary>
 						<div class="row">
 							<div class="col-md-4">
@@ -1488,7 +1635,8 @@
 					</div>
 				</details>
 
-				<details open class="mt-4">
+				<!-- ! Atención de solicitud -->
+				<details open class="mb-4">
 					<summary>
 						<div class="row">
 							<div class="col-md-4">
@@ -1508,8 +1656,8 @@
 					<div class="details-content">
 						<div class="row">
 							<div class="col-md-12">
-								<div class="input-group mb-3 align-items-center" style="display: flex; align-items: center; flex-wrap: nowrap;">
-									<label class="input-group-text label-estilo2" for="nivelaprobacion" style="margin-right: 10px; white-space: nowrap;">Nivel de aprobación</label>
+								<div class="input-group mb-3 align-items-center">
+									<label class="input-group-text label-estilo2" for="nivelaprobacion">Nivel de aprobación</label>
 
 									<span id="descripcionPosicion" name="descripcionPosicion" style="color: #0056B3; font-size: 14px; margin-right: 10px; white-space: nowrap;">{{ datosAprobadores.descripcionPosicion }}</span>
 
@@ -1542,7 +1690,6 @@
 								<div class="input-group mb-3 align-items-center">
 									<label class="input-group-text label-estilo2" for="observacion">{{observaciontexto}}</label>
 
-
 									<textarea [(ngModel)]="textareaContent" id="observacion" name="observacion" #observacion="ngModel" [required]="isRequired" style="color: black; font-size: 14px" [placeholder]="campoObligatorio"></textarea>
 								</div>
 							</div>
@@ -1552,7 +1699,7 @@
 			</div>
 
 			<!-- ! Aqui empieza la condición Formulario Acción -->
-			<div *ngIf="mostrarAccionPersonal" class="after-header-solicitud">
+			<div *ngIf="mostrarAccionPersonal">
 				<div class="row mt-4">
 					<div class="col-md-5">
 						<div class="input-group mb-3 align-items-center">

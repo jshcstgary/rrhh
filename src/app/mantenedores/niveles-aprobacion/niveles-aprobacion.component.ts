@@ -8,16 +8,18 @@ import { PageCodes } from "src/app/enums/codes.enum";
 import { NivelAprobacionPageControlPermission } from "src/app/enums/page-control-permisions.enum";
 import { MantenimientoService } from "src/app/services/mantenimiento/mantenimiento.service";
 import { PermisoService } from "src/app/services/permiso/permiso.service";
-import { reportCodeEnum } from "src/app/services/util/util.interface";
+import { FormatoUtilReporte, reportCodeEnum } from "src/app/services/util/util.interface";
 import { UtilService } from "src/app/services/util/util.service";
 import { ValidationsService } from "src/app/services/validations/validations.service";
 import { PageControlPermiso } from "src/app/types/page-control-permiso.type";
 import { Control } from "src/app/types/permiso.type";
 import Swal from "sweetalert2";
 import { CrearNivelesAprobacionService } from "../crear-niveles-aprobacion/crear-niveles-aprobacion.service";
-import { NivelesAprobacionData, NivelesAprobacionData2 } from "./niveles-aprobacion.data";
+import { NivelesAprobacionData } from "./niveles-aprobacion.data";
 import { NivelesAprobacionService } from "./niveles-aprobacion.service";
 import { LocalStorageKeys } from "src/app/enums/local-storage-keys.enum";
+import { IDropdownOptions } from "src/app/component/dropdown/dropdown.interface";
+import { PlantillaAData } from "src/app/plantilla/plantillaA/plantillaA.data";
 
 @Component({
 	selector: "app-niveles-aprobacion",
@@ -89,7 +91,6 @@ export class NivelesAprobacionComponent implements OnInit {
 	};
 
 	public columnsTable: IColumnsTable = NivelesAprobacionData.columns;
-	public columnsTable2: IColumnsTable = NivelesAprobacionData2.columns;
 	public dataTable: any[] = [];
 
 	// public rutasTableHeader: any[] = [];
@@ -127,6 +128,8 @@ export class NivelesAprobacionComponent implements OnInit {
 	public dataTipoSolicitudes: any[] = [];
 	public dataNivelDireccion: any[] = [];
 
+	public dropdownOptionsExport: IDropdownOptions = PlantillaAData.dropdownOptionsExport;
+
 	constructor(
 		private nivelesAprobacionService: NivelesAprobacionService,
 		private tableService: TableService,
@@ -142,13 +145,14 @@ export class NivelesAprobacionComponent implements OnInit {
 
 	ngOnInit(): void {
 		localStorage.removeItem(LocalStorageKeys.Reloaded);
-		this.columnsTable[this.columnsTable.length - 1].actions.forEach(action => {
-			if (action.id === "editOnTable") {
-				action.showed = this.controlsPermissions[NivelAprobacionPageControlPermission.ButtonEditar].visualizar
-			} else if (action.id === "cloneOnTable") {
-				action.showed = this.controlsPermissions[NivelAprobacionPageControlPermission.ButtonDuplicar].visualizar
-			}
-		});
+
+		// this.columnsTable[this.columnsTable.length - 1].actions.forEach(action => {
+		// 	if (action.id === "editOnTable") {
+		// 		action.showed = this.controlsPermissions[NivelAprobacionPageControlPermission.ButtonEditar].visualizar
+		// 	} else if (action.id === "cloneOnTable") {
+		// 		action.showed = this.controlsPermissions[NivelAprobacionPageControlPermission.ButtonDuplicar].visualizar
+		// 	}
+		// });
 
 		this.ObtenerServicioTipoSolicitud();
 		this.ObtenerServicioNivelDireccion();
@@ -469,5 +473,78 @@ export class NivelesAprobacionComponent implements OnInit {
 		const tipoMotivo = this.dataTipoMotivo.find(data => data.id === idTipoMotivo);
 
 		return tipoMotivo === undefined ? "-" : tipoMotivo.descripcion;
+	}
+
+	private isAnyRowCheckedInTable(formato: FormatoUtilReporte) {
+		// let rowsCheckedInTable: any[] = this.tableService.rowsCheckedByTable[this.mainTableName];
+
+		// if (rowsCheckedInTable.length === 0) {
+		// 	rowsCheckedInTable = this.originalDataTable.map((x) => x.key);
+		// }
+
+		const headerTitles = [
+			...this.columnsTable.map(({ title }) => title),
+			...this.dataRuta.map(({ descripcion }) => descripcion)
+		];
+
+		const bodyReport = this.dataTable.map(data => {
+			return [
+				data[0].tipoSolicitud,
+				data[0].tipoRuta,
+				this.mostrarTipoMotivo(data[0].idTipoMotivo),
+				data[0].accion,
+				data[0].nivelDireccion,
+				...this.dataRuta.map((ruta) => this.showData(data, ruta))
+			]
+		});
+
+		// const { headerTitles, dataIndexTitles } = this.columnsTable.reduce(
+		// 	(acc, col) => {
+		// 		if (col.title && col.title !== "Acciones") {
+		// 			acc.headerTitles.push(col.title);
+
+		// 			acc.dataIndexTitles.push({
+		// 				dataIndex: col.dataIndex,
+		// 				dataIndexesToJoin: col.dataIndexesToJoin,
+		// 			});
+		// 		}
+
+		// 		return acc;
+		// 	},
+		// 	{
+		// 		headerTitles: [],
+		// 		dataIndexTitles: []
+		// 	}
+		// );
+
+		// const bodyReport = this.originalDataTable
+		// 	.filter((row) => rowsCheckedInTable.some((keyChecked) => keyChecked === row.key))
+		// 	.map((row) => dataIndexTitles.map((colDataIndex: { dataIndex: string; dataIndexesToJoin: string[]; }) => {
+		// 		let value: string;
+
+		// 		if (colDataIndex.dataIndex === "otrasCausales" || colDataIndex.dataIndex === "estado") {
+		// 			// Procesar solo la columna "otrasCausales"
+		// 			value = row[colDataIndex.dataIndex]?.toString() ?? "";
+
+		// 			if (value === "true" || value === "1") {
+		// 				value = "Activo";
+		// 			} else if (value === "false" || value === "0") {
+		// 				value = "Inactivo";
+		// 			}
+		// 		} else {
+		// 			// Mantener los valores de otras columnas sin cambios
+		// 			if (colDataIndex.dataIndexesToJoin) {
+		// 				value = colDataIndex.dataIndexesToJoin
+		// 					.map((index) => row[index])
+		// 					.join(" - ");
+		// 			} else {
+		// 				value = row[colDataIndex.dataIndex]?.toString() ?? "";
+		// 			}
+		// 		}
+
+		// 		return value;
+		// 	}));
+
+		this.utilService.generateReport(formato, reportCodeEnum.MANTENIMIENTO_NIVELES_APROBACION, "NIVELES DE APROBACIÓN", headerTitles, bodyReport);
 	}
 }

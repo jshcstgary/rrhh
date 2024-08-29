@@ -1407,6 +1407,7 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
 	}
 
 	async saveCandidato() {
+		this.utilService.openLoadingSpinner("Guardando datos, por favor espere...");
 
 		const request = {
 			iD_SOLICITUD: this.solicitud.idSolicitud,
@@ -1434,8 +1435,6 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
 			fechaIngresoCandidato: null
 		};
 
-		// return;
-
 		this.seleccionCandidatoService.saveCandidato(request).subscribe({
 			next: () => {
 				this.starterService.getUser(localStorage.getItem(LocalStorageKeys.IdUsuario)!).subscribe({
@@ -1447,23 +1446,21 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
 						this.tipoProcesoSaved = this.model.tipoProceso;
 						this.disabledTipoProceso = this.tipoProcesoSaved !== "";
 
-						this.disabledFechas.actualizacionPerfil = this.fechas.actualizacionPerfil !== null && this.fechas.actualizacionPerfil !== "";
-						this.disabledFechas.busquedaCandidatos = this.fechas.busquedaCandidatos !== null && this.fechas.busquedaCandidatos !== "";
-						this.disabledFechas.entrevista = this.fechas.entrevista !== null && this.fechas.entrevista !== "";
-						this.disabledFechas.pruebas = this.fechas.pruebas !== null && this.fechas.pruebas !== "";
-						this.disabledFechas.referencias = this.fechas.referencias !== null && this.fechas.referencias !== "";
-						this.disabledFechas.elaboracionInforme = this.fechas.elaboracionInforme !== null && this.fechas.elaboracionInforme !== "";
-						this.disabledFechas.entregaJefe = this.fechas.entregaJefe !== null && this.fechas.entregaJefe !== "";
-						this.disabledFechas.entrevistaJefatura = this.fechas.entrevistaJefatura !== null && this.fechas.entrevistaJefatura !== "";
-						this.disabledFechas.tomaDecisiones = this.fechas.tomaDecisiones !== null && this.fechas.tomaDecisiones !== "";
-						this.disabledFechas.candidatoSeleccionado = this.fechas.candidatoSeleccionado !== null && this.fechas.candidatoSeleccionado !== "";
-						this.disabledFechas.procesoContratacion = this.fechas.procesoContratacion !== null && this.fechas.procesoContratacion !== "";
-						this.disabledFechas.finProcesoContratacion = this.fechas.finProcesoContratacion !== null && this.fechas.finProcesoContratacion !== "";
+						// this.disabledFechas.actualizacionPerfil = this.fechas.actualizacionPerfil !== null && this.fechas.actualizacionPerfil !== "";
+						// this.disabledFechas.busquedaCandidatos = this.fechas.busquedaCandidatos !== null && this.fechas.busquedaCandidatos !== "";
+						// this.disabledFechas.entrevista = this.fechas.entrevista !== null && this.fechas.entrevista !== "";
+						// this.disabledFechas.pruebas = this.fechas.pruebas !== null && this.fechas.pruebas !== "";
+						// this.disabledFechas.referencias = this.fechas.referencias !== null && this.fechas.referencias !== "";
+						// this.disabledFechas.elaboracionInforme = this.fechas.elaboracionInforme !== null && this.fechas.elaboracionInforme !== "";
+						// this.disabledFechas.entregaJefe = this.fechas.entregaJefe !== null && this.fechas.entregaJefe !== "";
+						// this.disabledFechas.entrevistaJefatura = this.fechas.entrevistaJefatura !== null && this.fechas.entrevistaJefatura !== "";
+						// this.disabledFechas.tomaDecisiones = this.fechas.tomaDecisiones !== null && this.fechas.tomaDecisiones !== "";
+						// this.disabledFechas.candidatoSeleccionado = this.fechas.candidatoSeleccionado !== null && this.fechas.candidatoSeleccionado !== "";
+						// this.disabledFechas.procesoContratacion = this.fechas.procesoContratacion !== null && this.fechas.procesoContratacion !== "";
+						// this.disabledFechas.finProcesoContratacion = this.fechas.finProcesoContratacion !== null && this.fechas.finProcesoContratacion !== "";
 
-						this.utilService.modalResponse(
-							`Datos Guardados Correctamente`,
-							"success"
-						);
+						this.utilService.modalResponse("Datos Guardados Correctamente", "success" );
+
 						setTimeout(() => {
 							window.location.reload();
 						}, 3000);

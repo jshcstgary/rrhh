@@ -12,7 +12,7 @@
 					</div>
 
 					<div *ngIf="!existeMatenedores || existe" class="col-md-4 text-end d-flex justify-content-end align-items-center">
-						<button type="submit" class="btn btn-info me-2 d-flex align-items-center justify-content-center button-custom" aria-label="Close" [disabled]="!solicitudForm.form.valid || selectedOption === 'Si'"><i class="fas fa-save me-2 icon-size"></i> Guardar</button>
+						<button type="submit" class="btn btn-info me-2 d-flex align-items-center justify-content-center button-custom" aria-label="Close" [disabled]="!solicitudForm.form.valid || !existenNivelesAprobacion || selectedOption === 'Si'"><i class="fas fa-save me-2 icon-size"></i> Guardar</button>
 
 						<button *ngIf="RegistrarsolicitudCompletada || selectedOption === 'Si'" type="button" (click)="onCompletar()" class="btn btn-info me-2 d-flex align-items-center justify-content-center button-custom"><i class="fas fa-check-circle me-2 icon-size"></i> Enviar Solicitud</button>
 					</div>
@@ -20,7 +20,7 @@
 
 				<div class="row mt-4">
 					<div class="col-md-4">
-						<div class="input-group mb-3">
+						<div class="input-group mb-3 align-items-center">
 							<label class="label-estilo">Creado por:</label>
 
 							<span style="color: black; font-size: 14px" class="text-start">{{ solicitud.usuarioCreacion }}</span>
@@ -28,7 +28,7 @@
 					</div>
 
 					<div class="col-md-4">
-						<div class="input-group mb-3">
+						<div class="input-group mb-3 align-items-center">
 							<label class="label-estilo">Fecha:</label>
 
 							<span style="color: black; font-size: 14px" class="text-start">{{ solicitud.fechaCreacion | date : "yyyy/MM/dd" }}</span>
@@ -36,7 +36,7 @@
 					</div>
 
 					<div class="col-md-4">
-						<div class="input-group mb-3">
+						<div class="input-group mb-3 align-items-center">
 							<label class="label-estilo">Nro. Solicitud:</label>
 
 							<span style="color: black; font-size: 14px" class="text-start">{{ solicitud.idSolicitud }}</span>
@@ -47,377 +47,425 @@
 				<hr />
 			</div>
 
-			<div class="row after-header-solicitud">
-				<div class="col-md-3">
-					<div class="mb-4">
-						<h3 class="sol-danger">Información general</h3>
-					</div>
-				</div>
+			<div class="after-header-solicitud"></div>
 
-				<div class="col-md-9">
-					<hr />
-				</div>
-			</div>
-
-			<div class="row">
-				<div class="col-md-6">
-					<div class="input-group mb-3 align-items-center">
-						<label class="input-group-text label-estilo" for="tipoSolicitud">Tipo de solicitud</label>
-
-						<span #mivar id="tipoSolicitud" name="idTipoSolicitud" style="color: black; font-size: 14px" class="text-start">{{ solicitud.tipoSolicitud }}</span>
-					</div>
-				</div>
-
-				<div class="col-md-6">
-					<div class="input-group mb-3 align-items-center">
-						<label class="input-group-text label-estilo" for="tipomotivo">Tipo de motivo</label>
-
-						<span id="tipomotivo" name="tipomotivo" style="color: black; font-size: 14px" class="text-start">{{ solicitud.tipoMotivo }}</span>
-					</div>
-				</div>
-			</div>
-
-			<div class="row">
-				<div class="col-md-6">
-					<div class="input-group">
-						<label class="input-group-text label-estilo" for="codigoposicion">Código de posición</label>
-
-						<span *ngIf="solicitud.tipoMotivo === 'Reemplazo'; else editablePosition" id="descripcionposicion" name="descripcionposicion" style="color: black; font-size: 14px" class="text-start">{{ model.codigoPosicion }}</span>
-
-						<ng-template #editablePosition>
-							<input type="text" name="codigoposicion" [(ngModel)]="model.codigoPosicion" style="color: black; font-size: 14px; width: 30%" class="form-control" id="codigoposicion" aria-describedby="inputGroupPrepend" required #codigoposicion="ngModel" placeholder="Ingrese código" (click)="openModal()" readonly />
-						</ng-template>
-					</div>
-				</div>
-
-				<div class="col-md-6">
-					<div class="input-group mb-3 align-items-center">
-						<label class="input-group-text label-estilo" for="descripcionposicion">Descripción de posición</label>
-
-						<span *ngIf="solicitud.tipoMotivo === 'Reemplazo'; else editableDescPosition" id="descripcionposicion" name="descripcionposicion" style="color: black; font-size: 14px" class="text-start">{{ model.descrPosicion }}</span>
-
-						<ng-template #editableDescPosition>
-							<input type="text" name="descripcion-posicion" [(ngModel)]="model.descrPosicion" style="color: black; font-size: 14px; width: 30%" class="form-control text-start" id="descripcionPosicion" aria-describedby="inputGroupPrepend" required #descripcionPosicion="ngModel" placeholder="Ingrese descripcion posicion" (click)="openModal()" readonly />
-						</ng-template>
-					</div>
-				</div>
-			</div>
-
-			<!-- <div class="row" *ngIf="mostrarSubledger"> -->
-			<div class="row" *ngIf="solicitud.tipoMotivo === 'Reemplazo'">
-				<div class="col-md-6">
-					<div class="input-group mb-3 align-items-center">
-						<label class="input-group-text label-estilo" for="subledger">Subledger</label>
-
-						<input type="text" name="subledger" [(ngModel)]="model.subledger" style="color: black; font-size: 14px; width: 30%" class="form-control text-start" id="subledger" aria-describedby="inputGroupPrepend" required #subledger="ngModel" placeholder="Ingrese subledger" (click)="openModal()" />
-					</div>
-				</div>
-
-				<div class="col-md-6">
-					<div class="input-group mb-3 align-items-center">
-						<label class="input-group-text label-estilo" for="nombreempleado"> Empleado </label>
-
-						<input type="text" name="nombreCompleto" [(ngModel)]="model.nombreCompleto" style="color: black; font-size: 14px; width: 30%" class="form-control text-start" id="nombreCompleto"  aria-describedby="inputGroupPrepend" #nombreCompleto="ngModel" placeholder="Ingrese nombre" required (click)="openModal()" />
-					</div>
-				</div>
-			</div>
-
-			<div class="row">
-				<div class="col-md-12">
-					<div class="input-group mb-3 align-items-center">
-						<label class="input-group-text label-estilo2" for="compania">Compañía</label>
-
-						<span id="compania" name="" style="color: black; font-size: 14px" class="text-start">{{ model.compania }}</span>
-					</div>
-				</div>
-			</div>
-			
-			<div class="row">
-				<div class="col-md-6">
-					<div class="input-group mb-3 align-items-center">
-						<label class="input-group-text label-estilo" for="unidadnegocio">Unidad de negocio</label>
-
-						<span id="unidadnegocio" name="" style="color: black; font-size: 14px" class="text-start">{{ model.unidadNegocio }}</span>
-					</div>
-				</div>
-
-				<div class="col-md-6">
-					<div class="input-group mb-3 align-items-center">
-						<label class="input-group-text label-estilo" for="departamento">Área/Departamento</label>
-
-						<span id="departamento" name="" style="color: black; font-size: 14px" class="text-start">{{ model.departamento }}</span>
-					</div>
-				</div>
-			</div>
-			
-			<div class="row">
-				<div class="col-md-6">
-					<div class="input-group mb-3 align-items-center">
-						<label class="input-group-text label-estilo" for="tipocargo">Tipo de cargo</label>
-
-						<span id="cargo" name="" style="color: black; font-size: 14px" class="text-start">{{ model.nombreCargo }}</span>
-					</div>
-				</div>
-
-				<div class="col-md-6">
-					<div class="input-group mb-3 align-items-center">
-						<label class="input-group-text label-estilo" for="localidadzona">Localidad/Zona</label>
-
-						<span id="localidadzona" name="" style="color: black; font-size: 14px" class="text-start">{{ model.localidad }}</span>
-					</div>
-				</div>
-			</div>
-
-			<div class="row">
-				<div class="col-md-6">
-					<div class="input-group mb-3 align-items-center">
-						<label class="input-group-text label-estilo" for="niveldirección">Nivel de dirección</label>
-
-						<span id="niveldirección" name="" style="color: black; font-size: 14px" class="text-start">{{ model.nivelDir }}</span>
-					</div>
-				</div>
-
-				<div class="col-md-6">
-					<div class="input-group mb-3 align-items-center">
-						<label class="input-group-text label-estilo" for="centrocosto">Centro de costo</label>
-
-						<span id="centrocosto" name="" style="color: black; font-size: 14px" class="text-start">{{ model.nomCCosto }}</span>
-					</div>
-				</div>
-			</div>
-
-			<div class="row" *ngIf="mostrarTipoJustificacionYMision">
-				<div class="col-md-6">
-					<div class="input-group mb-3 align-item-center">
-						<label class="input-group-text label-estilo" for="misioncargo">Misión del cargo <span style="color: red">*</span></label>
-
-						<input type="text" name="misioncargo" placeholder="Campo obligatorio" [(ngModel)]="model.misionCargo" class="form-control" id="misioncargo" #misioncargo="ngModel" required />
-					</div>
-				</div>
-			</div>
-
-			<div class="row" *ngIf="mostrarTipoJustificacionYMision">
-				<div class="col-md-12">
-					<div class="input-group mb-3">
-						<label class="input-group-text label-estilo2" for="justificacion">Justificación <span style="color: red">*</span></label>
-
-						<textarea class="form-control" id="justificacion" name="justificacion" placeholder="Campo obligatorio" [(ngModel)]="model.justificacionCargo" style="color: black; font-size: 14px" required #justificacion="ngModel"></textarea>
-					</div>
-				</div>
-			</div>
-
-			<div class="row mt-4">
-				<div class="col-md-4">
-					<div class="mb-4">
-						<h3 class="sol-danger">Funciones y responsabilidades</h3>
-					</div>
-				</div>
-
-				<div class="col-md-8">
-					<hr />
-				</div>
-			</div>
-
-			<div class="row">
-				<div class="col-md-12">
-					<div class="input-group mb-3 align-items-center">
-						<label class="input-group-text label-estilo2" for="reporta">Reporta a</label>
-
-						<span id="reporta" name="" style="color: black; font-size: 14px">{{ model.reportaA }}</span>
-					</div>
-				</div>
-			</div>
-			
-			<div class="row">
-				<div class="col-md-6">
-					<div class="input-group mb-3 align-items-center">
-						<label class="input-group-text label-estilo" for="nivelRepa">Nivel de reporte</label>
-
-						<span id="nivelRepa" name="" style="color: black; font-size: 14px" class="text-start">{{ model.nivelRepa }}</span>
-					</div>
-				</div>
-
-				<div class="col-md-6">
-					<div class="input-group mb-3 align-items-center">
-						<label class="input-group-text label-estilo" for="tipocontrato">Tipo de contrato</label>
-
-						<select id="tipocontrato" name="tipocontrato" class="form-select" [(ngModel)]="model.tipoContrato" style="font-size: 14px" required>
-							<option selected>Eventual</option>
-
-							<option>Temporal</option>
-
-							<option>Mixto</option>
-						</select>
-					</div>
-				</div>
-			</div>
-			
-			<div class="row">
-				<div class="col-md-6">
-					<div class="input-group mb-3 align-items-center">
-						<label class="input-group-text label-estilo" for="supervisaa">Supervisa a</label>
-
-						<span id="supervisaa" name="" style="color: black; font-size: 14px" class="text-start">{{ model.supervisaA }}</span>
-					</div>
-				</div>
-
-				<div class="col-md-6">
-					<div class="input-group mb-3 align-items-center">
-						<div class="d-flex justify-content-between align-items-center input-group-text label-estilo">
-							<label class="" for="sueldo">Sueldo</label>
-
-							<span class="fs-6">$</span>
+			<details open class="mb-4">
+				<summary>
+					<div class="row">
+						<div class="col-md-4">
+							<h3 class="sol-danger">Información general</h3>
 						</div>
 
-						<input [(ngModel)]="model.sueldo" type="text" mask="separator.2" [leadZero]="true" name="sueldo" class="form-control" id="sueldo" />
-					</div>
-				</div>
-			</div>
-
-			<div class="row mt-4">
-				<div class="col-md-4">
-					<div class="mb-4">
-						<h3 class="sol-danger">Tipo de variable</h3>
-					</div>
-				</div>
-			</div>
-
-			<div class="row">
-				<div class="col-md-6">
-					<div class="input-group mb-3 align-items-center">
-						<div class="d-flex justify-content-between align-items-center input-group-text label-estilo">
-							<label class="" for="sueldo">Mensual</label>
-
-							<span class="fs-6">$</span>
+						<div class="col-md-7">
+							<hr />
 						</div>
 
-						<input [(ngModel)]="model.sueldoMensual" type="text" mask="separator.2" [leadZero]="true" name="mensual" class="form-control" id="mensual" />
-					</div>
-				</div>
-
-				<div class="col-md-6">
-					<div class="input-group mb-3 align-items-center">
-						<div class="d-flex justify-content-between align-items-center input-group-text label-estilo">
-							<label class="" for="sueldo">Trimestral</label>
-
-							<span class="fs-6">$</span>
+						<div class="col-md-1 text-end">
+							<i class="fas fa-chevron-circle-down"></i>
 						</div>
-
-						<input [(ngModel)]="model.sueldoTrimestral" type="text" mask="separator.2" [leadZero]="true" name="trimestral" class="form-control" id="trimestral" />
 					</div>
-				</div>
-			</div>
+				</summary>
 
-			<div class="row">
-				<div class="col-md-6">
-					<div class="input-group mb-3 align-items-center">
-						<div class="d-flex justify-content-between align-items-center input-group-text label-estilo">
-							<label class="" for="sueldo">Semestral</label>
+				<div class="details-content">
+					<div class="row">
+						<div class="col-md-6">
+							<div class="input-group mb-3 align-items-center">
+								<label class="input-group-text label-estilo" for="tipoSolicitud">Tipo de solicitud</label>
 
-							<span class="fs-6">$</span>
-						</div>
-
-						<input [(ngModel)]="model.sueldoSemestral" type="text" mask="separator.2" [leadZero]="true" name="semestral" class="form-control" id="semestral" />
-					</div>
-				</div>
-
-				<div class="col-md-6">
-					<div class="input-group mb-3 align-items-center">
-						<div class="d-flex justify-content-between align-items-center input-group-text label-estilo">
-							<label class="" for="sueldo">Anual</label>
-
-							<span class="fs-6">$</span>
-						</div>
-
-						<input [(ngModel)]="model.sueldoAnual" type="text" mask="separator.2" [leadZero]="true" name="anual" class="form-control" id="anual" />
-					</div>
-				</div>
-			</div>
-
-			<div class="row mt-4">
-				<div class="col-md-4">
-					<div class="mb-4">
-						<h3 class="sol-danger">Aprobadores de la solicitud</h3>
-					</div>
-				</div>
-
-				<div class="col-md-8">
-					<hr />
-				</div>
-			</div>
-
-			<div class="accordion" id="accordionExample">
-				<div *ngFor="let nivelItem of dataAprobacionesPorPosicion[keySelected]; let i = index" class="accordion-item">
-					<div class="accordion-header">
-						<button class="accordion-button" type="button" data-bs-toggle="collapse" [attr.data-bs-target]="'#collapse' + i" aria-expanded="true" [attr.aria-controls]="'collapse' + i" style="display: block">
-							<div class="row" style="align-items: center; justify-content: space-around">
-								<div class="col">{{ nivelItem.nivelAprobacionType.ruta }}</div>
-
-								<div class="col">
-									{{ nivelItem.aprobador.usuario !== "" && nivelItem.aprobador.usuario !== undefined && nivelItem.aprobador.usuario != null ? nivelItem.aprobador.codigoPosicion + "-" + nivelItem.aprobador.usuario : "No aplica" }}
-								</div>
-
-								<div class="col">
-									{{ nivelItem.nivelAprobacionType.nivelAprobacionRuta }}
-								</div>
+								<span #mivar id="tipoSolicitud" name="idTipoSolicitud" style="color: black; font-size: 14px" class="text-start">{{ solicitud.tipoSolicitud }}</span>
 							</div>
-						</button>
+						</div>
+
+						<div class="col-md-6">
+							<div class="input-group mb-3 align-items-center">
+								<label class="input-group-text label-estilo" for="tipomotivo">Tipo de motivo</label>
+
+								<span id="tipomotivo" name="tipomotivo" style="color: black; font-size: 14px" class="text-start">{{ solicitud.tipoMotivo }}</span>
+							</div>
+						</div>
 					</div>
 
-					<div [id]="'collapse' + i" class="accordion-collapse collapse" [ngClass]="{ show: i === 0 }" data-bs-parent="#accordionExample">
-						<div class="row">
-							<div class="col">
-								<div class="input-group">
-									<label for="lvl1descripcion">Descripción de la posición</label>
+					<div class="row">
+						<div class="col-md-6">
+							<div class="input-group">
+								<label class="input-group-text label-estilo" for="codigoposicion">Código de posición</label>
 
-									<span id="lvl1descripcion" name="" style="color: black; font-size: 14px">{{ nivelItem.aprobador.descripcionPosicion !== "" && nivelItem.aprobador.descripcionPosicion !== undefined && nivelItem.aprobador.descripcionPosicion != null ? nivelItem.aprobador.descripcionPosicion : "No aplica" }}</span>
-								</div>
+								<span *ngIf="solicitud.tipoMotivo === 'Reemplazo'; else editablePosition" id="descripcionposicion" name="descripcionposicion" style="color: black; font-size: 14px" class="text-start">{{ model.codigoPosicion }}</span>
+
+								<ng-template #editablePosition>
+									<input type="text" name="codigoposicion" [(ngModel)]="model.codigoPosicion" style="color: black; font-size: 14px; width: 30%" class="form-control" id="codigoposicion" aria-describedby="inputGroupPrepend" required #codigoposicion="ngModel" placeholder="Ingrese código" (click)="openModal()" readonly />
+								</ng-template>
+							</div>
+						</div>
+
+						<div class="col-md-6">
+							<div class="input-group mb-3 align-items-center">
+								<label class="input-group-text label-estilo" for="descripcionposicion">Descripción de posición</label>
+
+								<span *ngIf="solicitud.tipoMotivo === 'Reemplazo'; else editableDescPosition" id="descripcionposicion" name="descripcionposicion" style="color: black; font-size: 14px" class="text-start">{{ model.descrPosicion }}</span>
+
+								<ng-template #editableDescPosition>
+									<input type="text" name="descripcion-posicion" [(ngModel)]="model.descrPosicion" style="color: black; font-size: 14px; width: 30%" class="form-control text-start" id="descripcionPosicion" aria-describedby="inputGroupPrepend" required #descripcionPosicion="ngModel" placeholder="Ingrese descripcion posicion" (click)="openModal()" readonly />
+								</ng-template>
+							</div>
+						</div>
+					</div>
+
+					<div class="row" *ngIf="solicitud.tipoMotivo === 'Reemplazo'">
+						<div class="col-md-6">
+							<div class="input-group mb-3 align-items-center">
+								<label class="input-group-text label-estilo" for="subledger">Subledger</label>
+
+								<input type="text" name="subledger" [(ngModel)]="model.subledger" style="color: black; font-size: 14px; width: 30%" class="form-control text-start" id="subledger" aria-describedby="inputGroupPrepend" required #subledger="ngModel" placeholder="Ingrese subledger" (click)="openModal()" />
+							</div>
+						</div>
+
+						<div class="col-md-6">
+							<div class="input-group mb-3 align-items-center">
+								<label class="input-group-text label-estilo" for="nombreempleado"> Empleado </label>
+
+								<input type="text" name="nombreCompleto" [(ngModel)]="model.nombreCompleto" style="color: black; font-size: 14px; width: 30%" class="form-control text-start" id="nombreCompleto"  aria-describedby="inputGroupPrepend" #nombreCompleto="ngModel" placeholder="Ingrese nombre" required (click)="openModal()" />
+							</div>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-md-12">
+							<div class="input-group mb-3 align-items-center">
+								<label class="input-group-text label-estilo2" for="compania">Compañía</label>
+
+								<span id="compania" name="" style="color: black; font-size: 14px" class="text-start">{{ model.compania }}</span>
+							</div>
+						</div>
+					</div>
+					
+					<div class="row">
+						<div class="col-md-6">
+							<div class="input-group mb-3 align-items-center">
+								<label class="input-group-text label-estilo" for="unidadnegocio">Unidad de negocio</label>
+
+								<span id="unidadnegocio" name="" style="color: black; font-size: 14px" class="text-start">{{ model.unidadNegocio }}</span>
+							</div>
+						</div>
+
+						<div class="col-md-6">
+							<div class="input-group mb-3 align-items-center">
+								<label class="input-group-text label-estilo" for="departamento">Área/Departamento</label>
+
+								<span id="departamento" name="" style="color: black; font-size: 14px" class="text-start">{{ model.departamento }}</span>
+							</div>
+						</div>
+					</div>
+					
+					<div class="row">
+						<div class="col-md-6">
+							<div class="input-group mb-3 align-items-center">
+								<label class="input-group-text label-estilo" for="tipocargo">Tipo de cargo</label>
+
+								<span id="cargo" name="" style="color: black; font-size: 14px" class="text-start">{{ model.nombreCargo }}</span>
+							</div>
+						</div>
+
+						<div class="col-md-6">
+							<div class="input-group mb-3 align-items-center">
+								<label class="input-group-text label-estilo" for="localidadzona">Localidad/Zona</label>
+
+								<span id="localidadzona" name="" style="color: black; font-size: 14px" class="text-start">{{ model.localidad }}</span>
+							</div>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-md-6">
+							<div class="input-group mb-3 align-items-center">
+								<label class="input-group-text label-estilo" for="niveldirección">Nivel de dirección</label>
+
+								<span id="niveldirección" name="" style="color: black; font-size: 14px" class="text-start">{{ model.nivelDir }}</span>
+							</div>
+						</div>
+
+						<div class="col-md-6">
+							<div class="input-group mb-3 align-items-center">
+								<label class="input-group-text label-estilo" for="centrocosto">Centro de costo</label>
+
+								<span id="centrocosto" name="" style="color: black; font-size: 14px" class="text-start">{{ model.nomCCosto }}</span>
+							</div>
+						</div>
+					</div>
+
+					<div class="row" *ngIf="mostrarTipoJustificacionYMision">
+						<div class="col-md-6">
+							<div class="input-group mb-3 align-item-center">
+								<label class="input-group-text label-estilo" for="misioncargo">Misión del cargo <span style="color: red">*</span></label>
+
+								<input type="text" name="misioncargo" placeholder="Campo obligatorio" [(ngModel)]="model.misionCargo" class="form-control" id="misioncargo" #misioncargo="ngModel" required />
+							</div>
+						</div>
+					</div>
+
+					<div class="row" *ngIf="mostrarTipoJustificacionYMision">
+						<div class="col-md-12">
+							<div class="input-group mb-3">
+								<label class="input-group-text label-estilo2" for="justificacion">Justificación <span style="color: red">*</span></label>
+
+								<textarea class="form-control" id="justificacion" name="justificacion" placeholder="Campo obligatorio" [(ngModel)]="model.justificacionCargo" style="color: black; font-size: 14px" required #justificacion="ngModel"></textarea>
 							</div>
 						</div>
 					</div>
 				</div>
-			</div>
+			</details>
 
-			<div class="row mt-4">
-				<div class="col-md-4">
-					<div class="mb-4">
-						<h3 class="sol-danger">Anulación de Solicitud</h3>
-					</div>
-				</div>
-
-				<div class="col-md-8">
-					<hr />
-				</div>
-			</div>
-
-			<div class="row">
-				<div class="col">
-					<div class="input-group mb-3 contenedor">
-						<label class="input-group-text adjustable-label" for="anular">¿Anular Solicitud?</label>
-
-						<div class="form-check form-check-inline">
-							<input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="Si" [(ngModel)]="selectedOption" (change)="onSelectionChange()" />
-
-							<label class="form-check-label" for="inlineRadio1">Sí</label>
+			<details class="mb-4">
+				<summary>
+					<div class="row">
+						<div class="col-md-4">
+							<h3 class="sol-danger">Funciones y responsabilidades</h3>
 						</div>
 
-						<div class="form-check form-check-inline">
-							<input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="No" [(ngModel)]="selectedOption" (change)="onSelectionChange()" />
-							<label class="form-check-label" for="inlineRadio2">No</label>
+						<div class="col-md-7">
+							<hr />
+						</div>
+
+						<div class="col-md-1 text-end">
+							<i class="fas fa-chevron-circle-down"></i>
+						</div>
+					</div>
+				</summary>
+
+				<div class="details-content">
+					<div class="row">
+						<div class="col-md-12">
+							<div class="input-group mb-3 align-items-center">
+								<label class="input-group-text label-estilo2" for="reporta">Reporta a</label>
+
+								<span id="reporta" name="" style="color: black; font-size: 14px">{{ model.reportaA }}</span>
+							</div>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-md-6">
+							<div class="input-group mb-3 align-items-center">
+								<label class="input-group-text label-estilo" for="nivelRepa">Nivel de reporte</label>
+
+								<span id="nivelRepa" name="" style="color: black; font-size: 14px" class="text-start">{{ model.nivelRepa }}</span>
+							</div>
+						</div>
+
+						<div class="col-md-6">
+							<div class="input-group mb-3 align-items-center">
+								<label class="input-group-text label-estilo" for="tipocontrato">Tipo de contrato</label>
+
+								<select id="tipocontrato" name="tipocontrato" class="form-select" [(ngModel)]="model.tipoContrato" style="font-size: 14px" required>
+									<option selected>Eventual</option>
+
+									<option>Temporal</option>
+
+									<option>Mixto</option>
+								</select>
+							</div>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-md-6">
+							<div class="input-group mb-3 align-items-center">
+								<label class="input-group-text label-estilo" for="supervisaa">Supervisa a</label>
+
+								<span id="supervisaa" name="" style="color: black; font-size: 14px" class="text-start">{{ model.supervisaA }}</span>
+							</div>
+						</div>
+
+						<div class="col-md-6">
+							<div class="input-group mb-3 align-items-center">
+								<div class="d-flex justify-content-between align-items-center input-group-text label-estilo">
+									<label class="" for="sueldo">Sueldo</label>
+
+									<span class="fs-6">$</span>
+								</div>
+
+								<input [(ngModel)]="model.sueldo" type="text" mask="separator.2" [leadZero]="true" name="sueldo" class="form-control" id="sueldo" />
+							</div>
 						</div>
 					</div>
 				</div>
-			</div>
+			</details>
 
-			<div class="row">
-				<div class="col">
-					<div class="input-group mb-3 contenedor">
-						<label class="input-group-text adjustable-label adjustable-label" for="anulacion">Comentarios Anulación de Solicitud</label>
+			<details class="mb-4">
+				<summary>
+					<div class="row">
+						<div class="col-md-4">
+							<h3 class="sol-danger">Tipo de variable</h3>
+						</div>
 
-						<textarea id="anulacion" name="anulacion" [(ngModel)]="model.comentariosAnulacion" style="color: black; font-size: 14px"></textarea>
+						<div class="col-md-7">
+							<hr />
+						</div>
+
+						<div class="col-md-1 text-end">
+							<i class="fas fa-chevron-circle-down"></i>
+						</div>
+					</div>
+				</summary>
+
+				<div class="details-content">
+					<div class="row">
+						<div class="col-md-6">
+							<div class="input-group mb-3 align-items-center">
+								<div class="d-flex justify-content-between align-items-center input-group-text label-estilo">
+									<label class="" for="sueldo">Mensual</label>
+	
+									<span class="fs-6">$</span>
+								</div>
+	
+								<input [(ngModel)]="model.sueldoMensual" type="text" mask="separator.2" [leadZero]="true" name="mensual" class="form-control" id="mensual" />
+							</div>
+						</div>
+	
+						<div class="col-md-6">
+							<div class="input-group mb-3 align-items-center">
+								<div class="d-flex justify-content-between align-items-center input-group-text label-estilo">
+									<label class="" for="sueldo">Trimestral</label>
+	
+									<span class="fs-6">$</span>
+								</div>
+	
+								<input [(ngModel)]="model.sueldoTrimestral" type="text" mask="separator.2" [leadZero]="true" name="trimestral" class="form-control" id="trimestral" />
+							</div>
+						</div>
+					</div>
+	
+					<div class="row">
+						<div class="col-md-6">
+							<div class="input-group mb-3 align-items-center">
+								<div class="d-flex justify-content-between align-items-center input-group-text label-estilo">
+									<label class="" for="sueldo">Semestral</label>
+	
+									<span class="fs-6">$</span>
+								</div>
+	
+								<input [(ngModel)]="model.sueldoSemestral" type="text" mask="separator.2" [leadZero]="true" name="semestral" class="form-control" id="semestral" />
+							</div>
+						</div>
+	
+						<div class="col-md-6">
+							<div class="input-group mb-3 align-items-center">
+								<div class="d-flex justify-content-between align-items-center input-group-text label-estilo">
+									<label class="" for="sueldo">Anual</label>
+	
+									<span class="fs-6">$</span>
+								</div>
+	
+								<input [(ngModel)]="model.sueldoAnual" type="text" mask="separator.2" [leadZero]="true" name="anual" class="form-control" id="anual" />
+							</div>
+						</div>
 					</div>
 				</div>
-			</div>
+			</details>
+
+			<details class="mb-4">
+				<summary>
+					<div class="row">
+						<div class="col-md-4">
+							<h3 class="sol-danger">Aprobadores de la solicitud</h3>
+						</div>
+
+						<div class="col-md-7">
+							<hr />
+						</div>
+
+						<div class="col-md-1 text-end">
+							<i class="fas fa-chevron-circle-down"></i>
+						</div>
+					</div>
+				</summary>
+
+				<div class="details-content">
+					<div class="accordion" id="accordionExample">
+						<div *ngFor="let nivelItem of dataAprobacionesPorPosicion[keySelected]; let i = index" class="accordion-item">
+							<div class="accordion-header">
+								<button class="accordion-button" type="button" data-bs-toggle="collapse" [attr.data-bs-target]="'#collapse' + i" aria-expanded="true" [attr.aria-controls]="'collapse' + i" style="display: block">
+									<div class="row" style="align-items: center; justify-content: space-around">
+										<div class="col">
+											{{ nivelItem.nivelAprobacionType.ruta }}
+										</div>
+
+										<div class="col">
+											{{ nivelItem.aprobador.usuario !== "" && nivelItem.aprobador.usuario !== undefined && nivelItem.aprobador.usuario != null ? nivelItem.aprobador.codigoPosicion + "-" + nivelItem.aprobador.usuario : "No aplica" }}
+										</div>
+
+										<div class="col">
+											{{ nivelItem.nivelAprobacionType.nivelAprobacionRuta }}
+										</div>
+									</div>
+								</button>
+							</div>
+
+							<div [id]="'collapse' + i" class="accordion-collapse collapse" [ngClass]="{ show: i === 0 }" data-bs-parent="#accordionExample">
+								<div class="row">
+									<div class="col">
+										<div class="input-group">
+											<label for="lvl1descripcion">Descripción de la posición</label>
+
+											<span id="lvl1descripcion" name="" style="color: black; font-size: 14px">{{ nivelItem.aprobador.descripcionPosicion !== "" && nivelItem.aprobador.descripcionPosicion !== undefined && nivelItem.aprobador.descripcionPosicion != null ? nivelItem.aprobador.descripcionPosicion : "No aplica" }}</span>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</details>
+
+			<details class="mb 4">
+				<summary>
+					<div class="row">
+						<div class="col-md-4">
+							<h3 class="sol-danger">Anulación de Solicitud</h3>
+						</div>
+
+						<div class="col-md-7">
+							<hr />
+						</div>
+
+						<div class="col-md-1 text-end">
+							<i class="fas fa-chevron-circle-down"></i>
+						</div>
+					</div>
+				</summary>
+
+				<div class="details-content">
+					<div class="row">
+						<div class="col-md-12">
+							<div class="input-group mb-3 alig-items-center">
+								<label class="input-group-text label-estilo2" for="anular">¿Anular Solicitud?</label>
+
+								<div class="form-check form-check-inline">
+									<input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="Si" [(ngModel)]="selectedOption" (change)="onSelectionChange()" />
+
+									<label class="form-check-label" for="inlineRadio1">Sí</label>
+								</div>
+
+								<div class="form-check form-check-inline">
+									<input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="No" [(ngModel)]="selectedOption" (change)="onSelectionChange()" />
+
+									<label class="form-check-label" for="inlineRadio2">No</label>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-md-12">
+							<div class="input-group mb-3 aling-items-center">
+								<label class="input-group-text label-estilo2" for="anulacion">Comentarios Anulación de Solicitud</label>
+
+								<textarea id="anulacion" name="anulacion" [(ngModel)]="model.comentariosAnulacion" style="color: black; font-size: 14px"></textarea>
+							</div>
+						</div>
+					</div>
+				</div>
+			</details>
 		</div>
 	</div>
 </form>
