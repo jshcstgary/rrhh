@@ -17,8 +17,8 @@ export interface IConsultaAprobadoresFijo {
   estado: string;
   fechA_CREACION: Date;
   fechA_MODIFICACION: Date;
-  usuariO_CREACION: Date;
-  usuariO_MODIFICACION: Date;
+  usuariO_CREACION: string;
+  usuariO_MODIFICACION: string;
   descripcioN_POSICION: string;
   supervisA_A: string;
   niveL_REPORTE: string;

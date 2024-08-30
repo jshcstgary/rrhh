@@ -12,7 +12,7 @@
 					</div>
 
 					<div *ngIf="!existeMatenedores || existe" class="col-md-4 text-end">
-						<button type="submit" class="btn btn-info me-2 mt-1" aria-label="Close" [disabled]="!solicitudForm.form.valid || selectedOption === 'Si'"><i class="fas fa-save"></i> Guardar</button>
+						<button type="submit" class="btn btn-info me-2 mt-1" aria-label="Close" [disabled]="!solicitudForm.form.valid || !existenNivelesAprobacion || selectedOption === 'Si'"><i class="fas fa-save"></i> Guardar</button>
 
 						<button *ngIf="RegistrarsolicitudCompletada || selectedOption === 'Si'" type="button" (click)="onCompletar()" class="btn btn-info me-2 mt-1"><i class="fas fa-check-circle"></i> Enviar Solicitud</button>
 					</div>

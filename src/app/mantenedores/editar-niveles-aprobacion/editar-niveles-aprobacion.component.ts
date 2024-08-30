@@ -144,7 +144,6 @@ export class EditarNivelesAprobacionComponent {
 	private getNivelesById() {
 		this.serviceNivelesAprobacion.getNivelesById(this.id_edit).subscribe(({ nivelAprobacionType }) => {
 			this.nivelesAprobacion = nivelAprobacionType;
-
 			this.modelHead.idTipoSolicitud = nivelAprobacionType[0].idTipoSolicitud === 0 ? null : nivelAprobacionType[0].idTipoSolicitud;
 			this.modelHead.idTipoRuta = nivelAprobacionType[0].idTipoRuta === 0 ? null : nivelAprobacionType[0].idTipoRuta;
 			this.modelHead.idNivelDireccion = nivelAprobacionType[0].idNivelDireccion === "" ? null : nivelAprobacionType[0].idNivelDireccion;
@@ -153,7 +152,6 @@ export class EditarNivelesAprobacionComponent {
 
 			const codigoTipoSolicitud = this.dataTipoSolicitudes.find(data => data.id === this.modelHead.idTipoSolicitud)!.codigoTipoSolicitud;
 			const restricted = this.restrictionsIds.includes(codigoTipoSolicitud);
-
 			this.desactivarTipoMotivoYAccion = restricted;
 
 			// if (!this.desactivarTipoMotivoYAccion) {
@@ -187,7 +185,6 @@ export class EditarNivelesAprobacionComponent {
 
 	onChangeTipoSolicitud() {
 		const codigoTipoSolicitud = this.dataTipoSolicitudes.find((data) => data.id == this.modelHead.idTipoSolicitud)!.codigoTipoSolicitud;
-
 		// this.desactivarTipoMotivoYAccion = this.restrictionsIds.includes(this.tipoSolicitudSeleccionada);
 		this.desactivarTipoMotivoYAccion = this.restrictionsIds.includes(codigoTipoSolicitud);
 
@@ -251,10 +248,13 @@ export class EditarNivelesAprobacionComponent {
 	}
 
 	procesarNivelAprobacion() {
-		this.utilService.openLoadingSpinner("Cargando información, espere por favor...");
-
+		if(this.modelHead.idTipoMotivo===null){
+			this.modelHead.idTipoMotivo=0;
+		}if(this.modelHead.idAccion===null){
+			this.modelHead.idAccion=0;
+		}
 		const nivelesAprobacion = Object.entries(this.idNivelesAprobacionRuta)
-			.filter(([_, value]) => value !== "")
+		    .filter(([_, value]) => value !== "")
 			.map(([key, value]) => {
 				let modelo: DatosNivelesAprobacion = new DatosNivelesAprobacion();
 
@@ -272,8 +272,7 @@ export class EditarNivelesAprobacionComponent {
 		this.serviceNivelesAprobacion.actualizarNivelesAprobacion(nivelesAprobacion).subscribe({
 			next: () => {
 				this.utilService.closeLoadingSpinner();
-
-				this.utilService.modalResponse("Datos ingresados correctamente", "success");
+				this.utilService.modalResponse("Datos Actualizados correctamente", "success");
 
 				setTimeout(() => {
 					this.router.navigate(["/mantenedores/niveles-aprobacion"]);
@@ -286,31 +285,26 @@ export class EditarNivelesAprobacionComponent {
 	}
 
 	public validateData(): boolean {
+		if (this.modelHead.idTipoSolicitud !== null) {
+
+			const tipoSolicitud = this.dataTipoSolicitudes.find(data => data.id.toString() === this.modelHead.idTipoSolicitud.toString());
+			if (tipoSolicitud === undefined) {
+				return true;
+			}
+	
+			const codigoSolicitudIncluded = this.restrictionsIds.includes(tipoSolicitud.codigoTipoSolicitud);
+			if (codigoSolicitudIncluded) {
+				this.modelHead.idAccion = null;
+				this.modelHead.idTipoMotivo = null;
+	
+				this.desactivarTipoMotivoYAccion = true;
+				return !codigoSolicitudIncluded || this.modelHead.idNivelDireccion === null || this.modelHead.idTipoRuta === null || this.modelHead.idTipoSolicitud === null;
+			}
+		}
 		if (Object.values(this.modelHead).some(value => value === null)) {
 			return true;
 		}
-		
-		const tipoSolicitud = this.dataTipoSolicitudes.find(data => data.id.toString() === this.modelHead.idTipoSolicitud.toString());
-
-		if (tipoSolicitud === undefined) {
-			return true;
-		}
-
-		const codigoSolicitudIncluded = this.restrictionsIds.includes(tipoSolicitud.codigoTipoSolicitud);
-
-		if (codigoSolicitudIncluded) {
-			this.modelHead.idAccion = 0;
-			this.modelHead.idTipoMotivo = 0;
-
-			this.desactivarTipoMotivoYAccion = true;
-
-			return !codigoSolicitudIncluded || this.modelHead.idNivelDireccion === null || this.modelHead.idTipoRuta === null || this.modelHead.idTipoSolicitud === null;
-		}
-
 		this.desactivarTipoMotivoYAccion = false;
-
-		this.utilService.closeLoadingSpinner();
-
 		return this.modelHead.idAccion === null || this.modelHead.idNivelDireccion === null || this.modelHead.idTipoMotivo === null || this.modelHead.idTipoRuta === null || this.modelHead.idTipoSolicitud === null;
 	}
 

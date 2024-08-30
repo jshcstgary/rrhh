@@ -863,7 +863,8 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 					const detalles = solicitudes.detalleSolicitudType.find((detalle) => detalle.idSolicitud === solicitud.idSolicitud);
 
 					detalles.estado = solicitud.estado;
-					solicitud.fechaCreacion = new DatePipe('en-CO').transform(solicitud.fechaCreacion, 'dd/MM/yyyy');;
+					solicitud.fechaCreacion = new DatePipe('en-CO').transform(solicitud.fechaCreacion, 'dd/MM/yyyy HH:mm:ss');
+					solicitud.fechaActualizacion = new DatePipe('en-CO').transform(solicitud.fechaActualizacion, 'dd/MM/yyyy HH:mm:ss');
 					return {
 						...solicitud,
 						...detalles
@@ -871,10 +872,7 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 
 				});
 
-				// Ordenar la data por fechaCreacion de forma descendente
-				return data.sort((a, b) => {
-					return b.idDetalleSolicitud - a.idDetalleSolicitud;
-				});
+				return data.sort((a, b) => new Date(b.fechaCreacion).getTime() - new Date(a.fechaCreacion).getTime());
 			})
 		);
 
@@ -960,7 +958,7 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 								};
 							});
 
-							return data.sort((a, b) => new Date(b.fechaCreacion).getTime() - new Date(a.fechaCreacion).getTime());
+							return data.sort((a, b) => new Date(a.fechaCreacion).getTime() - new Date(b.fechaCreacion).getTime());
 						})
 					)
 					.subscribe((data) => {

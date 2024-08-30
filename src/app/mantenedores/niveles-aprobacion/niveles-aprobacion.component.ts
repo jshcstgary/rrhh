@@ -197,16 +197,15 @@ export class NivelesAprobacionComponent implements OnInit {
 
 					this.utilService.closeLoadingSpinner();
 
-					this.utilService.modalResponse("No existen registros para esta búsqueda", "error");
+					//this.utilService.modalResponse("No existen registros para esta búsqueda", "error");
 
 					return;
 				}
 
-				if(this.isRequisicionPersonal) {
-					this.dataTable = response.nivelAprobacionType
+			this.dataTable = response.nivelAprobacionType
 						.filter(data => data.estado === "A")
 						.reduce((acc, obj) => {
-							const grupo = acc.find(g => g[0].idTipoMotivo === obj.idTipoMotivo && g[0].idTipoRuta === obj.idTipoRuta);
+							const grupo = acc.find(g => g[0].idTipoSolicitud === obj.idTipoSolicitud && g[0].idTipoRuta === obj.idTipoRuta && g[0].idTipoMotivo === obj.idTipoMotivo && g[0].idAccion === obj.idAccion && g[0].nivelDireccion === obj.nivelDireccion);
 							
 							if (grupo) {
 								grupo.push(obj);
@@ -216,22 +215,7 @@ export class NivelesAprobacionComponent implements OnInit {
 							
 							return acc;
 						}, [] as any[][]);
-				} else {
-					this.dataTable = response.nivelAprobacionType
-						.filter(data => data.estado === "A")
-						.reduce((acc, obj) => {
-							const grupo = acc.find(g => g[0].idTipoRuta === obj.idTipoRuta);
-							
-							if (grupo) {
-								grupo.push(obj);
-							} else {
-								acc.push([obj]);
-							}
-							
-							return acc;
-						}, [] as any[][]);
-				}
-
+				
 				this.utilService.closeLoadingSpinner();
 			},
 			error: (error: HttpErrorResponse) => {
@@ -239,7 +223,7 @@ export class NivelesAprobacionComponent implements OnInit {
 
 				this.dataTable = [];
 
-				this.utilService.modalResponse("No existen registros para esta búsqueda", "error");
+				//this.utilService.modalResponse("No existen registros para esta búsqueda", "error");
 			},
 		});
 	}
@@ -274,7 +258,7 @@ export class NivelesAprobacionComponent implements OnInit {
 					this.dataTable = response.nivelAprobacionType
 						.filter(data => data.estado === "A")
 						.reduce((acc, obj) => {
-							const grupo = acc.find(g => g[0].idTipoMotivo === obj.idTipoMotivo && g[0].idTipoRuta === obj.idTipoRuta);
+							const grupo = acc.find(g => g[0].idTipoSolicitud === obj.idTipoSolicitud && g[0].idTipoRuta === obj.idTipoRuta && g[0].idTipoMotivo === obj.idTipoMotivo && g[0].idAccion === obj.idAccion && g[0].nivelDireccion === obj.nivelDireccion);
 							
 							if (grupo) {
 								grupo.push(obj);
@@ -288,7 +272,7 @@ export class NivelesAprobacionComponent implements OnInit {
 					this.dataTable = response.nivelAprobacionType
 						.filter(data => data.estado === "A")
 						.reduce((acc, obj) => {
-							const grupo = acc.find(g => g[0].idTipoRuta === obj.idTipoRuta);
+							const grupo = acc.find(g => g[0].idTipoSolicitud === obj.idTipoSolicitud && g[0].idTipoRuta === obj.idTipoRuta && g[0].idTipoMotivo === obj.idTipoMotivo && g[0].idAccion === obj.idAccion && g[0].nivelDireccion === obj.nivelDireccion);
 							
 							if (grupo) {
 								grupo.push(obj);
