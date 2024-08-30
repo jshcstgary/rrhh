@@ -344,6 +344,7 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
 	public success: false;
 	public params: any;
 	public id_edit: undefined | string;
+	existenNivelesAprobacion: boolean = false;
 
 	private id_solicitud_by_params: any;
 
@@ -1206,6 +1207,15 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
 			.obtenerAprobacionesPorPosicionRuta(this.solicitud.idTipoSolicitud, this.solicitud.idTipoMotivo, this.model.codigoPosicion, this.model.nivelDir, this.dataTipoRutaEmp[0].id, 'A')
 			.subscribe({
 				next: (response) => {
+					if (response.totalRegistros === 0 || response.totalRegistros === null) {
+						this.utilService.modalResponse("No existe aprobadores de solicitud para los datos ingresados", "error");
+
+						this.existenNivelesAprobacion = false;
+						
+						return;
+					}
+					this.existenNivelesAprobacion = true;
+
 					this.dataAprobacionesPorPosicion[this.keySelected] = response.nivelAprobacionPosicionType;
 				},
 				error: (error: HttpErrorResponse) => {

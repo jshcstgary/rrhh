@@ -9,6 +9,7 @@ import { EditarAprobadorFijoService } from "./editar-aprobador-fijo.service";
 import { BuscarAprobadorFijoComponent } from "../buscar-aprobador-fijo/buscar-aprobador-fijo.component";
 import { format } from "date-fns";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
+import { LocalStorageKeys } from "src/app/enums/local-storage-keys.enum";
 
 @Component({
 	selector: "app-editar-aprobador-fijo",
@@ -106,8 +107,8 @@ export class EditarAprobadorFijoComponent implements OnInit {
 					this.modelo.estado = true;
 					this.modelo.fechA_CREACION = currentdate;
 					this.modelo.fechA_MODIFICACION = currentdate;
-					this.modelo.usuariO_CREACION = currentdate;
-					this.modelo.usuariO_MODIFICACION = currentdate;
+					this.modelo.usuariO_CREACION =  localStorage.getItem(LocalStorageKeys.IdLogin);;
+					this.modelo.usuariO_MODIFICACION =  localStorage.getItem(LocalStorageKeys.IdLogin);;
 					this.modelo.descripcioN_POSICION = epelado.descrPosicion;
 					this.modelo.supervisA_A = "N/A";
 					this.modelo.niveL_REPORTE = epelado.nivelReporte;
@@ -141,8 +142,9 @@ export class EditarAprobadorFijoComponent implements OnInit {
 
 			const model = {
 				...this.modelo,
+				fechA_CREACION: fechaEnFormatoISO,
 				fechA_MODIFICACION: fechaEnFormatoISO,
-				usuariO_MODIFICACION: fechaEnFormatoISO,
+				usuariO_MODIFICACION: localStorage.getItem(LocalStorageKeys.IdLogin),
 				estado: this.modelo.estado ? "A" : "I",
 			};
 
@@ -157,7 +159,7 @@ export class EditarAprobadorFijoComponent implements OnInit {
 					}, 1600);
 				},
 				error: (error: HttpErrorResponse) => {
-					this.utilService.modalResponse(error.error, "error");
+					this.utilService.modalResponse(`Ya existe un registro para el Nivel de Aprobación: ${model.niveL_DIRECCION}.`, "error");
 				}
 			});
 		});

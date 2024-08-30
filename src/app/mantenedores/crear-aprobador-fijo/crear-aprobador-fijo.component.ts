@@ -10,6 +10,7 @@ import { CrearAprobadorFijoService } from "./crear-aprobador-fijo.service";
 import { BuscarAprobadorFijoComponent } from "../buscar-aprobador-fijo/buscar-aprobador-fijo.component";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { format } from "date-fns";
+import { LocalStorageKeys } from "src/app/enums/local-storage-keys.enum";
 
 @Component({
 	selector: "app-crear-aprobador-fijo",
@@ -59,8 +60,8 @@ export class CrearAprobadorFijoComponent {
 					this.modelo.estado = true;
 					this.modelo.fechA_CREACION = currentdate;
 					this.modelo.fechA_MODIFICACION = currentdate;
-					this.modelo.usuariO_CREACION = currentdate;
-					this.modelo.usuariO_MODIFICACION = currentdate;
+					this.modelo.usuariO_CREACION = localStorage.getItem(LocalStorageKeys.IdLogin);
+					this.modelo.usuariO_MODIFICACION =  localStorage.getItem(LocalStorageKeys.IdLogin);
 					this.modelo.descripcioN_POSICION = epelado.descrPosicion;
 					this.modelo.supervisA_A = "N/A";
 					this.modelo.niveL_REPORTE = epelado.nivelReporte;
