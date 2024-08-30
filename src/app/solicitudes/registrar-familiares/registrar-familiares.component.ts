@@ -38,6 +38,7 @@ import { Permiso } from "src/app/types/permiso.type";
 import Swal from "sweetalert2";
 import { environment, portalWorkFlow } from "../../../environments/environment";
 import { CamundaRestService } from "../../camunda-rest.service";
+import { BuscarEmpleadoComponent } from "../buscar-empleado/buscar-empleado.component";
 import { CompleteTaskComponent } from "../general/complete-task.component";
 import { RegistrarCandidatoService } from "../registrar-candidato/registrar-candidato.service";
 import { SolicitudesService } from "../registrar-solicitud/solicitudes.service";
@@ -356,7 +357,7 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
 	public primerNivelAprobacion: string = "";
 	public aprobacion: any;
 	public unidadNegocioEmp: string;
-  	public dataTipoRutaEmp: any[] = [];
+	public dataTipoRutaEmp: any[] = [];
 
 	nombresEmpleados: string[] = [];
 
@@ -927,7 +928,7 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
 				/*this.mostrarTipoJustificacionYMision = this.restrictionsIds.includes(
 				  this.solicitud.idTipoMotivo
 				);
-		
+
 				this.mostrarSubledger = this.restrictionsSubledgerIds.includes(
 				  this.solicitud.idTipoMotivo
 				);*/ // comentado mmunoz
@@ -961,95 +962,94 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
 			next: (response: any) => {
 				this.detalleSolicitud = response.detalleSolicitudType[0];
 				if (this.detalleSolicitud.codigoPosicion.length > 0) {
-					this.unidadNegocioEmp=this.detalleSolicitud.unidadNegocio;
-					if(this.unidadNegocioEmp.toUpperCase().includes("AREAS") || this.unidadNegocioEmp.toUpperCase().includes("ÁREAS"))
-						{
-						 this.mantenimientoService.getTipoRuta().subscribe({
-						   next: (response) => {
-							 this.dataTipoRutaEmp = response.tipoRutaType
-							   .filter(({ estado }) => estado === "A")
-							   .filter(({ tipoRuta }) => tipoRuta.toUpperCase().includes("CORPORATIV"))
-							   .map((r) => ({
-								 id: r.id,
-								 descripcion: r.tipoRuta,
-							   }));
-							   this.loadingComplete++;
+					this.unidadNegocioEmp = this.detalleSolicitud.unidadNegocio;
+					if (this.unidadNegocioEmp.toUpperCase().includes("AREAS") || this.unidadNegocioEmp.toUpperCase().includes("ÁREAS")) {
+						this.mantenimientoService.getTipoRuta().subscribe({
+							next: (response) => {
+								this.dataTipoRutaEmp = response.tipoRutaType
+									.filter(({ estado }) => estado === "A")
+									.filter(({ tipoRuta }) => tipoRuta.toUpperCase().includes("CORPORATIV"))
+									.map((r) => ({
+										id: r.id,
+										descripcion: r.tipoRuta,
+									}));
+								this.loadingComplete++;
 
-							   // tveas, si incluye el id, debo mostrarlos (true)
-							   this.mostrarTipoJustificacionYMision = this.restrictionsIds.includes(
-								   this.solicitud.idTipoMotivo
-							   );
-			   
-							   this.mostrarSubledger = this.restrictionsSubledgerIds.includes(
-								   this.solicitud.idTipoMotivo
-							   );
-			   
-							   this.keySelected =
-								   this.solicitud.idTipoSolicitud +
-								   "_" +
-								   this.solicitud.idTipoMotivo +
-								   "_" +
-								   this.model.nivelDir;
-							   if (!this.dataAprobacionesPorPosicion[this.keySelected]) {
-								   this.getNivelesAprobacion();
-								   if (this.model.codigoPosicion.trim().length > 0) {
-									   this.obtenerAprobacionesPorPosicionAPS();
-									   this.obtenerAprobacionesPorPosicionAPD();
-								   }
-			   
-								   console.log("aprobadores dinamicos", this.dataAprobadoresDinamicos);
-								   let variables = this.generateVariablesFromFormFields();
-								   console.log("variables prueba ruta", variables);
-							   }				
-						   },
-						   error: (error: HttpErrorResponse) => {
-							 this.utilService.modalResponse(error.error, "error");
-						   },
-						 });
-						}else{
-						 this.mantenimientoService.getTipoRuta().subscribe({
-						   next: (response) => {
-							 this.dataTipoRutaEmp = response.tipoRutaType
-							   .filter(({ estado }) => estado === "A")
-							   .filter(({ tipoRuta }) => tipoRuta.toUpperCase()==="UNIDADES")
-							   .map((r) => ({
-								 id: r.id,
-								 descripcion: r.tipoRuta,
-							   }));
-							   this.loadingComplete++;
+								// tveas, si incluye el id, debo mostrarlos (true)
+								this.mostrarTipoJustificacionYMision = this.restrictionsIds.includes(
+									this.solicitud.idTipoMotivo
+								);
 
-				// tveas, si incluye el id, debo mostrarlos (true)
-				this.mostrarTipoJustificacionYMision = this.restrictionsIds.includes(
-					this.solicitud.idTipoMotivo
-				);
+								this.mostrarSubledger = this.restrictionsSubledgerIds.includes(
+									this.solicitud.idTipoMotivo
+								);
 
-				this.mostrarSubledger = this.restrictionsSubledgerIds.includes(
-					this.solicitud.idTipoMotivo
-				);
+								this.keySelected =
+									this.solicitud.idTipoSolicitud +
+									"_" +
+									this.solicitud.idTipoMotivo +
+									"_" +
+									this.model.nivelDir;
+								if (!this.dataAprobacionesPorPosicion[this.keySelected]) {
+									this.getNivelesAprobacion();
+									if (this.model.codigoPosicion.trim().length > 0) {
+										this.obtenerAprobacionesPorPosicionAPS();
+										this.obtenerAprobacionesPorPosicionAPD();
+									}
 
-				this.keySelected =
-					this.solicitud.idTipoSolicitud +
-					"_" +
-					this.solicitud.idTipoMotivo +
-					"_" +
-					this.model.nivelDir;
-				if (!this.dataAprobacionesPorPosicion[this.keySelected]) {
-					this.getNivelesAprobacion();
-					if (this.model.codigoPosicion.trim().length > 0) {
-						this.obtenerAprobacionesPorPosicionAPS();
-						this.obtenerAprobacionesPorPosicionAPD();
+									console.log("aprobadores dinamicos", this.dataAprobadoresDinamicos);
+									let variables = this.generateVariablesFromFormFields();
+									console.log("variables prueba ruta", variables);
+								}
+							},
+							error: (error: HttpErrorResponse) => {
+								this.utilService.modalResponse(error.error, "error");
+							},
+						});
+					} else {
+						this.mantenimientoService.getTipoRuta().subscribe({
+							next: (response) => {
+								this.dataTipoRutaEmp = response.tipoRutaType
+									.filter(({ estado }) => estado === "A")
+									.filter(({ tipoRuta }) => tipoRuta.toUpperCase() === "UNIDADES")
+									.map((r) => ({
+										id: r.id,
+										descripcion: r.tipoRuta,
+									}));
+								this.loadingComplete++;
+
+								// tveas, si incluye el id, debo mostrarlos (true)
+								this.mostrarTipoJustificacionYMision = this.restrictionsIds.includes(
+									this.solicitud.idTipoMotivo
+								);
+
+								this.mostrarSubledger = this.restrictionsSubledgerIds.includes(
+									this.solicitud.idTipoMotivo
+								);
+
+								this.keySelected =
+									this.solicitud.idTipoSolicitud +
+									"_" +
+									this.solicitud.idTipoMotivo +
+									"_" +
+									this.model.nivelDir;
+								if (!this.dataAprobacionesPorPosicion[this.keySelected]) {
+									this.getNivelesAprobacion();
+									if (this.model.codigoPosicion.trim().length > 0) {
+										this.obtenerAprobacionesPorPosicionAPS();
+										this.obtenerAprobacionesPorPosicionAPD();
+									}
+
+									let variables = this.generateVariablesFromFormFields();
+									console.log("variables prueba ruta", variables);
+								}
+
+							},
+							error: (error: HttpErrorResponse) => {
+								this.utilService.modalResponse(error.error, "error");
+							},
+						});
 					}
-
-			    	let variables = this.generateVariablesFromFormFields();
-					console.log("variables prueba ruta", variables);
-				}
-							   				
-						   },
-						   error: (error: HttpErrorResponse) => {
-							 this.utilService.modalResponse(error.error, "error");
-						   },
-						 });
-						}
 					this.model.codigoPosicion = this.detalleSolicitud.codigoPosicion;
 					this.model.descrPosicion = this.detalleSolicitud.descripcionPosicion;
 					this.model.subledger = this.detalleSolicitud.subledger;
@@ -1084,11 +1084,11 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
 				this.detalleSolicitud.idSolicitud = response.idSolicitud;
 				this.detalleSolicitud.unidadNegocio = response.unidadNegocio;*/ //comentado mmunoz
 				//console.log("DATA DETALLE SOLICITUD BY ID: ", this.detalleSolicitud);
-				
+
 
 				//console.log("aprobacion: ",aprobacion);
 				/* console.log(`Elemento en la posición Miguel1 ${this.keySelected}:`, this.dataAprobacionesPorPosicion[this.keySelected][0].nivelAprobacionType.idNivelAprobacion);
-		
+
 				for (const key in this.dataAprobacionesPorPosicion[this.keySelected]) {
 				  if (this.dataAprobacionesPorPosicion.hasOwnProperty(key)) {
 					console.log(`Clave: ${key}`);
@@ -1170,9 +1170,7 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
 		return this.mantenimientoService.getFamiliaresCandidatoBySolicitud(this.id_solicitud_by_params).subscribe({
 			next: (response) => {
 				const data = response?.familiaresCandidato || [];
-				console.log(data);
 
-				console.log(idSolicitud);
 				this.dataTableDatosFamiliares = data.filter(
 					(d) => d.idSolicitud === idSolicitud
 				);
@@ -1424,13 +1422,13 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
 					next: (aprobador) => {
 						aprobadoractual = aprobador.nivelAprobacion?.value;
 						this.solicitudes
-							.obtenerAprobacionesPorPosicionRuta(this.solicitud.idTipoSolicitud, this.solicitud.idTipoMotivo, this.model.codigoPosicion, this.model.nivelDir,this.dataTipoRutaEmp[0].id, 'APS')
+							.obtenerAprobacionesPorPosicionRuta(this.solicitud.idTipoSolicitud, this.solicitud.idTipoMotivo, this.model.codigoPosicion, this.model.nivelDir, this.dataTipoRutaEmp[0].id, 'APS')
 							.subscribe({
 								next: (responseAPS) => {
 									this.dataAprobacionesPorPosicionAPS = responseAPS.nivelAprobacionPosicionType;
 									this.aprobacion = this.dataAprobacionesPorPosicionAPS.find(elemento => elemento.aprobador.nivelDireccion.toUpperCase().includes(aprobadoractual));
 									if (aprobadoractual !== undefined) {
-		
+
 										if (this.aprobacion.aprobador.nivelDireccion.trim() !== null) {
 											this.solicitudes.modelDetalleAprobaciones.id_Solicitud = this.solicitud.idSolicitud;
 											this.solicitudes.modelDetalleAprobaciones.id_NivelAprobacion = this.aprobacion.nivelAprobacionType.idNivelAprobacion;
@@ -1795,7 +1793,7 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
 					this.solicitud.idTipoSolicitud,
 					this.solicitud.idTipoMotivo,
 					this.detalleSolicitud.codigoPosicion,
-					this.detalleSolicitud.nivelDireccion, 
+					this.detalleSolicitud.nivelDireccion,
 					this.dataTipoRutaEmp[0].id,
 					'A'
 				)
@@ -1808,7 +1806,7 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
 								this.model.codigoPosicion,
 								this.model.nivelDir,
 								this.dataTipoRutaEmp[0].id,
-								 'APD'
+								'APD'
 							)
 							.subscribe({
 								next: (responseAPD) => {
@@ -1899,18 +1897,19 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
 			.subscribe((res) => { });
 	}
 
-	indexedModal: Record<keyof DialogComponents, any> = {
-		dialogBuscarEmpleados: () => this.openModalBuscarEmpleado(),
-		dialogReasignarUsuario: () => this.openModalReasignarUsuario(),
-	};
+	// indexedModal: Record<keyof DialogComponents, any> = {
+	// 	dialogBuscarEmpleados: () => this.openModalBuscarEmpleado(),
+	// 	dialogReasignarUsuario: () => this.openModalReasignarUsuario(),
+	// };
 
-	openModal(component: keyof DialogComponents) {
-		this.indexedModal[component]();
-	}
+	// openModal(component: keyof DialogComponents) {
+	// 	this.indexedModal[component]();
+	// }
 
-	openModalBuscarEmpleado() {
+	public openModal() {
 		this.modalService
-			.open(dialogComponentList.dialogBuscarEmpleados, {
+			// .open(dialogComponentList.dialogBuscarEmpleados, {
+			.open(BuscarEmpleadoComponent, {
 				ariaLabelledBy: "modal-title",
 			})
 			.result.then(
@@ -1920,6 +1919,8 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
 					}
 
 					if (result?.data) {
+						this.utilService.openLoadingSpinner("Guardando familiar, espere por favor...");
+
 						const data: IEmpleadoData = result.data;
 
 						const dtoFamiliares: FamiliaresCandidatos = {
@@ -1949,6 +1950,8 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
 							},
 							error: (err) => {
 								console.error(err);
+
+								this.utilService.modalResponse(err.error, "error");
 							}
 						});
 					}
@@ -2044,68 +2047,72 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
 	}
 
 	async handleActionClick(event: any) {
-		// console.log('Action click:', event);
 		const { index, action } = event;
 
 		switch (action) {
 			case "editOnTable":
-				console.log("EDITAR");
 				this.startEditingRow(index);
+
 				break;
+
 			case "delete":
-				console.log("ELIMINAR");
+				this.utilService.openLoadingSpinner("Eliminando información, espere por favor...");
+
 				this.dataTableDatosFamiliares[index].estado = "I";
-				await this.mantenimientoService
-					.putFamiliaresCandidatos(this.dataTableDatosFamiliares[index])
-					.subscribe((response) => {
-						console.log("response", response);
-						this.utilService.modalResponse(
-							"Familiar eliminado correctamente",
-							"success"
-						);
-					});
+
+				await this.mantenimientoService.putFamiliaresCandidatos(this.dataTableDatosFamiliares[index]).subscribe((response) => {
+					this.utilService.modalResponse("Familiar eliminado correctamente", "success");
+				});
 
 				this.dataTableDatosFamiliares = this.dataTableDatosFamiliares.filter(
 					(row) => row.estado !== "I"
 				);
+
 				break;
+
 			default:
-				console.log("Opcion no definida");
 				break;
 		}
 	}
 
 	startEditingRow(index) {
-		// this.dataTableDatosFamiliares[index].isEditingRow = true;
 		this.dataTableDatosFamiliares = this.dataTableDatosFamiliares.map(
 			(row, indexRow) => {
 				if (indexRow === index) {
 					row.isEditingRow = true;
 				}
+
 				return row;
 			}
 		);
 	}
 
 	updateRowData(updatedRow: any) {
+		this.utilService.openLoadingSpinner("Actualizando información, espere por favor...");
+
 		this.mantenimientoService.putFamiliaresCandidatos(updatedRow).subscribe({
 			next: () => {
 				this.dataTableDatosFamiliares = this.dataTableDatosFamiliares.map((row) => {
 					if (row.subledger === updatedRow.subledger) {
 						return updatedRow;
 					}
+
 					return row;
 				});
+
+				this.utilService.modalResponse("Dato actualizado.", "success");
 			},
 			error: (err) => {
 				console.error(err);
 
-				Swal.fire({
-					text: "No se pudo actualizar el registro",
-					icon: "warning",
-					confirmButtonColor: "rgb(227, 199, 22)",
-					confirmButtonText: "Ok"
-				});
+				this.utilService.modalResponse("No se pudo actualizar el registro", "error");
+
+				// Swal.fire({
+				// 	text: "No se pudo actualizar el registro",
+				// 	icon: "warning",
+				// 	confirmButtonColor: "rgb(227, 199, 22)",
+				// 	confirmButtonText: "Ok"
+				// });
 			}
 		});
 	}

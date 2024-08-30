@@ -6,102 +6,115 @@ $cell-padding: 12px 24px;
 @import "../../../assets/scss/variable";
 
 .table-container {
-  overflow-x: auto;
-  width: 100%;
-  min-height: 300px;
+	overflow-x: auto;
+	width: 100%;
 }
 
 table {
-  box-shadow: 0px 4px 4px 0px #00000040;
-  border-radius: $border-table-radius;
+	box-shadow: 0px 4px 4px 0px #00000040;
+	border-radius: $border-table-radius;
 }
 
 th {
-  background-color: #0056b34d;
-  /* Letra */
-  color: #0056b3;
-  font-size: $font-size;
-  font-style: $font-style;
-  font-weight: 600;
-  line-height: $line-height;
-  /* estilos de celda */
-  height: 44px;
-  padding: $cell-padding;
+	background-color: #0056b34d;
+	/* Letra */
+	color: #0056b3;
+	font-size: $font-size;
+	font-style: $font-style;
+	font-weight: 600;
+	line-height: $line-height;
+	/* estilos de celda */
+	height: 44px;
+	padding: $cell-padding;
 }
 
 td {
-  font-size: $font-size;
-  font-style: $font-style;
-  font-weight: 500;
-  line-height: $line-height;
-  height: 64px;
-  padding: $cell-padding;
-  border-bottom: 0.5px solid #506385;
-  background-color: #fff;
-  color: #182844;
+	font-size: $font-size;
+	font-style: $font-style;
+	font-weight: 500;
+	line-height: $line-height;
+	height: 64px;
+	padding: $cell-padding;
+	border-bottom: 0.5px solid #506385;
+	background-color: #fff;
+	color: #182844;
 }
+
 th:first-child {
-  border-top-left-radius: $border-table-radius;
+	border-top-left-radius: $border-table-radius;
 }
+
 th:last-child {
-  border-top-right-radius: $border-table-radius;
+	border-top-right-radius: $border-table-radius;
 }
+
 tr:last-child td:first-child {
-  border-bottom-left-radius: 5px;
+	border-bottom-left-radius: 5px;
 }
+
 tr:last-child td:last-child {
-  border-bottom-right-radius: 5px;
+	border-bottom-right-radius: 5px;
 }
+
 tr:last-child td {
-  border-bottom: none;
+	border-bottom: none;
 }
+
 th div::selection {
-  background-color: transparent;
+	background-color: transparent;
 }
+
 input[type="checkbox"]:focus,
 .action-icon:focus {
-  outline: solid $info;
+	outline: solid $info;
 }
+
 .action-icon::selection {
-  background-color: transparent;
+	background-color: transparent;
 }
+
 .column-color {
-  cursor: pointer;
-  display: flex;
-  justify-content: center;
+	cursor: pointer;
+	display: flex;
+	justify-content: center;
 }
+
 .column-color:hover {
-  color: black;
-  text-decoration: underline black;
+	color: black;
+	text-decoration: underline black;
 }
+
 .box-color {
-  width: 5rem;
-  height: 15px;
-  border: 2.5px solid #000000;
-  margin-right: 2px;
+	width: 5rem;
+	height: 15px;
+	border: 2.5px solid #000000;
+	margin-right: 2px;
 }
+
 .paginate-page {
-  font-weight: 500;
+	font-weight: 500;
 }
+
 .select-rows-per-page {
-  margin-left: 24px;
-  background-color: white;
-  padding: 8px;
-  border-radius: 5px;
+	margin-left: 24px;
+	background-color: white;
+	padding: 8px;
+	border-radius: 5px;
 }
+
 .empty-table-row {
-  height: 300px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+	height: 300px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 
 .actions-column {
-    width: 100px;
+	width: 100px;
 }
 
 .editable-input {
-  border: 1px solid blue;
-  padding: 4px;
-  border-radius: 4px;
+	border: 1px solid blue;
+	padding: 4px;
+	border-radius: 4px;
 }

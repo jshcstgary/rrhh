@@ -1,27 +1,29 @@
 <div class="p-2 buscar-aprobador-fijo-modal">
 	<form class="input-group my-2" [formGroup]="myForm" (ngSubmit)="onSubmit()">
-		<input type="text" class="form-control" formControlName="searchInput" placeholder="Ingrese código de posición, subledger, nombre o correo del empleado">
-	
+		<input type="text" class="form-control" formControlName="searchInput" placeholder="Ingrese código de posición, subledger, nombre o correo del empleado" />
+
 		<button type="submit" class="btn btn-info" [disabled]="myForm.invalid">Buscar</button>
 	</form>
 
-	<hr>
-	
+	<hr />
+
 	<div class="table-container my-2 p-1 pt-0">
 		<table *ngIf="empleados.length !== 0; else emptyEmpleados">
 			<thead>
 				<tr>
 					<th></th>
-					
+
 					<th>Código de Posición</th>
-					
+
 					<th>Posición</th>
 
 					<th>Nombre</th>
 
 					<th>Subledger</th>
-					
+
 					<th>Compañía</th>
+
+					<th>Cargo</th>
 
 					<th>Unidad de Negocio</th>
 
@@ -30,16 +32,18 @@
 					<th>Localidad/Zona</th>
 
 					<th>Centro de Costo</th>
+
+					<th>Fecha de Ingreso</th>
 				</tr>
 			</thead>
 			<tbody>
-				<tr *ngFor="let empleado of empleados" class="cursor-pointer empleado-fila" [ngClass]="{selected: empleadoSeleccionado === empleado}" (click)="seleccionarUsuario(empleado)">
+				<tr *ngFor="let empleado of empleados" class="cursor-pointer empleado-fila" [ngClass]="{ selected: empleadoSeleccionado === empleado }" (click)="seleccionarUsuario(empleado)">
 					<td>
-						<input class="form-check-input" type="radio" [value]="empleado" [checked]="empleadoSeleccionado === empleado" (change)="$event.stopPropagation(); seleccionarUsuario(empleado)">
+						<input class="form-check-input" type="radio" [value]="empleado" [checked]="empleadoSeleccionado === empleado" (change)="$event.stopPropagation(); seleccionarUsuario(empleado)" />
 					</td>
-					
+
 					<td>{{ empleado.codigoPosicion }}</td>
-					
+
 					<td>{{ empleado.descrPosicion }}</td>
 
 					<td>{{ empleado.nombreCompleto }}</td>
@@ -48,6 +52,8 @@
 
 					<td>{{ empleado.compania }}</td>
 
+					<td>{{ empleado.nombreCargo }}</td>
+
 					<td>{{ empleado.unidadNegocio }}</td>
 
 					<td>{{ empleado.departamento }}</td>
@@ -55,6 +61,8 @@
 					<td>{{ empleado.localidad }}</td>
 
 					<td>{{ empleado.nombreCargo }}</td>
+
+					<td>{{ empleado.fechaIngresogrupo }}</td>
 				</tr>
 			</tbody>
 		</table>
@@ -66,7 +74,7 @@
 		</ng-template>
 	</div>
 
-	<hr>
+	<hr />
 
 	<div class="my-2 d-flex justify-content-end align-items-center gap-2">
 		<button class="btn btn-outline-primary" type="button" (click)="onClose()">Cerrar</button>
