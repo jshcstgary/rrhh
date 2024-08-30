@@ -28,9 +28,12 @@ export class TipoSolicitudService {
 
 	public store(request: ITiposolicitudTable): Observable<ITiposolicitud> {
 		request.usuarioCreacion = localStorage.getItem(LocalStorageKeys.IdLogin);
-		request.fechaActualizacion = null;
+		request.fechaCreacion = new Date();
+		request.usuarioActualizacion = localStorage.getItem(LocalStorageKeys.IdLogin);
+		request.fechaActualizacion = new Date();
 
 		convertTimeZonedDate(request.fechaCreacion);
+		convertTimeZonedDate(request.fechaActualizacion);
 
 		return this.http.post<ITiposolicitud>(this.apiUrl, request);
 	}

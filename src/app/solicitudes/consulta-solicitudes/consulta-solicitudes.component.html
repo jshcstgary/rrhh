@@ -39,7 +39,7 @@
 										<div class="mb-3">
 											<label class="azul">Empresa</label>
 
-											<ng-select [disabled]="!controlsPermissions[pageControlPermission.FiltroEmpresa].habilitar || searchInputFilter!==''" #inputSelectHacienda [(ngModel)]="dataFilterSolicitudes.empresa" name="empresa" placeholder="Seleccione">
+											<ng-select [disabled]="!controlsPermissions[pageControlPermission.FiltroEmpresa].habilitar || searchInputFilter !== ''" #inputSelectHacienda [(ngModel)]="dataFilterSolicitudes.empresa" name="empresa" placeholder="Seleccione">
 												<ng-option *ngFor="let data of dataEmpresa" [value]="data">{{ data }}</ng-option>
 											</ng-select>
 										</div>
@@ -49,7 +49,7 @@
 										<div class="mb-3">
 											<label class="azul">Unidad de Negocio</label>
 
-											<ng-select [disabled]="!controlsPermissions[pageControlPermission.FiltroUnidadNegocio].habilitar || searchInputFilter!==''" #inputSelectProducto [(ngModel)]="dataFilterSolicitudes.unidadNegocio" name="unidadNegocio" placeholder="Seleccione">
+											<ng-select [disabled]="!controlsPermissions[pageControlPermission.FiltroUnidadNegocio].habilitar || searchInputFilter !== ''" #inputSelectProducto [(ngModel)]="dataFilterSolicitudes.unidadNegocio" name="unidadNegocio" placeholder="Seleccione">
 												<ng-option *ngFor="let data of dataUnidadesNegocio" [value]="data">{{ data }}</ng-option>
 											</ng-select>
 										</div>
@@ -60,7 +60,7 @@
 											<label class="azul">Fecha Creación Desde</label>
 
 											<div class="input-group">
-												<input #inputDateFechaDesde [disabled]="!controlsPermissions[pageControlPermission.FiltroFechaDesde].habilitar || searchInputFilter!==''" class="form-control" placeholder="yyyy-mm-dd" name="fechaDesde" [(ngModel)]="dataFilterSolicitudes.fechaDesde" ngbDatepicker [footerTemplate]="footerTemplateFechaDesde" #fechaDesde="ngbDatepicker" />
+												<input #inputDateFechaDesde [disabled]="!controlsPermissions[pageControlPermission.FiltroFechaDesde].habilitar || searchInputFilter !== ''" class="form-control" placeholder="yyyy-mm-dd" name="fechaDesde" [(ngModel)]="dataFilterSolicitudes.fechaDesde" ngbDatepicker [footerTemplate]="footerTemplateFechaDesde" #fechaDesde="ngbDatepicker" />
 
 												<button class="btn btn-outline-secondary bi bi-calendar3" (click)="fechaDesde.toggle()" type="button">
 													<i-feather class="feather-sm" name="calendar"></i-feather>
@@ -74,7 +74,7 @@
 											<label class="azul">Fecha Creación Hasta</label>
 
 											<div class="input-group">
-												<input #inputDateFechaHasta [disabled]="!controlsPermissions[pageControlPermission.FiltroFechaHasta].habilitar || searchInputFilter!==''" class="form-control" placeholder="yyyy-mm-dd" name="fechaHasta" [(ngModel)]="dataFilterSolicitudes.fechaHasta" ngbDatepicker [footerTemplate]="footerTemplateFechaHasta" #fechaHasta="ngbDatepicker" />
+												<input #inputDateFechaHasta [disabled]="!controlsPermissions[pageControlPermission.FiltroFechaHasta].habilitar || searchInputFilter !== ''" class="form-control" placeholder="yyyy-mm-dd" name="fechaHasta" [(ngModel)]="dataFilterSolicitudes.fechaHasta" ngbDatepicker [footerTemplate]="footerTemplateFechaHasta" #fechaHasta="ngbDatepicker" />
 
 												<button class="btn btn-outline-secondary bi bi-calendar3" (click)="fechaHasta.toggle()" type="button">
 													<i-feather class="feather-sm" name="calendar"></i-feather>
@@ -87,7 +87,7 @@
 										<div class="mb-3">
 											<label class="azul">Tipo de Solicitud</label>
 
-											<ng-select #inputSelectLabor [disabled]="!controlsPermissions[pageControlPermission.FiltroTipoSolicitud].habilitar || searchInputFilter!==''" [(ngModel)]="dataFilterSolicitudes.idTipoSolicitud" name="idTipoSolicitud" placeholder="Seleccione">
+											<ng-select #inputSelectLabor [disabled]="!controlsPermissions[pageControlPermission.FiltroTipoSolicitud].habilitar || searchInputFilter !== ''" [(ngModel)]="dataFilterSolicitudes.idTipoSolicitud" name="idTipoSolicitud" placeholder="Seleccione">
 												<ng-option *ngFor="let data of dataTipoSolicitudes" [value]="data.id">{{ data.id }} - {{ data.descripcion }}</ng-option>
 											</ng-select>
 										</div>
@@ -97,7 +97,7 @@
 										<div class="mb-3">
 											<label class="azul">Estado</label>
 
-											<ng-select #inputSelectTrabajador [disabled]="!controlsPermissions[pageControlPermission.FiltroEstado].habilitar || searchInputFilter!==''" [(ngModel)]="dataFilterSolicitudes.estado" name="id_trabajador" placeholder="Seleccione">
+											<ng-select #inputSelectTrabajador [disabled]="!controlsPermissions[pageControlPermission.FiltroEstado].habilitar || searchInputFilter !== ''" [(ngModel)]="dataFilterSolicitudes.estado" name="id_trabajador" placeholder="Seleccione">
 												<ng-option *ngFor="let data of data_estado" [value]="data.codigo">{{ data.codigo }} - {{ data.descripcion }}</ng-option>
 											</ng-select>
 										</div>
@@ -106,9 +106,7 @@
 									<div class="col-md-5">
 										<div class="mb-3">
 											<div class="text-end">
-												<button #buttonSearch *ngIf="controlsPermissions[pageControlPermission.ButtonBuscar].visualizar" (click)="filterDataTable()" type="submit" class="btn btn-info me-2">
-													<i class="fas fa-filter"></i> Buscar
-												</button>
+												<button #buttonSearch *ngIf="controlsPermissions[pageControlPermission.ButtonBuscar].visualizar" (click)="filterDataTable()" type="submit" class="btn btn-info me-2"><i class="fas fa-filter"></i> Buscar</button>
 											</div>
 										</div>
 									</div>
@@ -138,13 +136,9 @@
 									<div class="col-md-8">
 										<div class="mb-3">
 											<div class="text-end">
-												<button type="button" *ngIf="controlsPermissions[pageControlPermission.ButtonAgregar].visualizar" (click)="mostrarModalCrearSolicitudes()" class="btn btn-info me-2">
-													<i class="fas fa-plus"></i> Agregar
-												</button>
+												<button type="button" *ngIf="controlsPermissions[pageControlPermission.ButtonAgregar].visualizar" (click)="mostrarModalCrearSolicitudes()" class="btn btn-info me-2"><i class="fas fa-plus"></i> Agregar</button>
 
-												<a class="btn btn-primary" *ngIf="mostrarBotonResignar()" routerLink="/mantenedores/reasignar-tareas-usuarios" role="button">
-													<i class="fas fa-redo"></i> Reasignar
-												</a>
+												<a class="btn btn-primary" *ngIf="mostrarBotonResignar()" routerLink="/solicitudes/reasignar-tareas-usuarios" role="button"> <i class="fas fa-redo"></i> Reasignar </a>
 
 												<!-- <button type="button" *ngIf="controlsPermissions[pageControlPermission.ButtonReasignar].visualizar" (click)="pageCrear()" class="btn btn-info me-2">
 													<i class="fas fa-redo"></i> Reasignar
@@ -179,19 +173,17 @@
 					<h2 class="card-body text-start">
 						<div class="row">
 							<div class="col-md-6">
-								<b style="color: rgb(227, 199, 22); font-size: xx-large; margin: 20px;">Crear Solicitud</b>
+								<b style="color: rgb(227, 199, 22); font-size: xx-large; margin: 20px">Crear Solicitud</b>
 							</div>
 
 							<div class="col-md-6 text-end">
-								<button style="margin: 10px; color: black" type="button"(click)="modal.dismiss('Cross click')"class="mr-10 fz-14 btn btn-outline-secondary btn-icon-end">Cancelar</button>
+								<button style="margin: 10px; color: black" type="button" (click)="modal.dismiss('Cross click')" class="mr-10 fz-14 btn btn-outline-secondary btn-icon-end">Cancelar</button>
 
-								<button type="button" class="mr-10 fz-14 btn btn-info btn-icon-end" (click)="CrearInstanciaSolicitud()" aria-label="Close" aria-label="Close" [disabled]="solicitud.idTipoSolicitud === null || (desactivarTipoMotivo && solicitud.idTipoMotivo === 0) || (desactivarTipoAccion && solicitud.idTipoAccion === 0)">
-									<i class="fas fa-save"></i> Guardar
-								</button>
+								<button type="button" class="mr-10 fz-14 btn btn-info btn-icon-end" (click)="CrearInstanciaSolicitud()" aria-label="Close" aria-label="Close" [disabled]="solicitud.idTipoSolicitud === null || (desactivarTipoMotivo && solicitud.idTipoMotivo === 0) || (desactivarTipoAccion && solicitud.idTipoAccion === 0)"><i class="fas fa-save"></i> Guardar</button>
 							</div>
 						</div>
 
-						<div class="row" style="padding-top: 20px; display: flex; justify-content: start; margin: 10px;">
+						<div class="row" style="padding-top: 20px; display: flex; justify-content: start; margin: 10px">
 							<div class="col-md-12">
 								<div class="input-group mb-3">
 									<label class="input-group-text" for="tiposolicitud">Tipo Solicitud</label>
@@ -205,7 +197,7 @@
 							</div>
 						</div>
 
-						<div class="row" style="padding-top: 20px; display: flex; justify-content: start; margin: 10px;" *ngIf="desactivarTipoMotivo">
+						<div class="row" style="padding-top: 20px; display: flex; justify-content: start; margin: 10px" *ngIf="desactivarTipoMotivo">
 							<div class="col-md-12">
 								<div class="input-group mb-3">
 									<label class="input-group-text" for="tipomotivo">Tipo de Motivo</label>
@@ -219,7 +211,7 @@
 							</div>
 						</div>
 
-						<div class="row" style="padding-top: 20px; display: flex; justify-content: start; margin: 10px;" *ngIf="desactivarTipoAccion">
+						<div class="row" style="padding-top: 20px; display: flex; justify-content: start; margin: 10px" *ngIf="desactivarTipoAccion">
 							<div class="col-md-12">
 								<div class="col-md-12">
 									<div class="input-group mb-3">
@@ -235,7 +227,7 @@
 							</div>
 						</div>
 
-						<div class="row" style="padding-top: 20px; display: flex; justify-content: start; margin: 10px;" [hidden]="!submitted">
+						<div class="row" style="padding-top: 20px; display: flex; justify-content: start; margin: 10px" [hidden]="!submitted">
 							<div *ngIf="this.getCreatedId() === 'No se ha creado Id de Proceso'">
 								<p>Proceso no ha sido iniciado.</p>
 

@@ -27,9 +27,12 @@ export class TipoProcesoService {
 
 	public store(request: ITipoproceso): Observable<ITipoproceso> {
 		request.usuarioCreacion = localStorage.getItem(LocalStorageKeys.IdLogin);
-		request.fechaActualizacion = null;
+		request.fechaCreacion = new Date();
+		request.usuarioActualizacion = localStorage.getItem(LocalStorageKeys.IdLogin);
+		request.fechaActualizacion = new Date();
 
 		convertTimeZonedDate(request.fechaCreacion);
+		convertTimeZonedDate(request.fechaActualizacion);
 
 		return this.http.post<ITipoproceso>(this.apiUrl, request);
 	}

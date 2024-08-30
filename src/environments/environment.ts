@@ -90,7 +90,7 @@ export const environment = {
 	exempleadoServiceEsSpyral: `${base}:8079/v1/us/exempleadosp`,
 	// exempleadoServiceEsSpyral: `${baseG}/v1/us/exempleadosp`,
 
-	exempleadoService: pruebas_locales ? `${base}:8089/v1/us/exempleados_rbp` : `${baseRBP}:8268/v1/es/tiposolicitud`,
+	exempleadoService: pruebas_locales ? `${base}:8089/v1/us/exempleados_rbp` : `${baseRBP}:8289/v1/us/exempleados_rbp`,
 	// exempleadoService: `${baseG}/v1/us/exempleados_rbp`,
 
 	tipoSolicitudServiceES: pruebas_locales ? `${base}:8068/v1/es/tiposolicitud` : `${baseRBP}:8268/v1/es/tiposolicitud`,

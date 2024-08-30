@@ -1012,73 +1012,75 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
 				this.detalleSolicitud = response.detalleSolicitudType[0];
 				if (this.detalleSolicitud.codigoPosicion.length > 0) {
 					this.unidadNegocioEmp=this.detalleSolicitud.unidadNegocio;
-      if(this.unidadNegocioEmp.toUpperCase().includes("AREAS") || this.unidadNegocioEmp.toUpperCase().includes("ÁREAS"))
-        {
-         this.mantenimientoService.getTipoRuta().subscribe({
-           next: (response) => {
-             this.dataTipoRutaEmp = response.tipoRutaType
-               .filter(({ estado }) => estado === "A")
-               .filter(({ tipoRuta }) => tipoRuta.toUpperCase().includes("CORPORATIV"))
-               .map((r) => ({
-                 id: r.id,
-                 descripcion: r.tipoRuta,
-               }));
-               this.loadingComplete++;
+					
+					if(this.unidadNegocioEmp.toUpperCase().includes("AREAS") || this.unidadNegocioEmp.toUpperCase().includes("ÁREAS")) {
+						this.mantenimientoService.getTipoRuta().subscribe({
+							next: (response) => {
+								this.dataTipoRutaEmp = response.tipoRutaType
+									.filter(({ estado }) => estado === "A")
+									.filter(({ tipoRuta }) => tipoRuta.toUpperCase().includes("CORPORATIV"))
+									.map((r) => ({
+										id: r.id,
+										descripcion: r.tipoRuta,
+									}));
 
-				// tveas, si incluye el id, debo mostrarlos (true)
-				this.mostrarTipoJustificacionYMision = this.restrictionsIds.includes(
-					this.solicitud.idTipoMotivo
-				);
+									this.loadingComplete++;
 
-				this.mostrarSubledger = this.restrictionsSubledgerIds.includes(
-					this.solicitud.idTipoMotivo
-				);
+								// tveas, si incluye el id, debo mostrarlos (true)
+								this.mostrarTipoJustificacionYMision = this.restrictionsIds.includes(
+									this.solicitud.idTipoMotivo
+								);
 
-				this.keySelected = `${this.solicitud.idTipoSolicitud}_${this.solicitud.idTipoMotivo}_${this.model.nivelDir}`;
-				if (!this.dataAprobacionesPorPosicion[this.keySelected]) {
-					this.getNivelesAprobacion();
+								this.mostrarSubledger = this.restrictionsSubledgerIds.includes(
+									this.solicitud.idTipoMotivo
+								);
 
-					this.obtenerComentariosAtencionPorInstanciaRaiz();
-				}
-           },
-           error: (error: HttpErrorResponse) => {
-             this.utilService.modalResponse(error.error, "error");
-           },
-         });
-        }else{
-         this.mantenimientoService.getTipoRuta().subscribe({
-           next: (response) => {
-             this.dataTipoRutaEmp = response.tipoRutaType
-               .filter(({ estado }) => estado === "A")
-               .filter(({ tipoRuta }) => tipoRuta.toUpperCase()==="UNIDADES")
-               .map((r) => ({
-                 id: r.id,
-                 descripcion: r.tipoRuta,
-               }));
-               this.loadingComplete++;
+								this.keySelected = `${this.solicitud.idTipoSolicitud}_${this.solicitud.idTipoMotivo}_${this.model.nivelDir}`;
+								if (!this.dataAprobacionesPorPosicion[this.keySelected]) {
+									this.getNivelesAprobacion();
 
-				// tveas, si incluye el id, debo mostrarlos (true)
-				this.mostrarTipoJustificacionYMision = this.restrictionsIds.includes(
-					this.solicitud.idTipoMotivo
-				);
+									this.obtenerComentariosAtencionPorInstanciaRaiz();
+								}
+							},
+							error: (error: HttpErrorResponse) => {
+								this.utilService.modalResponse(error.error, "error");
+							},
+						});
+					} else {
+						this.mantenimientoService.getTipoRuta().subscribe({
+							next: (response) => {
+								this.dataTipoRutaEmp = response.tipoRutaType
+									.filter(({ estado }) => estado === "A")
+									.filter(({ tipoRuta }) => tipoRuta.toUpperCase()==="UNIDADES")
+									.map((r) => ({
+										id: r.id,
+										descripcion: r.tipoRuta,
+									}));
 
-				this.mostrarSubledger = this.restrictionsSubledgerIds.includes(
-					this.solicitud.idTipoMotivo
-				);
+								this.loadingComplete++;
 
-				this.keySelected = `${this.solicitud.idTipoSolicitud}_${this.solicitud.idTipoMotivo}_${this.model.nivelDir}`;
-				if (!this.dataAprobacionesPorPosicion[this.keySelected]) {
-					this.getNivelesAprobacion();
+								// tveas, si incluye el id, debo mostrarlos (true)
+								this.mostrarTipoJustificacionYMision = this.restrictionsIds.includes(
+									this.solicitud.idTipoMotivo
+								);
 
-					this.obtenerComentariosAtencionPorInstanciaRaiz();
-				}
+								this.mostrarSubledger = this.restrictionsSubledgerIds.includes(
+									this.solicitud.idTipoMotivo
+								);
 
-           },
-           error: (error: HttpErrorResponse) => {
-             this.utilService.modalResponse(error.error, "error");
-           },
-         });
-        }
+								this.keySelected = `${this.solicitud.idTipoSolicitud}_${this.solicitud.idTipoMotivo}_${this.model.nivelDir}`;
+								if (!this.dataAprobacionesPorPosicion[this.keySelected]) {
+									this.getNivelesAprobacion();
+
+									this.obtenerComentariosAtencionPorInstanciaRaiz();
+								}
+							},
+							error: (error: HttpErrorResponse) => {
+								this.utilService.modalResponse(error.error, "error");
+							},
+						});
+					}
+
 					this.model.codigoPosicion = this.detalleSolicitud.codigoPosicion;
 					this.model.descrPosicion = this.detalleSolicitud.descripcionPosicion;
 					this.model.subledger = this.detalleSolicitud.subledger;
@@ -1104,7 +1106,6 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
 					this.model.correo = this.detalleSolicitud.correo;
 					this.model.fechaIngreso = this.detalleSolicitud.fechaIngreso;
 				}
-
 			},
 			error: (error: HttpErrorResponse) => {
 				this.utilService.modalResponse(error.error, "error");
@@ -2018,14 +2019,5 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
 				console.log(`Dismissed with: ${reason}`);
 			}
 		);
-	}
-
-	indexedModal: Record<keyof DialogComponents, any> = {
-		dialogBuscarEmpleados: undefined,
-		dialogReasignarUsuario: () => this.openModalReasignarUsuario(),
-	};
-
-	openModal(component: keyof DialogComponents) {
-		this.indexedModal[component]();
 	}
 }

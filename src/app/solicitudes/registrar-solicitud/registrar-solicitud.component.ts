@@ -1212,8 +1212,6 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
 					}).then((result) => {
 						if (result.isConfirmed) {
 							this.router.navigate(["/mantenedores/reasignar-tareas-usuarios"]);
-							if (this.submitted) {
-							}
 						}
 					});
 				}

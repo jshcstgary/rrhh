@@ -941,6 +941,7 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 						this.model.descrPosicion = this.detalleSolicitud.descripcionPosicion;
 						this.model.subledger = this.detalleSolicitud.subledger;
 						this.model.nombreCompleto = this.detalleSolicitud.nombreEmpleado;
+						this.detalleSolicitud.nombreJefeSolicitante = this.detalleSolicitud.nombreJefeSolicitante;
 						this.model.compania = this.detalleSolicitud.compania;
 						this.model.unidadNegocio = this.detalleSolicitud.unidadNegocio;
 						this.model.departamento = this.detalleSolicitud.departamento;

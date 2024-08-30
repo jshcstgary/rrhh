@@ -6,41 +6,49 @@
 					<div class="col-md-8">
 						<div class="mb-3">
 							<h3 class="sol-danger">
-								<a routerLink="/tareas/consulta-tareas"> <i class="bi bi-arrow-left-circle azul"></i> {{ solicitud.idSolicitud }} </a>
+								<a routerLink="/tareas/consulta-tareas"> <i class="bi bi-arrow-left-circle azul"></i> {{
+									solicitud.idSolicitud }} </a>
 							</h3>
 						</div>
 					</div>
 
 					<div class="col-md-12 text-end">
 						<!-- <button *ngIf="RegistrarsolicitudCompletada" type="button" (click)="openModal('dialogReasignarUsuario')" class="btn btn-info me-2 mt-1"><i class="fas fa-redo"></i> Reasignar</button> -->
-						<button *ngIf="RegistrarsolicitudCompletada" type="button" type="submit" class="btn btn-info me-2 mt-1" aria-label="Close" [disabled]="!solicitudForm.form.valid"><i class="fas fa-save"></i> Guardar</button>
+						<button *ngIf="RegistrarsolicitudCompletada" type="button" type="submit"
+							class="btn btn-info me-2 mt-1" aria-label="Close" [disabled]="!solicitudForm.form.valid"><i
+								class="fas fa-save"></i> Guardar</button>
 
-						<button type="button" (click)="onCompletar()" class="btn btn-info me-2 mt-1"><i class="fas fa-check-circle"></i> Completar Tarea</button>
+						<button type="button" (click)="onCompletar()" class="btn btn-info me-2 mt-1"><i
+								class="fas fa-check-circle"></i> Completar Tarea</button>
 					</div>
 				</div>
 
 				<div class="row mt-4">
 					<div class="col-md-4">
 						<div class="input-group mb-3">
-							<label class="input-group-text label-estilo" for="origin">Creado por:</label>
+							<label class="input-group-text text-start label-estilo" for="origin">Creado por:</label>
 
-							<span id="origin" name="" style="color: black; font-size: 14px" class="text-start">{{ this.solicitud.usuarioCreacion }}</span>
+							<span id="origin" name="" style="color: black; font-size: 14px" class="text-start">{{
+								this.solicitud.usuarioCreacion }}</span>
 						</div>
 					</div>
 
 					<div class="col-md-4">
 						<div class="input-group mb-3">
-							<label class="input-group-text label-estilo" for="unidadnegocio">Fecha:</label>
+							<label class="input-group-text text-start label-estilo" for="unidadnegocio">Fecha:</label>
 
-							<span id="date" name="" style="color: black; font-size: 14px" class="text-start">{{ this.solicitud.fechaCreacion | date : "yyyy/MM/dd" }}</span>
+							<span id="date" name="" style="color: black; font-size: 14px" class="text-start">{{
+								this.solicitud.fechaCreacion | date : "yyyy/MM/dd" }}</span>
 						</div>
 					</div>
 
 					<div class="col-md-4">
 						<div class="input-group mb-3">
-							<label class="input-group-text label-estilo" for="unidadnegocio">Nro. Solicitud:</label>
+							<label class="input-group-text text-start label-estilo" for="unidadnegocio">Nro.
+								Solicitud:</label>
 
-							<span id="solicitud" name="" style="color: black; font-size: 14px" class="text-start">{{ this.solicitud.idSolicitud }}</span>
+							<span id="solicitud" name="" style="color: black; font-size: 14px" class="text-start">{{
+								this.solicitud.idSolicitud }}</span>
 						</div>
 					</div>
 				</div>
@@ -69,7 +77,8 @@
 
 						&nbsp;
 
-						<span #mivar id="tipoSolicitud" name="tipoSolicitud" style="color: black; font-size: 14px" class="text-start">{{ this.solicitud.idSolicitud }}</span>
+						<span #mivar id="tipoSolicitud" name="tipoSolicitud" style="color: black; font-size: 14px"
+							class="text-start">{{ this.solicitud.idSolicitud }}</span>
 					</div>
 				</div>
 			</div>
@@ -83,7 +92,8 @@
 
 						&nbsp;
 
-						<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{ this.model.nombreCompleto }}</span>
+						<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px"
+							class="text-start">{{ this.model.nombreCompleto }}</span>
 					</div>
 				</div>
 			</div>
@@ -99,7 +109,9 @@
 
 				<div class="col-md-7">
 					<div class="input-group mb-3">
-						<textarea name="descripcionposicion" style="color: black; font-size: 14px; width: 100%; resize: none" class="form-control" id="observaciones" rows="3" required></textarea>
+						<textarea name="descripcionposicion"
+							style="color: black; font-size: 14px; width: 100%; resize: none" class="form-control"
+							id="observaciones" rows="3" required></textarea>
 					</div>
 				</div>
 			</div>
@@ -125,7 +137,8 @@
 
 						&nbsp;
 
-						<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{ this.detalleSolicitud.nombreEmpleado }}</span>
+						<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px"
+							class="text-start">{{ this.detalleSolicitud.nombreEmpleado }}</span>
 					</div>
 				</div>
 			</div>
@@ -135,13 +148,15 @@
 
 				<div class="col d-flex justify-content-center align-items-center">
 					<div class="mb-3">
-						<label class="input-group label-estilo" style="font-size: 20px; color: black" for="tipoMotivo">Actual</label>
+						<label class="input-group label-estilo" style="font-size: 20px; color: black"
+							for="tipoMotivo">Actual</label>
 					</div>
 				</div>
 
 				<div class="col d-flex justify-content-center align-items-center">
 					<div class="mb-3">
-						<label class="input-group label-estilo" style="font-size: 20px; color: black" for="tipoMotivo">Anterior</label>
+						<label class="input-group label-estilo" style="font-size: 20px; color: black"
+							for="tipoMotivo">Anterior</label>
 					</div>
 				</div>
 			</div>
@@ -155,7 +170,8 @@
 
 						&nbsp;
 
-						<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{ this.model.compania }}</span>
+						<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px"
+							class="text-start">{{ this.model.compania }}</span>
 					</div>
 				</div>
 
@@ -165,7 +181,8 @@
 
 						&nbsp;
 
-						<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{ this.detalleSolicitud.compania }}</span>
+						<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px"
+							class="text-start">{{ this.detalleSolicitud.compania }}</span>
 					</div>
 				</div>
 			</div>
@@ -179,7 +196,8 @@
 
 						&nbsp;
 
-						<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{ this.model.sueldo }}</span>
+						<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px"
+							class="text-start">{{ this.model.sueldo }}</span>
 					</div>
 				</div>
 
@@ -189,7 +207,8 @@
 
 						&nbsp;
 
-						<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{ this.detalleSolicitud.sueldo }}</span>
+						<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px"
+							class="text-start">{{ this.detalleSolicitud.sueldo }}</span>
 					</div>
 				</div>
 			</div>
@@ -215,7 +234,8 @@
 
 						&nbsp;
 
-						<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{ this.model.sueldoMensual }}</span>
+						<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px"
+							class="text-start">{{ this.model.sueldoMensual }}</span>
 					</div>
 				</div>
 
@@ -225,7 +245,8 @@
 
 						&nbsp;
 
-						<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{ this.detalleSolicitud.sueldoVariableMensual }}</span>
+						<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px"
+							class="text-start">{{ this.detalleSolicitud.sueldoVariableMensual }}</span>
 					</div>
 				</div>
 			</div>
@@ -239,7 +260,8 @@
 
 						&nbsp;
 
-						<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{ this.model.sueldoTrimestral }}</span>
+						<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px"
+							class="text-start">{{ this.model.sueldoTrimestral }}</span>
 					</div>
 				</div>
 
@@ -249,7 +271,8 @@
 
 						&nbsp;
 
-						<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{ this.detalleSolicitud.sueldoVariableTrimestral }}</span>
+						<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px"
+							class="text-start">{{ this.detalleSolicitud.sueldoVariableTrimestral }}</span>
 					</div>
 				</div>
 			</div>
@@ -263,7 +286,8 @@
 
 						&nbsp;
 
-						<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{ this.model.sueldoSemestral }}</span>
+						<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px"
+							class="text-start">{{ this.model.sueldoSemestral }}</span>
 					</div>
 				</div>
 
@@ -273,7 +297,8 @@
 
 						&nbsp;
 
-						<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{ this.detalleSolicitud.sueldoVariableSemestral }}</span>
+						<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px"
+							class="text-start">{{ this.detalleSolicitud.sueldoVariableSemestral }}</span>
 					</div>
 				</div>
 			</div>
@@ -287,7 +312,8 @@
 
 						&nbsp;
 
-						<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{ this.model.sueldoAnual }}</span>
+						<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px"
+							class="text-start">{{ this.model.sueldoAnual }}</span>
 					</div>
 				</div>
 
@@ -297,7 +323,8 @@
 
 						&nbsp;
 
-						<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{ this.detalleSolicitud.sueldoVariableAnual }}</span>
+						<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px"
+							class="text-start">{{ this.detalleSolicitud.sueldoVariableAnual }}</span>
 					</div>
 				</div>
 			</div>
@@ -311,7 +338,8 @@
 
 						&nbsp;
 
-						<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{ this.modelRemuneracion }}</span>
+						<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px"
+							class="text-start">{{ this.modelRemuneracion }}</span>
 					</div>
 				</div>
 
@@ -321,7 +349,8 @@
 
 						&nbsp;
 
-						<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{ this.modelRemuneracion }}</span>
+						<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px"
+							class="text-start">{{ this.modelRemuneracion }}</span>
 					</div>
 				</div>
 			</div>
@@ -335,7 +364,8 @@
 
 						&nbsp;
 
-						<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{ this.model.descrPuesto }}</span>
+						<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px"
+							class="text-start">{{ this.model.descrPuesto }}</span>
 					</div>
 				</div>
 
@@ -345,7 +375,8 @@
 
 						&nbsp;
 
-						<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{ this.detalleSolicitud.puesto }}</span>
+						<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px"
+							class="text-start">{{ this.detalleSolicitud.puesto }}</span>
 					</div>
 				</div>
 			</div>
@@ -359,7 +390,8 @@
 
 						&nbsp;
 
-						<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{ this.model.unidadNegocio }}</span>
+						<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px"
+							class="text-start">{{ this.model.unidadNegocio }}</span>
 					</div>
 				</div>
 
@@ -369,7 +401,8 @@
 
 						&nbsp;
 
-						<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{ this.detalleSolicitud.unidadNegocio }}</span>
+						<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px"
+							class="text-start">{{ this.detalleSolicitud.unidadNegocio }}</span>
 					</div>
 				</div>
 			</div>
@@ -383,7 +416,8 @@
 
 						&nbsp;
 
-						<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{ this.model.departamento }}</span>
+						<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px"
+							class="text-start">{{ this.model.departamento }}</span>
 					</div>
 				</div>
 
@@ -393,7 +427,8 @@
 
 						&nbsp;
 
-						<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{ this.detalleSolicitud.departamento }}</span>
+						<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px"
+							class="text-start">{{ this.detalleSolicitud.departamento }}</span>
 					</div>
 				</div>
 			</div>
@@ -407,7 +442,8 @@
 
 						&nbsp;
 
-						<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{ this.model.localidad }}</span>
+						<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px"
+							class="text-start">{{ this.model.localidad }}</span>
 					</div>
 				</div>
 
@@ -417,7 +453,8 @@
 
 						&nbsp;
 
-						<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{ this.detalleSolicitud.localidad }}</span>
+						<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px"
+							class="text-start">{{ this.detalleSolicitud.localidad }}</span>
 					</div>
 				</div>
 			</div>
@@ -431,7 +468,9 @@
 
 						&nbsp;
 
-						<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{ this.model.jefeInmediatoSuperior === "" ? "No aplica" : this.model.jefeInmediatoSuperior }}</span>
+						<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px"
+							class="text-start">{{ this.model.jefeInmediatoSuperior === "" ? "No aplica" :
+							this.model.jefeInmediatoSuperior }}</span>
 					</div>
 				</div>
 
@@ -441,7 +480,9 @@
 
 						&nbsp;
 
-						<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{ this.detalleSolicitud.jefeInmediatoSuperior === "" ? "No aplica" : this.detalleSolicitud.jefeInmediatoSuperior }}</span>
+						<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px"
+							class="text-start">{{ this.detalleSolicitud.jefeInmediatoSuperior === "" ? "No aplica" :
+							this.detalleSolicitud.jefeInmediatoSuperior }}</span>
 					</div>
 				</div>
 			</div>
@@ -455,7 +496,9 @@
 
 						&nbsp;
 
-						<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{ this.model.jefeInmediatoSuperior === "" ? "No aplica" : this.model.jefeInmediatoSuperior }}</span>
+						<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px"
+							class="text-start">{{ this.model.jefeInmediatoSuperior === "" ? "No aplica" :
+							this.model.jefeInmediatoSuperior }}</span>
 					</div>
 				</div>
 
@@ -465,7 +508,9 @@
 
 						&nbsp;
 
-						<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{ this.detalleSolicitud.jefeInmediatoSuperior === "" ? "No aplica" : this.detalleSolicitud.jefeInmediatoSuperior }}</span>
+						<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px"
+							class="text-start">{{ this.detalleSolicitud.jefeInmediatoSuperior === "" ? "No aplica" :
+							this.detalleSolicitud.jefeInmediatoSuperior }}</span>
 					</div>
 				</div>
 			</div>
@@ -479,7 +524,8 @@
 
 						&nbsp;
 
-						<span id="jeferef" name="jeferef" style="color: black; font-size: 14px" class="text-start">{{ this.detalleSolicitud.jefeAnteriorJefeReferencia }}</span>
+						<span id="jeferef" name="jeferef" style="color: black; font-size: 14px" class="text-start">{{
+							this.detalleSolicitud.jefeAnteriorJefeReferencia }}</span>
 					</div>
 				</div>
 
@@ -489,7 +535,8 @@
 
 						&nbsp;
 
-						<span id="respon" name="respon" style="color: black; font-size: 14px" class="text-start">{{ this.detalleSolicitud.responsableRRHH }}</span>
+						<span id="respon" name="respon" style="color: black; font-size: 14px" class="text-start">{{
+							this.detalleSolicitud.responsableRRHH }}</span>
 					</div>
 				</div>
 			</div>
@@ -503,15 +550,19 @@
 
 						&nbsp;
 
-						<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{ this.detalleSolicitud.cargoReferencia }}</span>
+						<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px"
+							class="text-start">{{ this.detalleSolicitud.cargoReferencia }}</span>
 					</div>
 				</div>
 
 				<div class="col mb-4">
 					<div class="input-group mb-3 h-100">
-						<label class="input-group-text label-estilo" for="tipoMotivo">Observaciones del comité de Remuneraciones</label>
+						<label class="input-group-text text-start label-estilo" for="tipoMotivo">Observaciones del
+							comité de Remuneraciones</label>
 
-						<textarea [value]="this.detalleSolicitud.justificacion" id="observaciones" name="observaciones" style="color: black; font-size: 14px; height: 100px; resize: none; position: absolute; top: 50px; width: 100%" disabled></textarea>
+						<textarea [value]="this.detalleSolicitud.justificacion" id="observaciones" name="observaciones"
+							style="color: black; font-size: 14px; height: 100px; resize: none; position: absolute; top: 50px; width: 100%"
+							disabled></textarea>
 					</div>
 				</div>
 			</div>
@@ -525,7 +576,8 @@
 
 						&nbsp;
 
-						<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{ this.detalleSolicitud.fechaIngreso | date : "yyyy/MM/dd" }}</span>
+						<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px"
+							class="text-start">{{ this.detalleSolicitud.fechaIngreso | date : "yyyy/MM/dd" }}</span>
 					</div>
 				</div>
 			</div>
@@ -539,7 +591,8 @@
 
 						&nbsp;
 
-						<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{ this.detalleSolicitud.fechaSalida | date : "yyyy/MM/dd" }}</span>
+						<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px"
+							class="text-start">{{ this.detalleSolicitud.fechaSalida | date : "yyyy/MM/dd" }}</span>
 					</div>
 				</div>
 			</div>
@@ -553,7 +606,8 @@
 
 						&nbsp;
 
-						<span id="responRight" name="responRight" style="color: black; font-size: 14px" class="text-start">{{ this.model.responsableRRHH }}</span>
+						<span id="responRight" name="responRight" style="color: black; font-size: 14px"
+							class="text-start">{{ this.model.responsableRRHH }}</span>
 					</div>
 				</div>
 			</div>
@@ -571,14 +625,19 @@
 			</div>
 
 			<div class="accordion" id="accordionExample">
-				<div *ngFor="let nivelItem of dataAprobacionesPorPosicion[keySelected]; let i = index" class="accordion-item">
+				<div *ngFor="let nivelItem of dataAprobacionesPorPosicion[keySelected]; let i = index"
+					class="accordion-item">
 					<div class="accordion-header">
-						<button class="accordion-button" type="button" data-bs-toggle="collapse" [attr.data-bs-target]="'#collapse' + i" aria-expanded="true" [attr.aria-controls]="'collapse' + i" style="display: block">
+						<button class="accordion-button" type="button" data-bs-toggle="collapse"
+							[attr.data-bs-target]="'#collapse' + i" aria-expanded="true"
+							[attr.aria-controls]="'collapse' + i" style="display: block">
 							<div class="row" style="align-items: center; justify-content: space-around">
 								<div class="col">{{ nivelItem.nivelAprobacionType.ruta }}</div>
 
 								<div class="col">
-									{{ nivelItem.aprobador.usuario !== "" && nivelItem.aprobador.usuario !== undefined && nivelItem.aprobador.usuario != null ? nivelItem.aprobador.codigoPosicion + "-" + nivelItem.aprobador.usuario : "No aplica" }}
+									{{ nivelItem.aprobador.usuario !== "" && nivelItem.aprobador.usuario !== undefined
+									&& nivelItem.aprobador.usuario != null ? nivelItem.aprobador.codigoPosicion + "-" +
+									nivelItem.aprobador.usuario : "No aplica" }}
 								</div>
 
 								<div class="col">
@@ -588,7 +647,8 @@
 						</button>
 					</div>
 
-					<div [id]="'collapse' + i" class="accordion-collapse collapse" [ngClass]="{ show: i === 0 }" data-bs-parent="#accordionExample">
+					<div [id]="'collapse' + i" class="accordion-collapse collapse" [ngClass]="{ show: i === 0 }"
+						data-bs-parent="#accordionExample">
 						<div class="row">
 							<div class="col">
 								<div class="input-group">
@@ -596,7 +656,11 @@
 
 									&nbsp;
 
-									<span id="lvl1descripcion" name="" style="color: black; font-size: 14px">{{ nivelItem.aprobador.descripcionPosicion !== "" && nivelItem.aprobador.descripcionPosicion !== undefined && nivelItem.aprobador.descripcionPosicion != null ? nivelItem.aprobador.descripcionPosicion : "No aplica" }}</span>
+									<span id="lvl1descripcion" name="" style="color: black; font-size: 14px">{{
+										nivelItem.aprobador.descripcionPosicion !== "" &&
+										nivelItem.aprobador.descripcionPosicion !== undefined &&
+										nivelItem.aprobador.descripcionPosicion != null ?
+										nivelItem.aprobador.descripcionPosicion : "No aplica" }}</span>
 								</div>
 							</div>
 						</div>
@@ -639,7 +703,8 @@
 
 						&nbsp;
 
-						<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{ "Gerente General de RRHH" }}</span>
+						<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px"
+							class="text-start">{{ "Gerente General de RRHH" }}</span>
 					</div>
 				</div>
 			</div>
@@ -653,7 +718,8 @@
 
 						&nbsp;
 
-						<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{ "01/10/24" }}</span>
+						<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px"
+							class="text-start">{{ "01/10/24" }}</span>
 					</div>
 				</div>
 			</div>

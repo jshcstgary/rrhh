@@ -865,6 +865,7 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 					detalles.estado = solicitud.estado;
 					solicitud.fechaCreacion = new DatePipe('en-CO').transform(solicitud.fechaCreacion, 'dd/MM/yyyy HH:mm:ss');
 					solicitud.fechaActualizacion = new DatePipe('en-CO').transform(solicitud.fechaActualizacion, 'dd/MM/yyyy HH:mm:ss');
+
 					return {
 						...solicitud,
 						...detalles

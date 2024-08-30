@@ -6,43 +6,38 @@
 					<div class="col-md-8">
 						<div class="mb-3">
 							<h3 class="sol-danger">
-								<a routerLink="/solicitudes/consulta-solicitudes"> <i
-										class="bi bi-arrow-left-circle azul"></i> {{ solicitud.idSolicitud }} </a>
+								<a routerLink="/solicitudes/consulta-solicitudes"> <i class="bi bi-arrow-left-circle azul"></i> {{ solicitud.idSolicitud }} </a>
 							</h3>
 						</div>
 					</div>
 
 					<div class="col-md-4 text-end">
-						<button class="btn btn-outline-info me-2" (click)="exportar()"><i class="fas fa-file-pdf"></i>
-							Exportar</button>
+						<button class="btn btn-outline-info me-2" (click)="exportar()"><i class="fas fa-file-pdf"></i> Exportar</button>
 					</div>
 				</div>
 
 				<div class="row mt-4">
 					<div class="col-md-4">
 						<div class="input-group mb-3">
-							<label class="label-estilo" for="origin">Creado por:</label>
+							<label class="input-group label-estilo" for="origin">Creado por:</label>
 
-							<span id="origin" name="" style="color: black; font-size: 14px" class="text-start">{{
-								solicitud.usuarioCreacion }}</span>
+							<span id="origin" name="" style="color: black; font-size: 14px" class="text-start">{{ solicitud.usuarioCreacion }}</span>
 						</div>
 					</div>
 
 					<div class="col-md-4">
 						<div class="input-group mb-3">
-							<label class="label-estilo" for="unidadnegocio">Fecha:</label>
+							<label class="input-group label-estilo" for="unidadnegocio">Fecha:</label>
 
-							<span id="date" name="" style="color: black; font-size: 14px" class="text-start">{{
-								this.solicitud.fechaCreacion | date : "yyyy/MM/dd" }}</span>
+							<span id="date" name="" style="color: black; font-size: 14px" class="text-start">{{ solicitud.fechaCreacion | date : "yyyy/MM/dd" }}</span>
 						</div>
 					</div>
 
 					<div class="col-md-4">
 						<div class="input-group mb-3">
-							<label class="label-estilo" for="unidadnegocio">Nro. Solicitud:</label>
+							<label class="input-group-text-estilo" for="unidadnegocio">Nro. Solicitud:</label>
 
-							<span id="solicitud" name="" style="color: black; font-size: 14px" class="text-start">{{
-								solicitud.idSolicitud }}</span>
+							<span id="solicitud" name="" style="color: black; font-size: 14px" class="text-start">{{ solicitud.idSolicitud }}</span>
 						</div>
 					</div>
 				</div>
@@ -54,151 +49,133 @@
 
 			<!-- ! Aqui empieza la condición Formulario FAMILIARES-->
 			<div *ngIf="mostrarFormularioFamiliares">
-				<div class="row mt-4">
-					<div class="col-md-4">
-						<div class="mb-4">
-							<h3 class="sol-danger">Información de persona a contratar</h3>
+				<!-- ! Información de persona a contratar -->
+				<details class="mb-4">
+					<summary>
+						<div class="row">
+							<div class="col-md-4">
+								<h3 class="sol-danger">Información de persona a contratar</h3>
+							</div>
+
+							<div class="col-md-7">
+								<hr />
+							</div>
+
+							<div class="col-md-1 text-end">
+								<i class="fas fa-chevron-circle-down"></i>
+							</div>
+						</div>
+					</summary>
+
+					<div class="details-content">
+						<div class="row">
+							<div class="col-md-12">
+								<div class="input-group mb-3 align-items-center">
+									<label class="input-group-text text-start label-estilo2" for="tipoSolicitud">Nro de Solicitud de Requisicion</label>
+
+									<span #mivar id="tipoSolicitud" name="idTipoSolicitud" style="color: black; font-size: 14px" class="text-start">{{ idSolicitudRP }}</span>
+								</div>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col-md-12">
+								<div class="input-group mb-3 align-items-center">
+									<label class="input-group-text text-start label-estilo2" for="tipoSolicitud">Justificacion</label>
+
+									<span style="color: black; font-size: 14px" class="text-start">{{ model.justificacionCargo }}</span>
+								</div>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col-md-12">
+								<div class="input-group mb-3 align-items-center">
+									<label class="input-group-text text-start label-estilo2" for="codigoposicion"
+										>Nombre del candidato <br />
+										seleccionado</label
+									>
+
+									<span #mivar id="tipoSolicitud" name="idTipoSolicitud" class="d-block" style="color: black; font-size: 14px" class="text-start">{{ nombreCompletoCandidato }}</span>
+								</div>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col-md-12">
+								<div class="input-group mb-3 align-items">
+									<label class="input-group-text text-start label-estilo2" for="compania">Compañía</label>
+
+									<span id="compania" name="" style="color: black; font-size: 14px" class="text-start">{{ model.compania }}</span>
+								</div>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col-md-6">
+								<div class="input-group mb-3 align-items-center">
+									<label class="input-group-text text-start label-estilo" for="unidadnegocio">Unidad de negocio</label>
+
+									<span id="unidadnegocio" name="" style="color: black; font-size: 14px" class="text-start">{{ model.unidadNegocio }}</span>
+								</div>
+							</div>
+
+							<div class="col-md-6">
+								<div class="input-group mb-3 align-items-center">
+									<label class="input-group-text text-start label-estilo" for="departamento">Área/Departamento</label>
+
+									<span id="departamento" name="" style="color: black; font-size: 14px" class="text-start">{{ model.departamento }}</span>
+								</div>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col-md-6">
+								<div class="input-group mb-3 align-items-center">
+									<label class="input-group-text text-start label-estilo" for="tipocargo">Localidad/Zona</label>
+
+									<span id="cargo" name="" style="color: black; font-size: 14px" class="text-start">{{ model.localidad }}</span>
+								</div>
+							</div>
+
+							<div class="col-md-6">
+								<div class="input-group mb-3 align-items-center">
+									<label class="input-group-text text-start label-estilo" for="localidadzona">Cargo</label>
+
+									<span id="localidadzona" name="" style="color: black; font-size: 14px" class="text-start">{{ model.nombreCargo }}</span>
+								</div>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col-md-6">
+								<div class="input-group mb-3 align-items-center">
+									<label class="input-group-text text-start label-estilo" for="niveldirección">Tipo de contrato</label>
+
+									<span id="niveldirección" name="" style="color: black; font-size: 14px" class="text-start">{{ model.tipoContrato }}</span>
+								</div>
+							</div>
+
+							<div class="col-md-6">
+								<div class="input-group mb-3 align-items-center">
+									<label class="input-group-text text-start label-estilo" for="centrocosto">Jefe solicitante</label>
+
+									<span id="centrocosto" name="" style="color: black; font-size: 14px" class="text-start">{{ detalleSolicitud.nombreJefeSolicitante }}</span>
+								</div>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col-md-6">
+								<div class="input-group mb-3 align-items-center">
+									<label class="input-group-text text-start label-estilo" for="centrocosto">Responsable de RRHH</label>
+
+									<span id="centrocosto" name="" style="color: black; font-size: 14px" class="text-start">{{ solicitud.usuarioCreacion }}</span>
+								</div>
+							</div>
 						</div>
 					</div>
-
-					<div class="col-md-8">
-						<hr />
-					</div>
-				</div>
-
-				<div class="row">
-					<div class="col-md-3">
-						<div class="input-group mb-3">
-							<label class="input-group-text label-estilo" for="tipoSolicitud">Nro de Solicitud de
-								Requisición</label>
-
-							&nbsp;
-						</div>
-					</div>
-
-					<div class="col-md-6">
-						<div class="input-group mb-3">
-							<span #mivar id="tipoSolicitud" name="idTipoSolicitud" style="color: black; font-size: 14px"
-								class="text-start">{{ idSolicitudRP }}</span>
-						</div>
-					</div>
-				</div>
-
-				<div class="row">
-					<div class="col-md-3">
-						<div class="input-group mb-3">
-							<label class="input-group-text label-estilo" for="tipoSolicitud">Justificacion*</label>
-						</div>
-					</div>
-
-					<div class="col-md-7">
-						<div class="input-group mb-3">
-							<textarea name="descripcionposicion" [(ngModel)]="model.justificacionCargo"
-								style="color: black; font-size: 14px; width: 100%; resize: none" class="form-control"
-								id="descripcionposicion" rows="3" required readonly></textarea>
-						</div>
-					</div>
-				</div>
-
-				<div class="row">
-					<div class="col-md-6"></div>
-				</div>
-
-				<div class="row">
-					<div class="col-md-3">
-						<label class="input-group-text label-estilo" for="codigoposicion">Nombre del candidato
-							seleccionado</label>
-					</div>
-
-					<div class="col-md-6">
-						<div class="input-group mb-3">
-							<span #mivar id="tipoSolicitud" name="idTipoSolicitud" style="color: black; font-size: 14px"
-								class="text-start">{{ nombreCompletoCandidato }}</span>
-						</div>
-					</div>
-				</div>
-
-				<div class="row">
-					<div class="col-md-7">
-						<div class="input-group mb-3">
-							<label class="input-group-text label-estilo" for="compania">Compañía</label>
-
-							<span id="compania" name="" style="color: black; font-size: 14px" class="text-start">{{
-								model.compania }}</span>
-						</div>
-					</div>
-
-					<div class="col-md">
-						<div class="input-group mb-3">
-							<label class="input-group-text label-estilo" for="unidadnegocio">Unidad de negocio</label>
-
-							<span id="unidadnegocio" name="" style="color: black; font-size: 14px" class="text-start">{{
-								model.unidadNegocio }}</span>
-						</div>
-					</div>
-				</div>
-
-				<div class="row">
-					<div class="col-md-7">
-						<div class="input-group mb-3">
-							<label class="input-group-text label-estilo" for="departamento">Departamento</label>
-
-							<span id="departamento" name="" style="color: black; font-size: 14px" class="text-start">{{
-								model.departamento }}</span>
-						</div>
-					</div>
-
-					<div class="col-md">
-						<div class="input-group mb-3">
-							<label class="input-group-text label-estilo" for="tipocargo">Localidad</label>
-
-							<span id="cargo" name="" style="color: black; font-size: 14px" class="text-start">{{
-								model.localidad }}</span>
-						</div>
-					</div>
-				</div>
-
-				<div class="row">
-					<div class="col-md-7">
-						<div class="input-group mb-3">
-							<label class="input-group-text label-estilo" for="localidadzona">Cargo</label>
-
-							<span id="localidadzona" name="" style="color: black; font-size: 14px" class="text-start">{{
-								model.nombreCargo }}</span>
-						</div>
-					</div>
-
-					<div class="col-md">
-						<div class="input-group mb-3">
-							<label class="input-group-text label-estilo" for="niveldirección">Tipo de contrato</label>
-
-							<span id="niveldirección" name="" style="color: black; font-size: 14px"
-								class="text-start">{{ model.tipoContrato }}</span>
-						</div>
-					</div>
-				</div>
-
-				<div class="row">
-					<div class="col-md-7">
-						<div class="input-group mb-3">
-							<label class="input-group-text label-estilo" for="centrocosto">Jefe solicitante</label>
-
-							<span id="centrocosto" name="" style="color: black; font-size: 14px" class="text-start">{{
-								solicitud.usuarioCreacion }}</span>
-						</div>
-					</div>
-				</div>
-
-				<div class="row">
-					<div class="col-md-7">
-						<div class="input-group mb-3">
-							<label class="input-group-text label-estilo" for="centrocosto">Responsable de RRHH</label>
-
-							<span id="centrocosto" name="" style="color: black; font-size: 14px" class="text-start">{{
-								solicitud.usuarioCreacion }}</span>
-						</div>
-					</div>
-				</div>
+				</details>
 
 				<div class="row" *ngIf="mostrarTipoJustificacionYMision">
 					<div class="col">
@@ -207,8 +184,7 @@
 
 							&nbsp;
 
-							<textarea id="justificacion" name="justificacion" [(ngModel)]="model.justificacionCargo"
-								style="color: black; font-size: 14px" required #justificacion="ngModel"></textarea>
+							<textarea id="justificacion" name="justificacion" [(ngModel)]="model.justificacionCargo" style="color: black; font-size: 14px" required #justificacion="ngModel"></textarea>
 						</div>
 					</div>
 				</div>
@@ -226,7 +202,7 @@
 				</div>
 
 				<table-personalized [columns]="columnsDatosFamiliares" [data]="dataTableDatosFamiliares" [tableWidth]="'100%'"> </table-personalized>
-	
+
 				<div class="row mt-4">
 					<div class="col-md-4">
 						<div class="mb-4">
@@ -240,22 +216,21 @@
 				</div>
 
 				<div class="accordion" id="accordionExample">
-					<div *ngFor="let nivelItem of dataAprobacionesPorPosicion[keySelected]; let i = index"
-						class="accordion-item">
+					<div *ngFor="let nivelItem of dataAprobacionesPorPosicion[keySelected]; let i = index" class="accordion-item">
 						<div class="accordion-header">
-							<button class="accordion-button" type="button" data-bs-toggle="collapse"
-								[attr.data-bs-target]="'#collapse' + i" aria-expanded="true"
-								[attr.aria-controls]="'collapse' + i" style="display: block">
+							<button class="accordion-button" type="button" data-bs-toggle="collapse" [attr.data-bs-target]="'#collapse' + i" aria-expanded="true" [attr.aria-controls]="'collapse' + i" style="display: block">
 								<div class="row" style="align-items: center; justify-content: space-around">
 									<div class="col">
 										{{ nivelItem.nivelAprobacionType.ruta }}
 									</div>
 
 									<div class="col">
-										{{ nivelItem.aprobador.usuario !== "" && nivelItem.aprobador.usuario !==
-										undefined && nivelItem.aprobador.usuario != null ?
-										nivelItem.aprobador.codigoPosicion + "-" + nivelItem.aprobador.usuario : "No
-										aplica" }}
+										{{
+											nivelItem.aprobador.usuario !== "" && nivelItem.aprobador.usuario !== undefined && nivelItem.aprobador.usuario != null
+												? nivelItem.aprobador.codigoPosicion + "-" + nivelItem.aprobador.usuario
+												: "No
+										aplica"
+										}}
 									</div>
 
 									<div class="col">
@@ -265,8 +240,7 @@
 							</button>
 						</div>
 
-						<div [id]="'collapse' + i" class="accordion-collapse collapse" [ngClass]="{ show: i === 0 }"
-							data-bs-parent="#accordionExample">
+						<div [id]="'collapse' + i" class="accordion-collapse collapse" [ngClass]="{ show: i === 0 }" data-bs-parent="#accordionExample">
 							<div class="row">
 								<div class="col">
 									<div class="input-group">
@@ -275,10 +249,7 @@
 										&nbsp;
 
 										<span id="lvl1descripcion" name="" style="color: black; font-size: 14px">
-											{{ nivelItem.aprobador.descripcionPosicion !== "" &&
-											nivelItem.aprobador.descripcionPosicion !== undefined &&
-											nivelItem.aprobador.descripcionPosicion != null ?
-											nivelItem.aprobador.descripcionPosicion : "No aplica" }}
+											{{ nivelItem.aprobador.descripcionPosicion !== "" && nivelItem.aprobador.descripcionPosicion !== undefined && nivelItem.aprobador.descripcionPosicion != null ? nivelItem.aprobador.descripcionPosicion : "No aplica" }}
 										</span>
 									</div>
 								</div>
@@ -372,13 +343,11 @@
 
 					<div class="col-md-7">
 						<div class="input-group mb-3">
-							<label class="input-group label-estilo" for="tipoSolicitud">Nro Solicitud de
-								Requisición</label>
+							<label class="input-group label-estilo" for="tipoSolicitud">Nro Solicitud de Requisición</label>
 
 							&nbsp;
 
-							<span #mivar id="tipoSolicitud" name="tipoSolicitud" style="color: black; font-size: 14px"
-								class="text-start">{{ idSolicitudRP }}</span>
+							<span #mivar id="tipoSolicitud" name="tipoSolicitud" style="color: black; font-size: 14px" class="text-start">{{ idSolicitudRP }}</span>
 						</div>
 					</div>
 				</div>
@@ -388,13 +357,11 @@
 
 					<div class="col-md-7">
 						<div class="input-group mb-3">
-							<label class="input-group label-estilo" for="tipoMotivo">Apellidos y nombres
-								completos</label>
+							<label class="input-group label-estilo" for="tipoMotivo">Apellidos y nombres completos</label>
 
 							&nbsp;
 
-							<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px"
-								class="text-start">{{ this.nombreCompletoCandidato }}</span>
+							<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{ this.nombreCompletoCandidato }}</span>
 						</div>
 					</div>
 				</div>
@@ -410,8 +377,7 @@
 
 					<div class="col-md-7">
 						<div class="input-group mb-3">
-							<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px"
-								class="text-start">{{ detalleSolicitudRG.justificacion }}</span>
+							<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{ detalleSolicitudRG.justificacion }}</span>
 						</div>
 					</div>
 				</div>
@@ -437,8 +403,7 @@
 
 							&nbsp;
 
-							<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px"
-								class="text-start">{{ this.detalleSolicitud.nombreEmpleado }}</span>
+							<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{ this.detalleSolicitud.nombreEmpleado }}</span>
 						</div>
 					</div>
 				</div>
@@ -448,15 +413,13 @@
 
 					<div class="col d-flex justify-content-center align-items-center">
 						<div class="mb-3">
-							<label class="input-group label-estilo" style="font-size: 20px; color: black"
-								for="tipoMotivo">Anterior</label>
+							<label class="input-group label-estilo" style="font-size: 20px; color: black" for="tipoMotivo">Anterior</label>
 						</div>
 					</div>
 
 					<div class="col d-flex justify-content-center align-items-center">
 						<div class="mb-3">
-							<label class="input-group label-estilo" style="font-size: 20px; color: black"
-								for="tipoMotivo">Actual</label>
+							<label class="input-group label-estilo" style="font-size: 20px; color: black" for="tipoMotivo">Actual</label>
 						</div>
 					</div>
 				</div>
@@ -470,8 +433,7 @@
 
 							&nbsp;
 
-							<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px"
-								class="text-start">{{ modelRG.compania }}</span>
+							<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{ modelRG.compania }}</span>
 						</div>
 					</div>
 
@@ -481,8 +443,7 @@
 
 							&nbsp;
 
-							<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px"
-								class="text-start">{{ model.compania }}</span>
+							<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{ model.compania }}</span>
 						</div>
 					</div>
 				</div>
@@ -496,8 +457,7 @@
 
 							&nbsp;
 
-							<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px"
-								class="text-start">{{ modelRG.sueldo }}</span>
+							<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{ modelRG.sueldo }}</span>
 						</div>
 					</div>
 
@@ -507,8 +467,7 @@
 
 							&nbsp;
 
-							<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px"
-								class="text-start">{{ model.sueldo }}</span>
+							<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{ model.sueldo }}</span>
 						</div>
 					</div>
 				</div>
@@ -534,8 +493,7 @@
 
 							&nbsp;
 
-							<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px"
-								class="text-start">$ {{ modelRG.sueldoMensual | number : "1.2-2" }}</span>
+							<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">$ {{ modelRG.sueldoMensual | number : "1.2-2" }}</span>
 						</div>
 					</div>
 
@@ -545,8 +503,7 @@
 
 							&nbsp;
 
-							<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px"
-								class="text-start">$ {{ model.sueldoMensual | number : "1.2-2" }}</span>
+							<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">$ {{ model.sueldoMensual | number : "1.2-2" }}</span>
 						</div>
 					</div>
 				</div>
@@ -560,8 +517,7 @@
 
 							&nbsp;
 
-							<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px"
-								class="text-start">$ {{ modelRG.sueldoTrimestral | number : "1.2-2" }}</span>
+							<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">$ {{ modelRG.sueldoTrimestral | number : "1.2-2" }}</span>
 						</div>
 					</div>
 
@@ -571,8 +527,7 @@
 
 							&nbsp;
 
-							<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px"
-								class="text-start">$ {{ model.sueldoTrimestral | number : "1.2-2" }}</span>
+							<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">$ {{ model.sueldoTrimestral | number : "1.2-2" }}</span>
 						</div>
 					</div>
 				</div>
@@ -586,8 +541,7 @@
 
 							&nbsp;
 
-							<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px"
-								class="text-start">$ {{ modelRG.sueldoSemestral | number : "1.2-2" }}</span>
+							<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">$ {{ modelRG.sueldoSemestral | number : "1.2-2" }}</span>
 						</div>
 					</div>
 
@@ -597,8 +551,7 @@
 
 							&nbsp;
 
-							<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px"
-								class="text-start">$ {{ model.sueldoSemestral | number : "1.2-2" }}</span>
+							<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">$ {{ model.sueldoSemestral | number : "1.2-2" }}</span>
 						</div>
 					</div>
 				</div>
@@ -612,8 +565,7 @@
 
 							&nbsp;
 
-							<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px"
-								class="text-start">$ {{ modelRG.sueldoAnual | number : "1.2-2" }}</span>
+							<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">$ {{ modelRG.sueldoAnual | number : "1.2-2" }}</span>
 						</div>
 					</div>
 
@@ -623,8 +575,7 @@
 
 							&nbsp;
 
-							<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px"
-								class="text-start">$ {{ model.sueldoAnual | number : "1.2-2" }}</span>
+							<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">$ {{ model.sueldoAnual | number : "1.2-2" }}</span>
 						</div>
 					</div>
 				</div>
@@ -638,8 +589,7 @@
 
 							&nbsp;
 
-							<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px"
-								class="text-start">$ {{ remuneracion | number : "1.2-2" }}</span>
+							<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">$ {{ remuneracion | number : "1.2-2" }}</span>
 						</div>
 					</div>
 
@@ -649,8 +599,7 @@
 
 							&nbsp;
 
-							<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px"
-								class="text-start">$ {{ modelRemuneracion | number : "1.2-2" }}</span>
+							<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">$ {{ modelRemuneracion | number : "1.2-2" }}</span>
 						</div>
 					</div>
 				</div>
@@ -664,8 +613,7 @@
 
 							&nbsp;
 
-							<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px"
-								class="text-start">{{ modelRG.descrPosicion }}</span>
+							<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{ modelRG.descrPosicion }}</span>
 						</div>
 					</div>
 
@@ -675,8 +623,7 @@
 
 							&nbsp;
 
-							<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px"
-								class="text-start">{{ model.descrPosicion }}</span>
+							<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{ model.descrPosicion }}</span>
 						</div>
 					</div>
 				</div>
@@ -690,8 +637,7 @@
 
 							&nbsp;
 
-							<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px"
-								class="text-start">{{ modelRG.unidadNegocio }}</span>
+							<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{ modelRG.unidadNegocio }}</span>
 						</div>
 					</div>
 
@@ -701,8 +647,7 @@
 
 							&nbsp;
 
-							<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px"
-								class="text-start">{{ model.unidadNegocio }}</span>
+							<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{ model.unidadNegocio }}</span>
 						</div>
 					</div>
 				</div>
@@ -716,8 +661,7 @@
 
 							&nbsp;
 
-							<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px"
-								class="text-start">{{ modelRG.departamento }}</span>
+							<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{ modelRG.departamento }}</span>
 						</div>
 					</div>
 
@@ -727,8 +671,7 @@
 
 							&nbsp;
 
-							<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px"
-								class="text-start">{{ model.departamento }}</span>
+							<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{ model.departamento }}</span>
 						</div>
 					</div>
 				</div>
@@ -742,8 +685,7 @@
 
 							&nbsp;
 
-							<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px"
-								class="text-start">{{ modelRG.localidad }}</span>
+							<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{ modelRG.localidad }}</span>
 						</div>
 					</div>
 
@@ -753,8 +695,7 @@
 
 							&nbsp;
 
-							<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px"
-								class="text-start">{{ model.localidad }}</span>
+							<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{ model.localidad }}</span>
 						</div>
 					</div>
 				</div>
@@ -768,8 +709,7 @@
 
 							&nbsp;
 
-							<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px"
-								class="text-start">{{ detalleSolicitudRG.jefeInmediatoSuperior }}</span>
+							<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{ detalleSolicitudRG.jefeInmediatoSuperior }}</span>
 						</div>
 					</div>
 
@@ -779,9 +719,7 @@
 
 							&nbsp;
 
-							<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px"
-								class="text-start">{{ this.detalleSolicitud.jefeInmediatoSuperior === "" ? "No aplica" :
-								this.detalleSolicitud.jefeInmediatoSuperior }}</span>
+							<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{ this.detalleSolicitud.jefeInmediatoSuperior === "" ? "No aplica" : this.detalleSolicitud.jefeInmediatoSuperior }}</span>
 						</div>
 					</div>
 				</div>
@@ -795,8 +733,7 @@
 
 							&nbsp;
 
-							<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px"
-								class="text-start">{{ detalleSolicitudRG.puestoJefeInmediato }}</span>
+							<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{ detalleSolicitudRG.puestoJefeInmediato }}</span>
 						</div>
 					</div>
 
@@ -806,9 +743,7 @@
 
 							&nbsp;
 
-							<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px"
-								class="text-start">{{ this.detalleSolicitud.jefeInmediatoSuperior === "" ? "No aplica" :
-								detalleSolicitud.puestoJefeInmediato }}</span>
+							<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{ this.detalleSolicitud.jefeInmediatoSuperior === "" ? "No aplica" : detalleSolicitud.puestoJefeInmediato }}</span>
 						</div>
 					</div>
 				</div>
@@ -822,8 +757,7 @@
 
 							&nbsp;
 
-							<span id="jeferef" name="jeferef" style="color: black; font-size: 14px"
-								class="text-start">{{ this.detalleSolicitudRG.jefeReferencia }}</span>
+							<span id="jeferef" name="jeferef" style="color: black; font-size: 14px" class="text-start">{{ this.detalleSolicitudRG.jefeReferencia }}</span>
 						</div>
 					</div>
 
@@ -833,8 +767,7 @@
 
 							&nbsp;
 
-							<span id="respon" name="respon" style="color: black; font-size: 14px" class="text-start">{{
-								this.detalleSolicitud.responsableRRHH }}</span>
+							<span id="respon" name="respon" style="color: black; font-size: 14px" class="text-start">{{ this.detalleSolicitud.responsableRRHH }}</span>
 						</div>
 					</div>
 				</div>
@@ -848,19 +781,15 @@
 
 							&nbsp;
 
-							<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px"
-								class="text-start">{{ this.detalleSolicitudRG.puesto }}</span>
+							<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{ this.detalleSolicitudRG.puesto }}</span>
 						</div>
 					</div>
 
 					<div class="col mb-4">
 						<div class="input-group mb-3 h-100">
-							<label class="input-group-text label-estilo" for="tipoMotivo">Observaciones del comité de
-								Remuneraciones</label>
+							<label class="input-group-text text-start label-estilo" for="tipoMotivo">Observaciones del comité de Remuneraciones</label>
 
-							<textarea [value]="detalleSolicitudRG.valor" id="observaciones" name="observaciones"
-								style="color: black; font-size: 14px; height: 100px; resize: none; position: absolute; top: 50px; width: 100%"
-								disabled></textarea>
+							<textarea [value]="detalleSolicitudRG.valor" id="observaciones" name="observaciones" style="color: black; font-size: 14px; height: 100px; resize: none; position: absolute; top: 50px; width: 100%" disabled></textarea>
 						</div>
 					</div>
 				</div>
@@ -874,8 +803,7 @@
 
 							&nbsp;
 
-							<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px"
-								class="text-start">{{ modelRG.fechaIngreso | date : "dd/MM/yyyy" }}</span>
+							<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{ modelRG.fechaIngreso | date : "dd/MM/yyyy" }}</span>
 						</div>
 					</div>
 				</div>
@@ -889,8 +817,7 @@
 
 							&nbsp;
 
-							<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px"
-								class="text-start">{{ detalleSolicitudRG.fechaSalida | date : "dd/MM/yyyy" }}</span>
+							<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{ detalleSolicitudRG.fechaSalida | date : "dd/MM/yyyy" }}</span>
 						</div>
 					</div>
 				</div>
@@ -904,8 +831,7 @@
 
 							&nbsp;
 
-							<span id="responRight" name="responRight" style="color: black; font-size: 14px"
-								class="text-start">{{ detalleSolicitudRG.responsableRRHH }}</span>
+							<span id="responRight" name="responRight" style="color: black; font-size: 14px" class="text-start">{{ detalleSolicitudRG.responsableRRHH }}</span>
 						</div>
 					</div>
 				</div>
@@ -923,22 +849,21 @@
 				</div>
 
 				<div class="accordion" id="accordionExample">
-					<div *ngFor="let nivelItem of dataAprobacionesPorPosicion[keySelected]; let i = index"
-						class="accordion-item">
+					<div *ngFor="let nivelItem of dataAprobacionesPorPosicion[keySelected]; let i = index" class="accordion-item">
 						<div class="accordion-header">
-							<button class="accordion-button" type="button" data-bs-toggle="collapse"
-								[attr.data-bs-target]="'#collapse' + i" aria-expanded="true"
-								[attr.aria-controls]="'collapse' + i" style="display: block">
+							<button class="accordion-button" type="button" data-bs-toggle="collapse" [attr.data-bs-target]="'#collapse' + i" aria-expanded="true" [attr.aria-controls]="'collapse' + i" style="display: block">
 								<div class="row" style="align-items: center; justify-content: space-around">
 									<div class="col">
 										{{ nivelItem.nivelAprobacionType.ruta }}
 									</div>
 
 									<div class="col">
-										{{ nivelItem.aprobador.usuario !== "" && nivelItem.aprobador.usuario !==
-										undefined && nivelItem.aprobador.usuario != null ?
-										nivelItem.aprobador.codigoPosicion + "-" + nivelItem.aprobador.usuario : "No
-										aplica" }}
+										{{
+											nivelItem.aprobador.usuario !== "" && nivelItem.aprobador.usuario !== undefined && nivelItem.aprobador.usuario != null
+												? nivelItem.aprobador.codigoPosicion + "-" + nivelItem.aprobador.usuario
+												: "No
+										aplica"
+										}}
 									</div>
 
 									<div class="col">
@@ -948,8 +873,7 @@
 							</button>
 						</div>
 
-						<div [id]="'collapse' + i" class="accordion-collapse collapse" [ngClass]="{ show: i === 0 }"
-							data-bs-parent="#accordionExample">
+						<div [id]="'collapse' + i" class="accordion-collapse collapse" [ngClass]="{ show: i === 0 }" data-bs-parent="#accordionExample">
 							<div class="row">
 								<div class="col">
 									<div class="input-group">
@@ -958,10 +882,7 @@
 										&nbsp;
 
 										<span id="lvl1descripcion" name="" style="color: black; font-size: 14px">
-											{{ nivelItem.aprobador.descripcionPosicion !== "" &&
-											nivelItem.aprobador.descripcionPosicion !== undefined &&
-											nivelItem.aprobador.descripcionPosicion != null ?
-											nivelItem.aprobador.descripcionPosicion : "No aplica" }}
+											{{ nivelItem.aprobador.descripcionPosicion !== "" && nivelItem.aprobador.descripcionPosicion !== undefined && nivelItem.aprobador.descripcionPosicion != null ? nivelItem.aprobador.descripcionPosicion : "No aplica" }}
 										</span>
 									</div>
 								</div>
@@ -986,14 +907,11 @@
 					<div class="row mb-2">
 						<div class="col-md-10">
 							<div class="input-group mb-3">
-								<label class="input-group label-estilo" for="tipoSolicitud">Jefe Anterior o Jefe de
-									Referencia</label>
+								<label class="input-group label-estilo" for="tipoSolicitud">Jefe Anterior o Jefe de Referencia</label>
 
 								&nbsp;
 
-								<span #mivar id="tipoSolicitud" name="tipoSolicitud"
-									style="color: black; font-size: 14px" class="text-start">{{
-									this.detalleSolicitudRG.jefeInmediatoSuperior }}</span>
+								<span #mivar id="tipoSolicitud" name="tipoSolicitud" style="color: black; font-size: 14px" class="text-start">{{ this.detalleSolicitudRG.jefeInmediatoSuperior }}</span>
 							</div>
 						</div>
 					</div>
@@ -1004,20 +922,16 @@
 
 								&nbsp;
 
-								<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px"
-									class="text-start">{{ this.detalleSolicitudRG.puestoJefeInmediato }}</span>
+								<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{ this.detalleSolicitudRG.puestoJefeInmediato }}</span>
 							</div>
 						</div>
 					</div>
 
 					<div class="row mt-3">
 						<div class="col-md-10">
-							<label for="comments" class="label-estilo"> Comentarios (¿Cómo fue el desempeño en el Área?)
-							</label>
+							<label for="comments" class="label-estilo"> Comentarios (¿Cómo fue el desempeño en el Área?) </label>
 
-							<span *ngIf="mostrarFormularioReingreso" #mivar id="tipoSolicitud" name="tipoSolicitud"
-								style="color: black; font-size: 14px" class="text-start">{{
-								comentariosJefeInmediato.comentario }}</span>
+							<span *ngIf="mostrarFormularioReingreso" #mivar id="tipoSolicitud" name="tipoSolicitud" style="color: black; font-size: 14px" class="text-start">{{ comentariosJefeInmediato.comentario }}</span>
 						</div>
 					</div>
 
@@ -1028,9 +942,7 @@
 
 								&nbsp;
 
-								<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px"
-									class="text-start">{{ comentariosJefeInmediato.fecha_Creacion | date : "dd/MM/yyyy"
-									}}</span>
+								<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{ comentariosJefeInmediato.fecha_Creacion | date : "dd/MM/yyyy" }}</span>
 							</div>
 						</div>
 					</div>
@@ -1056,9 +968,7 @@
 
 								&nbsp;
 
-								<span *ngIf="mostrarFormularioReingreso" #mivar id="tipoSolicitud" name="tipoSolicitud"
-									style="color: black; font-size: 14px" class="text-start">{{
-									comentariosRRHH.comentario }}</span>
+								<span *ngIf="mostrarFormularioReingreso" #mivar id="tipoSolicitud" name="tipoSolicitud" style="color: black; font-size: 14px" class="text-start">{{ comentariosRRHH.comentario }}</span>
 							</div>
 						</div>
 					</div>
@@ -1070,8 +980,7 @@
 
 								&nbsp;
 
-								<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px"
-									class="text-start">{{ causaSalida }}</span>
+								<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{ causaSalida }}</span>
 							</div>
 						</div>
 					</div>
@@ -1083,8 +992,7 @@
 
 								&nbsp;
 
-								<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px"
-									class="text-start">{{ comentariosRRHH.fecha_Creacion | date : "dd/MM/yyyy" }}</span>
+								<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{ comentariosRRHH.fecha_Creacion | date : "dd/MM/yyyy" }}</span>
 							</div>
 						</div>
 					</div>
@@ -1106,14 +1014,11 @@
 					<div class="row mb-2">
 						<div class="col-md-10">
 							<div class="input-group mb-3">
-								<label class="input-group label-estilo" for="tipoSolicitud">Nombre del Jefe
-									Solicitante</label>
+								<label class="input-group label-estilo" for="tipoSolicitud">Nombre del Jefe Solicitante</label>
 
 								&nbsp;
 
-								<span #mivar id="tipoSolicitud" name="tipoSolicitud"
-									style="color: black; font-size: 14px" class="text-start">{{
-									detalleSolicitudRG.jefeSolicitante }}</span>
+								<span #mivar id="tipoSolicitud" name="tipoSolicitud" style="color: black; font-size: 14px" class="text-start">{{ detalleSolicitudRG.jefeSolicitante }}</span>
 							</div>
 						</div>
 					</div>
@@ -1125,20 +1030,16 @@
 
 								&nbsp;
 
-								<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px"
-									class="text-start">{{ detalleSolicitudRG.puesto }}</span>
+								<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{ detalleSolicitudRG.puesto }}</span>
 							</div>
 						</div>
 					</div>
 
 					<div class="col-md-10">
 						<div class="input-group mb-3">
-							<label class="input-group label-estilo" for="tipoSolicitud">Comentarios (por qué considera
-								el reingreso)*</label>
+							<label class="input-group label-estilo" for="tipoSolicitud">Comentarios (por qué considera el reingreso)*</label>
 
-							<span *ngIf="mostrarFormularioReingreso" #mivar id="tipoSolicitud" name="tipoSolicitud"
-								style="color: black; font-size: 14px" class="text-start">{{
-								Comentario_Jefe_Solicitante.comentario }}</span>
+							<span *ngIf="mostrarFormularioReingreso" #mivar id="tipoSolicitud" name="tipoSolicitud" style="color: black; font-size: 14px" class="text-start">{{ Comentario_Jefe_Solicitante.comentario }}</span>
 						</div>
 					</div>
 
@@ -1149,9 +1050,7 @@
 
 								&nbsp;
 
-								<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px"
-									class="text-start">{{ Comentario_Jefe_Solicitante.fecha_Creacion | date :
-									"dd/MM/yyyy" }}</span>
+								<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{ Comentario_Jefe_Solicitante.fecha_Creacion | date : "dd/MM/yyyy" }}</span>
 							</div>
 						</div>
 					</div>
@@ -1176,25 +1075,21 @@
 					<div class="row">
 						<div class="col-md-6">
 							<div class="input-group mb-3 align-items-center">
-								<label class="input-group-text label-estilo" for="tipoSolicitud">Tipo de
-									solicitud</label>
+								<label class="input-group-text text-start label-estilo" for="tipoSolicitud">Tipo de solicitud</label>
 
 								&nbsp;
 
-								<span #mivar id="tipoSolicitud" name="idTipoSolicitud"
-									style="color: black; font-size: 14px" class="text-start">{{ solicitud.tipoSolicitud
-									}}</span>
+								<span #mivar id="tipoSolicitud" name="idTipoSolicitud" style="color: black; font-size: 14px" class="text-start">{{ solicitud.tipoSolicitud }}</span>
 							</div>
 						</div>
 
 						<div class="col-md-6">
 							<div class="input-group mb-3 align-items-center">
-								<label class="input-group-text label-estilo" for="tipomotivo">Tipo de motivo</label>
+								<label class="input-group-text text-start label-estilo" for="tipomotivo">Tipo de motivo</label>
 
 								&nbsp;
 
-								<span id="tipomotivo" name="tipomotivo" style="color: black; font-size: 14px"
-									class="text-start">{{ solicitud.tipoMotivo }}</span>
+								<span id="tipomotivo" name="tipomotivo" style="color: black; font-size: 14px" class="text-start">{{ solicitud.tipoMotivo }}</span>
 							</div>
 						</div>
 					</div>
@@ -1202,26 +1097,21 @@
 					<div class="row">
 						<div class="col-md-6">
 							<div class="input-group mb-3 align-items-center">
-								<label class="input-group-text label-estilo" for="codigoposicion"> Código de posición
-								</label>
+								<label class="input-group-text text-start label-estilo" for="codigoposicion"> Código de posición </label>
 
 								&nbsp;
 
-								<span id="codigoposicion" name="codigoposicion" style="color: black; font-size: 14px"
-									class="text-start">{{ model.codigoPosicion }}</span>
+								<span id="codigoposicion" name="codigoposicion" style="color: black; font-size: 14px" class="text-start">{{ model.codigoPosicion }}</span>
 							</div>
 						</div>
 
 						<div class="col-md-6">
 							<div class="input-group mb-3 align-items-center">
-								<label class="input-group-text label-estilo" for="descripcionposicion">Descripción de
-									posición</label>
+								<label class="input-group-text text-start label-estilo" for="descripcionposicion">Descripción de posición</label>
 
 								&nbsp;
 
-								<span id="descripcionposicion" name="descripcionposicion"
-									style="color: black; font-size: 14px" class="text-start">{{ model.descrPosicion
-									}}</span>
+								<span id="descripcionposicion" name="descripcionposicion" style="color: black; font-size: 14px" class="text-start">{{ model.descrPosicion }}</span>
 							</div>
 						</div>
 					</div>
@@ -1229,23 +1119,21 @@
 					<div class="row" *ngIf="mostrarSubledger">
 						<div class="col-md-6">
 							<div class="input-group mb-3 align-items-center">
-								<label class="input-group-text label-estilo" for="subledger"> Subledger </label>
+								<label class="input-group-text text-start label-estilo" for="subledger"> Subledger </label>
 
 								&nbsp;
 
-								<span id="subledger" name="subledger" style="color: black; font-size: 14px"
-									class="text-start">{{ model.subledger }}</span>
+								<span id="subledger" name="subledger" style="color: black; font-size: 14px" class="text-start">{{ model.subledger }}</span>
 							</div>
 						</div>
 
 						<div class="col-md-6" *ngIf="mostrarSubledger">
 							<div class="input-group mb-3 align-items-center">
-								<label class="input-group-text label-estilo" for="nombreempleado"> Empleado </label>
+								<label class="input-group-text text-start label-estilo" for="nombreempleado"> Empleado </label>
 
 								&nbsp;
 
-								<span id="nombreempleado" name="nombreempleado" style="color: black; font-size: 14px"
-									class="text-start">{{ model.nombreCompleto }}</span>
+								<span id="nombreempleado" name="nombreempleado" style="color: black; font-size: 14px" class="text-start">{{ model.nombreCompleto }}</span>
 							</div>
 						</div>
 					</div>
@@ -1253,10 +1141,9 @@
 					<div class="row">
 						<div class="col-md-12">
 							<div class="input-group mb-3 align-items-center">
-								<label class="input-group-text label-estilo2" for="compania">Compañía</label>
+								<label class="input-group-text text-start label-estilo2" for="compania">Compañía</label>
 
-								<span id="compania" name="" style="color: black; font-size: 14px" class="text-start">{{
-									model.compania }}</span>
+								<span id="compania" name="" style="color: black; font-size: 14px" class="text-start">{{ model.compania }}</span>
 							</div>
 						</div>
 					</div>
@@ -1264,21 +1151,17 @@
 					<div class="row">
 						<div class="col-md-6">
 							<div class="input-group mb-3 align-items-center">
-								<label class="input-group-text label-estilo" for="unidadnegocio">Unidad de
-									negocio</label>
+								<label class="input-group-text text-start label-estilo" for="unidadnegocio">Unidad de negocio</label>
 
-								<span id="unidadnegocio" name="" style="color: black; font-size: 14px"
-									class="text-start">{{ model.unidadNegocio }}</span>
+								<span id="unidadnegocio" name="" style="color: black; font-size: 14px" class="text-start">{{ model.unidadNegocio }}</span>
 							</div>
 						</div>
 
 						<div class="col-md-6">
 							<div class="input-group mb-3">
-								<label class="input-group-text label-estilo"
-									for="departamento">Área/Departamento</label>
+								<label class="input-group-text text-start label-estilo" for="departamento">Área/Departamento</label>
 
-								<span id="departamento" name="" style="color: black; font-size: 14px"
-									class="text-start">{{ model.departamento }}</span>
+								<span id="departamento" name="" style="color: black; font-size: 14px" class="text-start">{{ model.departamento }}</span>
 							</div>
 						</div>
 					</div>
@@ -1286,19 +1169,17 @@
 					<div class="row">
 						<div class="col-md-6">
 							<div class="input-group mb-3">
-								<label class="input-group-text label-estilo" for="tipocargo">Tipo de cargo</label>
+								<label class="input-group-text text-start label-estilo" for="tipocargo">Tipo de cargo</label>
 
-								<span id="cargo" name="" style="color: black; font-size: 14px" class="text-start">{{
-									model.nombreCargo }}</span>
+								<span id="cargo" name="" style="color: black; font-size: 14px" class="text-start">{{ model.nombreCargo }}</span>
 							</div>
 						</div>
 
 						<div class="col-md-6">
 							<div class="input-group mb-3">
-								<label class="input-group-text label-estilo" for="localidadzona">Localidad/Zona</label>
+								<label class="input-group-text text-start label-estilo" for="localidadzona">Localidad/Zona</label>
 
-								<span id="localidadzona" name="" style="color: black; font-size: 14px"
-									class="text-start">{{ model.localidad }}</span>
+								<span id="localidadzona" name="" style="color: black; font-size: 14px" class="text-start">{{ model.localidad }}</span>
 							</div>
 						</div>
 					</div>
@@ -1306,20 +1187,17 @@
 					<div class="row">
 						<div class="col-md-6">
 							<div class="input-group mb-3">
-								<label class="input-group-text label-estilo" for="niveldirección">Nivel de
-									dirección</label>
+								<label class="input-group-text text-start label-estilo" for="niveldirección">Nivel de dirección</label>
 
-								<span id="niveldirección" name="" style="color: black; font-size: 14px"
-									class="text-start">{{ model.nivelDir }}</span>
+								<span id="niveldirección" name="" style="color: black; font-size: 14px" class="text-start">{{ model.nivelDir }}</span>
 							</div>
 						</div>
 
 						<div class="col-md-6">
 							<div class="input-group mb-3">
-								<label class="input-group-text label-estilo" for="centrocosto">Centro de costo</label>
+								<label class="input-group-text text-start label-estilo" for="centrocosto">Centro de costo</label>
 
-								<span id="centrocosto" name="" style="color: black; font-size: 14px"
-									class="text-start">{{ model.nomCCosto }}</span>
+								<span id="centrocosto" name="" style="color: black; font-size: 14px" class="text-start">{{ model.nomCCosto }}</span>
 							</div>
 						</div>
 					</div>
@@ -1327,10 +1205,9 @@
 					<div class="row" *ngIf="mostrarTipoJustificacionYMision">
 						<div class="col-md-6" *ngIf="mostrarTipoJustificacionYMision">
 							<div class="input-group mb-3">
-								<label class="input-group-text label-estilo" for="misioncargo">Misión del cargo</label>
+								<label class="input-group-text text-start label-estilo" for="misioncargo">Misión del cargo</label>
 
-								<span id="misioncargo" name="misioncargo" style="color: black; font-size: 14px"
-									class="text-start">{{ model.misionCargo }}</span>
+								<span id="misioncargo" name="misioncargo" style="color: black; font-size: 14px" class="text-start">{{ model.misionCargo }}</span>
 							</div>
 						</div>
 					</div>
@@ -1338,10 +1215,9 @@
 					<div class="row" *ngIf="mostrarTipoJustificacionYMision">
 						<div class="col">
 							<div class="input-group mb-3 contenedor">
-								<label class="input-group-text label-estilo2" for="justificacion">Justificación</label>
+								<label class="input-group-text text-start label-estilo2" for="justificacion">Justificación</label>
 
-								<span id="justificacion" name="justificacion" style="color: black; font-size: 14px"
-									class="text-start">{{ model.justificacionCargo }}</span>
+								<span id="justificacion" name="justificacion" style="color: black; font-size: 14px" class="text-start">{{ model.justificacionCargo }}</span>
 							</div>
 						</div>
 					</div>
@@ -1361,10 +1237,9 @@
 					<div class="row">
 						<div class="col-md-12">
 							<div class="input-group mb-3 align-items-center">
-								<label class="input-group-text label-estilo2" for="reporta">Reporta a</label>
+								<label class="input-group-text text-start label-estilo2" for="reporta">Reporta a</label>
 
-								<span id="reporta" name="" style="color: black; font-size: 14px">{{ model.reportaA }}
-								</span>
+								<span id="reporta" name="" style="color: black; font-size: 14px">{{ model.reportaA }} </span>
 							</div>
 						</div>
 					</div>
@@ -1372,19 +1247,17 @@
 					<div class="row">
 						<div class="col-md-6">
 							<div class="input-group mb-3 align-items-center">
-								<label class="input-group-text label-estilo" for="nivelRepa">Nivel de reporte</label>
+								<label class="input-group-text text-start label-estilo" for="nivelRepa">Nivel de reporte</label>
 
-								<span id="nivelRepa" name="" style="color: black; font-size: 14px" class="text-start">{{
-									model.nivelRepa }}</span>
+								<span id="nivelRepa" name="" style="color: black; font-size: 14px" class="text-start">{{ model.nivelRepa }}</span>
 							</div>
 						</div>
 
 						<div class="col-md-6">
 							<div class="input-group mb-3 align-items-center">
-								<label class="input-group-text label-estilo" for="tipocontrato">Tipo de contrato</label>
+								<label class="input-group-text text-start label-estilo" for="tipocontrato">Tipo de contrato</label>
 
-								<span id="tipocontrato" name="tipocontrato" style="color: black; font-size: 14px"
-									class="text-start">{{ model.tipoContrato }}</span>
+								<span id="tipocontrato" name="tipocontrato" style="color: black; font-size: 14px" class="text-start">{{ model.tipoContrato }}</span>
 							</div>
 						</div>
 					</div>
@@ -1392,19 +1265,17 @@
 					<div class="row">
 						<div class="col-md-6">
 							<div class="input-group mb-3 align-items-center">
-								<label class="input-group-text label-estilo" for="supervisaa">Supervisa a</label>
+								<label class="input-group-text text-start label-estilo" for="supervisaa">Supervisa a</label>
 
-								<span id="supervisaa" name="" style="color: black; font-size: 14px"
-									class="text-start">{{ model.supervisaA }}</span>
+								<span id="supervisaa" name="" style="color: black; font-size: 14px" class="text-start">{{ model.supervisaA }}</span>
 							</div>
 						</div>
 
 						<div class="col-md-6">
 							<div class="input-group mb-3 align-items-center">
-								<label class="input-group-text label-estilo" for="sueldo">Sueldo</label>
+								<label class="input-group-text text-start label-estilo" for="sueldo">Sueldo</label>
 
-								<span id="sueldo" name="sueldo" style="color: black; font-size: 14px"
-									class="text-start">$ {{ model.sueldo | number : "1.2-2" }}</span>
+								<span id="sueldo" name="sueldo" style="color: black; font-size: 14px" class="text-start">$ {{ model.sueldo | number : "1.2-2" }}</span>
 							</div>
 						</div>
 					</div>
@@ -1420,19 +1291,17 @@
 					<div class="row">
 						<div class="col-md-6">
 							<div class="input-group mb-3 align-item-center">
-								<label class="input-group-text label-estilo" for="mensual">Mensual</label>
+								<label class="input-group-text text-start label-estilo" for="mensual">Mensual</label>
 
-								<span id="mensual" name="mensual" style="color: black; font-size: 14px"
-									class="text-start">$ {{ model.sueldoMensual | number : "1.2-2" }}</span>
+								<span id="mensual" name="mensual" style="color: black; font-size: 14px" class="text-start">$ {{ model.sueldoMensual | number : "1.2-2" }}</span>
 							</div>
 						</div>
 
 						<div class="col-md-6">
 							<div class="input-group mb-3 align-item-center">
-								<label class="input-group-text label-estilo" for="trimestral">Trimestral</label>
+								<label class="input-group-text text-start label-estilo" for="trimestral">Trimestral</label>
 
-								<span id="trimestral" name="trimestral" style="color: black; font-size: 14px"
-									class="text-start">$ {{ model.sueldoTrimestral | number : "1.2-2" }}</span>
+								<span id="trimestral" name="trimestral" style="color: black; font-size: 14px" class="text-start">$ {{ model.sueldoTrimestral | number : "1.2-2" }}</span>
 							</div>
 						</div>
 					</div>
@@ -1440,19 +1309,17 @@
 					<div class="row">
 						<div class="col-md-6">
 							<div class="input-group mb-3 align-item-center">
-								<label class="input-group-text label-estilo" for="semestral">Semestral</label>
+								<label class="input-group-text text-start label-estilo" for="semestral">Semestral</label>
 
-								<span id="semestral" name="semestral" style="color: black; font-size: 14px"
-									class="text-start">$ {{ model.sueldoSemestral | number : "1.2-2" }}</span>
+								<span id="semestral" name="semestral" style="color: black; font-size: 14px" class="text-start">$ {{ model.sueldoSemestral | number : "1.2-2" }}</span>
 							</div>
 						</div>
 
 						<div class="col-md-6">
 							<div class="input-group mb-3 align-item-center">
-								<label class="input-group-text label-estilo" for="anual">Anual</label>
+								<label class="input-group-text text-start label-estilo" for="anual">Anual</label>
 
-								<span id="anual" name="anual" style="color: black; font-size: 14px" class="text-start">$
-									{{ model.sueldoAnual | number : "1.2-2" }}</span>
+								<span id="anual" name="anual" style="color: black; font-size: 14px" class="text-start">$ {{ model.sueldoAnual | number : "1.2-2" }}</span>
 							</div>
 						</div>
 					</div>
@@ -1470,22 +1337,21 @@
 					</div>
 
 					<div class="accordion" id="accordionExample">
-						<div *ngFor="let nivelItem of dataAprobacionesPorPosicion[keySelected]; let i = index"
-							class="accordion-item">
+						<div *ngFor="let nivelItem of dataAprobacionesPorPosicion[keySelected]; let i = index" class="accordion-item">
 							<div class="accordion-header">
-								<button class="accordion-button" type="button" data-bs-toggle="collapse"
-									[attr.data-bs-target]="'#collapse' + i" aria-expanded="true"
-									[attr.aria-controls]="'collapse' + i" style="display: block">
+								<button class="accordion-button" type="button" data-bs-toggle="collapse" [attr.data-bs-target]="'#collapse' + i" aria-expanded="true" [attr.aria-controls]="'collapse' + i" style="display: block">
 									<div class="row" style="align-items: center; justify-content: space-around">
 										<div class="col">
 											{{ nivelItem.nivelAprobacionType.ruta }}
 										</div>
 
 										<div class="col">
-											{{ nivelItem.aprobador.usuario !== "" && nivelItem.aprobador.usuario !==
-											undefined && nivelItem.aprobador.usuario != null ?
-											nivelItem.aprobador.codigoPosicion + "-" + nivelItem.aprobador.usuario : "No
-											aplica" }}
+											{{
+												nivelItem.aprobador.usuario !== "" && nivelItem.aprobador.usuario !== undefined && nivelItem.aprobador.usuario != null
+													? nivelItem.aprobador.codigoPosicion + "-" + nivelItem.aprobador.usuario
+													: "No
+											aplica"
+											}}
 										</div>
 
 										<div class="col">
@@ -1495,8 +1361,7 @@
 								</button>
 							</div>
 
-							<div [id]="'collapse' + i" class="accordion-collapse collapse" [ngClass]="{ show: i === 0 }"
-								data-bs-parent="#accordionExample">
+							<div [id]="'collapse' + i" class="accordion-collapse collapse" [ngClass]="{ show: i === 0 }" data-bs-parent="#accordionExample">
 								<div class="row">
 									<div class="col">
 										<div class="input-group">
@@ -1504,11 +1369,7 @@
 
 											&nbsp;
 
-											<span id="lvl1descripcion" name="" style="color: black; font-size: 14px">{{
-												nivelItem.aprobador.descripcionPosicion !== "" &&
-												nivelItem.aprobador.descripcionPosicion !== undefined &&
-												nivelItem.aprobador.descripcionPosicion != null ?
-												nivelItem.aprobador.descripcionPosicion : "No aplica" }}</span>
+											<span id="lvl1descripcion" name="" style="color: black; font-size: 14px">{{ nivelItem.aprobador.descripcionPosicion !== "" && nivelItem.aprobador.descripcionPosicion !== undefined && nivelItem.aprobador.descripcionPosicion != null ? nivelItem.aprobador.descripcionPosicion : "No aplica" }}</span>
 										</div>
 									</div>
 								</div>
@@ -1533,20 +1394,15 @@
 
 					<div class="row mt-2">
 						<div class="col">
-							<div *ngFor="let item of dataComentariosAprobaciones; let i = index"
-								class="row mt-2 align-items-center">
+							<div *ngFor="let item of dataComentariosAprobaciones; let i = index" class="row mt-2 align-items-center">
 								<div class="col-auto">
-									<label *ngIf="i === 0" class="input-group-text adjustable-label"
-										for="lcomentariodinamico"> Aprobadores dinámicos </label>
+									<label *ngIf="i === 0" class="input-group-text adjustable-label" for="lcomentariodinamico"> Aprobadores dinámicos </label>
 
-									<label *ngIf="i !== 0" class="input-group-text hidden-label"
-										for="lcomentariodinamico"> Aprobadores dinámicos </label>
+									<label *ngIf="i !== 0" class="input-group-text hidden-label" for="lcomentariodinamico"> Aprobadores dinámicos </label>
 								</div>
 
 								<div class="col">
-									<span id="lcomentariodinamico" name="" style="color: black; font-size: 14px">{{
-										item.text !== "" && item.text !== undefined && item.text != null ? item.text :
-										"No hay comentario" }}</span>
+									<span id="lcomentariodinamico" name="" style="color: black; font-size: 14px">{{ item.text !== "" && item.text !== undefined && item.text != null ? item.text : "No hay comentario" }}</span>
 								</div>
 							</div>
 						</div>
@@ -1555,17 +1411,14 @@
 					<div class="row mt-2">
 						<div class="col">
 							<div class="input-group mb-3">
-								<label class="input-group-text adjustable-label2" for="lcomentariorrhh"> Gerente de RRHH
-									Corporativo </label>
+								<label class="input-group-text adjustable-label2" for="lcomentariorrhh"> Gerente de RRHH Corporativo </label>
 
 								&nbsp;
 
 								<div *ngFor="let item of dataComentariosAprobacionesRRHH">
 									&nbsp;
 
-									<span id="lcomentariorrhh" name="" style="color: black; font-size: 14px">{{
-										item.text !== "" && item.text !== undefined && item.text != null ? item.text :
-										"No hay comentario" }}</span>
+									<span id="lcomentariorrhh" name="" style="color: black; font-size: 14px">{{ item.text !== "" && item.text !== undefined && item.text != null ? item.text : "No hay comentario" }}</span>
 								</div>
 							</div>
 						</div>
@@ -1574,17 +1427,14 @@
 					<div class="row mt-2">
 						<div class="col">
 							<div class="input-group mb-3">
-								<label class="input-group-text adjustable-label2" for="comitederemuneraciones"> Comité
-									de Remuneraciones </label>
+								<label class="input-group-text adjustable-label2" for="comitederemuneraciones"> Comité de Remuneraciones </label>
 
 								&nbsp;
 
 								<div *ngFor="let item of dataComentariosAprobacionesCREM">
 									&nbsp;
 
-									<span id="lcomentariocrem" name="" style="color: black; font-size: 14px">{{
-										item.text !== "" && item.text !== undefined && item.text != null ? item.text :
-										"No hay comentario" }}</span>
+									<span id="lcomentariocrem" name="" style="color: black; font-size: 14px">{{ item.text !== "" && item.text !== undefined && item.text != null ? item.text : "No hay comentario" }}</span>
 								</div>
 							</div>
 						</div>
@@ -1606,7 +1456,7 @@
 					<div class="row">
 						<div class="col-md-6">
 							<div class="input-group mb-3">
-								<label class="input-group-text label-estilo" for="tipoSolicitud">Tipo Proceso</label>
+								<label class="input-group-text text-start label-estilo" for="tipoSolicitud">Tipo Proceso</label>
 
 								&nbsp;
 
@@ -1618,23 +1468,20 @@
 
 						<div class="col-md-6">
 							<div class="input-group mb-3">
-								<label class="input-group-text label-estilo2" for="flexSwitchCheckChecked">Tipo de
-									fuente</label>
+								<label class="input-group-text text-start label-estilo2" for="flexSwitchCheckChecked">Tipo de fuente</label>
 
 								&nbsp;
 
 								<span *ngIf="model.tipoProceso === ''; else fuenteExterna">Ninguno</span>
 
 								<ng-template #fuenteExterna>
-									<div *ngIf="isChecked; else externo"
-										class="form-check form-switch checkbox-container">
+									<div *ngIf="isChecked; else externo" class="form-check form-switch checkbox-container">
 										<label class="form-check-label" for="flexSwitchCheckChecked">Externo</label>
 									</div>
 
 									<ng-template #externo>
 										<div>
-											<label #externo class="form-check-label"
-												for="flexSwitchCheckChecked">Interno</label>
+											<label #externo class="form-check-label" for="flexSwitchCheckChecked">Interno</label>
 										</div>
 									</ng-template>
 								</ng-template>
@@ -1646,7 +1493,7 @@
 					<div class="row" *ngIf="isChecked">
 						<div class="col-md-6">
 							<div class="input-group mb-3">
-								<label class="input-group-text label-estilo">Fuente Externa</label>
+								<label class="input-group-text text-start label-estilo">Fuente Externa</label>
 
 								&nbsp;
 
@@ -1735,8 +1582,7 @@
 
 					<div class="row">
 						<div class="col-md-4 d-flex align-items-center">
-							<label class="input-group-text adjustable-label">Fin del proceso de selección y de
-								contración</label>
+							<label class="input-group-text adjustable-label">Fin del proceso de selección y de contración</label>
 
 							<input class="form-control" [value]="fechas.finProcesoContratacion" readonly />
 						</div>
@@ -1744,13 +1590,14 @@
 
 					<div class="row mb-3">
 						<div class="col-md-3 me-2">
-							<label class="input-group-text label-estilo" for="nombre-candidato">Nombre del candidato
-								seleccionado</label>
+							<label class="input-group-text text-start label-estilo" for="nombre-candidato"
+								>Nombre del candidato <br />
+								seleccionado</label
+							>
 						</div>
 
 						<div class="col-md-4">
-							<input type="text" name="nombre-candidato" placeholder="Nombre del candidato"
-								[(ngModel)]="nombreCandidato" class="form-control" id="nombre-candidato" readonly />
+							<input type="text" name="nombre-candidato" placeholder="Nombre del candidato" [(ngModel)]="nombreCandidato" class="form-control" id="nombre-candidato" readonly />
 						</div>
 					</div>
 					<!--Fin Seleccion de candidato-->
@@ -1773,8 +1620,7 @@
 						<div class="col-md-4 d-flex">
 							<label for="input2" class="input-group-text adjustable-label">Fin de proceso</label>
 
-							<input id="input2" type="text" class="form-control" readonly
-								[value]="fechas.reingreso === '' ? '' : fechas.finProceso" />
+							<input id="input2" type="text" class="form-control" readonly [value]="fechas.reingreso === '' ? '' : fechas.finProceso" />
 						</div>
 					</div>
 
@@ -1790,15 +1636,13 @@
 						<div class="col-md-4 d-flex">
 							<label for="input1" class="input-group-text adjustable-label">Inicio de proceso</label>
 
-							<input id="input1" type="text" class="form-control" readonly
-								[value]="fechas.contratacionFamiliares" />
+							<input id="input1" type="text" class="form-control" readonly [value]="fechas.contratacionFamiliares" />
 						</div>
 
 						<div class="col-md-4 d-flex">
 							<label for="input2" class="input-group-text adjustable-label">Fin de proceso</label>
 
-							<input id="input2" type="text" class="form-control" readonly
-								[value]="fechas.contratacionFamiliares === '' ? '' : fechas.finProcesoFamiliares" />
+							<input id="input2" type="text" class="form-control" readonly [value]="fechas.contratacionFamiliares === '' ? '' : fechas.finProcesoFamiliares" />
 						</div>
 					</div>
 				</div>
@@ -1813,8 +1657,7 @@
 
 							&nbsp;
 
-							<span id="comp" name="comp" style="color: black; font-size: 14px" class="text-start">{{
-								model.nombreCompleto }}</span>
+							<span id="comp" name="comp" style="color: black; font-size: 14px" class="text-start">{{ model.nombreCompleto }}</span>
 						</div>
 					</div>
 
@@ -1826,8 +1669,7 @@
 
 							&nbsp;
 
-							<span id="comp" name="comp" style="color: black; font-size: 14px" class="text-start">{{
-								model.subledger }}</span>
+							<span id="comp" name="comp" style="color: black; font-size: 14px" class="text-start">{{ model.subledger }}</span>
 						</div>
 					</div>
 				</div>
@@ -1835,13 +1677,11 @@
 				<div class="row">
 					<div class="col">
 						<div class="input-group mb-3">
-							<label class="input-group label-estilo" for="justificacion" style="width: 20%">Justificación
-								<span style="color: red">*</span></label>
+							<label class="input-group label-estilo" for="justificacion" style="width: 20%">Justificación <span style="color: red">*</span></label>
 
 							&nbsp;
 
-							<span style="color: black; font-size: 14px" class="text-start">{{ model.justificacionCargo
-								}}</span>
+							<span style="color: black; font-size: 14px" class="text-start">{{ model.justificacionCargo }}</span>
 						</div>
 					</div>
 				</div>
@@ -1849,8 +1689,7 @@
 				<div class="mx-auto my-5">
 					<div class="form-check form-check-inline">
 						<div class="form-check text-center">
-							<input type="checkbox" [(ngModel)]="viewInputs" class="form-check-input" name="customCheck1"
-								id="customCheck1" checked disabled />
+							<input type="checkbox" [(ngModel)]="viewInputs" class="form-check-input" name="customCheck1" id="customCheck1" checked disabled />
 
 							<label class="form-check-label" for="customCheck1">Transferencia de Compañía</label>
 						</div>
@@ -1882,9 +1721,7 @@
 
 									&nbsp;
 
-									<span #mivar id="tipoSolicitud" name="tipoSolicitud"
-										style="color: black; font-size: 14px" class="text-start">{{ model.fechaIngreso |
-										date : "yyyy/MM/dd" }}</span>
+									<span #mivar id="tipoSolicitud" name="tipoSolicitud" style="color: black; font-size: 14px" class="text-start">{{ model.fechaIngreso | date : "yyyy/MM/dd" }}</span>
 								</div>
 							</div>
 						</div>
@@ -1895,8 +1732,7 @@
 
 								&nbsp;
 
-								<span id="comp" name="comp" style="color: black; font-size: 14px" class="text-start">{{
-									model.compania }}</span>
+								<span id="comp" name="comp" style="color: black; font-size: 14px" class="text-start">{{ model.compania }}</span>
 							</div>
 						</div>
 
@@ -1906,8 +1742,7 @@
 
 								&nbsp;
 
-								<span id="unidad" name="unidad" style="color: black; font-size: 14px"
-									class="text-start">{{ model.unidadNegocio }}</span>
+								<span id="unidad" name="unidad" style="color: black; font-size: 14px" class="text-start">{{ model.unidadNegocio }}</span>
 							</div>
 						</div>
 
@@ -1917,8 +1752,7 @@
 
 								&nbsp;
 
-								<span id="comp" name="comp" style="color: black; font-size: 14px" class="text-start">{{
-									model.departamento }}</span>
+								<span id="comp" name="comp" style="color: black; font-size: 14px" class="text-start">{{ model.departamento }}</span>
 							</div>
 						</div>
 
@@ -1928,8 +1762,7 @@
 
 								&nbsp;
 
-								<span id="unidad" name="unidad" style="color: black; font-size: 14px"
-									class="text-start">{{ model.localidad }}</span>
+								<span id="unidad" name="unidad" style="color: black; font-size: 14px" class="text-start">{{ model.localidad }}</span>
 							</div>
 						</div>
 
@@ -1939,8 +1772,7 @@
 
 								&nbsp;
 
-								<span id="unidad" name="unidad" style="color: black; font-size: 14px"
-									class="text-start">{{ model.grupoPago }}</span>
+								<span id="unidad" name="unidad" style="color: black; font-size: 14px" class="text-start">{{ model.grupoPago }}</span>
 							</div>
 						</div>
 
@@ -1950,8 +1782,7 @@
 
 								&nbsp;
 
-								<span id="comp" name="comp" style="color: black; font-size: 14px" class="text-start">{{
-									model.nombreCargo }}</span>
+								<span id="comp" name="comp" style="color: black; font-size: 14px" class="text-start">{{ model.nombreCargo }}</span>
 							</div>
 						</div>
 
@@ -1961,8 +1792,7 @@
 
 								&nbsp;
 
-								<span id="unidad" name="unidad" style="color: black; font-size: 14px"
-									class="text-start">{{ model.nomCCosto }}</span>
+								<span id="unidad" name="unidad" style="color: black; font-size: 14px" class="text-start">{{ model.nomCCosto }}</span>
 							</div>
 						</div>
 
@@ -1972,8 +1802,7 @@
 
 								&nbsp;
 
-								<span id="unidad" name="unidad" style="color: black; font-size: 14px"
-									class="text-start">{{ model.sucursal }}</span>
+								<span id="unidad" name="unidad" style="color: black; font-size: 14px" class="text-start">{{ model.sucursal }}</span>
 							</div>
 						</div>
 
@@ -1983,8 +1812,7 @@
 
 								&nbsp;
 
-								<span id="mov" name="mov" style="color: black; font-size: 14px" class="text-start">{{
-									detalleSolicitudPropuestos.movilizacion }}</span>
+								<span id="mov" name="mov" style="color: black; font-size: 14px" class="text-start">{{ detalleSolicitudPropuestos.movilizacion }}</span>
 							</div>
 						</div>
 
@@ -1994,15 +1822,13 @@
 
 								&nbsp;
 
-								<span id="al" name="al" style="color: black; font-size: 14px" class="text-start">{{
-									detalleSolicitudPropuestos.alimentacion }}</span>
+								<span id="al" name="al" style="color: black; font-size: 14px" class="text-start">{{ detalleSolicitudPropuestos.alimentacion }}</span>
 							</div>
 						</div>
 						<div *ngIf="!muestraRemuneracion">
 							<div class="row my-4">
 								<div class="col-12">
-									<label class="input-group label-estilo" style="font-size: 20px; color: black"
-										for="tipoMotivo">Tipo de Variable </label>
+									<label class="input-group label-estilo" style="font-size: 20px; color: black" for="tipoMotivo">Tipo de Variable </label>
 								</div>
 							</div>
 
@@ -2012,8 +1838,7 @@
 
 									&nbsp;
 
-									<span id="comp" name="comp" style="color: black; font-size: 14px"
-										class="text-start">$ {{ model.sueldo | number : "1.2-2" }}</span>
+									<span id="comp" name="comp" style="color: black; font-size: 14px" class="text-start">$ {{ model.sueldo | number : "1.2-2" }}</span>
 								</div>
 							</div>
 
@@ -2023,8 +1848,7 @@
 
 									&nbsp;
 
-									<span id="me" name="me" style="color: black; font-size: 14px" class="text-start">$
-										{{ model.sueldoMensual | number : "1.2-2" }}</span>
+									<span id="me" name="me" style="color: black; font-size: 14px" class="text-start">$ {{ model.sueldoMensual | number : "1.2-2" }}</span>
 								</div>
 							</div>
 
@@ -2034,8 +1858,7 @@
 
 									&nbsp;
 
-									<span id="al" name="al" style="color: black; font-size: 14px" class="text-start">$
-										{{ model.sueldoTrimestral | number : "1.2-2" }}</span>
+									<span id="al" name="al" style="color: black; font-size: 14px" class="text-start">$ {{ model.sueldoTrimestral | number : "1.2-2" }}</span>
 								</div>
 							</div>
 
@@ -2045,8 +1868,7 @@
 
 									&nbsp;
 
-									<span id="al" name="al" style="color: black; font-size: 14px" class="text-start">$
-										{{ model.sueldoSemestral | number : "1.2-2" }}</span>
+									<span id="al" name="al" style="color: black; font-size: 14px" class="text-start">$ {{ model.sueldoSemestral | number : "1.2-2" }}</span>
 								</div>
 							</div>
 
@@ -2056,8 +1878,7 @@
 
 									&nbsp;
 
-									<span id="al" name="al" style="color: black; font-size: 14px" class="text-start">$
-										{{ model.sueldoAnual | number : "1.2-2" }}</span>
+									<span id="al" name="al" style="color: black; font-size: 14px" class="text-start">$ {{ model.sueldoAnual | number : "1.2-2" }}</span>
 								</div>
 							</div>
 						</div>
@@ -2074,8 +1895,7 @@
 
 								&nbsp;
 
-								<span id="comp" name="comp" style="color: black; font-size: 14px" class="text-start">{{
-									modelPropuestos.compania }}</span>
+								<span id="comp" name="comp" style="color: black; font-size: 14px" class="text-start">{{ modelPropuestos.compania }}</span>
 							</div>
 						</div>
 
@@ -2085,8 +1905,7 @@
 
 								&nbsp;
 
-								<span id="comp" name="comp" style="color: black; font-size: 14px" class="text-start">{{
-									modelPropuestos.unidadNegocio }}</span>
+								<span id="comp" name="comp" style="color: black; font-size: 14px" class="text-start">{{ modelPropuestos.unidadNegocio }}</span>
 							</div>
 						</div>
 
@@ -2096,9 +1915,7 @@
 
 								&nbsp;
 
-								<span #mivar id="tipoSolicitud" name="tipoSolicitud"
-									style="color: black; font-size: 14px" class="text-start">{{
-									modelPropuestos.fechaIngreso | date : "yyyy/MM/dd" }}</span>
+								<span #mivar id="tipoSolicitud" name="tipoSolicitud" style="color: black; font-size: 14px" class="text-start">{{ modelPropuestos.fechaIngreso | date : "yyyy/MM/dd" }}</span>
 							</div>
 						</div>
 
@@ -2108,8 +1925,7 @@
 
 								&nbsp;
 
-								<span id="comp" name="comp" style="color: black; font-size: 14px" class="text-start">{{
-									modelPropuestos.departamento }}</span>
+								<span id="comp" name="comp" style="color: black; font-size: 14px" class="text-start">{{ modelPropuestos.departamento }}</span>
 							</div>
 						</div>
 
@@ -2119,8 +1935,7 @@
 
 								&nbsp;
 
-								<span id="comp" name="comp" style="color: black; font-size: 14px" class="text-start">{{
-									modelPropuestos.localidad }}</span>
+								<span id="comp" name="comp" style="color: black; font-size: 14px" class="text-start">{{ modelPropuestos.localidad }}</span>
 							</div>
 						</div>
 
@@ -2130,8 +1945,7 @@
 
 								&nbsp;
 
-								<span id="comp" name="comp" style="color: black; font-size: 14px" class="text-start">{{
-									modelPropuestos.grupoPago }}</span>
+								<span id="comp" name="comp" style="color: black; font-size: 14px" class="text-start">{{ modelPropuestos.grupoPago }}</span>
 							</div>
 						</div>
 
@@ -2141,8 +1955,7 @@
 
 								&nbsp;
 
-								<span id="comp" name="comp" style="color: black; font-size: 14px" class="text-start">{{
-									modelPropuestos.nombreCargo }}</span>
+								<span id="comp" name="comp" style="color: black; font-size: 14px" class="text-start">{{ modelPropuestos.nombreCargo }}</span>
 							</div>
 						</div>
 
@@ -2152,8 +1965,7 @@
 
 								&nbsp;
 
-								<span id="comp" name="comp" style="color: black; font-size: 14px" class="text-start">{{
-									modelPropuestos.nomCCosto }}</span>
+								<span id="comp" name="comp" style="color: black; font-size: 14px" class="text-start">{{ modelPropuestos.nomCCosto }}</span>
 							</div>
 						</div>
 
@@ -2163,8 +1975,7 @@
 
 								&nbsp;
 
-								<span id="comp" name="comp" style="color: black; font-size: 14px" class="text-start">{{
-									modelPropuestos.sucursal }}</span>
+								<span id="comp" name="comp" style="color: black; font-size: 14px" class="text-start">{{ modelPropuestos.sucursal }}</span>
 							</div>
 						</div>
 
@@ -2174,8 +1985,7 @@
 
 								&nbsp;
 
-								<span id="comp" name="comp" style="color: black; font-size: 14px" class="text-start">{{
-									detalleSolicitudPropuestos.movilizacion }}</span>
+								<span id="comp" name="comp" style="color: black; font-size: 14px" class="text-start">{{ detalleSolicitudPropuestos.movilizacion }}</span>
 							</div>
 						</div>
 
@@ -2185,15 +1995,13 @@
 
 								&nbsp;
 
-								<span id="comp" name="comp" style="color: black; font-size: 14px" class="text-start">{{
-									detalleSolicitudPropuestos.alimentacion }}</span>
+								<span id="comp" name="comp" style="color: black; font-size: 14px" class="text-start">{{ detalleSolicitudPropuestos.alimentacion }}</span>
 							</div>
 						</div>
 						<div *ngIf="!muestraRemuneracion">
 							<div class="row my-4">
 								<div class="col-12">
-									<label class="input-group label-estilo" style="font-size: 20px; color: black"
-										for="tipoMotivo">Tipo de Variable </label>
+									<label class="input-group label-estilo" style="font-size: 20px; color: black" for="tipoMotivo">Tipo de Variable </label>
 								</div>
 							</div>
 
@@ -2203,8 +2011,7 @@
 
 									&nbsp;
 
-									<span id="comp" name="comp" style="color: black; font-size: 14px"
-										class="text-start">$ {{ modelPropuestos.sueldo | number : "1.2-2" }}</span>
+									<span id="comp" name="comp" style="color: black; font-size: 14px" class="text-start">$ {{ modelPropuestos.sueldo | number : "1.2-2" }}</span>
 								</div>
 							</div>
 
@@ -2214,9 +2021,7 @@
 
 									&nbsp;
 
-									<span id="comp" name="comp" style="color: black; font-size: 14px"
-										class="text-start">$ {{ modelPropuestos.sueldoMensual | number : "1.2-2"
-										}}</span>
+									<span id="comp" name="comp" style="color: black; font-size: 14px" class="text-start">$ {{ modelPropuestos.sueldoMensual | number : "1.2-2" }}</span>
 								</div>
 							</div>
 
@@ -2226,9 +2031,7 @@
 
 									&nbsp;
 
-									<span id="comp" name="comp" style="color: black; font-size: 14px"
-										class="text-start">$ {{ modelPropuestos.sueldoTrimestral | number : "1.2-2"
-										}}</span>
+									<span id="comp" name="comp" style="color: black; font-size: 14px" class="text-start">$ {{ modelPropuestos.sueldoTrimestral | number : "1.2-2" }}</span>
 								</div>
 							</div>
 
@@ -2238,9 +2041,7 @@
 
 									&nbsp;
 
-									<span id="comp" name="comp" style="color: black; font-size: 14px"
-										class="text-start">$ {{ modelPropuestos.sueldoSemestral | number : "1.2-2"
-										}}</span>
+									<span id="comp" name="comp" style="color: black; font-size: 14px" class="text-start">$ {{ modelPropuestos.sueldoSemestral | number : "1.2-2" }}</span>
 								</div>
 							</div>
 
@@ -2250,8 +2051,7 @@
 
 									&nbsp;
 
-									<span id="comp" name="comp" style="color: black; font-size: 14px"
-										class="text-start">$ {{ modelPropuestos.sueldoAnual | number : "1.2-2" }}</span>
+									<span id="comp" name="comp" style="color: black; font-size: 14px" class="text-start">$ {{ modelPropuestos.sueldoAnual | number : "1.2-2" }}</span>
 								</div>
 							</div>
 						</div>
@@ -2271,22 +2071,21 @@
 				</div>
 
 				<div class="accordion" id="accordionExample">
-					<div *ngFor="let nivelItem of dataAprobacionesPorPosicion[keySelected]; let i = index"
-						class="accordion-item">
+					<div *ngFor="let nivelItem of dataAprobacionesPorPosicion[keySelected]; let i = index" class="accordion-item">
 						<div class="accordion-header">
-							<button class="accordion-button" type="button" data-bs-toggle="collapse"
-								[attr.data-bs-target]="'#collapse' + i" aria-expanded="true"
-								[attr.aria-controls]="'collapse' + i" style="display: block">
+							<button class="accordion-button" type="button" data-bs-toggle="collapse" [attr.data-bs-target]="'#collapse' + i" aria-expanded="true" [attr.aria-controls]="'collapse' + i" style="display: block">
 								<div class="row" style="align-items: center; justify-content: space-around">
 									<div class="col">
 										{{ nivelItem.nivelAprobacionType.ruta }}
 									</div>
 
 									<div class="col">
-										{{ nivelItem.aprobador.usuario !== "" && nivelItem.aprobador.usuario !==
-										undefined && nivelItem.aprobador.usuario != null ?
-										nivelItem.aprobador.codigoPosicion + "-" + nivelItem.aprobador.usuario : "No
-										aplica" }}
+										{{
+											nivelItem.aprobador.usuario !== "" && nivelItem.aprobador.usuario !== undefined && nivelItem.aprobador.usuario != null
+												? nivelItem.aprobador.codigoPosicion + "-" + nivelItem.aprobador.usuario
+												: "No
+										aplica"
+										}}
 									</div>
 
 									<div class="col">
@@ -2296,8 +2095,7 @@
 							</button>
 						</div>
 
-						<div [id]="'collapse' + i" class="accordion-collapse collapse" [ngClass]="{ show: i === 0 }"
-							data-bs-parent="#accordionExample">
+						<div [id]="'collapse' + i" class="accordion-collapse collapse" [ngClass]="{ show: i === 0 }" data-bs-parent="#accordionExample">
 							<div class="row">
 								<div class="col">
 									<div class="input-group">
@@ -2306,10 +2104,7 @@
 										&nbsp;
 
 										<span id="lvl1descripcion" name="" style="color: black; font-size: 14px">
-											{{ nivelItem.aprobador.descripcionPosicion !== "" &&
-											nivelItem.aprobador.descripcionPosicion !== undefined &&
-											nivelItem.aprobador.descripcionPosicion != null ?
-											nivelItem.aprobador.descripcionPosicion : "No aplica" }}
+											{{ nivelItem.aprobador.descripcionPosicion !== "" && nivelItem.aprobador.descripcionPosicion !== undefined && nivelItem.aprobador.descripcionPosicion != null ? nivelItem.aprobador.descripcionPosicion : "No aplica" }}
 										</span>
 									</div>
 								</div>

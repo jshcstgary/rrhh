@@ -2,7 +2,7 @@
 	<div class="row mb-3">
 		<div class="col-md-3 mb-3">
 			<label class="azul mb-1">Nivel de Dirección <span class="obligatorio">(Obligatorio)</span></label>
-			
+
 			<ng-select [(ngModel)]="dataFilterNivelesAprobacion.nivelDireccion" placeholder="Seleccione">
 				<ng-option *ngFor="let nivelDireccion of dataNivelDireccion" [value]="nivelDireccion">{{ nivelDireccion }}</ng-option>
 			</ng-select>
@@ -66,24 +66,17 @@
 		<table *ngIf="dataTable.length !== 0; else noTable">
 			<thead>
 				<tr>
-					<th *ngFor="let columnName of columnsTable" class="text-center">{{ columnName.title }}</th>
-					
-					<!-- <th class="text-center">Tipo de solicitud</th>
-
-					<th class="text-center">Tipo de ruta</th>
-
-					<th class="text-center">Tipo Motivo</th> -->
+					<th *ngFor="let columnName of columnsTable; let i = index" class="text-center" [ngClass]="{ 'fixed-col-start': i === 0 }">{{ columnName.title }}</th>
 
 					<th *ngFor="let ruta of dataRuta" class="text-center">{{ ruta.descripcion }}</th>
 
-					<th class="text-center fixed-col-end">Acciones</th>
+					<th class="text-center fixed-col-end action">Acciones</th>
 				</tr>
 			</thead>
 
 			<tbody>
 				<tr *ngFor="let data of dataTable; let i = index">
-					<!-- <td>{{ mostrarTipoSolicitud() }}</td> -->
-					<td>{{ data[0].tipoSolicitud }}</td>
+					<td class="fixed-col-start">{{ data[0].tipoSolicitud }}</td>
 
 					<td>{{ data[0].tipoRuta }}</td>
 
@@ -95,7 +88,7 @@
 
 					<td *ngFor="let ruta of dataRuta">{{ showData(data, ruta) }}</td>
 
-					<td class="text-center fixed-col-end">
+					<td class="text-center fixed-col-end action">
 						<i tabindex="0" class="material-icons text-info cursor-pointer action-icon" (click)="onRowActionClicked(i)">edit</i>
 					</td>
 				</tr>

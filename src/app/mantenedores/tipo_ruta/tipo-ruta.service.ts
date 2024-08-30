@@ -27,9 +27,12 @@ export class TipoRutaService {
 
 	public store(request: ITiporuta): Observable<ITiporuta> {
 		request.usuarioCreacion = localStorage.getItem(LocalStorageKeys.IdLogin);
-		request.fechaActualizacion = null;
+		request.fechaCreacion = new Date();
+		request.usuarioActualizacion = localStorage.getItem(LocalStorageKeys.IdLogin);
+		request.fechaActualizacion = new Date();
 
 		convertTimeZonedDate(request.fechaCreacion);
+		convertTimeZonedDate(request.fechaActualizacion);
 
 		return this.http.post<ITiporuta>(this.apiUrl, request);
 	}

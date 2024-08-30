@@ -32,6 +32,7 @@ import {
 	columnsAprobadores,
 	dataTableAprobadores,
 } from "./reingreso-personal.data";
+import { BuscarEmpleadoComponent } from "../buscar-empleado/buscar-empleado.component";
 
 interface DialogComponents {
 	dialogBuscarEmpleados: Type<DialogBuscarEmpleadosReingresoComponent>;
@@ -640,72 +641,139 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
 	);
 
 	getDataJefeInmediatoSuperior() {
-		this.getDataEmpleadosEvolution(this.jefeInmediatoSuperiorQuery, "nombresJefeInmediatoSuperior");
+		// this.getDataEmpleadosEvolution(this.jefeInmediatoSuperiorQuery, "nombresJefeInmediatoSuperior");
 	}
 
 	getDataJefeReferencia() {
-		this.getDataEmpleadosEvolution(this.jefeReferenciaQuery, "nombresJefeReferencia");
+		// this.getDataEmpleadosEvolution(this.jefeReferenciaQuery, "nombresJefeReferencia");
 	}
 
 	getDataResponsableRRHH() {
-		this.getDataEmpleadosEvolution(this.responsableRRHHQuery, "nombresResponsableRRHH");
+		// this.getDataEmpleadosEvolution(this.responsableRRHHQuery, "nombresResponsableRRHH");
 	}
 
-	getDataEmpleadosEvolution(search: string, arrayToFill: string) {
+	getDataEmpleadosEvolution(arrayToFill: string) {
 		// this.mantenimientoService.getDataEmpleadosEvolution().subscribe({
-		this.mantenimientoService.getDataEmpleadosEvolutionPorId(search).subscribe({
-			next: (response) => {
-				this.dataEmpleadoEvolution = response.evType;
-				const datosEmpleado = this.dataEmpleadoEvolution.find((empleado) => {
-					return empleado['codigoPosicion'] === this.dataEmpleadoEvolution[0].codigoPosicion;
-				});
+			this.modalService
+			// .open(dialogComponentList.dialogBuscarEmpleados, {
+			.open(BuscarEmpleadoComponent, {
+				ariaLabelledBy: "modal-title",
+			})
+			.result.then(
+				(result) => {
+					if (result?.action === "close") {
+						return;
+					}
 
-				if (arrayToFill === "nombresJefeInmediatoSuperior") {
-					this.jefesInmediatoSuperior = [...new Set(this.dataEmpleadoEvolution.map((empleado) => empleado))];
-					this.jefeInmediatoSuperiorQuery = Object.assign(
-						{},
-						{
-							...datosEmpleado,
-							sueldo: datosEmpleado.sueldo,
-							sueldoMensual: datosEmpleado.sueldoVariableMensual,
-							sueldoTrimestral: datosEmpleado.sueldoVariableTrimestral,
-							sueldoSemestral: datosEmpleado.sueldoVariableSemestral,
-							sueldoAnual: datosEmpleado.sueldoVariableAnual,
-						}
-					);
-				} else if (arrayToFill === "nombresJefeReferencia") {
-					this.jefesReferencia = [...new Set(this.dataEmpleadoEvolution.map((empleado) => empleado))];
-					this.jefeReferenciaQuery = Object.assign(
-						{},
-						{
-							...datosEmpleado,
-							sueldo: datosEmpleado.sueldo,
-							sueldoMensual: datosEmpleado.sueldoVariableMensual,
-							sueldoTrimestral: datosEmpleado.sueldoVariableTrimestral,
-							sueldoSemestral: datosEmpleado.sueldoVariableSemestral,
-							sueldoAnual: datosEmpleado.sueldoVariableAnual,
-						}
-					);
-				} else {
-					this.responsablesRRHH = [...new Set(this.dataEmpleadoEvolution.map((empleado) => empleado))];
+					if (!(result?.data)) {
+						return;
+					}
 
-					this.responsableRRHHQuery = Object.assign(
-						{},
-						{
-							...datosEmpleado,
-							sueldo: datosEmpleado.sueldo,
-							sueldoMensual: datosEmpleado.sueldoVariableMensual,
-							sueldoTrimestral: datosEmpleado.sueldoVariableTrimestral,
-							sueldoSemestral: datosEmpleado.sueldoVariableSemestral,
-							sueldoAnual: datosEmpleado.sueldoVariableAnual,
-						}
-					);
+					const datosEmpleado = result?.data;
+
+					if (arrayToFill === "nombresJefeInmediatoSuperior") {
+						// this.jefesInmediatoSuperior = [...new Set(this.dataEmpleadoEvolution.map((empleado) => empleado))];
+	
+						this.jefeInmediatoSuperiorQuery = Object.assign(
+							{},
+							{
+								...datosEmpleado,
+								sueldo: datosEmpleado.sueldo,
+								sueldoMensual: datosEmpleado.sueldoVariableMensual,
+								sueldoTrimestral: datosEmpleado.sueldoVariableTrimestral,
+								sueldoSemestral: datosEmpleado.sueldoVariableSemestral,
+								sueldoAnual: datosEmpleado.sueldoVariableAnual,
+							}
+						);
+					} else if (arrayToFill === "nombresJefeReferencia") {
+						// this.jefesReferencia = [...new Set(this.dataEmpleadoEvolution.map((empleado) => empleado))];
+	
+						this.jefeReferenciaQuery = Object.assign(
+							{},
+							{
+								...datosEmpleado,
+								sueldo: datosEmpleado.sueldo,
+								sueldoMensual: datosEmpleado.sueldoVariableMensual,
+								sueldoTrimestral: datosEmpleado.sueldoVariableTrimestral,
+								sueldoSemestral: datosEmpleado.sueldoVariableSemestral,
+								sueldoAnual: datosEmpleado.sueldoVariableAnual,
+							}
+						);
+					} else {
+						// this.responsablesRRHH = [...new Set(this.dataEmpleadoEvolution.map((empleado) => empleado))];
+	
+						this.responsableRRHHQuery = Object.assign(
+							{},
+							{
+								...datosEmpleado,
+								sueldo: datosEmpleado.sueldo,
+								sueldoMensual: datosEmpleado.sueldoVariableMensual,
+								sueldoTrimestral: datosEmpleado.sueldoVariableTrimestral,
+								sueldoSemestral: datosEmpleado.sueldoVariableSemestral,
+								sueldoAnual: datosEmpleado.sueldoVariableAnual,
+							}
+						);
+					}
+				},
+				(reason) => {
+
 				}
-			},
-			error: (error: HttpErrorResponse) => {
-				this.utilService.modalResponse(error.error, "error");
-			},
-		});
+			);
+		// this.mantenimientoService.getDataEmpleadosEvolutionPorId(search).subscribe({
+		// 	next: (response) => {
+		// 		this.dataEmpleadoEvolution = response.evType;
+		// 		const datosEmpleado = this.dataEmpleadoEvolution.find((empleado) => {
+		// 			return empleado['codigoPosicion'] === this.dataEmpleadoEvolution[0].codigoPosicion;
+		// 		});
+
+		// 		if (arrayToFill === "nombresJefeInmediatoSuperior") {
+		// 			this.jefesInmediatoSuperior = [...new Set(this.dataEmpleadoEvolution.map((empleado) => empleado))];
+
+		// 			this.jefeInmediatoSuperiorQuery = Object.assign(
+		// 				{},
+		// 				{
+		// 					...datosEmpleado,
+		// 					sueldo: datosEmpleado.sueldo,
+		// 					sueldoMensual: datosEmpleado.sueldoVariableMensual,
+		// 					sueldoTrimestral: datosEmpleado.sueldoVariableTrimestral,
+		// 					sueldoSemestral: datosEmpleado.sueldoVariableSemestral,
+		// 					sueldoAnual: datosEmpleado.sueldoVariableAnual,
+		// 				}
+		// 			);
+		// 		} else if (arrayToFill === "nombresJefeReferencia") {
+		// 			this.jefesReferencia = [...new Set(this.dataEmpleadoEvolution.map((empleado) => empleado))];
+
+		// 			this.jefeReferenciaQuery = Object.assign(
+		// 				{},
+		// 				{
+		// 					...datosEmpleado,
+		// 					sueldo: datosEmpleado.sueldo,
+		// 					sueldoMensual: datosEmpleado.sueldoVariableMensual,
+		// 					sueldoTrimestral: datosEmpleado.sueldoVariableTrimestral,
+		// 					sueldoSemestral: datosEmpleado.sueldoVariableSemestral,
+		// 					sueldoAnual: datosEmpleado.sueldoVariableAnual,
+		// 				}
+		// 			);
+		// 		} else {
+		// 			this.responsablesRRHH = [...new Set(this.dataEmpleadoEvolution.map((empleado) => empleado))];
+
+		// 			this.responsableRRHHQuery = Object.assign(
+		// 				{},
+		// 				{
+		// 					...datosEmpleado,
+		// 					sueldo: datosEmpleado.sueldo,
+		// 					sueldoMensual: datosEmpleado.sueldoVariableMensual,
+		// 					sueldoTrimestral: datosEmpleado.sueldoVariableTrimestral,
+		// 					sueldoSemestral: datosEmpleado.sueldoVariableSemestral,
+		// 					sueldoAnual: datosEmpleado.sueldoVariableAnual,
+		// 				}
+		// 			);
+		// 		}
+		// 	},
+		// 	error: (error: HttpErrorResponse) => {
+		// 		this.utilService.modalResponse(error.error, "error");
+		// 	},
+		// });
 	}
 
 	loadDataCamunda() {
@@ -1646,7 +1714,8 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
 
 	openModalBuscarEmpleado() {
 		this.modalService
-			.open(dialogComponentList.dialogBuscarEmpleados, {
+			// .open(dialogComponentList.dialogBuscarEmpleados, {
+			.open(BuscarEmpleadoComponent, {
 				ariaLabelledBy: "modal-title",
 			})
 			.result.then(
@@ -1657,7 +1726,7 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
 
 					if (result?.data) {
 						const data: any = result.data;
-						console.log("AQUIIIII PRUEBA", data);
+
 						this.fechaSalida = data.fechaSalida ?? new Date();
 						this.modelRG.nombreCompleto = data.nombreCompleto;
 						this.modelRG.subledger = data.subledger ?? "0";
@@ -1676,16 +1745,6 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
 						this.remuneracion = Number(this.modelRG.sueldoAnual) / 12 + Number(this.modelRG.sueldoSemestral) / 6 + Number(this.modelRG.sueldoTrimestral) / 3 + Number(this.modelRG.sueldoMensual);
 
 						this.detalleSolicitudRG.supervisaA = "N-A";
-
-						// this.mantenimientoService
-						//   .(dtoFamiliares)
-						//   .subscribe((response) => {
-
-						//     this.utilService.modalResponse(
-						//       "Empleado ingresado correctamente",
-						//       "success"
-						//     );
-						//   });
 					}
 				},
 				(reason) => {

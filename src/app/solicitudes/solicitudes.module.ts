@@ -46,6 +46,7 @@ import { DialogBuscarEmpleadosReingresoComponent } from "./reingreso-personal/di
 import { ReingresoPersonalComponent } from "./reingreso-personal/reingreso-personal.component";
 import { TrazabilidadSolicitudComponent } from "./trazabilidad-solicitud/trazabilidad-solicitud.component";
 import { BuscarEmpleadoComponent } from "./buscar-empleado/buscar-empleado.component";
+import { SolicitudSeccionDesplegableComponent } from "../shared/solicitud-seccion-desplegable/solicitud-seccion-desplegable.component";
 
 @NgModule({
 	declarations: [
@@ -94,7 +95,8 @@ import { BuscarEmpleadoComponent } from "./buscar-empleado/buscar-empleado.compo
 		ReactiveFormsModule,
 		DirectivesModule,
 		NgxMaskDirective,
-		NgxMaskPipe
+		NgxMaskPipe,
+		SolicitudSeccionDesplegableComponent
 	],
 	exports: [
 		RevisarSolicitudComponent,

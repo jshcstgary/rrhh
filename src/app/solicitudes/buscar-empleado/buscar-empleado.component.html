@@ -62,7 +62,7 @@
 
 					<td>{{ empleado.nombreCargo }}</td>
 
-					<td>{{ empleado.fechaIngresogrupo }}</td>
+					<td>{{ empleado.fechaIngresogrupo | date : "dd-MM-yyyy" }}</td>
 				</tr>
 			</tbody>
 		</table>

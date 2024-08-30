@@ -396,18 +396,7 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
 		cuerpo: ""
 	};
 
-	constructor(
-		route: ActivatedRoute,
-		router: Router,
-		camundaRestService: CamundaRestService,
-		private mantenimientoService: MantenimientoService,
-		private solicitudes: SolicitudesService,
-		private utilService: UtilService,
-		private consultaTareasService: ConsultaTareasService,
-		private modalService: NgbModal,
-		private starterService: StarterService
-
-	) {
+	constructor(route: ActivatedRoute, router: Router, camundaRestService: CamundaRestService, private mantenimientoService: MantenimientoService, private solicitudes: SolicitudesService, private utilService: UtilService, private consultaTareasService: ConsultaTareasService, private modalService: NgbModal, private starterService: StarterService) {
 		super(route, router, camundaRestService);
 
 		this.searchSubject.pipe(debounceTime(0)).subscribe(({ campo, valor }) => {
@@ -423,7 +412,6 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
 		this.route.paramMap.subscribe((params) => {
 			this.id_solicitud_by_params = params.get("idSolicitud");
 			this.idDeInstancia = params.get("id");
-			console.log("this.idDeInstancia: ", this.idDeInstancia);
 		});
 
 		this.verifyData();
@@ -446,8 +434,8 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
 							if (this.existe || this.existeMatenedores) {
 								try {
 									await this.loadDataCamunda();
-									this.obtenerEmpresaYUnidadNegocio();
 
+									this.obtenerEmpresaYUnidadNegocio();
 
 									this.utilService.closeLoadingSpinner();
 								} catch (error) {
@@ -584,10 +572,13 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
 				this.model.idEmpresa = this.solicitud.idEmpresa;
 				this.model.compania = this.solicitud.empresa;
 				this.model.unidadNegocio = this.solicitud.unidadNegocio;
+
 				if (this.solicitud.tipoAccion.toUpperCase().includes("ASIGNA")) {
 					this.muestraRemuneracion = true;
 				}
+
 				this.loadingComplete += 2;
+
 				this.getDetalleSolicitudById(this.id_edit);
 			},
 			error: (error: HttpErrorResponse) => {
@@ -862,8 +853,6 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
 		});
 
 		this.route.queryParams.subscribe((params: Solicitud) => {
-			//this.solicitud = params;
-			console.log("Mis params: ", params);
 			this.misParams = params
 		});
 
@@ -874,11 +863,6 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
 				this.date = "";
 			}
 
-			//
-			// Comentado por ahora
-			/*if (null !== qParams?.get("p")) {
-			  this.parentIdFlag = qParams.get("p");
-			}*/
 			this.parentIdFlag = "true";
 		});
 
@@ -892,6 +876,7 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
 						this.tareasPorCompletar = result.filter((empleado) => {
 							return empleado["deleteReason"] === null;
 						});
+
 						if (this.tareasPorCompletar.length === 0) {
 							return;
 						} else {
@@ -899,8 +884,8 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
 							this.taskType_Activity = this.tareasPorCompletar[0].taskDefinitionKey;
 							this.nameTask = this.tareasPorCompletar[0].name;
 						}
+
 						this.taskId = params["id"];
-						// this.getDetalleSolicitudById(this.id_solicitud_by_params); // Si se comenta, causa problemas al abrir el Sweet Alert 2
 						this.getSolicitudById(this.id_solicitud_by_params);
 						this.date = this.tareasPorCompletar[0].startTime;
 					},
@@ -912,10 +897,8 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
 			} else {
 				this.uniqueTaskId = params["id"];
 				this.taskId = params["id"];
-				this.loadExistingVariables(
-					this.uniqueTaskId ? this.uniqueTaskId : "",
-					variableNames
-				);
+
+				this.loadExistingVariables(this.uniqueTaskId ? this.uniqueTaskId : "", variableNames);
 			}
 		});
 	}
@@ -939,6 +922,7 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
 			// this.model.reset();
 			let tempSearch = valor;
 			this.model = new RegistrarData();
+
 			if (campo == "codigoPosicion") {
 				this.model.codigoPosicion = tempSearch;
 			} else if (campo == "subledger") {
@@ -946,10 +930,6 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
 			} else if (campo == "nombreCompleto") {
 				this.model.nombreCompleto = tempSearch;
 			}
-			/*this.utilService.modalResponse(
-			  "No existe un registro para este autocompletado",
-			  "error"
-			);*/
 		}
 	}
 
@@ -962,6 +942,16 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
 
 				if (response.detalleSolicitudType[0].codigoPosicion > 0) {
 					this.RegistrarsolicitudCompletada = true;
+
+					if (this.RegistrarsolicitudCompletada) {
+						Swal.fire({
+							text: "Solicitud guardada, puede proceder a enviarla.",
+							icon: "info",
+							confirmButtonColor: "rgb(227, 199, 22)",
+							confirmButtonText: "Ok",
+							timer: 30000
+						});
+					}
 
 					const detalleActual = response.detalleSolicitudType.find(detalle => detalle.idDetalleSolicitud === 1);
 					this.sueldoEmpleado.sueldo = detalleActual.sueldo;
@@ -1002,6 +992,7 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
 					this.nivelDireccionDatoPropuesto = detalleActual.nivelDireccion;
 					this.viewInputs = detalleActual.codigo === "100" ? true : false;
 					this.unidadNegocioEmp = detalleActual.unidadNegocio;
+
 					if (this.unidadNegocioEmp.toUpperCase().includes("AREAS") || this.unidadNegocioEmp.toUpperCase().includes("ÁREAS")) {
 						this.mantenimientoService.getTipoRuta().subscribe({
 							next: (response) => {
@@ -1012,6 +1003,7 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
 										id: r.id,
 										descripcion: r.tipoRuta,
 									}));
+
 								this.loadingComplete++;
 
 								this.mostrarTipoJustificacionYMision = this.restrictionsIds.includes(
@@ -1030,7 +1022,6 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
 									if (this.model.codigoPosicion.trim().length > 0) {
 										this.obtenerAprobacionesPorPosicionAPS();
 										this.obtenerAprobacionesPorPosicionAPD();
-										console.log("SI LLEGA");
 									}
 
 									let variables = this.generateVariablesFromFormFields();
@@ -1068,7 +1059,6 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
 									if (this.model.codigoPosicion.trim().length > 0) {
 										this.obtenerAprobacionesPorPosicionAPS();
 										this.obtenerAprobacionesPorPosicionAPD();
-										console.log("SI LLEGA");
 									}
 
 									let variables = this.generateVariablesFromFormFields();
@@ -2224,7 +2214,6 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
 		const isChecked = (event.target as HTMLInputElement).checked;
 
 		this.viewInputs = !isChecked;
-		console.log(this.viewInputs)
 	}
 
 
@@ -2294,40 +2283,40 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
 
 	}
 
-	// openModalReasignarUsuario() {
-	// 	const modelRef = this.modalService.open(dialogComponentList.dialogReasignarUsuario, {
-	// 		ariaLabelledBy: "modal-title",
-	// 	});
+	openModalReasignarUsuario() {
+		const modelRef = this.modalService.open(dialogComponentList.dialogReasignarUsuario, {
+			ariaLabelledBy: "modal-title",
+		});
 
-	// 	modelRef.componentInstance.idParam = this.solicitud.idSolicitud;
-	// 	modelRef.componentInstance.taskId = this.taskType_Activity;
+		modelRef.componentInstance.idParam = this.solicitud.idSolicitud;
+		modelRef.componentInstance.taskId = this.taskType_Activity;
 
-	// 	modelRef.result.then(
-	// 		(result) => {
-	// 			if (result === "close") {
-	// 				return;
-	// 			}
+		modelRef.result.then(
+			(result) => {
+				if (result === "close") {
+					return;
+				}
 
-	// 			if (result?.data) {
-	// 				Swal.fire({
-	// 					text: result.data,
-	// 					icon: "success",
-	// 					confirmButtonColor: "rgb(227, 199, 22)",
-	// 					confirmButtonText: "Ok",
-	// 				}).then((result) => {
-	// 					if (result.isConfirmed) {
-	// 						this.router.navigate(["/mantenedores/reasignar-tareas-usuarios"]);
-	// 						if (this.submitted) {
-	// 						}
-	// 					}
-	// 				});
-	// 			}
-	// 		},
-	// 		(reason) => {
-	// 			console.log(`Dismissed with: ${reason}`);
-	// 		}
-	// 	);
-	// }
+				if (result?.data) {
+					Swal.fire({
+						text: result.data,
+						icon: "success",
+						confirmButtonColor: "rgb(227, 199, 22)",
+						confirmButtonText: "Ok",
+					}).then((result) => {
+						if (result.isConfirmed) {
+							this.router.navigate(["/mantenedores/reasignar-tareas-usuarios"]);
+							if (this.submitted) {
+							}
+						}
+					});
+				}
+			},
+			(reason) => {
+				console.log(`Dismissed with: ${reason}`);
+			}
+		);
+	}
 
 	// indexedModal: Record<keyof DialogComponents, any> = {
 	// 	dialogReasignarUsuario: () => this.openModalReasignarUsuario(),
@@ -2450,6 +2439,7 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
 					// });
 
 					const datosEmpleado = result.data;
+					console.log(datosEmpleado);
 
 					this.sueldoEmpleado.sueldo = datosEmpleado.sueldo;
 					this.sueldoEmpleado.variableMensual = datosEmpleado.sueldoVariableMensual;
@@ -2505,7 +2495,8 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
 					});
 
 					this.modelPropuestos = structuredClone(this.model);
-					this.modelPropuestos.fechaIngreso = structuredClone(this.model.fechaIngresogrupo);
+					// this.modelPropuestos.fechaIngreso = structuredClone(this.model.fechaIngresogrupo);
+					this.modelPropuestos.fechaIngreso = new Date("");
 					this.detalleSolicitudPropuestos.movilizacion = "0";
 					this.detalleSolicitudPropuestos.alimentacion = "0";
 					this.unidadNegocioEmp = datosEmpleado.unidadNegocio;

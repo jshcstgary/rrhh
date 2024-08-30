@@ -27,6 +27,8 @@ export class AccionService {
 
 	public store(request: IAccion): Observable<IAccion> {
 		request.usuarioCreacion = localStorage.getItem(LocalStorageKeys.IdLogin);
+		request.fechaCreacion = new Date();
+		request.usuarioActualizacion = localStorage.getItem(LocalStorageKeys.IdLogin);
 		request.fechaActualizacion = new Date();
 
 		convertTimeZonedDate(request.fechaCreacion);
