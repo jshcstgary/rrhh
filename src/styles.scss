@@ -40,12 +40,12 @@ a.link:focus {
 }
 
 
-.sidebar-nav>ul>.sidebar-item {
-	&.active>a.sidebar-link {
+.sidebar-nav > ul > .sidebar-item {
+	&.active > a.sidebar-link {
 		color: white !important;
 	}
 
-	&>a.sidebar-link {
+	& > a.sidebar-link {
 		color: white !important;
 	}
 }
@@ -129,7 +129,7 @@ body {
 					flex-basis: 100px;
 				}
 
-				&>.item-percent {
+				& > .item-percent {
 					display: none;
 				}
 			}
@@ -207,7 +207,7 @@ thead th.fixed-col-end {
 }
 
 .after-header-solicitud {
-	margin-top: 150px !important;
+	margin-top: 160px !important;
 }
 
 .cursor-pointer {

@@ -14,9 +14,10 @@
 					<div class="col-md-4 text-end">
 						<button *ngIf="existeMatenedores" type="button" (click)="openModalReasignarUsuario()" class="btn btn-info me-2 mt-1"><i class="fas fa-redo"></i> Reasignar</button>
 
-						<button *ngIf="!existeMatenedores || existe" type="submit" class="btn btn-info me-2 mt-1" aria-label="Close" [disabled]="!solicitudForm.form.valid"><i class="fas fa-save"></i> Guardar</button>
+						<!-- <button *ngIf="!existeMatenedores || existe" type="submit" class="btn btn-info me-2 mt-1" aria-label="Close" [disabled]="!solicitudForm.form.valid"><i class="fas fa-save"></i> Guardar</button> -->
 
-						<button *ngIf="!existeMatenedores || existe" type="button" (click)="onCompletar()" class="btn btn-info me-2 mt-1" [disabled]="disabledComplete"><i class="fas fa-check-circle icon-size"></i> Completar Tarea</button>
+						<!-- <button *ngIf="!existeMatenedores || existe" type="button" (click)="onCompletar()" class="btn btn-info me-2 mt-1" [disabled]="disabledComplete"><i class="fas fa-check-circle icon-size"></i> Completar Tarea</button> -->
+						<button *ngIf="!existeMatenedores || existe" type="submit" class="btn btn-info me-2 mt-1"><i class="fas fa-check-circle icon-size"></i> Completar Tarea</button>
 					</div>
 				</div>
 
@@ -51,24 +52,8 @@
 			<div class="after-header-solicitud"></div>
 
 			<!-- ! Información general -->
-			<details class="mb-4">
-				<summary>
-					<div class="row">
-						<div class="col-md-4">
-							<h3 class="sol-danger">Información general</h3>
-						</div>
-
-						<div class="col-md-7">
-							<hr />
-						</div>
-
-						<div class="col-md-1 text-end">
-							<i class="fas fa-chevron-circle-down"></i>
-						</div>
-					</div>
-				</summary>
-
-				<div class="details-content">
+			<app-solicitud-seccion-desplegable titleSummary="Información general">
+				<div>
 					<div class="row">
 						<div class="col-md-6">
 							<div class="input-group mb-3 align-items-center">
@@ -207,27 +192,11 @@
 						</div>
 					</div>
 				</div>
-			</details>
+			</app-solicitud-seccion-desplegable>
 
 			<!-- ! Funciones y responsabilidades -->
-			<details class="mb-4">
-				<summary>
-					<div class="row">
-						<div class="col-md-4">
-							<h3 class="sol-danger">Funciones y responsabilidades</h3>
-						</div>
-
-						<div class="col-md-7">
-							<hr />
-						</div>
-
-						<div class="col-md-1 text-end">
-							<i class="fas fa-chevron-circle-down"></i>
-						</div>
-					</div>
-				</summary>
-
-				<div class="details-content">
+			<app-solicitud-seccion-desplegable titleSummary="Funciones y responsabilidades">
+				<div>
 					<div class="row">
 						<div class="col-md-12">
 							<div class="input-group mb-3 align-items-center">
@@ -274,27 +243,11 @@
 						</div>
 					</div>
 				</div>
-			</details>
+			</app-solicitud-seccion-desplegable>
 
 			<!-- ! Tipo de variable -->
-			<details class="mb-4">
-				<summary>
-					<div class="row">
-						<div class="col-md-4">
-							<h3 class="sol-danger">Tipo de variable</h3>
-						</div>
-
-						<div class="col-md-7">
-							<hr />
-						</div>
-
-						<div class="col-md-1 text-end">
-							<i class="fas fa-chevron-circle-down"></i>
-						</div>
-					</div>
-				</summary>
-
-				<div class="details-content">
+			<app-solicitud-seccion-desplegable titleSummary="Tipo de variable">
+				<div>
 					<div class="row">
 						<div class="col-md-6">
 							<div class="input-group mb-3 align-items-center">
@@ -331,27 +284,11 @@
 						</div>
 					</div>
 				</div>
-			</details>
+			</app-solicitud-seccion-desplegable>
 
 			<!-- ! Aprobadores de la solicitud -->
-			<details class="mb-4">
-				<summary>
-					<div class="row">
-						<div class="col-md-4">
-							<h3 class="sol-danger">Aprobadores de la solicitud</h3>
-						</div>
-
-						<div class="col-md-7">
-							<hr />
-						</div>
-
-						<div class="col-md-1 text-end">
-							<i class="fas fa-chevron-circle-down"></i>
-						</div>
-					</div>
-				</summary>
-
-				<div class="details-content">
+			<app-solicitud-seccion-desplegable titleSummary="Aprobadores de la solicitud">
+				<div>
 					<div class="accordion" id="accordionExample">
 						<div *ngFor="let nivelItem of dataAprobacionesPorPosicion[keySelected]; let i = index" class="accordion-item">
 							<div class="accordion-header">
@@ -386,27 +323,11 @@
 						</div>
 					</div>
 				</div>
-			</details>
+			</app-solicitud-seccion-desplegable>
 
 			<!-- ! Atención de los aprobadores -->
-			<details class="mb-4">
-				<summary>
-					<div class="row">
-						<div class="col-md-4">
-							<h3 class="sol-danger">Atención de los Aprobadores</h3>
-						</div>
-
-						<div class="col-md-7">
-							<hr />
-						</div>
-
-						<div class="col-md-1 text-end">
-							<i class="fas fa-chevron-circle-down"></i>
-						</div>
-					</div>
-				</summary>
-
-				<div class="details-content">
+			<app-solicitud-seccion-desplegable titleSummary="Atención de los aprobadores">
+				<div>
 					<div class="row">
 						<div class="col-md-12">
 							<div class="input-group mb-3 align-items-start">
@@ -450,27 +371,11 @@
 						</div>
 					</div>
 				</div>
-			</details>
+			</app-solicitud-seccion-desplegable>
 
 			<!-- ! Atención de solicitud -->
-			<details open class="mb-4">
-				<summary>
-					<div class="row">
-						<div class="col-md-4">
-							<h3 class="sol-danger">Atención de Solicitud</h3>
-						</div>
-
-						<div class="col-md-7">
-							<hr />
-						</div>
-
-						<div class="col-md-1 text-end">
-							<i class="fas fa-chevron-circle-down"></i>
-						</div>
-					</div>
-				</summary>
-
-				<div class="details-content">
+			<app-solicitud-seccion-desplegable titleSummary="Atención de solicitud" [isOpen]="true">
+				<div>
 					<div class="row">
 						<div class="col-md-12">
 							<div class="input-group mb-3 align-items-center">
@@ -519,7 +424,7 @@
 						</div>
 					</div>
 				</div>
-			</details>
+			</app-solicitud-seccion-desplegable>
 		</h2>
 	</div>
 </form>

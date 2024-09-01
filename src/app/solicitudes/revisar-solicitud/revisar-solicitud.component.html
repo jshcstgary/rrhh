@@ -217,7 +217,7 @@
 				</app-solicitud-seccion-desplegable>
 
 				<!-- ! Atención de solicitud -->
-				<app-solicitud-seccion-desplegable titleSummary="Atención de Solicitud" [isOpen]="true">
+				<!-- <app-solicitud-seccion-desplegable titleSummary="Atención de Solicitud" [isOpen]="true">
 					<div>
 						<div class="row">
 							<div class="col-md-12">
@@ -259,7 +259,7 @@
 							</div>
 						</div>
 					</div>
-				</app-solicitud-seccion-desplegable>
+				</app-solicitud-seccion-desplegable> -->
 			</div>
 
 			<!-- ! Aqui empieza la condición Formulario Reingreso -->
@@ -681,15 +681,12 @@
 						<div class="accordion-header">
 							<button class="accordion-button" type="button" data-bs-toggle="collapse" [attr.data-bs-target]="'#collapse' + i" aria-expanded="true" [attr.aria-controls]="'collapse' + i" style="display: block">
 								<div class="row" style="align-items: center; justify-content: space-around">
-									<div class="col">{{ nivelItem.nivelAprobacionType.ruta }}</div>
+									<div class="col">
+										{{ nivelItem.nivelAprobacionType.ruta }}
+									</div>
 
 									<div class="col">
-										{{
-											nivelItem.aprobador.usuario !== "" && nivelItem.aprobador.usuario !== undefined && nivelItem.aprobador.usuario != null
-												? nivelItem.aprobador.codigoPosicion + "-" + nivelItem.aprobador.usuario
-												: "No
-										aplica"
-										}}
+										{{ nivelItem.aprobador.usuario !== "" && nivelItem.aprobador.usuario !== undefined && nivelItem.aprobador.usuario != null ? nivelItem.aprobador.codigoPosicion + "-" + nivelItem.aprobador.usuario : "No aplica" }}
 									</div>
 
 									<div class="col">
@@ -1196,7 +1193,7 @@
 				</app-solicitud-seccion-desplegable>
 
 				<!-- ! Atención de solicitud -->
-				<app-solicitud-seccion-desplegable titleSummary="Atención de Solicitud" [isOpen]="true">
+				<!-- <app-solicitud-seccion-desplegable titleSummary="Atención de Solicitud" [isOpen]="true">
 					<div>
 						<div class="row">
 							<div class="col-md-12">
@@ -1238,7 +1235,7 @@
 							</div>
 						</div>
 					</div>
-				</app-solicitud-seccion-desplegable>
+				</app-solicitud-seccion-desplegable> -->
 			</div>
 
 			<!-- ! Aqui empieza la condición Formulario Acción -->
@@ -1623,7 +1620,7 @@
 				</app-solicitud-seccion-desplegable>
 
 				<!-- ! Atención de solicitud -->
-				<app-solicitud-seccion-desplegable titleSummary="Atención de Solicitud">
+				<!-- <app-solicitud-seccion-desplegable titleSummary="Atención de Solicitud" [isOpen]="true">
 					<div>
 						<div class="row">
 							<div class="col-md-12">
@@ -1665,10 +1662,77 @@
 							</div>
 						</div>
 					</div>
-				</app-solicitud-seccion-desplegable>
+				</app-solicitud-seccion-desplegable> -->
 			</div>
 
-			<div class="row" *ngIf="isFechaMaximaVisible">
+			<!-- ! Atención de solicitud -->
+			<app-solicitud-seccion-desplegable *ngIf="mostrarAccionPersonal || mostrarRequisicion || mostrarFormularioReingreso || mostrarFormularioFamiliares" titleSummary="Atención de Solicitud" [isOpen]="true">
+				<div>
+					<div class="row">
+						<div class="col-md-12">
+							<div class="input-group mb-3 align-items-center">
+								<label class="input-group-text text-start label-estilo2" for="nivelaprobacion">Nivel de aprobación</label>
+
+								<span id="descripcionPosicion" name="descripcionPosicion" style="color: #0056b3; font-size: 14px; margin-right: 10px; white-space: nowrap">{{ datosAprobadores.descripcionPosicion }}</span>
+
+								<span id="usuarioaprueba" name="usuarioaprueba" style="color: black; font-size: 14px; white-space: nowrap">{{ datosAprobadores.usuario }}</span>
+							</div>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-md-12">
+							<div class="input-group mb-3 align-items-center">
+								<label class="input-group-text text-start label-estilo2" for="desicion">Decisión a tomar</label>
+
+								<div class="d-flex gap-3" role="group" aria-label="Basic example" id="desicion">
+									<button type="button" class="btn" (click)="process('aprobar')" [ngClass]="{ 'btn-primary btn-unselected': !isSelected('aprobar'), 'btn-selected': isSelected('aprobar') }" value="aprobar">Aprobar</button>
+
+									<button type="button" class="btn" [ngClass]="{ 'btn-primary btn-unselected': !isSelected('devolver'), 'btn-selected': isSelected('devolver') }" (click)="process('devolver')" value="devolver">Devolver</button>
+
+									<button type="button" class="btn" [ngClass]="{ 'btn-primary btn-unselected': !isSelected('rechazar'), 'btn-selected': isSelected('rechazar') }" (click)="process('rechazar')" value="rechazar">Cancelar</button>
+
+									<button type="button" class="btn" [ngClass]="{ 'btn-primary btn-unselected': !isSelected('esperar'), 'btn-selected': isSelected('esperar') }" (click)="process('esperar')" value="esperar">En espera</button>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-md-12">
+							<div class="input-group mb-3 align-items-center">
+								<label class="input-group-text text-start label-estilo2" for="observacion">{{ observaciontexto }}</label>
+
+								<textarea [(ngModel)]="textareaContent" id="observacion" name="observacion" #observacion="ngModel" [required]="isRequired" style="color: black; font-size: 14px" [placeholder]="campoObligatorio"></textarea>
+							</div>
+						</div>
+					</div>
+
+					<div class="row" *ngIf="isFechaMaximaVisible">
+						<div class="col">
+							<div class="input-group mb-3 contenedor">
+								<label class="input-group-text text-start label-estilo2" for="aprobar">Fecha máxima de espera</label>
+
+								<div class="datepicker-container">
+									<mat-form-field appearance="outline">
+										<mat-label>Fecha</mat-label>
+
+										<input matInput [matDatepicker]="picker" [min]="minDateValidation" [max]="maxDateValidation" [(ngModel)]="selectedDate" name="espera-maxima" />
+
+										<mat-hint>Máximo 365 días después de hoy</mat-hint>
+
+										<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+
+										<mat-datepicker #picker></mat-datepicker>
+									</mat-form-field>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</app-solicitud-seccion-desplegable>
+
+			<!-- <div class="row" *ngIf="isFechaMaximaVisible">
 				<div class="col">
 					<div class="input-group mb-3 contenedor">
 						<label class="input-group-text text-start label-estilo2" for="aprobar">Fecha máxima de espera</label>
@@ -1688,7 +1752,7 @@
 						</div>
 					</div>
 				</div>
-			</div>
+			</div> -->
 		</h2>
 	</div>
 </form>

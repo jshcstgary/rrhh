@@ -51,24 +51,9 @@
 
 			<div class="after-header-solicitud"></div>
 
-			<details open class="mb-4">
-				<summary>
-					<div class="row">
-						<div class="col-md-4">
-							<h3 class="sol-danger">Información general</h3>
-						</div>
-
-						<div class="col-md-7">
-							<hr />
-						</div>
-
-						<div class="col-md-1 text-end">
-							<i class="fas fa-chevron-circle-down"></i>
-						</div>
-					</div>
-				</summary>
-
-				<div class="details-content">
+			<!-- ! Información general -->
+			<app-solicitud-seccion-desplegable titleSummary="Información general" [isOpen]="true">
+				<div>
 					<div class="row">
 						<div class="col-md-6">
 							<div class="input-group mb-3 align-items-center">
@@ -89,15 +74,13 @@
 
 					<div class="row">
 						<div class="col-md-6">
-							<div class="input-group">
+							<div class="input-group mb-3 align-items-center">
 								<label class="input-group-text text-start label-estilo" for="codigoposicion">Código de posición</label>
 
 								<span *ngIf="solicitud.tipoMotivo === 'Reemplazo'; else editablePosition" id="descripcionposicion" name="descripcionposicion" style="color: black; font-size: 14px" class="text-start">{{ model.codigoPosicion }}</span>
 
 								<ng-template #editablePosition>
-									<!-- <input type="text" name="codigoposicion" [(ngModel)]="model.codigoPosicion" style="color: black; font-size: 14px; width: 30%" class="form-control" id="codigoposicion" aria-describedby="inputGroupPrepend" required #codigoposicion="ngModel" placeholder="Ingrese código" (click)="openModal()" readonly /> -->
-
-									<input name="codigoposicion" type="text" class="form-control" [(ngModel)]="model.codigoPosicion" readonly (click)="openModal()" />
+									<input name="codigoposicion" type="text" class="form-control w-25" [(ngModel)]="model.codigoPosicion" readonly (click)="openModal()" />
 
 									<button class="btn btn-light" type="button" (click)="openModal()">
 										<i class="ti-search"></i>
@@ -113,9 +96,7 @@
 								<span *ngIf="solicitud.tipoMotivo === 'Reemplazo'; else editableDescPosition" id="descripcionposicion" name="descripcionposicion" style="color: black; font-size: 14px" class="text-start">{{ model.descrPosicion }}</span>
 
 								<ng-template #editableDescPosition>
-									<!-- <input type="text" name="descripcion-posicion" [(ngModel)]="model.descrPosicion" style="color: black; font-size: 14px; width: 30%" class="form-control text-start" id="descripcionPosicion" aria-describedby="inputGroupPrepend" required #descripcionPosicion="ngModel" placeholder="Ingrese descripcion posicion" (click)="openModal()" readonly /> -->
-
-									<input name="descripcion-posicion" type="text" class="form-control" [(ngModel)]="model.descrPosicion" readonly (click)="openModal()" />
+									<input name="descripcion-posicion" type="text" class="form-control w-25" [(ngModel)]="model.descrPosicion" readonly (click)="openModal()" />
 
 									<button class="btn btn-light" type="button" (click)="openModal()">
 										<i class="ti-search"></i>
@@ -130,9 +111,7 @@
 							<div class="input-group mb-3 align-items-center">
 								<label class="input-group-text text-start label-estilo" for="subledger">Subledger</label>
 
-								<!-- <input type="text" name="subledger" [(ngModel)]="model.subledger" style="color: black; font-size: 14px; width: 30%" class="form-control text-start" id="subledger" aria-describedby="inputGroupPrepend" required #subledger="ngModel" placeholder="Ingrese subledger" (click)="openModal()" /> -->
-
-								<input name="subledger" type="text" class="form-control" [(ngModel)]="model.subledger" readonly (click)="openModal()" />
+								<input name="subledger" type="text" class="form-control w-25" [(ngModel)]="model.subledger" readonly (click)="openModal()" />
 
 								<button class="btn btn-light" type="button" (click)="openModal()">
 									<i class="ti-search"></i>
@@ -144,9 +123,7 @@
 							<div class="input-group mb-3 align-items-center">
 								<label class="input-group-text text-start label-estilo" for="nombreempleado"> Empleado </label>
 
-								<!-- <input type="text" name="nombreCompleto" [(ngModel)]="model.nombreCompleto" style="color: black; font-size: 14px; width: 30%" class="form-control text-start" id="nombreCompleto" aria-describedby="inputGroupPrepend" #nombreCompleto="ngModel" placeholder="Ingrese nombre" required (click)="openModal()" /> -->
-
-								<input name="nombreCompleto" type="text" class="form-control" [(ngModel)]="model.nombreCompleto" readonly (click)="openModal()" />
+								<input name="nombreCompleto" type="text" class="form-control w-25" [(ngModel)]="model.nombreCompleto" readonly (click)="openModal()" />
 
 								<button class="btn btn-light" type="button" (click)="openModal()">
 									<i class="ti-search"></i>
@@ -239,26 +216,11 @@
 						</div>
 					</div>
 				</div>
-			</details>
+			</app-solicitud-seccion-desplegable>
 
-			<details class="mb-4">
-				<summary>
-					<div class="row">
-						<div class="col-md-4">
-							<h3 class="sol-danger">Funciones y responsabilidades</h3>
-						</div>
-
-						<div class="col-md-7">
-							<hr />
-						</div>
-
-						<div class="col-md-1 text-end">
-							<i class="fas fa-chevron-circle-down"></i>
-						</div>
-					</div>
-				</summary>
-
-				<div class="details-content">
+			<!-- ! Funciones y responsabilidades -->
+			<app-solicitud-seccion-desplegable titleSummary="Funciones y responsabilidades">
+				<div>
 					<div class="row">
 						<div class="col-md-12">
 							<div class="input-group mb-3 align-items-center">
@@ -315,26 +277,11 @@
 						</div>
 					</div>
 				</div>
-			</details>
+			</app-solicitud-seccion-desplegable>
 
-			<details class="mb-4">
-				<summary>
-					<div class="row">
-						<div class="col-md-4">
-							<h3 class="sol-danger">Tipo de variable</h3>
-						</div>
-
-						<div class="col-md-7">
-							<hr />
-						</div>
-
-						<div class="col-md-1 text-end">
-							<i class="fas fa-chevron-circle-down"></i>
-						</div>
-					</div>
-				</summary>
-
-				<div class="details-content">
+			<!-- ! Tipo de variable -->
+			<app-solicitud-seccion-desplegable titleSummary="Tipo de variable">
+				<div>
 					<div class="row">
 						<div class="col-md-6">
 							<div class="input-group mb-3 align-items-center">
@@ -387,26 +334,11 @@
 						</div>
 					</div>
 				</div>
-			</details>
+			</app-solicitud-seccion-desplegable>
 
-			<details class="mb-4">
-				<summary>
-					<div class="row">
-						<div class="col-md-4">
-							<h3 class="sol-danger">Aprobadores de la solicitud</h3>
-						</div>
-
-						<div class="col-md-7">
-							<hr />
-						</div>
-
-						<div class="col-md-1 text-end">
-							<i class="fas fa-chevron-circle-down"></i>
-						</div>
-					</div>
-				</summary>
-
-				<div class="details-content">
+			<!-- ! Aprobadores de la solicitud -->
+			<app-solicitud-seccion-desplegable titleSummary="Aprobadores de la solicitud">
+				<div>
 					<div class="accordion" id="accordionExample">
 						<div *ngFor="let nivelItem of dataAprobacionesPorPosicion[keySelected]; let i = index" class="accordion-item">
 							<div class="accordion-header">
@@ -417,12 +349,7 @@
 										</div>
 
 										<div class="col">
-											{{
-												nivelItem.aprobador.usuario !== "" && nivelItem.aprobador.usuario !== undefined && nivelItem.aprobador.usuario != null
-													? nivelItem.aprobador.codigoPosicion + "-" + nivelItem.aprobador.usuario
-													: "No
-											aplica"
-											}}
+											{{ nivelItem.aprobador.usuario !== "" && nivelItem.aprobador.usuario !== undefined && nivelItem.aprobador.usuario != null ? nivelItem.aprobador.codigoPosicion + "-" + nivelItem.aprobador.usuario : "No aplica" }}
 										</div>
 
 										<div class="col">
@@ -446,26 +373,11 @@
 						</div>
 					</div>
 				</div>
-			</details>
+			</app-solicitud-seccion-desplegable>
 
-			<details class="mb 4">
-				<summary>
-					<div class="row">
-						<div class="col-md-4">
-							<h3 class="sol-danger">Anulación de Solicitud</h3>
-						</div>
-
-						<div class="col-md-7">
-							<hr />
-						</div>
-
-						<div class="col-md-1 text-end">
-							<i class="fas fa-chevron-circle-down"></i>
-						</div>
-					</div>
-				</summary>
-
-				<div class="details-content">
+			<!-- ! Anulación de Solicitud -->
+			<app-solicitud-seccion-desplegable titleSummary="Anulación de Solicitud">
+				<div>
 					<div class="row">
 						<div class="col-md-12">
 							<div class="input-group mb-3 alig-items-center">
@@ -496,7 +408,7 @@
 						</div>
 					</div>
 				</div>
-			</details>
+			</app-solicitud-seccion-desplegable>
 		</div>
 	</div>
 </form>

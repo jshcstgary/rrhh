@@ -87,22 +87,22 @@
 			<!-- ! Datos de contratación -->
 			<app-solicitud-seccion-desplegable titleSummary="Datos de contratación" [isOpen]="true">
 				<div>
-					<!-- <div class="d-flex justify-content-end">
+					<div class="d-flex justify-content-end">
 						<button type="button" (click)="openModalBuscarEmpleado()" class="btn btn-info"><i class="ti-search me-1"></i> Buscar empleado</button>
-					</div> -->
+					</div>
 
 					<div class="row">
 						<div class="col-md-6">
 							<div class="input-group mb-3 align-items-center">
 								<label class="input-group-text text-start label-estilo" for="tipoMotivo">Empleado</label>
 
-								<!-- <span id="empleado" name="empleado" style="color: black; font-size: 14px" class="text-start">{{ detalleSolicitudRG.supervisaA === "N/A" ? "" : modelRG.nombreCompleto }}</span> -->
+								<span id="empleado" name="empleado" style="color: black; font-size: 14px" class="text-start">{{ detalleSolicitudRG.supervisaA === "N/A" ? "" : modelRG.nombreCompleto }}</span>
 
-								<input name="empleado" type="text" class="form-control" [(ngModel)]="detalleSolicitudRG.supervisaA === 'N/A' ? '' : modelRG.nombreCompleto" readonly (click)="openModalBuscarEmpleado()" />
+								<!-- <input name="empleado" type="text" class="form-control" [(ngModel)]="detalleSolicitudRG.supervisaA === 'N/A' ? '' : modelRG.nombreCompleto" readonly (click)="openModalBuscarEmpleado()" />
 
 								<button class="btn btn-light" type="button" (click)="openModalBuscarEmpleado()">
 									<i class="ti-search"></i>
-								</button>
+								</button> -->
 							</div>
 						</div>
 					</div>

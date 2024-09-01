@@ -1,12 +1,66 @@
 <form (ngSubmit)="onSubmit()" #SolicitudForm="ngForm" #solicitudForm="ngForm">
 	<div class="card">
 		<div class="card-body text-start">
-			<div class="row">
+			<div class="header-solicitud">
+				<div class="row">
+					<div class="col-md-8">
+						<div class="mb-3">
+							<h3 class="sol-danger">
+								<a routerLink="/tareas/consulta-tareas"> <i class="bi bi-arrow-left-circle azul"></i> {{ solicitudRG.idSolicitud }} </a>
+							</h3>
+						</div>
+					</div>
+
+					<div class="col-md-4 text-end" *ngIf="!existeMatenedores || existe">
+						<button *ngIf="existeMatenedores" type="button" (click)="openModalReasignarUsuario()" class="btn btn-info me-2 mt-1"><i class="fas fa-redo"></i> Reasignar</button>
+
+						<!-- <button *ngIf="!existeMatenedores || existe" type="button" class="btn btn-info me-2 mt-1" (click)="saveDetalleAprobaciones()" [disabled]="textareaContent === '' && (buttonValue === 'devolver' || buttonValue === 'rechazar')">
+							<i class="fas fa-save"></i> Guardar
+						</button> -->
+
+						<!-- <button *ngIf="!existeMatenedores || existe" type="button" (click)="onCompletar()" class="btn btn-info me-2 mt-1" [disabled]="disabledComplete"> -->
+						<!-- <button *ngIf="!existeMatenedores || existe" type="button" (click)="saveDetalleAprobaciones()" class="btn btn-info me-2 mt-1" [disabled]="textareaContent === '' && (buttonValue === 'devolver' || buttonValue === 'rechazar')"><i class="fas fa-check-circle icon-size"></i> Enviar</button> -->
+						<button *ngIf="!existeMatenedores || existe" type="submit" class="btn btn-info me-2 mt-1" [disabled]="comentarios === ''"><i class="fas fa-check-circle icon-size"></i> Enviar</button>
+					</div>
+				</div>
+
+				<div class="row mt-4">
+					<div class="col-md-4">
+						<div class="input-group mb-3 align-items-center">
+							<label class="label-estilo" for="origin">Creado por:</label>
+
+							<span id="origin" name="" style="color: black; font-size: 14px" class="text-start">{{ solicitud.usuarioCreacion }}</span>
+						</div>
+					</div>
+
+					<div class="col-md-4">
+						<div class="input-group mb-3 align-items-center">
+							<label class="label-estilo" for="unidadnegocio">Fecha:</label>
+
+							<span id="date" name="" style="color: black; font-size: 14px" class="text-start">{{ solicitud.fechaCreacion | date : "yyyy/MM/dd" }}</span>
+						</div>
+					</div>
+
+					<div class="col-md-4">
+						<div class="input-group mb-3 align-items-center">
+							<label class="label-estilo" for="unidadnegocio">Nro. Solicitud:</label>
+
+							<span id="solicitud" name="" style="color: black; font-size: 14px" class="text-start">{{ solicitudRG.idSolicitud }}</span>
+						</div>
+					</div>
+				</div>
+
+				<hr />
+			</div>
+
+			<div class="after-header-solicitud"></div>
+
+			<!-- <div class="row">
 				<div class="col-md-8">
 					<div class="mb-3">
-						<a routerLink="/tareas/consulta-tareas">
-							<h2 class="sol-danger"><i class="bi bi-arrow-left-circle azul"></i> {{ solicitudRG.idSolicitud }}</h2>
-						</a>
+						<h2 class="sol-danger">
+							<a routerLink="/tareas/consulta-tareas"><i class="bi bi-arrow-left-circle azul"></i> {{ solicitudRG.idSolicitud }}</a>
+						</h2>
 					</div>
 				</div>
 
@@ -30,7 +84,7 @@
 				<div class="col-md-4">
 					<div class="input-group mb-3">
 						<label class="input-group-text text-start label-estilo" for="unidadnegocio">Fecha:</label>
-						<span id="date" name="" style="color: black; font-size: 14px" class="text-start">{{ this.solicitud.fechaCreacion | date : "yyyy/MM/dd" }}</span>
+						<span id="date" name="" style="color: black; font-size: 14px" class="text-start">{{ solicitud.fechaCreacion | date : "yyyy/MM/dd" }}</span>
 					</div>
 				</div>
 				<div class="col-md-4">
@@ -39,509 +93,516 @@
 						<span id="solicitud" name="" style="color: black; font-size: 14px" class="text-start">{{ solicitudRG.idSolicitud }}</span>
 					</div>
 				</div>
-			</div>
+			</div> -->
 
-			<div class="row mt-2">
-				<div class="col-md-3">
-					<div class="mb-4">
-						<a>
-							<h2 class="sol-danger">Información general</h2>
-						</a>
-					</div>
-				</div>
+			<!-- ! Información general -->
+			<app-solicitud-seccion-desplegable titleSummary="Información general">
+				<div>
+					<div class="row">
+						<div class="col-md-12">
+							<div class="input-group mb-3 align-items-center">
+								<label class="input-group-text label-estilo2" for="tipoSolicitud">Nro Solicitud de Requisicion</label>
 
-				<div class="col-md-9">
-					<hr />
-				</div>
-			</div>
-			<div class="row mb-2">
-				<div class="col-md-1"></div>
-				<div class="col-md-7">
-					<div class="input-group mb-3">
-						<label class="input-group label-estilo" for="tipoSolicitud">Nro Solicitud de Requisicion</label>
-						&nbsp;
-						<span #mivar id="tipoSolicitud" name="tipoSolicitud" style="color: black; font-size: 14px" class="text-start">{{ idSolicitudRP }}</span>
-					</div>
-				</div>
-			</div>
-			<div class="row mt-3">
-				<div class="col-md-1"></div>
-				<div class="col-md-7">
-					<div class="input-group mb-3">
-						<label class="input-group label-estilo" for="tipoMotivo">Apellidos y nombres completos</label>
-						&nbsp;
-						<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{ this.model.nombreCompleto }}</span>
-					</div>
-				</div>
-			</div>
-
-			<div class="row mt-3">
-				<div class="col-md-1"></div>
-				<div class="col-md-3">
-					<div class="input-group mb-3">
-						<label class="input-group label-estilo" for="observaciones">Observaciones</label>
-					</div>
-				</div>
-
-				<div class="col-md-7">
-					<div class="input-group mb-3">
-						<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{ detalleSolicitudRG.justificacion }}</span>
-					</div>
-				</div>
-			</div>
-
-			<div class="row mt-4">
-				<div class="col-md-3">
-					<div class="mb-4">
-						<a>
-							<h2 class="sol-danger">Datos de contratación</h2>
-						</a>
-					</div>
-				</div>
-
-				<div class="col-md-9">
-					<hr />
-				</div>
-			</div>
-
-			<div class="row">
-				<div class="col-md-1"></div>
-				<div class="col-md-10">
-					<div class="input-group mb-3">
-						<label class="input-group label-estilo" for="tipoMotivo">Empleado</label>
-						&nbsp;
-						<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{ this.detalleSolicitud.nombreEmpleado }}</span>
-					</div>
-				</div>
-			</div>
-
-			<div class="row mt-4 mb-4">
-				<div class="col-md-1"></div>
-				<div class="col d-flex justify-content-center align-items-center">
-					<div class="mb-3">
-						<label class="input-group label-estilo" style="font-size: 20px; color: black" for="tipoMotivo">Anterior</label>
-					</div>
-				</div>
-				<div class="col d-flex justify-content-center align-items-center">
-					<div class="mb-3">
-						<label class="input-group label-estilo" style="font-size: 20px; color: black" for="tipoMotivo">Actual</label>
-					</div>
-				</div>
-			</div>
-
-			<div class="row mt-4">
-				<div class="col-md-1"></div>
-				<div class="col">
-					<div class="input-group mb-3">
-						<label class="input-group label-estilo" for="tipoMotivo">Compañía</label>
-						&nbsp;
-						<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{ modelRG.compania }}</span>
-					</div>
-				</div>
-				<div class="col">
-					<div class="input-group mb-3">
-						<label class="input-group label-estilo" for="tipoMotivo">Compañía</label>
-						&nbsp;
-						<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{ model.compania }}</span>
-					</div>
-				</div>
-			</div>
-
-			<div class="row mt-4 mb-4">
-				<div class="col-md-1"></div>
-				<div class="col">
-					<div class="input-group mb-3">
-						<label class="input-group label-estilo" for="tipoMotivo">Sueldo</label>
-						&nbsp;
-						<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{ modelRG.sueldo }}</span>
-					</div>
-				</div>
-				<div class="col">
-					<div class="input-group mb-3">
-						<label class="input-group label-estilo" for="tipoMotivo">Sueldo</label>
-						&nbsp;
-						<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{ model.sueldo }}</span>
-					</div>
-				</div>
-			</div>
-
-			<div class="row mt-4">
-				<div class="col-md-3">
-					<div class="mb-4">
-						<a>
-							<h2 class="sol-danger">Tipo de variable</h2>
-						</a>
-					</div>
-				</div>
-
-				<div class="col-md-9">
-					<hr />
-				</div>
-			</div>
-
-			<div class="row mt-4">
-				<div class="col-md-1"></div>
-				<div class="col">
-					<div class="input-group mb-3">
-						<label class="input-group label-estilo" for="tipoMotivo">Mensual</label>
-						&nbsp;
-						<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{ modelRG.sueldoMensual }}</span>
-					</div>
-				</div>
-				<div class="col">
-					<div class="input-group mb-3">
-						<label class="input-group label-estilo" for="tipoMotivo">Mensual</label>
-						&nbsp;
-						<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{ model.sueldoMensual }}</span>
-					</div>
-				</div>
-			</div>
-			<div class="row mt-4">
-				<div class="col-md-1"></div>
-				<div class="col">
-					<div class="input-group mb-3">
-						<label class="input-group label-estilo" for="tipoMotivo">Trimestral</label>
-						&nbsp;
-						<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{ modelRG.sueldoTrimestral }}</span>
-					</div>
-				</div>
-				<div class="col">
-					<div class="input-group mb-3">
-						<label class="input-group label-estilo" for="tipoMotivo">Trimestral</label>
-						&nbsp;
-						<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{ model.sueldoTrimestral }}</span>
-					</div>
-				</div>
-			</div>
-			<div class="row mt-4">
-				<div class="col-md-1"></div>
-				<div class="col">
-					<div class="input-group mb-3">
-						<label class="input-group label-estilo" for="tipoMotivo">Semestral</label>
-						&nbsp;
-						<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{ modelRG.sueldoSemestral }}</span>
-					</div>
-				</div>
-				<div class="col">
-					<div class="input-group mb-3">
-						<label class="input-group label-estilo" for="tipoMotivo">Semestral</label>
-						&nbsp;
-						<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{ model.sueldoSemestral }}</span>
-					</div>
-				</div>
-			</div>
-			<div class="row mt-4">
-				<div class="col-md-1"></div>
-				<div class="col">
-					<div class="input-group mb-3">
-						<label class="input-group label-estilo" for="tipoMotivo">Anual</label>
-						&nbsp;
-						<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{ modelRG.sueldoAnual }}</span>
-					</div>
-				</div>
-				<div class="col">
-					<div class="input-group mb-3">
-						<label class="input-group label-estilo" for="tipoMotivo">Anual</label>
-						&nbsp;
-						<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{ model.sueldoAnual }}</span>
-					</div>
-				</div>
-			</div>
-			<div class="row mt-4">
-				<div class="col-md-1"></div>
-				<div class="col">
-					<div class="input-group mb-3">
-						<label class="input-group label-estilo" for="tipoMotivo">Remuneracion mensual</label>
-						&nbsp;
-						<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{ this.remuneracion }}</span>
-					</div>
-				</div>
-				<div class="col">
-					<div class="input-group mb-3">
-						<label class="input-group label-estilo" for="tipoMotivo">Remuneracion mensual</label>
-						&nbsp;
-						<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{ modelRemuneracion }}</span>
-					</div>
-				</div>
-			</div>
-			<div class="row mt-4">
-				<div class="col-md-1"></div>
-				<div class="col">
-					<div class="input-group mb-3">
-						<label class="input-group label-estilo" for="tipoMotivo">Puesto</label>
-						&nbsp;
-						<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{ modelRG.descrPosicion }}</span>
-					</div>
-				</div>
-				<div class="col">
-					<div class="input-group mb-3">
-						<label class="input-group label-estilo" for="tipoMotivo">Puesto</label>
-						&nbsp;
-						<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{ model.descrPosicion }}</span>
-					</div>
-				</div>
-			</div>
-			<div class="row mt-4">
-				<div class="col-md-1"></div>
-				<div class="col">
-					<div class="input-group mb-3">
-						<label class="input-group label-estilo" for="tipoMotivo">Unidad de Negocio</label>
-						&nbsp;
-						<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{ modelRG.unidadNegocio }}</span>
-					</div>
-				</div>
-				<div class="col">
-					<div class="input-group mb-3">
-						<label class="input-group label-estilo" for="tipoMotivo">Unidad de Negocio</label>
-						&nbsp;
-						<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{ model.unidadNegocio }}</span>
-					</div>
-				</div>
-			</div>
-			<div class="row mt-4">
-				<div class="col-md-1"></div>
-				<div class="col">
-					<div class="input-group mb-3">
-						<label class="input-group label-estilo" for="tipoMotivo">Departamento</label>
-						&nbsp;
-						<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{ modelRG.departamento }}</span>
-					</div>
-				</div>
-				<div class="col">
-					<div class="input-group mb-3">
-						<label class="input-group label-estilo" for="tipoMotivo">Departamento</label>
-						&nbsp;
-						<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{ model.departamento }}</span>
-					</div>
-				</div>
-			</div>
-			<div class="row mt-4">
-				<div class="col-md-1"></div>
-				<div class="col">
-					<div class="input-group mb-3">
-						<label class="input-group label-estilo" for="tipoMotivo">Localidad</label>
-						&nbsp;
-						<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{ modelRG.localidad }}</span>
-					</div>
-				</div>
-				<div class="col">
-					<div class="input-group mb-3">
-						<label class="input-group label-estilo" for="tipoMotivo">Localidad</label>
-						&nbsp;
-						<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{ model.localidad }}</span>
-					</div>
-				</div>
-			</div>
-			<div class="row mt-4">
-				<div class="col-md-1"></div>
-				<div class="col">
-					<div class="input-group mb-3">
-						<label class="input-group label-estilo" for="tipoMotivo">Jefe Inmediato Superior</label>
-						&nbsp;
-						<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{ this.detalleSolicitudRG.jefeInmediatoSuperior }}</span>
-					</div>
-				</div>
-				<div class="col">
-					<div class="input-group mb-3">
-						<label class="input-group label-estilo" for="tipoMotivo">Jefe Inmediato Superior</label>
-						&nbsp;
-						<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{ this.detalleSolicitud.jefeInmediatoSuperior === "" ? "No aplica" : this.detalleSolicitud.jefeInmediatoSuperior }}</span>
-					</div>
-				</div>
-			</div>
-			<div class="row mt-4">
-				<div class="col-md-1"></div>
-				<div class="col">
-					<div class="input-group mb-3">
-						<label class="input-group label-estilo" for="tipoMotivo">Puesto Jefe In Superior</label>
-						&nbsp;
-						<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{ this.detalleSolicitudRG.puestoJefeInmediato }}</span>
-					</div>
-				</div>
-				<div class="col">
-					<div class="input-group mb-3">
-						<label class="input-group label-estilo" for="tipoMotivo">Puesto Jefe Inmediato</label>
-						&nbsp;
-						<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{ this.detalleSolicitud.jefeInmediatoSuperior === "" ? "No aplica" : this.detalleSolicitud.jefeInmediatoSuperior }}</span>
-					</div>
-				</div>
-			</div>
-			<div class="row mt-4">
-				<div class="col-md-1"></div>
-				<div class="col">
-					<div class="input-group mb-3">
-						<label class="input-group label-estilo" for="jeferef">Jefe Referencia</label>
-						&nbsp;
-						<span id="jeferef" name="jeferef" style="color: black; font-size: 14px" class="text-start">{{ this.detalleSolicitudRG.jefeReferencia }}</span>
-					</div>
-				</div>
-				<div class="col">
-					<div class="input-group mb-3">
-						<label class="input-group label-estilo" for="respon">Responsable RRHH</label>
-						&nbsp;
-						<span id="respon" name="respon" style="color: black; font-size: 14px" class="text-start">{{ this.detalleSolicitud.responsableRRHH }}</span>
-					</div>
-				</div>
-			</div>
-			<div class="row mt-4">
-				<div class="col-md-1"></div>
-				<div class="col">
-					<div class="input-group mb-3">
-						<label class="input-group label-estilo" for="tipoMotivo">Puesto Referencia</label>
-						&nbsp;
-						<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{ this.detalleSolicitudRG.puesto }}</span>
-					</div>
-				</div>
-				<div class="col mb-4">
-					<div class="input-group mb-3 h-100">
-						<label class="input-group-text text-start label-estilo" for="tipoMotivo">Observaciones del comité de Remuneraciones</label>
-						<textarea [value]="observacionRemuneraciones" id="observaciones" name="observaciones" style="color: black; font-size: 14px; height: 100px; resize: none; position: absolute; top: 50px; width: 100%" disabled></textarea>
-					</div>
-				</div>
-			</div>
-			<div class="row mt-4">
-				<div class="col-md-1"></div>
-				<div class="col-md-6">
-					<div class="input-group mb-3">
-						<label class="input-group label-estilo" for="tipoMotivo">Fecha de Ingreso</label>
-						&nbsp;
-						<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{ modelRG.fechaIngreso | date : "dd/MM/yyyy" }}</span>
-					</div>
-				</div>
-			</div>
-			<div class="row mt-4">
-				<div class="col-md-1"></div>
-				<div class="col-md-6">
-					<div class="input-group mb-3">
-						<label class="input-group label-estilo" for="tipoMotivo">Fecha de Salida</label>
-						&nbsp;
-						<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{ this.detalleSolicitudRG.fechaSalida | date : "dd/MM/yyyy" }}</span>
-					</div>
-				</div>
-			</div>
-			<div class="row mt-4">
-				<div class="col-md-1"></div>
-				<div class="col-md-6">
-					<div class="input-group mb-3">
-						<label class="input-group label-estilo" for="responRight">Responsable RRHH</label>
-						&nbsp;
-						<span id="responRight" name="responRight" style="color: black; font-size: 14px" class="text-start">{{ this.detalleSolicitudRG.responsableRRHH }}</span>
-					</div>
-				</div>
-			</div>
-
-			<div class="row mt-4">
-				<div class="col-md-3">
-					<div class="mb-4">
-						<a>
-							<h3 class="sol-danger">Aprobadores de la solicitud</h3>
-						</a>
-					</div>
-				</div>
-
-				<div class="col-md-9">
-					<hr />
-				</div>
-			</div>
-
-			<!-- <table-component
-                tableName="tablaAprobadores"
-                [columns]="columnsAprobadores"
-                [dataTable]="dataTableAprobadores"
-            /> -->
-
-			<div class="accordion" id="accordionExample">
-				<div *ngFor="let nivelItem of dataAprobacionesPorPosicion[keySelected]; let i = index" class="accordion-item">
-					<div class="accordion-header">
-						<button class="accordion-button" type="button" data-bs-toggle="collapse" [attr.data-bs-target]="'#collapse' + i" aria-expanded="true" [attr.aria-controls]="'collapse' + i" style="display: block">
-							<div class="row" style="align-items: center; justify-content: space-around">
-								<div class="col">{{ nivelItem.nivelAprobacionType.ruta }}</div>
-
-								<div class="col">
-									{{ nivelItem.aprobador.usuario !== "" && nivelItem.aprobador.usuario !== undefined && nivelItem.aprobador.usuario != null ? nivelItem.aprobador.codigoPosicion + "-" + nivelItem.aprobador.usuario : "No aplica" }}
-								</div>
-
-								<div class="col">
-									{{ nivelItem.nivelAprobacionType.nivelAprobacionRuta }}
-								</div>
+								<span #mivar id="tipoSolicitud" name="tipoSolicitud" style="color: black; font-size: 14px" class="text-start">{{ idSolicitudRP }}</span>
 							</div>
-						</button>
+						</div>
 					</div>
 
-					<div [id]="'collapse' + i" class="accordion-collapse collapse" [ngClass]="{ show: i === 0 }" data-bs-parent="#accordionExample">
-						<div class="row">
-							<div class="col">
-								<div class="input-group">
-									<label for="lvl1descripcion"> Descripción de la posición </label>
+					<div class="row">
+						<div class="col-md-12">
+							<div class="input-group mb-3 align-items-center">
+								<label class="input-group-text label-estilo2" for="tipoMotivo">Apellidos y nombres completos</label>
 
-									&nbsp;
+								<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{ model.nombreCompleto }}</span>
+							</div>
+						</div>
+					</div>
 
-									<span id="lvl1descripcion" name="" style="color: black; font-size: 14px">
-										{{ nivelItem.aprobador.descripcionPosicion !== "" && nivelItem.aprobador.descripcionPosicion !== undefined && nivelItem.aprobador.descripcionPosicion != null ? nivelItem.aprobador.descripcionPosicion : "No aplica" }}
-									</span>
+					<div class="row">
+						<div class="col-md-12">
+							<div class="input-group mb-3 align-items-center">
+								<label class="input-group-text label-estilo2" for="observaciones">Observaciones</label>
+
+								<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{ detalleSolicitudRG.justificacion }}</span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</app-solicitud-seccion-desplegable>
+
+			<!-- ! Datos de contratación -->
+			<app-solicitud-seccion-desplegable titleSummary="Datos de contratación">
+				<div>
+					<div class="row">
+						<div class="col-md-6">
+							<div class="input-group mb-3 align-items-center">
+								<label class="input-group-text text-start label-estilo" for="tipoMotivo">Empleado</label>
+
+								<span id="empleado" name="empleado" style="color: black; font-size: 14px" class="text-start">{{ detalleSolicitudRG.supervisaA === "N/A" ? "" : modelRG.nombreCompleto }}</span>
+							</div>
+						</div>
+					</div>
+
+					<div class="row my-4">
+						<div class="col-md-6">
+							<h2 class="label-estilo sol-danger text-center w-100">Anterior</h2>
+						</div>
+
+						<div class="col-md-6">
+							<h2 class="label-estilo sol-danger text-center w-100">Actual</h2>
+						</div>
+					</div>
+
+					<div class="row mt-4">
+						<div class="col">
+							<div class="input-group mb-3 align-items-center">
+								<label class="input-group-text text-start label-estilo" for="tipoMotivo">Compañía</label>
+
+								<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{ detalleSolicitudRG.supervisaA === "N/A" ? "" : modelRG.compania }}</span>
+							</div>
+						</div>
+						<div class="col">
+							<div class="input-group mb-3 align-items-center">
+								<label class="input-group-text text-start label-estilo" for="tipoMotivo">Compañía</label>
+
+								<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{ model.compania }}</span>
+							</div>
+						</div>
+					</div>
+
+					<div class="row mt-4 mb-4">
+						<div class="col">
+							<div class="input-group mb-3 align-items-center">
+								<label class="input-group-text text-start label-estilo" for="tipoMotivo">Sueldo</label>
+
+								<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{ detalleSolicitudRG.supervisaA === "N/A" ? "" : modelRG.sueldo }}</span>
+							</div>
+						</div>
+						<div class="col">
+							<div class="input-group mb-3 align-items-center">
+								<label class="input-group-text text-start label-estilo" for="tipoMotivo">Sueldo</label>
+
+								<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{ model.sueldo }}</span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</app-solicitud-seccion-desplegable>
+
+			<!-- ! Tipo de variable -->
+			<app-solicitud-seccion-desplegable titleSummary="Tipo de variable">
+				<div>
+					<div class="row">
+						<div class="col-md-6">
+							<div class="input-group mb-3 align-items-center">
+								<label class="input-group-text text-start label-estilo" for="tipoMotivo">Mensual</label>
+
+								<span style="color: black; font-size: 14px" class="text-start">$ {{ modelRG.sueldoMensual | number : "1.2-2" }}</span>
+							</div>
+						</div>
+
+						<div class="col-md-6">
+							<div class="input-group mb-3 align-items-center">
+								<label class="input-group-text text-start label-estilo" for="tipoMotivo">Mensual</label>
+
+								<span style="color: black; font-size: 14px" class="text-start">$ {{ model.sueldoMensual | number : "1.2-2" }}</span>
+							</div>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-md-6">
+							<div class="input-group mb-3 align-items-center">
+								<label class="input-group-text text-start label-estilo" for="tipoMotivo">Trimestral</label>
+
+								<span style="color: black; font-size: 14px" class="text-start">$ {{ modelRG.sueldoTrimestral | number : "1.2-2" }}</span>
+							</div>
+						</div>
+
+						<div class="col-md-6">
+							<div class="input-group mb-3 align-items-center">
+								<label class="input-group-text text-start label-estilo" for="tipoMotivo">Trimestral</label>
+
+								<span style="color: black; font-size: 14px" class="text-start">$ {{ model.sueldoTrimestral | number : "1.2-2" }}</span>
+							</div>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-md-6">
+							<div class="input-group mb-3 align-items-center">
+								<label class="input-group-text text-start label-estilo" for="tipoMotivo">Semestral</label>
+
+								<span style="color: black; font-size: 14px" class="text-start">$ {{ modelRG.sueldoSemestral | number : "1.2-2" }}</span>
+							</div>
+						</div>
+
+						<div class="col-md-6">
+							<div class="input-group mb-3 align-items-center">
+								<label class="input-group-text text-start label-estilo" for="tipoMotivo">Semestral</label>
+
+								<span style="color: black; font-size: 14px" class="text-start">$ {{ model.sueldoSemestral | number : "1.2-2" }}</span>
+							</div>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-md-6">
+							<div class="input-group mb-3 align-items-center">
+								<label class="input-group-text text-start label-estilo" for="tipoMotivo">Anual</label>
+
+								<span style="color: black; font-size: 14px" class="text-start">$ {{ modelRG.sueldoAnual | number : "1.2-2" }}</span>
+							</div>
+						</div>
+
+						<div class="col-md-6">
+							<div class="input-group mb-3 align-items-center">
+								<label class="input-group-text text-start label-estilo" for="tipoMotivo">Anual</label>
+
+								<span style="color: black; font-size: 14px" class="text-start">$ {{ model.sueldoAnual | number : "1.2-2" }}</span>
+							</div>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-md-6">
+							<div class="input-group mb-3 align-items-center">
+								<label class="input-group-text text-start label-estilo" for="tipoMotivo">Remuneración mensual</label>
+
+								<span style="color: black; font-size: 14px" class="text-start">$ {{ remuneracion | number : "1.2-2" }}</span>
+							</div>
+						</div>
+
+						<div class="col-md-6">
+							<div class="input-group mb-3 align-items-center">
+								<label class="input-group-text text-start label-estilo" for="tipoMotivo">Remuneración mensual</label>
+
+								<span style="color: black; font-size: 14px" class="text-start">$ {{ modelRemuneracion | number : "1.2-2" }}</span>
+							</div>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-md-6">
+							<div class="input-group mb-3 align-items-center">
+								<label class="input-group-text text-start label-estilo" for="tipoMotivo">Puesto</label>
+
+								<span style="color: black; font-size: 14px" class="text-start">{{ modelRG.descrPosicion }}</span>
+							</div>
+						</div>
+
+						<div class="col-md-6">
+							<div class="input-group mb-3 align-items-center">
+								<label class="input-group-text text-start label-estilo" for="tipoMotivo">Puesto</label>
+
+								<span style="color: black; font-size: 14px" class="text-start">{{ model.descrPosicion }}</span>
+							</div>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-md-6">
+							<div class="input-group mb-3 align-items-center">
+								<label class="input-group-text text-start label-estilo" for="tipoMotivo">Unidad de Negocio</label>
+
+								<span style="color: black; font-size: 14px" class="text-start">{{ modelRG.unidadNegocio }}</span>
+							</div>
+						</div>
+
+						<div class="col-md-6">
+							<div class="input-group mb-3 align-items-center">
+								<label class="input-group-text text-start label-estilo" for="tipoMotivo">Unidad de Negocio</label>
+
+								<span style="color: black; font-size: 14px" class="text-start">{{ model.unidadNegocio }}</span>
+							</div>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-md-6">
+							<div class="input-group mb-3 align-items-center">
+								<label class="input-group-text text-start label-estilo" for="tipoMotivo">Departamento</label>
+
+								<span style="color: black; font-size: 14px" class="text-start">{{ modelRG.departamento }}</span>
+							</div>
+						</div>
+
+						<div class="col-md-6">
+							<div class="input-group mb-3 align-items-center">
+								<label class="input-group-text text-start label-estilo" for="tipoMotivo">Departamento</label>
+
+								<span style="color: black; font-size: 14px" class="text-start">{{ model.departamento }}</span>
+							</div>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-md-6">
+							<div class="input-group mb-3 align-items-center">
+								<label class="input-group-text text-start label-estilo" for="tipoMotivo">Localidad</label>
+
+								<span style="color: black; font-size: 14px" class="text-start">{{ modelRG.localidad }}</span>
+							</div>
+						</div>
+
+						<div class="col-md-6">
+							<div class="input-group mb-3 align-items-center">
+								<label class="input-group-text text-start label-estilo" for="tipoMotivo">Localidad</label>
+
+								<span style="color: black; font-size: 14px" class="text-start">{{ model.localidad }}</span>
+							</div>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-md-6">
+							<div class="input-group mb-3 align-items-center">
+								<label class="input-group-text text-start label-estilo" for="tipoMotivo">Jefe Inmediato Superior</label>
+
+								<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{ detalleSolicitudRG.jefeInmediatoSuperior }}</span>
+							</div>
+						</div>
+
+						<div class="col-md-6">
+							<div class="input-group mb-3 align-items-center">
+								<label class="input-group-text text-start label-estilo" for="tipoMotivo">Jefe Inmediato Superior</label>
+
+								<span style="color: black; font-size: 14px" class="text-start">{{ model.jefeInmediatoSuperior }}</span>
+							</div>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-md-6">
+							<div class="input-group mb-3 align-items-center">
+								<label class="input-group-text text-start label-estilo" for="tipoMotivo">Puesto Jefe Inmediato</label>
+
+								<span style="color: black; font-size: 14px" class="text-start">{{ detalleSolicitud.jefeInmediatoSuperior === "" ? "No aplica" : detalleSolicitud.jefeInmediatoSuperior }}</span>
+							</div>
+						</div>
+
+						<div class="col-md-6">
+							<div class="input-group mb-3 align-items-center">
+								<label class="input-group-text text-start label-estilo" for="tipoMotivo">Puesto Jefe Inmediato</label>
+
+								<span style="color: black; font-size: 14px" class="text-start">{{ model.puestoJefeInmediato }}</span>
+							</div>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-md-6">
+							<div class="input-group mb-3 align-items-center">
+								<label class="input-group-text text-start label-estilo" for="tipoMotivo">Jefe Referencia</label>
+
+								<span id="jeferef" name="jeferef" style="color: black; font-size: 14px" class="text-start">{{ detalleSolicitudRG.jefeReferencia }}</span>
+							</div>
+						</div>
+
+						<div class="col-md-6">
+							<div class="input-group mb-3 align-items-center">
+								<label class="input-group-text text-start label-estilo" for="tipoMotivo">Responsable RRHH</label>
+
+								<span style="color: black; font-size: 14px" class="text-start">{{ solicitud.usuarioCreacion }}</span>
+							</div>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-md-6">
+							<div class="input-group mb-3 align-items-center">
+								<label class="input-group-text text-start label-estilo" for="tipoMotivo">Puesto Referencia</label>
+
+								<span style="color: black; font-size: 14px" class="text-start">{{ detalleSolicitudRG.puesto }}</span>
+							</div>
+						</div>
+
+						<div class="col-md-6">
+							<div class="input-group mb-3 align-items-center">
+								<label class="input-group-text text-start label-estilo" for="tipoMotivo"
+									>Observaciones del comité <br />
+									de Remuneraciones</label
+								>
+
+								<span style="color: black; font-size: 14px" class="text-start">{{ observacionRemuneraciones }}</span>
+							</div>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-md-6">
+							<div class="input-group mb-3 align-items-center">
+								<label class="input-group-text text-start label-estilo" for="tipoMotivo">Fecha de Ingreso</label>
+
+								<span style="color: black; font-size: 14px" class="text-start">{{ modelRG.fechaIngreso | date : "dd/MM/yyyy" }}</span>
+							</div>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-md-6">
+							<div class="input-group mb-3 align-items-center">
+								<label class="input-group-text text-start label-estilo" for="tipoMotivo">Fecha de Salida</label>
+
+								<span style="color: black; font-size: 14px" class="text-start">{{ detalleSolicitudRG.fechaSalida | date : "dd/MM/yyyy" }}</span>
+							</div>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-md-6">
+							<div class="input-group mb-3 align-items-center">
+								<label class="input-group-text text-start label-estilo" for="tipoMotivo">Responsable RRHH</label>
+
+								<span id="responRight" name="responRight" style="color: black; font-size: 14px" class="text-start">{{ detalleSolicitudRG.responsableRRHH }}</span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</app-solicitud-seccion-desplegable>
+
+			<!-- ! Aprobadores de la solicitud -->
+			<app-solicitud-seccion-desplegable titleSummary="Aprobadores de la solicitud">
+				<div>
+					<div class="accordion" id="accordionExample">
+						<div *ngFor="let nivelItem of dataAprobacionesPorPosicion[keySelected]; let i = index" class="accordion-item">
+							<div class="accordion-header">
+								<button class="accordion-button" type="button" data-bs-toggle="collapse" [attr.data-bs-target]="'#collapse' + i" aria-expanded="true" [attr.aria-controls]="'collapse' + i" style="display: block">
+									<div class="row" style="align-items: center; justify-content: space-around">
+										<div class="col">
+											{{ nivelItem.nivelAprobacionType.ruta }}
+										</div>
+
+										<div class="col">
+											{{ nivelItem.aprobador.usuario !== "" && nivelItem.aprobador.usuario !== undefined && nivelItem.aprobador.usuario != null ? nivelItem.aprobador.codigoPosicion + "-" + nivelItem.aprobador.usuario : "No aplica" }}
+										</div>
+
+										<div class="col">
+											{{ nivelItem.nivelAprobacionType.nivelAprobacionRuta }}
+										</div>
+									</div>
+								</button>
+							</div>
+
+							<div [id]="'collapse' + i" class="accordion-collapse collapse" [ngClass]="{ show: i === 0 }" data-bs-parent="#accordionExample">
+								<div class="row">
+									<div class="col">
+										<div class="input-group">
+											<label for="lvl1descripcion"> Descripción de la posición </label>
+
+											&nbsp;
+
+											<span id="lvl1descripcion" name="" style="color: black; font-size: 14px">{{ nivelItem.aprobador.descripcionPosicion !== "" && nivelItem.aprobador.descripcionPosicion !== undefined && nivelItem.aprobador.descripcionPosicion != null ? nivelItem.aprobador.descripcionPosicion : "No aplica" }}</span>
+										</div>
+									</div>
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
-			</div>
+			</app-solicitud-seccion-desplegable>
 
+			<!-- ! Referencia de Último Jefe -->
 			<div *ngIf="taskKey === taskKeyUltimoJefe || taskKey === taskKeySolicitante">
-				<div class="row mt-4">
-					<div class="col-md-3">
-						<div class="mb-4">
-							<a>
-								<h2 class="sol-danger">Referencia de Ultimo Jefe</h2>
-							</a>
-						</div>
-					</div>
+				<app-solicitud-seccion-desplegable titleSummary="Referencia de Último Jefe" [isOpen]="true">
+					<div>
+						<div class="row">
+							<div class="col-md-12">
+								<div class="input-group mb-3 align-items-center">
+									<label class="input-group-text label-estilo2" for="tipoSolicitud">Jefe Anterior o Jefe de Referencia</label>
 
-					<div class="col-md-9">
-						<hr />
-					</div>
-				</div>
+									<span #mivar id="tipoSolicitud" name="tipoSolicitud" style="color: black; font-size: 14px" class="text-start">{{ detalleSolicitudRG.jefeInmediatoSuperior }}</span>
+								</div>
+							</div>
+						</div>
 
-				<div class="row mb-2">
-					<div class="col-md-10">
-						<div class="input-group mb-3">
-							<label class="input-group label-estilo" for="tipoSolicitud">Jefe Anterior o Jefe de Referencia</label>
-							&nbsp;
-							<span #mivar id="tipoSolicitud" name="tipoSolicitud" style="color: black; font-size: 14px" class="text-start">{{ this.detalleSolicitudRG.jefeInmediatoSuperior }}</span>
-						</div>
-					</div>
-				</div>
-				<div class="row mt-3">
-					<div class="col-md-10">
-						<div class="input-group mb-3">
-							<label class="input-group label-estilo" for="tipoMotivo">Puesto</label>
-							&nbsp;
-							<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{ this.detalleSolicitudRG.puestoJefeInmediato }}</span>
-						</div>
-					</div>
-				</div>
+						<div class="row">
+							<div class="col-md-12">
+								<div class="input-group mb-3 align-items-center">
+									<label class="input-group-text label-estilo2" for="tipoMotivo">Puesto</label>
 
-				<div class="row mt-3">
-					<div class="col-md-12">
-						<div class="input-group mb-3">
-							<label for="comments" class="input-group label-estilo" style="width: 37%"> Comentarios (¿Cómo fue el desempeño en el Área?) </label>
-							<textarea *ngIf="taskKey !== taskKeySolicitante" name="descripcionposicion" style="color: black; font-size: 14px; resize: none" class="form-control" id="comments" rows="3" [(ngModel)]="comentarios" required></textarea>
-							<span *ngIf="taskKey === taskKeySolicitante" #mivar id="tipoSolicitud" name="tipoSolicitud" style="color: black; font-size: 14px" class="text-start">{{ comentariosJefeInmediato.comentario }}</span>
+									<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{ detalleSolicitudRG.puestoJefeInmediato }}</span>
+								</div>
+							</div>
 						</div>
-					</div>
-				</div>
 
-				<div class="row mt-3">
-					<div class="col-md-10">
-						<div class="input-group mb-3">
-							<label class="input-group label-estilo" for="tipoMotivo">Fecha</label>
-							&nbsp;
-							<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{ currentDate | date : "dd/MM/yyyy" }}</span>
+						<div class="row">
+							<div class="col-md-12">
+								<div class="input-group mb-3 align-items-center">
+									<label class="input-group-text label-estilo2" for="comments"> Comentarios (¿Cómo fue el desempeño en el Área?) </label>
+
+									<textarea *ngIf="taskKey !== taskKeySolicitante" name="descripcionposicion" style="color: black; font-size: 14px; resize: none" class="form-control" id="comments" rows="3" [(ngModel)]="comentarios" required></textarea>
+
+									<!-- <span *ngIf="taskKey === taskKeySolicitante" #mivar id="tipoSolicitud" name="tipoSolicitud" style="color: black; font-size: 14px" class="text-start">$ {{ comentariosJefeInmediato.comentario }}</span> -->
+								</div>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col-md-12">
+								<div class="input-group mb-3 align-items-center">
+									<label class="input-group-text label-estilo2" for="tipoMotivo">Fecha</label>
+
+									<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{ currentDate | date : "dd/MM/yyyy" }}</span>
+								</div>
+							</div>
 						</div>
 					</div>
-				</div>
+				</app-solicitud-seccion-desplegable>
 			</div>
 
+			<!-- ! Ingreso de Referencias de Jefe RR.HH. -->
 			<div *ngIf="taskKey === taskKeyRRHH || taskKey === taskKeySolicitante">
+				<app-solicitud-seccion-desplegable titleSummary="Ingreso de Referencias de Jefe RR.HH." [isOpen]="true">
+					<div>
+						<div class="row">
+							<div class="col-md-12">
+								<div class="input-group mb-3 align-items-center">
+									<label class="input-group-text label-estilo2" for="tipoSolicitud">Forma de Salida</label>
+
+									<!-- <input *ngIf="taskKey !== taskKeySolicitante" type="text" [(ngModel)]="comentarios" type="text" name="comentario" placeholder="Campo obligatorio" style="border: 1px solid blue; border-radius: 7px; width: 50%" /> -->
+
+									<textarea *ngIf="taskKey !== taskKeySolicitante" type="text" name="comentario" style="color: black; font-size: 14px; resize: none" class="form-control" id="comments" rows="3" [(ngModel)]="comentarios" required></textarea>
+									<!-- <span *ngIf="taskKey === taskKeySolicitante" #mivar id="tipoSolicitud" name="tipoSolicitud" style="color: black; font-size: 14px" class="text-start">$ {{ comentariosRRHH.comentario }}</span> -->
+								</div>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col-md-12">
+								<div class="input-group mb-3 align-items-center">
+									<label class="input-group-text label-estilo2" for="tipoMotivo">Causa real de salida</label>
+
+									<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{ causaSalida }}</span>
+								</div>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col-md-12">
+								<div class="input-group mb-3 align-items-center">
+									<label class="input-group-text label-estilo2" for="justificacion">Justificación <span style="color: red">*</span></label>
+
+									<span>{{ model.justificacionCargo }}</span>
+									<!-- <textarea id="justificacion" name="justificacion" placeholder="Campo obligatorio" [(ngModel)]="model.justificacionCargo" style="color: black; font-size: 14px" required #justificacion="ngModel"></textarea> -->
+								</div>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col-md-12">
+								<div class="input-group mb-3 align-items-center">
+									<label class="input-group-text label-estilo2" for="tipoMotivo">Fecha</label>
+
+									<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{ currentDate | date : "dd/MM/yyyy" }}</span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</app-solicitud-seccion-desplegable>
+			</div>
+
+			<!-- <div *ngIf="taskKey === taskKeyRRHH || taskKey === taskKeySolicitante">
 				<div class="row mt-4">
 					<div class="col-md-3">
 						<div class="mb-4">
@@ -593,6 +654,57 @@
 						</div>
 					</div>
 				</div>
+			</div> -->
+
+			<!-- ! Ingreso de Referencias Jefe Solicitante -->
+			<div *ngIf="taskKey === taskKeySolicitante">
+				<app-solicitud-seccion-desplegable titleSummary="Ingreso de Referencias Jefe Solicitante" [isOpen]="true">
+					<div>
+						<div class="row">
+							<div class="col-md-12">
+								<div class="input-group mb-3 align-items-center">
+									<label class="input-group-text label-estilo2" for="tipoSolicitud">Nombre del Jefe Solicitante</label>
+
+									<!-- <input *ngIf="taskKey !== taskKeySolicitante" type="text" [(ngModel)]="comentarios" type="text" name="comentario" placeholder="Campo obligatorio" style="border: 1px solid blue; border-radius: 7px; width: 50%" /> -->
+
+									<span #mivar id="tipoSolicitud" name="tipoSolicitud" style="color: black; font-size: 14px" class="text-start">{{ detalleSolicitud.jefeInmediatoSuperior }}</span>
+									<!-- <span *ngIf="taskKey === taskKeySolicitante" #mivar id="tipoSolicitud" name="tipoSolicitud" style="color: black; font-size: 14px" class="text-start">$ {{ comentariosRRHH.comentario }}</span> -->
+								</div>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col-md-12">
+								<div class="input-group mb-3 align-items-center">
+									<label class="input-group-text label-estilo2" for="tipoMotivo">Puesto</label>
+
+									<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{ detalleSolicitud.puestoJefeInmediato }}</span>
+								</div>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col-md-12">
+								<div class="input-group mb-3 align-items-center">
+									<label class="input-group-text label-estilo2" for="justificacion">Comentarios (¿por qué considera el reingreso?)</label>
+
+									<textarea name="descripcionposicion" style="color: black; font-size: 14px; resize: none" class="form-control" id="comments2" rows="3" [(ngModel)]="comentarios" required></textarea>
+									<!-- <textarea id="justificacion" name="justificacion" placeholder="Campo obligatorio" [(ngModel)]="model.justificacionCargo" style="color: black; font-size: 14px" required #justificacion="ngModel"></textarea> -->
+								</div>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col-md-12">
+								<div class="input-group mb-3 align-items-center">
+									<label class="input-group-text label-estilo2" for="tipoMotivo">Fecha</label>
+
+									<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{ currentDate | date : "dd/MM/yyyy" }}</span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</app-solicitud-seccion-desplegable>
 			</div>
 
 			<div *ngIf="taskKey === taskKeySolicitante">

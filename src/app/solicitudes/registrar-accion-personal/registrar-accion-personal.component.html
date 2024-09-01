@@ -11,12 +11,14 @@
 						</div>
 					</div>
 
-					<div *ngIf="!existeMatenedores || existe" class="col-md-4 text-end">
-						<button type="button" (click)="openModalReasignarUsuario()" class="btn btn-info me-2 mt-1"><i class="fas fa-redo"></i> Reasignar</button>
+					<div class="col-md-4 text-end">
+						<button *ngIf="existeMatenedores" type="button" (click)="openModalReasignarUsuario()" class="btn btn-info me-2 mt-1"><i class="fas fa-redo"></i> Reasignar</button>
 
-						<button type="submit" class="btn btn-info me-2 mt-1" aria-label="Close" [disabled]="!solicitudForm.form.valid || !existenNivelesAprobacion || selectedOption === 'Si'"><i class="fas fa-save"></i> Guardar</button>
+						<div *ngIf="!existeMatenedores || existe">
+							<button type="submit" class="btn btn-info me-2 mt-1" aria-label="Close" [disabled]="!solicitudForm.form.valid || !existenNivelesAprobacion || selectedOption === 'Si'"><i class="fas fa-save"></i> Guardar</button>
 
-						<button *ngIf="RegistrarsolicitudCompletada || selectedOption === 'Si'" type="button" (click)="onCompletar()" class="btn btn-info me-2 mt-1"><i class="fas fa-check-circle"></i> Enviar Solicitud</button>
+							<button *ngIf="RegistrarsolicitudCompletada || selectedOption === 'Si'" type="button" (click)="onCompletar()" class="btn btn-info me-2 mt-1"><i class="fas fa-check-circle"></i> Enviar Solicitud</button>
+						</div>
 					</div>
 				</div>
 
@@ -56,7 +58,11 @@
 					<div class="input-group mb-3 align-items-center">
 						<label class="input-group-text text-start label-estilo" for="nombre-empleado">Nombre de Empleado</label>
 
-						<input type="text" name="nombre-empleado" [(ngModel)]="model.nombreCompleto" style="color: black; font-size: 14px" class="form-control" id="codigoposicion" aria-describedby="inputGroupPrepend" required placeholder="Ingrese código" (click)="openModal()" readonly />
+						<input type="text" name="nombre-empleado" [(ngModel)]="model.nombreCompleto" style="color: black; font-size: 14px; width: 33%" class="form-control" id="codigoposicion" aria-describedby="inputGroupPrepend" required placeholder="Nombre del empleado" (click)="openModal()" readonly />
+
+						<button class="btn btn-light" type="button" (click)="openModal()">
+							<i class="ti-search"></i>
+						</button>
 					</div>
 				</div>
 
@@ -64,17 +70,21 @@
 					<div class="input-group mb-3 align-items-center">
 						<label class="input-group-text text-start label-estilo" for="subledger">Subledger</label>
 
-						<input type="text" name="subledger" [(ngModel)]="model.subledger" style="color: black; font-size: 14px; width: 30%" class="form-control" id="codigoposicion" aria-describedby="inputGroupPrepend" required placeholder="Ingrese código" (click)="openModal()" readonly />
+						<input type="text" name="subledger" [(ngModel)]="model.subledger" style="color: black; font-size: 14px; width: 30%" class="form-control" id="codigoposicion" aria-describedby="inputGroupPrepend" required placeholder="Subledger" (click)="openModal()" readonly />
+
+						<button class="btn btn-light" type="button" (click)="openModal()">
+							<i class="ti-search"></i>
+						</button>
 					</div>
 				</div>
+			</div>
 
-				<div class="row">
-					<div class="col-md-12">
-						<div class="input-group mb-3">
-							<label class="input-group-text text-start label-estilo2" for="justificacion">Justificación <span style="color: red">*</span></label>
+			<div class="row">
+				<div class="col-md-12">
+					<div class="input-group mb-3 align-items-center">
+						<label class="input-group-text text-start label-estilo2" for="justificacion">Justificación <span style="color: red">*</span></label>
 
-							<textarea class="form-control" id="justificacion" name="justificacion" placeholder="Campo obligatorio" [(ngModel)]="model.justificacionCargo" style="color: black; font-size: 14px" required #justificacion="ngModel"></textarea>
-						</div>
+						<textarea [(ngModel)]="model.justificacionCargo" id="justificaciono" name="justificaciono" style="color: black; font-size: 14px" placeholder="Campo obligatorio"></textarea>
 					</div>
 				</div>
 			</div>
@@ -90,24 +100,8 @@
 			</div>
 
 			<!-- ! Información del empleado -->
-			<details open class="mb-4">
-				<summary>
-					<div class="row">
-						<div class="col-md-4">
-							<h3 class="sol-danger">Información del Empleado</h3>
-						</div>
-
-						<div class="col-md-7">
-							<hr />
-						</div>
-
-						<div class="col-md-1 text-end">
-							<i class="fas fa-chevron-circle-down"></i>
-						</div>
-					</div>
-				</summary>
-
-				<div class="details-content">
+			<app-solicitud-seccion-desplegable titleSummary="Información del Empleado" [isOpen]="true">
+				<div>
 					<div class="row">
 						<div class="col-md-6">
 							<div class="row my-2">
@@ -433,40 +427,22 @@
 						</div>
 					</div>
 				</div>
-			</details>
+			</app-solicitud-seccion-desplegable>
 
-			<details class="mb-4">
-				<summary>
-					<div class="row">
-						<div class="col-md-4">
-							<h3 class="sol-danger">Aprobadores de la solicitud</h3>
-						</div>
-
-						<div class="col-md-7">
-							<hr />
-						</div>
-
-						<div class="col-md-1 text-end">
-							<i class="fas fa-chevron-circle-down"></i>
-						</div>
-					</div>
-				</summary>
-
-				<div class="details-content">
+			<!-- ! Aprobadores de la solicitud -->
+			<app-solicitud-seccion-desplegable titleSummary="Aprobadores de la solicitud">
+				<div>
 					<div class="accordion" id="accordionExample">
 						<div *ngFor="let nivelItem of dataAprobacionesPorPosicion[keySelected]; let i = index" class="accordion-item">
 							<div class="accordion-header">
 								<button class="accordion-button" type="button" data-bs-toggle="collapse" [attr.data-bs-target]="'#collapse' + i" aria-expanded="true" [attr.aria-controls]="'collapse' + i" style="display: block">
 									<div class="row" style="align-items: center; justify-content: space-around">
-										<div class="col">{{ nivelItem.nivelAprobacionType.ruta }}</div>
+										<div class="col">
+											{{ nivelItem.nivelAprobacionType.ruta }}
+										</div>
 
 										<div class="col">
-											{{
-												nivelItem.aprobador.usuario !== "" && nivelItem.aprobador.usuario !== undefined && nivelItem.aprobador.usuario != null
-													? nivelItem.aprobador.codigoPosicion + "-" + nivelItem.aprobador.usuario
-													: "No
-											aplica"
-											}}
+											{{ nivelItem.aprobador.usuario !== "" && nivelItem.aprobador.usuario !== undefined && nivelItem.aprobador.usuario != null ? nivelItem.aprobador.codigoPosicion + "-" + nivelItem.aprobador.usuario : "No aplica" }}
 										</div>
 
 										<div class="col">
@@ -490,26 +466,11 @@
 						</div>
 					</div>
 				</div>
-			</details>
+			</app-solicitud-seccion-desplegable>
 
-			<details class="mb-4">
-				<summary>
-					<div class="row">
-						<div class="col-md-4">
-							<h3 class="sol-danger">Anulación de Solicitud</h3>
-						</div>
-
-						<div class="col-md-7">
-							<hr />
-						</div>
-
-						<div class="col-md-1 text-end">
-							<i class="fas fa-chevron-circle-down"></i>
-						</div>
-					</div>
-				</summary>
-
-				<div class="details-content">
+			<!-- ! Anulación de la solicitud -->
+			<app-solicitud-seccion-desplegable titleSummary="Anulación de Solicitud">
+				<div>
 					<div class="row">
 						<div class="col-md-12">
 							<div class="input-group mb-3 align-items-center">
@@ -550,7 +511,7 @@
 						</div>
 					</div>
 				</div>
-			</details>
+			</app-solicitud-seccion-desplegable>
 		</div>
 	</div>
 </form>
