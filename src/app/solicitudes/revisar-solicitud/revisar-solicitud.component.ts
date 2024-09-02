@@ -1563,9 +1563,13 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
 								if (this.id_solicitud_by_params.includes("RG") || this.id_solicitud_by_params.includes("CF")) {
 									this.seleccionCandidatoService.deleteCandidatoById(this.idSolicitudRP).subscribe({
 										next: (res) => {
+											this.comentarioSalidaJefeService.eliminarComentarios(this.id_solicitud_by_params).subscribe({
+												next: () => { }
+											});
 										}
 									});
 								}
+
 								this.solicitudes
 									.obtenerNivelesAprobacionRegistrados(this.id_solicitud_by_params)
 									.subscribe({

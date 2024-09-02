@@ -655,7 +655,7 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
 
 	getDataEmpleadosEvolution(arrayToFill: string) {
 		// this.mantenimientoService.getDataEmpleadosEvolution().subscribe({
-			this.modalService
+		this.modalService
 			// .open(dialogComponentList.dialogBuscarEmpleados, {
 			.open(BuscarEmpleadoComponent, {
 				ariaLabelledBy: "modal-title",
@@ -674,7 +674,7 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
 
 					if (arrayToFill === "nombresJefeInmediatoSuperior") {
 						// this.jefesInmediatoSuperior = [...new Set(this.dataEmpleadoEvolution.map((empleado) => empleado))];
-	
+
 						this.jefeInmediatoSuperiorQuery = Object.assign(
 							{},
 							{
@@ -688,7 +688,7 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
 						);
 					} else if (arrayToFill === "nombresJefeReferencia") {
 						// this.jefesReferencia = [...new Set(this.dataEmpleadoEvolution.map((empleado) => empleado))];
-	
+
 						this.jefeReferenciaQuery = Object.assign(
 							{},
 							{
@@ -702,7 +702,7 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
 						);
 					} else {
 						// this.responsablesRRHH = [...new Set(this.dataEmpleadoEvolution.map((empleado) => empleado))];
-	
+
 						this.responsableRRHHQuery = Object.assign(
 							{},
 							{
@@ -836,6 +836,7 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
 							this.taskType_Activity = this.tareasPorCompletar[0].taskDefinitionKey;
 							this.nameTask = this.tareasPorCompletar[0].name;
 						}
+
 						this.taskId = params["id"];
 						// this.getDetalleSolicitudById(this.id_solicitud_by_params); // Si se comenta, causa problemas al abrir el Sweet Alert 2
 						this.getCandidatoValues();
@@ -899,7 +900,8 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
 					this.detalleSolicitudRG = response.detalleSolicitudType[0];
 				}
 
-				this.jefeInmediatoSuperiorQuery = this.detalleSolicitudRG.supervisaA === "NA" ? {
+				// this.jefeInmediatoSuperiorQuery = this.detalleSolicitudRG.supervisaA === "NA" ? {
+				this.jefeReferenciaQuery = this.detalleSolicitudRG.supervisaA === "NA" ? {
 					nombreCompleto: this.detalleSolicitudRG.jefeInmediatoSuperior,
 					descrPuesto: this.detalleSolicitudRG.puestoJefeInmediato
 				} : "";
@@ -1526,9 +1528,15 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
 
 		let jefes = [];
 
-		if (this.jefeInmediatoSuperiorQuery.codigo !== undefined) {
+		// if (this.jefeInmediatoSuperiorQuery.codigo !== undefined) {
+		// 	jefes.push({
+		// 		...this.jefeInmediatoSuperiorQuery,
+		// 		tipoJefe: "jefeInmediato"
+		// 	});
+		// }
+		if (this.jefeReferenciaQuery.codigo !== undefined) {
 			jefes.push({
-				...this.jefeInmediatoSuperiorQuery,
+				...this.jefeReferenciaQuery,
 				tipoJefe: "jefeInmediato"
 			});
 		}
@@ -1561,12 +1569,14 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
 						sueldoAnual: responseSolicitante.evType[0].sueldoVariableAnual,
 					}
 				);
+
 				jefes.push({
 					...this.jefeSolicitanteQuery,
 					tipoJefe: "jefeSolicitante"
 				});
-				console.log(jefes);
+
 				const detallesJefes = jefes.map((jefe) => this.llenarModelDetalleAprobaciones(jefe));
+
 				this.solicitudes.cargarDetalleAprobacionesArreglo(detallesJefes).subscribe({
 					next: () => {
 						this.submitted = true;
@@ -1639,8 +1649,8 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
 
 										this.detalleSolicitud.fechaIngreso = this.modelRG.fechaIngreso;
 
-										this.detalleSolicitud.jefeInmediatoSuperior = this.jefeInmediatoSuperiorQuery.nombreCompleto;
-										this.detalleSolicitud.puestoJefeInmediato = this.jefeInmediatoSuperiorQuery.descrPuesto;
+										this.detalleSolicitud.jefeInmediatoSuperior = this.modelRG.jefeInmediatoSuperior;
+										this.detalleSolicitud.puestoJefeInmediato = this.model.puestoJefeInmediato;
 										this.detalleSolicitud.jefeReferencia = this.jefeReferenciaQuery.nombreCompleto;
 										this.detalleSolicitud.puesto = this.jefeReferenciaQuery.descrPuesto;
 										this.detalleSolicitud.responsableRRHH = this.responsableRRHHQuery.nombreCompleto;

@@ -4,6 +4,7 @@ import { lastValueFrom } from 'rxjs';
 import { Solicitud } from 'src/app/eschemas/Solicitud';
 import { UtilService } from 'src/app/services/util/util.service';
 import { SolicitudesService } from '../registrar-solicitud/solicitudes.service';
+import { LocalStorageKeys } from 'src/app/enums/local-storage-keys.enum';
 
 @Component({
 	selector: 'app-trazabilidad-solicitud',
@@ -36,7 +37,7 @@ export class TrazabilidadSolicitudComponent {
 			if (this.solicitud !== null) {
 				const nivelesAprobacionResponse = await lastValueFrom(this.solicitudes.getDetalleAprobadoresSolicitudesById(this.solicitud.idSolicitud));
 
-				this.indexToShow = nivelesAprobacionResponse.detalleAprobadorSolicitud.findIndex(({ estadoAprobacion, codigoPosicionAprobador }) => !estadoAprobacion.toUpperCase().includes("APROBA") && !estadoAprobacion.toUpperCase().includes("CREADO") && codigoPosicionAprobador !== "");
+				this.indexToShow = nivelesAprobacionResponse.detalleAprobadorSolicitud.findIndex(({ estadoAprobacion, codigoPosicionAprobador, comentario }) => !estadoAprobacion.toUpperCase().includes("APROBA") && !estadoAprobacion.toUpperCase().includes("CREADO") && codigoPosicionAprobador !== "" && (estadoAprobacion.toUpperCase().includes("COMENTARIO") && (comentario === null || comentario === "")));
 
 				this.dataDetalleAprobadorSolicitud = nivelesAprobacionResponse.detalleAprobadorSolicitud;
 			}
@@ -47,5 +48,9 @@ export class TrazabilidadSolicitudComponent {
 
 			this.utilService.modalResponse(error.error, "error");
 		}
+	}
+
+	public getPerfil(): string {
+		return localStorage.getItem(LocalStorageKeys.Perfil);
 	}
 }

@@ -11,7 +11,7 @@
 						</div>
 					</div>
 
-					<div class="col-md-4 text-end" *ngIf="!existeMatenedores || existe">
+					<div class="col-md-4 text-end">
 						<button *ngIf="existeMatenedores" type="button" (click)="openModalReasignarUsuario()" class="btn btn-info me-2 mt-1"><i class="fas fa-redo"></i> Reasignar</button>
 
 						<!-- <button *ngIf="!existeMatenedores || existe" type="button" class="btn btn-info me-2 mt-1" (click)="saveDetalleAprobaciones()" [disabled]="textareaContent === '' && (buttonValue === 'devolver' || buttonValue === 'rechazar')">
@@ -113,7 +113,7 @@
 							<div class="input-group mb-3 align-items-center">
 								<label class="input-group-text label-estilo2" for="tipoMotivo">Apellidos y nombres completos</label>
 
-								<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{ model.nombreCompleto }}</span>
+								<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{ nombreCompletoCandidato }}</span>
 							</div>
 						</div>
 					</div>
@@ -175,14 +175,14 @@
 							<div class="input-group mb-3 align-items-center">
 								<label class="input-group-text text-start label-estilo" for="tipoMotivo">Sueldo</label>
 
-								<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{ detalleSolicitudRG.supervisaA === "N/A" ? "" : modelRG.sueldo }}</span>
+								<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">$ {{ detalleSolicitudRG.supervisaA === "N/A" ? "" : (modelRG.sueldo | number : "1.2-2") }}</span>
 							</div>
 						</div>
 						<div class="col">
 							<div class="input-group mb-3 align-items-center">
 								<label class="input-group-text text-start label-estilo" for="tipoMotivo">Sueldo</label>
 
-								<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{ model.sueldo }}</span>
+								<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">$ {{ model.sueldo | number : "1.2-2" }}</span>
 							</div>
 						</div>
 					</div>
@@ -357,9 +357,14 @@
 					<div class="row">
 						<div class="col-md-6">
 							<div class="input-group mb-3 align-items-center">
-								<label class="input-group-text text-start label-estilo" for="tipoMotivo">Jefe Inmediato Superior</label>
+								<!-- <label class="input-group-text text-start label-estilo" for="tipoMotivo">Jefe Inmediato Superior</label> -->
+								<label class="input-group-text text-start label-estilo" for="tipoMotivo"
+									>Jefe Inmediato Superior <br />
+									o Referencia</label
+								>
 
-								<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{ detalleSolicitudRG.jefeInmediatoSuperior }}</span>
+								<!-- <span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{ detalleSolicitudRG.jefeInmediatoSuperior }}</span> -->
+								<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{ detalleSolicitudRG.jefeReferencia }}</span>
 							</div>
 						</div>
 
@@ -375,9 +380,14 @@
 					<div class="row">
 						<div class="col-md-6">
 							<div class="input-group mb-3 align-items-center">
-								<label class="input-group-text text-start label-estilo" for="tipoMotivo">Puesto Jefe Inmediato</label>
+								<!-- <label class="input-group-text text-start label-estilo" for="tipoMotivo">Puesto Jefe Inmediato</label> -->
+								<label class="input-group-text text-start label-estilo" for="tipoMotivo"
+									>Puesto Jefe Inmediato Superior <br />
+									o Referencia</label
+								>
 
-								<span style="color: black; font-size: 14px" class="text-start">{{ detalleSolicitud.jefeInmediatoSuperior === "" ? "No aplica" : detalleSolicitud.jefeInmediatoSuperior }}</span>
+								<!-- <span style="color: black; font-size: 14px" class="text-start">{{ detalleSolicitud.jefeInmediatoSuperior === "" ? "No aplica" : detalleSolicitud.jefeInmediatoSuperior }}</span> -->
+								<span style="color: black; font-size: 14px" class="text-start">{{ detalleSolicitud.jefeInmediatoSuperior === "" ? "No aplica" : detalleSolicitudRG.puesto }}</span>
 							</div>
 						</div>
 
@@ -391,15 +401,15 @@
 					</div>
 
 					<div class="row">
-						<div class="col-md-6">
+						<!-- <div class="col-md-6">
 							<div class="input-group mb-3 align-items-center">
 								<label class="input-group-text text-start label-estilo" for="tipoMotivo">Jefe Referencia</label>
 
 								<span id="jeferef" name="jeferef" style="color: black; font-size: 14px" class="text-start">{{ detalleSolicitudRG.jefeReferencia }}</span>
 							</div>
-						</div>
+						</div> -->
 
-						<div class="col-md-6">
+						<div class="offset-md-6 col-md-6">
 							<div class="input-group mb-3 align-items-center">
 								<label class="input-group-text text-start label-estilo" for="tipoMotivo">Responsable RRHH</label>
 
@@ -409,15 +419,15 @@
 					</div>
 
 					<div class="row">
-						<div class="col-md-6">
+						<!-- <div class="col-md-6">
 							<div class="input-group mb-3 align-items-center">
 								<label class="input-group-text text-start label-estilo" for="tipoMotivo">Puesto Referencia</label>
 
 								<span style="color: black; font-size: 14px" class="text-start">{{ detalleSolicitudRG.puesto }}</span>
 							</div>
-						</div>
+						</div> -->
 
-						<div class="col-md-6">
+						<div class="offset-md-6 col-md-6">
 							<div class="input-group mb-3 align-items-center">
 								<label class="input-group-text text-start label-estilo" for="tipoMotivo"
 									>Observaciones del comité <br />
@@ -504,14 +514,15 @@
 
 			<!-- ! Referencia de Último Jefe -->
 			<div *ngIf="taskKey === taskKeyUltimoJefe || taskKey === taskKeySolicitante">
-				<app-solicitud-seccion-desplegable titleSummary="Referencia de Último Jefe" [isOpen]="true">
+				<app-solicitud-seccion-desplegable titleSummary="Referencia de Último Jefe" [isOpen]="taskKey === taskKeyUltimoJefe">
 					<div>
 						<div class="row">
 							<div class="col-md-12">
 								<div class="input-group mb-3 align-items-center">
 									<label class="input-group-text label-estilo2" for="tipoSolicitud">Jefe Anterior o Jefe de Referencia</label>
 
-									<span #mivar id="tipoSolicitud" name="tipoSolicitud" style="color: black; font-size: 14px" class="text-start">{{ detalleSolicitudRG.jefeInmediatoSuperior }}</span>
+									<!-- <span #mivar id="tipoSolicitud" name="tipoSolicitud" style="color: black; font-size: 14px" class="text-start">{{ detalleSolicitudRG.jefeInmediatoSuperior }}</span> -->
+									<span #mivar id="tipoSolicitud" name="tipoSolicitud" style="color: black; font-size: 14px" class="text-start">{{ detalleSolicitudRG.jefeReferencia }}</span>
 								</div>
 							</div>
 						</div>
@@ -521,7 +532,8 @@
 								<div class="input-group mb-3 align-items-center">
 									<label class="input-group-text label-estilo2" for="tipoMotivo">Puesto</label>
 
-									<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{ detalleSolicitudRG.puestoJefeInmediato }}</span>
+									<!-- <span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{ detalleSolicitudRG.puestoJefeInmediato }}</span> -->
+									<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{ detalleSolicitudRG.puesto }}</span>
 								</div>
 							</div>
 						</div>
@@ -553,14 +565,12 @@
 
 			<!-- ! Ingreso de Referencias de Jefe RR.HH. -->
 			<div *ngIf="taskKey === taskKeyRRHH || taskKey === taskKeySolicitante">
-				<app-solicitud-seccion-desplegable titleSummary="Ingreso de Referencias de Jefe RR.HH." [isOpen]="true">
+				<app-solicitud-seccion-desplegable titleSummary="Ingreso de Referencias de Jefe RR.HH." [isOpen]="taskKey === taskKeyRRHH">
 					<div>
 						<div class="row">
 							<div class="col-md-12">
 								<div class="input-group mb-3 align-items-center">
 									<label class="input-group-text label-estilo2" for="tipoSolicitud">Forma de Salida</label>
-
-									<!-- <input *ngIf="taskKey !== taskKeySolicitante" type="text" [(ngModel)]="comentarios" type="text" name="comentario" placeholder="Campo obligatorio" style="border: 1px solid blue; border-radius: 7px; width: 50%" /> -->
 
 									<textarea *ngIf="taskKey !== taskKeySolicitante" type="text" name="comentario" style="color: black; font-size: 14px; resize: none" class="form-control" id="comments" rows="3" [(ngModel)]="comentarios" required></textarea>
 
@@ -666,10 +676,7 @@
 								<div class="input-group mb-3 align-items-center">
 									<label class="input-group-text label-estilo2" for="tipoSolicitud">Nombre del Jefe Solicitante</label>
 
-									<!-- <input *ngIf="taskKey !== taskKeySolicitante" type="text" [(ngModel)]="comentarios" type="text" name="comentario" placeholder="Campo obligatorio" style="border: 1px solid blue; border-radius: 7px; width: 50%" /> -->
-
 									<span #mivar id="tipoSolicitud" name="tipoSolicitud" style="color: black; font-size: 14px" class="text-start">{{ detalleSolicitud.jefeInmediatoSuperior }}</span>
-									<!-- <span *ngIf="taskKey === taskKeySolicitante" #mivar id="tipoSolicitud" name="tipoSolicitud" style="color: black; font-size: 14px" class="text-start">$ {{ comentariosRRHH.comentario }}</span> -->
 								</div>
 							</div>
 						</div>

@@ -27,6 +27,7 @@ import { SolicitudesService } from '../registrar-solicitud/solicitudes.service';
 import { ComentarioSalidaJefeService } from './comentario-salida-jefe.service';
 import { columnsAprobadores, dataTableAprobadores } from './registrar-comentario-salida-jefe.data';
 import { convertTimeZonedDate } from 'src/app/services/util/dates.util';
+import { DialogReasignarUsuarioComponent } from 'src/app/shared/reasginar-usuario/reasignar-usuario.component';
 
 @Component({
 	selector: 'app-registrar-comentario-salida-jefe',
@@ -1120,13 +1121,6 @@ export class RegistrarComentarioSalidaJefeComponent extends CompleteTaskComponen
 
 		this.comentarioSalidaJefeService.registrarComentario(comentario).subscribe({
 			next: (res) => {
-				// Swal.fire({
-				// 	text: "Datos guardados",
-				// 	icon: "success",
-				// 	confirmButtonColor: "rgb(227, 199, 22)",
-				// 	confirmButtonText: "Ok",
-				// });
-
 				this.completeDisabled = false;
 
 				this.onCompletar();
@@ -1345,7 +1339,7 @@ export class RegistrarComentarioSalidaJefeComponent extends CompleteTaskComponen
 	}
 
 	openModalReasignarUsuario() {
-		const modelRef = this.modalService.open(dialogComponentList.dialogReasignarUsuario, {
+		const modelRef = this.modalService.open(DialogReasignarUsuarioComponent, {
 			ariaLabelledBy: "modal-title",
 		});
 
