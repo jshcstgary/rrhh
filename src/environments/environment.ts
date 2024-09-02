@@ -4,7 +4,11 @@ const base = "http://10.35.3.162"; //base de servicios local
 const baseRBP = "http://192.168.44.180"; //base de servicios RBP http://10.35.3.162
 const baseG = "http://181.188.224.250:18043"; //base de servicios api gateway
 
+<<<<<<< HEAD
 const pruebas_locales: boolean = false; //Varialbe boleana para las pruebas locales y pruebas en el ambiente del cliente, true para locales, false para RBP
+=======
+const pruebas_locales: boolean = false; //Varialbe boleana para las pruebas locales y pruebas en el ambiente del cliente
+>>>>>>> 8e572963c40a228ebb511bc67e4ca35a5d7f2c60
 
 // export const portalWorkFlow: string = "http://10.35.3.162:4200/";
 
