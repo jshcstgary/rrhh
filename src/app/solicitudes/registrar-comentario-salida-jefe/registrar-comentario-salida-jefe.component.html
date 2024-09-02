@@ -20,7 +20,7 @@
 
 						<!-- <button *ngIf="!existeMatenedores || existe" type="button" (click)="onCompletar()" class="btn btn-info me-2 mt-1" [disabled]="disabledComplete"> -->
 						<!-- <button *ngIf="!existeMatenedores || existe" type="button" (click)="saveDetalleAprobaciones()" class="btn btn-info me-2 mt-1" [disabled]="textareaContent === '' && (buttonValue === 'devolver' || buttonValue === 'rechazar')"><i class="fas fa-check-circle icon-size"></i> Enviar</button> -->
-						<button *ngIf="!existeMatenedores || existe" type="submit" class="btn btn-info me-2 mt-1" [disabled]="comentarios === ''"><i class="fas fa-check-circle icon-size"></i> Enviar</button>
+						<button *ngIf="!existeMatenedores || existe" type="submit" class="btn btn-info me-2 mt-1" [disabled]="comentarios === ''"><i class="fas fa-check-circle"></i> Enviar</button>
 					</div>
 				</div>
 
@@ -533,7 +533,7 @@
 
 									<textarea *ngIf="taskKey !== taskKeySolicitante" name="descripcionposicion" style="color: black; font-size: 14px; resize: none" class="form-control" id="comments" rows="3" [(ngModel)]="comentarios" required></textarea>
 
-									<!-- <span *ngIf="taskKey === taskKeySolicitante" #mivar id="tipoSolicitud" name="tipoSolicitud" style="color: black; font-size: 14px" class="text-start">$ {{ comentariosJefeInmediato.comentario }}</span> -->
+									<span *ngIf="taskKey === taskKeySolicitante" #mivar id="tipoSolicitud" name="tipoSolicitud" style="color: black; font-size: 14px" class="text-start">{{ comentariosJefeInmediato.comentario }}</span>
 								</div>
 							</div>
 						</div>
@@ -563,7 +563,8 @@
 									<!-- <input *ngIf="taskKey !== taskKeySolicitante" type="text" [(ngModel)]="comentarios" type="text" name="comentario" placeholder="Campo obligatorio" style="border: 1px solid blue; border-radius: 7px; width: 50%" /> -->
 
 									<textarea *ngIf="taskKey !== taskKeySolicitante" type="text" name="comentario" style="color: black; font-size: 14px; resize: none" class="form-control" id="comments" rows="3" [(ngModel)]="comentarios" required></textarea>
-									<!-- <span *ngIf="taskKey === taskKeySolicitante" #mivar id="tipoSolicitud" name="tipoSolicitud" style="color: black; font-size: 14px" class="text-start">$ {{ comentariosRRHH.comentario }}</span> -->
+
+									<span *ngIf="taskKey === taskKeySolicitante" #mivar id="tipoSolicitud" name="tipoSolicitud" style="color: black; font-size: 14px" class="text-start">{{ comentariosRRHH.comentario }}</span>
 								</div>
 							</div>
 						</div>
@@ -707,7 +708,7 @@
 				</app-solicitud-seccion-desplegable>
 			</div>
 
-			<div *ngIf="taskKey === taskKeySolicitante">
+			<!-- <div *ngIf="taskKey === taskKeySolicitante">
 				<div class="row mt-4">
 					<div class="col-md-4">
 						<div class="mb-4">
@@ -753,7 +754,7 @@
 						</div>
 					</div>
 				</div>
-			</div>
+			</div> -->
 		</div>
 	</div>
 </form>

@@ -26,6 +26,7 @@ import { RegistrarCandidatoService } from '../registrar-candidato/registrar-cand
 import { SolicitudesService } from '../registrar-solicitud/solicitudes.service';
 import { ComentarioSalidaJefeService } from './comentario-salida-jefe.service';
 import { columnsAprobadores, dataTableAprobadores } from './registrar-comentario-salida-jefe.data';
+import { convertTimeZonedDate } from 'src/app/services/util/dates.util';
 
 @Component({
 	selector: 'app-registrar-comentario-salida-jefe',
@@ -759,7 +760,7 @@ export class RegistrarComentarioSalidaJefeComponent extends CompleteTaskComponen
 					this.uniqueTaskId = this.taskType_Activity_subledger[0].taskId;
 					this.date = this.taskType_Activity_subledger[0].startTime;
 				}
-				this.getCandidatoValues();
+				// this.getCandidatoValues();
 
 				this.getCandidatoValues();
 			} else {
@@ -1102,6 +1103,8 @@ export class RegistrarComentarioSalidaJefeComponent extends CompleteTaskComponen
 			return;
 		}
 
+		this.utilService.openLoadingSpinner("Completando Tarea, espere por favor...");
+
 		const comentario = {
 			id_Solicitud: this.solicitudRG.idSolicitud,
 			id_Tipo_Solicitud: this.solicitudRG.idTipoSolicitud.toString(),
@@ -1112,16 +1115,21 @@ export class RegistrarComentarioSalidaJefeComponent extends CompleteTaskComponen
 			justificacion: this.model.justificacionCargo
 		};
 
+		convertTimeZonedDate(comentario.fecha_Creacion);
+		convertTimeZonedDate(comentario.fecha_Modificacion);
+
 		this.comentarioSalidaJefeService.registrarComentario(comentario).subscribe({
 			next: (res) => {
-				Swal.fire({
-					text: "Datos guardados",
-					icon: "success",
-					confirmButtonColor: "rgb(227, 199, 22)",
-					confirmButtonText: "Ok",
-				});
+				// Swal.fire({
+				// 	text: "Datos guardados",
+				// 	icon: "success",
+				// 	confirmButtonColor: "rgb(227, 199, 22)",
+				// 	confirmButtonText: "Ok",
+				// });
 
 				this.completeDisabled = false;
+
+				this.onCompletar();
 			}
 		});
 	}
@@ -1244,7 +1252,6 @@ export class RegistrarComentarioSalidaJefeComponent extends CompleteTaskComponen
 		}
 
 		let variables = this.generateVariablesFromFormFields();
-		this.utilService.openLoadingSpinner("Completando Tarea, espere por favor...");
 
 		if (this.taskKey === this.taskKeySolicitante) {
 

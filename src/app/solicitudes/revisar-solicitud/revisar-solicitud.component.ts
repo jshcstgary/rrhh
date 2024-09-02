@@ -897,15 +897,17 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
 	getSolicitudById(id: any) {
 		return this.solicitudes.getSolicitudById(id).subscribe({
 			next: (response: any) => {
-
 				if (id.includes("RG")) {
 					this.solicitudRG = response;
 				} else {
 					this.solicitud = response;
 				}
+
+				console.log(this.solicitud);
 				if (this.solicitud.tipoAccion.toUpperCase().includes("ASIGNA")) {
 					this.muestraRemuneracion = true;
 				}
+
 				this.mostrarRequisicion = this.id_solicitud_by_params.includes("RP-");
 				this.mostrarFormularioFamiliares = this.id_solicitud_by_params.includes("CF-");
 				this.mostrarFormularioReingreso = this.id_solicitud_by_params.includes("RG-");
@@ -1389,7 +1391,7 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
 			this.buttonValue = "esperar";
 		}
 
-		this.camundaRestService .postCompleteTask(this.uniqueTaskId, variables) .subscribe({
+		this.camundaRestService.postCompleteTask(this.uniqueTaskId, variables).subscribe({
 			next: (res) => {
 				this.solicitudes.modelDetalleAprobaciones.estadoAprobacion = this.buttonValue;
 				this.solicitudes.modelDetalleAprobaciones.comentario = this.textareaContent;
@@ -1399,7 +1401,7 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
 
 				this.solicitudes.modelDetalleAprobaciones.fechaModificacion = new Date();
 				convertTimeZonedDate(this.solicitudes.modelDetalleAprobaciones.fechaModificacion);
-				
+
 				this.solicitudes.guardarDetallesAprobacionesSolicitud(this.solicitudes.modelDetalleAprobaciones).subscribe({
 					next: (res) => {
 					}
@@ -2031,7 +2033,7 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
 
 	saveDetalleAprobaciones() {
 		this.utilService.openLoadingSpinner("Guardando información, espere por favor...");
-		
+
 		this.solicitudes.modelDetalleAprobaciones.estadoAprobacion = this.buttonValue;
 		// this.solicitudes.modelDetalleAprobaciones.estadoAprobacion = null;
 		this.solicitudes.modelDetalleAprobaciones.comentario = this.textareaContent;
@@ -2048,7 +2050,7 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
 			if (this.detalleSolicitud.valor.includes("Solicitud en Espera")) {
 				this.detalleSolicitud.fechaSalida = new Date();
 				this.detalleSolicitud.valor = null;
-				
+
 				this.solicitudes.actualizarDetalleSolicitud(this.detalleSolicitud).subscribe({
 					next: () => {
 					}

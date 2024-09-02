@@ -33,6 +33,7 @@ import {
 	dataTableAprobadores,
 } from "./reingreso-personal.data";
 import { BuscarEmpleadoComponent } from "../buscar-empleado/buscar-empleado.component";
+import { BuscarExempleadoComponent } from "./buscar-exempleado/buscar-exempleado.component";
 
 interface DialogComponents {
 	dialogBuscarEmpleados: Type<DialogBuscarEmpleadosReingresoComponent>;
@@ -1479,7 +1480,7 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
 	}
 
 	indexedModal: Record<keyof DialogComponents, any> = {
-		dialogBuscarEmpleados: () => this.openModalBuscarEmpleado(),
+		dialogBuscarEmpleados: () => this.openModalBuscarExempleado(),
 		dialogReasignarUsuario: () => this.openModalReasignarUsuario()
 	};
 
@@ -1712,10 +1713,10 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
 	public departamento: string = "";
 	public feIng: Date;
 
-	openModalBuscarEmpleado() {
+	openModalBuscarExempleado() {
 		this.modalService
 			// .open(dialogComponentList.dialogBuscarEmpleados, {
-			.open(BuscarEmpleadoComponent, {
+			.open(BuscarExempleadoComponent, {
 				ariaLabelledBy: "modal-title",
 			})
 			.result.then(
