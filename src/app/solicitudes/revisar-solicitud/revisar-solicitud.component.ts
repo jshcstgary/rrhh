@@ -444,7 +444,7 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
 						confirmButtonText: "Ok",
 					}).then((result) => {
 						if (result.isConfirmed) {
-							this.router.navigate(["/mantenedores/reasignar-tareas-usuarios"]);
+							this.router.navigate(["/solicitudes/reasignar-tareas-usuarios"]);
 							if (this.submitted) {
 							}
 						}
@@ -899,13 +899,12 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
 			next: (response: any) => {
 				if (id.includes("RG")) {
 					this.solicitudRG = response;
-				} else {
+				}else if (this.id_solicitud_by_params.includes("AP-")) {
+					if (this.solicitud.tipoAccion.toUpperCase().includes("ASIGNA")) {
+						this.muestraRemuneracion = true;
+					}
+				}else {
 					this.solicitud = response;
-				}
-
-				console.log(this.solicitud);
-				if (this.solicitud.tipoAccion.toUpperCase().includes("ASIGNA")) {
-					this.muestraRemuneracion = true;
 				}
 
 				this.mostrarRequisicion = this.id_solicitud_by_params.includes("RP-");
@@ -1563,9 +1562,10 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
 								if (this.id_solicitud_by_params.includes("RG") || this.id_solicitud_by_params.includes("CF")) {
 									this.seleccionCandidatoService.deleteCandidatoById(this.idSolicitudRP).subscribe({
 										next: (res) => {
-											this.comentarioSalidaJefeService.eliminarComentarios(this.id_solicitud_by_params).subscribe({
-												next: () => { }
-											});
+										}
+									});
+									this.comentarioSalidaJefeService.eliminarComentarios(this.id_solicitud_by_params).subscribe({
+										next: (res) => {
 										}
 									});
 								}

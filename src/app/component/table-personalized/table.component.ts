@@ -14,7 +14,7 @@ export class TablaComponent {
   @Output() saveRowData = new EventEmitter<any>();
   @Output() actionClick = new EventEmitter<any>();
 
-  public parentezcos: string[] = ["Madre/Padre", "Hermano/a", "Hijo/a", "Tío/a", "Sobrino/a", "Nieto/a", "Cónyuge"];
+  public parentezcos: string[] = ["Madre/Padre", "Hermano/a", "Primo/a", "Hijo/a", "Tío/a", "Sobrino/a", "Nieto/a", "Cónyuge"];
 
   onChangeSort(column: any) {
     this.changeSort.emit(column);

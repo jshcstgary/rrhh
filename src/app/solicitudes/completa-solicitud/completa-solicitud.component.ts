@@ -33,6 +33,7 @@ import { CompleteTaskComponent } from "../general/complete-task.component";
 import { dialogComponentList } from "../registrar-candidato/registrar-candidato.component";
 import { RegistrarCandidatoService } from "../registrar-candidato/registrar-candidato.service";
 import { SolicitudesService } from "../registrar-solicitud/solicitudes.service";
+import { convertTimeZonedDate } from "src/app/services/util/dates.util";
 
 @Component({
 	selector: 'completaSolicitud',
@@ -535,7 +536,7 @@ export class CompletaSolicitudComponent extends CompleteTaskComponent {
 						confirmButtonText: "Ok",
 					}).then((result) => {
 						if (result.isConfirmed) {
-							this.router.navigate(["/mantenedores/reasignar-tareas-usuarios"]);
+							this.router.navigate(["/solicitudes/reasignar-tareas-usuarios"]);
 							if (this.submitted) {
 							}
 						}

@@ -33,6 +33,7 @@ import { CamundaRestService } from "../../camunda-rest.service";
 import { CompleteTaskComponent } from "../general/complete-task.component";
 import { SolicitudesService } from "../registrar-solicitud/solicitudes.service";
 import { RegistrarCandidatoService } from "./registrar-candidato.service";
+import { portalWorkFlow } from "src/environments/environment.prod";
 
 export const dialogComponentList: DialogComponents = {
 	dialogBuscarEmpleados: undefined,
@@ -218,7 +219,14 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
 	public dataTipoProceso: any = [];
 
 	// public dataTipoAccion: any;
-
+	emailVariables = {
+		de: "",
+		para: "",
+		alias: "",
+		asunto: "",
+		cuerpo: "",
+		password: ""
+	};
 	public dataTipoAccion: any = [];
 	// public dataAprobacionesPorPosicion: { [idTipoSolicitud: number, IdTipoMotivo: number, IdNivelDireccion: number]: any[] } =
 	// {};
@@ -1582,8 +1590,37 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
 																		this.starterService.getUser(localStorage.getItem(LocalStorageKeys.IdUsuario)!).subscribe({
 																			next: (user) => {
 																				this.llenarModelDetalleAprobacionesCF_RG(user, resSolicitud.idSolicitud, idTipoSolicitud, descripcionTipoSolicitud);
-
-																				this.solicitudes.guardarDetallesAprobacionesSolicitud(this.solicitudes.modelDetalleAprobaciones).subscribe((res) => { });
+																				this.solicitudes.modelDetalleAprobaciones.comentario = "Candidato Seleccionado";
+																				this.solicitudes.guardarDetallesAprobacionesSolicitud(this.solicitudes.modelDetalleAprobaciones).subscribe((res) => {
+																						this.solicitudes.getDetalleAprobadoresSolicitudesById(resSolicitud.idSolicitud).subscribe({
+																							next: (resJefe) => {
+																							resJefe.detalleAprobadorSolicitud.forEach((item) => {
+																								if(item.nivelAprobacionRuta.toUpperCase().includes("REGISTRARSOLICITUD")){
+																								const htmlString = "<!DOCTYPE html>\r\n<html lang=\"es\">\r\n\r\n<head>\r\n  <meta charset=\"UTF-8\">\r\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n  <title>Document<\/title>\r\n<\/head>\r\n\r\n<body>\r\n  <h2>Estimado(a)<\/h2>\r\n  <h3>{NOMBRE_APROBADOR}<\/h3>\r\n\r\n  <P>La Solicitud de {TIPO_SOLICITUD} {ID_SOLICITUD} para la posici\u00F3n de {DESCRIPCION_POSICION} est\u00E1 disponible para su\r\n    revisi\u00F3n.<\/P>\r\n\r\n  <p>\r\n    <b>\r\n      Favor ingresar al siguiente enlace: <a href=\"{URL_APROBACION}\">{URL_APROBACION}<\/a>\r\n      <br>\r\n      <br>\r\n      Gracias por su atenci\u00F3n.\r\n    <\/b>\r\n  <\/p>\r\n<\/body>\r\n\r\n<\/html>\r\n";
+																		
+																								const modifiedHtmlString = htmlString.replace("{NOMBRE_APROBADOR}", item.usuarioAprobador).replace("{TIPO_SOLICITUD}", resSolicitud.tipoSolicitud).replace("{ID_SOLICITUD}", resSolicitud.idSolicitud).replace("{DESCRIPCION_POSICION}", this.detalleSolicitud.descripcionPosicion).replace(new RegExp("{URL_APROBACION}", "g"), `${portalWorkFlow}tareas/consulta-tareas`);
+																					
+																								this.emailVariables = {
+																									de: "emisor",
+																									para: item.correo,
+																									// alias: this.solicitudes.modelDetalleAprobaciones.correo,
+																									alias: "Notificación 1",
+																									asunto: `Creación de Solicitud de ${resSolicitud.tipoSolicitud} ${resSolicitud.idSolicitud}`,
+																									cuerpo: modifiedHtmlString,
+																									password: "password"
+																								};
+																								this.solicitudes.sendEmail(this.emailVariables).subscribe({
+																									next: () => {
+																								},
+																								error: (error) => {
+																									console.error(error);
+																								}
+																								});			
+																								}
+																							});}	
+																						});
+																					
+																				 });
 																			}
 																		});
 																	}
@@ -2008,7 +2045,7 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
 						confirmButtonText: "Ok",
 					}).then((result) => {
 						if (result.isConfirmed) {
-							this.router.navigate(["/mantenedores/reasignar-tareas-usuarios"]);
+							this.router.navigate(["/solicitudes/reasignar-tareas-usuarios"]);
 							if (this.submitted) {
 							}
 						}

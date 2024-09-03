@@ -16,7 +16,7 @@ export class TrazabilidadSolicitudComponent {
 
 	public dataDetalleAprobadorSolicitud = [];
 
-	private idSolicitudParam: string = "";
+	public idSolicitudParam: string = "";
 
 	public indexToShow: number = -1;
 
@@ -37,8 +37,9 @@ export class TrazabilidadSolicitudComponent {
 			if (this.solicitud !== null) {
 				const nivelesAprobacionResponse = await lastValueFrom(this.solicitudes.getDetalleAprobadoresSolicitudesById(this.solicitud.idSolicitud));
 
-				this.indexToShow = nivelesAprobacionResponse.detalleAprobadorSolicitud.findIndex(({ estadoAprobacion, codigoPosicionAprobador, comentario }) => !estadoAprobacion.toUpperCase().includes("APROBA") && !estadoAprobacion.toUpperCase().includes("CREADO") && codigoPosicionAprobador !== "" && (estadoAprobacion.toUpperCase().includes("COMENTARIO") && (comentario === null || comentario === "")));
-
+				this.indexToShow = nivelesAprobacionResponse.detalleAprobadorSolicitud.findIndex(({ estadoAprobacion, codigoPosicionAprobador, comentario }) => (!estadoAprobacion.toUpperCase().includes("APROBA") && !estadoAprobacion.toUpperCase().includes("CREADO") && codigoPosicionAprobador !== "" && !estadoAprobacion.toUpperCase().includes("COMENTARIO") && !estadoAprobacion.toUpperCase().includes("CANDIDATO") ) 
+				||(estadoAprobacion.toUpperCase().includes("COMENTARIO") && (comentario === null || comentario === ""))
+			||(estadoAprobacion.toUpperCase().includes("CANDIDATO") && (comentario === null || comentario === "")));
 				this.dataDetalleAprobadorSolicitud = nivelesAprobacionResponse.detalleAprobadorSolicitud;
 			}
 

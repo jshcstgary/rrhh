@@ -663,73 +663,83 @@
 						<div class="row">
 							<div class="col-md-6">
 								<div class="input-group mb-3 align-items-center">
-									<label class="input-group-text text-start label-estilo" for="tipoMotivo">Jefe Inmediato Superior</label>
-
-									<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{ detalleSolicitudRG.jefeInmediatoSuperior }}</span>
+									<!-- <label class="input-group-text text-start label-estilo" for="tipoMotivo">Jefe Inmediato Superior</label> -->
+									<label class="input-group-text text-start label-estilo" for="tipoMotivo"
+										>Jefe Inmediato Superior <br />
+										o Referencia</label
+									>
+	
+									<!-- <span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{ detalleSolicitudRG.jefeInmediatoSuperior }}</span> -->
+									<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{ detalleSolicitudRG.jefeReferencia }}</span>
 								</div>
 							</div>
-
+	
 							<div class="col-md-6">
 								<div class="input-group mb-3 align-items-center">
 									<label class="input-group-text text-start label-estilo" for="tipoMotivo">Jefe Inmediato Superior</label>
-
-									<span style="color: black; font-size: 14px" class="text-start">{{ detalleSolicitud.jefeInmediatoSuperior === "" ? "No aplica" : detalleSolicitud.jefeInmediatoSuperior }}</span>
+	
+									<span style="color: black; font-size: 14px" class="text-start">{{ detalleSolicitudRG.jefeInmediatoSuperior }}</span>
 								</div>
 							</div>
 						</div>
-
+	
 						<div class="row">
 							<div class="col-md-6">
 								<div class="input-group mb-3 align-items-center">
+									<!-- <label class="input-group-text text-start label-estilo" for="tipoMotivo">Puesto Jefe Inmediato</label> -->
+									<label class="input-group-text text-start label-estilo" for="tipoMotivo"
+										>Puesto Jefe Inmediato Superior <br />
+										o Referencia</label
+									>
+	
+									<!-- <span style="color: black; font-size: 14px" class="text-start">{{ detalleSolicitud.jefeInmediatoSuperior === "" ? "No aplica" : detalleSolicitud.jefeInmediatoSuperior }}</span> -->
+									<span style="color: black; font-size: 14px" class="text-start">{{ detalleSolicitud.jefeInmediatoSuperior === "" ? "No aplica" : detalleSolicitudRG.puesto }}</span>
+								</div>
+							</div>
+	
+							<div class="col-md-6">
+								<div class="input-group mb-3 align-items-center">
 									<label class="input-group-text text-start label-estilo" for="tipoMotivo">Puesto Jefe Inmediato</label>
-
+	
 									<span style="color: black; font-size: 14px" class="text-start">{{ detalleSolicitudRG.puestoJefeInmediato }}</span>
 								</div>
 							</div>
-
-							<div class="col-md-6">
-								<div class="input-group mb-3 align-items-center">
-									<label class="input-group-text text-start label-estilo" for="tipoMotivo">Puesto Jefe Inmediato</label>
-
-									<span style="color: black; font-size: 14px" class="text-start">{{ detalleSolicitud.jefeInmediatoSuperior === "" ? "No aplica" : detalleSolicitud.jefeInmediatoSuperior }}</span>
-								</div>
-							</div>
 						</div>
-
+	
 						<div class="row">
-							<div class="col-md-6">
+							<!-- <div class="col-md-6">
 								<div class="input-group mb-3 align-items-center">
 									<label class="input-group-text text-start label-estilo" for="tipoMotivo">Jefe Referencia</label>
-
-									<span id="jeferef" name="jeferef" style="color: black; font-size: 14px" class="text-start">{{ this.detalleSolicitudRG.jefeReferencia }}</span>
+	
+									<span id="jeferef" name="jeferef" style="color: black; font-size: 14px" class="text-start">{{ detalleSolicitudRG.jefeReferencia }}</span>
 								</div>
-							</div>
-
-							<div class="col-md-6">
+							</div> -->
+	
+							<div class="offset-md-6 col-md-6">
 								<div class="input-group mb-3 align-items-center">
 									<label class="input-group-text text-start label-estilo" for="tipoMotivo">Responsable RRHH</label>
-
-									<span style="color: black; font-size: 14px" class="text-start">{{ detalleSolicitud.responsableRRHH }}</span>
+	
+									<span style="color: black; font-size: 14px" class="text-start">{{ solicitud.usuarioCreacion }}</span>
 								</div>
 							</div>
 						</div>
-
+	
 						<div class="row">
-							<div class="col-md-6">
+							<!-- <div class="col-md-6">
 								<div class="input-group mb-3 align-items-center">
 									<label class="input-group-text text-start label-estilo" for="tipoMotivo">Puesto Referencia</label>
-
-									<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{ this.detalleSolicitudRG.puesto }}</span>
+	
+									<span style="color: black; font-size: 14px" class="text-start">{{ detalleSolicitudRG.puesto }}</span>
 								</div>
-							</div>
-
-							<div class="col-md-6">
+							</div> -->
+	
+							<div class="offset-md-6 col-md-6">
 								<div class="input-group mb-3 align-items-center">
 									<label class="input-group-text text-start label-estilo" for="tipoMotivo"
 										>Observaciones del comité <br />
 										de Remuneraciones</label
 									>
-
+	
 									<span style="color: black; font-size: 14px" class="text-start">{{ detalleSolicitudRG.valor }}</span>
 								</div>
 							</div>
@@ -1040,7 +1050,7 @@
 									<button class="accordion-button" type="button" data-bs-toggle="collapse" [attr.data-bs-target]="'#collapse' + i" aria-expanded="true" [attr.aria-controls]="'collapse' + i" style="display: block">
 										<div class="row" style="align-items: center; justify-content: space-around">
 											<div class="col">
-												{{ nivelItem.nivelAprobacionType.ruta }}
+												{{ nivelItem.nivelAprobacionType.ruta.toUpperCase().includes("REGISTRARSOLICITUD") ? "Registrar Solicitud" : nivelItem.nivelAprobacionType.ruta.toUpperCase().includes("CANDIDATO") ? "Selección de Candidato" : nivelItem.nivelAprobacionType.ruta.toUpperCase().includes("COMENTARIOJEFE") ? "Registrar Comentario Jefe" : nivelItem.nivelAprobacionType.ruta.toUpperCase().includes("COMENTARIORRHH") ? "Registrar Comentario RR.HH." : nivelItem.nivelAprobacionType.ruta.toUpperCase().includes("COMENTARIOSOLICITANTE") ? "Registrar Comentario Solicitante" : nivelItem.nivelAprobacionType.ruta }}
 											</div>
 
 											<div class="col">
@@ -1048,7 +1058,7 @@
 											</div>
 
 											<div class="col">
-												{{ nivelItem.nivelAprobacionType.nivelAprobacionRuta }}
+												{{ nivelItem.nivelAprobacionType.nivelAprobacionRuta.toUpperCase().includes("REGISTRARSOLICITUD") ? "Registrar Solicitud" : nivelItem.nivelAprobacionType.nivelAprobacionRuta.toUpperCase().includes("CANDIDATO") ? "Selección de Candidato" : nivelItem.nivelAprobacionType.nivelAprobacionRuta.toUpperCase().includes("COMENTARIOJEFE") ? "Registrar Comentario Jefe" : nivelItem.nivelAprobacionType.nivelAprobacionRuta.toUpperCase().includes("COMENTARIORRHH") ? "Registrar Comentario RR.HH." : nivelItem.nivelAprobacionType.nivelAprobacionRuta.toUpperCase().includes("COMENTARIOSOLICITANTE") ? "Registrar Comentario Solicitante" : nivelItem.nivelAprobacionType.nivelAprobacionRuta }}
 											</div>
 										</div>
 									</button>
@@ -1083,7 +1093,7 @@
 										Jefe de Referencia</label
 									>
 
-									<span #mivar id="tipoSolicitud" name="tipoSolicitud" style="color: black; font-size: 14px" class="text-start">{{ detalleSolicitudRG.jefeInmediatoSuperior }}</span>
+									<span #mivar id="tipoSolicitud" name="tipoSolicitud" style="color: black; font-size: 14px" class="text-start">{{ detalleSolicitudRG.jefeReferencia }}</span>
 								</div>
 							</div>
 						</div>
@@ -1093,7 +1103,7 @@
 								<div class="input-group mb-3 align-items-center">
 									<label class="input-group-text label-estilo2" for="tipoMotivo">Puesto</label>
 
-									<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{ detalleSolicitudRG.puestoJefeInmediato }}</span>
+									<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{ detalleSolicitudRG.puesto }}</span>
 								</div>
 							</div>
 						</div>
@@ -1258,7 +1268,7 @@
 								<div class="input-group mb-3 align-items-center">
 									<label class="input-group-text label-estilo2" for="tipoSolicitud">Nombre del Jefe Solicitante</label>
 
-									<span #mivar id="tipoSolicitud" name="tipoSolicitud" style="color: black; font-size: 14px" class="text-start">{{ detalleSolicitudRG.nombreJefeSolicitante }}</span>
+									<span #mivar id="tipoSolicitud" name="tipoSolicitud" style="color: black; font-size: 14px" class="text-start">{{ detalleSolicitudRG.jefeInmediatoSuperior }}</span>
 								</div>
 							</div>
 						</div>
@@ -1268,7 +1278,7 @@
 								<div class="input-group mb-3 align-items-center">
 									<label class="input-group-text label-estilo2" for="tipoMotivo">Puesto</label>
 
-									<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{ detalleSolicitudRG.puesto }}</span>
+									<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{ detalleSolicitudRG.puestoJefeInmediato }}</span>
 								</div>
 							</div>
 						</div>
@@ -2168,9 +2178,9 @@
 					<div class="row">
 						<div class="col-md-12">
 							<div class="input-group mb-3 align-items-center">
-								<label class="input-group-text text-start label-estilo2" for="desicion">Decisión a tomar</label>
+								<label  *ngIf="!existeMatenedores" class="input-group-text text-start label-estilo2" for="desicion">Decisión a tomar</label>
 
-								<div class="d-flex gap-3" role="group" aria-label="Basic example" id="desicion">
+								<div  *ngIf="!existeMatenedores"  class="d-flex gap-3" role="group" aria-label="Basic example" id="desicion">
 									<button type="button" class="btn" (click)="process('aprobar')" [ngClass]="{ 'btn-primary btn-unselected': !isSelected('aprobar'), 'btn-selected': isSelected('aprobar') }" value="aprobar">Aprobar</button>
 
 									<button type="button" class="btn" [ngClass]="{ 'btn-primary btn-unselected': !isSelected('devolver'), 'btn-selected': isSelected('devolver') }" (click)="process('devolver')" value="devolver">Devolver</button>
@@ -2186,9 +2196,9 @@
 					<div class="row">
 						<div class="col-md-12">
 							<div class="input-group mb-3 align-items-center">
-								<label class="input-group-text text-start label-estilo2" for="observacion">{{ observaciontexto }}</label>
+								<label  *ngIf="!existeMatenedores" class="input-group-text text-start label-estilo2" for="observacion">{{ observaciontexto }}</label>
 
-								<textarea [(ngModel)]="textareaContent" id="observacion" name="observacion" #observacion="ngModel" [required]="isRequired" style="color: black; font-size: 14px" [placeholder]="campoObligatorio"></textarea>
+								<textarea  *ngIf="!existeMatenedores" [(ngModel)]="textareaContent" id="observacion" name="observacion" #observacion="ngModel" [required]="isRequired" style="color: black; font-size: 14px" [placeholder]="campoObligatorio"></textarea>
 							</div>
 						</div>
 					</div>

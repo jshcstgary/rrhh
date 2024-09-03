@@ -127,25 +127,24 @@ export class DialogReasignarUsuarioComponent {
 
 		this.solicitudes.getDetalleAprobadoresSolicitudesById(this.idParam).subscribe({
 			next: (response) => {
-				console.log(response);
 				this.dataDetalleAprobadorSolicitud = response.detalleAprobadorSolicitud;
 				if (this.taskId === environment.taskType_Revisar) {
 					this.mensaje = "Se reasignó la tarea de revisión por aprobadores dinámicos";
 					this.dataAprobador = this.dataDetalleAprobadorSolicitud.find(data => data.estadoAprobacion.toUpperCase() === "PORREVISAR");
 
 					if (this.dataAprobador === undefined || this.dataAprobador === null) {
-						this.dataAprobador = this.dataDetalleAprobadorSolicitud.find(data => data.estadoAprobacion.toUpperCase().includes("ESPERAR"));
+						this.dataAprobador = this.dataDetalleAprobadorSolicitud.find(data => data.estadoAprobacion.toUpperCase().includes("ESPERA"));
 
 						if (this.dataAprobador === undefined || this.dataAprobador === null) {
 							this.dataAprobador = this.dataDetalleAprobadorSolicitud.find(data => data.estadoAprobacion.toUpperCase().includes("DEVOLVER"));
 						}
 					}
-				} else if (this.taskId.toUpperCase().includes("RevisarSolicitudGerente") || this.taskId === environment.taskType_RRHH) {
+				} else if (this.taskId.toUpperCase().includes("REVISARSOLICITUDGERENTE") || this.taskId === environment.taskType_RRHH) {
 					this.mensaje = "Se reasignó la tarea de revisión por gerencia de recursos humanos";
 					this.dataAprobador = this.dataDetalleAprobadorSolicitud.find(data => data.estadoAprobacion.toUpperCase().includes("PORREVISARRRHH"));
 
 					if (this.dataAprobador === undefined || this.dataAprobador === null) {
-						this.dataAprobador = this.dataDetalleAprobadorSolicitud.find(data => data.estadoAprobacion.toUpperCase().includes("ESPERAR"));
+						this.dataAprobador = this.dataDetalleAprobadorSolicitud.find(data => data.estadoAprobacion.toUpperCase().includes("ESPERA"));
 
 						if (this.dataAprobador === undefined || this.dataAprobador === null) {
 							this.dataAprobador = this.dataDetalleAprobadorSolicitud.find(data => data.estadoAprobacion.toUpperCase().includes("DEVOLVER"));
@@ -153,10 +152,10 @@ export class DialogReasignarUsuarioComponent {
 					}
 				} else if (this.taskId.toUpperCase().includes("REMUNERACIONES") || this.taskId === environment.taskType_CREM) {
 					this.mensaje = "Se reasignó la tarea de revisión por comité de remuneraciones";
-					this.dataAprobador = this.dataDetalleAprobadorSolicitud.find(data => data.estadoAprobacion.toUpperCase().includes("PORREVISAREMUNERA"));
+					this.dataAprobador = this.dataDetalleAprobadorSolicitud.find(data => data.estadoAprobacion.toUpperCase().includes("PORREVISARREMUNERA"));
 
 					if (this.dataAprobador === undefined || this.dataAprobador === null) {
-						this.dataAprobador = this.dataDetalleAprobadorSolicitud.find(data => data.estadoAprobacion.toUpperCase().includes("ESPERAR"));
+						this.dataAprobador = this.dataDetalleAprobadorSolicitud.find(data => data.estadoAprobacion.toUpperCase().includes("ESPERA"));
 
 						if (this.dataAprobador === undefined || this.dataAprobador === null) {
 							this.dataAprobador = this.dataDetalleAprobadorSolicitud.find(data => data.estadoAprobacion.toUpperCase().includes("DEVOLVER"));

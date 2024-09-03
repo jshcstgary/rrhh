@@ -1985,7 +1985,7 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
 						confirmButtonText: "Ok",
 					}).then((result) => {
 						if (result.isConfirmed) {
-							this.router.navigate(["/mantenedores/reasignar-tareas-usuarios"]);
+							this.router.navigate(["/solicitudes/reasignar-tareas-usuarios"]);
 							if (this.submitted) {
 							}
 						}
