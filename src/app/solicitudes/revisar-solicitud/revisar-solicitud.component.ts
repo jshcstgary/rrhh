@@ -900,6 +900,7 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
 				if (id.includes("RG")) {
 					this.solicitudRG = response;
 				}else if (this.id_solicitud_by_params.includes("AP-")) {
+					this.solicitud = response;
 					if (this.solicitud.tipoAccion.toUpperCase().includes("ASIGNA")) {
 						this.muestraRemuneracion = true;
 					}
