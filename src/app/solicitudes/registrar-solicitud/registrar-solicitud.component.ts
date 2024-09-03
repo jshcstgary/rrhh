@@ -275,6 +275,7 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
 							const permisos: Permiso[] = JSON.parse(localStorage.getItem(LocalStorageKeys.Permisos)!);
 
 							this.existeMatenedores = permisos.some(permiso => permiso.codigo === PageCodes.AprobadorFijo);
+							console.log(this.existeMatenedores);
 
 							if (this.existe || this.existeMatenedores) {
 								try {

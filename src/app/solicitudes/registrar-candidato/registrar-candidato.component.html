@@ -566,7 +566,7 @@
 								<select id="selectOptions" [(ngModel)]="selectedOption" name="selectOptions" class="form-select" style="font-size: 14px" required>
 									<option value="">Seleccione...</option>
 
-									<option *ngFor="let option of options" [value]="option.descripcion">{{ option.descripcion }}</option>
+									<option *ngFor="let option of options" [value]="option.codigo">{{ option.valor }}</option>
 								</select>
 							</div>
 						</div>

@@ -25,7 +25,7 @@ import { DataFilterNivelesAprobacion } from "src/app/eschemas/DataFilterNivelesA
 import { DatosInstanciaProceso } from "src/app/eschemas/DatosInstanciaProceso";
 import { Solicitud } from "src/app/eschemas/Solicitud";
 import { MantenimientoService } from "src/app/services/mantenimiento/mantenimiento.service";
-import { reportCodeEnum } from "src/app/services/util/util.interface";
+import { FormatoUtilReporte, reportCodeEnum } from "src/app/services/util/util.interface";
 import { UtilService } from "src/app/services/util/util.service";
 import { ValidationsService } from "src/app/services/validations/validations.service";
 import Swal from "sweetalert2";
@@ -52,6 +52,8 @@ import { ConsultaGraficosData } from "./consulta-grafico.data";
 import { ConsultaSolicitudesService } from "./consulta-solicitudes.service";
 import { convertTimeZonedDate } from "src/app/services/util/dates.util";
 import { portalWorkFlow } from "src/environments/environment";
+import { format } from "date-fns";
+import { RegistrarCandidatoService } from "../registrar-candidato/registrar-candidato.service";
 
 //import { single} from './chartData';
 declare var require: any;
@@ -202,14 +204,6 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 	public dataFilterNivelesAprobacion = new DataFilterNivelesAprobacion();
 	public dataNivelDireccion: any[] = [];
 
-	/*data_estado = [
-	  { id: 1, name: 'Aprobado' },
-	  { id: 2, name: 'En espera' },
-	  { id: 3, name: 'Creado' },
-	  { id: 4, name: 'Enviado' },
-	  { id: 5, name: 'Cancelado' },
-	];*/
-
 	editing: any = {};
 	rows: any = new Array();
 	temp = [...data];
@@ -225,6 +219,24 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 
 	public solicitud = new Solicitud();
 	public detalleSolicitud = new DetalleSolicitud();
+
+	public dropdownOptionsExport = [
+		{
+			id: "PDF",
+			name: "PDF",
+			icon: "fas fa-file-pdf",
+		},
+		{
+			id: "EXCEL",
+			name: "EXCEL",
+			icon: "fas fa-file-excel",
+		},
+		{
+			id: "CSV",
+			name: "CSV",
+			icon: "fas fa-file-alt",
+		}
+	]
 
 	selected_empresa: number;
 	selected_producto: number;
@@ -266,7 +278,7 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 	constructor(
 		private config: NgSelectConfig,
 		public consultaSolicitudesService: ConsultaSolicitudesService,
-
+		private seleccionCandidatoService: RegistrarCandidatoService,
 		private tableService: TableService,
 		private route: ActivatedRoute,
 		private validationsService: ValidationsService,
@@ -376,7 +388,7 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 		this.router.navigate(["/solicitudes/crear-tipo-solicitud"]);
 	}
 
-	public mostrarBotonResignar(): boolean {
+	public mostrarBotonesAdmin(): boolean {
 		const permisos: Permiso[] = JSON.parse(localStorage.getItem(LocalStorageKeys.Permisos)!);
 
 		return permisos.some(({ codigo }) => codigo === PageCodes.Mantenedores);
@@ -488,34 +500,35 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 													this.solicitudes.guardarDetallesAprobacionesSolicitud(this.solicitudes.modelDetalleAprobaciones).subscribe({
 														next: () => {
 															setTimeout(() => {
-																
-															this.solicitudes.getDetalleAprobadoresSolicitudesById(this.solicitud.idSolicitud).subscribe({
-																next: (resJefe) => {
-																resJefe.detalleAprobadorSolicitud.forEach((item) => {
-																	if(item.nivelAprobacionRuta.toUpperCase().includes("REGISTRARSOLICITUD")){
-																	const htmlString = "<!DOCTYPE html>\r\n<html lang=\"es\">\r\n\r\n<head>\r\n  <meta charset=\"UTF-8\">\r\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n  <title>Document<\/title>\r\n<\/head>\r\n\r\n<body>\r\n  <h2>Estimado(a)<\/h2>\r\n  <h3>{NOMBRE_APROBADOR}<\/h3>\r\n\r\n  <P>La Solicitud de {TIPO_SOLICITUD} {ID_SOLICITUD} para la posici\u00F3n de {DESCRIPCION_POSICION} est\u00E1 disponible para su\r\n    revisi\u00F3n.<\/P>\r\n\r\n  <p>\r\n    <b>\r\n      Favor ingresar al siguiente enlace: <a href=\"{URL_APROBACION}\">{URL_APROBACION}<\/a>\r\n      <br>\r\n      <br>\r\n      Gracias por su atenci\u00F3n.\r\n    <\/b>\r\n  <\/p>\r\n<\/body>\r\n\r\n<\/html>\r\n";
-											
-																	const modifiedHtmlString = htmlString.replace("{NOMBRE_APROBADOR}", item.usuarioAprobador).replace("{TIPO_SOLICITUD}", this.solicitud.tipoSolicitud).replace("{ID_SOLICITUD}", this.solicitud.idSolicitud).replace("{DESCRIPCION_POSICION}", this.detalleSolicitud.descripcionPosicion).replace(new RegExp("{URL_APROBACION}", "g"), `${portalWorkFlow}tareas/consulta-tareas`);
-														
-																	this.emailVariables = {
-																		de: "emisor",
-																		para: item.correo,
-																		// alias: this.solicitudes.modelDetalleAprobaciones.correo,
-																		alias: "Notificación 1",
-																		asunto: `Creación de Solicitud de ${this.solicitud.tipoSolicitud} ${this.solicitud.idSolicitud}`,
-																		cuerpo: modifiedHtmlString,
-																		password: "password"
-																	};
-																	this.solicitudes.sendEmail(this.emailVariables).subscribe({
-																		next: () => {
-																	},
-																	error: (error) => {
-																		console.error(error);
+
+																this.solicitudes.getDetalleAprobadoresSolicitudesById(this.solicitud.idSolicitud).subscribe({
+																	next: (resJefe) => {
+																		resJefe.detalleAprobadorSolicitud.forEach((item) => {
+																			if (item.nivelAprobacionRuta.toUpperCase().includes("REGISTRARSOLICITUD")) {
+																				const htmlString = "<!DOCTYPE html>\r\n<html lang=\"es\">\r\n\r\n<head>\r\n  <meta charset=\"UTF-8\">\r\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n  <title>Document<\/title>\r\n<\/head>\r\n\r\n<body>\r\n  <h2>Estimado(a)<\/h2>\r\n  <h3>{NOMBRE_APROBADOR}<\/h3>\r\n\r\n  <P>La Solicitud de {TIPO_SOLICITUD} {ID_SOLICITUD} para la posici\u00F3n de {DESCRIPCION_POSICION} est\u00E1 disponible para su\r\n    revisi\u00F3n.<\/P>\r\n\r\n  <p>\r\n    <b>\r\n      Favor ingresar al siguiente enlace: <a href=\"{URL_APROBACION}\">{URL_APROBACION}<\/a>\r\n      <br>\r\n      <br>\r\n      Gracias por su atenci\u00F3n.\r\n    <\/b>\r\n  <\/p>\r\n<\/body>\r\n\r\n<\/html>\r\n";
+
+																				const modifiedHtmlString = htmlString.replace("{NOMBRE_APROBADOR}", item.usuarioAprobador).replace("{TIPO_SOLICITUD}", this.solicitud.tipoSolicitud).replace("{ID_SOLICITUD}", this.solicitud.idSolicitud).replace("{DESCRIPCION_POSICION}", this.detalleSolicitud.descripcionPosicion).replace(new RegExp("{URL_APROBACION}", "g"), `${portalWorkFlow}tareas/consulta-tareas`);
+
+																				this.emailVariables = {
+																					de: "emisor",
+																					para: item.correo,
+																					// alias: this.solicitudes.modelDetalleAprobaciones.correo,
+																					alias: "Notificación 1",
+																					asunto: `Creación de Solicitud de ${this.solicitud.tipoSolicitud} ${this.solicitud.idSolicitud}`,
+																					cuerpo: modifiedHtmlString,
+																					password: "password"
+																				};
+																				this.solicitudes.sendEmail(this.emailVariables).subscribe({
+																					next: () => {
+																					},
+																					error: (error) => {
+																						console.error(error);
+																					}
+																				});
+																			}
+																		});
 																	}
-																	});			
-																	}
-																});}															
-													 });
+																});
 																this.router.navigate([
 																	this.codigoTipoSolicitud === "AP" ? "/solicitudes/accion-personal/registrar-solicitud" : "/solicitudes/registrar-solicitud",
 																	this.solicitud.idInstancia,
@@ -1164,1326 +1177,128 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 		console.log("Deactivate", JSON.parse(JSON.stringify(data)));
 	}
 
-	// public exportar(): void {
-	// 	if (this.solicitud.idSolicitud.toUpperCase().includes("RP")) {
-	// 		this.exportarRequisicionPersonal();
-	// 	} else if (this.solicitud.idSolicitud.toUpperCase().includes("CF")) {
-	// 		this.exportarContratacionFamiliar();
-	// 	} else if (this.solicitud.idSolicitud.toUpperCase().includes("RG")) {
-	// 		this.exportarReingresoPersonal();
-	// 	} else if (this.solicitud.idSolicitud.toUpperCase().includes("AP")) {
-	// 		this.exportarAccionPersonal();
-	// 	}
-	// }
+	private isAnyRowCheckedInTable(formato: FormatoUtilReporte) {
+		// let rowsCheckedInTable: any[] = this.tableService.rowsCheckedByTable[this.mainTableName];
 
-	// private exportarRequisicionPersonal(): void {
-	// 	const backgroundCellColor: [number, number, number] = [218, 238, 243];
-	// 	const textColor: [number, number, number] = [56, 95, 147];
-	// 	const lineColor: [number, number, number] = [149, 179, 215];
+		// if (rowsCheckedInTable.length === 0) {
+		// 	rowsCheckedInTable = this.originalDataTable.map((x) => x.key);
+		// }
 
-	// 	const doc = new jsPDF();
+		const headerTitles = ["Compañía", "Unidad de Negocio", "Localidad", "Nombre del jefe solicitante", "Àrea/Departamento", "Cargo requerido", "Nivel de dirección", "Tipo de requerimiento", "Estatus del proceso", "Fuente de reclutamiento", "Número de solicitud", "Fecha de aprobación de solicitud", "Fecha de cierre del proceso/Finalización del proceso", "Fecha de ingreso del nuevo colaborador", "Número de días de requisición en proceso (Workflow)", "Número de días de requisición hasta el ingreso del colaborador", "Etapa actual del proceso", "Apellidos y nombres del ocupante anterior"];
 
-	// 	// Esquina de la hoja
-	// 	autoTable(doc, {
-	// 		theme: "plain",
-	// 		body: [
-	// 			[
-	// 				{
-	// 					content: `RR.HH.: ${this.solicitud.idSolicitud}`,
-	// 					styles: {
-	// 						halign: "right",
-	// 						fontStyle: "bold"
-	// 					}
-	// 				}
-	// 			],
-	// 		]
-	// 	});
+		console.log(this.dataTable);
+		// forkJoin([...this.dataTable.map(({ idSolicitud }) => (this.solicitudes.getDetalleSolicitudById(idSolicitud)))]).subscribe({
+		// 	next: (response) => {
+		// 		const detalleSolicitudes = response.map(({ detalleSolicitudType }) => (detalleSolicitudType[0]));
 
-	// 	// Títutlo
-	// 	autoTable(doc, {
-	// 		theme: "plain",
-	// 		body: [
-	// 			[
-	// 				{
-	// 					content: "REQUERIMIENTO DE PERSONAL",
-	// 					styles: {
-	// 						halign: "center",
-	// 						fontSize: 20,
-	// 						fontStyle: "bold",
-	// 						textColor
-	// 					}
-	// 				}
-	// 			],
-	// 		]
-	// 	});
+		// 		console.log(detalleSolicitudes);
 
-	// 	// Encabezado de la solicitud
-	// 	autoTable(doc, {
-	// 		theme: "grid",
-	// 		bodyStyles: {
-	// 			lineColor
-	// 		},
-	// 		body: [
-	// 			["Creado por:", this.solicitud.usuarioCreacion, "Fecha:", format(new Date(this.solicitud.fechaCreacion), "dd/MM/yyyy"), "Solicitud No:", this.solicitud.idSolicitud],
-	// 		],
-	// 		columnStyles: {
-	// 			0: {
-	// 				fontStyle: "bold",
-	// 				halign: "right"
-	// 			},
-	// 			2: {
-	// 				fontStyle: "bold",
-	// 				halign: "right"
-	// 			},
-	// 			4: {
-	// 				fontStyle: "bold",
-	// 				halign: "right"
-	// 			}
-	// 		}
-	// 	});
+		// 		const lookup = detalleSolicitudes.reduce((acc, item) => {
+		// 			acc[item.idSolicitud] = item;
 
-	// 	// Información de la posición
-	// 	autoTable(doc, {
-	// 		theme: "grid",
-	// 		headStyles: {
-	// 			fillColor: backgroundCellColor,
-	// 			textColor,
-	// 			halign: "center",
-	// 			lineColor
-	// 		},
-	// 		bodyStyles: {
-	// 			lineColor
-	// 		},
-	// 		head: [
-	// 			[
-	// 				{
-	// 					content: "INFORMACIÓN DE LA POSICIÓN",
-	// 					colSpan: 4
-	// 				}
-	// 			]
-	// 		],
-	// 		body: [
-	// 			["Unidad:", this.model.unidadNegocio, "Motivo", this.solicitud.tipoMotivo],
-	// 			["Ciudad/Localidad:", this.model.localidad, "Empleado a reemplazar", this.model.nombreCompleto],
-	// 			["Cargo solicitado:", this.model.nombreCargo, "Sueldo", this.model.sueldo],
-	// 			["Área/Dpto:", this.model.departamento, "Variable máxima:", this.model.sueldoMensual],
-	// 			["Centro de Costos", this.model.nomCCosto, "Total", parseInt(this.model.sueldo) + parseInt(this.model.sueldoMensual)],
-	// 			[
-	// 				"Justificación:",
-	// 				{
-	// 					content: this.model.justificacionCargo,
-	// 					colSpan: 3
-	// 				}
-	// 			]
-	// 		],
-	// 		columnStyles: {
-	// 			0: {
-	// 				fontStyle: "bold",
-	// 				cellWidth: 30
-	// 			},
-	// 			1: {
-	// 				cellWidth: 60
-	// 			},
-	// 			2: {
-	// 				fontStyle: "bold",
-	// 				cellWidth: 30
-	// 			},
-	// 			3: {
-	// 				cellWidth: 60
-	// 			}
-	// 		}
-	// 	});
+		// 			return acc;
+		// 		}, {});
 
-	// 	// Funciones y responsabilidades
-	// 	autoTable(doc, {
-	// 		theme: "grid",
-	// 		headStyles: {
-	// 			fillColor: backgroundCellColor,
-	// 			textColor,
-	// 			halign: "center",
-	// 			lineColor
-	// 		},
-	// 		bodyStyles: {
-	// 			lineColor
-	// 		},
-	// 		head: [
-	// 			[
-	// 				{
-	// 					content: "FUNCIONES Y RESPONSABILIDADES",
-	// 					colSpan: 4
-	// 				}
-	// 			]
-	// 		],
-	// 		body: [
-	// 			["Reporta a:", this.model.reportaA, "Supervisa a:", this.model.supervisaA],
-	// 			[
-	// 				"Misión del cargo:",
-	// 				{
-	// 					content: this.model.misionCargo,
-	// 					colSpan: 3
-	// 				}
-	// 			]
-	// 		],
-	// 		columnStyles: {
-	// 			0: {
-	// 				fontStyle: "bold",
-	// 				cellWidth: 30
-	// 			},
-	// 			1: {
-	// 				cellWidth: 60
-	// 			},
-	// 			2: {
-	// 				fontStyle: "bold",
-	// 				cellWidth: 30
-	// 			},
-	// 			3: {
-	// 				cellWidth: 60
-	// 			}
-	// 		}
-	// 	});
+		// 		// Combinar usando el objeto de referencia
+		// 		const combined = this.dataTable.map(item => ({
+		// 			solicitud: item,
+		// 			detalle: lookup[item.idSolicitud]
+		// 		}));
 
-	// 	// Sección de candidato
-	// 	autoTable(doc, {
-	// 		theme: "grid",
-	// 		headStyles: {
-	// 			fillColor: backgroundCellColor,
-	// 			textColor,
-	// 			halign: "center",
-	// 			lineColor
-	// 		},
-	// 		bodyStyles: {
-	// 			lineColor
-	// 		},
-	// 		head: [
-	// 			[
-	// 				{
-	// 					content: "SELECCIÓN DE CANDIDATO",
-	// 					colSpan: 2
-	// 				}
-	// 			]
-	// 		],
-	// 		body: [
-	// 			[
-	// 				{
-	// 					content: "TAREA:",
-	// 					styles: {
-	// 						halign: "center",
-	// 						textColor,
-	// 						fontStyle: "bold"
-	// 					}
-	// 				},
-	// 				{
-	// 					content: "FECHA:",
-	// 					styles: {
-	// 						halign: "center",
-	// 						textColor,
-	// 						fontStyle: "bold"
-	// 					}
-	// 				}
-	// 			],
-	// 			["Actualización del perfil:", this.fechas.actualizacionPerfil],
-	// 			["Búsqueda del candidato:", this.fechas.busquedaCandidatos],
-	// 			["Entrevistas:", this.fechas.entrevista],
-	// 			["Pruebas:", this.fechas.pruebas],
-	// 			["Referencias:", this.fechas.referencias],
-	// 			["Elaboración del Informe:", this.fechas.elaboracionInforme],
-	// 			["Entrega al Jefe Solicitante el informe de selección:", this.fechas.entregaJefe],
-	// 			["Entrevistas por parte de fejaturas:", this.fechas.entrevistaJefatura],
-	// 			["Toma de decisiones por parte de fejaturas:", this.fechas.tomaDecisiones],
-	// 			["Candidato seleccionado:", this.fechas.candidatoSeleccionado],
-	// 			["Proceso de Contratación:", this.fechas.procesoContratacion],
-	// 			["Fin del Proceso de Selección y Proceso de Contratación:", this.fechas.finProcesoContratacion],
-	// 			[
-	// 				{
-	// 					content: "",
-	// 					colSpan: 2,
-	// 					styles: {
-	// 						fillColor: backgroundCellColor,
-	// 						cellPadding: "2px"
-	// 					}
-	// 				}
-	// 			],
-	// 			["Nombre del candidato escogido:", this.nombreCandidato],
-	// 			["Fecha de ingreso:", this.fechas.reingreso === "" ? this.fechas.contratacionFamiliares : this.fechas.reingreso]
-	// 		],
-	// 		columnStyles: {
-	// 			0: {
-	// 				fontStyle: "bold",
-	// 				cellWidth: 110
-	// 			},
-	// 			1: {
-	// 				cellWidth: 70,
-	// 				halign: "center"
-	// 			}
-	// 		}
-	// 	});
+		// 		console.log(combined);
+		// 	}
+		// });
 
-	// 	// Log del flujo
-	// 	autoTable(doc, {
-	// 		theme: "grid",
-	// 		headStyles: {
-	// 			fillColor: backgroundCellColor,
-	// 			textColor,
-	// 			lineColor
-	// 		},
-	// 		bodyStyles: {
-	// 			lineColor
-	// 		},
-	// 		head: [
-	// 			[
-	// 				{
-	// 					content: "Log delflujo",
-	// 					colSpan: 3
-	// 				}
-	// 			]
-	// 		],
-	// 		body: [
-	// 			[
-	// 				{
-	// 					content: "Fecha",
-	// 					styles: {
-	// 						halign: "center",
-	// 						textColor,
-	// 						fontStyle: "bold"
-	// 					}
-	// 				},
-	// 				{
-	// 					content: "Acción",
-	// 					styles: {
-	// 						halign: "center",
-	// 						textColor,
-	// 						fontStyle: "bold"
-	// 					}
-	// 				},
-	// 				{
-	// 					content: "Responsble",
-	// 					styles: {
-	// 						halign: "center",
-	// 						textColor,
-	// 						fontStyle: "bold"
-	// 					}
-	// 				}
-	// 			],
-	// 			...this.dataAprobacionesPorPosicion[this.keySelected].map(dataAprobador => ([format(new Date(dataAprobador.nivelAprobacionType.fechaCreacion), "dd/MM/yyyy"), dataAprobador.nivelAprobacionType.ruta, dataAprobador.aprobador.usuario === "" ? "No aplica" : dataAprobador.aprobador.usuario]))
-	// 		],
-	// 		columnStyles: {
-	// 			0: {
-	// 				cellWidth: 30,
-	// 				halign: "center"
-	// 			},
-	// 			1: {
-	// 				cellWidth: 75
-	// 			},
-	// 			2: {
-	// 				cellWidth: 75
-	// 			}
-	// 		}
-	// 	});
+		const solicitudesData: any = this.dataTable;
 
-	// 	doc.save(`${this.solicitud.idSolicitud}-${format(new Date(), "dd-MM-yyyy")}.pdf`)
-	// }
+		this.seleccionCandidatoService.getCandidato().subscribe({
+			next: (response) => {
+				const detalleSolicitudes = response.seleccionCandidatoType;
 
-	// private exportarContratacionFamiliar(): void {
-	// 	const backgroundCellColor: [number, number, number] = [218, 238, 243];
-	// 	const textColor: [number, number, number] = [56, 95, 147];
-	// 	const lineColor: [number, number, number] = [149, 179, 215];
+				const lookup = detalleSolicitudes.reduce((acc, item) => {
+					acc[item.iD_SOLICITUD] = item;
 
-	// 	const doc = new jsPDF();
+					return acc;
+				}, {});
 
-	// 	// Esquina de la hoja
-	// 	autoTable(doc, {
-	// 		theme: "plain",
-	// 		body: [
-	// 			[
-	// 				{
-	// 					content: `RR.HH.: ${this.solicitud.idSolicitud}`,
-	// 					styles: {
-	// 						halign: "right",
-	// 						fontStyle: "bold"
-	// 					}
-	// 				}
-	// 			],
-	// 		]
-	// 	});
+				// Combinar usando el objeto de referencia
+				const combined = solicitudesData.map(item => ({
+					solicitud: item,
+					detalle: lookup[item.idSolicitud]
+				}));
 
-	// 	// Títutlo
-	// 	autoTable(doc, {
-	// 		theme: "plain",
-	// 		body: [
-	// 			[
-	// 				{
-	// 					content: "CONTRATACIÓN DE FAMILIAR",
-	// 					styles: {
-	// 						halign: "center",
-	// 						fontSize: 20,
-	// 						fontStyle: "bold",
-	// 						textColor
-	// 					}
-	// 				}
-	// 			],
-	// 		]
-	// 	});
+				const bodyReport = combined.map(({ solicitud, detalle }) => ([
+					solicitud.compania === null || solicitud.compania === undefined ? "" : solicitud.compania,
+					solicitud.unidadNegocio === null || solicitud.unidadNegocio === undefined ? "" : solicitud.unidadNegocio,
+					solicitud.localidad === null || solicitud.localidad === undefined ? "" : solicitud.localidad,
+					solicitud.nombreJefeSolicitante === null || solicitud.nombreJefeSolicitante === undefined ? "" : solicitud.nombreJefeSolicitante,
+					solicitud.areaDepartamento === null || solicitud.areaDepartamento === undefined ? "" : solicitud.areaDepartamento,
+					solicitud.descripcionPosicion === null || solicitud.descripcionPosicion === undefined ? "" : solicitud.descripcionPosicion,
+					solicitud.nivelDireccion === null || solicitud.nivelDireccion === undefined ? "" : solicitud.nivelDireccion,
+					solicitud.tipoMotivo === null || solicitud.tipoMotivo === undefined ? "" : solicitud.tipoMotivo,
+					solicitud.estado === null || solicitud.estado === undefined ? "" : solicitud.estado,
+					detalle !== undefined ? (detalle.fuenteExterna === null || detalle.fuenteExterna === undefined ? "" : detalle.fuenteExterna) : "",
+					solicitud.idSolicitud,
+					solicitud.fechaActualizacion === null || solicitud.fechaActualizacion === undefined ? "" : format(new Date(solicitud.fechaActualizacion), "dd-MM-yyyy"),
+					solicitud.fechaSalida === null || solicitud.fechaSalida === undefined ? "" : format(new Date(solicitud.fechaSalida), "dd-MM-yyyy"),
+					solicitud.fechaIngreso === null || solicitud.fechaIngreso === undefined ? "" : format(new Date(solicitud.fechaIngreso), "dd-MM-yyyy"),
+					"Días de requisición en proceso",
+					"Días de requisición hasta el ingreso del colaborador",
+					"Etapa actual",
+					"Nombres del ocupante anterior",
+				]));
 
-	// 	// Encabezado de la solicitud
-	// 	autoTable(doc, {
-	// 		theme: "grid",
-	// 		bodyStyles: {
-	// 			lineColor
-	// 		},
-	// 		body: [
-	// 			[
-	// 				{
-	// 					content: "Creado por:",
-	// 					rowSpan: 2,
-	// 					styles: {
-	// 						valign: "middle"
-	// 					}
-	// 				},
-	// 				{
-	// 					content: this.solicitud.usuarioCreacion,
-	// 					rowSpan: 2,
-	// 					styles: {
-	// 						valign: "middle"
-	// 					}
-	// 				},
-	// 				{
-	// 					content: "Fecha:",
-	// 					rowSpan: 2,
-	// 					styles: {
-	// 						valign: "middle"
-	// 					}
-	// 				},
-	// 				{
-	// 					content: format(new Date(this.solicitud.fechaCreacion), "dd/MM/yyyy"),
-	// 					rowSpan: 2,
-	// 					styles: {
-	// 						valign: "middle"
-	// 					}
-	// 				},
-	// 				"Solicitud No:",
-	// 				this.solicitud.idSolicitud
-	// 			],
-	// 			["Requisición de Personal No:", this.idSolicitudRP]
-	// 		],
-	// 		columnStyles: {
-	// 			0: {
-	// 				fontStyle: "bold",
-	// 				halign: "right"
-	// 			},
-	// 			2: {
-	// 				fontStyle: "bold",
-	// 				halign: "right"
-	// 			},
-	// 			4: {
-	// 				fontStyle: "bold",
-	// 				halign: "right"
-	// 			}
-	// 		}
-	// 	});
+				this.utilService.generateReport(formato, reportCodeEnum.MANTENIMIENTO_NIVELES_APROBACION, "NIVELES DE APROBACIÓN", headerTitles, bodyReport);
+			}
+		});
 
-	// 	// Información de la persona a contratar
-	// 	autoTable(doc, {
-	// 		theme: "grid",
-	// 		headStyles: {
-	// 			fillColor: backgroundCellColor,
-	// 			textColor,
-	// 			halign: "center",
-	// 			lineColor
-	// 		},
-	// 		bodyStyles: {
-	// 			lineColor
-	// 		},
-	// 		head: [
-	// 			[
-	// 				{
-	// 					content: "INFORMACIÓN DE LA PERSONA A CONTRATAR",
-	// 					colSpan: 2
-	// 				}
-	// 			]
-	// 		],
-	// 		body: [
-	// 			["Apellidos y nombres:", this.nombreCompletoCandidato],
-	// 			["Unidad:", this.model.unidadNegocio],
-	// 			["Departamento:", this.model.departamento],
-	// 			["Cargo:", this.model.nombreCargo],
-	// 			["Localidad:", this.model.localidad],
-	// 			["Jefe Solicitante:", this.solicitud.usuarioCreacion],
-	// 			["Responsable de RR.HH.:", this.solicitud.usuarioCreacion],
-	// 			["Justificación:", this.model.justificacionCargo]
-	// 		],
-	// 		columnStyles: {
-	// 			0: {
-	// 				fontStyle: "bold",
-	// 				cellWidth: 50
-	// 			},
-	// 			1: {
-	// 				cellWidth: 130
-	// 			}
-	// 		}
-	// 	});
+		// const { headerTitles, dataIndexTitles } = this.columnsTable.reduce(
+		// 	(acc, col) => {
+		// 		if (col.title && col.title !== "Acciones") {
+		// 			acc.headerTitles.push(col.title);
 
-	// 	// Datos de familiares que ya laboran en la empresa
-	// 	autoTable(doc, {
-	// 		theme: "grid",
-	// 		headStyles: {
-	// 			fillColor: backgroundCellColor,
-	// 			textColor,
-	// 			halign: "center",
-	// 			lineColor
-	// 		},
-	// 		bodyStyles: {
-	// 			lineColor
-	// 		},
-	// 		head: [
-	// 			[
-	// 				{
-	// 					content: "DATOS DE FAMILIARES QUE YA LABORAN EN LA EMPRESA",
-	// 					colSpan: 7
-	// 				}
-	// 			]
-	// 		],
-	// 		body: [
-	// 			[
-	// 				{
-	// 					content: "Nombre",
-	// 					styles: {
-	// 						fontStyle: "bold",
-	// 						halign: "center"
-	// 					}
-	// 				},
-	// 				{
-	// 					content: "Fecha de ingreso",
-	// 					styles: {
-	// 						fontStyle: "bold",
-	// 						halign: "center"
-	// 					}
-	// 				},
-	// 				{
-	// 					content: "Cargo",
-	// 					styles: {
-	// 						fontStyle: "bold",
-	// 						halign: "center"
-	// 					}
-	// 				},
-	// 				{
-	// 					content: "Unidad",
-	// 					styles: {
-	// 						fontStyle: "bold",
-	// 						halign: "center"
-	// 					}
-	// 				},
-	// 				{
-	// 					content: "Departamento",
-	// 					styles: {
-	// 						fontStyle: "bold",
-	// 						halign: "center"
-	// 					}
-	// 				},
-	// 				{
-	// 					content: "Localidad",
-	// 					styles: {
-	// 						fontStyle: "bold",
-	// 						halign: "center"
-	// 					}
-	// 				},
-	// 				{
-	// 					content: "Parentezco",
-	// 					styles: {
-	// 						fontStyle: "bold",
-	// 						halign: "center"
-	// 					}
-	// 				}
-	// 			],
-	// 			...this.dataTableDatosFamiliares.map(datoFamiliar => ([datoFamiliar.nombreEmpleado, datoFamiliar.fechaCreacion as string, datoFamiliar.cargo, datoFamiliar.unidad, datoFamiliar.departamento, datoFamiliar.localidad, datoFamiliar.parentesco]))
-	// 		],
-	// 		columnStyles: {
-	// 			0: {
-	// 				cellWidth: 25
-	// 			},
-	// 			1: {
-	// 				cellWidth: 25
-	// 			},
-	// 			2: {
-	// 				cellWidth: 25
-	// 			},
-	// 			3: {
-	// 				cellWidth: 25
-	// 			},
-	// 			4: {
-	// 				cellWidth: 30
-	// 			},
-	// 			5: {
-	// 				cellWidth: 25
-	// 			},
-	// 			6: {
-	// 				cellWidth: 25
-	// 			}
-	// 		}
-	// 	});
+		// 			acc.dataIndexTitles.push({
+		// 				dataIndex: col.dataIndex,
+		// 				dataIndexesToJoin: col.dataIndexesToJoin,
+		// 			});
+		// 		}
 
-	// 	// Log del flujo
-	// 	autoTable(doc, {
-	// 		theme: "grid",
-	// 		headStyles: {
-	// 			fillColor: backgroundCellColor,
-	// 			textColor,
-	// 			lineColor
-	// 		},
-	// 		bodyStyles: {
-	// 			lineColor
-	// 		},
-	// 		head: [
-	// 			[
-	// 				{
-	// 					content: "Log delflujo",
-	// 					colSpan: 3
-	// 				}
-	// 			]
-	// 		],
-	// 		body: [
-	// 			[
-	// 				{
-	// 					content: "Fecha",
-	// 					styles: {
-	// 						halign: "center",
-	// 						textColor,
-	// 						fontStyle: "bold"
-	// 					}
-	// 				},
-	// 				{
-	// 					content: "Acción",
-	// 					styles: {
-	// 						halign: "center",
-	// 						textColor,
-	// 						fontStyle: "bold"
-	// 					}
-	// 				},
-	// 				{
-	// 					content: "Responsble",
-	// 					styles: {
-	// 						halign: "center",
-	// 						textColor,
-	// 						fontStyle: "bold"
-	// 					}
-	// 				}
-	// 			],
-	// 			...this.dataAprobacionesPorPosicion[this.keySelected].map(dataAprobador => ([format(new Date(dataAprobador.nivelAprobacionType.fechaCreacion), "dd/MM/yyyy"), dataAprobador.nivelAprobacionType.ruta, dataAprobador.aprobador.usuario === "" ? "No aplica" : dataAprobador.aprobador.usuario]))
-	// 		],
-	// 		columnStyles: {
-	// 			0: {
-	// 				cellWidth: 30,
-	// 				halign: "center"
-	// 			},
-	// 			1: {
-	// 				cellWidth: 75
-	// 			},
-	// 			2: {
-	// 				cellWidth: 75
-	// 			}
-	// 		}
-	// 	});
+		// 		return acc;
+		// 	},
+		// 	{
+		// 		headerTitles: [],
+		// 		dataIndexTitles: []
+		// 	}
+		// );
 
-	// 	doc.save(`${this.solicitud.idSolicitud}-${format(new Date(), "dd-MM-yyyy")}.pdf`)
-	// }
+		// const bodyReport = this.originalDataTable
+		// 	.filter((row) => rowsCheckedInTable.some((keyChecked) => keyChecked === row.key))
+		// 	.map((row) => dataIndexTitles.map((colDataIndex: { dataIndex: string; dataIndexesToJoin: string[]; }) => {
+		// 		let value: string;
 
-	// private exportarReingresoPersonal(): void {
-	// 	const backgroundCellColor: [number, number, number] = [218, 238, 243];
-	// 	const textColor: [number, number, number] = [56, 95, 147];
-	// 	const lineColor: [number, number, number] = [149, 179, 215];
+		// 		if (colDataIndex.dataIndex === "otrasCausales" || colDataIndex.dataIndex === "estado") {
+		// 			// Procesar solo la columna "otrasCausales"
+		// 			value = row[colDataIndex.dataIndex]?.toString() ?? "";
 
-	// 	const variableMaxima = Math.max(...[parseInt(this.model.sueldoAnual), parseInt(this.model.sueldoMensual), parseInt(this.model.sueldoSemestral), parseInt(this.model.sueldoTrimestral)]);
-	// 	const variableMaximaRG = Math.max(...[parseInt(this.modelRG.sueldoAnual), parseInt(this.modelRG.sueldoMensual), parseInt(this.modelRG.sueldoSemestral), parseInt(this.modelRG.sueldoTrimestral)]);
+		// 			if (value === "true" || value === "1") {
+		// 				value = "Activo";
+		// 			} else if (value === "false" || value === "0") {
+		// 				value = "Inactivo";
+		// 			}
+		// 		} else {
+		// 			// Mantener los valores de otras columnas sin cambios
+		// 			if (colDataIndex.dataIndexesToJoin) {
+		// 				value = colDataIndex.dataIndexesToJoin
+		// 					.map((index) => row[index])
+		// 					.join(" - ");
+		// 			} else {
+		// 				value = row[colDataIndex.dataIndex]?.toString() ?? "";
+		// 			}
+		// 		}
 
-	// 	const doc = new jsPDF();
+		// 		return value;
+		// 	}));
 
-	// 	// Esquina de la hoja
-	// 	autoTable(doc, {
-	// 		theme: "plain",
-	// 		body: [
-	// 			[
-	// 				{
-	// 					content: `RR.HH.: ${this.solicitud.idSolicitud}`,
-	// 					styles: {
-	// 						halign: "right",
-	// 						fontStyle: "bold"
-	// 					}
-	// 				}
-	// 			],
-	// 		]
-	// 	});
-
-	// 	// Títutlo
-	// 	autoTable(doc, {
-	// 		theme: "plain",
-	// 		body: [
-	// 			[
-	// 				{
-	// 					content: "REINGRESO DE PERSONAL",
-	// 					styles: {
-	// 						halign: "center",
-	// 						fontSize: 20,
-	// 						fontStyle: "bold",
-	// 						textColor
-	// 					}
-	// 				}
-	// 			],
-	// 		]
-	// 	});
-
-	// 	// Encabezado de la solicitud
-	// 	autoTable(doc, {
-	// 		theme: "grid",
-	// 		bodyStyles: {
-	// 			lineColor
-	// 		},
-	// 		body: [
-	// 			[
-	// 				{
-	// 					content: "Creado por:",
-	// 					rowSpan: 2,
-	// 					styles: {
-	// 						valign: "middle"
-	// 					}
-	// 				},
-	// 				{
-	// 					content: this.solicitud.usuarioCreacion,
-	// 					rowSpan: 2,
-	// 					styles: {
-	// 						valign: "middle"
-	// 					}
-	// 				},
-	// 				{
-	// 					content: "Fecha:",
-	// 					rowSpan: 2,
-	// 					styles: {
-	// 						valign: "middle"
-	// 					}
-	// 				},
-	// 				{
-	// 					content: format(new Date(this.solicitud.fechaCreacion), "dd/MM/yyyy"),
-	// 					rowSpan: 2,
-	// 					styles: {
-	// 						valign: "middle"
-	// 					}
-	// 				},
-	// 				"Solicitud No:",
-	// 				this.solicitud.idSolicitud
-	// 			],
-	// 			["Requisición de Personal No:", this.idSolicitudRP]
-	// 		],
-	// 		columnStyles: {
-	// 			0: {
-	// 				fontStyle: "bold",
-	// 				halign: "right"
-	// 			},
-	// 			2: {
-	// 				fontStyle: "bold",
-	// 				halign: "right"
-	// 			},
-	// 			4: {
-	// 				fontStyle: "bold",
-	// 				halign: "right"
-	// 			}
-	// 		}
-	// 	});
-
-	// 	// Información de la persona a contratar
-	// 	autoTable(doc, {
-	// 		theme: "grid",
-	// 		headStyles: {
-	// 			fillColor: backgroundCellColor,
-	// 			textColor,
-	// 			halign: "center",
-	// 			lineColor
-	// 		},
-	// 		bodyStyles: {
-	// 			lineColor
-	// 		},
-	// 		head: [
-	// 			[
-	// 				{
-	// 					content: "INFORMACIÓN DE LA PERSONA A CONTRATAR",
-	// 					colSpan: 4
-	// 				}
-	// 			]
-	// 		],
-	// 		body: [
-	// 			["Apellidos y nombres:", this.nombreCompletoCandidato, "Fecha de ingreso:", "dd/MM/yyyy"]
-	// 		],
-	// 		columnStyles: {
-	// 			0: {
-	// 				fontStyle: "bold",
-	// 				cellWidth: 40
-	// 			},
-	// 			1: {
-	// 				cellWidth: 75
-	// 			},
-	// 			2: {
-	// 				fontStyle: "bold",
-	// 				cellWidth: 35
-	// 			},
-	// 			3: {
-	// 				cellWidth: 30
-	// 			}
-	// 		}
-	// 	});
-
-	// 	// Datos de contratación
-	// 	autoTable(doc, {
-	// 		theme: "grid",
-	// 		headStyles: {
-	// 			fillColor: backgroundCellColor,
-	// 			textColor,
-	// 			halign: "center",
-	// 			lineColor
-	// 		},
-	// 		bodyStyles: {
-	// 			lineColor
-	// 		},
-	// 		head: [
-	// 			[
-	// 				{
-	// 					content: "DATOS DE CONTRTACIÓN",
-	// 					colSpan: 3
-	// 				}
-	// 			]
-	// 		],
-	// 		body: [
-	// 			[
-	// 				{
-	// 					content: "Descripción",
-	// 					styles: {
-	// 						halign: "center",
-	// 						textColor,
-	// 						fontStyle: "bold"
-	// 					}
-	// 				},
-	// 				{
-	// 					content: "Contratación anterior",
-	// 					styles: {
-	// 						halign: "center",
-	// 						textColor,
-	// 						fontStyle: "bold"
-	// 					}
-	// 				},
-	// 				{
-	// 					content: "Contratación actual",
-	// 					styles: {
-	// 						halign: "center",
-	// 						textColor,
-	// 						fontStyle: "bold"
-	// 					}
-	// 				}
-	// 			],
-	// 			["Compañía:", this.model.compania, this.modelRG.compania],
-	// 			["Sueldo:", this.model.sueldo, this.modelRG.sueldo],
-	// 			["Variable Máxima:", variableMaxima, variableMaximaRG],
-	// 			["Remuneración Total:", "", ""],
-	// 			["Cargo:", this.model.descrPosicion, this.modelRG.descrPosicion],
-	// 			["Departamento:", this.model.departamento, this.modelRG.departamento],
-	// 			["Fecha de Ingreso:", format(new Date(this.model.fechaIngreso), "dd/MM/yyyy"), format(new Date(this.modelRG.fechaIngreso), "dd/MM/yyyy")],
-	// 			["Fecha de Salida:", format(new Date(this.detalleSolicitudRG.fechaSalida), "dd/MM/yyyy"), format(new Date(this.detalleSolicitud.fechaSalida), "dd/MM/yyyy")],
-	// 			["Jefe Inmediato Superior:", this.detalleSolicitudRG.jefeInmediatoSuperior, this.detalleSolicitud.jefeInmediatoSuperior],
-	// 			["Cargo Jefe Inemdiato Superior:", this.detalleSolicitudRG.puestoJefeInmediato, this.detalleSolicitud.puestoJefeInmediato],
-	// 			["Responsable de RR.HH.:", this.detalleSolicitudRG.responsableRRHH, this.detalleSolicitud.responsableRRHH]
-	// 		],
-	// 		columnStyles: {
-	// 			0: {
-	// 				fontStyle: "bold",
-	// 				cellWidth: 60
-	// 			},
-	// 			1: {
-	// 				cellWidth: 60
-	// 			},
-	// 			2: {
-	// 				cellWidth: 60
-	// 			}
-	// 		}
-	// 	});
-
-	// 	// Referencia de recursos humanos
-	// 	autoTable(doc, {
-	// 		theme: "grid",
-	// 		headStyles: {
-	// 			fillColor: backgroundCellColor,
-	// 			textColor,
-	// 			halign: "center",
-	// 			lineColor
-	// 		},
-	// 		bodyStyles: {
-	// 			lineColor
-	// 		},
-	// 		head: [
-	// 			[
-	// 				{
-	// 					content: "REFERENCIA DE RECURSOS HUMANOS",
-	// 					colSpan: 4
-	// 				}
-	// 			]
-	// 		],
-	// 		body: [
-	// 			[
-	// 				"Forma de salida:",
-	// 				{
-	// 					content: this.comentariosRRHH.comentario,
-	// 					colSpan: 3
-	// 				}
-	// 			],
-	// 			[
-	// 				"Causa real de salida:",
-	// 				{
-	// 					content: this.causaSalida,
-	// 					colSpan: 3
-	// 				}
-	// 			],
-	// 			[
-	// 				"Justificación", "", "Fecha:", format(this.currentDate, "dd/MM/yyyy")
-	// 			]
-	// 		],
-	// 		columnStyles: {
-	// 			0: {
-	// 				fontStyle: "bold",
-	// 				cellWidth: 40
-	// 			},
-	// 			2: {
-	// 				fontStyle: "bold",
-	// 				cellWidth: 25
-	// 			},
-	// 			3: {
-	// 				cellWidth: 35
-	// 			}
-	// 		}
-	// 	});
-
-	// 	// Referencia del último jefe
-	// 	autoTable(doc, {
-	// 		theme: "grid",
-	// 		headStyles: {
-	// 			fillColor: backgroundCellColor,
-	// 			textColor,
-	// 			halign: "center",
-	// 			lineColor
-	// 		},
-	// 		bodyStyles: {
-	// 			lineColor
-	// 		},
-	// 		head: [
-	// 			[
-	// 				{
-	// 					content: "REFERENCIA DEL ÚLTIMO JEFE",
-	// 					colSpan: 2
-	// 				}
-	// 			]
-	// 		],
-	// 		body: [
-	// 			["¿Cómo fue el desempeño en el área?:", this.comentariosJefeInmediato.comentario],
-	// 			["Fecha:", format(this.currentDate, "dd/MM/yyyy")]
-	// 		],
-	// 		columnStyles: {
-	// 			0: {
-	// 				fontStyle: "bold",
-	// 				cellWidth: 70
-	// 			}
-	// 		}
-	// 	});
-
-	// 	// Jefe solicitante
-	// 	autoTable(doc, {
-	// 		theme: "grid",
-	// 		headStyles: {
-	// 			fillColor: backgroundCellColor,
-	// 			textColor: textColor,
-	// 			halign: "center",
-	// 			lineColor
-	// 		},
-	// 		bodyStyles: {
-	// 			lineColor
-	// 		},
-	// 		head: [
-	// 			[
-	// 				{
-	// 					content: "JEFE SOLICITANTE",
-	// 					colSpan: 4
-	// 				}
-	// 			]
-	// 		],
-	// 		body: [
-	// 			["Nombre del jefe solicitante:", this.detalleSolicitudRG.jefeSolicitante, "Cargo:", this.detalleSolicitudRG.puesto],
-	// 			["Justificación:", this.Comentario_Jefe_Solicitante.comentario, "Fecha:", format(this.currentDate, "dd/MM/yyyy")]
-	// 		],
-	// 		columnStyles: {
-	// 			0: {
-	// 				fontStyle: "bold",
-	// 				cellWidth: 60
-	// 			},
-	// 			2: {
-	// 				fontStyle: "bold",
-	// 				cellWidth: 25
-	// 			},
-	// 			3: {
-	// 				cellWidth: 25
-	// 			}
-	// 		}
-	// 	});
-
-	// 	// Log del flujo
-	// 	autoTable(doc, {
-	// 		theme: "grid",
-	// 		headStyles: {
-	// 			fillColor: backgroundCellColor,
-	// 			textColor,
-	// 			lineColor
-	// 		},
-	// 		bodyStyles: {
-	// 			lineColor
-	// 		},
-	// 		head: [
-	// 			[
-	// 				{
-	// 					content: "Log delflujo",
-	// 					colSpan: 3
-	// 				}
-	// 			]
-	// 		],
-	// 		body: [
-	// 			[
-	// 				{
-	// 					content: "Fecha",
-	// 					styles: {
-	// 						halign: "center",
-	// 						textColor,
-	// 						fontStyle: "bold"
-	// 					}
-	// 				},
-	// 				{
-	// 					content: "Acción",
-	// 					styles: {
-	// 						halign: "center",
-	// 						textColor,
-	// 						fontStyle: "bold"
-	// 					}
-	// 				},
-	// 				{
-	// 					content: "Responsble",
-	// 					styles: {
-	// 						halign: "center",
-	// 						textColor,
-	// 						fontStyle: "bold"
-	// 					}
-	// 				}
-	// 			],
-	// 			...this.dataAprobacionesPorPosicion[this.keySelected].map(dataAprobador => ([format(new Date(dataAprobador.nivelAprobacionType.fechaCreacion), "dd/MM/yyyy"), dataAprobador.nivelAprobacionType.ruta, dataAprobador.aprobador.usuario === "" ? "No aplica" : dataAprobador.aprobador.usuario]))
-	// 		],
-	// 		columnStyles: {
-	// 			0: {
-	// 				cellWidth: 30,
-	// 				halign: "center"
-	// 			},
-	// 			1: {
-	// 				cellWidth: 75
-	// 			},
-	// 			2: {
-	// 				cellWidth: 75
-	// 			}
-	// 		}
-	// 	});
-
-	// 	doc.save(`${this.solicitud.idSolicitud}-${format(new Date(), "dd-MM-yyyy")}.pdf`)
-	// }
-
-	// private exportarAccionPersonal(): void {
-	// 	const backgroundCellColor: [number, number, number] = [218, 238, 243];
-	// 	const textColor: [number, number, number] = [56, 95, 147];
-	// 	const lineColor: [number, number, number] = [149, 179, 215];
-
-	// 	const variableMaxima = Math.max(...[parseInt(this.model.sueldoAnual), parseInt(this.model.sueldoMensual), parseInt(this.model.sueldoSemestral), parseInt(this.model.sueldoTrimestral)]);
-	// 	const variableMaximaPropuestos = Math.max(...[parseInt(this.modelPropuestos.sueldoAnual), parseInt(this.modelPropuestos.sueldoMensual), parseInt(this.modelPropuestos.sueldoSemestral), parseInt(this.modelPropuestos.sueldoTrimestral)]);
-
-	// 	const doc = new jsPDF();
-
-	// 	// Esquina de la hoja
-	// 	autoTable(doc, {
-	// 		theme: "plain",
-	// 		body: [
-	// 			[
-	// 				{
-	// 					content: `RR.HH.: ${this.solicitud.idSolicitud}`,
-	// 					styles: {
-	// 						halign: "right",
-	// 						fontStyle: "bold"
-	// 					}
-	// 				}
-	// 			],
-	// 		]
-	// 	});
-
-	// 	// Títutlo
-	// 	autoTable(doc, {
-	// 		theme: "plain",
-	// 		body: [
-	// 			[
-	// 				{
-	// 					content: "ACCIÓN DE PERSONAL",
-	// 					styles: {
-	// 						halign: "center",
-	// 						fontSize: 20,
-	// 						fontStyle: "bold",
-	// 						textColor
-	// 					}
-	// 				}
-	// 			],
-	// 		]
-	// 	});
-
-	// 	// Encabezado de la solicitud
-	// 	autoTable(doc, {
-	// 		theme: "grid",
-	// 		bodyStyles: {
-	// 			lineColor
-	// 		},
-	// 		body: [
-	// 			["Creado por:", this.solicitud.usuarioCreacion, "Fecha:", format(new Date(this.solicitud.fechaCreacion), "dd/MM/yyyy"), "Solicitud No:", this.solicitud.idSolicitud],
-	// 		],
-	// 		columnStyles: {
-	// 			0: {
-	// 				fontStyle: "bold",
-	// 				halign: "right"
-	// 			},
-	// 			2: {
-	// 				fontStyle: "bold",
-	// 				halign: "right"
-	// 			},
-	// 			4: {
-	// 				fontStyle: "bold",
-	// 				halign: "right"
-	// 			}
-	// 		}
-	// 	});
-
-	// 	// Información
-	// 	autoTable(doc, {
-	// 		theme: "grid",
-	// 		headStyles: {
-	// 			fillColor: backgroundCellColor,
-	// 			textColor,
-	// 			halign: "center",
-	// 			lineColor
-	// 		},
-	// 		bodyStyles: {
-	// 			lineColor
-	// 		},
-	// 		head: [
-	// 			[
-	// 				{
-	// 					content: "INFORMACIÓN",
-	// 					colSpan: 4
-	// 				}
-	// 			]
-	// 		],
-	// 		body: [
-	// 			[
-	// 				{
-	// 					content: "Nombre empleado"
-	// 				},
-	// 				{
-	// 					content: this.model.nombreCompleto,
-	// 					colSpan: 3
-	// 				}
-	// 			],
-	// 			[
-	// 				{
-	// 					content: "ORIGEN",
-	// 					colSpan: 2,
-	// 					styles: {
-	// 						textColor,
-	// 						halign: "center"
-	// 					}
-	// 				},
-	// 				{
-	// 					content: "DESTINO",
-	// 					colSpan: 2,
-	// 					styles: {
-	// 						textColor,
-	// 						halign: "center"
-	// 					}
-	// 				}
-	// 			],
-	// 			["Fecha de ingreso:", format(new Date(this.model.fechaIngreso), "dd/MM/yyyy"), "Fecha de cambio:", format(new Date(this.model.fechaIngreso), "dd/MM/yyyy")],
-	// 			["Cargo:", this.model.nombreCargo, "Cargo:", this.modelPropuestos.nombreCompleto],
-	// 			["Unidad:", this.model.unidadNegocio, "Unidad:", this.modelPropuestos.unidadNegocio],
-	// 			["Área/Departamento:", this.model.departamento, "Área/Departamento::", this.modelPropuestos.departamento],
-	// 			["Localidad:", this.model.localidad, "Localidad:", this.modelPropuestos.localidad],
-	// 			["Sueldo:", `$ ${parseInt(this.model.sueldo).toFixed(2)}`, "Sueldo:", `$ ${parseInt(this.modelPropuestos.sueldo).toFixed(2)}`],
-	// 			["Variable máxima:", `$ ${variableMaxima.toFixed(2)}`, "Variable máxima:", `$ ${variableMaximaPropuestos.toFixed(2)}`],
-	// 			["Movilizavión:", this.detalleSolicitudPropuestos.movilizacion !== "" ? `$ ${parseInt(this.detalleSolicitudPropuestos.movilizacion).toFixed(2)}` : "$ 0.00", "Movilización:", this.detalleSolicitudPropuestos.movilizacion !== "" ? `$ ${parseInt(this.detalleSolicitudPropuestos.movilizacion).toFixed(2)}` : "$ 0.00"],
-	// 			["Alimentación:", this.detalleSolicitudPropuestos.alimentacion !== "" ? `$ ${parseInt(this.detalleSolicitudPropuestos.alimentacion).toFixed(2)}` : "$ 0.00", "Alimentación:", this.detalleSolicitudPropuestos.alimentacion !== "" ? `$ ${parseInt(this.detalleSolicitudPropuestos.alimentacion).toFixed(2)}` : "$ 0.00"],
-	// 			["Centro de Costos:", this.model.nomCCosto, "Centro de Costos:", this.modelPropuestos.nomCCosto],
-	// 			["Grupo de pago:", this.model.grupoPago, "Grupo de pago:", this.modelPropuestos.grupoPago],
-	// 			["Sucursal (Nómina):", this.model.sucursal, "Scursal (Nómina):", this.modelPropuestos.sucursal],
-	// 			["Distribución contable:", this.model.subledger, "Distribución Contable:", this.modelPropuestos.subledger]
-	// 		],
-	// 		columnStyles: {
-	// 			0: {
-	// 				fontStyle: "bold",
-	// 				cellWidth: 40
-	// 			},
-	// 			1: {
-	// 				cellWidth: 50
-	// 			},
-	// 			2: {
-	// 				fontStyle: "bold",
-	// 				cellWidth: 40
-	// 			},
-	// 			3: {
-	// 				cellWidth: 50
-	// 			}
-	// 		}
-	// 	});
-
-	// 	// Descripción
-	// 	autoTable(doc, {
-	// 		theme: "grid",
-	// 		headStyles: {
-	// 			fillColor: backgroundCellColor,
-	// 			textColor,
-	// 			halign: "center",
-	// 			lineColor
-	// 		},
-	// 		bodyStyles: {
-	// 			lineColor
-	// 		},
-	// 		head: [
-	// 			[
-	// 				{
-	// 					content: "DESCRIPCIÓN",
-	// 					colSpan: 2
-	// 				}
-	// 			]
-	// 		],
-	// 		body: [
-	// 			["Tipo de Acción:", this.solicitud.tipoAccion],
-	// 			["Justificación:", this.model.justificacionCargo]
-	// 		],
-	// 		columnStyles: {
-	// 			0: {
-	// 				fontStyle: "bold",
-	// 				cellWidth: 30
-	// 			}
-	// 		}
-	// 	});
-
-	// 	// Sección para recursos humanos
-	// 	autoTable(doc, {
-	// 		theme: "grid",
-	// 		headStyles: {
-	// 			fillColor: backgroundCellColor,
-	// 			textColor,
-	// 			halign: "center",
-	// 			lineColor
-	// 		},
-	// 		bodyStyles: {
-	// 			lineColor
-	// 		},
-	// 		head: [
-	// 			[
-	// 				{
-	// 					content: "SECCIÓN PARA RECURSOS HUMANOS",
-	// 					colSpan: 2
-	// 				}
-	// 			]
-	// 		],
-	// 		body: [
-	// 			["Observaciones:", ""],
-	// 			[
-	// 				{
-	// 					content: "",
-	// 					colSpan: 2,
-	// 					styles: {
-	// 						minCellHeight: 20
-	// 					}
-	// 				}
-	// 			],
-	// 			[
-	// 				{
-	// 					content: "ACEPTACIÓN DEL EMPLEADO",
-	// 					colSpan: 2,
-	// 					styles: {
-	// 						halign: "center"
-	// 					}
-	// 				}
-	// 			]
-	// 		],
-	// 		columnStyles: {
-	// 			0: {
-	// 				fontStyle: "bold",
-	// 				cellWidth: 30
-	// 			}
-	// 		}
-	// 	});
-
-
-	// 	// Log del flujo
-	// 	autoTable(doc, {
-	// 		theme: "grid",
-	// 		headStyles: {
-	// 			fillColor: backgroundCellColor,
-	// 			textColor,
-	// 			lineColor
-	// 		},
-	// 		bodyStyles: {
-	// 			lineColor
-	// 		},
-	// 		head: [
-	// 			[
-	// 				{
-	// 					content: "Log delflujo",
-	// 					colSpan: 3
-	// 				}
-	// 			]
-	// 		],
-	// 		body: [
-	// 			[
-	// 				{
-	// 					content: "Fecha",
-	// 					styles: {
-	// 						halign: "center",
-	// 						textColor,
-	// 						fontStyle: "bold"
-	// 					}
-	// 				},
-	// 				{
-	// 					content: "Acción",
-	// 					styles: {
-	// 						halign: "center",
-	// 						textColor,
-	// 						fontStyle: "bold"
-	// 					}
-	// 				},
-	// 				{
-	// 					content: "Responsble",
-	// 					styles: {
-	// 						halign: "center",
-	// 						textColor,
-	// 						fontStyle: "bold"
-	// 					}
-	// 				}
-	// 			],
-	// 			...this.dataAprobacionesPorPosicion[this.keySelected].map(dataAprobador => ([format(new Date(dataAprobador.nivelAprobacionType.fechaCreacion), "dd/MM/yyyy"), dataAprobador.nivelAprobacionType.ruta, dataAprobador.aprobador.usuario === "" ? "No aplica" : dataAprobador.aprobador.usuario]))
-	// 		],
-	// 		columnStyles: {
-	// 			0: {
-	// 				cellWidth: 30,
-	// 				halign: "center"
-	// 			},
-	// 			1: {
-	// 				cellWidth: 75
-	// 			},
-	// 			2: {
-	// 				cellWidth: 75
-	// 			}
-	// 		}
-	// 	});
-
-	// 	doc.save(`${this.solicitud.idSolicitud}-${format(new Date(), "dd-MM-yyyy")}.pdf`)
-	// }
+		// this.utilService.generateReport(formato, reportCodeEnum.MANTENIMIENTO_NIVELES_APROBACION, "NIVELES DE APROBACIÓN", headerTitles, bodyReport);
+	}
 }

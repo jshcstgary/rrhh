@@ -201,11 +201,7 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
 	public parentIdFlag: string | null = "false"; // set to true if the id is for the process instance, instead of task-id
 	//Multitrabajo, LinkedIn, Instagram
 	selectedOption: string;
-	options: Array<{ value: string, descripcion: string }> = [
-		{ value: '1', descripcion: 'Multitrabajo' },
-		{ value: '2', descripcion: 'LinkedIn' },
-		{ value: '3', descripcion: 'Instagram' },
-	];
+	options: { codigo: string, valor: string }[] = [];
 
 	public dataComentariosAprobaciones: any[] = [];
 	public dataComentariosAprobacionesPorPosicion: any[] = [];
@@ -459,7 +455,7 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
 
 		this.verifyData();
 
-		this.selectedOption = this.options[0].descripcion;
+		// this.selectedOption = this.options[0].valor;
 
 		this.getCandidatoValues();
 
@@ -1018,6 +1014,7 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
 		return this.solicitudes.getDetalleSolicitudById(id).subscribe({
 			next: (response: any) => {
 				this.detalleSolicitud = response.detalleSolicitudType[0];
+
 				if (this.detalleSolicitud.codigoPosicion.length > 0) {
 					this.unidadNegocioEmp=this.detalleSolicitud.unidadNegocio;
 					
@@ -1114,6 +1111,15 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
 					this.model.correo = this.detalleSolicitud.correo;
 					this.model.fechaIngreso = this.detalleSolicitud.fechaIngreso;
 				}
+
+				return this.mantenimientoService.getCatalogo("RBPTF").subscribe({
+					next: (response) => {
+						this.options = response.itemCatalogoTypes.map(({ codigo, valor }) => ({
+							codigo,
+							valor
+						}));
+					}
+				});
 			},
 			error: (error: HttpErrorResponse) => {
 				this.utilService.modalResponse(error.error, "error");

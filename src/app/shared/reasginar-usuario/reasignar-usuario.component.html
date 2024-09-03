@@ -1,10 +1,118 @@
-<div class="modal-custom">
+<div class="p-2 buscar-aprobador-fijo-modal">
+	<h3 class="sol-danger">Reasignar usuario</h3>
+
+	<hr />
+
+	<form class="input-group my-2" [formGroup]="myForm" (ngSubmit)="getDataEmpleadosEvolution()">
+		<input type="text" class="form-control" formControlName="searchInput" placeholder="Ingrese código de posición, subledger, nombre o correo del empleado" />
+
+		<button type="submit" class="btn btn-info" [disabled]="myForm.invalid">Buscar</button>
+	</form>
+
+	<hr />
+
+	<div class="table-container my-2 p-1 pt-0">
+		<table *ngIf="dataEmpleadoEvolution.length !== 0; else emptyEmpleados">
+			<thead>
+				<tr>
+					<th></th>
+
+					<th>Código de Posición</th>
+
+					<th>Posición</th>
+
+					<th>Nombre</th>
+
+					<th>Subledger</th>
+
+					<th>Compañía</th>
+
+					<th>Cargo</th>
+
+					<th>Unidad de Negocio</th>
+
+					<th>Área/Departamento</th>
+
+					<th>Localidad/Zona</th>
+
+					<th>Centro de Costo</th>
+
+					<th>Fecha de Ingreso</th>
+				</tr>
+			</thead>
+
+			<tbody>
+				<tr *ngFor="let empleado of dataEmpleadoEvolution" class="cursor-pointer empleado-fila" [ngClass]="{ selected: modelo === empleado }" (click)="seleccionarUsuario(empleado)">
+					<td>
+						<input class="form-check-input" type="radio" [value]="empleado" [checked]="modelo === empleado" (change)="$event.stopPropagation(); seleccionarUsuario(empleado)" />
+					</td>
+
+					<td>{{ empleado.codigoPosicion }}</td>
+
+					<td>{{ empleado.descrPosicion }}</td>
+
+					<td>{{ empleado.nombreCompleto }}</td>
+
+					<td>{{ empleado.subledger }}</td>
+
+					<td>{{ empleado.compania }}</td>
+
+					<td>{{ empleado.nombreCargo }}</td>
+
+					<td>{{ empleado.unidadNegocio }}</td>
+
+					<td>{{ empleado.departamento }}</td>
+
+					<td>{{ empleado.localidad }}</td>
+
+					<!-- <td>{{ empleado.nombreCargo }}</td> -->
+					<td>{{ empleado.nomCCosto }}</td>
+
+					<td>{{ empleado.fechaIngresogrupo | date : "dd-MM-yyyy" }}</td>
+				</tr>
+			</tbody>
+		</table>
+
+		<ng-template #emptyEmpleados>
+			<div class="empty-empleados">
+				<p>Realice una búsqueda</p>
+			</div>
+		</ng-template>
+	</div>
+
+	<hr />
+
+	<div class="row mb-3">
+		<div class="col-12 input-group align-items-center">
+			<label class="label-estilo" for="fields.comentarios" style="font-size: 14px; width: 15%;">Usuario:</label>
+
+			<span style="color: black; font-size: 14px;">{{ usuarioAprobador }}</span>
+		</div>
+	</div>
+
+	<!-- <textarea name="comentarios" style="color: black; font-size: 14px; width: 100%; resize: none" class="form-control" [(ngModel)]="textareaContent" id="comentarios" rows="3" required></textarea> -->
+
+	<label class="label-estilo" for="fields.comentarios" style="font-size: 14px; width: 100%">Comentarios</label>
+
+	<textarea name="comentarios" style="color: black; font-size: 14px; width: 100%; resize: none" class="form-control" [(ngModel)]="textareaContent" id="comentarios" rows="3" required></textarea>
+
+	<hr />
+
+	<div class="my-2 d-flex justify-content-end align-items-center gap-2">
+		<button class="btn btn-outline-primary" type="button" (click)="onClose()">Cerrar</button>
+
+		<button class="btn btn-primary" type="button" [disabled]="modelo.subledger === '' || textareaContent === ''" (click)="onSave()">Confirmar</button>
+	</div>
+</div>
+
+<!-- <div class="modal-custom">
 	<div class="">
 		<div class="p-2 mt-2">
 			<h4 class="mx-2 sol-danger">Reasignar Usuario</h4>
 
 			<hr class="my-0" />
 		</div>
+
 		<div class="px-4">
 			<div class="row">
 				<div class="input-group my-3">
@@ -12,45 +120,59 @@
 
 					<input type="text" [(ngModel)]="search" class="form-control" id="search" placeholder="Ingrese nombre o Apellido" style="color: black" [ngbTypeahead]="searchNombreCompleto" (selectItem)="onSelectItem('nombreCompleto', $event)" />
 
-					<button class="btn btn-light" type="button" (click)="getDataEmpleadosEvolution('nombreEmpleado')">
+					<button class="btn btn-light" type="button" (click)="getDataEmpleadosEvolution()">
 						<i class="ti-search"></i>
 					</button>
 				</div>
 			</div>
+
 			<div class="row">
 				<div class="col-md-6 my-3">
 					<label class="label-estilo" for="fields.nombreCompleto" style="font-size: 14px; width: 100%">Nombre Empleado a Reasignar</label>
+
 					<input readonly id="nombreCompleto" [(ngModel)]="this.modelo.nombreCompleto" type="text" class="form-control mb-3" style="width: 100%; color: black" />
 				</div>
+
 				<div class="col-md-6 my-3">
 					<label class="label-estilo" for="fields.compania" style="font-size: 14px; width: 100%">Empresa</label>
+
 					<input readonly id="compania" [(ngModel)]="this.modelo.compania" type="text" class="form-control mb-3" style="width: 100%; color: black" />
 				</div>
 			</div>
+
 			<div class="row">
 				<div class="col-md-6 my-3">
 					<label class="label-estilo" for="fields.codigo" style="font-size: 14px; width: 100%">Codigo Empleado a Reasignar</label>
+
 					<input readonly id="codigo" [(ngModel)]="this.modelo.codigo" type="text" class="form-control mb-3" style="width: 100%; color: black" />
 				</div>
+
 				<div class="col-md-6 my-3">
 					<label class="label-estilo" for="fields.unidadNegocio" style="font-size: 14px; width: 100%">Unidad de Negocio</label>
+
 					<input readonly id="unidadNegocio" [(ngModel)]="this.modelo.unidadNegocio" type="text" class="form-control mb-3" style="width: 100%; color: black" />
 				</div>
 			</div>
+
 			<div class="row">
 				<div class="col-md-6 my-3">
 					<label class="label-estilo" for="fields.comentarios" style="font-size: 14px; width: 100%">Comentarios</label>
+
 					<textarea name="comentarios" style="color: black; font-size: 14px; width: 100%; resize: none" class="form-control" [(ngModel)]="textareaContent" id="comentarios" rows="3" required></textarea>
 				</div>
+
 				<div class="col-md-6 my-3">
 					<label class="label-estilo" for="fields.usuario" style="font-size: 14px; width: 100%">Usuario</label>
+
 					<input readonly id="usuario" [(ngModel)]="usuarioAprobador" type="text" class="form-control mb-3" style="width: 100%; color: black" />
 				</div>
 			</div>
 		</div>
+
 		<div class="p-4">
 			<button type="button" class="btn btn-primary" (click)="onSave()">Grabar</button>
+
 			<button type="button" class="mx-3 btn btn-outline-secondary" (click)="onClose()">Cancelar</button>
 		</div>
 	</div>
-</div>
+</div> -->

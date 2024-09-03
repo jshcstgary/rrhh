@@ -1,33 +1,33 @@
+import { CommonModule } from "@angular/common";
 import { HttpErrorResponse } from "@angular/common/http";
-import { Component, inject, Input } from "@angular/core";
-import { FormsModule } from "@angular/forms";
-import { ActivatedRoute, Router } from "@angular/router";
+import { Component, Input } from "@angular/core";
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { NgbActiveModal, NgbTypeaheadModule } from "@ng-bootstrap/ng-bootstrap";
-import { debounceTime, distinctUntilChanged, map, Observable, OperatorFunction } from "rxjs";
+import { Validators } from "ngx-editor";
 import { LocalStorageKeys } from "src/app/enums/local-storage-keys.enum";
 import { Solicitud } from "src/app/eschemas/Solicitud";
-import {
-	EvType,
-	IEmpleadoData
-} from "src/app/services/mantenimiento/empleado.interface";
+import { EvType } from "src/app/services/mantenimiento/empleado.interface";
 import { MantenimientoService } from "src/app/services/mantenimiento/mantenimiento.service";
 import { UtilService } from "src/app/services/util/util.service";
 import { SolicitudesService } from "src/app/solicitudes/registrar-solicitud/solicitudes.service";
 import { environment, portalWorkFlow } from "src/environments/environment";
 import Swal from "sweetalert2";
 
-
 @Component({
 	selector: "app-dialog-reasignar-usuario",
 	templateUrl: "./reasignar-usuario.component.html",
 	styleUrls: ["./reasignar-usuario.component.scss"],
 	standalone: true,
-	imports: [FormsModule, NgbTypeaheadModule],
+	imports: [CommonModule, FormsModule, ReactiveFormsModule, NgbTypeaheadModule],
 })
 export class DialogReasignarUsuarioComponent {
-	activeModal = inject(NgbActiveModal);
+	public myForm: FormGroup = this.formBuilder.group({
+		searchInput: ["", [Validators.required, Validators.minLength(1)]]
+	});
 
-	search: string;
+	// public empleadoSeleccionado: any = null;
+
+	// search: string;
 	emailVariables = {
 		de: "",
 		password: "",
@@ -36,23 +36,26 @@ export class DialogReasignarUsuarioComponent {
 		asunto: "",
 		cuerpo: ""
 	};
-	textareaContent: string = '';
-	route: ActivatedRoute
-	router: Router
-	fields = <IEmpleadoData>{
-		nombreCompleto: "",
-		compania: "",
-		codigo: "",
-		unidadNegocio: "",
-		comentarios: "",
-		fechaIngresogrupo: null,
-		nombreCargo: "",
-		departamento: "",
-		localidad: "",
-	};
-	public dataEmpleadoEvolution: any[];
 
-	public nombresEmpleados: string[] = [];
+	textareaContent: string = "";
+	// route: ActivatedRoute
+	// router: Router
+
+	// fields = <IEmpleadoData>{
+	// 	nombreCompleto: "",
+	// 	compania: "",
+	// 	codigo: "",
+	// 	unidadNegocio: "",
+	// 	comentarios: "",
+	// 	fechaIngresogrupo: null,
+	// 	nombreCargo: "",
+	// 	departamento: "",
+	// 	localidad: "",
+	// };
+
+	public dataEmpleadoEvolution: any[] = [];
+
+	// public nombresEmpleados: string[] = [];
 
 	public modelo: { correo: string; } & EvType = {
 		codigo: "",
@@ -98,7 +101,7 @@ export class DialogReasignarUsuarioComponent {
 
 	public mensaje: string = "";
 
-	public dataAprobador: any;
+	public dataAprobador: any = null;
 	public usuarioAprobador: string = "";
 
 	@Input("idParam")
@@ -107,18 +110,15 @@ export class DialogReasignarUsuarioComponent {
 	@Input("taskId")
 	public taskId: string = "";
 
-	constructor(private mantenimientoService: MantenimientoService, private utilService: UtilService, private solicitudes: SolicitudesService) {
+	constructor(private activeModal: NgbActiveModal, private mantenimientoService: MantenimientoService, private utilService: UtilService, private solicitudes: SolicitudesService, private formBuilder: FormBuilder) {
 		this.utilService.openLoadingSpinner("Cargando información, espere por favor...");
 	}
-
+	
 	ngOnInit() {
 		this.getNivelesAprobacion();
 	}
 
 	private getNivelesAprobacion(): void {
-		console.log(this.idParam);
-		console.log(this.taskId);
-
 		this.solicitudes.getSolicitudById(this.idParam).subscribe({
 			next: (response: any) => {
 				this.solicitud = response;
@@ -255,7 +255,6 @@ export class DialogReasignarUsuarioComponent {
 					this.dataAprobador.id_NivelAprobacion = this.dataAprobador.idNivelAprobacion;
 					this.dataAprobador.ruta = "Reasignación de Completar Solicitud";
 					this.dataAprobador.nivelAprobacionRuta = "Completar Solicitud";
-
 				} else {
 					this.dataAprobador = this.dataDetalleAprobadorSolicitud.find(data => data.estadoAprobacion.toUpperCase().includes("REASIGNADO"));
 
@@ -288,8 +287,7 @@ export class DialogReasignarUsuarioComponent {
 	}
 
 	onSave() {
-		if (this.taskId === environment.taskType_Revisar
-			&& this.dataAprobador.nivelDireccionAprobador !== this.modelo.nivelDir) {
+		if (this.taskId === environment.taskType_Revisar && this.dataAprobador.nivelDireccionAprobador !== this.modelo.nivelDir) {
 			Swal.fire({
 				text: "Empleado a Reasignar no tiene el mismo nivel de Dirección: " + this.dataAprobador.nivelDireccionAprobador,
 				icon: "error",
@@ -298,80 +296,81 @@ export class DialogReasignarUsuarioComponent {
 				cancelButtonColor: "#77797a",
 				confirmButtonText: "OK"
 			});
-		} else {
-			this.dataAprobador.usuarioAprobador = this.modelo.nombreCompleto;
-			this.dataAprobador.codigoPosicionAprobador = this.modelo.codigoPosicion;
-			this.dataAprobador.descripcionPosicionAprobador = this.modelo.descrPosicion;
-			this.dataAprobador.sudlegerAprobador = this.modelo.subledger;
-			this.dataAprobador.codigoPosicionReportaA = this.modelo.codigoPosicionReportaA;
-			this.dataAprobador.correo = this.modelo.correo;
-			this.dataAprobador.usuarioCreacion = localStorage.getItem(LocalStorageKeys.IdLogin);
-			this.dataAprobador.comentario = this.textareaContent;
-			this.dataAprobador.usuarioModificacion = localStorage.getItem(LocalStorageKeys.IdLogin);
-			this.dataAprobador.fechaCreacion = new Date().toISOString();
-			this.dataAprobador.fechaModificacion = new Date().toISOString();
-			const htmlString = "<!DOCTYPE html>\r\n<html lang=\"es\">\r\n\r\n<head>\r\n  <meta charset=\"UTF-8\">\r\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n  <title>Document<\/title>\r\n<\/head>\r\n\r\n<body>\r\n  <h2>Estimado(a)<\/h2>\r\n  <h3>{NOMBRE_APROBADOR}<\/h3>\r\n\r\n  <P>La Solicitud de {TIPO_SOLICITUD} {ID_SOLICITUD} le ha sido reasignada para su\r\n    revisi\u00F3n y aprobaci\u00F3n.<\/P>\r\n\r\n  <p>\r\n    <b>\r\n      Favor ingresar al siguiente enlace: <a href=\"{URL_APROBACION}\">{URL_APROBACION}<\/a>\r\n      <br>\r\n      <br>\r\n      Gracias por su atenci\u00F3n.\r\n    <\/b>\r\n  <\/p>\r\n<\/body>\r\n\r\n<\/html>\r\n";
 
-			const modifiedHtmlString = htmlString.replace("{NOMBRE_APROBADOR}", this.modelo.nombreCompleto).replace("{TIPO_SOLICITUD}", this.solicitud.tipoSolicitud).replace("{ID_SOLICITUD}", this.solicitud.idSolicitud).replace(new RegExp("{URL_APROBACION}", "g"), `${portalWorkFlow}tareas/consulta-tareas`);
-
-
-			this.emailVariables = {
-				de: "prueba",
-				para: this.modelo.correo,
-				// alias: this.solicitudes.modelDetalleAprobaciones.correo,
-				alias: "Notificación 1",
-				asunto: `Reasignación de Autorización de Solicitud de ${this.solicitud.tipoSolicitud} ${this.solicitud.idSolicitud}`
-				,
-				cuerpo: modifiedHtmlString,
-				password: "p"
-			};
-			this.solicitudes.guardarDetallesAprobacionesSolicitud(this.dataAprobador).subscribe({
-				next: () => {
-					this.solicitud.estadoSolicitud = "RA";
-					this.solicitud.fechaActualizacion = new Date();
-
-					this.activeModal.close({
-						data: `${this.mensaje} a ${this.modelo.nombreCompleto}`
-					});
-					this.solicitudes
-						.actualizarSolicitud(this.solicitud)
-						.subscribe((responseSolicitud) => {
-							this.solicitudes.sendEmail(this.emailVariables).subscribe({
-								next: () => {
-								},
-								error: (error) => {
-									console.error(error);
-								}
-							});
-						});
-				}
-			});
+			return;
 		}
+
+		this.dataAprobador.usuarioAprobador = this.modelo.nombreCompleto;
+		this.dataAprobador.codigoPosicionAprobador = this.modelo.codigoPosicion;
+		this.dataAprobador.descripcionPosicionAprobador = this.modelo.descrPosicion;
+		this.dataAprobador.sudlegerAprobador = this.modelo.subledger;
+		this.dataAprobador.codigoPosicionReportaA = this.modelo.codigoPosicionReportaA;
+		this.dataAprobador.correo = this.modelo.correo;
+		this.dataAprobador.usuarioCreacion = localStorage.getItem(LocalStorageKeys.IdLogin);
+		this.dataAprobador.comentario = this.textareaContent;
+		this.dataAprobador.usuarioModificacion = localStorage.getItem(LocalStorageKeys.IdLogin);
+		this.dataAprobador.fechaCreacion = new Date().toISOString();
+		this.dataAprobador.fechaModificacion = new Date().toISOString();
+		const htmlString = "<!DOCTYPE html>\r\n<html lang=\"es\">\r\n\r\n<head>\r\n  <meta charset=\"UTF-8\">\r\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n  <title>Document<\/title>\r\n<\/head>\r\n\r\n<body>\r\n  <h2>Estimado(a)<\/h2>\r\n  <h3>{NOMBRE_APROBADOR}<\/h3>\r\n\r\n  <P>La Solicitud de {TIPO_SOLICITUD} {ID_SOLICITUD} le ha sido reasignada para su\r\n    revisi\u00F3n y aprobaci\u00F3n.<\/P>\r\n\r\n  <p>\r\n    <b>\r\n      Favor ingresar al siguiente enlace: <a href=\"{URL_APROBACION}\">{URL_APROBACION}<\/a>\r\n      <br>\r\n      <br>\r\n      Gracias por su atenci\u00F3n.\r\n    <\/b>\r\n  <\/p>\r\n<\/body>\r\n\r\n<\/html>\r\n";
+
+		const modifiedHtmlString = htmlString.replace("{NOMBRE_APROBADOR}", this.modelo.nombreCompleto).replace("{TIPO_SOLICITUD}", this.solicitud.tipoSolicitud).replace("{ID_SOLICITUD}", this.solicitud.idSolicitud).replace(new RegExp("{URL_APROBACION}", "g"), `${portalWorkFlow}tareas/consulta-tareas`);
+
+
+		this.emailVariables = {
+			de: "prueba",
+			para: this.modelo.correo,
+			// alias: this.solicitudes.modelDetalleAprobaciones.correo,
+			alias: "Notificación 1",
+			asunto: `Reasignación de Autorización de Solicitud de ${this.solicitud.tipoSolicitud} ${this.solicitud.idSolicitud}`,
+			cuerpo: modifiedHtmlString,
+			password: "p"
+		};
+
+		this.solicitudes.guardarDetallesAprobacionesSolicitud(this.dataAprobador).subscribe({
+			next: () => {
+				this.solicitud.estadoSolicitud = "RA";
+				this.solicitud.fechaActualizacion = new Date();
+
+				this.activeModal.close({
+					data: `${this.mensaje} a ${this.modelo.nombreCompleto}`
+				});
+				this.solicitudes
+					.actualizarSolicitud(this.solicitud)
+					.subscribe((responseSolicitud) => {
+						this.solicitudes.sendEmail(this.emailVariables).subscribe({
+							next: () => {
+							},
+							error: (error) => {
+								console.error(error);
+							}
+						});
+					});
+			}
+		});
 	}
 
-	onEnter(search: string): void {
-		this.mantenimientoService
-			.getDataEmpleadosEvolutionPorId(search)
-			.subscribe({
-				next: (data) => {
-					this.dataEmpleadoEvolution = data.evType;
-				},
-				error: (error) => {
-					console.error(error);
-				},
-			});
-	}
+	// onEnter(search: string): void {
+	// 	this.mantenimientoService
+	// 		.getDataEmpleadosEvolutionPorId(search)
+	// 		.subscribe({
+	// 			next: (data) => {
+	// 				this.dataEmpleadoEvolution = data.evType;
+	// 			},
+	// 			error: (error) => {
+	// 				console.error(error);
+	// 			},
+	// 		});
+	// }
 
-	searchNombreCompleto: OperatorFunction<string, readonly string[]> = (text$: Observable<string>) => text$.pipe(
-		debounceTime(200),
-		distinctUntilChanged(),
-		map((term) => term.length < 1 ? [] : this.nombresEmpleados.filter((v) => v.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10))
-	);
+	// searchNombreCompleto: OperatorFunction<string, readonly string[]> = (text$: Observable<string>) => text$.pipe(
+	// 	debounceTime(200),
+	// 	distinctUntilChanged(),
+	// 	map((term) => term.length < 1 ? [] : this.nombresEmpleados.filter((v) => v.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10))
+	// );
 
-	getDataEmpleadosEvolution(tipo: string) {
-		return this.mantenimientoService.getDataEmpleadosEvolutionPorId(this.search).subscribe({
+	getDataEmpleadosEvolution() {
+		return this.mantenimientoService.getDataEmpleadosEvolutionPorId(this.myForm.value.searchInput).subscribe({
 			next: (response) => {
-				console.log(response);
 				if (response.evType.length === 0) {
 					Swal.fire({
 						text: "No se encontró registro",
@@ -387,11 +386,11 @@ export class DialogReasignarUsuarioComponent {
 
 				this.dataEmpleadoEvolution = response.evType;
 
-				this.eventSearch.item = this.dataEmpleadoEvolution[0].nombreCompleto;
+				// this.eventSearch.item = this.dataEmpleadoEvolution[0].nombreCompleto;
 
-				this.onSelectItem('nombreCompleto', this.eventSearch);
+				// this.onSelectItem("nombreCompleto", this.eventSearch);
 
-				this.nombresEmpleados = [...new Set(this.dataEmpleadoEvolution.map((empleado) => empleado.nombreCompleto))];
+				// this.nombresEmpleados = [...new Set(this.dataEmpleadoEvolution.map((empleado) => empleado.nombreCompleto))];
 			},
 			error: (error: HttpErrorResponse) => {
 				this.utilService.modalResponse(error.error, "error");
@@ -399,28 +398,33 @@ export class DialogReasignarUsuarioComponent {
 		});
 	}
 
-	onSelectItem(campo: string, event) {
-		let valor = event.item;
-
-		const datosEmpleado = this.dataEmpleadoEvolution.find((empleado) => {
-			return empleado[campo] === valor;
-		});
-
-		if (datosEmpleado) {
-			this.modelo = datosEmpleado;
-			this.search = datosEmpleado.nombreCompleto;
-		} else {
-			let tempSearch = valor;
-
-			//   this.clearModel();
-
-			if (campo == "codigoPosicion") {
-				this.modelo.codigoPosicion = tempSearch;
-			} else if (campo == "subledger") {
-				this.modelo.subledger = tempSearch;
-			} else if (campo == "nombreCompleto") {
-				this.modelo.nombreCompleto = tempSearch;
-			}
-		}
+	public seleccionarUsuario(empleado: any): void {
+		// this.empleadoSeleccionado = empleado;
+		this.	modelo = empleado;
 	}
+
+	// onSelectItem(campo: string, event) {
+	// 	let valor = event.item;
+
+	// 	const datosEmpleado = this.dataEmpleadoEvolution.find((empleado) => {
+	// 		return empleado[campo] === valor;
+	// 	});
+
+	// 	if (datosEmpleado) {
+	// 		this.modelo = datosEmpleado;
+	// 		this.search = datosEmpleado.nombreCompleto;
+	// 	} else {
+	// 		let tempSearch = valor;
+
+	// 		//   this.clearModel();
+
+	// 		if (campo == "codigoPosicion") {
+	// 			this.modelo.codigoPosicion = tempSearch;
+	// 		} else if (campo == "subledger") {
+	// 			this.modelo.subledger = tempSearch;
+	// 		} else if (campo == "nombreCompleto") {
+	// 			this.modelo.nombreCompleto = tempSearch;
+	// 		}
+	// 	}
+	// }
 }

@@ -25,7 +25,7 @@ export class BuscarEmpleadoComponent {
 	public seleccionarUsuario(empleado: any): void {
 		this.empleadoSeleccionado = empleado;
 	}
-	
+
 	public onSubmit(): void {
 		this.utilService.openLoadingSpinner("Obteniendo información, espere por favor...");
 
