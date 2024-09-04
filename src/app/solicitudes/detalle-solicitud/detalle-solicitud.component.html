@@ -50,24 +50,8 @@
 			<!-- ! Aqui empieza la condición Formulario FAMILIARES-->
 			<div *ngIf="mostrarFormularioFamiliares">
 				<!-- ! Información de persona a contratar -->
-				<details class="mb-4">
-					<summary>
-						<div class="row">
-							<div class="col-md-4">
-								<h3 class="sol-danger">Información de persona a contratar</h3>
-							</div>
-
-							<div class="col-md-7">
-								<hr />
-							</div>
-
-							<div class="col-md-1 text-end">
-								<i class="fas fa-chevron-circle-down"></i>
-							</div>
-						</div>
-					</summary>
-
-					<div class="details-content">
+				<app-solicitud-seccion-desplegable titleSummary="Información de persona a contratar">
+					<div>
 						<div class="row">
 							<div class="col-md-12">
 								<div class="input-group mb-3 align-items-center">
@@ -175,88 +159,69 @@
 							</div>
 						</div>
 					</div>
-				</details>
+				</app-solicitud-seccion-desplegable>
 
-				<div class="row" *ngIf="mostrarTipoJustificacionYMision">
-					<div class="col">
-						<div class="input-group mb-3 contenedor">
-							<label class="input-group-text adjustable-label" for="justificacion">Justificación</label>
-
-							&nbsp;
-
-							<textarea id="justificacion" name="justificacion" [(ngModel)]="model.justificacionCargo" style="color: black; font-size: 14px" required #justificacion="ngModel"></textarea>
-						</div>
+				<!-- ! Datos de familiares que ya laboran en la empresa -->
+				<app-solicitud-seccion-desplegable titleSummary="Datos de familiares que ya laboran en la empresa">
+					<div>
+						<table-personalized [columns]="columnsDatosFamiliares" [data]="dataTableDatosFamiliares" [tableWidth]="'100%'"> </table-personalized>
 					</div>
-				</div>
+				</app-solicitud-seccion-desplegable>
 
-				<div class="row mt-2">
-					<div class="col">
-						<div class="mb-4">
-							<h3 class="sol-danger">Datos de familiares que ya laboran en la empresa</h3>
-						</div>
-					</div>
+				<!-- ! Aprobadores de la solicitud -->
+				<app-solicitud-seccion-desplegable titleSummary="Aprobadores de la solicitud">
+					<div>
+						<div class="accordion" id="accordionExample">
+							<div *ngFor="let nivelItem of dataAprobacionesPorPosicion[keySelected]; let i = index" class="accordion-item">
+								<div class="accordion-header">
+									<button class="accordion-button" type="button" data-bs-toggle="collapse" [attr.data-bs-target]="'#collapse' + i" aria-expanded="true" [attr.aria-controls]="'collapse' + i" style="display: block">
+										<div class="row" style="align-items: center; justify-content: space-around">
+											<div class="col">
+												{{ nivelItem.nivelAprobacionType.ruta }}
+											</div>
 
-					<div class="col">
-						<hr />
-					</div>
-				</div>
+											<div class="col">
+												{{ nivelItem.aprobador.usuario !== "" && nivelItem.aprobador.usuario !== undefined && nivelItem.aprobador.usuario != null ? nivelItem.aprobador.codigoPosicion + "-" + nivelItem.aprobador.usuario : "No aplica" }}
+											</div>
 
-				<table-personalized [columns]="columnsDatosFamiliares" [data]="dataTableDatosFamiliares" [tableWidth]="'100%'"> </table-personalized>
-
-				<div class="row mt-4">
-					<div class="col-md-4">
-						<div class="mb-4">
-							<h3 class="sol-danger">Aprobadores de la solicitud</h3>
-						</div>
-					</div>
-
-					<div class="col-md-8">
-						<hr />
-					</div>
-				</div>
-
-				<div class="accordion" id="accordionExample">
-					<div *ngFor="let nivelItem of dataAprobacionesPorPosicion[keySelected]; let i = index" class="accordion-item">
-						<div class="accordion-header">
-							<button class="accordion-button" type="button" data-bs-toggle="collapse" [attr.data-bs-target]="'#collapse' + i" aria-expanded="true" [attr.aria-controls]="'collapse' + i" style="display: block">
-								<div class="row" style="align-items: center; justify-content: space-around">
-									<div class="col">
-										{{ nivelItem.nivelAprobacionType.ruta }}
-									</div>
-
-									<div class="col">
-										{{
-											nivelItem.aprobador.usuario !== "" && nivelItem.aprobador.usuario !== undefined && nivelItem.aprobador.usuario != null
-												? nivelItem.aprobador.codigoPosicion + "-" + nivelItem.aprobador.usuario
-												: "No
-										aplica"
-										}}
-									</div>
-
-									<div class="col">
-										{{ nivelItem.nivelAprobacionType.nivelAprobacionRuta }}
-									</div>
+											<div class="col">
+												{{
+													nivelItem.nivelAprobacionType.nivelAprobacionRuta.toUpperCase().includes("REGISTRARSOLICITUD")
+														? "Registrar Solicitud"
+														: nivelItem.nivelAprobacionType.nivelAprobacionRuta.toUpperCase().includes("CANDIDATO")
+															? "Selección de Candidato"
+															: nivelItem.nivelAprobacionType.nivelAprobacionRuta.toUpperCase().includes("COMENTARIOJEFE")
+																? "Registrar Comentario Jefe"
+																: nivelItem.nivelAprobacionType.nivelAprobacionRuta.toUpperCase().includes("COMENTARIORRHH")
+																	? "Registrar Comentario RR.HH."
+																	: nivelItem.nivelAprobacionType.nivelAprobacionRuta.toUpperCase().includes("COMENTARIOSOLICITANTE")
+																		? "Registrar Comentario Solicitante"
+																		: nivelItem.nivelAprobacionType.nivelAprobacionRuta
+												}}
+											</div>
+										</div>
+									</button>
 								</div>
-							</button>
-						</div>
 
-						<div [id]="'collapse' + i" class="accordion-collapse collapse" [ngClass]="{ show: i === 0 }" data-bs-parent="#accordionExample">
-							<div class="row">
-								<div class="col">
-									<div class="input-group">
-										<label for="lvl1descripcion"> Descripción de la posición </label>
+								<div [id]="'collapse' + i" class="accordion-collapse collapse" [ngClass]="{ show: i === 0 }" data-bs-parent="#accordionExample">
+									<div class="row">
+										<div class="col">
+											<div class="input-group">
+												<label for="lvl1descripcion"> Descripción de la posición </label>
 
-										&nbsp;
+												&nbsp;
 
-										<span id="lvl1descripcion" name="" style="color: black; font-size: 14px">
-											{{ nivelItem.aprobador.descripcionPosicion !== "" && nivelItem.aprobador.descripcionPosicion !== undefined && nivelItem.aprobador.descripcionPosicion != null ? nivelItem.aprobador.descripcionPosicion : "No aplica" }}
-										</span>
+												<span id="lvl1descripcion" name="" style="color: black; font-size: 14px">
+													{{ nivelItem.aprobador.descripcionPosicion !== "" && nivelItem.aprobador.descripcionPosicion !== undefined && nivelItem.aprobador.descripcionPosicion != null ? nivelItem.aprobador.descripcionPosicion : "No aplica" }}
+												</span>
+											</div>
+										</div>
 									</div>
 								</div>
 							</div>
 						</div>
 					</div>
-				</div>
+				</app-solicitud-seccion-desplegable>
 			</div>
 
 			<!-- <table-personalized *ngIf="mostrarFormularioFamiliares" [columns]="columnsDatosFamiliares"
@@ -567,7 +532,7 @@
 				</div> -->
 
 				<!-- ! Tipo de variable -->
-				<app-solicitud-seccion-desplegable titleSummary="Tipo de variable">
+				<app-solicitud-seccion-desplegable titleSummary="Sueldo/Tipo de variable">
 					<div>
 						<div class="row my-4">
 							<div class="col-md-6">
@@ -1238,7 +1203,19 @@
 											</div>
 
 											<div class="col">
-												{{ nivelItem.nivelAprobacionType.nivelAprobacionRuta.toUpperCase().includes("REGISTRARSOLICITUD") ? "Registrar Solicitud" : nivelItem.nivelAprobacionType.nivelAprobacionRuta.toUpperCase().includes("CANDIDATO") ? "Selección de Candidato" : nivelItem.nivelAprobacionType.nivelAprobacionRuta.toUpperCase().includes("COMENTARIOJEFE") ? "Registrar Comentario Jefe" : nivelItem.nivelAprobacionType.nivelAprobacionRuta.toUpperCase().includes("COMENTARIORRHH") ? "Registrar Comentario RR.HH." : nivelItem.nivelAprobacionType.nivelAprobacionRuta.toUpperCase().includes("COMENTARIOSOLICITANTE") ? "Registrar Comentario Solicitante" : nivelItem.nivelAprobacionType.nivelAprobacionRuta }}
+												{{
+													nivelItem.nivelAprobacionType.nivelAprobacionRuta.toUpperCase().includes("REGISTRARSOLICITUD")
+														? "Registrar Solicitud"
+														: nivelItem.nivelAprobacionType.nivelAprobacionRuta.toUpperCase().includes("CANDIDATO")
+															? "Selección de Candidato"
+															: nivelItem.nivelAprobacionType.nivelAprobacionRuta.toUpperCase().includes("COMENTARIOJEFE")
+																? "Registrar Comentario Jefe"
+																: nivelItem.nivelAprobacionType.nivelAprobacionRuta.toUpperCase().includes("COMENTARIORRHH")
+																	? "Registrar Comentario RR.HH."
+																	: nivelItem.nivelAprobacionType.nivelAprobacionRuta.toUpperCase().includes("COMENTARIOSOLICITANTE")
+																		? "Registrar Comentario Solicitante"
+																		: nivelItem.nivelAprobacionType.nivelAprobacionRuta
+												}}
 											</div>
 										</div>
 									</button>
@@ -1582,324 +1559,297 @@
 
 			<!-- ! Aquí empieza la condición Formulario Requisición -->
 			<div *ngIf="mostrarRequisicion">
-				<div *ngIf="!mostrarFormularioReingreso">
-					<div class="row mt-4">
-						<div class="col-md-3">
-							<div class="mb-4">
-								<h3 class="sol-danger">Información general</h3>
+				<!-- ! Información general -->
+				<app-solicitud-seccion-desplegable titleSummary="Información general">
+					<div>
+						<div class="row">
+							<div class="col-md-6">
+								<div class="input-group mb-3 align-items-center">
+									<label class="input-group-text text-start label-estilo" for="tipoSolicitud">Tipo de solicitud</label>
+
+									<span #mivar id="tipoSolicitud" name="idTipoSolicitud" style="color: black; font-size: 14px" class="text-start">{{ solicitud.tipoSolicitud }}</span>
+								</div>
+							</div>
+
+							<div class="col-md-6">
+								<div class="input-group mb-3 align-items-center">
+									<label class="input-group-text text-start label-estilo" for="tipomotivo">Tipo de motivo</label>
+
+									<span id="tipomotivo" name="tipomotivo" style="color: black; font-size: 14px" class="text-start">{{ solicitud.tipoMotivo }}</span>
+								</div>
 							</div>
 						</div>
 
-						<div class="col-md-9">
-							<hr />
-						</div>
-					</div>
+						<div class="row">
+							<div class="col-md-6">
+								<div class="input-group mb-3 align-items-center">
+									<label class="input-group-text text-start label-estilo" for="codigoposicion"> Código de posición </label>
 
-					<div class="row">
-						<div class="col-md-6">
-							<div class="input-group mb-3 align-items-center">
-								<label class="input-group-text text-start label-estilo" for="tipoSolicitud">Tipo de solicitud</label>
-
-								&nbsp;
-
-								<span #mivar id="tipoSolicitud" name="idTipoSolicitud" style="color: black; font-size: 14px" class="text-start">{{ solicitud.tipoSolicitud }}</span>
+									<span id="codigoposicion" name="codigoposicion" style="color: black; font-size: 14px" class="text-start">{{ model.codigoPosicion }}</span>
+								</div>
 							</div>
 						</div>
 
-						<div class="col-md-6">
-							<div class="input-group mb-3 align-items-center">
-								<label class="input-group-text text-start label-estilo" for="tipomotivo">Tipo de motivo</label>
+						<div class="row">
+							<div class="col-md-12">
+								<div class="input-group mb-3 align-items-center">
+									<label class="input-group-text text-start label-estilo2" for="descripcionposicion">Descripción de posición</label>
 
-								&nbsp;
-
-								<span id="tipomotivo" name="tipomotivo" style="color: black; font-size: 14px" class="text-start">{{ solicitud.tipoMotivo }}</span>
-							</div>
-						</div>
-					</div>
-
-					<div class="row">
-						<div class="col-md-6">
-							<div class="input-group mb-3 align-items-center">
-								<label class="input-group-text text-start label-estilo" for="codigoposicion"> Código de posición </label>
-
-								&nbsp;
-
-								<span id="codigoposicion" name="codigoposicion" style="color: black; font-size: 14px" class="text-start">{{ model.codigoPosicion }}</span>
+									<span id="descripcionposicion" name="descripcionposicion" style="color: black; font-size: 14px" class="text-start">{{ model.descrPosicion }}</span>
+								</div>
 							</div>
 						</div>
 
-						<div class="col-md-6">
-							<div class="input-group mb-3 align-items-center">
-								<label class="input-group-text text-start label-estilo" for="descripcionposicion">Descripción de posición</label>
+						<div class="row" *ngIf="mostrarSubledger">
+							<div class="col-md-6">
+								<div class="input-group mb-3 align-items-center">
+									<label class="input-group-text text-start label-estilo" for="subledger"> Subledger </label>
 
-								&nbsp;
-
-								<span id="descripcionposicion" name="descripcionposicion" style="color: black; font-size: 14px" class="text-start">{{ model.descrPosicion }}</span>
+									<span id="subledger" name="subledger" style="color: black; font-size: 14px" class="text-start">{{ model.subledger }}</span>
+								</div>
 							</div>
-						</div>
-					</div>
 
-					<div class="row" *ngIf="mostrarSubledger">
-						<div class="col-md-6">
-							<div class="input-group mb-3 align-items-center">
-								<label class="input-group-text text-start label-estilo" for="subledger"> Subledger </label>
+							<div class="col-md-6">
+								<div class="input-group mb-3 align-items-center">
+									<label class="input-group-text text-start label-estilo" for="nombreempleado"> Empleado </label>
 
-								&nbsp;
-
-								<span id="subledger" name="subledger" style="color: black; font-size: 14px" class="text-start">{{ model.subledger }}</span>
+									<span id="nombreempleado" name="nombreempleado" style="color: black; font-size: 14px" class="text-start">{{ model.nombreCompleto }}</span>
+								</div>
 							</div>
 						</div>
 
-						<div class="col-md-6" *ngIf="mostrarSubledger">
-							<div class="input-group mb-3 align-items-center">
-								<label class="input-group-text text-start label-estilo" for="nombreempleado"> Empleado </label>
+						<div class="row">
+							<div class="col-md-12">
+								<div class="input-group mb-3 align-items-center">
+									<label class="input-group-text text-start label-estilo2" for="compania">Compañía</label>
 
-								&nbsp;
-
-								<span id="nombreempleado" name="nombreempleado" style="color: black; font-size: 14px" class="text-start">{{ model.nombreCompleto }}</span>
-							</div>
-						</div>
-					</div>
-
-					<div class="row">
-						<div class="col-md-12">
-							<div class="input-group mb-3 align-items-center">
-								<label class="input-group-text text-start label-estilo2" for="compania">Compañía</label>
-
-								<span id="compania" name="" style="color: black; font-size: 14px" class="text-start">{{ model.compania }}</span>
-							</div>
-						</div>
-					</div>
-
-					<div class="row">
-						<div class="col-md-6">
-							<div class="input-group mb-3 align-items-center">
-								<label class="input-group-text text-start label-estilo" for="unidadnegocio">Unidad de negocio</label>
-
-								<span id="unidadnegocio" name="" style="color: black; font-size: 14px" class="text-start">{{ model.unidadNegocio }}</span>
+									<span id="compania" name="" style="color: black; font-size: 14px" class="text-start">{{ model.compania }}</span>
+								</div>
 							</div>
 						</div>
 
-						<div class="col-md-6">
-							<div class="input-group mb-3">
-								<label class="input-group-text text-start label-estilo" for="departamento">Área/Departamento</label>
+						<div class="row">
+							<div class="col-md-6">
+								<div class="input-group mb-3 align-items-center">
+									<label class="input-group-text text-start label-estilo" for="unidadnegocio">Unidad de negocio</label>
 
-								<span id="departamento" name="" style="color: black; font-size: 14px" class="text-start">{{ model.departamento }}</span>
+									<span id="unidadnegocio" name="" style="color: black; font-size: 14px" class="text-start">{{ model.unidadNegocio }}</span>
+								</div>
 							</div>
-						</div>
-					</div>
 
-					<div class="row">
-						<div class="col-md-6">
-							<div class="input-group mb-3">
-								<label class="input-group-text text-start label-estilo" for="tipocargo">Tipo de cargo</label>
+							<div class="col-md-6">
+								<div class="input-group mb-3">
+									<label class="input-group-text text-start label-estilo" for="departamento">Área/Departamento</label>
 
-								<span id="cargo" name="" style="color: black; font-size: 14px" class="text-start">{{ model.nombreCargo }}</span>
-							</div>
-						</div>
-
-						<div class="col-md-6">
-							<div class="input-group mb-3">
-								<label class="input-group-text text-start label-estilo" for="localidadzona">Localidad/Zona</label>
-
-								<span id="localidadzona" name="" style="color: black; font-size: 14px" class="text-start">{{ model.localidad }}</span>
-							</div>
-						</div>
-					</div>
-
-					<div class="row">
-						<div class="col-md-6">
-							<div class="input-group mb-3">
-								<label class="input-group-text text-start label-estilo" for="niveldirección">Nivel de dirección</label>
-
-								<span id="niveldirección" name="" style="color: black; font-size: 14px" class="text-start">{{ model.nivelDir }}</span>
+									<span id="departamento" name="" style="color: black; font-size: 14px" class="text-start">{{ model.departamento }}</span>
+								</div>
 							</div>
 						</div>
 
-						<div class="col-md-6">
-							<div class="input-group mb-3">
-								<label class="input-group-text text-start label-estilo" for="centrocosto">Centro de costo</label>
+						<div class="row">
+							<div class="col-md-6">
+								<div class="input-group mb-3">
+									<label class="input-group-text text-start label-estilo" for="tipocargo">Tipo de cargo</label>
 
-								<span id="centrocosto" name="" style="color: black; font-size: 14px" class="text-start">{{ model.nomCCosto }}</span>
+									<span id="cargo" name="" style="color: black; font-size: 14px" class="text-start">{{ model.nombreCargo }}</span>
+								</div>
+							</div>
+
+							<div class="col-md-6">
+								<div class="input-group mb-3">
+									<label class="input-group-text text-start label-estilo" for="localidadzona">Localidad/Zona</label>
+
+									<span id="localidadzona" name="" style="color: black; font-size: 14px" class="text-start">{{ model.localidad }}</span>
+								</div>
 							</div>
 						</div>
-					</div>
 
-					<div class="row" *ngIf="mostrarTipoJustificacionYMision">
-						<div class="col-md-6" *ngIf="mostrarTipoJustificacionYMision">
-							<div class="input-group mb-3">
-								<label class="input-group-text text-start label-estilo" for="misioncargo">Misión del cargo</label>
+						<div class="row">
+							<div class="col-md-6">
+								<div class="input-group mb-3">
+									<label class="input-group-text text-start label-estilo" for="niveldirección">Nivel de dirección</label>
 
-								<span id="misioncargo" name="misioncargo" style="color: black; font-size: 14px" class="text-start">{{ model.misionCargo }}</span>
+									<span id="niveldirección" name="" style="color: black; font-size: 14px" class="text-start">{{ model.nivelDir }}</span>
+								</div>
+							</div>
+
+							<div class="col-md-6">
+								<div class="input-group mb-3">
+									<label class="input-group-text text-start label-estilo" for="centrocosto">Centro de costo</label>
+
+									<span id="centrocosto" name="" style="color: black; font-size: 14px" class="text-start">{{ model.nomCCosto }}</span>
+								</div>
+							</div>
+						</div>
+
+						<div class="row" *ngIf="mostrarTipoJustificacionYMision">
+							<div class="col-md-6">
+								<div class="input-group mb-3">
+									<label class="input-group-text text-start label-estilo" for="misioncargo">Misión del cargo</label>
+
+									<span id="misioncargo" name="misioncargo" style="color: black; font-size: 14px" class="text-start">{{ model.misionCargo }}</span>
+								</div>
+							</div>
+						</div>
+
+						<div class="row" *ngIf="mostrarTipoJustificacionYMision">
+							<div class="col">
+								<div class="input-group mb-3 contenedor">
+									<label class="input-group-text text-start label-estilo2" for="justificacion">Justificación</label>
+
+									<span id="justificacion" name="justificacion" style="color: black; font-size: 14px" class="text-start">{{ model.justificacionCargo }}</span>
+								</div>
 							</div>
 						</div>
 					</div>
+				</app-solicitud-seccion-desplegable>
 
-					<div class="row" *ngIf="mostrarTipoJustificacionYMision">
-						<div class="col">
-							<div class="input-group mb-3 contenedor">
-								<label class="input-group-text text-start label-estilo2" for="justificacion">Justificación</label>
+				<!-- ! Funciones y responsabilidades -->
+				<app-solicitud-seccion-desplegable titleSummary="Funciones y responsabilidades">
+					<div>
+						<div class="row">
+							<div class="col-md-12">
+								<div class="input-group mb-3 align-items-center">
+									<label class="input-group-text text-start label-estilo2" for="reporta">Reporta a</label>
 
-								<span id="justificacion" name="justificacion" style="color: black; font-size: 14px" class="text-start">{{ model.justificacionCargo }}</span>
+									<span id="reporta" name="" style="color: black; font-size: 14px">{{ model.reportaA }} </span>
+								</div>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col-md-6">
+								<div class="input-group mb-3 align-items-center">
+									<label class="input-group-text text-start label-estilo" for="nivelRepa">Nivel de reporte</label>
+
+									<span id="nivelRepa" name="" style="color: black; font-size: 14px" class="text-start">{{ model.nivelRepa }}</span>
+								</div>
+							</div>
+
+							<div class="col-md-6">
+								<div class="input-group mb-3 align-items-center">
+									<label class="input-group-text text-start label-estilo" for="tipocontrato">Tipo de contrato</label>
+
+									<span id="tipocontrato" name="tipocontrato" style="color: black; font-size: 14px" class="text-start">{{ model.tipoContrato }}</span>
+								</div>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col-md-12">
+								<div class="input-group mb-3 align-items-center w-100">
+									<label class="input-group-text text-start label-estilo2" for="supervisaa">Supervisa a</label>
+
+									<span id="supervisaa" name="" style="color: black; font-size: 14px" class="text-start w-75">{{ model.supervisaA }}</span>
+								</div>
 							</div>
 						</div>
 					</div>
+				</app-solicitud-seccion-desplegable>
 
-					<div class="row mt-4">
-						<div class="col-md-4">
-							<div class="mb-4">
-								<h3 class="sol-danger">Funciones y responsabilidades</h3>
+				<!-- !Tipo de variable -->
+				<app-solicitud-seccion-desplegable titleSummary="Sueldo/Tipo de variable">
+					<div>
+						<div class="row">
+							<div class="col-md-6">
+								<div class="input-group mb-3 align-items-center">
+									<label class="input-group-text text-start label-estilo" for="sueldo">Sueldo</label>
+
+									<span id="sueldo" name="sueldo" style="color: black; font-size: 14px" class="text-start">$ {{ model.sueldo | number : "1.2-2" }}</span>
+								</div>
+							</div>
+						</div>
+						
+						<div class="row">
+							<div class="col-md-6">
+								<div class="input-group mb-3 align-item-center">
+									<label class="input-group-text text-start label-estilo" for="mensual">Mensual</label>
+
+									<span id="mensual" name="mensual" style="color: black; font-size: 14px" class="text-start">$ {{ model.sueldoMensual | number : "1.2-2" }}</span>
+								</div>
+							</div>
+
+							<div class="col-md-6">
+								<div class="input-group mb-3 align-item-center">
+									<label class="input-group-text text-start label-estilo" for="trimestral">Trimestral</label>
+
+									<span id="trimestral" name="trimestral" style="color: black; font-size: 14px" class="text-start">$ {{ model.sueldoTrimestral | number : "1.2-2" }}</span>
+								</div>
 							</div>
 						</div>
 
-						<div class="col-md-8">
-							<hr />
-						</div>
-					</div>
+						<div class="row">
+							<div class="col-md-6">
+								<div class="input-group mb-3 align-item-center">
+									<label class="input-group-text text-start label-estilo" for="semestral">Semestral</label>
 
-					<div class="row">
-						<div class="col-md-12">
-							<div class="input-group mb-3 align-items-center">
-								<label class="input-group-text text-start label-estilo2" for="reporta">Reporta a</label>
-
-								<span id="reporta" name="" style="color: black; font-size: 14px">{{ model.reportaA }} </span>
+									<span id="semestral" name="semestral" style="color: black; font-size: 14px" class="text-start">$ {{ model.sueldoSemestral | number : "1.2-2" }}</span>
+								</div>
 							</div>
-						</div>
-					</div>
 
-					<div class="row">
-						<div class="col-md-6">
-							<div class="input-group mb-3 align-items-center">
-								<label class="input-group-text text-start label-estilo" for="nivelRepa">Nivel de reporte</label>
+							<div class="col-md-6">
+								<div class="input-group mb-3 align-item-center">
+									<label class="input-group-text text-start label-estilo" for="anual">Anual</label>
 
-								<span id="nivelRepa" name="" style="color: black; font-size: 14px" class="text-start">{{ model.nivelRepa }}</span>
-							</div>
-						</div>
-
-						<div class="col-md-6">
-							<div class="input-group mb-3 align-items-center">
-								<label class="input-group-text text-start label-estilo" for="tipocontrato">Tipo de contrato</label>
-
-								<span id="tipocontrato" name="tipocontrato" style="color: black; font-size: 14px" class="text-start">{{ model.tipoContrato }}</span>
-							</div>
-						</div>
-					</div>
-
-					<div class="row">
-						<div class="col-md-6">
-							<div class="input-group mb-3 align-items-center">
-								<label class="input-group-text text-start label-estilo" for="supervisaa">Supervisa a</label>
-
-								<span id="supervisaa" name="" style="color: black; font-size: 14px" class="text-start">{{ model.supervisaA }}</span>
-							</div>
-						</div>
-
-						<div class="col-md-6">
-							<div class="input-group mb-3 align-items-center">
-								<label class="input-group-text text-start label-estilo" for="sueldo">Sueldo</label>
-
-								<span id="sueldo" name="sueldo" style="color: black; font-size: 14px" class="text-start">$ {{ model.sueldo | number : "1.2-2" }}</span>
+									<span id="anual" name="anual" style="color: black; font-size: 14px" class="text-start">$ {{ model.sueldoAnual | number : "1.2-2" }}</span>
+								</div>
 							</div>
 						</div>
 					</div>
+				</app-solicitud-seccion-desplegable>
 
-					<div class="row mt-4">
-						<div class="col-md-4">
-							<div class="mb-4">
-								<h3 class="sol-danger">Tipo de variable</h3>
-							</div>
-						</div>
-					</div>
+				<!-- ! Aprobadores de la solicitud -->
+				<app-solicitud-seccion-desplegable titleSummary="Aprobadores de la solicitud">
+					<div>
+						<div class="accordion" id="accordionExample">
+							<div *ngFor="let nivelItem of dataAprobacionesPorPosicion[keySelected]; let i = index" class="accordion-item">
+								<div class="accordion-header">
+									<button class="accordion-button" type="button" data-bs-toggle="collapse" [attr.data-bs-target]="'#collapse' + i" aria-expanded="true" [attr.aria-controls]="'collapse' + i" style="display: block">
+										<div class="row" style="align-items: center; justify-content: space-around">
+											<div class="col">
+												{{ nivelItem.nivelAprobacionType.ruta }}
+											</div>
 
-					<div class="row">
-						<div class="col-md-6">
-							<div class="input-group mb-3 align-item-center">
-								<label class="input-group-text text-start label-estilo" for="mensual">Mensual</label>
+											<div class="col">
+												{{ nivelItem.aprobador.usuario !== "" && nivelItem.aprobador.usuario !== undefined && nivelItem.aprobador.usuario != null ? nivelItem.aprobador.codigoPosicion + "-" + nivelItem.aprobador.usuario : "No aplica" }}
+											</div>
 
-								<span id="mensual" name="mensual" style="color: black; font-size: 14px" class="text-start">$ {{ model.sueldoMensual | number : "1.2-2" }}</span>
-							</div>
-						</div>
-
-						<div class="col-md-6">
-							<div class="input-group mb-3 align-item-center">
-								<label class="input-group-text text-start label-estilo" for="trimestral">Trimestral</label>
-
-								<span id="trimestral" name="trimestral" style="color: black; font-size: 14px" class="text-start">$ {{ model.sueldoTrimestral | number : "1.2-2" }}</span>
-							</div>
-						</div>
-					</div>
-
-					<div class="row">
-						<div class="col-md-6">
-							<div class="input-group mb-3 align-item-center">
-								<label class="input-group-text text-start label-estilo" for="semestral">Semestral</label>
-
-								<span id="semestral" name="semestral" style="color: black; font-size: 14px" class="text-start">$ {{ model.sueldoSemestral | number : "1.2-2" }}</span>
-							</div>
-						</div>
-
-						<div class="col-md-6">
-							<div class="input-group mb-3 align-item-center">
-								<label class="input-group-text text-start label-estilo" for="anual">Anual</label>
-
-								<span id="anual" name="anual" style="color: black; font-size: 14px" class="text-start">$ {{ model.sueldoAnual | number : "1.2-2" }}</span>
-							</div>
-						</div>
-					</div>
-
-					<div class="row mt-4">
-						<div class="col-md-4">
-							<div class="mb-4">
-								<h3 class="sol-danger">Aprobadores de la solicitud</h3>
-							</div>
-						</div>
-
-						<div class="col-md-8">
-							<hr />
-						</div>
-					</div>
-
-					<div class="accordion" id="accordionExample">
-						<div *ngFor="let nivelItem of dataAprobacionesPorPosicion[keySelected]; let i = index" class="accordion-item">
-							<div class="accordion-header">
-								<button class="accordion-button" type="button" data-bs-toggle="collapse" [attr.data-bs-target]="'#collapse' + i" aria-expanded="true" [attr.aria-controls]="'collapse' + i" style="display: block">
-									<div class="row" style="align-items: center; justify-content: space-around">
-										<div class="col">
-											{{ nivelItem.nivelAprobacionType.ruta }}
+											<div class="col">
+												{{
+													nivelItem.nivelAprobacionType.nivelAprobacionRuta.toUpperCase().includes("REGISTRARSOLICITUD")
+														? "Registrar Solicitud"
+														: nivelItem.nivelAprobacionType.nivelAprobacionRuta.toUpperCase().includes("CANDIDATO")
+															? "Selección de Candidato"
+															: nivelItem.nivelAprobacionType.nivelAprobacionRuta.toUpperCase().includes("COMENTARIOJEFE")
+																? "Registrar Comentario Jefe"
+																: nivelItem.nivelAprobacionType.nivelAprobacionRuta.toUpperCase().includes("COMENTARIORRHH")
+																	? "Registrar Comentario RR.HH."
+																	: nivelItem.nivelAprobacionType.nivelAprobacionRuta.toUpperCase().includes("COMENTARIOSOLICITANTE")
+																		? "Registrar Comentario Solicitante"
+																		: nivelItem.nivelAprobacionType.nivelAprobacionRuta
+												}}
+											</div>
 										</div>
+									</button>
+								</div>
 
+								<div [id]="'collapse' + i" class="accordion-collapse collapse" [ngClass]="{ show: i === 0 }" data-bs-parent="#accordionExample">
+									<div class="row">
 										<div class="col">
-											{{
-												nivelItem.aprobador.usuario !== "" && nivelItem.aprobador.usuario !== undefined && nivelItem.aprobador.usuario != null
-													? nivelItem.aprobador.codigoPosicion + "-" + nivelItem.aprobador.usuario
-													: "No
-											aplica"
-											}}
-										</div>
+											<div class="input-group">
+												<label for="lvl1descripcion"> Descripción de la posición </label>
 
-										<div class="col">
-											{{ nivelItem.nivelAprobacionType.nivelAprobacionRuta }}
-										</div>
-									</div>
-								</button>
-							</div>
+												&nbsp;
 
-							<div [id]="'collapse' + i" class="accordion-collapse collapse" [ngClass]="{ show: i === 0 }" data-bs-parent="#accordionExample">
-								<div class="row">
-									<div class="col">
-										<div class="input-group">
-											<label for="lvl1descripcion"> Descripción de la posición </label>
-
-											&nbsp;
-
-											<span id="lvl1descripcion" name="" style="color: black; font-size: 14px">{{ nivelItem.aprobador.descripcionPosicion !== "" && nivelItem.aprobador.descripcionPosicion !== undefined && nivelItem.aprobador.descripcionPosicion != null ? nivelItem.aprobador.descripcionPosicion : "No aplica" }}</span>
+												<span id="lvl1descripcion" name="" style="color: black; font-size: 14px">{{ nivelItem.aprobador.descripcionPosicion !== "" && nivelItem.aprobador.descripcionPosicion !== undefined && nivelItem.aprobador.descripcionPosicion != null ? nivelItem.aprobador.descripcionPosicion : "No aplica" }}</span>
+											</div>
 										</div>
 									</div>
 								</div>
 							</div>
 						</div>
 					</div>
-				</div>
+				</app-solicitud-seccion-desplegable>
 
 				<div *ngIf="model.tipoProceso !== ''">
 					<!--Comentarios de aprobadores en seleccion de candidato-->
@@ -2173,24 +2123,18 @@
 
 			<!-- ! Aquí empieza la condición Acción de Personal -->
 			<div *ngIf="mostrarAccionPersonal">
-				<div class="row mt-4">
-					<div class="col-md-5">
-						<div class="input-group mb-3">
-							<label class="input-group label-estilo" for="tipoMotivo">Nombre de Empleado</label>
-
-							&nbsp;
+				<div class="row">
+					<div class="col-md-6">
+						<div class="input-group mb-3 align-items-center">
+							<label class="input-group-text label-estilo text-start" for="tipoMotivo">Nombre de Empleado</label>
 
 							<span id="comp" name="comp" style="color: black; font-size: 14px" class="text-start">{{ model.nombreCompleto }}</span>
 						</div>
 					</div>
 
-					<div class="col-md-1"></div>
-
 					<div class="col-md-5">
-						<div class="input-group mb-3">
-							<label class="input-group label-estilo" for="tipoMotivo">Subledger</label>
-
-							&nbsp;
+						<div class="input-group mb-3 align-items-center">
+							<label class="input-group-text label-estilo text-center" for="tipoMotivo">Subledger</label>
 
 							<span id="comp" name="comp" style="color: black; font-size: 14px" class="text-start">{{ model.subledger }}</span>
 						</div>
@@ -2198,11 +2142,9 @@
 				</div>
 
 				<div class="row">
-					<div class="col">
+					<div class="col-md-12">
 						<div class="input-group mb-3">
-							<label class="input-group label-estilo" for="justificacion" style="width: 20%">Justificación <span style="color: red">*</span></label>
-
-							&nbsp;
+							<label class="input-group-text label-estilo2" for="justificacion">Justificación</label>
 
 							<span style="color: black; font-size: 14px" class="text-start">{{ model.justificacionCargo }}</span>
 						</div>
@@ -2219,7 +2161,356 @@
 					</div>
 				</div>
 
-				<div class="row mt-2">
+				<app-solicitud-seccion-desplegable titleSummary="Información del Empleado">
+					<div class="row">
+						<div class="col-md-6">
+							<div class="row my-2">
+								<h2 class="col-12 sol-danger">Datos actuales</h2>
+							</div>
+
+							<div class="row">
+								<div class="col-md-12">
+									<div class="input-group mb-3">
+										<label class="input-group label-estilo" for="tipoSolicitud">Fecha de Ingreso</label>
+
+										<span #mivar id="tipoSolicitud" name="tipoSolicitud" style="color: black; font-size: 14px" class="text-start">{{ model.fechaIngreso | date : "yyyy/MM/dd" }}</span>
+									</div>
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col-md-12">
+									<div class="input-group mb-3 align-items-center">
+										<label class="input-group label-estilo text-center" for="tipoMotivo">Compañía</label>
+
+										<span id="comp" name="comp" style="color: black; font-size: 14px" class="text-start">{{ model.compania }}</span>
+									</div>
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col-md-12">
+									<div class="input-group mb-3 align-items-center">
+										<label class="input-group label-estilo text-center" for="tipoMotivo">Unidad</label>
+
+										<span id="unidad" name="unidad" style="color: black; font-size: 14px" class="text-start">{{ model.unidadNegocio }}</span>
+									</div>
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col-md-12">
+									<div class="input-group mb-3 align-items-center">
+										<label class="input-group label-estilo text-center" for="tipoMotivo">Área / Departamento</label>
+
+										<span id="comp" name="comp" style="color: black; font-size: 14px" class="text-start">{{ model.departamento }}</span>
+									</div>
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col-md-12">
+									<div class="input-group mb-3 align-items-center">
+										<label class="input-group label-estilo text-center" for="tipoMotivo">Localidad</label>
+
+										<span id="unidad" name="unidad" style="color: black; font-size: 14px" class="text-start">{{ model.localidad }}</span>
+									</div>
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col-md-12">
+									<div class="input-group mb-3 align-items-center">
+										<label class="input-group label-estilo text-center" for="tipoMotivo">Grupo de Pago</label>
+
+										<span id="unidad" name="unidad" style="color: black; font-size: 14px" class="text-start">{{ model.grupoPago }}</span>
+									</div>
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col-md-12">
+									<div class="input-group mb-3 align-items-center">
+										<label class="input-group label-estilo text-center" for="tipoMotivo">Puesto</label>
+
+										<span id="comp" name="comp" style="color: black; font-size: 14px" class="text-start">{{ model.nombreCargo }}</span>
+									</div>
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col-md-12">
+									<div class="input-group mb-3 align-items-center">
+										<label class="input-group label-estilo text-center" for="tipoMotivo">Centro de Costo</label>
+
+										<span id="unidad" name="unidad" style="color: black; font-size: 14px" class="text-start">{{ model.nomCCosto }}</span>
+									</div>
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col-md-12">
+									<div class="input-group mb-3 align-items-center">
+										<label class="input-group label-estilo text-center" for="tipoMotivo">Sucursal (Nómina)</label>
+
+										<span id="unidad" name="unidad" style="color: black; font-size: 14px" class="text-start">{{ model.sucursal }}</span>
+									</div>
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col-md-12">
+									<div class="input-group mb-3 align-items-center">
+										<label class="input-group label-estilo text-center" for="mov">Movilización</label>
+
+										<span id="mov" name="mov" style="color: black; font-size: 14px" class="text-start">{{ detalleSolicitudPropuestos.movilizacion }}</span>
+									</div>
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col-md-12">
+									<div class="input-group mb-3 align-items-center">
+										<span id="al" name text-center="al" style="color: black; font-size: 14px" class="text-start">{{ detalleSolicitudPropuestos.alimentacion }}</span>
+										<label class="input-group label-estilo" for="al">Alimentación</label>
+									</div>
+								</div>
+							</div>
+
+							<div *ngIf="!muestraRemuneracion">
+								<div class="row my-4">
+									<div class="col-12">
+										<label class="input-group label-estilo" style="font-size: 20px; color: black" for="tipoMotivo">Tipo de Variable </label>
+									</div>
+								</div>
+
+								<div class="row">
+									<div class="col-md-12">
+										<div class="input-group mb-3 align-items-center">
+											<label class="input-group label-estilo text-center" for="tipoMotivo">Sueldo</label>
+
+											<span id="comp" name="comp" style="color: black; font-size: 14px" class="text-start">$ {{ model.sueldo | number : "1.2-2" }}</span>
+										</div>
+									</div>
+								</div>
+
+								<div class="row">
+									<div class="col-md-12">
+										<div class="input-group mb-3 align-items-center">
+											<label class="input-group label-estilo text-center" for="me">Mensual</label>
+
+											<span id="me" name="me" style="color: black; font-size: 14px" class="text-start">$ {{ model.sueldoMensual | number : "1.2-2" }}</span>
+										</div>
+									</div>
+								</div>
+
+								<div class="row">
+									<div class="col-md-12">
+										<div class="input-group mb-3 align-items-center">
+											<label class="input-group label-estilo text-center" for="al">Trimestral</label>
+
+											<span id="al" name="al" style="color: black; font-size: 14px" class="text-start">$ {{ model.sueldoTrimestral | number : "1.2-2" }}</span>
+										</div>
+									</div>
+								</div>
+
+								<div class="row">
+									<div class="col-md-12">
+										<div class="input-group mb-3 align-items-center">
+											<label class="input-group label-estilo text-center" for="al">Semestral</label>
+
+											<span id="al" name="al" style="color: black; font-size: 14px" class="text-start">$ {{ model.sueldoSemestral | number : "1.2-2" }}</span>
+										</div>
+									</div>
+								</div>
+
+								<div class="row">
+									<div class="col-md-12">
+										<div class="input-group mb-3 align-items-center">
+											<label class="input-group label-estilo text-center" for="al">Anual</label>
+
+											<span id="al" name="al" style="color: black; font-size: 14px" class="text-start">$ {{ model.sueldoAnual | number : "1.2-2" }}</span>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="col-md-6">
+							<div class="row my-2">
+								<h3 class="col-12 sol-danger">Datos propuestos</h3>
+							</div>
+
+							<div class="row">
+								<div class="col-md-12">
+									<div class="input-group mb-3 align-items-center">
+										<label class="input-group label-estilo text-center" for="tipoMotivo">Compañía</label>
+
+										<span id="comp" name="comp" style="color: black; font-size: 14px" class="text-start">{{ modelPropuestos.compania }}</span>
+									</div>
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col-md-12">
+									<div class="input-group mb-3 align-items-center">
+										<label class="input-group label-estilo text-center" for="tipoMotivo">Unidad</label>
+
+										<span id="comp" name="comp" style="color: black; font-size: 14px" class="text-start">{{ modelPropuestos.unidadNegocio }}</span>
+									</div>
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col-md-12">
+									<div class="input-group mb-3 align-items-center">
+										<label class="input-group label-estilo text-center" for="tipoSolicitud">Fecha de Ingreso</label>
+
+										<span #mivar id="tipoSolicitud" name="tipoSolicitud" style="color: black; font-size: 14px" class="text-start">{{ modelPropuestos.fechaIngreso | date : "yyyy/MM/dd" }}</span>
+									</div>
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col-md-12">
+									<div class="input-group mb-3 align-items-center">
+										<label class="input-group label-estilo text-center" for="tipoMotivo">Área / Departamento</label>
+
+										<span id="comp" name="comp" style="color: black; font-size: 14px" class="text-start">{{ modelPropuestos.departamento }}</span>
+									</div>
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col-md-12">
+									<div class="input-group mb-3 align-items-center">
+										<label class="input-group label-estilo text-center" for="tipoMotivo">Localidad</label>
+
+										<span id="comp" name="comp" style="color: black; font-size: 14px" class="text-start">{{ modelPropuestos.localidad }}</span>
+									</div>
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col-md-12">
+									<div class="input-group mb-3 align-items-center">
+										<label class="input-group label-estilo text-center" for="tipoMotivo">Grupo de Pago</label>
+
+										<span id="comp" name="comp" style="color: black; font-size: 14px" class="text-start">{{ modelPropuestos.grupoPago }}</span>
+									</div>
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col-md-12">
+									<div class="input-group mb-3 align-items-center">
+										<label class="input-group label-estilo text-center" for="tipoMotivo">Puesto</label>
+
+										<span id="comp" name="comp" style="color: black; font-size: 14px" class="text-start">{{ modelPropuestos.nombreCargo }}</span>
+									</div>
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col-md-12">
+									<div class="input-group mb-3 align-items-center">
+										<label class="input-group label-estilo text-center" for="tipoMotivo">Centro de Costo</label>
+
+										<span id="comp" name="comp" style="color: black; font-size: 14px" class="text-start">{{ modelPropuestos.nomCCosto }}</span>
+									</div>
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col-md-12">
+									<div class="input-group mb-3 align-items-center">
+										<label class="input-group label-estilo text-center" for="tipoMotivo">Sucursal (Nómina)</label>
+
+										<span id="comp" name="comp" style="color: black; font-size: 14px" class="text-start">{{ modelPropuestos.sucursal }}</span>
+									</div>
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col-md-12">
+									<div class="input-group mb-3 align-items-center">
+										<label class="input-group label-estilo text-center" for="mov">Movilizacion</label>
+
+										<span id="comp" name="comp" style="color: black; font-size: 14px" class="text-start">{{ detalleSolicitudPropuestos.movilizacion }}</span>
+									</div>
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col-md-12">
+									<div class="input-group mb-3 align-items-center">
+										<label class="input-group label-estilo text-center" for="al">Alimentación</label>
+
+										<span id="comp" name="comp" style="color: black; font-size: 14px" class="text-start">{{ detalleSolicitudPropuestos.alimentacion }}</span>
+									</div>
+								</div>
+							</div>
+							<div *ngIf="!muestraRemuneracion">
+								<div class="row my-4">
+									<div class="col-md-12">
+										<label class="input-group label-estilo" style="font-size: 20px; color: black" for="tipoMotivo">Tipo de Variable </label>
+									</div>
+								</div>
+
+								<div class="row">
+									<div class="col-md-12">
+										<div class="input-group mb-3 align-items-center">
+											<label class="input-group label-estilo text-center" for="tipoMotivo">Sueldo</label>
+
+											<span id="comp" name="comp" style="color: black; font-size: 14px" class="text-start">$ {{ modelPropuestos.sueldo | number : "1.2-2" }}</span>
+										</div>
+									</div>
+								</div>
+
+								<div class="row">
+									<div class="col-md-12">
+										<div class="input-group mb-3 align-items-center">
+											<label class="input-group label-estilo text-center" for="me">Mensual</label>
+
+											<span id="comp" name="comp" style="color: black; font-size: 14px" class="text-start">$ {{ modelPropuestos.sueldoMensual | number : "1.2-2" }}</span>
+										</div>
+									</div>
+								</div>
+
+								<div class="row">
+									<div class="col-md-12">
+										<div class="input-group mb-3 align-items-center">
+											<label class="input-group label-estilo text-center" for="al">Trimestral</label>
+
+											<span id="comp" name="comp" style="color: black; font-size: 14px" class="text-start">$ {{ modelPropuestos.sueldoTrimestral | number : "1.2-2" }}</span>
+										</div>
+									</div>
+								</div>
+
+								<div class="row">
+									<div class="col-md-12">
+										<div class="input-group mb-3 align-items-center">
+											<label class="input-group label-estilo text-center" for="al">Semestral</label>
+
+											<span id="comp" name="comp" style="color: black; font-size: 14px" class="text-start">$ {{ modelPropuestos.sueldoSemestral | number : "1.2-2" }}</span>
+										</div>
+									</div>
+								</div>
+
+								<div class="row">
+									<div class="col-md-12">
+										<div class="input-group mb-3 align-items-center">
+											<label class="input-group label-estilo text-center" for="al">Anual</label>
+
+											<span id="comp" name="comp" style="color: black; font-size: 14px" class="text-start">$ {{ modelPropuestos.sueldoAnual | number : "1.2-2" }}</span>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</app-solicitud-seccion-desplegable>
+				<!-- <div class="row mt-2">
 					<div class="col-md-4">
 						<div class="mb-4">
 							<h3 class="sol-danger">Información del Empleado</h3>
@@ -2239,10 +2530,10 @@
 
 						<div class="row">
 							<div class="col-12">
-								<div class="input-group mb-3">
-									<label class="input-group label-estilo" for="tipoSolicitud">Fecha de Ingreso</label>
-
-									&nbsp;
+								<div class="input-group mb-3 align-items--center">
+									
+																	&nbsp;
+									<label class="input- text-centergroup label-estilo" for="tipoSolicitud">Fecha de Ingreso</label>
 
 									<span #mivar id="tipoSolicitud" name="tipoSolicitud" style="color: black; font-size: 14px" class="text-start">{{ model.fechaIngreso | date : "yyyy/MM/dd" }}</span>
 								</div>
@@ -2579,84 +2870,77 @@
 							</div>
 						</div>
 					</div>
-				</div>
+				</div> -->
 
-				<div class="row mt-4">
-					<div class="col-md-3">
-						<div class="mb-4">
-							<h3 class="sol-danger">Aprobadores de la solicitud</h3>
-						</div>
-					</div>
+				<!-- ! Aprobadores de la solicitud -->
+				<app-solicitud-seccion-desplegable titleSummary="Aprobadores de la solicitud">
+					<div>
+						<div class="accordion" id="accordionExample">
+							<div *ngFor="let nivelItem of dataAprobacionesPorPosicion[keySelected]; let i = index" class="accordion-item">
+								<div class="accordion-header">
+									<button class="accordion-button" type="button" data-bs-toggle="collapse" [attr.data-bs-target]="'#collapse' + i" aria-expanded="true" [attr.aria-controls]="'collapse' + i" style="display: block">
+										<div class="row" style="align-items: center; justify-content: space-around">
+											<div class="col">
+												{{ nivelItem.nivelAprobacionType.ruta }}
+											</div>
 
-					<div class="col-md-9">
-						<hr />
-					</div>
-				</div>
+											<div class="col">
+												{{ nivelItem.aprobador.usuario !== "" && nivelItem.aprobador.usuario !== undefined && nivelItem.aprobador.usuario != null ? nivelItem.aprobador.codigoPosicion + "-" + nivelItem.aprobador.usuario : "No aplica" }}
+											</div>
 
-				<div class="accordion" id="accordionExample">
-					<div *ngFor="let nivelItem of dataAprobacionesPorPosicion[keySelected]; let i = index" class="accordion-item">
-						<div class="accordion-header">
-							<button class="accordion-button" type="button" data-bs-toggle="collapse" [attr.data-bs-target]="'#collapse' + i" aria-expanded="true" [attr.aria-controls]="'collapse' + i" style="display: block">
-								<div class="row" style="align-items: center; justify-content: space-around">
-									<div class="col">
-										{{ nivelItem.nivelAprobacionType.ruta }}
-									</div>
-
-									<div class="col">
-										{{
-											nivelItem.aprobador.usuario !== "" && nivelItem.aprobador.usuario !== undefined && nivelItem.aprobador.usuario != null
-												? nivelItem.aprobador.codigoPosicion + "-" + nivelItem.aprobador.usuario
-												: "No
-										aplica"
-										}}
-									</div>
-
-									<div class="col">
-										{{ nivelItem.nivelAprobacionType.nivelAprobacionRuta }}
-									</div>
+											<div class="col">
+												{{
+													nivelItem.nivelAprobacionType.nivelAprobacionRuta.toUpperCase().includes("REGISTRARSOLICITUD")
+														? "Registrar Solicitud"
+														: nivelItem.nivelAprobacionType.nivelAprobacionRuta.toUpperCase().includes("CANDIDATO")
+															? "Selección de Candidato"
+															: nivelItem.nivelAprobacionType.nivelAprobacionRuta.toUpperCase().includes("COMENTARIOJEFE")
+																? "Registrar Comentario Jefe"
+																: nivelItem.nivelAprobacionType.nivelAprobacionRuta.toUpperCase().includes("COMENTARIORRHH")
+																	? "Registrar Comentario RR.HH."
+																	: nivelItem.nivelAprobacionType.nivelAprobacionRuta.toUpperCase().includes("COMENTARIOSOLICITANTE")
+																		? "Registrar Comentario Solicitante"
+																		: nivelItem.nivelAprobacionType.nivelAprobacionRuta
+												}}
+											</div>
+										</div>
+									</button>
 								</div>
-							</button>
-						</div>
 
-						<div [id]="'collapse' + i" class="accordion-collapse collapse" [ngClass]="{ show: i === 0 }" data-bs-parent="#accordionExample">
-							<div class="row">
-								<div class="col">
-									<div class="input-group">
-										<label for="lvl1descripcion"> Descripción de la posición </label>
+								<div [id]="'collapse' + i" class="accordion-collapse collapse" [ngClass]="{ show: i === 0 }" data-bs-parent="#accordionExample">
+									<div class="row">
+										<div class="col">
+											<div class="input-group">
+												<label for="lvl1descripcion"> Descripción de la posición </label>
 
-										&nbsp;
+												&nbsp;
 
-										<span id="lvl1descripcion" name="" style="color: black; font-size: 14px">
-											{{ nivelItem.aprobador.descripcionPosicion !== "" && nivelItem.aprobador.descripcionPosicion !== undefined && nivelItem.aprobador.descripcionPosicion != null ? nivelItem.aprobador.descripcionPosicion : "No aplica" }}
-										</span>
+												<span id="lvl1descripcion" name="" style="color: black; font-size: 14px">
+													{{ nivelItem.aprobador.descripcionPosicion !== "" && nivelItem.aprobador.descripcionPosicion !== undefined && nivelItem.aprobador.descripcionPosicion != null ? nivelItem.aprobador.descripcionPosicion : "No aplica" }}
+												</span>
+											</div>
+										</div>
 									</div>
 								</div>
 							</div>
 						</div>
 					</div>
-				</div>
+				</app-solicitud-seccion-desplegable>
 
-				<div class="row mt-4">
-					<div class="col-md-4">
-						<div class="mb-4">
-							<h3 class="sol-danger">Tipo de Acción</h3>
+				<!-- ! Tipo de Acción -->
+				<app-solicitud-seccion-desplegable titleSummary="Tipo de Acción">
+					<div>
+						<div class="row">
+							<div class="col">
+								<div class="input-group mb-3 contenedor">
+									&nbsp;
+
+									<span>{{ solicitud.tipoAccion }}</span>
+								</div>
+							</div>
 						</div>
 					</div>
-
-					<div class="col-md-8">
-						<hr />
-					</div>
-				</div>
-
-				<div class="row">
-					<div class="col">
-						<div class="input-group mb-3 contenedor">
-							&nbsp;
-
-							<span>{{ solicitud.tipoAccion }}</span>
-						</div>
-					</div>
-				</div>
+				</app-solicitud-seccion-desplegable>
 			</div>
 		</h2>
 	</div>

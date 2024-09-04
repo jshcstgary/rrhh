@@ -1751,8 +1751,8 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 				["Referencias:", this.fechas.referencias],
 				["Elaboración del Informe:", this.fechas.elaboracionInforme],
 				["Entrega al Jefe Solicitante el informe de selección:", this.fechas.entregaJefe],
-				["Entrevistas por parte de fejaturas:", this.fechas.entrevistaJefatura],
-				["Toma de decisiones por parte de fejaturas:", this.fechas.tomaDecisiones],
+				["Entrevistas por parte de jefaturas:", this.fechas.entrevistaJefatura],
+				["Toma de decisiones por parte de jefaturas:", this.fechas.tomaDecisiones],
 				["Candidato seleccionado:", this.fechas.candidatoSeleccionado],
 				["Proceso de Contratación:", this.fechas.procesoContratacion],
 				["Fin del Proceso de Selección y Proceso de Contratación:", this.fechas.finProcesoContratacion],
@@ -1795,7 +1795,7 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 			head: [
 				[
 					{
-						content: "Log delflujo",
+						content: "Log del flujo",
 						colSpan: 3
 					}
 				]
@@ -1819,7 +1819,7 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 						}
 					},
 					{
-						content: "Responsble",
+						content: "Responsable",
 						styles: {
 							halign: "center",
 							textColor,
@@ -2096,7 +2096,7 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 			head: [
 				[
 					{
-						content: "Log delflujo",
+						content: "Log del flujo",
 						colSpan: 3
 					}
 				]
@@ -2120,7 +2120,7 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 						}
 					},
 					{
-						content: "Responsble",
+						content: "Responsable",
 						styles: {
 							halign: "center",
 							textColor,
@@ -2499,7 +2499,7 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 			head: [
 				[
 					{
-						content: "Log delflujo",
+						content: "Log del flujo",
 						colSpan: 3
 					}
 				]
@@ -2523,7 +2523,7 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 						}
 					},
 					{
-						content: "Responsble",
+						content: "Responsable",
 						styles: {
 							halign: "center",
 							textColor,
@@ -2794,7 +2794,7 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 			head: [
 				[
 					{
-						content: "Log delflujo",
+						content: "Log del flujo",
 						colSpan: 3
 					}
 				]
@@ -2818,7 +2818,7 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 						}
 					},
 					{
-						content: "Responsble",
+						content: "Responsable",
 						styles: {
 							halign: "center",
 							textColor,

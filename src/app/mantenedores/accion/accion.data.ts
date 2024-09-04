@@ -24,13 +24,11 @@ export const AccionData: IAccionData = {
 			dataIndex: "tipoSolicitudId",
 			width: "300px",
 			dataIndexesToJoin: ["tipoSolicitudFormatted"],
-			// sortActive: true,
 			colType: "string",
 		},
 		{
 			title: "Fecha",
 			dataIndex: "fechaActualizacion",
-			sortActive: true,
 			colType: "string",
 		},
 		{

@@ -21,7 +21,6 @@ export const TiporutaData: ITiporutaData = {
 		{
 			title: "Fecha",
 			dataIndex: "fechaActualizacion",
-			sortActive: true,
 			colType: "string",
 		},
 		{

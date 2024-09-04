@@ -45,39 +45,41 @@ export class EditarAprobadorFijoComponent implements OnInit {
 	}
 
 	getAprobadorFijoById() {
-		return this.editarAprobadorFijoService
-			.obtenerAprobadorFijoById(this.id_edit)
-			.subscribe({
-				next: (response) => {
-					let fechaActual = new Date();
-					let fechaEnFormatoISO = fechaActual.toISOString();
-					// this.modelo.ID_APROBACION = ;
-					this.modelo.iD_APROBADOR = this.id_edit;
-					this.modelo.niveL_DIRECCION = response.niveL_DIRECCION;
-					this.modelo.codigO_POSICION = response.codigO_POSICION;
-					// let fechaActual = new Date();
-					this.modelo.subleger = response.subleger;
-					this.modelo.nombre = response.nombre;
-					this.modelo.codigO_POSICION_REPORTA_A =
-						response.codigO_POSICION_REPORTA_A;
-					this.modelo.reportA_A = response.reportA_A;
-					this.modelo.estado = response.estado === "A";
-					this.modelo.fechA_CREACION = response.fechA_CREACION;
-					this.modelo.fechA_MODIFICACION = response.fechA_MODIFICACION;
-					this.modelo.usuariO_CREACION = response.usuariO_CREACION;
-					this.modelo.usuariO_MODIFICACION = response.usuariO_MODIFICACION;
-					this.modelo.descripcioN_POSICION = response.descripcioN_POSICION;
-					this.modelo.supervisA_A = response.supervisA_A;
-					this.modelo.niveL_REPORTE = response.niveL_REPORTE;
-					this.modelo.correo = response.correo;
-				},
-				error: (error: HttpErrorResponse) => {
-					this.utilService.modalResponse(error.error, "error");
-				},
-			});
+		this.utilService.openLoadingSpinner("Obteniendo datos...");
+
+		return this.editarAprobadorFijoService.obtenerAprobadorFijoById(this.id_edit).subscribe({
+			next: (response) => {
+				let fechaActual = new Date();
+				let fechaEnFormatoISO = fechaActual.toISOString();
+				// this.modelo.ID_APROBACION = ;
+				this.modelo.iD_APROBADOR = this.id_edit;
+				this.modelo.niveL_DIRECCION = response.niveL_DIRECCION;
+				this.modelo.codigO_POSICION = response.codigO_POSICION;
+				// let fechaActual = new Date();
+				this.modelo.subleger = response.subleger;
+				this.modelo.nombre = response.nombre;
+				this.modelo.codigO_POSICION_REPORTA_A =
+					response.codigO_POSICION_REPORTA_A;
+				this.modelo.reportA_A = response.reportA_A;
+				this.modelo.estado = response.estado === "A";
+				this.modelo.fechA_CREACION = response.fechA_CREACION;
+				this.modelo.fechA_MODIFICACION = response.fechA_MODIFICACION;
+				this.modelo.usuariO_CREACION = response.usuariO_CREACION;
+				this.modelo.usuariO_MODIFICACION = response.usuariO_MODIFICACION;
+				this.modelo.descripcioN_POSICION = response.descripcioN_POSICION;
+				this.modelo.supervisA_A = response.supervisA_A;
+				this.modelo.niveL_REPORTE = response.niveL_REPORTE;
+				this.modelo.correo = response.correo;
+
+				this.utilService.closeLoadingSpinner();
+			},
+			error: (error: HttpErrorResponse) => {
+				this.utilService.modalResponse(error.error, "error");
+			},
+		});
 	}
 
-	public openModal(textPlaceholder: string) {
+	public openModal() {
 		this.modalService
 			.open(BuscarAprobadorFijoComponent, {
 				backdrop: "static",
@@ -88,16 +90,16 @@ export class EditarAprobadorFijoComponent implements OnInit {
 					if (result?.action === "close") {
 						return;
 					}
-	
+
 					if (result?.data === undefined) {
 						return;
 					}
-	
+
 					console.log(result?.data);
 					const epelado = result?.data;
-	
+
 					const currentdate: string = format(new Date(), "dd-MM-yyyy HH:mm:ss");
-	
+
 					this.modelo.iD_APROBADOR = 1;
 					this.modelo.codigO_POSICION = epelado.codigoPosicion;
 					this.modelo.subleger = epelado.subledger;
@@ -107,8 +109,8 @@ export class EditarAprobadorFijoComponent implements OnInit {
 					this.modelo.estado = true;
 					this.modelo.fechA_CREACION = currentdate;
 					this.modelo.fechA_MODIFICACION = currentdate;
-					this.modelo.usuariO_CREACION =  localStorage.getItem(LocalStorageKeys.IdLogin);;
-					this.modelo.usuariO_MODIFICACION =  localStorage.getItem(LocalStorageKeys.IdLogin);;
+					this.modelo.usuariO_CREACION = localStorage.getItem(LocalStorageKeys.IdLogin);;
+					this.modelo.usuariO_MODIFICACION = localStorage.getItem(LocalStorageKeys.IdLogin);;
 					this.modelo.descripcioN_POSICION = epelado.descrPosicion;
 					this.modelo.supervisA_A = "N/A";
 					this.modelo.niveL_REPORTE = epelado.nivelReporte;

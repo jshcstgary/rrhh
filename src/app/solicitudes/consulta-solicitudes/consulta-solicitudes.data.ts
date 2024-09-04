@@ -64,7 +64,7 @@ export const ConsultaSolicitudesData: IConsultaSolicitudesData = {
 			colType: "string",
 		},
 		{
-			title: "Usuario",
+			title: "Responsable",
 			dataIndex: "usuarioCreacion",
 			colType: "string",
 		},

@@ -1322,9 +1322,10 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
 				confirmButtonColor: "rgb(227, 199, 22)",
 				confirmButtonText: "OK",
 			});
-			return;
 
+			return;
 		}
+
 		Swal.fire({
 			text: "¿Desea guardar los cambios?",
 			icon: "question",
@@ -1360,8 +1361,8 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
 			idUnidadNegocio: this.model.unidadNegocio,
 		};
 
-		this.solicitud.empresa = this.model.idEmpresa;
-		this.solicitud.idEmpresa = this.model.idEmpresa;
+		this.solicitud.empresa = this.model.compania;
+		this.solicitud.idEmpresa = this.model.compania;
 
 		this.solicitud.unidadNegocio = this.model.unidadNegocio;
 		this.solicitud.idUnidadNegocio = this.model.unidadNegocio;
@@ -2124,6 +2125,7 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
 									this.primerNivelAprobacion = responseAPD.nivelAprobacionPosicionType[0].aprobador.nivelDireccion;
 									this.mapearDetallesAprobadores(response.nivelAprobacionPosicionType);
 
+									this.existenNivelesAprobacion = true;
 								},
 								error: (error: HttpErrorResponse) => {
 									this.utilService.modalResponse(

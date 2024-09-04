@@ -28,7 +28,6 @@ export const TipoprocesoData: ITipoprocesoData = {
 		{
 			title: "Fecha",
 			dataIndex: "fechaActualizacion",
-			sortActive: true,
 			colType: "string",
 		},
 		{

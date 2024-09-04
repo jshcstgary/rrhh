@@ -128,7 +128,19 @@ export class NivelesAprobacionComponent implements OnInit {
 	public dataTipoSolicitudes: any[] = [];
 	public dataNivelDireccion: any[] = [];
 
-	public dropdownOptionsExport: IDropdownOptions = PlantillaAData.dropdownOptionsExport;
+	// public dropdownOptionsExport: IDropdownOptions = PlantillaAData.dropdownOptionsExport;
+	public dropdownOptionsExport: IDropdownOptions = [
+		{
+			id: "EXCEL",
+			name: "EXCEL",
+			icon: "fas fa-file-excel",
+		},
+		{
+			id: "CSV",
+			name: "CSV",
+			icon: "fas fa-file-alt",
+		},
+	];
 
 	constructor(
 		private nivelesAprobacionService: NivelesAprobacionService,

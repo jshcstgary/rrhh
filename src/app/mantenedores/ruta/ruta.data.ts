@@ -23,13 +23,11 @@ export const TiporutaData: IRutaData = {
 			dataIndex: "idTipoRuta",
 			width: "300px",
 			dataIndexesToJoin: ["tipoRutaFormatted"],
-			// sortActive: true,
 			colType: "string",
 		},
 		{
 			title: "Fecha",
 			dataIndex: "fechaActualizacion",
-			sortActive: true,
 			colType: "string",
 		},
 		{

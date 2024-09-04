@@ -8,7 +8,6 @@ export const TipomotivoData: ITipomotivoData = {
 		// {
 		// 	title: "Código",
 		// 	dataIndex: "id",
-		// 	align: "center",
 		// 	sortActive: true,
 		// 	colType: "number",
 		// },
@@ -28,7 +27,6 @@ export const TipomotivoData: ITipomotivoData = {
 		{
 			title: "Fecha",
 			dataIndex: "fechaActualizacion",
-			sortActive: true,
 			colType: "string",
 		},
 		{

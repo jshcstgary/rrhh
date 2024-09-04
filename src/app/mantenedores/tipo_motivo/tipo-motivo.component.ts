@@ -166,7 +166,7 @@ export class TipoMotivoComponent implements OnInit {
 					}))
 					.sort((a, b) => {
 						const tipoSolicitudComparacion = a.tipoSolicitudFormatted.localeCompare(b.tipoSolicitudFormatted);
-						
+
 						if (tipoSolicitudComparacion !== 0) {
 							return tipoSolicitudComparacion;
 						}

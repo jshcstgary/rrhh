@@ -1235,6 +1235,7 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
 									this.primerNivelAprobacion = responseAPD.nivelAprobacionPosicionType[0].aprobador.nivelDireccion;
 									this.mapearDetallesAprobadores(response.nivelAprobacionPosicionType);
 
+									this.existenNivelesAprobacion = true;
 								},
 								error: (error: HttpErrorResponse) => {
 									this.utilService.modalResponse(

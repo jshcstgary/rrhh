@@ -36,7 +36,6 @@ export const AprobadoresFijosData: IConsultaAprobadoresFijosData = {
 		{
 			title: "Fecha",
 			dataIndex: "fechA_MODIFICACION",
-			sortActive: true,
 			colType: "string",
 		},
 		{

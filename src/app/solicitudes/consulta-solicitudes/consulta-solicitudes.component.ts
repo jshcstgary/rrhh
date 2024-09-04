@@ -791,7 +791,6 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 	}
 
 	filterDataTable() {
-
 		if ((this.searchInputFilter === undefined || this.searchInputFilter === null || this.searchInputFilter === '')
 			&& (this.dataFilterSolicitudes.idTipoSolicitud === undefined || this.dataFilterSolicitudes.idTipoSolicitud === null)) {
 			Swal.fire({
@@ -807,6 +806,7 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 		const data = structuredClone(this.dataFilterSolicitudes);
 
 		if (this.dataFilterSolicitudes.fechaDesde !== undefined && this.dataFilterSolicitudes.fechaDesde !== null) {
+			console.log(this.dataFilterSolicitudes);
 			data.fechaDesde = this.formatFecha(this.dataFilterSolicitudes, "fechaDesde");
 		}
 
@@ -827,13 +827,7 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 	}
 
 	formatFecha(data: any, fechaProp: string) {
-		return (
-			data[fechaProp].year +
-			"-" +
-			data[fechaProp].month +
-			"-" +
-			data[fechaProp].day
-		);
+		return `${data[fechaProp].year}-${data[fechaProp].month}-${data[fechaProp].day}`;
 	}
 
 	formatFechaISO(date: any, fechaProp: string) {

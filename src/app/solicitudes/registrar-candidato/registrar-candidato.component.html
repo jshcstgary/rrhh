@@ -97,10 +97,12 @@
 								<span id="codigoposicion" name="codigoposicion" style="color: black; font-size: 14px" class="text-start">{{ model.codigoPosicion }}</span>
 							</div>
 						</div>
+					</div>
 
-						<div class="col-md-6">
+					<div class="row">
+						<div class="col-md-12">
 							<div class="input-group mb-3 align-items-center">
-								<label class="input-group-text text-start label-estilo" for="descripcionposicion">Descripción de posición</label>
+								<label class="input-group-text text-start label-estilo2" for="descripcionposicion">Descripción de posición</label>
 
 								<span id="descripcionposicion" name="descripcionposicion" style="color: black; font-size: 14px" class="text-start">{{ model.descrPosicion }}</span>
 							</div>
@@ -241,14 +243,16 @@
 					</div>
 
 					<div class="row">
-						<div class="col-md-6">
-							<div class="input-group mb-3 aling-items-center">
-								<label class="input-group-text text-start label-estilo" for="supervisaa">Supervisa a</label>
+						<div class="col-md-12">
+							<div class="input-group mb-3 aling-items-center w-100">
+								<label class="input-group-text text-start label-estilo2" for="supervisaa">Supervisa a</label>
 
-								<span id="supervisaa" name="" style="color: black; font-size: 14px" class="text-start">{{ model.supervisaA }}</span>
+								<span id="supervisaa" name="" style="color: black; font-size: 14px" class="text-start w-75">{{ model.supervisaA }}</span>
 							</div>
 						</div>
-
+					</div>
+					
+					<div class="row">
 						<div class="col-md-6">
 							<div class="input-group mb-3 aling-items-center">
 								<label class="input-group-text text-start label-estilo" for="tipocontrato">Tipo de contrato</label>
@@ -256,22 +260,12 @@
 								<span id="tipocontrato" name="tipocontrato" style="color: black; font-size: 14px" class="text-start">{{ model.tipoContrato }}</span>
 							</div>
 						</div>
-					</div>
 
-					<div class="row">
 						<div class="col-md-6">
 							<div class="input-group mb-3 aling-items-center">
 								<label class="input-group-text text-start label-estilo" for="nivelRepa">Nivel de reporte</label>
 
 								<span id="nivelRepa" name="" style="color: black; font-size: 14px" class="text-start">{{ model.nivelRepa }}</span>
-							</div>
-						</div>
-
-						<div class="col-md-6">
-							<div class="input-group mb-3 aling-items-center">
-								<label class="input-group-text text-start label-estilo" for="sueldo">Sueldo</label>
-
-								<span id="sueldo" name="sueldo" style="color: black; font-size: 14px" class="text-start">S {{ model.sueldo | number : "1.2-2" }}</span>
 							</div>
 						</div>
 					</div>
@@ -283,7 +277,7 @@
 				<summary>
 					<div class="row">
 						<div class="col-md-4">
-							<h3 class="sol-danger">Tipo de variable</h3>
+							<h3 class="sol-danger">Sueldo/Tipo de variable</h3>
 						</div>
 
 						<div class="col-md-7">
@@ -297,6 +291,16 @@
 				</summary>
 
 				<div class="details-content">
+					<div class="row">
+						<div class="col-md-6">
+							<div class="input-group mb-3 aling-items-center">
+								<label class="input-group-text text-start label-estilo" for="sueldo">Sueldo</label>
+
+								<span id="sueldo" name="sueldo" style="color: black; font-size: 14px" class="text-start">S {{ model.sueldo | number : "1.2-2" }}</span>
+							</div>
+						</div>
+					</div>
+
 					<div class="row">
 						<div class="col-md-6">
 							<div class="input-group mb-3 align-items-center">

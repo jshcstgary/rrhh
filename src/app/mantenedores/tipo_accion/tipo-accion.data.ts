@@ -28,7 +28,6 @@ export const TipoaccionData: ITipoaccionData = {
 		{
 			title: "Fecha",
 			dataIndex: "fechaActualizacion",
-			sortActive: true,
 			colType: "string",
 		},
 		{

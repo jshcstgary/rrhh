@@ -190,7 +190,7 @@
 			</app-solicitud-seccion-desplegable>
 
 			<!-- ! Tipo de variable -->
-			<app-solicitud-seccion-desplegable titleSummary="Tipo de variable">
+			<app-solicitud-seccion-desplegable titleSummary="Sueldo/Tipo de variable">
 				<div>
 					<div class="row">
 						<div class="col-md-6">
@@ -488,7 +488,19 @@
 										</div>
 
 										<div class="col">
-											{{ nivelItem.nivelAprobacionType.nivelAprobacionRuta }}
+											{{
+												nivelItem.nivelAprobacionType.nivelAprobacionRuta.toUpperCase().includes("REGISTRARSOLICITUD")
+													? "Registrar Solicitud"
+													: nivelItem.nivelAprobacionType.nivelAprobacionRuta.toUpperCase().includes("CANDIDATO")
+														? "Selección de Candidato"
+														: nivelItem.nivelAprobacionType.nivelAprobacionRuta.toUpperCase().includes("COMENTARIOJEFE")
+															? "Registrar Comentario Jefe"
+															: nivelItem.nivelAprobacionType.nivelAprobacionRuta.toUpperCase().includes("COMENTARIORRHH")
+																? "Registrar Comentario RR.HH."
+																: nivelItem.nivelAprobacionType.nivelAprobacionRuta.toUpperCase().includes("COMENTARIOSOLICITANTE")
+																	? "Registrar Comentario Solicitante"
+																	: nivelItem.nivelAprobacionType.nivelAprobacionRuta
+											}}
 										</div>
 									</div>
 								</button>

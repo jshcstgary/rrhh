@@ -7,26 +7,20 @@
 						<div class="col-md-8">
 							<div class="mb-3">
 								<h3 class="sol-danger">
-									<a routerLink="/mantenedores/aprobadores-fijos">
-										<i class="bi bi-arrow-left-circle azul"></i> Mantenimiento de Aprobadores Fijos
-									</a>
+									<a routerLink="/mantenedores/aprobadores-fijos"> <i class="bi bi-arrow-left-circle azul"></i> Mantenimiento de Aprobadores Fijos </a>
 								</h3>
 							</div>
 						</div>
 
 						<div class="col-md-4 text-end">
-							<button type="button" class="mr-10 fz-14 btn btn-info btn-icon-end" aria-label="Close" aria-label="Close" (click)="guardarAprobadorFijo()" [disabled]="validateData()">
-								<i class="fas fa-save"></i> Guardar
-							</button>
+							<button type="button" class="mr-10 fz-14 btn btn-info btn-icon-end" (click)="guardarAprobadorFijo()" [disabled]="validateData()"><i class="fas fa-save"></i> Guardar</button>
 						</div>
 					</div>
 
 					<div class="row" style="padding-top: 20px; display: flex; justify-content: start; margin: 10px">
 						<div class="col-md-12" style="width: 75%">
-							<div class="input-group mb-3">
+							<div class="input-group mb-3 gap-2">
 								<label class="input-group-text" for="subledger" style="color: black; font-size: 14px; width: 45%"> Subledger </label>
-
-								&nbsp;
 
 								<input type="text" name="subledger" [(ngModel)]="modelo.subleger" style="color: black; font-size: 14px; width: 30%" class="form-control" id="subledger" placeholder="Subledger del Empleado" (click)="openModal()" required readonly />
 							</div>
@@ -35,10 +29,8 @@
 
 					<div class="row" style="padding-top: 20px; display: flex; justify-content: start; margin: 10px">
 						<div class="col-md-12" style="width: 75%">
-							<div class="input-group mb-3">
+							<div class="input-group mb-3 gap-2">
 								<label class="input-group-text" for="nombreempleado" style="color: black; font-size: 14px; width: 45%"> Nombre del Empleado </label>
-
-								&nbsp;
 
 								<input type="text" name="nombreempleado" [(ngModel)]="modelo.nombre" style="color: black; font-size: 14px; width: 30%" class="form-control" id="nombreempleado" placeholder="Nombre del empleado" (click)="openModal()" required readonly />
 							</div>
@@ -47,17 +39,17 @@
 
 					<div class="row" style="padding-top: 20px; display: flex; justify-content: start; margin: 10px">
 						<div class="col-md-12" style="width: 75%">
-							<div class="input-group mb-3">
+							<div class="input-group mb-3 gap-2">
 								<label class="input-group-text" for="descripcionPosicion" style="color: black; font-size: 14px; width: 45%">Descripción posición</label>
 
-								<span id="descripcionPosicion" name="" style="color: black; font-size: 14px; width: 30%; display: block; margin-left: 10px;">{{ modelo.descripcioN_POSICION }}</span>
+								<span id="descripcionPosicion" style="color: black; font-size: 14px; width: 50%; display: block;">{{ modelo.descripcioN_POSICION }}</span>
 							</div>
 						</div>
 					</div>
 
 					<div class="row" style="padding-top: 20px; display: flex; justify-content: start; margin: 10px">
 						<div class="col-md-12" style="width: 75%">
-							<div class="input-group mb-3">
+							<div class="input-group mb-3 gap-2">
 								<label class="input-group-text" for="codigoposicion" style="color: black; font-size: 14px; width: 45%"> Correo del Empleado </label>
 
 								<input type="text" name="correoempleado" [(ngModel)]="modelo.correo" style="color: black; font-size: 14px; width: 30%" class="form-control" id="correoempleado" placeholder="Correo del empleado" (click)="openModal()" required readonly />
@@ -67,12 +59,14 @@
 
 					<div class="row" style="padding-top: 20px; display: flex; justify-content: start; margin: 10px">
 						<div class="col-md-12" style="width: 75%">
-							<div class="input-group mb-3">
+							<div class="input-group mb-3 gap-2">
 								<label class="input-group-text" for="nivelDireccion" style="color: black; font-size: 14px; width: 45%">Nivel de Aprobación</label>
 
 								<select [(ngModel)]="modelo.niveL_DIRECCION" id="tiposolicitud" name="tiposolicitud" class="form-select" style="font-size: 14px" required>
 									<option value="" hidden>Selecccione</option>
+
 									<option value="Gerente de RRHH Corporativo">Gerente de RRHH Corporativo</option>
+
 									<option value="Comité de Remuneraciones">Comité de Remuneraciones</option>
 								</select>
 							</div>
@@ -81,9 +75,9 @@
 
 					<div class="row" style="padding-top: 20px; display: flex; justify-content: start; margin: 10px">
 						<div class="col-md-12" style="width: 75%">
-							<div class="input-group mb-3">
+							<div class="input-group mb-3 gap-2 align-items-center">
 								<label class="input-group-text" for="estado" style="color: black; font-size: 14px; width: 45%">Estado</label>
-								&nbsp;
+
 								<div class="form-check form-switch">
 									<input class="form-check-input" type="checkbox" required id="estado" [(ngModel)]="modelo.estado" name="estado" checked />
 								</div>
