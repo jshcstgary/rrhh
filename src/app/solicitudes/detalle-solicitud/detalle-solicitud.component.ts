@@ -76,7 +76,10 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 	);
 
 	public detalleSolicitudPropuestos = new DetalleSolicitud();
-
+	public option: { codigo: string; valor: string } = {
+		codigo: "",
+		valor: ""
+	};
 
 	columnsDatosFamiliares = columnsDatosFamiliares.columns;
 	dataTableDatosFamiliares: FamiliaresCandidatos[] = [];
@@ -627,13 +630,9 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 				// unique id is from the route params
 				this.uniqueTaskId = params["id"];
 				this.taskId = params["id"];
-				this.loadExistingVariables(
-					this.uniqueTaskId ? this.uniqueTaskId : "",
-					variableNames
-				);
+
+				this.loadExistingVariables(this.uniqueTaskId ? this.uniqueTaskId : "", variableNames);
 			}
-			// console.log("Así es mi variablesNames: ", variableNames);
-			// ready to do the processing now
 		});
 	}
 
@@ -809,8 +808,8 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 		this.utilService.openLoadingSpinner("Cargando información, espere por favor...");
 
 		try {
-
 			await this.loadDataCamunda();
+
 			await this.obtenerServicioFamiliaresCandidatos({
 				idSolicitud: this.id_solicitud_by_params,
 			});
@@ -840,16 +839,18 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 	getSolicitudById(id: any) {
 		return this.solicitudes.getSolicitudById(id).subscribe({
 			next: (response: any) => {
-
 				this.solicitud = response;
+
 				if (this.solicitud.tipoAccion.toUpperCase().includes("ASIGNA")) {
 					this.muestraRemuneracion = true;
 				}
+
 				this.mostrarRequisicion = this.solicitud.idSolicitud.includes("RP-");
 				this.mostrarFormularioFamiliares = this.solicitud.idSolicitud.includes("CF-");
 				this.mostrarFormularioReingreso = this.solicitud.idSolicitud.includes("RG-");
 				this.mostrarAccionPersonal = this.solicitud.idSolicitud.includes("AP-");
 				this.loadingComplete += 2;
+
 				this.getDetalleSolicitudById(id);
 			},
 			error: (error: HttpErrorResponse) => {
@@ -936,6 +937,7 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 				else {
 					this.detalleSolicitud = response.detalleSolicitudType[0];
 					this.detalleSolicitudRG = response.detalleSolicitudType[0];
+
 					if (!(id.toUpperCase().includes("RG")) && this.detalleSolicitud.codigoPosicion.length > 0) {
 						this.model.codigoPosicion = this.detalleSolicitud.codigoPosicion;
 						this.model.descrPosicion = this.detalleSolicitud.descripcionPosicion;
@@ -963,7 +965,6 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 						this.model.correo = this.detalleSolicitud.correo;
 						this.model.fechaIngreso = this.detalleSolicitud.fechaIngreso;
 						this.modelRemuneracion = Number(this.model.sueldoAnual) / 12 + Number(this.model.sueldoSemestral) / 6 + Number(this.model.sueldoTrimestral) / 3 + Number(this.model.sueldoMensual);
-
 					} else if (id.toUpperCase().includes("RG")) {
 						if (this.detalleSolicitudRG.codigoPosicion.length > 0) {
 							this.modelRG.codigoPosicion = this.detalleSolicitudRG.codigoPosicion;
@@ -1009,12 +1010,17 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 				this.mostrarSubledger = this.restrictionsSubledgerIds.includes(this.solicitud.idTipoMotivo);
 
 				this.keySelected = this.solicitud.idTipoSolicitud + "_" + this.solicitud.idTipoMotivo + "_" + this.model.nivelDir;
+
 				if (!this.dataAprobacionesPorPosicion[this.keySelected]) {
 					this.getNivelesAprobacion();
 					this.obtenerComentariosAtencionPorInstanciaRaiz();
-
-
 				}
+
+				this.mantenimientoService.getCatalogo("RBPTF").subscribe({
+					next: (response) => {
+						this.option = response.itemCatalogoTypes.find(({ codigo }) => codigo === this.selectedOption);
+					}
+				});
 			},
 			error: (error: HttpErrorResponse) => {
 				this.utilService.modalResponse(error.error, "error");
@@ -1162,8 +1168,8 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 					idUnidadNegocio: this.model.unidadNegocio,
 				};
 
-				this.solicitud.empresa = this.model.idEmpresa;
-				this.solicitud.idEmpresa = this.model.idEmpresa;
+				this.solicitud.empresa = this.model.compania;
+				this.solicitud.idEmpresa = this.model.compania;
 
 				this.solicitud.unidadNegocio = this.model.unidadNegocio;
 				this.solicitud.idUnidadNegocio = this.model.unidadNegocio;
@@ -1177,7 +1183,7 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 						this.detalleSolicitud.cargo = this.model.nombreCargo;
 						this.detalleSolicitud.centroCosto = this.model.nomCCosto;
 						this.detalleSolicitud.codigoPosicion = this.model.codigoPosicion;
-						this.detalleSolicitud.compania = this.model.idEmpresa;
+						this.detalleSolicitud.compania = this.model.compania;
 						this.detalleSolicitud.departamento = this.model.departamento;
 						this.detalleSolicitud.descripcionPosicion =
 							this.model.descrPosicion;
@@ -1304,7 +1310,7 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 		let variables: any = {};
 
 		variables.codigo = { value: this.model.codigo };
-		variables.idEmpresa = { value: this.model.idEmpresa };
+		variables.idEmpresa = { value: this.model.compania };
 		variables.compania = { value: this.model.compania };
 		variables.departamento = { value: this.model.departamento };
 		variables.nombreCargo = { value: this.model.nombreCargo };
@@ -1517,21 +1523,21 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 				],
 			]
 		};
-		
+
 		if (this.solicitud.idSolicitud.toUpperCase().includes("RP")) {
 			esquinaDeHoja.body[0][0].content = codigosSolicitudReporte.requisicionPersonal;
 			tituloDeHoja.body[0][0].content = "REQUERIMIENTO DE PERSONAL";
-			
+
 			this.exportarRequisicionPersonal(doc, esquinaDeHoja, tituloDeHoja, backgroundCellColor, textColor, lineColor);
 		} else if (this.solicitud.idSolicitud.toUpperCase().includes("CF")) {
 			esquinaDeHoja.body[0][0].content = codigosSolicitudReporte.contratacionFamiliares;
 			tituloDeHoja.body[0][0].content = "CONTRATACIÓN DE FAMILIAR";
-			
+
 			this.exportarContratacionFamiliar(doc, esquinaDeHoja, tituloDeHoja, backgroundCellColor, textColor, lineColor);
 		} else if (this.solicitud.idSolicitud.toUpperCase().includes("RG")) {
 			esquinaDeHoja.body[0][0].content = codigosSolicitudReporte.reingresoPersonal;
 			tituloDeHoja.body[0][0].content = "REINGRESO DE PERSONAL";
-			
+
 			this.exportarReingresoPersonal(doc, esquinaDeHoja, tituloDeHoja, backgroundCellColor, textColor, lineColor);
 		} else if (this.solicitud.idSolicitud.toUpperCase().includes("AP")) {
 			esquinaDeHoja.body[0][0].content = codigosSolicitudReporte.accionPersonal;

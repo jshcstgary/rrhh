@@ -185,19 +185,7 @@
 											</div>
 
 											<div class="col">
-												{{
-													nivelItem.nivelAprobacionType.nivelAprobacionRuta.toUpperCase().includes("REGISTRARSOLICITUD")
-														? "Registrar Solicitud"
-														: nivelItem.nivelAprobacionType.nivelAprobacionRuta.toUpperCase().includes("CANDIDATO")
-															? "Selección de Candidato"
-															: nivelItem.nivelAprobacionType.nivelAprobacionRuta.toUpperCase().includes("COMENTARIOJEFE")
-																? "Registrar Comentario Jefe"
-																: nivelItem.nivelAprobacionType.nivelAprobacionRuta.toUpperCase().includes("COMENTARIORRHH")
-																	? "Registrar Comentario RR.HH."
-																	: nivelItem.nivelAprobacionType.nivelAprobacionRuta.toUpperCase().includes("COMENTARIOSOLICITANTE")
-																		? "Registrar Comentario Solicitante"
-																		: nivelItem.nivelAprobacionType.nivelAprobacionRuta
-												}}
+												{{ nivelItem.nivelAprobacionType.nivelAprobacionRuta.toUpperCase().includes("REGISTRARSOLICITUD") ? "Registrar Solicitud" : nivelItem.nivelAprobacionType.nivelAprobacionRuta.toUpperCase().includes("CANDIDATO") ? "Selección de Candidato" : nivelItem.nivelAprobacionType.nivelAprobacionRuta.toUpperCase().includes("COMENTARIOJEFE") ? "Registrar Comentario Jefe" : nivelItem.nivelAprobacionType.nivelAprobacionRuta.toUpperCase().includes("COMENTARIORRHH") ? "Registrar Comentario RR.HH." : nivelItem.nivelAprobacionType.nivelAprobacionRuta.toUpperCase().includes("COMENTARIOSOLICITANTE") ? "Registrar Comentario Solicitante" : nivelItem.nivelAprobacionType.nivelAprobacionRuta }}
 											</div>
 										</div>
 									</button>
@@ -1203,19 +1191,7 @@
 											</div>
 
 											<div class="col">
-												{{
-													nivelItem.nivelAprobacionType.nivelAprobacionRuta.toUpperCase().includes("REGISTRARSOLICITUD")
-														? "Registrar Solicitud"
-														: nivelItem.nivelAprobacionType.nivelAprobacionRuta.toUpperCase().includes("CANDIDATO")
-															? "Selección de Candidato"
-															: nivelItem.nivelAprobacionType.nivelAprobacionRuta.toUpperCase().includes("COMENTARIOJEFE")
-																? "Registrar Comentario Jefe"
-																: nivelItem.nivelAprobacionType.nivelAprobacionRuta.toUpperCase().includes("COMENTARIORRHH")
-																	? "Registrar Comentario RR.HH."
-																	: nivelItem.nivelAprobacionType.nivelAprobacionRuta.toUpperCase().includes("COMENTARIOSOLICITANTE")
-																		? "Registrar Comentario Solicitante"
-																		: nivelItem.nivelAprobacionType.nivelAprobacionRuta
-												}}
+												{{ nivelItem.nivelAprobacionType.nivelAprobacionRuta.toUpperCase().includes("REGISTRARSOLICITUD") ? "Registrar Solicitud" : nivelItem.nivelAprobacionType.nivelAprobacionRuta.toUpperCase().includes("CANDIDATO") ? "Selección de Candidato" : nivelItem.nivelAprobacionType.nivelAprobacionRuta.toUpperCase().includes("COMENTARIOJEFE") ? "Registrar Comentario Jefe" : nivelItem.nivelAprobacionType.nivelAprobacionRuta.toUpperCase().includes("COMENTARIORRHH") ? "Registrar Comentario RR.HH." : nivelItem.nivelAprobacionType.nivelAprobacionRuta.toUpperCase().includes("COMENTARIOSOLICITANTE") ? "Registrar Comentario Solicitante" : nivelItem.nivelAprobacionType.nivelAprobacionRuta }}
 											</div>
 										</div>
 									</button>
@@ -1759,7 +1735,7 @@
 								</div>
 							</div>
 						</div>
-						
+
 						<div class="row">
 							<div class="col-md-6">
 								<div class="input-group mb-3 align-item-center">
@@ -1815,19 +1791,7 @@
 											</div>
 
 											<div class="col">
-												{{
-													nivelItem.nivelAprobacionType.nivelAprobacionRuta.toUpperCase().includes("REGISTRARSOLICITUD")
-														? "Registrar Solicitud"
-														: nivelItem.nivelAprobacionType.nivelAprobacionRuta.toUpperCase().includes("CANDIDATO")
-															? "Selección de Candidato"
-															: nivelItem.nivelAprobacionType.nivelAprobacionRuta.toUpperCase().includes("COMENTARIOJEFE")
-																? "Registrar Comentario Jefe"
-																: nivelItem.nivelAprobacionType.nivelAprobacionRuta.toUpperCase().includes("COMENTARIORRHH")
-																	? "Registrar Comentario RR.HH."
-																	: nivelItem.nivelAprobacionType.nivelAprobacionRuta.toUpperCase().includes("COMENTARIOSOLICITANTE")
-																		? "Registrar Comentario Solicitante"
-																		: nivelItem.nivelAprobacionType.nivelAprobacionRuta
-												}}
+												{{ nivelItem.nivelAprobacionType.nivelAprobacionRuta.toUpperCase().includes("REGISTRARSOLICITUD") ? "Registrar Solicitud" : nivelItem.nivelAprobacionType.nivelAprobacionRuta.toUpperCase().includes("CANDIDATO") ? "Selección de Candidato" : nivelItem.nivelAprobacionType.nivelAprobacionRuta.toUpperCase().includes("COMENTARIOJEFE") ? "Registrar Comentario Jefe" : nivelItem.nivelAprobacionType.nivelAprobacionRuta.toUpperCase().includes("COMENTARIORRHH") ? "Registrar Comentario RR.HH." : nivelItem.nivelAprobacionType.nivelAprobacionRuta.toUpperCase().includes("COMENTARIOSOLICITANTE") ? "Registrar Comentario Solicitante" : nivelItem.nivelAprobacionType.nivelAprobacionRuta }}
 											</div>
 										</div>
 									</button>
@@ -1851,273 +1815,243 @@
 					</div>
 				</app-solicitud-seccion-desplegable>
 
-				<div *ngIf="model.tipoProceso !== ''">
-					<!--Comentarios de aprobadores en seleccion de candidato-->
-					<div class="row mt-4">
-						<div class="col-md-4">
-							<div class="mb-4">
-								<h3 class="sol-danger">Atención de la Solicitud</h3>
-							</div>
-						</div>
+				<!-- ! Atención de la Solicitud -->
+				<app-solicitud-seccion-desplegable titleSummary="Atención de la Solicitud">
+					<div>
+						<div class="row">
+							<div class="col-md-12">
+								<div class="input-group mb-3 align-items-start">
+									<label class="input-group-text text-start label-estilo2">Aprobadores dinámicos</label>
 
-						<div class="col-md-8">
-							<hr />
-						</div>
-					</div>
-
-					<div class="row mt-2">
-						<div class="col">
-							<div *ngFor="let item of dataComentariosAprobaciones; let i = index" class="row mt-2 align-items-center">
-								<div class="col-auto">
-									<label *ngIf="i === 0" class="input-group-text adjustable-label" for="lcomentariodinamico"> Aprobadores dinámicos </label>
-
-									<label *ngIf="i !== 0" class="input-group-text hidden-label" for="lcomentariodinamico"> Aprobadores dinámicos </label>
-								</div>
-
-								<div class="col">
-									<span id="lcomentariodinamico" name="" style="color: black; font-size: 14px">{{ item.text !== "" && item.text !== undefined && item.text != null ? item.text : "No hay comentario" }}</span>
-								</div>
-							</div>
-						</div>
-					</div>
-
-					<div class="row mt-2">
-						<div class="col">
-							<div class="input-group mb-3">
-								<label class="input-group-text adjustable-label2" for="lcomentariorrhh"> Gerente de RRHH Corporativo </label>
-
-								&nbsp;
-
-								<div *ngFor="let item of dataComentariosAprobacionesRRHH">
-									&nbsp;
-
-									<span id="lcomentariorrhh" name="" style="color: black; font-size: 14px">{{ item.text !== "" && item.text !== undefined && item.text != null ? item.text : "No hay comentario" }}</span>
-								</div>
-							</div>
-						</div>
-					</div>
-
-					<div class="row mt-2">
-						<div class="col">
-							<div class="input-group mb-3">
-								<label class="input-group-text adjustable-label2" for="comitederemuneraciones"> Comité de Remuneraciones </label>
-
-								&nbsp;
-
-								<div *ngFor="let item of dataComentariosAprobacionesCREM">
-									&nbsp;
-
-									<span id="lcomentariocrem" name="" style="color: black; font-size: 14px">{{ item.text !== "" && item.text !== undefined && item.text != null ? item.text : "No hay comentario" }}</span>
-								</div>
-							</div>
-						</div>
-					</div>
-					<!--Fin de Comentarios -->
-
-					<div class="row mt-4">
-						<div class="col-md-4">
-							<div class="mb-4">
-								<h3 class="sol-danger">Selección de Candidato</h3>
-							</div>
-						</div>
-
-						<div class="col-md-8">
-							<hr />
-						</div>
-					</div>
-
-					<div class="row">
-						<div class="col-md-6">
-							<div class="input-group mb-3">
-								<label class="input-group-text text-start label-estilo" for="tipoSolicitud">Tipo Proceso</label>
-
-								&nbsp;
-
-								<div>
-									<span>{{ model.tipoProceso === "" ? "Ninguno" : model.tipoProceso }}</span>
-								</div>
-							</div>
-						</div>
-
-						<div class="col-md-6">
-							<div class="input-group mb-3">
-								<label class="input-group-text text-start label-estilo2" for="flexSwitchCheckChecked">Tipo de fuente</label>
-
-								&nbsp;
-
-								<span *ngIf="model.tipoProceso === ''; else fuenteExterna">Ninguno</span>
-
-								<ng-template #fuenteExterna>
-									<div *ngIf="isChecked; else externo" class="form-check form-switch checkbox-container">
-										<label class="form-check-label" for="flexSwitchCheckChecked">Externo</label>
-									</div>
-
-									<ng-template #externo>
-										<div>
-											<label #externo class="form-check-label" for="flexSwitchCheckChecked">Interno</label>
+									<div>
+										<div class="row" *ngFor="let item of dataComentariosAprobaciones">
+											<span style="color: black; font-size: 14px" class="text-start">{{ item.text }}</span>
 										</div>
-									</ng-template>
-								</ng-template>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col-md-12">
+								<div class="input-group mb-3 align-items-start">
+									<label class="input-group-text text-start label-estilo2">Gerente de RRHH Corporativo</label>
+
+									<div>
+										<div class="row" *ngFor="let item of dataComentariosAprobacionesRRHH">
+											<span style="color: black; font-size: 14px">{{ item.text }}</span>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col-md-12">
+								<div class="input-group mb-3 align-items-start">
+									<label class="input-group-text text-start label-estilo2">Comité de Remuneraciones</label>
+
+									<div>
+										<div class="row" *ngFor="let item of dataComentariosAprobacionesCREM">
+											<span style="color: black; font-size: 14px">{{ item.text }}</span>
+										</div>
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>
-					<!--Fila Fuente externa-->
+				</app-solicitud-seccion-desplegable>
 
-					<div class="row" *ngIf="isChecked">
-						<div class="col-md-6">
-							<div class="input-group mb-3">
-								<label class="input-group-text text-start label-estilo">Fuente Externa</label>
+				<div *ngIf="model.tipoProceso !== ''">
+					<!-- ! Selección de Candidato -->
+					<app-solicitud-seccion-desplegable titleSummary="Selección de Candidato">
+						<div>
+							<div class="row">
+								<div class="col-md-4 d-flex align-items-center">
+									<label class="input-group-text adjustable-label">Actualización del perfil</label>
 
-								&nbsp;
+									<span style="font-size: 14px">{{ fechas.actualizacionPerfil }}</span>
+								</div>
 
-								<span>{{ selectedOption }}</span>
+								<div class="col-md-4 d-flex align-items-center">
+									<label class="input-group-text adjustable-label">Búsqueda de candidatos</label>
+
+									<span style="font-size: 14px">{{ fechas.busquedaCandidatos }}</span>
+									<!-- <input class="form-control" [value]="fechas.busquedaCandidatos" readonly /> -->
+								</div>
+
+								<div class="col-md-4 d-flex align-items-center">
+									<label class="input-group-text adjustable-label">Entrevista de RR.HH.</label>
+
+									<span style="font-size: 14px">{{ fechas.entrevista }}</span>
+									<!-- <input class="form-control" [value]="fechas.entrevista" readonly /> -->
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col-md-4 d-flex align-items-center">
+									<label class="input-group-text adjustable-label">Pruebas</label>
+
+									<span style="font-size: 14px">{{ fechas.pruebas }}</span>
+									<!-- <input class="form-control" [value]="fechas.pruebas" readonly /> -->
+								</div>
+
+								<div class="col-md-4 d-flex align-items-center">
+									<label class="input-group-text adjustable-label">Referencias</label>
+
+									<span style="font-size: 14px">{{ fechas.referencias }}</span>
+									<!-- <input class="form-control" [value]="fechas.referencias" readonly /> -->
+								</div>
+
+								<div class="col-md-4 d-flex align-items-center">
+									<label class="input-group-text adjustable-label">Elaboración de informe</label>
+
+									<span style="font-size: 14px">{{ fechas.elaboracionInforme }}</span>
+									<!-- <input class="form-control" [value]="fechas.elaboracionInforme" readonly /> -->
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col-md-4 d-flex align-items-center">
+									<label class="input-group-text adjustable-label">Entrega al jefe solicitante</label>
+
+									<span style="font-size: 14px">{{ fechas.entregaJefe }}</span>
+									<!-- <input class="form-control" [value]="fechas.entregaJefe" readonly /> -->
+								</div>
+
+								<div class="col-md-4 d-flex align-items-center">
+									<label class="input-group-text adjustable-label">Entrevista por jefatura</label>
+
+									<span style="font-size: 14px">{{ fechas.entrevistaJefatura }}</span>
+									<!-- <input class="form-control" [value]="fechas.entrevistaJefatura" readonly /> -->
+								</div>
+
+								<div class="col-md-4 d-flex align-items-center">
+									<label class="input-group-text adjustable-label">Toma de decisiones</label>
+
+									<span style="font-size: 14px">{{ fechas.tomaDecisiones }}</span>
+									<!-- <input class="form-control" [value]="fechas.tomaDecisiones" readonly /> -->
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col-md-4 d-flex align-items-center">
+									<label class="input-group-text adjustable-label">Candidato seleccionado</label>
+
+									<span style="font-size: 14px">{{ fechas.candidatoSeleccionado }}</span>
+									<!-- <input class="form-control" [value]="fechas.candidatoSeleccionado" readonly /> -->
+								</div>
+
+								<div class="col-md-4 d-flex align-items-center">
+									<label class="input-group-text adjustable-label">Proceso de contratación</label>
+
+									<span style="font-size: 14px">{{ fechas.procesoContratacion }}</span>
+									<!-- <input class="form-control" [value]="fechas.procesoContratacion" readonly /> -->
+								</div>
+
+								<div class="col-md-4 d-flex align-items-center">
+									<label class="input-group-text adjustable-label">Fin del proceso de selección y de contración</label>
+
+									<span style="font-size: 14px">{{ fechas.finProcesoContratacion }}</span>
+									<!-- <input class="form-control" [value]="fechas.finProcesoContratacion" readonly /> -->
+								</div>
+							</div>
+
+							<div class="px-3">
+								<hr />
+							</div>
+
+							<div class="row">
+								<div class="col-md-6">
+									<div class="input-group mb-3 align-items-center">
+										<label class="input-group-text text-start label-estilo" for="tipoSolicitud">Tipo Proceso</label>
+
+										<span style="font-size: 14px">{{ model.tipoProceso === "" ? "Ninguno" : model.tipoProceso }}</span>
+									</div>
+								</div>
+
+								<div class="col-md-6">
+									<div class="input-group mb-3 align-items-center">
+										<label class="input-group-text text-start label-estilo" for="flexSwitchCheckChecked">Tipo de fuente</label>
+
+										<span style="font-size: 14px">{{ model.tipoProceso === "" ? "Ninguno" : isChecked ? "Externo" : "Interno" }}</span>
+									</div>
+								</div>
+							</div>
+
+							<div class="row" *ngIf="isChecked">
+								<div class="col-md-6">
+									<div class="input-group mb-3 align-items-center">
+										<label class="input-group-text text-start label-estilo">Fuente Externa</label>
+
+										<span style="font-size: 14px">{{ option.valor }}</span>
+									</div>
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col-md-12">
+									<div class="input-group mb-3 align-items-center">
+										<label class="input-group-text text-start label-estilo2" for="nombre-candidato"
+											>Nombre del candidato <br />
+											seleccionado</label
+										>
+
+										<span style="font-size: 14px">{{ nombreCandidato }}</span>
+									</div>
+								</div>
 							</div>
 						</div>
-					</div>
-					<!--Fin Fuente externa-->
+					</app-solicitud-seccion-desplegable>
 
-					<!--Inicio seleccion de candidato-->
-
-					<!--Columnas con tres campos por fila-->
-					<div class="row">
-						<div class="col-md-4 d-flex align-items-center">
-							<label class="input-group-text adjustable-label">Actualización del perfil</label>
-
-							<input class="form-control" [value]="fechas.actualizacionPerfil" readonly />
-						</div>
-
-						<div class="col-md-4 d-flex align-items-center">
-							<label class="input-group-text adjustable-label">Búsqueda de candidatos</label>
-
-							<input class="form-control" [value]="fechas.busquedaCandidatos" readonly />
-						</div>
-
-						<div class="col-md-4 d-flex align-items-center">
-							<label class="input-group-text adjustable-label">Entrevista de RR.HH.</label>
-
-							<input class="form-control" [value]="fechas.entrevista" readonly />
-						</div>
-					</div>
-
-					<div class="row">
-						<div class="col-md-4 d-flex align-items-center">
-							<label class="input-group-text adjustable-label">Pruebas</label>
-
-							<input class="form-control" [value]="fechas.pruebas" readonly />
-						</div>
-
-						<div class="col-md-4 d-flex align-items-center">
-							<label class="input-group-text adjustable-label">Referencias</label>
-
-							<input class="form-control" [value]="fechas.referencias" readonly />
-						</div>
-
-						<div class="col-md-4 d-flex align-items-center">
-							<label class="input-group-text adjustable-label">Elaboración de informe</label>
-
-							<input class="form-control" [value]="fechas.elaboracionInforme" readonly />
-						</div>
-					</div>
-
-					<div class="row">
-						<div class="col-md-4 d-flex align-items-center">
-							<label class="input-group-text adjustable-label">Entrega al jefe solicitante</label>
-
-							<input class="form-control" [value]="fechas.entregaJefe" readonly />
-						</div>
-
-						<div class="col-md-4 d-flex align-items-center">
-							<label class="input-group-text adjustable-label">Entrevista por jefatura</label>
-
-							<input class="form-control" [value]="fechas.entrevistaJefatura" readonly />
-						</div>
-
-						<div class="col-md-4 d-flex align-items-center">
-							<label class="input-group-text adjustable-label">Toma de decisiones</label>
-
-							<input class="form-control" [value]="fechas.tomaDecisiones" readonly />
-						</div>
-					</div>
-
-					<div class="row">
-						<div class="col-md-4 d-flex">
-							<label class="input-group-text adjustable-label">Candidato seleccionado</label>
-
-							<input class="form-control" [value]="fechas.candidatoSeleccionado" readonly />
-						</div>
-
-						<div class="col-md-4 d-flex">
-							<label class="input-group-text adjustable-label">Proceso de contratación</label>
-
-							<input class="form-control" [value]="fechas.procesoContratacion" readonly />
-						</div>
-					</div>
-
-					<div class="row">
-						<div class="col-md-4 d-flex align-items-center">
-							<label class="input-group-text adjustable-label">Fin del proceso de selección y de contración</label>
-
-							<input class="form-control" [value]="fechas.finProcesoContratacion" readonly />
-						</div>
-					</div>
-
-					<div class="row mb-3">
-						<div class="col-md-3 me-2">
-							<label class="input-group-text text-start label-estilo" for="nombre-candidato"
-								>Nombre del candidato <br />
-								seleccionado</label
-							>
-						</div>
-
-						<div class="col-md-4">
-							<input type="text" name="nombre-candidato" placeholder="Nombre del candidato" [(ngModel)]="nombreCandidato" class="form-control" id="nombre-candidato" readonly />
-						</div>
-					</div>
-					<!--Fin Seleccion de candidato-->
-
-					<div class="row mt-4">
-						<div class="col-md-4">
+					<!-- ! Fechas -->
+					<app-solicitud-seccion-desplegable titleSummary="Fechas">
+						<div>
 							<div class="mb-4">
 								<h3 class="sol-danger">Reingreso</h3>
 							</div>
-						</div>
-					</div>
 
-					<div class="row">
-						<div class="col-md-4 d-flex">
-							<label for="input1" class="input-group-text adjustable-label">Inicio de proceso</label>
+							<div class="row">
+								<div class="col-md-6">
+									<div class="input-group mb-3 align-items-center">
+										<label for="input1" class="input-group-text label-estilo">Inicio de proceso</label>
 
-							<input id="input1" type="text" class="form-control" readonly [value]="fechas.reingreso" />
-						</div>
+										<span style="font-size: 14px">{{ fechas.reingreso }}</span>
+									</div>
+								</div>
 
-						<div class="col-md-4 d-flex">
-							<label for="input2" class="input-group-text adjustable-label">Fin de proceso</label>
+								<div class="col-md-6">
+									<div class="input-group mb-3 align-items-center">
+										<label for="input2" class="input-group-text label-estilo">Fin de proceso</label>
 
-							<input id="input2" type="text" class="form-control" readonly [value]="fechas.reingreso === '' ? '' : fechas.finProceso" />
-						</div>
-					</div>
+										<span style="font-size: 14px">{{ fechas.finProceso }}</span>
+									</div>
+								</div>
+							</div>
 
-					<div class="row mt-4">
-						<div class="col-md-4">
 							<div class="mb-4">
 								<h3 class="sol-danger">Contratación de familiares</h3>
 							</div>
+
+							<div class="row">
+								<div class="col-md-6">
+									<div class="input-group mb-3 align-items-center">
+										<label for="input1" class="input-group-text label-estilo">Inicio de proceso</label>
+
+										<span style="font-size: 14px">{{ fechas.contratacionFamiliares }}</span>
+									</div>
+								</div>
+
+								<div class="col-md-6">
+									<div class="input-group mb-3 align-items-center">
+										<label for="input2" class="input-group-text label-estilo">Fin de proceso</label>
+
+										<span style="font-size: 14px">{{ fechas.finProcesoFamiliares }}</span>
+									</div>
+								</div>
+							</div>
 						</div>
-					</div>
-
-					<div class="row">
-						<div class="col-md-4 d-flex">
-							<label for="input1" class="input-group-text adjustable-label">Inicio de proceso</label>
-
-							<input id="input1" type="text" class="form-control" readonly [value]="fechas.contratacionFamiliares" />
-						</div>
-
-						<div class="col-md-4 d-flex">
-							<label for="input2" class="input-group-text adjustable-label">Fin de proceso</label>
-
-							<input id="input2" type="text" class="form-control" readonly [value]="fechas.contratacionFamiliares === '' ? '' : fechas.finProcesoFamiliares" />
-						</div>
-					</div>
+					</app-solicitud-seccion-desplegable>
 				</div>
 			</div>
 
@@ -2889,19 +2823,7 @@
 											</div>
 
 											<div class="col">
-												{{
-													nivelItem.nivelAprobacionType.nivelAprobacionRuta.toUpperCase().includes("REGISTRARSOLICITUD")
-														? "Registrar Solicitud"
-														: nivelItem.nivelAprobacionType.nivelAprobacionRuta.toUpperCase().includes("CANDIDATO")
-															? "Selección de Candidato"
-															: nivelItem.nivelAprobacionType.nivelAprobacionRuta.toUpperCase().includes("COMENTARIOJEFE")
-																? "Registrar Comentario Jefe"
-																: nivelItem.nivelAprobacionType.nivelAprobacionRuta.toUpperCase().includes("COMENTARIORRHH")
-																	? "Registrar Comentario RR.HH."
-																	: nivelItem.nivelAprobacionType.nivelAprobacionRuta.toUpperCase().includes("COMENTARIOSOLICITANTE")
-																		? "Registrar Comentario Solicitante"
-																		: nivelItem.nivelAprobacionType.nivelAprobacionRuta
-												}}
+												{{ nivelItem.nivelAprobacionType.nivelAprobacionRuta.toUpperCase().includes("REGISTRARSOLICITUD") ? "Registrar Solicitud" : nivelItem.nivelAprobacionType.nivelAprobacionRuta.toUpperCase().includes("CANDIDATO") ? "Selección de Candidato" : nivelItem.nivelAprobacionType.nivelAprobacionRuta.toUpperCase().includes("COMENTARIOJEFE") ? "Registrar Comentario Jefe" : nivelItem.nivelAprobacionType.nivelAprobacionRuta.toUpperCase().includes("COMENTARIORRHH") ? "Registrar Comentario RR.HH." : nivelItem.nivelAprobacionType.nivelAprobacionRuta.toUpperCase().includes("COMENTARIOSOLICITANTE") ? "Registrar Comentario Solicitante" : nivelItem.nivelAprobacionType.nivelAprobacionRuta }}
 											</div>
 										</div>
 									</button>

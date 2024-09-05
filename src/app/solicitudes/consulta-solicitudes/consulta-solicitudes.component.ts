@@ -814,6 +814,17 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 			data.fechaHasta = this.formatFecha(this.dataFilterSolicitudes, "fechaHasta");
 		}
 
+		if (this.dataFilterSolicitudes.fechaDesde !== undefined && this.dataFilterSolicitudes.fechaDesde !== null && (this.dataFilterSolicitudes.fechaHasta === undefined || this.dataFilterSolicitudes.fechaHasta === null)) {
+            const currentDate: string = new Date().toISOString().split("T")[0];
+
+			if(data.fechaDesde === currentDate.substring(0,5).concat(currentDate.substring(6).replaceAll("0",""))) {
+                this.dataFilterSolicitudes.fechaHasta = this.dataFilterSolicitudes.fechaDesde;
+                this.dataFilterSolicitudes.fechaHasta.day = this.dataFilterSolicitudes.fechaHasta.day + 1;
+                data.fechaHasta = this.formatFecha(this.dataFilterSolicitudes, "fechaHasta");
+                this.dataFilterSolicitudes.fechaHasta=null;
+            }
+        }
+
 		if (this.dataFilterSolicitudes.fechaDesde !== undefined && this.dataFilterSolicitudes.fechaDesde !== null && this.dataFilterSolicitudes.fechaHasta !== undefined && this.dataFilterSolicitudes.fechaHasta !== null && data.fechaDesde === data.fechaHasta) {
 			this.dataFilterSolicitudes.fechaHasta.day = this.dataFilterSolicitudes.fechaHasta.day + 1;
 			data.fechaHasta = this.formatFecha(this.dataFilterSolicitudes, "fechaHasta");
@@ -992,18 +1003,18 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 							}));
 
 							// Combinar las solicitudes y los detalles de la solicitud
-							const data = solicitudes.solicitudType.map((solicitud) => {
-								const detalles = detallesSolicitud.detalleSolicitudType.find((detalle) => detalle.idSolicitud === solicitud.idSolicitud);
-								solicitud.fechaCreacion = new DatePipe('en-CO').transform(solicitud.fechaCreacion, 'dd/MM/yyyy HH:mm:ss');
-								solicitud.fechaActualizacion = new DatePipe('en-CO').transform(solicitud.fechaActualizacion, 'dd/MM/yyyy HH:mm:ss');
+							return solicitudes.solicitudType
+								.map((solicitud) => {
+									const detalles = detallesSolicitud.detalleSolicitudType.find((detalle) => detalle.idSolicitud === solicitud.idSolicitud);
+									solicitud.fechaCreacion = new DatePipe('en-CO').transform(solicitud.fechaCreacion, 'dd/MM/yyyy HH:mm:ss');
+									solicitud.fechaActualizacion = new DatePipe('en-CO').transform(solicitud.fechaActualizacion, 'dd/MM/yyyy HH:mm:ss');
 
-								return {
-									...solicitud,
-									...detalles
-								};
-							});
-
-							return data.sort((a, b) => new Date(a.fechaCreacion).getTime() - new Date(b.fechaCreacion).getTime());
+									return {
+										...solicitud,
+										...detalles
+									};
+								})
+								.sort((a, b) => new Date(a.fechaCreacion).getTime() - new Date(b.fechaCreacion).getTime());
 						})
 					)
 					.subscribe((data) => {
@@ -1222,20 +1233,20 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 				}));
 
 				const bodyReport = combined.map(({ solicitud, detalle }) => ([
-					solicitud.compania === null || solicitud.compania === undefined ? "" : solicitud.compania,
-					solicitud.unidadNegocio === null || solicitud.unidadNegocio === undefined ? "" : solicitud.unidadNegocio,
-					solicitud.localidad === null || solicitud.localidad === undefined ? "" : solicitud.localidad,
-					solicitud.nombreJefeSolicitante === null || solicitud.nombreJefeSolicitante === undefined ? "" : solicitud.nombreJefeSolicitante,
-					solicitud.areaDepartamento === null || solicitud.areaDepartamento === undefined ? "" : solicitud.areaDepartamento,
-					solicitud.descripcionPosicion === null || solicitud.descripcionPosicion === undefined ? "" : solicitud.descripcionPosicion,
-					solicitud.nivelDireccion === null || solicitud.nivelDireccion === undefined ? "" : solicitud.nivelDireccion,
-					solicitud.tipoMotivo === null || solicitud.tipoMotivo === undefined ? "" : solicitud.tipoMotivo,
-					solicitud.estado === null || solicitud.estado === undefined ? "" : solicitud.estado,
-					detalle !== undefined ? (detalle.fuenteExterna === null || detalle.fuenteExterna === undefined ? "" : detalle.fuenteExterna) : "",
+					solicitud.compania === null || solicitud.compania === undefined || solicitud.compania === "" ? "-" : solicitud.compania,
+					solicitud.unidadNegocio === null || solicitud.unidadNegocio === undefined || solicitud.unidadNegocio === "" ? "-" : solicitud.unidadNegocio,
+					solicitud.localidad === null || solicitud.localidad === undefined || solicitud.localidad === "" ? "-" : solicitud.localidad,
+					solicitud.nombreJefeSolicitante === null || solicitud.nombreJefeSolicitante === undefined || solicitud.nombreJefeSolicitante === "" ? "-" : solicitud.nombreJefeSolicitante,
+					solicitud.areaDepartamento === null || solicitud.areaDepartamento === undefined || solicitud.areaDepartamento === "" ? "-" : solicitud.areaDepartamento,
+					solicitud.descripcionPosicion === null || solicitud.descripcionPosicion === undefined || solicitud.descripcionPosicion === "" ? "-" : solicitud.descripcionPosicion,
+					solicitud.nivelDireccion === null || solicitud.nivelDireccion === undefined || solicitud.nivelDireccion === "" ? "-" : solicitud.nivelDireccion,
+					solicitud.tipoMotivo === null || solicitud.tipoMotivo === undefined || solicitud.tipoMotivo === "" ? "-" : solicitud.tipoMotivo,
+					solicitud.estado === null || solicitud.estado === undefined || solicitud.estado === "" ? "-" : solicitud.estado,
+					detalle !== undefined ? (detalle.fuenteExterna === null || detalle.fuenteExterna === undefined || detalle.fuenteExterna === "" ? "-" : detalle.fuenteExterna) : "-",
 					solicitud.idSolicitud,
-					solicitud.fechaActualizacion === null || solicitud.fechaActualizacion === undefined ? "" : format(new Date(solicitud.fechaActualizacion), "dd-MM-yyyy"),
-					solicitud.fechaSalida === null || solicitud.fechaSalida === undefined ? "" : format(new Date(solicitud.fechaSalida), "dd-MM-yyyy"),
-					solicitud.fechaIngreso === null || solicitud.fechaIngreso === undefined ? "" : format(new Date(solicitud.fechaIngreso), "dd-MM-yyyy"),
+					solicitud.fechaActualizacion === null || solicitud.fechaActualizacion === undefined || solicitud.fechaActualizacion === "" ? "-" : format(new Date(solicitud.fechaActualizacion), "dd-MM-yyyy"),
+					solicitud.fechaSalida === null || solicitud.fechaSalida === undefined || solicitud.fechaSalida === "" ? "-" : format(new Date(solicitud.fechaSalida), "dd-MM-yyyy"),
+					solicitud.fechaIngreso === null || solicitud.fechaIngreso === undefined || solicitud.fechaIngreso === "" ? "-" : format(new Date(solicitud.fechaIngreso), "dd-MM-yyyy"),
 					"Días de requisición en proceso",
 					"Días de requisición hasta el ingreso del colaborador",
 					"Etapa actual",

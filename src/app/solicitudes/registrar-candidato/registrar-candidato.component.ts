@@ -34,6 +34,7 @@ import { CompleteTaskComponent } from "../general/complete-task.component";
 import { SolicitudesService } from "../registrar-solicitud/solicitudes.service";
 import { RegistrarCandidatoService } from "./registrar-candidato.service";
 import { portalWorkFlow } from "src/environments/environment.prod";
+import { convertTimeZonedDate } from "src/app/services/util/dates.util";
 
 export const dialogComponentList: DialogComponents = {
 	dialogBuscarEmpleados: undefined,
@@ -1314,8 +1315,8 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
 			idUnidadNegocio: this.model.unidadNegocio,
 		};
 
-		this.solicitud.empresa = this.model.idEmpresa;
-		this.solicitud.idEmpresa = this.model.idEmpresa;
+		this.solicitud.empresa = this.model.compania;
+		this.solicitud.idEmpresa = this.model.compania;
 
 		this.solicitud.unidadNegocio = this.model.unidadNegocio;
 		this.solicitud.idUnidadNegocio = this.model.unidadNegocio;
@@ -1491,8 +1492,8 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
 	onCompletar() { //completar tarea mmunoz
 		if (this.uniqueTaskId === null) {
 			//handle this as an error
-			this.errorMessage =
-				"Unique Task id is empty. Cannot initiate task complete.";
+			this.errorMessage = "Unique Task id is empty. Cannot initiate task complete.";
+
 			return;
 		}
 		this.utilService.openLoadingSpinner(
@@ -1548,6 +1549,9 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
 											tipoAccion: "string"
 										};
 
+										convertTimeZonedDate(solicitud.fechaActualizacion);
+										convertTimeZonedDate(solicitud.fechaCreacion);
+
 										this.solicitudes.guardarSolicitud(solicitud).subscribe({
 											next: resSolicitud => {
 
@@ -1591,6 +1595,10 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
 																if (this.model.tipoProceso.toUpperCase().includes("REINGRESO")) {
 																	detalle.supervisaA = 'N/A';
 																}
+
+																detalle.fechaRegistro = new Date();
+																convertTimeZonedDate(detalle.fechaRegistro);
+
 																this.solicitudes.guardarDetalleSolicitud(detalle).subscribe({
 																	next: () => {
 																		this.starterService.getUser(localStorage.getItem(LocalStorageKeys.IdUsuario)!).subscribe({

@@ -25,6 +25,11 @@ export const TiposolicitudData: ITiposolicitudData = {
 			colType: "string",
 		},
 		{
+			title: "Fecha",
+			dataIndex: "fechaActualizacion",
+			colType: "string",
+		},
+		{
 			title: "Estado",
 			dataIndex: "estado",
 			type: "bool",

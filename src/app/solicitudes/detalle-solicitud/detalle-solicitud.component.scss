@@ -1,32 +1,32 @@
 .autocomplete-items {
-  border: 1px solid #d4d4d4;
-  border-bottom: none;
-  border-top: none;
-  z-index: 99;
-  /*position the autocomplete items to be the same width as the container:*/
-  top: 100%;
-  left: 0;
-  right: 0;
+	border: 1px solid #d4d4d4;
+	border-bottom: none;
+	border-top: none;
+	z-index: 99;
+	/*position the autocomplete items to be the same width as the container:*/
+	top: 100%;
+	left: 0;
+	right: 0;
 }
 
 .suggestion-item {
-  padding: 10px;
-  cursor: pointer;
-  background-color: #fff;
-  border-bottom: 1px solid #d4d4d4;
+	padding: 10px;
+	cursor: pointer;
+	background-color: #fff;
+	border-bottom: 1px solid #d4d4d4;
 }
 
 .suggestion-item:hover {
-  /*when hovering an item:*/
-  background-color: #e9e9e9;
+	/*when hovering an item:*/
+	background-color: #e9e9e9;
 }
 
 .form-control {
-  width: 300px;
+	width: 300px;
 }
 
 .header-accordion {
-  background-color: white !important
+	background-color: white !important
 }
 
 // .accordion-item {
@@ -35,74 +35,74 @@
 
 .accordion-button,
 .accordion-button.collapsed {
-  border: none !important;
-  box-shadow: none !important;
+	border: none !important;
+	box-shadow: none !important;
 }
 
 textarea {
-  width: 40%;
-  // height: 200px;
-  padding: 10px;
-  border: 1px solid #e2dfdf;
-  box-sizing: border-box;
+	width: 40%;
+	// height: 200px;
+	padding: 10px;
+	border: 1px solid #e2dfdf;
+	box-sizing: border-box;
 }
 
 .ngb-typeahead-window .dropdown-item.active {
-  background-color: gold;
-  /* Cambia el color de fondo a dorado */
+	background-color: gold;
+	/* Cambia el color de fondo a dorado */
 }
 
 .dropdown-menu {
-  width: 300px;
-  /* Ajusta el ancho según tus necesidades */
+	width: 300px;
+	/* Ajusta el ancho según tus necesidades */
 }
 
 .label-estilo {
-  color: #0056B3;
-  font-size: 16px;
-  width: 45%;
-  background-color: white;
-  font-weight: 500;
-  border-style: none;
+	color: #0056B3;
+	font-size: 16px;
+	width: 45%;
+	background-color: white;
+	font-weight: 500;
+	border-style: none;
 }
 
 .label-estilo2 {
-  color: #0056B3;
-  font-size: 16px;
-  width: 22%;
-  background-color: white;
-  font-weight: 500;
-  border-style: none;
+	color: #0056B3;
+	font-size: 16px;
+	width: 22%;
+	background-color: white;
+	font-weight: 500;
+	border-style: none;
 }
 
 .sol-danger {
-  color: #C69D08;
-  font-size: 23px;
-  font-weight: 500;
+	color: #C69D08;
+	font-size: 23px;
+	font-weight: 500;
 }
 
 .row {
-  display: flex;
-  flex-wrap: nowrap;
+	display: flex;
+	flex-wrap: nowrap;
 }
 
 .align-items-center {
-  align-items: center;
+	align-items: center;
 }
 
 .adjustable-label {
-  color: #0056B3;
-  font-size: 16px;
-  background-color: white;
-  font-weight: 500;
-  border-style: none;
-  width: 45%;
-  /* Ajusta al 100% del contenedor padre */
-  word-wrap: break-word;
-  /* Permite que las palabras se dividan en el borde del contenedor */
-  white-space: normal;
-  /* Permite que el texto se ajuste y baje a la siguiente línea */
-  text-align: left;
+	color: #0056B3;
+	font-size: 16px;
+	background-color: white;
+	font-weight: 500;
+	border-style: none;
+	width: 45%;
+	/* Ajusta al 100% del contenedor padre */
+	word-wrap: break-word;
+	/* Permite que las palabras se dividan en el borde del contenedor */
+	white-space: normal;
+	/* Permite que el texto se ajuste y baje a la siguiente línea */
+	text-align: left;
 }
 
 /*#lcomentariodinamico {
@@ -112,7 +112,7 @@ textarea {
 //}*/
 
 .hidden-label {
-  visibility: hidden;
+	visibility: hidden;
 }
 
 

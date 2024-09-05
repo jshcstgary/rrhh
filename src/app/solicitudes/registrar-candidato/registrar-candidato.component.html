@@ -53,24 +53,8 @@
 			<div class="after-header-solicitud"></div>
 
 			<!-- ! Información General -->
-			<details class="mb-4">
-				<summary>
-					<div class="row">
-						<div class="col-md-4">
-							<h3 class="sol-danger">Información general</h3>
-						</div>
-
-						<div class="col-md-7">
-							<hr />
-						</div>
-
-						<div class="col-md-1 text-end">
-							<i class="fas fa-chevron-circle-down"></i>
-						</div>
-					</div>
-				</summary>
-
-				<div class="details-content">
+			<app-solicitud-seccion-desplegable titleSummary="Información General">
+				<div>
 					<div class="row">
 						<div class="col-md-6">
 							<div class="input-group mb-3 align-items-center">
@@ -211,27 +195,11 @@
 						</div>
 					</div>
 				</div>
-			</details>
+			</app-solicitud-seccion-desplegable>
 
 			<!-- ! Funciones y responsabildiades -->
-			<details class="mb-4">
-				<summary>
-					<div class="row">
-						<div class="col-md-4">
-							<h3 class="sol-danger">Funciones y responsabilidades</h3>
-						</div>
-
-						<div class="col-md-7">
-							<hr />
-						</div>
-
-						<div class="col-md-1 text-end">
-							<i class="fas fa-chevron-circle-down"></i>
-						</div>
-					</div>
-				</summary>
-
-				<div class="details-content">
+			<app-solicitud-seccion-desplegable titleSummary="Funciones y responsabildiades">
+				<div>
 					<div class="row">
 						<div class="col-md-12">
 							<div class="input-group mb-3 aling-items-center">
@@ -251,7 +219,7 @@
 							</div>
 						</div>
 					</div>
-					
+
 					<div class="row">
 						<div class="col-md-6">
 							<div class="input-group mb-3 aling-items-center">
@@ -270,27 +238,11 @@
 						</div>
 					</div>
 				</div>
-			</details>
+			</app-solicitud-seccion-desplegable>
 
 			<!-- ! Tipo de variables -->
-			<details class="mb-4">
-				<summary>
-					<div class="row">
-						<div class="col-md-4">
-							<h3 class="sol-danger">Sueldo/Tipo de variable</h3>
-						</div>
-
-						<div class="col-md-7">
-							<hr />
-						</div>
-
-						<div class="col-md-1 text-end">
-							<i class="fas fa-chevron-circle-down"></i>
-						</div>
-					</div>
-				</summary>
-
-				<div class="details-content">
+			<app-solicitud-seccion-desplegable titleSummary="Sueldo/Tipo de variable">
+				<div>
 					<div class="row">
 						<div class="col-md-6">
 							<div class="input-group mb-3 aling-items-center">
@@ -337,27 +289,11 @@
 						</div>
 					</div>
 				</div>
-			</details>
+			</app-solicitud-seccion-desplegable>
 
 			<!-- ! Atención de los aprobadores -->
-			<details class="mb-4">
-				<summary>
-					<div class="row">
-						<div class="col-md-4">
-							<h3 class="sol-danger">Atención de los Aprobadores</h3>
-						</div>
-
-						<div class="col-md-7">
-							<hr />
-						</div>
-
-						<div class="col-md-1 text-end">
-							<i class="fas fa-chevron-circle-down"></i>
-						</div>
-					</div>
-				</summary>
-
-				<div class="details-content">
+			<app-solicitud-seccion-desplegable titleSummary="Atención de los aprobadores">
+				<div>
 					<div class="row">
 						<div class="col-md-12">
 							<div class="input-group mb-3 align-items-start">
@@ -365,7 +301,6 @@
 
 								<div>
 									<div class="row" *ngFor="let item of dataComentariosAprobaciones">
-										<!-- <span style="color: black; font-size: 14px" class="text-start">{{ item.text !== "" || item.text !== undefined || item.text !== null ? item.text : "No hay comentario" }}</span> -->
 										<span style="color: black; font-size: 14px" class="text-start">{{ item.text }}</span>
 									</div>
 								</div>
@@ -401,27 +336,11 @@
 						</div>
 					</div>
 				</div>
-			</details>
+			</app-solicitud-seccion-desplegable>
 
-			<!-- ! Selecciónde candidato -->
-			<details open class="mb-4">
-				<summary>
-					<div class="row">
-						<div class="col-md-4">
-							<h3 class="sol-danger">Selección de Candidato</h3>
-						</div>
-
-						<div class="col-md-7">
-							<hr />
-						</div>
-
-						<div class="col-md-1 text-end">
-							<i class="fas fa-chevron-circle-down"></i>
-						</div>
-					</div>
-				</summary>
-
-				<div class="details-content">
+			<!-- ! Selección de candidato -->
+			<app-solicitud-seccion-desplegable titleSummary="Selección de candidato" [isOpen]="true">
+				<div>
 					<div class="row">
 						<div class="col-md-4 d-flex align-items-center">
 							<input id="input1" type="checkbox" [(ngModel)]="isCheckedPerfil" (change)="onCheckboxChangeCandidato($event)" name="checkPerfil" [disabled]="disabledFechas.actualizacionPerfil" />
@@ -589,27 +508,11 @@
 						</div>
 					</div>
 				</div>
-			</details>
+			</app-solicitud-seccion-desplegable>
 
 			<!-- ! Fechas -->
-			<details open class="mb-4">
-				<summary>
-					<div class="row">
-						<div class="col-md-4">
-							<h3 class="sol-danger">Fechas</h3>
-						</div>
-
-						<div class="col-md-7">
-							<hr />
-						</div>
-
-						<div class="col-md-1 text-end">
-							<i class="fas fa-chevron-circle-down"></i>
-						</div>
-					</div>
-				</summary>
-
-				<div class="details-content">
+			<app-solicitud-seccion-desplegable titleSummary="Fechas" [isOpen]="true">
+				<div>
 					<div class="mb-4">
 						<h3 class="sol-danger">Reingreso</h3>
 					</div>
@@ -654,7 +557,7 @@
 						</div>
 					</div>
 				</div>
-			</details>
+			</app-solicitud-seccion-desplegable>
 		</h2>
 	</div>
 </form>

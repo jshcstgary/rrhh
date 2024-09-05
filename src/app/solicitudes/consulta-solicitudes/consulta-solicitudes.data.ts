@@ -9,7 +9,7 @@ export const ConsultaSolicitudesData: IConsultaSolicitudesData = {
 			dataIndex: "idSolicitud",
 			align: "center",
 			sortActive: true,
-			colType: "number",
+			colType: "string",
 		},
 		{
 			title: "Tipo de Solicitud",

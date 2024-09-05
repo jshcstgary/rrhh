@@ -1193,28 +1193,28 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
 	}
 
 	obtenerAprobacionesPorPosicion() {
-		return this.solicitudes
-			.obtenerAprobacionesPorPosicionRuta(this.solicitud.idTipoSolicitud, this.solicitud.idTipoMotivo, this.model.codigoPosicion, this.model.nivelDir, this.dataTipoRutaEmp[0].id, 'A')
-			.subscribe({
-				next: (response) => {
-					if (response.totalRegistros === 0 || response.totalRegistros === null) {
+		return this.solicitudes.obtenerAprobacionesPorPosicionRuta(this.solicitud.idTipoSolicitud, this.solicitud.idTipoMotivo, this.model.codigoPosicion, this.model.nivelDir, this.dataTipoRutaEmp[0].id, "A").subscribe({
+			next: (res) => {
+				if (res.totalRegistros === 0 || res.totalRegistros === null) {
+					this.utilService.modalResponse("No existe aprobadores de solicitud para los datos ingresados", "error");
+
+					this.existenNivelesAprobacion = false;
+
+					return;
+				}
+
+				this.solicitudes.obtenerAprobacionesPorPosicionRuta(this.solicitud.idTipoSolicitud, this.solicitud.idTipoMotivo, this.model.codigoPosicion, this.model.nivelDir, this.dataTipoRutaEmp[0].id, "A").subscribe({
+					next: (response) => {
+						this.existenNivelesAprobacion = true;
+
+						this.dataAprobacionesPorPosicion[this.keySelected] = response.nivelAprobacionPosicionType;
+					},
+					error: (error: HttpErrorResponse) => {
 						this.utilService.modalResponse("No existe aprobadores de solicitud para los datos ingresados", "error");
-
-						this.existenNivelesAprobacion = false;
-						
-						return;
-					}
-					this.existenNivelesAprobacion = true;
-
-					this.dataAprobacionesPorPosicion[this.keySelected] = response.nivelAprobacionPosicionType;
-				},
-				error: (error: HttpErrorResponse) => {
-					this.utilService.modalResponse(
-						"No existe aprobadores de solicitud para los datos ingresados",
-						"error"
-					);
-				},
-			});
+					},
+				});
+			}
+		});
 	}
 
 	getNivelesAprobacion() {
@@ -1994,8 +1994,8 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
 			idUnidadNegocio: this.model.unidadNegocio,
 		};
 
-		this.solicitud.empresa = this.model.idEmpresa;
-		this.solicitud.idEmpresa = this.model.idEmpresa;
+		this.solicitud.empresa = this.model.compania;
+		this.solicitud.idEmpresa = this.model.compania;
 
 		this.solicitud.unidadNegocio = this.model.unidadNegocio;
 		this.solicitud.idUnidadNegocio = this.model.unidadNegocio;

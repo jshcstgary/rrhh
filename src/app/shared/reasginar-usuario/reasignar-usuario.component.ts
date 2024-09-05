@@ -4,13 +4,15 @@ import { Component, Input } from "@angular/core";
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { NgbActiveModal, NgbTypeaheadModule } from "@ng-bootstrap/ng-bootstrap";
 import { Validators } from "ngx-editor";
+import { LoginServices } from "src/app/auth/services/login.services";
 import { LocalStorageKeys } from "src/app/enums/local-storage-keys.enum";
 import { Solicitud } from "src/app/eschemas/Solicitud";
 import { EvType } from "src/app/services/mantenimiento/empleado.interface";
 import { MantenimientoService } from "src/app/services/mantenimiento/mantenimiento.service";
 import { UtilService } from "src/app/services/util/util.service";
 import { SolicitudesService } from "src/app/solicitudes/registrar-solicitud/solicitudes.service";
-import { environment, portalWorkFlow } from "src/environments/environment";
+import { LoginRequest } from "src/app/types/permiso.type";
+import { appCode, environment, portalWorkFlow } from "src/environments/environment";
 import Swal from "sweetalert2";
 
 @Component({
@@ -110,7 +112,7 @@ export class DialogReasignarUsuarioComponent {
 	@Input("taskId")
 	public taskId: string = "";
 
-	constructor(private activeModal: NgbActiveModal, private mantenimientoService: MantenimientoService, private utilService: UtilService, private solicitudes: SolicitudesService, private formBuilder: FormBuilder) {
+	constructor(private activeModal: NgbActiveModal, private mantenimientoService: MantenimientoService, private utilService: UtilService, private solicitudes: SolicitudesService, private formBuilder: FormBuilder, private loginService: LoginServices) {
 		this.utilService.openLoadingSpinner("Cargando información, espere por favor...");
 	}
 	
@@ -210,7 +212,7 @@ export class DialogReasignarUsuarioComponent {
 					this.dataAprobador = this.dataDetalleAprobadorSolicitud.find(data => data.estadoAprobacion.toUpperCase().includes("REGISTRARCOMENTARIOSOLICITANTE"));
 					this.dataAprobador.idNivelAprobacion = 700000;
 					this.dataAprobador.id_NivelAprobacion = this.dataAprobador.idNivelAprobacion;
-					this.dataAprobador.ruta = "Reasignación de Registro de Comentario Jefe Solicitante";
+					this.dataAprobador.ruta = "Reasignación de Registro de Comentario Solicitante";
 					this.dataAprobador.nivelAprobacionRuta = "Registro de Comentario Jefe Solicitante";
 				} else if (this.taskId === environment.taskType_AP_Registrar) {
 					this.mensaje = "Se reasignó la tarea de registrar solicitud de acción de personal";
@@ -299,6 +301,58 @@ export class DialogReasignarUsuarioComponent {
 
 			return;
 		}
+
+		// const getPerfileRequest: LoginRequest = {
+		// 	codigoAplicacion: appCode,
+		// 	codigoPerfil: "",
+		// 	codigoRecurso: "PWFCAMUMET",
+		// 	usuario: this.user,
+		// 	password: btoa(this.password),
+		// 	isAutenticacionLocal: false,
+		// };
+		// this.loginService.getPerfilesUsuario(getPerfileRequest).subscribe({
+		// 	next: (response) => {
+		// 		this.perfilUsuario = response;
+		// 		if (this.perfilUsuario.length === 0) {
+		// 			Swal.fire({
+		// 				text: "Usuario no encontrado",
+		// 				icon: "error",
+		// 				confirmButtonColor: "rgb(227, 199, 22)",
+		// 				confirmButtonText: "Ok",
+		// 			});
+
+		// 			return;
+		// 		}
+		// 	},
+		// 	error: (err) => {
+		// 		if (this.perfilUrl.toUpperCase().includes("IGUANA")) {
+		// 			this.perfilUsuarioError[0].scg_per_codigo = "0001";
+		// 			this.perfilUsuarioError[0].scg_per_descripcion = "Admin";
+		// 			this.perfilUsuarioError[0].message = "Exito";
+
+		// 			this.perfilUsuarioError[1].scg_per_codigo = "0002";
+		// 			this.perfilUsuarioError[1].scg_per_descripcion = "Iniciador";
+		// 			this.perfilUsuarioError[1].message = "Exito";
+
+		// 			this.perfilUsuarioError[2].scg_per_codigo = "0003";
+		// 			this.perfilUsuarioError[2].scg_per_descripcion = "Aprobador";
+		// 			this.perfilUsuarioError[2].message = "Exito";
+
+		// 			this.perfilUsuarioError[3].scg_per_codigo = "0004";
+		// 			this.perfilUsuarioError[3].scg_per_descripcion = "Aprobador Fijo";
+		// 			this.perfilUsuarioError[3].message = "Exito";
+
+		// 			this.perfilUsuario = this.perfilUsuarioError;
+		// 		} else {
+		// 			Swal.fire({
+		// 				text: "Usuario no es valido",
+		// 				icon: "error",
+		// 				confirmButtonColor: "rgb(227, 199, 22)",
+		// 				confirmButtonText: "Ok",
+		// 			});
+		// 		}
+		// 	}
+		// });
 
 		this.dataAprobador.usuarioAprobador = this.modelo.nombreCompleto;
 		this.dataAprobador.codigoPosicionAprobador = this.modelo.codigoPosicion;
@@ -400,7 +454,7 @@ export class DialogReasignarUsuarioComponent {
 
 	public seleccionarUsuario(empleado: any): void {
 		// this.empleadoSeleccionado = empleado;
-		this.	modelo = empleado;
+		this.modelo = empleado;
 	}
 
 	// onSelectItem(campo: string, event) {

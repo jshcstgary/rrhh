@@ -1304,7 +1304,7 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
 		this.solicitud.unidadNegocio = this.model.unidadNegocio;
 		this.solicitud.idUnidadNegocio = this.model.unidadNegocio;
 		this.solicitud.estadoSolicitud = "2";
-		console.log("this.solicitud: ", this.solicitud);
+
 		this.solicitudes
 			.actualizarSolicitud(this.solicitud)
 			.subscribe((responseSolicitud) => {
@@ -1564,8 +1564,8 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
 				next: (res) => {
 					this.camundaRestService.postCompleteTask(this.uniqueTaskId, variables).subscribe({
 						next: (res) => {
-							this.solicitud.empresa = this.model.idEmpresa;
-							this.solicitud.idEmpresa = this.model.idEmpresa;
+							this.solicitud.empresa = this.model.compania;
+							this.solicitud.idEmpresa = this.model.compania;
 							this.solicitud.unidadNegocio = this.model.unidadNegocio;
 							this.solicitud.idUnidadNegocio = this.model.unidadNegocio;
 

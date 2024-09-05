@@ -986,8 +986,8 @@ export class CompletarAccionPersonalComponent extends CompleteTaskComponent {
 				next: (res) => {
 					console.log("Complete task notificar");
 					//actualizo la solicitud a enviada
-					this.solicitud.empresa = this.model.idEmpresa;
-					this.solicitud.idEmpresa = this.model.idEmpresa;
+					this.solicitud.empresa = this.model.compania;
+					this.solicitud.idEmpresa = this.model.compania;
 
 					this.solicitud.unidadNegocio = this.model.unidadNegocio;
 					this.solicitud.idUnidadNegocio = this.model.unidadNegocio;
@@ -1093,8 +1093,8 @@ export class CompletarAccionPersonalComponent extends CompleteTaskComponent {
 			idUnidadNegocio: this.model.unidadNegocio,
 		};
 
-		this.solicitud.empresa = this.model.idEmpresa;
-		this.solicitud.idEmpresa = this.model.idEmpresa;
+		this.solicitud.empresa = this.model.compania;
+		this.solicitud.idEmpresa = this.model.compania;
 
 		this.solicitud.unidadNegocio = this.model.unidadNegocio;
 		this.solicitud.idUnidadNegocio = this.model.unidadNegocio;

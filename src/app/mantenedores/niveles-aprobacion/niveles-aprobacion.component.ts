@@ -472,12 +472,6 @@ export class NivelesAprobacionComponent implements OnInit {
 	}
 
 	private isAnyRowCheckedInTable(formato: FormatoUtilReporte) {
-		// let rowsCheckedInTable: any[] = this.tableService.rowsCheckedByTable[this.mainTableName];
-
-		// if (rowsCheckedInTable.length === 0) {
-		// 	rowsCheckedInTable = this.originalDataTable.map((x) => x.key);
-		// }
-
 		const headerTitles = [
 			...this.columnsTable.map(({ title }) => title),
 			...this.dataRuta.map(({ descripcion }) => descripcion)
@@ -494,53 +488,18 @@ export class NivelesAprobacionComponent implements OnInit {
 			]
 		});
 
-		// const { headerTitles, dataIndexTitles } = this.columnsTable.reduce(
-		// 	(acc, col) => {
-		// 		if (col.title && col.title !== "Acciones") {
-		// 			acc.headerTitles.push(col.title);
-
-		// 			acc.dataIndexTitles.push({
-		// 				dataIndex: col.dataIndex,
-		// 				dataIndexesToJoin: col.dataIndexesToJoin,
-		// 			});
-		// 		}
-
-		// 		return acc;
-		// 	},
-		// 	{
-		// 		headerTitles: [],
-		// 		dataIndexTitles: []
-		// 	}
-		// );
-
-		// const bodyReport = this.originalDataTable
-		// 	.filter((row) => rowsCheckedInTable.some((keyChecked) => keyChecked === row.key))
-		// 	.map((row) => dataIndexTitles.map((colDataIndex: { dataIndex: string; dataIndexesToJoin: string[]; }) => {
-		// 		let value: string;
-
-		// 		if (colDataIndex.dataIndex === "otrasCausales" || colDataIndex.dataIndex === "estado") {
-		// 			// Procesar solo la columna "otrasCausales"
-		// 			value = row[colDataIndex.dataIndex]?.toString() ?? "";
-
-		// 			if (value === "true" || value === "1") {
-		// 				value = "Activo";
-		// 			} else if (value === "false" || value === "0") {
-		// 				value = "Inactivo";
-		// 			}
-		// 		} else {
-		// 			// Mantener los valores de otras columnas sin cambios
-		// 			if (colDataIndex.dataIndexesToJoin) {
-		// 				value = colDataIndex.dataIndexesToJoin
-		// 					.map((index) => row[index])
-		// 					.join(" - ");
-		// 			} else {
-		// 				value = row[colDataIndex.dataIndex]?.toString() ?? "";
-		// 			}
-		// 		}
-
-		// 		return value;
-		// 	}));
-
 		this.utilService.generateReport(formato, reportCodeEnum.MANTENIMIENTO_NIVELES_APROBACION, "NIVELES DE APROBACIÓN", headerTitles, bodyReport);
+	}
+
+	public mostrarNiveles() {
+		return this.dataTable.map((data, index) => ({
+			tipoSolicitud: data[0].tipoSolicitud,
+			tipoRuta: data[0].tipoRuta,
+			tipoMotivo: this.mostrarTipoMotivo(data[0].idTipoMotivo),
+			accion: data[0].accion,
+			nivelDireccion: data[0].nivelDireccion,
+			rutas: this.dataRuta.map(ruta => this.showData(data, ruta))
+		}))
+		.sort((a, b) => b.tipoRuta.toUpperCase().localeCompare(a.tipoRuta.toUpperCase()));
 	}
 }

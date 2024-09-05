@@ -1,8 +1,10 @@
 import {
 	Component,
+	ElementRef,
 	Input,
 	OnChanges,
 	OnInit,
+	Renderer2,
 	SimpleChanges,
 } from "@angular/core";
 import { UtilService } from "src/app/services/util/util.service";
@@ -67,10 +69,7 @@ export class TableComponent implements OnInit, OnChanges {
 	/* Pagination */
 	public rowsPerPageOptions: number[] = TableComponentData.rowsPerPage;
 
-	constructor(
-		public tableService: TableService,
-		public utilService: UtilService
-	) { }
+	constructor(public tableService: TableService, public utilService: UtilService) { }
 
 	public ngOnInit(): void {
 		this.ValidateInitDataTable();
@@ -80,6 +79,7 @@ export class TableComponent implements OnInit, OnChanges {
 	public ngOnChanges(changes: SimpleChanges): void {
 		this.ValidateInitDataTable();
 	}
+
 	/**
 	 * Función para ejecutar los procesos respectivos cuando se carga la informacion al inico o se actualiza la tabla
 	 */

@@ -448,26 +448,28 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
 	}
 
 	obtenerAprobacionesPorPosicion() {
-		return this.solicitudes
-			.obtenerAprobacionesPorPosicionRuta(this.solicitud.idTipoSolicitud, this.solicitud.idTipoMotivo, this.model.codigoPosicion, this.model.nivelDir, this.dataTipoRutaEmp[0].id, 'A')
-			.subscribe({
-				next: (response) => {
-					if (response.totalRegistros === 0 || response.totalRegistros === null) {
+		return this.solicitudes.obtenerAprobacionesPorPosicionRuta(this.solicitud.idTipoSolicitud, this.solicitud.idTipoMotivo, this.model.codigoPosicion, this.model.nivelDir, this.dataTipoRutaEmp[0].id, "APD").subscribe({
+			next: (res) => {
+				if (res.totalRegistros === 0 || res.totalRegistros === null) {
+					this.utilService.modalResponse("No existe aprobadores de solicitud para los datos ingresados", "error");
+
+					this.existenNivelesAprobacion = false;
+
+					return;
+				}
+
+				this.solicitudes.obtenerAprobacionesPorPosicionRuta(this.solicitud.idTipoSolicitud, this.solicitud.idTipoMotivo, this.model.codigoPosicion, this.model.nivelDir, this.dataTipoRutaEmp[0].id, "A").subscribe({
+					next: (response) => {
+						this.existenNivelesAprobacion = true;
+
+						this.dataAprobacionesPorPosicion[this.keySelected] = response.nivelAprobacionPosicionType;
+					},
+					error: (error: HttpErrorResponse) => {
 						this.utilService.modalResponse("No existe aprobadores de solicitud para los datos ingresados", "error");
-
-						this.existenNivelesAprobacion = false;
-						
-						return;
-					}
-
-					this.existenNivelesAprobacion = true;
-
-					this.dataAprobacionesPorPosicion[this.keySelected] = response.nivelAprobacionPosicionType;
-				},
-				error: (error: HttpErrorResponse) => {
-					this.utilService.modalResponse( "No existe aprobadores de solicitud para los datos ingresados", "error");
-				},
-			});
+					},
+				});
+			}
+		});
 	}
 
 	obtenerAprobacionesPorPosicionAPS() {
@@ -501,9 +503,18 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
 			)
 			.subscribe({
 				next: (response) => {
+					if (response.totalRegistros === 0 || response.totalRegistros === null) {
+						this.utilService.modalResponse("No existe aprobadores de solicitud para los datos ingresados", "error");
+
+						this.existenNivelesAprobacion = false;
+
+						return;
+					}
+
 					this.dataAprobadoresDinamicos.length = 0;
 					this.dataAprobacionesPorPosicionAPD = response.nivelAprobacionPosicionType;
 					this.primerNivelAprobacion = response.nivelAprobacionPosicionType[0].aprobador.nivelDireccion;
+
 					this.dataAprobacionesPorPosicionAPD.forEach(item => {
 						this.dataAprobadoresDinamicos.push(item.aprobador.nivelDireccion);
 					});
@@ -587,7 +598,7 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
 						sueldoSemestral: empleado.sueldoVariableSemestral,
 						sueldoAnual: empleado.sueldoVariableAnual
 					});
-					
+
 					if (this.model.nivelDir.toUpperCase().includes("VICEPRESIDENCIA") || this.model.nivelDir.toUpperCase().includes("CORPORATI")) {
 						Swal.fire({
 							text: `Nivel de Dirección no permitido: ${this.model.nivelDir}`,
@@ -599,7 +610,7 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
 						this.clearModel();
 						this.keySelected = "";
 						this.dataAprobacionesPorPosicion = {};
-						
+
 						return;
 					}
 
@@ -643,7 +654,7 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
 										descripcion: r.tipoRuta,
 									}));
 
-									this.keySelected = `${this.solicitud.idTipoSolicitud}_${this.solicitud.idTipoMotivo}_${this.model.codigoPosicion}_${this.model.nivelDir}`;
+								this.keySelected = `${this.solicitud.idTipoSolicitud}_${this.solicitud.idTipoMotivo}_${this.model.codigoPosicion}_${this.model.nivelDir}`;
 
 								if (!this.dataAprobacionesPorPosicion[this.keySelected]) {
 									this.obtenerAprobacionesPorPosicion();
@@ -664,7 +675,7 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
 
 								return;
 							}
-							
+
 							this.model.jefeInmediatoSuperior = response.evType[0].nombreCompleto;
 							this.model.puestoJefeInmediato = response.evType[0].descrPosicion;
 							this.codigoReportaA = response.evType[0].subledger;
@@ -1149,7 +1160,7 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
 				}
 
 				this.loadingComplete++;
-				
+
 				// this.mostrarTipoJustificacionYMision = this.restrictionsIds.includes(this.solicitud.idTipoMotivo);
 				this.mostrarTipoJustificacionYMision = this.restrictionsIds.includes(this.solicitud.tipoMotivo.toUpperCase()) && this.solicitud.idSolicitud.toUpperCase().includes("RP");
 
@@ -1549,7 +1560,7 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
 					confirmButtonColor: "rgb(227, 199, 22)",
 					confirmButtonText: "OK",
 				});
-				
+
 				return;
 			}
 		}
