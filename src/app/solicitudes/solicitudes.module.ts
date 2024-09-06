@@ -3,7 +3,7 @@ import { NgModule } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { MatButtonModule } from "@angular/material/button";
 import { MatButtonToggleModule } from "@angular/material/button-toggle";
-import { MatNativeDateModule } from "@angular/material/core";
+import { MAT_DATE_LOCALE, MatNativeDateModule } from "@angular/material/core";
 import { MatDatepickerModule } from "@angular/material/datepicker";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
@@ -104,6 +104,6 @@ import { BuscarExempleadoComponent } from "./reingreso-personal/buscar-exemplead
 		RevisarSolicitudComponent,
 		//Otros componentes que deseas exportar
 	],
-	providers: [TableService, provideNgxMask()],
+	providers: [TableService, provideNgxMask(), { provide: MAT_DATE_LOCALE, useValue: "fr" }],
 })
 export class SolicitudesModule { }

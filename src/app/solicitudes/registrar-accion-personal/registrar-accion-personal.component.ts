@@ -70,7 +70,6 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
 		};
 
 	public existeMatenedores: boolean = false;
-	public muestraRemuneracion: boolean = false;
 
 	public existe: boolean = false;
 	public codigoReportaA: string = "";
@@ -565,6 +564,7 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
 	getSolicitudById(id: any) {
 		return this.solicitudes.getSolicitudById(id).subscribe({
 			next: (response: any) => {
+				console.log(response);
 				this.solicitud = response;
 				this.minDateValidation = this.solicitud.fechaCreacion;
 
@@ -573,11 +573,8 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
 				this.model.compania = this.solicitud.empresa;
 				this.model.unidadNegocio = this.solicitud.unidadNegocio;
 
-				if (this.solicitud.tipoAccion.toUpperCase().includes("ASIGNA")) {
-					this.muestraRemuneracion = true;
-				}
-
 				this.loadingComplete += 2;
+				console.log(this.model);
 
 				this.getDetalleSolicitudById(this.id_edit);
 			},
@@ -847,8 +844,7 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
 			} else {
 				this.solicitudDataInicial = this.solicitudes.modelSolicitud;
 				this.detalleSolicitud = this.solicitudes.modelDetalleSolicitud;
-				this.detalleSolicitud.idSolicitud =
-					this.solicitudDataInicial.idSolicitud;
+				this.detalleSolicitud.idSolicitud = this.solicitudDataInicial.idSolicitud;
 			}
 		});
 
@@ -985,7 +981,7 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
 					this.model.correo = detalleActual.correo;
 					this.model.fechaIngreso = detalleActual.fechaIngreso;
 					this.model.sucursal = detalleActual.sucursal;
-					this.model.fechaIngreso = detalleActual.fechaIngreso;
+					this.model.fechaIngresogrupo = detalleActual.fechaIngreso;
 					this.model.grupoPago = detalleActual.grupoDePago;
 					this.model.descrPuesto = detalleActual.descripcionPosicion;
 					this.codigoReportaA = detalleActual.jefeSolicitante;
@@ -1336,25 +1332,21 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
 				confirmButtonColor: "rgb(227, 199, 22)",
 				confirmButtonText: "OK",
 			});
-			return;
 
+			return;
 		}
 
-		if (parseFloat(this.sueldoEmpleado.sueldo) < parseFloat(this.modelPropuestos.sueldo)
-			|| parseFloat(this.sueldoEmpleado.variableMensual) < parseFloat(this.modelPropuestos.sueldoMensual)
-			|| parseFloat(this.sueldoEmpleado.variableTrimestral) < parseFloat(this.modelPropuestos.sueldoTrimestral)
-			|| parseFloat(this.sueldoEmpleado.variableSemestral) < parseFloat(this.modelPropuestos.sueldoSemestral)
-			|| parseFloat(this.sueldoEmpleado.variableAnual) < parseFloat(this.modelPropuestos.sueldoAnual)
-		) {
+		if (parseFloat(this.sueldoEmpleado.sueldo) < parseFloat(this.modelPropuestos.sueldo) || parseFloat(this.sueldoEmpleado.variableMensual) < parseFloat(this.modelPropuestos.sueldoMensual) || parseFloat(this.sueldoEmpleado.variableTrimestral) < parseFloat(this.modelPropuestos.sueldoTrimestral) || parseFloat(this.sueldoEmpleado.variableSemestral) < parseFloat(this.modelPropuestos.sueldoSemestral) || parseFloat(this.sueldoEmpleado.variableAnual) < parseFloat(this.modelPropuestos.sueldoAnual)) {
 			Swal.fire({
 				text: "No se puede registrar valores variables mayores a los obtenidos del sistema",
 				icon: "info",
 				confirmButtonColor: "rgb(227, 199, 22)",
 				confirmButtonText: "OK",
 			});
-			return;
 
+			return;
 		}
+
 		const { isConfirmed } = await Swal.fire({
 			text: "¿Desea guardar la Solicitud?",
 			icon: "question",
@@ -1979,6 +1971,9 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
 	public onCancel(): void { }
 
 	save() {
+		console.log(this.model);
+		return;
+
 		this.utilService.openLoadingSpinner("Guardando información, espere por favor...");
 
 		this.submitted = true;
@@ -2335,112 +2330,7 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
 			})
 			.result.then(
 				(result) => {
-					// if (result?.action === "close") {
-					// 	return;
-					// }
-
-					// if (result?.data === undefined) {
-					// 	return;
-					// }
-
-					// const empleado = result?.data;
-
-					// this.model = structuredClone({
-					// 	...empleado,
-					// 	sueldoMensual: empleado.sueldoVariableMensual,
-					// 	sueldoTrimestral: empleado.sueldoVariableTrimestral,
-					// 	sueldoSemestral: empleado.sueldoVariableSemestral,
-					// 	sueldoAnual: empleado.sueldoVariableAnual
-					// });
-
-					// if (this.model.nivelDir.toUpperCase().includes("VICEPRESIDENCIA") || this.model.nivelDir.toUpperCase().includes("CORPORATI")) {
-					// 	Swal.fire({
-					// 		text: `Nivel de Dirección no permitido: ${this.model.nivelDir}`,
-					// 		icon: "info",
-					// 		confirmButtonColor: "rgb(227, 199, 22)",
-					// 		confirmButtonText: "Sí",
-					// 	});
-
-					// 	this.clearModel();
-					// 	this.keySelected = "";
-					// 	this.dataAprobacionesPorPosicion = {};
-
-					// 	return;
-					// }
-
-					// this.sueldoEmpleado.sueldo = empleado.sueldo;
-					// this.sueldoEmpleado.variableMensual = empleado.sueldoVariableMensual;
-					// this.sueldoEmpleado.variableTrimestral = empleado.sueldoVariableTrimestral;
-					// this.sueldoEmpleado.variableSemestral = empleado.sueldoVariableSemestral;
-					// this.sueldoEmpleado.variableAnual = empleado.sueldoVariableAnual;
-
-					// this.unidadNegocioEmp = empleado.unidadNegocio;
-
-					// if (this.unidadNegocioEmp.toUpperCase().includes("AREAS") || this.unidadNegocioEmp.toUpperCase().includes("ÁREAS")) {
-					// 	this.mantenimientoService.getTipoRuta().subscribe({
-					// 		next: (response) => {
-					// 			this.dataTipoRutaEmp = response.tipoRutaType
-					// 				.filter(({ estado }) => estado === "A")
-					// 				.filter(({ tipoRuta }) => tipoRuta.toUpperCase().includes("CORPORATIV"))
-					// 				.map((r) => ({
-					// 					id: r.id,
-					// 					descripcion: r.tipoRuta,
-					// 				}));
-
-					// 			this.keySelected = `${this.solicitud.idTipoSolicitud}_${this.solicitud.idTipoMotivo}_${this.model.codigoPosicion}_${this.model.nivelDir}`;
-
-					// 			if (!this.dataAprobacionesPorPosicion[this.keySelected]) {
-					// 				this.obtenerAprobacionesPorPosicion();
-					// 			}
-					// 		},
-					// 		error: (error: HttpErrorResponse) => {
-					// 			this.utilService.modalResponse(error.error, "error");
-					// 		},
-					// 	});
-					// } else {
-					// 	this.mantenimientoService.getTipoRuta().subscribe({
-					// 		next: (response) => {
-					// 			this.dataTipoRutaEmp = response.tipoRutaType
-					// 				.filter(({ estado }) => estado === "A")
-					// 				.filter(({ tipoRuta }) => tipoRuta.toUpperCase() === "UNIDADES")
-					// 				.map((r) => ({
-					// 					id: r.id,
-					// 					descripcion: r.tipoRuta,
-					// 				}));
-
-					// 			this.keySelected = `${this.solicitud.idTipoSolicitud}_${this.solicitud.idTipoMotivo}_${this.model.codigoPosicion}_${this.model.nivelDir}`;
-
-					// 			if (!this.dataAprobacionesPorPosicion[this.keySelected]) {
-					// 				this.obtenerAprobacionesPorPosicion();
-					// 			}
-					// 		},
-					// 		error: (error: HttpErrorResponse) => {
-					// 			this.utilService.modalResponse(error.error, "error");
-					// 		},
-					// 	});
-					// }
-
-					// this.mantenimientoService.getDataEmpleadosEvolutionPorId(empleado.codigoPosicionReportaA).subscribe({
-					// 	next: (response) => {
-					// 		if (response.evType.length === 0) {
-					// 			this.model.jefeInmediatoSuperior = "";
-					// 			this.model.puestoJefeInmediato = "";
-					// 			this.codigoReportaA = "";
-
-					// 			return;
-					// 		}
-
-					// 		this.model.jefeInmediatoSuperior = response.evType[0].nombreCompleto;
-					// 		this.model.puestoJefeInmediato = response.evType[0].descrPosicion;
-					// 		this.codigoReportaA = response.evType[0].subledger;
-					// 	},
-					// 	error: (error: HttpErrorResponse) => {
-					// 		this.utilService.modalResponse(error.error, "error");
-					// 	},
-					// });
-
 					const datosEmpleado = result.data;
-					console.log(datosEmpleado);
 
 					this.sueldoEmpleado.sueldo = datosEmpleado.sueldo;
 					this.sueldoEmpleado.variableMensual = datosEmpleado.sueldoVariableMensual;

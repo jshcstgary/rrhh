@@ -137,7 +137,7 @@
 
 							<div class="row">
 								<div class="col-12 input-group mb-3 align-items-center">
-									<label class="input-group-text text-start label-estilo" for="tipoMotivo">Área / Departamento</label>
+									<label class="input-group-text text-start label-estilo" for="tipoMotivo">Área/Departamento</label>
 
 									<span id="comp" name="comp" style="color: black; font-size: 14px" class="text-start">{{ model.departamento }}</span>
 								</div>
@@ -145,7 +145,7 @@
 
 							<div class="row">
 								<div class="col-12 input-group mb-3 align-items-center">
-									<label class="input-group-text text-start label-estilo" for="tipoMotivo">Localidad</label>
+									<label class="input-group-text text-start label-estilo" for="tipoMotivo">Localidad/Zona</label>
 
 									<span id="unidad" name="unidad" style="color: black; font-size: 14px" class="text-start">{{ model.localidad }}</span>
 								</div>
@@ -199,51 +199,49 @@
 								</div>
 							</div>
 
-							<div *ngIf="!muestraRemuneracion">
-								<div class="row my-4">
-									<div class="col-12">
-										<label class="input-group label-estilo" style="font-size: 20px; color: black" for="tipoMotivo">Tipo de Variable </label>
-									</div>
+							<div class="row my-4">
+								<div class="col-12">
+									<label class="input-group label-estilo" style="font-size: 20px; color: black" for="tipoMotivo">Tipo de Variable </label>
 								</div>
+							</div>
 
-								<div class="row">
-									<div class="col-12 input-group mb-3 align-items-center">
-										<label class="input-group-text text-start label-estilo" for="tipoMotivo">Sueldo</label>
+							<div class="row">
+								<div class="col-12 input-group mb-3 align-items-center">
+									<label class="input-group-text text-start label-estilo" for="tipoMotivo">Sueldo</label>
 
-										<span id="comp" name="comp" style="color: black; font-size: 14px" class="text-start">$ {{ model.sueldo | number : "1.2-2" }}</span>
-									</div>
+									<span id="comp" name="comp" style="color: black; font-size: 14px" class="text-start">$ {{ model.sueldo | number : "1.2-2" }}</span>
 								</div>
+							</div>
 
-								<div class="row">
-									<div class="col-12 input-group mb-3 align-items-center">
-										<label class="input-group-text text-start label-estilo" for="me">Mensual</label>
+							<div class="row">
+								<div class="col-12 input-group mb-3 align-items-center">
+									<label class="input-group-text text-start label-estilo" for="me">Mensual</label>
 
-										<span id="me" name="me" style="color: black; font-size: 14px" class="text-start">$ {{ model.sueldoMensual | number : "1.2-2" }}</span>
-									</div>
+									<span id="me" name="me" style="color: black; font-size: 14px" class="text-start">$ {{ model.sueldoMensual | number : "1.2-2" }}</span>
 								</div>
+							</div>
 
-								<div class="row">
-									<div class="col-12 input-group mb-3 align-items-center">
-										<label class="input-group-text text-start label-estilo" for="al">Trimestral</label>
+							<div class="row">
+								<div class="col-12 input-group mb-3 align-items-center">
+									<label class="input-group-text text-start label-estilo" for="al">Trimestral</label>
 
-										<span id="al" name="al" style="color: black; font-size: 14px" class="text-start">$ {{ model.sueldoTrimestral | number : "1.2-2" }}</span>
-									</div>
+									<span id="al" name="al" style="color: black; font-size: 14px" class="text-start">$ {{ model.sueldoTrimestral | number : "1.2-2" }}</span>
 								</div>
+							</div>
 
-								<div class="row">
-									<div class="col-12 input-group mb-3 align-items-center">
-										<label class="input-group-text text-start label-estilo" for="al">Semestral</label>
+							<div class="row">
+								<div class="col-12 input-group mb-3 align-items-center">
+									<label class="input-group-text text-start label-estilo" for="al">Semestral</label>
 
-										<span id="al" name="al" style="color: black; font-size: 14px" class="text-start">$ {{ model.sueldoSemestral | number : "1.2-2" }}</span>
-									</div>
+									<span id="al" name="al" style="color: black; font-size: 14px" class="text-start">$ {{ model.sueldoSemestral | number : "1.2-2" }}</span>
 								</div>
+							</div>
 
-								<div class="row">
-									<div class="col-12 input-group mb-3 align-items-center">
-										<label class="input-group-text text-start label-estilo" for="al">Anual</label>
+							<div class="row">
+								<div class="col-12 input-group mb-3 align-items-center">
+									<label class="input-group-text text-start label-estilo" for="al">Anual</label>
 
-										<span id="al" name="al" style="color: black; font-size: 14px" class="text-start">$ {{ model.sueldoAnual | number : "1.2-2" }}</span>
-									</div>
+									<span id="al" name="al" style="color: black; font-size: 14px" class="text-start">$ {{ model.sueldoAnual | number : "1.2-2" }}</span>
 								</div>
 							</div>
 						</div>
@@ -251,6 +249,26 @@
 						<div class="col-md-6">
 							<div class="row my-2">
 								<h2 class="col-12 sol-danger">Datos propuestos</h2>
+							</div>
+
+							<div class="row">
+								<div class="col-12 input-group mb-3 align-items-center">
+									<label class="input-group-text text-start label-estilo" for="tipoSolicitud">Fecha de Cambio (dd/mm/yyyy)</label>
+
+									<div class="datepicker-container">
+										<mat-form-field appearance="outline">
+											<!-- <mat-label>Fecha (dd/mm/yyyy)</mat-label> -->
+
+											<input matInput [matDatepicker]="picker" [min]="minDateValidation" [max]="maxDateValidation" [(ngModel)]="modelPropuestos.fechaIngreso" class="form-control" id="fecha-ingreso" required name="fecha-ingreso" />
+
+											<!-- <mat-hint>DD/MM/YYYY</mat-hint> -->
+
+											<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+
+											<mat-datepicker #picker></mat-datepicker>
+										</mat-form-field>
+									</div>
+								</div>
 							</div>
 
 							<div class="row">
@@ -276,25 +294,7 @@
 							<div *ngIf="viewInputs">
 								<div class="row">
 									<div class="col-12 input-group mb-3 align-items-center">
-										<label class="input-group-text text-start label-estilo" for="tipoSolicitud">Fecha de Cambio</label>
-
-										<div class="datepicker-container">
-											<mat-form-field appearance="outline">
-												<mat-label>Fecha</mat-label>
-
-												<input matInput [matDatepicker]="picker" [min]="minDateValidation" [max]="maxDateValidation" [(ngModel)]="modelPropuestos.fechaIngreso" class="form-control" id="fecha-ingreso" required name="fecha-ingreso" />
-
-												<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-
-												<mat-datepicker #picker></mat-datepicker>
-											</mat-form-field>
-										</div>
-									</div>
-								</div>
-
-								<div class="row">
-									<div class="col-12 input-group mb-3 align-items-center">
-										<label class="input-group-text text-start label-estilo" for="tipoMotivo">Área / Departamento</label>
+										<label class="input-group-text text-start label-estilo" for="tipoMotivo">Área/Departamento</label>
 
 										<input type="text" name="departamento" placeholder="Campo obligatorio" [(ngModel)]="modelPropuestos.departamento" class="form-control" id="departamento" required />
 									</div>
@@ -302,7 +302,7 @@
 
 								<div class="row">
 									<div class="col-12 input-group mb-3 align-items-center">
-										<label class="input-group-text text-start label-estilo" for="tipoMotivo">Localidad</label>
+										<label class="input-group-text text-start label-estilo" for="tipoMotivo">Localidad/Zona</label>
 
 										<input type="text" name="localidad" placeholder="Campo obligatorio" [(ngModel)]="modelPropuestos.localidad" class="form-control" id="localidad" required />
 									</div>
@@ -356,71 +356,69 @@
 									</div>
 								</div>
 
-								<div *ngIf="!muestraRemuneracion">
-									<div class="row my-4">
-										<div class="col-12">
-											<label class="input-group label-estilo" style="font-size: 20px; color: black" for="tipoMotivo">Tipo de Variable </label>
-										</div>
+								<div class="row my-4">
+									<div class="col-12">
+										<label class="input-group label-estilo" style="font-size: 20px; color: black" for="tipoMotivo">Tipo de Variable </label>
 									</div>
+								</div>
 
-									<div class="row">
-										<div class="col-12 input-group mb-3 align-items-center">
-											<div class="d-flex justify-content-between align-items-center input-group-text label-estilo">
-												<label class="input-group-text text-start label-estilo" for="tipoMotivo">Sueldo</label>
+								<div class="row">
+									<div class="col-12 input-group mb-3 align-items-center">
+										<div class="d-flex justify-content-between align-items-center input-group-text label-estilo">
+											<label class="input-group-text text-start label-estilo" for="tipoMotivo">Sueldo</label>
 
-												<span>$</span>
-											</div>
-
-											<input [(ngModel)]="modelPropuestos.sueldo" type="text" mask="separator.2" [leadZero]="true" name="sueldo" class="form-control" id="sueldo" />
+											<span>$</span>
 										</div>
+
+										<input [(ngModel)]="modelPropuestos.sueldo" type="text" mask="separator.2" [leadZero]="true" name="sueldo" class="form-control" id="sueldo" />
 									</div>
+								</div>
 
-									<div class="row">
-										<div class="col-12 input-group mb-3 align-items-center">
-											<div class="d-flex justify-content-between align-items-center input-group-text label-estilo">
-												<label class="input-group-text text-start label-estilo" for="me">Mensual</label>
+								<div class="row">
+									<div class="col-12 input-group mb-3 align-items-center">
+										<div class="d-flex justify-content-between align-items-center input-group-text label-estilo">
+											<label class="input-group-text text-start label-estilo" for="me">Mensual</label>
 
-												<span>$</span>
-											</div>
-
-											<input [(ngModel)]="modelPropuestos.sueldoMensual" type="text" mask="separator.2" [leadZero]="true" name="sueldo-mensual" class="form-control" id="sueldo-mensual" />
+											<span>$</span>
 										</div>
+
+										<input [(ngModel)]="modelPropuestos.sueldoMensual" type="text" mask="separator.2" [leadZero]="true" name="sueldo-mensual" class="form-control" id="sueldo-mensual" />
 									</div>
+								</div>
 
-									<div class="row">
-										<div class="col-12 input-group mb-3 align-items-center">
-											<div class="d-flex justify-content-between align-items-center input-group-text label-estilo">
-												<label class="input-group-text text-start label-estilo" for="al">Trimestral</label>
+								<div class="row">
+									<div class="col-12 input-group mb-3 align-items-center">
+										<div class="d-flex justify-content-between align-items-center input-group-text label-estilo">
+											<label class="input-group-text text-start label-estilo" for="al">Trimestral</label>
 
-												<span>$</span>
-											</div>
-
-											<input [(ngModel)]="modelPropuestos.sueldoTrimestral" type="text" mask="separator.2" [leadZero]="true" name="sueldo-trimestral" class="form-control" id="sueldo-trimestral" />
+											<span>$</span>
 										</div>
+
+										<input [(ngModel)]="modelPropuestos.sueldoTrimestral" type="text" mask="separator.2" [leadZero]="true" name="sueldo-trimestral" class="form-control" id="sueldo-trimestral" />
 									</div>
+								</div>
 
-									<div class="row">
-										<div class="col-12 input-group mb-3 align-items-center">
-											<div class="d-flex justify-content-between align-items-center input-group-text label-estilo">
-												<label class="input-group-text text-start label-estilo" for="al">Semestral</label>
+								<div class="row">
+									<div class="col-12 input-group mb-3 align-items-center">
+										<div class="d-flex justify-content-between align-items-center input-group-text label-estilo">
+											<label class="input-group-text text-start label-estilo" for="al">Semestral</label>
 
-												<span>$</span>
-											</div>
-
-											<input [(ngModel)]="modelPropuestos.sueldoSemestral" type="text" mask="separator.2" [leadZero]="true" name="sueldo-semestral" class="form-control" id="sueldo-semestral" />
+											<span>$</span>
 										</div>
+
+										<input [(ngModel)]="modelPropuestos.sueldoSemestral" type="text" mask="separator.2" [leadZero]="true" name="sueldo-semestral" class="form-control" id="sueldo-semestral" />
 									</div>
+								</div>
 
-									<div class="row">
-										<div class="col-12 input-group mb-3 align-items-center">
-											<div class="d-flex justify-content-between align-items-center input-group-text label-estilo">
-												<label class="input-group-text text-start label-estilo" for="al">Anual</label>
+								<div class="row">
+									<div class="col-12 input-group mb-3 align-items-center">
+										<div class="d-flex justify-content-between align-items-center input-group-text label-estilo">
+											<label class="input-group-text text-start label-estilo" for="al">Anual</label>
 
-												<span>$</span>
-											</div>
-
-											<input [(ngModel)]="modelPropuestos.sueldoAnual" type="text" mask="separator.2" [leadZero]="true" name="sueldo-anual" class="form-control" id="sueldo-anual" />
+											<span>$</span>
 										</div>
+
+										<input [(ngModel)]="modelPropuestos.sueldoAnual" type="text" mask="separator.2" [leadZero]="true" name="sueldo-anual" class="form-control" id="sueldo-anual" />
 									</div>
 								</div>
 							</div>

@@ -20,6 +20,7 @@ import {
 	ITiposolicitudTable,
 } from "./tipo-solicitud.interface";
 import { TipoSolicitudService } from "./tipo-solicitud.service";
+import { DatePipe } from "@angular/common";
 
 @Component({
 	templateUrl: "./tipo-solicitud.component.html",
@@ -120,6 +121,7 @@ export class TipoSolicitudComponent implements OnInit {
 					.map((r) => ({
 						...r,
 						estado: r.estado === "A",
+						fechaActualizacion: new DatePipe('en-CO').transform(r.fechaActualizacion, "dd/MM/yyyy HH:mm:ss")
 					}))
 					.sort((a, b) => a.tipoSolicitud.localeCompare(b.tipoSolicitud));
 

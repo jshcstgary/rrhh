@@ -1,6 +1,7 @@
 import {
 	Component,
 	ElementRef,
+	HostListener,
 	Input,
 	OnChanges,
 	OnInit,
@@ -69,6 +70,8 @@ export class TableComponent implements OnInit, OnChanges {
 	/* Pagination */
 	public rowsPerPageOptions: number[] = TableComponentData.rowsPerPage;
 
+	public isSticky: boolean = false;
+
 	constructor(public tableService: TableService, public utilService: UtilService) { }
 
 	public ngOnInit(): void {
@@ -78,6 +81,19 @@ export class TableComponent implements OnInit, OnChanges {
 	}
 	public ngOnChanges(changes: SimpleChanges): void {
 		this.ValidateInitDataTable();
+	}
+
+	@HostListener("window:scroll", [])
+	onWindowScroll() {
+		const stickyOffset = 128; // 128px del tope de la pantalla
+		const scrollPosition = window.scrollY || document.documentElement.scrollTop;
+
+		// Verificar cuando el desplazamiento sea mayor a 128px
+		if (scrollPosition >= stickyOffset) {
+			this.isSticky = true;
+		} else {
+			this.isSticky = false;
+		}
 	}
 
 	/**

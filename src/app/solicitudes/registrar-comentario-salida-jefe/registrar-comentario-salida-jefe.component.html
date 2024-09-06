@@ -20,7 +20,7 @@
 
 						<!-- <button *ngIf="!existeMatenedores || existe" type="button" (click)="onCompletar()" class="btn btn-info me-2 mt-1" [disabled]="disabledComplete"> -->
 						<!-- <button *ngIf="!existeMatenedores || existe" type="button" (click)="saveDetalleAprobaciones()" class="btn btn-info me-2 mt-1" [disabled]="textareaContent === '' && (buttonValue === 'devolver' || buttonValue === 'rechazar')"><i class="fas fa-check-circle icon-size"></i> Enviar</button> -->
-						<button *ngIf="!existeMatenedores || existe" type="submit" class="btn btn-info me-2 mt-1" [disabled]="comentarios === ''"><i class="fas fa-check-circle"></i> Enviar</button>
+						<button *ngIf="!existeMatenedores || existe" type="submit" class="btn btn-info me-2 mt-1" [disabled]="comentarios === ''"><i class="fas fa-check-circle"></i> Enviar Solicitud</button>
 					</div>
 				</div>
 
@@ -480,7 +480,7 @@
 								<button class="accordion-button" type="button" data-bs-toggle="collapse" [attr.data-bs-target]="'#collapse' + i" aria-expanded="true" [attr.aria-controls]="'collapse' + i" style="display: block">
 									<div class="row" style="align-items: center; justify-content: space-around">
 										<div class="col">
-											{{ nivelItem.nivelAprobacionType.ruta }}
+											{{ nivelItem.nivelAprobacionType.ruta.toUpperCase().includes("REGISTRARSOLICITUD") ? "Registrar Solicitud" : nivelItem.nivelAprobacionType.ruta.toUpperCase().includes("CANDIDATO") ? "Selección de Candidato" : nivelItem.nivelAprobacionType.ruta.toUpperCase().includes("COMENTARIOJEFE") ? "Registrar Comentario Jefe Anterior o Referencia" : nivelItem.nivelAprobacionType.ruta.toUpperCase().includes("COMENTARIORRHH") ? "Registrar Comentario Responsable de RR.HH." : nivelItem.nivelAprobacionType.ruta.toUpperCase().includes("COMENTARIOSOLICITANTE") ? "Registrar Comentario Jefe Solicitante" : nivelItem.nivelAprobacionType.ruta }}
 										</div>
 
 										<div class="col">
@@ -488,19 +488,7 @@
 										</div>
 
 										<div class="col">
-											{{
-												nivelItem.nivelAprobacionType.nivelAprobacionRuta.toUpperCase().includes("REGISTRARSOLICITUD")
-													? "Registrar Solicitud"
-													: nivelItem.nivelAprobacionType.nivelAprobacionRuta.toUpperCase().includes("CANDIDATO")
-														? "Selección de Candidato"
-														: nivelItem.nivelAprobacionType.nivelAprobacionRuta.toUpperCase().includes("COMENTARIOJEFE")
-															? "Registrar Comentario Jefe"
-															: nivelItem.nivelAprobacionType.nivelAprobacionRuta.toUpperCase().includes("COMENTARIORRHH")
-																? "Registrar Comentario RR.HH."
-																: nivelItem.nivelAprobacionType.nivelAprobacionRuta.toUpperCase().includes("COMENTARIOSOLICITANTE")
-																	? "Registrar Comentario Solicitante"
-																	: nivelItem.nivelAprobacionType.nivelAprobacionRuta
-											}}
+											{{ nivelItem.nivelAprobacionType.nivelAprobacionRuta.toUpperCase().includes("REGISTRARSOLICITUD") ? "Registrar Solicitud" : nivelItem.nivelAprobacionType.nivelAprobacionRuta.toUpperCase().includes("CANDIDATO") ? "Selección de Candidato" : nivelItem.nivelAprobacionType.nivelAprobacionRuta.toUpperCase().includes("COMENTARIOJEFE") ? "Registrar Comentario Jefe Anterioro o Referencia" : nivelItem.nivelAprobacionType.nivelAprobacionRuta.toUpperCase().includes("COMENTARIORRHH") ? "Registrar Comentario Responsable de RR.HH." : nivelItem.nivelAprobacionType.nivelAprobacionRuta.toUpperCase().includes("COMENTARIOSOLICITANTE") ? "Registrar Comentario Jefe Solicitante" : nivelItem.nivelAprobacionType.nivelAprobacionRuta }}
 										</div>
 									</div>
 								</button>

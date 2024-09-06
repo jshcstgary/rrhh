@@ -55,7 +55,6 @@ export const ConsultaSolicitudesData: IConsultaSolicitudesData = {
 		{
 			title: "Nombre del Empleado",
 			dataIndex: "nombreEmpleado",
-			sortActive: true,
 			colType: "string",
 		},
 		{
@@ -76,13 +75,11 @@ export const ConsultaSolicitudesData: IConsultaSolicitudesData = {
 		{
 			title: "Fecha Creación",
 			dataIndex: "fechaCreacion",
-			sortActive: true,
 			colType: "string",
 		},
 		{
 			title: "Fecha Modificación",
 			dataIndex: "fechaActualizacion",
-			sortActive: true,
 			colType: "string",
 		},
 		{

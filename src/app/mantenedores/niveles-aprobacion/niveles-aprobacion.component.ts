@@ -36,8 +36,10 @@ export class NivelesAprobacionComponent implements OnInit {
 
 	tipoMotivoDeshablitado: boolean = false;
 
+	public finalData: any[] = [];
+
 	public restrictionsIds: any[] = ["RG", "CF", "AP"];
-	private isRequisicionPersonal: boolean =true;
+	private isRequisicionPersonal: boolean = true;
 
 	public controlsPermissions: PageControlPermiso = {
 		[NivelAprobacionPageControlPermission.FiltroTipoSolicitud]: {
@@ -158,14 +160,6 @@ export class NivelesAprobacionComponent implements OnInit {
 	ngOnInit(): void {
 		localStorage.removeItem(LocalStorageKeys.Reloaded);
 
-		// this.columnsTable[this.columnsTable.length - 1].actions.forEach(action => {
-		// 	if (action.id === "editOnTable") {
-		// 		action.showed = this.controlsPermissions[NivelAprobacionPageControlPermission.ButtonEditar].visualizar
-		// 	} else if (action.id === "cloneOnTable") {
-		// 		action.showed = this.controlsPermissions[NivelAprobacionPageControlPermission.ButtonDuplicar].visualizar
-		// 	}
-		// });
-
 		this.ObtenerServicioTipoSolicitud();
 		this.ObtenerServicioNivelDireccion();
 		this.ObtenerServicioTipoMotivo();
@@ -209,33 +203,45 @@ export class NivelesAprobacionComponent implements OnInit {
 
 					this.utilService.closeLoadingSpinner();
 
-					//this.utilService.modalResponse("No existen registros para esta búsqueda", "error");
-
 					return;
 				}
 
-			this.dataTable = response.nivelAprobacionType
-						.filter(data => data.estado === "A")
-						.reduce((acc, obj) => {
-							const grupo = acc.find(g => g[0].idTipoSolicitud === obj.idTipoSolicitud && g[0].idTipoRuta === obj.idTipoRuta && g[0].idTipoMotivo === obj.idTipoMotivo && g[0].idAccion === obj.idAccion && g[0].nivelDireccion === obj.nivelDireccion);
-							
-							if (grupo) {
-								grupo.push(obj);
-							} else {
-								acc.push([obj]);
-							}
-							
-							return acc;
-						}, [] as any[][]);
-				
+				this.dataTable = response.nivelAprobacionType
+					.filter(data => data.estado === "A")
+					.reduce((acc, obj) => {
+						const grupo = acc.find(g => g[0].idTipoSolicitud === obj.idTipoSolicitud && g[0].idTipoRuta === obj.idTipoRuta && g[0].idTipoMotivo === obj.idTipoMotivo && g[0].idAccion === obj.idAccion && g[0].nivelDireccion === obj.nivelDireccion);
+
+						if (grupo) {
+							grupo.push(obj);
+						} else {
+							acc.push([obj]);
+						}
+
+						return acc;
+					}, [] as any[][]);
+
+				this.dataTable = response.nivelAprobacionType
+					.filter(data => data.estado === "A")
+					.reduce((acc, obj) => {
+						const grupo = acc.find(g => g[0].idTipoSolicitud === obj.idTipoSolicitud && g[0].idTipoRuta === obj.idTipoRuta && g[0].idTipoMotivo === obj.idTipoMotivo && g[0].idAccion === obj.idAccion && g[0].nivelDireccion === obj.nivelDireccion);
+
+						if (grupo) {
+							grupo.push(obj);
+						} else {
+							acc.push([obj]);
+						}
+
+						return acc;
+					}, [] as any[][]);
+
+				this.mostrarNiveles();
+
 				this.utilService.closeLoadingSpinner();
 			},
 			error: (error: HttpErrorResponse) => {
 				this.utilService.closeLoadingSpinner();
 
 				this.dataTable = [];
-
-				//this.utilService.modalResponse("No existen registros para esta búsqueda", "error");
 			},
 		});
 	}
@@ -266,34 +272,38 @@ export class NivelesAprobacionComponent implements OnInit {
 					return;
 				}
 
-				if(this.isRequisicionPersonal) {
+				if (this.isRequisicionPersonal) {
 					this.dataTable = response.nivelAprobacionType
 						.filter(data => data.estado === "A")
 						.reduce((acc, obj) => {
 							const grupo = acc.find(g => g[0].idTipoSolicitud === obj.idTipoSolicitud && g[0].idTipoRuta === obj.idTipoRuta && g[0].idTipoMotivo === obj.idTipoMotivo && g[0].idAccion === obj.idAccion && g[0].nivelDireccion === obj.nivelDireccion);
-							
+
 							if (grupo) {
 								grupo.push(obj);
 							} else {
 								acc.push([obj]);
 							}
-							
+
 							return acc;
 						}, [] as any[][]);
+
+					this.mostrarNiveles();
 				} else {
 					this.dataTable = response.nivelAprobacionType
 						.filter(data => data.estado === "A")
 						.reduce((acc, obj) => {
 							const grupo = acc.find(g => g[0].idTipoSolicitud === obj.idTipoSolicitud && g[0].idTipoRuta === obj.idTipoRuta && g[0].idTipoMotivo === obj.idTipoMotivo && g[0].idAccion === obj.idAccion && g[0].nivelDireccion === obj.nivelDireccion);
-							
+
 							if (grupo) {
 								grupo.push(obj);
 							} else {
 								acc.push([obj]);
 							}
-							
+
 							return acc;
 						}, [] as any[][]);
+
+					this.mostrarNiveles();
 				}
 
 				this.utilService.closeLoadingSpinner();
@@ -421,6 +431,10 @@ export class NivelesAprobacionComponent implements OnInit {
 	}
 
 	onChangeTipoSolicitud() {
+		if (this.dataFilterNivelesAprobacion.tipoSolicitud === null) {
+			return;
+		}
+
 		const tipoSolicitud = this.dataTipoSolicitudes.find(data => data.id.toString() === this.dataFilterNivelesAprobacion.tipoSolicitud.toString());
 
 		if (tipoSolicitud === undefined) {
@@ -461,7 +475,7 @@ export class NivelesAprobacionComponent implements OnInit {
 		if (this.dataFilterNivelesAprobacion === null) {
 			return this.dataTipoSolicitudes.find(data => data.id.toString() === this.dataFilterNivelesAprobacion.tipoSolicitud.toString()).descripcion;
 		}
-		
+
 		return "SOLICITUD";
 	}
 
@@ -477,7 +491,8 @@ export class NivelesAprobacionComponent implements OnInit {
 			...this.dataRuta.map(({ descripcion }) => descripcion)
 		];
 
-		const bodyReport = this.dataTable.map(data => {
+		// const bodyReport = this.dataTable.map(data => {
+		const bodyReport = this.finalData.map(data => {
 			return [
 				data[0].tipoSolicitud,
 				data[0].tipoRuta,
@@ -491,15 +506,31 @@ export class NivelesAprobacionComponent implements OnInit {
 		this.utilService.generateReport(formato, reportCodeEnum.MANTENIMIENTO_NIVELES_APROBACION, "NIVELES DE APROBACIÓN", headerTitles, bodyReport);
 	}
 
-	public mostrarNiveles() {
-		return this.dataTable.map((data, index) => ({
-			tipoSolicitud: data[0].tipoSolicitud,
-			tipoRuta: data[0].tipoRuta,
-			tipoMotivo: this.mostrarTipoMotivo(data[0].idTipoMotivo),
-			accion: data[0].accion,
-			nivelDireccion: data[0].nivelDireccion,
-			rutas: this.dataRuta.map(ruta => this.showData(data, ruta))
-		}))
-		.sort((a, b) => b.tipoRuta.toUpperCase().localeCompare(a.tipoRuta.toUpperCase()));
+	private mostrarNiveles() {
+		const newData = this.dataTable
+			.map((data) => ({
+				tipoSolicitud: data[0].tipoSolicitud,
+				tipoRuta: data[0].tipoRuta,
+				tipoMotivo: this.mostrarTipoMotivo(data[0].idTipoMotivo),
+				accion: data[0].accion,
+				nivelDireccion: data[0].nivelDireccion,
+				rutas: this.dataRuta.map(ruta => this.showData(data, ruta))
+			}))
+			.sort((a, b) => a.tipoSolicitud.toUpperCase().localeCompare(b.tipoSolicitud.toUpperCase()))
+			.reduce((acc, item) => {
+				if (!acc[item.tipoSolicitud]) {
+					acc[item.tipoSolicitud] = [];
+				}
+
+				acc[item.tipoSolicitud].push(item);
+
+				return acc;
+			}, {});
+
+		Object.keys(newData).forEach(key => {
+			newData[key].sort((a, b) => a.tipoRuta.toUpperCase().localeCompare(b.tipoRuta.toUpperCase()));
+		});
+
+		this.finalData = Object.values(newData).flat();
 	}
 }

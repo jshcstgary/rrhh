@@ -1,10 +1,11 @@
 <div class="table-container" id="app-container-table-component" [style.overflow-x]="overflowX">
 	<table aria-label="" id="app-table-component" [style.width]="tableWidth">
+		<!-- <thead [ngClass]="{ 'sticky-thead': isSticky }"></thead> -->
 		<thead>
 			<tr>
 				<th [ngClass]="{ 'fixed-col-end': columns.length === i + 1 && fixedLastColumn }" *ngFor="let head of columns; let i = index" [ngStyle]="{ width: head.type === 'actions' && !showActionColumn ? 0 : head.width }">
 					<div *ngIf="head.type === 'actions' && !showActionColumn; else columnShowed"></div>
-
+	
 					<ng-template #columnShowed>
 						<div *ngIf="head.type === undefined; else cabeceraEspecial" class="d-flex justify-content-between cursor-pointer" [ngClass]="{ 'cursor-pointer': head.sortActive }" (click)="head.sortActive ? onChangeShort(i, head.dataIndex) : null">
 							{{ head.title }}
@@ -19,20 +20,20 @@
 							></i>
 						</div>
 					</ng-template>
-
+	
 					<ng-template #cabeceraEspecial [ngSwitch]="head.type">
 						<div *ngSwitchCase="'checkbox'" class="d-flex justify-content-center">
 							<input tabindex="0" type="checkbox" (change)="onCheckHeaderCheckbox()" [indeterminate]="isIndeterminateHeaderInput" [checked]="isChekedHeaderInput" [disabled]="isTableEmpty" />
 						</div>
-
+	
 						<div *ngSwitchCase="'actions'" class="text-center">
 							{{ head.title }}
 						</div>
-
+	
 						<div *ngSwitchCase="'color'">
 							{{ head.title }}
 						</div>
-
+	
 						<div *ngSwitchCase="'bool'">
 							{{ head.title }}
 						</div>
@@ -40,7 +41,7 @@
 				</th>
 			</tr>
 		</thead>
-
+	
 		<tbody *ngIf="!isTableEmpty; else emptytable">
 			<tr *ngFor="let row of data; let indexRow = index">
 				<td [ngClass]="{ 'fixed-col-end': columns.length === i + 1 && fixedLastColumn }" *ngFor="let head of columns; let i = index; let indexCol = index">
@@ -50,33 +51,33 @@
 						<div *ngIf="head.type === undefined; else bodyEspecial" [ngClass]="{ 'text-center': head.align === 'center' }">
 							{{ showDataInTable(row, head) }}
 						</div>
-
+	
 						<!-- En caso de ser una columna especial muestro la columna especial -->
 						<ng-template #bodyEspecial [ngSwitch]="head.type">
 							<div *ngSwitchCase="'checkbox'" style="text-align: center">
 								<input type="checkbox" (change)="onCheckCell($event, row.key)" [checked]="getCheckCell(row.key)" [disabled]="row.isEditingRow" />
 							</div>
-
+	
 							<div *ngSwitchCase="'actions'">
 								<div class="d-flex" [ngClass]="{ 'justify-content-between': head.actions.length > 1, 'justify-content-center': head.actions.length === 1 }" *ngIf="!row.isEditingRow; else iconEditingRow">
 									<div *ngFor="let action of head.actions">
 										<tooltip-component *ngIf="action.showed" [text]="action.tooltip">
 											<i *ngIf="action.icon" tabindex="0" class="text-info cursor-pointer action-icon" [ngClass]="action.icon" (click)="clickOnAction(action.id, row.key, action.tooltip, row.idNivelAprobacion === undefined ? (row.iD_APROBADOR === undefined ? row.idSolicitud : row.iD_APROBADOR) : row.idNivelAprobacion)" (keyup.enter)="clickOnAction(action.id, row.key, action.tooltip, row.idNivelAprobacion === undefined ? (row.iD_APROBADOR === undefined ? row.idSolicitud : row.iD_APROBADOR) : row.idNivelAprobacion)"></i>
-
+	
 											<i *ngIf="action.materialIcon" tabindex="0" class="material-icons text-info cursor-pointer action-icon" (click)="clickOnAction(action.id, row.key, action.tooltip, row.idNivelAprobacion === undefined ? (row.iD_APROBADOR === undefined ? row.idSolicitud : row.iD_APROBADOR) : row.idNivelAprobacion)" (keyup.enter)="clickOnAction(action.id, row.key, action.tooltip, row.idNivelAprobacion === undefined ? (row.iD_APROBADOR === undefined ? row.idSolicitud : row.iD_APROBADOR) : row.idNivelAprobacion)">{{ action.materialIcon }}</i>
 										</tooltip-component>
 									</div>
 								</div>
-
+	
 								<ng-template #iconEditingRow>
 									<i tabindex="0" id="iconSaveEditRowTable" class="fas fa-save text-info cursor-pointer action-icon" (click)="onSaveRowDataToModified()" (keyup.enter)="onSaveRowDataToModified()"></i>
 								</ng-template>
 							</div>
-
+	
 							<div *ngSwitchCase="'bool'">
 								<input-component type="toggle" [disabled]="true" [defaultValue]="row[head.dataIndex]"> </input-component>
 							</div>
-
+	
 							<div
 								*ngSwitchCase="'color'"
 								[ngClass]="{
@@ -86,31 +87,29 @@
 								(click)="utilService.copyTextToClipboard(row[head.dataIndex])"
 							>
 								<div class="box-color" [ngStyle]="{ 'background-color': row[head.dataIndex] }" *ngIf="row[head.dataIndex] !== null && row[head.dataIndex] !== '' && row[head.dataIndex] !== undefined; else templateColor"></div>
-
-								<ng-template #templateColor>
-									Sin Color
-								</ng-template>
+	
+								<ng-template #templateColor> Sin Color </ng-template>
 							</div>
 						</ng-template>
 					</div>
-
+	
 					<!-- En caso se este editando muestro el input -->
 					<ng-template #cellInputRows>
 						<div *ngIf="head.type === undefined || head.type === 'color' || head.type === 'bool'; else editCell">
 							<input-component [contexto]="this" [defaultValue]="row[head.dataIndex]" [id]="inputsEditRow[getAttributesToInputCell(head.dataIndex)].id" [type]="inputsEditRow[getAttributesToInputCell(head.dataIndex)].type" [maxLength]="inputsEditRow[getAttributesToInputCell(head.dataIndex)].maxLength" [required]="inputsEditRow[getAttributesToInputCell(head.dataIndex)].required" [inputMessageError]="inputsEditRow[getAttributesToInputCell(head.dataIndex)].inputMessageError" [disabled]="inputsEditRow[getAttributesToInputCell(head.dataIndex)].disabled" onChangeFunction="onChangeRowDataToModified" [options]="inputsEditRow[getAttributesToInputCell(head.dataIndex)].options" [allowedKeys]="inputsEditRow[getAttributesToInputCell(head.dataIndex)].allowedKeys" [restrictionType]="inputsEditRow[getAttributesToInputCell(head.dataIndex)].restrictionType" />
 						</div>
-
+	
 						<ng-template #editCell [ngSwitch]="head.type">
 							<div *ngSwitchCase="'checkbox'">
 								<input type="checkbox" [disabled]="true" />
 							</div>
-
+	
 							<div *ngSwitchCase="'actions'">
 								<div class="d-flex justify-content-between">
 									<tooltip-component text="Guardar">
 										<i tabindex="0" id="iconSaveEditRowTable" class="material-icons text-info cursor-pointer action-icon md-24" (click)="onSaveRowDataToModified()" (keyup.enter)="onSaveRowDataToModified()">save</i>
 									</tooltip-component>
-
+	
 									<tooltip-component text="Cancelar">
 										<i tabindex="0" id="iconSaveEditAndCloneRowTable" class="material-icons text-info cursor-pointer action-icon md-24" (click)="onCancelRow()" (keyup.enter)="onCancelRow()">cancel</i>
 									</tooltip-component>
@@ -121,7 +120,7 @@
 				</td>
 			</tr>
 		</tbody>
-
+	
 		<ng-template #emptytable>
 			<tbody>
 				<tr>

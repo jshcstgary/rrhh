@@ -16,6 +16,12 @@ table {
 	border-radius: $border-table-radius;
 }
 
+.sticky-thead {
+	position: fixed;
+	top: 128px;
+	z-index: 100;
+}
+
 th {
 	background-color: #0056b34d;
 	/* Letra */

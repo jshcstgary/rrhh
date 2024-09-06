@@ -112,6 +112,7 @@ export class LoginComponent {
 			password: btoa(this.password),
 			isAutenticacionLocal: false,
 		};
+
 		this.loginService.getPerfilesUsuario(getPerfileRequest).subscribe({
 			next: (response) => {
 				this.perfilUsuario = response;
@@ -131,12 +132,14 @@ export class LoginComponent {
 					localStorage.removeItem(LocalStorageKeys.Perfil);
 
 					this.isLoading = false;
+
 					return;
 				}
+
 				localStorage.setItem(LocalStorageKeys.Perfiles, JSON.stringify(this.perfilUsuario));
+
 				this.isLoading = false;
 				this.isLoadingPerfil = true;
-
 			},
 			error: (err) => {
 				if (this.perfilUrl.toUpperCase().includes("IGUANA")) {
@@ -157,7 +160,7 @@ export class LoginComponent {
 					this.perfilUsuarioError[3].message = "Exito";
 
 					this.perfilUsuario = this.perfilUsuarioError;
-					console.log(this.perfilUsuario);
+
 					localStorage.setItem(LocalStorageKeys.Perfiles, JSON.stringify(this.perfilUsuario));
 
 					this.isLoadingPerfil = true;
@@ -168,9 +171,11 @@ export class LoginComponent {
 						confirmButtonColor: "rgb(227, 199, 22)",
 						confirmButtonText: "Ok",
 					});
+
 					localStorage.removeItem(LocalStorageKeys.Perfiles);
 					localStorage.removeItem(LocalStorageKeys.Perfil);
 				}
+
 				console.log(this.perfilUsuario);
 				console.error(err);
 
@@ -197,6 +202,7 @@ export class LoginComponent {
 		}
 
 		this.isLoading = true;
+
 		if (this.perfilCodigo === null || this.perfilCodigo === undefined || this.perfilCodigo === "") {
 			Swal.fire({
 				text: "Seleccione un Perfil de Usuario",
@@ -204,9 +210,12 @@ export class LoginComponent {
 				confirmButtonColor: "rgb(227, 199, 22)",
 				confirmButtonText: "Ok",
 			});
+
 			this.isLoading = false;
+
 			return;
 		}
+
 		const loginRequest: LoginRequest = {
 			codigoAplicacion: appCode,
 			codigoPerfil: this.perfilCodigo,
@@ -218,6 +227,7 @@ export class LoginComponent {
 
 		this.perfilCodigoSeleccionado = JSON.parse(localStorage.getItem(LocalStorageKeys.Perfiles)).find(data => data.scg_per_codigo === this.perfilCodigo);
 		localStorage.setItem(LocalStorageKeys.Perfil, this.perfilCodigoSeleccionado.scg_per_descripcion);
+
 		this.loginService.login(loginRequest).subscribe({
 			next: ({ codigo, nombres, apellidos, email, vistas }: Perfil) => {
 				if (vistas.length === 0 || nombres === "" || apellidos === "" || email == "" || codigo === "") {
@@ -246,7 +256,7 @@ export class LoginComponent {
 
 				this.isLoading = false;
 
-				const isTasksEnabled: boolean = vistas.some(vista => vista.codigo === PageCodes.Tareas);
+				// const isTasksEnabled: boolean = vistas.some(vista => vista.codigo === PageCodes.Tareas);
 
 				this.router.navigate(["/solicitudes/consulta-solicitudes"]);
 			},
@@ -257,7 +267,7 @@ export class LoginComponent {
 				localStorage.removeItem(LocalStorageKeys.IdUsuario);
 				localStorage.removeItem(LocalStorageKeys.Permisos);
 				localStorage.removeItem(LocalStorageKeys.Reloaded);
-        localStorage.removeItem(LocalStorageKeys.Perfil);
+				localStorage.removeItem(LocalStorageKeys.Perfil);
 				localStorage.removeItem(LocalStorageKeys.Perfiles);
 
 				this.isLoading = false;

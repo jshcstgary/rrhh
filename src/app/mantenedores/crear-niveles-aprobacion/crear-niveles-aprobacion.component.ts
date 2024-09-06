@@ -357,6 +357,8 @@ export class CrearNivelesAprobacionComponent implements OnInit {
 	}
 
 	procesarNivelAprobacion() {
+		this.utilService.openLoadingSpinner("Guardando información...");
+
 		const nivelesAprobacion = Object.entries(this.idNivelesAprobacionRuta)
 			//.filter(([_, value]) => value !== "")
 			.map(([key, value]) => {

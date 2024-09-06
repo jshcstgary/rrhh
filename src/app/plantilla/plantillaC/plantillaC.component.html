@@ -1,38 +1,9 @@
 <div class="card p-3 bg-white">
-  <form-component
-    class="mb-2"
-    *ngIf="filterFormInputs.length > 0"
-    [formItems]="filterFormInputs"
-    [formName]="'headerFilter'"
-    [containsSearchButton]="filterFormContainsSearchButton"
-    [searchButtonProps]="filterFormSearchButtonProps"
-    [onChangeFormFunction]="onChangeHeaderFilterForm"
-    [contexto]="contexto"
-  >
-  </form-component>
+	<form-component class="mb-2" *ngIf="filterFormInputs.length > 0" [formItems]="filterFormInputs" [formName]="'headerFilter'" [containsSearchButton]="filterFormContainsSearchButton" [searchButtonProps]="filterFormSearchButtonProps" [onChangeFormFunction]="onChangeHeaderFilterForm" [contexto]="contexto"> </form-component>
 
-  <!-- Inicio -->
-  <div class="card-body border-top">
-    <table-component
-      [fixedLastColumn]="fixedLastColumnOnTable"
-      [tableName]="mainTableName"
-      [columns]="columnsTable"
-      [dataTable]="dataToTable"
-      [contexto]="this"
-      onSaveRowTable="onSaveRowTable"
-      [tableWidth]="tableWidth"
-      [overflowX]="overflowX"
-      [inputsEditRow]="tableInputsEditRow"
-      [totalRows]="totalRowsInTable"
-      onChangePagination="onChangePaginationTable"
-      onCancelEditRowTable="onCancelEditRowTable"
-      [rowsPerPageValue]="rowsPerPageTable"
-      [page]="pageNumberTable"
-      clickOnActionRow="onRowActionClicked"
-      [allowCloneButton]="allowCloneButtonOnTable"
-      [onRowChange]="onRowChange"
-      onChangeEditRowFunction="onChangeEditRowTableFunction"
-    ></table-component>
-  </div>
-  <!-- Fin -->
+	<!-- Inicio -->
+	<div class="card-body border-top">
+		<table-component [fixedLastColumn]="fixedLastColumnOnTable" [tableName]="mainTableName" [columns]="columnsTable" [dataTable]="dataToTable" [contexto]="this" onSaveRowTable="onSaveRowTable" [tableWidth]="tableWidth" [overflowX]="overflowX" [inputsEditRow]="tableInputsEditRow" [totalRows]="totalRowsInTable" onChangePagination="onChangePaginationTable" onCancelEditRowTable="onCancelEditRowTable" [rowsPerPageValue]="rowsPerPageTable" [page]="pageNumberTable" clickOnActionRow="onRowActionClicked" [allowCloneButton]="allowCloneButtonOnTable" [onRowChange]="onRowChange" onChangeEditRowFunction="onChangeEditRowTableFunction"></table-component>
+	</div>
+	<!-- Fin -->
 </div>
