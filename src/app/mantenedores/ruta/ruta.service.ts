@@ -26,9 +26,9 @@ export class RutaService {
 	}
 
 	public store(request: IRuta): Observable<IRuta> {
-		request.usuarioCreacion = localStorage.getItem(LocalStorageKeys.IdLogin);
+		request.usuarioCreacion = sessionStorage.getItem(LocalStorageKeys.IdLogin);
 		request.fechaCreacion = new Date();
-		request.usuarioActualizacion = localStorage.getItem(LocalStorageKeys.IdLogin);
+		request.usuarioActualizacion = sessionStorage.getItem(LocalStorageKeys.IdLogin);
 		request.fechaActualizacion = new Date();
 
 		convertTimeZonedDate(request.fechaCreacion);
@@ -38,7 +38,7 @@ export class RutaService {
 	}
 
 	public update(request: IRuta): Observable<IRuta> {
-		request.usuarioActualizacion = localStorage.getItem(LocalStorageKeys.IdLogin);
+		request.usuarioActualizacion = sessionStorage.getItem(LocalStorageKeys.IdLogin);
 		request.fechaActualizacion = new Date();
 		request.fechaActualizacion = new Date();
 

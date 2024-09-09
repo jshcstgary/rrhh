@@ -1,3 +1,4 @@
+import { DatePipe } from "@angular/common";
 import { HttpErrorResponse } from "@angular/common/http";
 import { Component, OnInit } from "@angular/core";
 import { FormService } from "src/app/component/form/form.service";
@@ -10,6 +11,7 @@ import { LocalStorageKeys } from "src/app/enums/local-storage-keys.enum";
 import { TipoMotivoPageControlPermission } from "src/app/enums/page-control-permisions.enum";
 import { MantenimientoService } from "src/app/services/mantenimiento/mantenimiento.service";
 import { PermisoService } from "src/app/services/permiso/permiso.service";
+import { removeExtraSpaces } from "src/app/services/util/text.util";
 import { UtilData } from "src/app/services/util/util.data";
 import { reportCodeEnum } from "src/app/services/util/util.interface";
 import { UtilService } from "src/app/services/util/util.service";
@@ -24,8 +26,6 @@ import {
 	ITipomotivoTable
 } from "./tipo-motivo.interface";
 import { TipoMotivoService } from "./tipo-motivo.service";
-import { removeExtraSpaces } from "src/app/services/util/text.util";
-import { DatePipe } from "@angular/common";
 
 @Component({
 	templateUrl: "./tipo-motivo.component.html",
@@ -91,8 +91,8 @@ export class TipoMotivoComponent implements OnInit {
 		private mantenimientoService: MantenimientoService,
 		private permissionService: PermisoService
 	) {
-		if (localStorage.getItem(LocalStorageKeys.Reloaded)! === "0" || localStorage.getItem(LocalStorageKeys.Reloaded) === null) {
-			localStorage.setItem(LocalStorageKeys.Reloaded, "1");
+		if (sessionStorage.getItem(LocalStorageKeys.Reloaded)! === "0" || sessionStorage.getItem(LocalStorageKeys.Reloaded) === null) {
+			sessionStorage.setItem(LocalStorageKeys.Reloaded, "1");
 
 			window.location.reload();
 		}
@@ -154,7 +154,7 @@ export class TipoMotivoComponent implements OnInit {
 		});
 	}
 
-	private getDataToTable() {
+	private getDataToTable(modalMessage: string = "") {
 		return this.tipomotivosService.index().subscribe({
 			next: (response) => {
 				this.dataTable = response
@@ -178,6 +178,10 @@ export class TipoMotivoComponent implements OnInit {
 				this.dataTableInactive = this.dataTable.filter(data => !data.estado);
 
 				this.utilService.closeLoadingSpinner();
+
+				if (modalMessage !== "") {
+					this.utilService.modalResponse(modalMessage, "success");
+				}
 			},
 			error: (error: HttpErrorResponse) => {
 				this.utilService.closeLoadingSpinner();
@@ -203,8 +207,7 @@ export class TipoMotivoComponent implements OnInit {
 	private onDelete(key: string) {
 		this.tipomotivosService.delete(key).subscribe({
 			next: (response) => {
-				this.getDataToTable();
-				this.utilService.modalResponse(response, "success");
+				this.getDataToTable(response);
 			},
 			error: (error: HttpErrorResponse) =>
 				this.utilService.modalResponse(error.error, "error"),
@@ -223,9 +226,7 @@ export class TipoMotivoComponent implements OnInit {
 				next: (response) => {
 					this.tableService.changeStateIsAnyEditRowActive(false);
 
-					this.utilService.modalResponse("Campos actualizados correctamente", "success");
-
-					this.getDataToTable().add(() => {
+					this.getDataToTable("Campos actualizados correctamente").add(() => {
 						if (finishedClonningRow) {
 							this.IdRowToClone = response.id.toString();
 						}
@@ -242,9 +243,7 @@ export class TipoMotivoComponent implements OnInit {
 				next: (response) => {
 					this.tableService.changeStateIsAnyEditRowActive(false);
 
-					this.utilService.modalResponse("Datos ingresados correctamente", "success");
-
-					this.getDataToTable().add(() => {
+					this.getDataToTable("Datos ingresados correctamente").add(() => {
 						if (finishedClonningRow) {
 							this.IdRowToClone = response.tipoMotivo.toString();
 						}

@@ -1,15 +1,15 @@
 import { HttpErrorResponse } from "@angular/common/http";
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
+import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { NgSelectConfig } from "@ng-select/ng-select";
+import { format } from "date-fns";
+import { LocalStorageKeys } from "src/app/enums/local-storage-keys.enum";
 import { AprobadorFijo } from "src/app/eschemas/AprobadorFijo";
 import { UtilService } from "src/app/services/util/util.service";
 import Swal from "sweetalert2";
-import { EditarAprobadorFijoService } from "./editar-aprobador-fijo.service";
 import { BuscarAprobadorFijoComponent } from "../buscar-aprobador-fijo/buscar-aprobador-fijo.component";
-import { format } from "date-fns";
-import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
-import { LocalStorageKeys } from "src/app/enums/local-storage-keys.enum";
+import { EditarAprobadorFijoService } from "./editar-aprobador-fijo.service";
 
 @Component({
 	selector: "app-editar-aprobador-fijo",
@@ -109,8 +109,8 @@ export class EditarAprobadorFijoComponent implements OnInit {
 					this.modelo.estado = true;
 					this.modelo.fechA_CREACION = currentdate;
 					this.modelo.fechA_MODIFICACION = currentdate;
-					this.modelo.usuariO_CREACION = localStorage.getItem(LocalStorageKeys.IdLogin);;
-					this.modelo.usuariO_MODIFICACION = localStorage.getItem(LocalStorageKeys.IdLogin);;
+					this.modelo.usuariO_CREACION = sessionStorage.getItem(LocalStorageKeys.IdLogin);;
+					this.modelo.usuariO_MODIFICACION = sessionStorage.getItem(LocalStorageKeys.IdLogin);;
 					this.modelo.descripcioN_POSICION = epelado.descrPosicion;
 					this.modelo.supervisA_A = "N/A";
 					this.modelo.niveL_REPORTE = epelado.nivelReporte;
@@ -146,7 +146,7 @@ export class EditarAprobadorFijoComponent implements OnInit {
 				...this.modelo,
 				fechA_CREACION: fechaEnFormatoISO,
 				fechA_MODIFICACION: fechaEnFormatoISO,
-				usuariO_MODIFICACION: localStorage.getItem(LocalStorageKeys.IdLogin),
+				usuariO_MODIFICACION: sessionStorage.getItem(LocalStorageKeys.IdLogin),
 				estado: this.modelo.estado ? "A" : "I",
 			};
 

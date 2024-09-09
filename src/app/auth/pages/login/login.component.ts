@@ -5,16 +5,15 @@ import { Router } from "@angular/router";
 import { NgSelectModule } from "@ng-select/ng-select";
 import { Session } from "../../interfaces/session.interface";
 // import { PermisoService } from "../../../../modules/util/services/permiso.service";
-import { debounceTime, Subject } from "rxjs";
+import { Subject } from "rxjs";
 // import { UtilService } from "../../../../modules/util/services/util.service";
-import { PageCodes } from "src/app/enums/codes.enum";
 import { LocalStorageKeys } from "src/app/enums/local-storage-keys.enum";
+import { UtilService } from "src/app/services/util/util.service";
 import { StarterService } from "src/app/starter/starter.service";
 import { LoginRequest, Perfil, PerfilUsuario, PerfilUsuarioResponse } from "src/app/types/permiso.type";
 import { appCode, environment } from "src/environments/environment";
 import Swal from "sweetalert2";
 import { LoginServices } from "../../services/login.services";
-import { UtilService } from "src/app/services/util/util.service";
 @Component({
 	selector: "app-login",
 	standalone: true,
@@ -124,19 +123,19 @@ export class LoginComponent {
 						confirmButtonText: "Ok",
 					});
 
-					localStorage.removeItem(LocalStorageKeys.IdLogin);
-					localStorage.removeItem(LocalStorageKeys.IdUsuario);
-					localStorage.removeItem(LocalStorageKeys.Permisos);
-					localStorage.removeItem(LocalStorageKeys.Reloaded);
-					localStorage.removeItem(LocalStorageKeys.Perfiles);
-					localStorage.removeItem(LocalStorageKeys.Perfil);
+					sessionStorage.removeItem(LocalStorageKeys.IdLogin);
+					sessionStorage.removeItem(LocalStorageKeys.IdUsuario);
+					sessionStorage.removeItem(LocalStorageKeys.Permisos);
+					sessionStorage.removeItem(LocalStorageKeys.Reloaded);
+					sessionStorage.removeItem(LocalStorageKeys.Perfiles);
+					sessionStorage.removeItem(LocalStorageKeys.Perfil);
 
 					this.isLoading = false;
 
 					return;
 				}
 
-				localStorage.setItem(LocalStorageKeys.Perfiles, JSON.stringify(this.perfilUsuario));
+				sessionStorage.setItem(LocalStorageKeys.Perfiles, JSON.stringify(this.perfilUsuario));
 
 				this.isLoading = false;
 				this.isLoadingPerfil = true;
@@ -161,7 +160,7 @@ export class LoginComponent {
 
 					this.perfilUsuario = this.perfilUsuarioError;
 
-					localStorage.setItem(LocalStorageKeys.Perfiles, JSON.stringify(this.perfilUsuario));
+					sessionStorage.setItem(LocalStorageKeys.Perfiles, JSON.stringify(this.perfilUsuario));
 
 					this.isLoadingPerfil = true;
 				} else {
@@ -172,17 +171,17 @@ export class LoginComponent {
 						confirmButtonText: "Ok",
 					});
 
-					localStorage.removeItem(LocalStorageKeys.Perfiles);
-					localStorage.removeItem(LocalStorageKeys.Perfil);
+					sessionStorage.removeItem(LocalStorageKeys.Perfiles);
+					sessionStorage.removeItem(LocalStorageKeys.Perfil);
 				}
 
 				console.log(this.perfilUsuario);
 				console.error(err);
 
-				localStorage.removeItem(LocalStorageKeys.IdLogin);
-				localStorage.removeItem(LocalStorageKeys.IdUsuario);
-				localStorage.removeItem(LocalStorageKeys.Permisos);
-				localStorage.removeItem(LocalStorageKeys.Reloaded);
+				sessionStorage.removeItem(LocalStorageKeys.IdLogin);
+				sessionStorage.removeItem(LocalStorageKeys.IdUsuario);
+				sessionStorage.removeItem(LocalStorageKeys.Permisos);
+				sessionStorage.removeItem(LocalStorageKeys.Reloaded);
 
 				this.isLoading = false;
 			}
@@ -225,8 +224,8 @@ export class LoginComponent {
 			isAutenticacionLocal: true,
 		};
 
-		this.perfilCodigoSeleccionado = JSON.parse(localStorage.getItem(LocalStorageKeys.Perfiles)).find(data => data.scg_per_codigo === this.perfilCodigo);
-		localStorage.setItem(LocalStorageKeys.Perfil, this.perfilCodigoSeleccionado.scg_per_descripcion);
+		this.perfilCodigoSeleccionado = JSON.parse(sessionStorage.getItem(LocalStorageKeys.Perfiles)).find(data => data.scg_per_codigo === this.perfilCodigo);
+		sessionStorage.setItem(LocalStorageKeys.Perfil, this.perfilCodigoSeleccionado.scg_per_descripcion);
 
 		this.loginService.login(loginRequest).subscribe({
 			next: ({ codigo, nombres, apellidos, email, vistas }: Perfil) => {
@@ -238,21 +237,21 @@ export class LoginComponent {
 						confirmButtonText: "Ok",
 					});
 
-					localStorage.removeItem(LocalStorageKeys.IdLogin);
-					localStorage.removeItem(LocalStorageKeys.IdUsuario);
-					localStorage.removeItem(LocalStorageKeys.Permisos);
-					localStorage.removeItem(LocalStorageKeys.Reloaded);
-					localStorage.removeItem(LocalStorageKeys.Perfil);
-					localStorage.removeItem(LocalStorageKeys.Perfiles);
+					sessionStorage.removeItem(LocalStorageKeys.IdLogin);
+					sessionStorage.removeItem(LocalStorageKeys.IdUsuario);
+					sessionStorage.removeItem(LocalStorageKeys.Permisos);
+					sessionStorage.removeItem(LocalStorageKeys.Reloaded);
+					sessionStorage.removeItem(LocalStorageKeys.Perfil);
+					sessionStorage.removeItem(LocalStorageKeys.Perfiles);
 
 					this.isLoading = false;
 
 					return;
 				}
 
-				localStorage.setItem(LocalStorageKeys.IdLogin, codigo);
-				localStorage.setItem(LocalStorageKeys.IdUsuario, email);
-				localStorage.setItem(LocalStorageKeys.Permisos, JSON.stringify(vistas));
+				sessionStorage.setItem(LocalStorageKeys.IdLogin, codigo);
+				sessionStorage.setItem(LocalStorageKeys.IdUsuario, email);
+				sessionStorage.setItem(LocalStorageKeys.Permisos, JSON.stringify(vistas));
 
 				this.isLoading = false;
 
@@ -263,12 +262,12 @@ export class LoginComponent {
 			error: (err) => {
 				console.error(err);
 
-				localStorage.removeItem(LocalStorageKeys.IdLogin);
-				localStorage.removeItem(LocalStorageKeys.IdUsuario);
-				localStorage.removeItem(LocalStorageKeys.Permisos);
-				localStorage.removeItem(LocalStorageKeys.Reloaded);
-				localStorage.removeItem(LocalStorageKeys.Perfil);
-				localStorage.removeItem(LocalStorageKeys.Perfiles);
+				sessionStorage.removeItem(LocalStorageKeys.IdLogin);
+				sessionStorage.removeItem(LocalStorageKeys.IdUsuario);
+				sessionStorage.removeItem(LocalStorageKeys.Permisos);
+				sessionStorage.removeItem(LocalStorageKeys.Reloaded);
+				sessionStorage.removeItem(LocalStorageKeys.Perfil);
+				sessionStorage.removeItem(LocalStorageKeys.Perfiles);
 
 				this.isLoading = false;
 

@@ -21,20 +21,20 @@ import { RegistrarData } from "src/app/eschemas/RegistrarData";
 import { Solicitud } from "src/app/eschemas/Solicitud";
 import { TipoSolicitudService } from "src/app/mantenedores/tipo_solicitud/tipo-solicitud.service";
 import { MantenimientoService } from "src/app/services/mantenimiento/mantenimiento.service";
+import { convertTimeZonedDate } from "src/app/services/util/dates.util";
 import { UtilService } from "src/app/services/util/util.service";
 import { DialogComponents } from "src/app/shared/dialogComponents/dialog.components";
 import { DialogReasignarUsuarioComponent } from "src/app/shared/reasginar-usuario/reasignar-usuario.component";
 import { StarterService } from "src/app/starter/starter.service";
 import { ConsultaTareasService } from "src/app/tareas/consulta-tareas/consulta-tareas.service";
 import { Permiso } from "src/app/types/permiso.type";
+import { portalWorkFlow } from "src/environments/environment.prod";
 import Swal from "sweetalert2";
 import { environment } from "../../../environments/environment";
 import { CamundaRestService } from "../../camunda-rest.service";
 import { CompleteTaskComponent } from "../general/complete-task.component";
 import { SolicitudesService } from "../registrar-solicitud/solicitudes.service";
 import { RegistrarCandidatoService } from "./registrar-candidato.service";
-import { portalWorkFlow } from "src/environments/environment.prod";
-import { convertTimeZonedDate } from "src/app/services/util/dates.util";
 
 export const dialogComponentList: DialogComponents = {
 	dialogBuscarEmpleados: undefined,
@@ -469,13 +469,13 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
 		this.utilService.openLoadingSpinner("Cargando información, espere por favor...");
 
 		try {
-			this.starterService.getUser(localStorage.getItem(LocalStorageKeys.IdUsuario)!).subscribe({
+			this.starterService.getUser(sessionStorage.getItem(LocalStorageKeys.IdUsuario)!).subscribe({
 				next: (res) => {
 					return this.consultaTareasService.getTareasUsuario(res.evType[0].subledger).subscribe({
 						next: async (response) => {
 							this.existe = response.solicitudes.some(({ idSolicitud, rootProcInstId }) => idSolicitud === this.id_solicitud_by_params && rootProcInstId === this.idDeInstancia);
 
-							const permisos: Permiso[] = JSON.parse(localStorage.getItem(LocalStorageKeys.Permisos)!);
+							const permisos: Permiso[] = JSON.parse(sessionStorage.getItem(LocalStorageKeys.Permisos)!);
 
 							this.existeMatenedores = permisos.some(permiso => permiso.codigo === PageCodes.AprobadorFijo);
 
@@ -781,7 +781,7 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
 				this.model.codigoPosicion,
 				this.model.nivelDir,
 				this.dataTipoRutaEmp[0].id,
-				 'A'
+				'A'
 			)
 			.subscribe({
 				next: (response) => {
@@ -1017,9 +1017,9 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
 				this.detalleSolicitud = response.detalleSolicitudType[0];
 
 				if (this.detalleSolicitud.codigoPosicion.length > 0) {
-					this.unidadNegocioEmp=this.detalleSolicitud.unidadNegocio;
-					
-					if(this.unidadNegocioEmp.toUpperCase().includes("AREAS") || this.unidadNegocioEmp.toUpperCase().includes("ÁREAS")) {
+					this.unidadNegocioEmp = this.detalleSolicitud.unidadNegocio;
+
+					if (this.unidadNegocioEmp.toUpperCase().includes("AREAS") || this.unidadNegocioEmp.toUpperCase().includes("ÁREAS")) {
 						this.mantenimientoService.getTipoRuta().subscribe({
 							next: (response) => {
 								this.dataTipoRutaEmp = response.tipoRutaType
@@ -1030,7 +1030,7 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
 										descripcion: r.tipoRuta,
 									}));
 
-									this.loadingComplete++;
+								this.loadingComplete++;
 
 								// tveas, si incluye el id, debo mostrarlos (true)
 								this.mostrarTipoJustificacionYMision = this.restrictionsIds.includes(
@@ -1057,7 +1057,7 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
 							next: (response) => {
 								this.dataTipoRutaEmp = response.tipoRutaType
 									.filter(({ estado }) => estado === "A")
-									.filter(({ tipoRuta }) => tipoRuta.toUpperCase()==="UNIDADES")
+									.filter(({ tipoRuta }) => tipoRuta.toUpperCase() === "UNIDADES")
 									.map((r) => ({
 										id: r.id,
 										descripcion: r.tipoRuta,
@@ -1322,7 +1322,7 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
 		this.solicitud.idUnidadNegocio = this.model.unidadNegocio;
 		this.solicitud.estadoSolicitud = "2";
 
-		this.starterService.getUser(localStorage.getItem(LocalStorageKeys.IdUsuario)!).subscribe({
+		this.starterService.getUser(sessionStorage.getItem(LocalStorageKeys.IdUsuario)!).subscribe({
 			next: (res) => {
 				this.llenarModelDetalleAprobaciones(res);
 
@@ -1453,7 +1453,7 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
 
 		this.seleccionCandidatoService.saveCandidato(request).subscribe({
 			next: () => {
-				this.starterService.getUser(localStorage.getItem(LocalStorageKeys.IdUsuario)!).subscribe({
+				this.starterService.getUser(sessionStorage.getItem(LocalStorageKeys.IdUsuario)!).subscribe({
 					next: (res) => {
 						this.llenarModelDetalleAprobaciones(res);
 
@@ -1475,7 +1475,7 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
 						// this.disabledFechas.procesoContratacion = this.fechas.procesoContratacion !== null && this.fechas.procesoContratacion !== "";
 						// this.disabledFechas.finProcesoContratacion = this.fechas.finProcesoContratacion !== null && this.fechas.finProcesoContratacion !== "";
 
-						this.utilService.modalResponse("Datos Guardados Correctamente", "success" );
+						this.utilService.modalResponse("Datos Guardados Correctamente", "success");
 
 						setTimeout(() => {
 							window.location.reload();
@@ -1601,40 +1601,41 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
 
 																this.solicitudes.guardarDetalleSolicitud(detalle).subscribe({
 																	next: () => {
-																		this.starterService.getUser(localStorage.getItem(LocalStorageKeys.IdUsuario)!).subscribe({
+																		this.starterService.getUser(sessionStorage.getItem(LocalStorageKeys.IdUsuario)!).subscribe({
 																			next: (user) => {
 																				this.llenarModelDetalleAprobacionesCF_RG(user, resSolicitud.idSolicitud, idTipoSolicitud, descripcionTipoSolicitud);
 																				this.solicitudes.modelDetalleAprobaciones.comentario = "Candidato Seleccionado";
 																				this.solicitudes.guardarDetallesAprobacionesSolicitud(this.solicitudes.modelDetalleAprobaciones).subscribe((res) => {
-																						this.solicitudes.getDetalleAprobadoresSolicitudesById(resSolicitud.idSolicitud).subscribe({
-																							next: (resJefe) => {
+																					this.solicitudes.getDetalleAprobadoresSolicitudesById(resSolicitud.idSolicitud).subscribe({
+																						next: (resJefe) => {
 																							resJefe.detalleAprobadorSolicitud.forEach((item) => {
-																								if(item.nivelAprobacionRuta.toUpperCase().includes("REGISTRARSOLICITUD")){
-																								const htmlString = "<!DOCTYPE html>\r\n<html lang=\"es\">\r\n\r\n<head>\r\n  <meta charset=\"UTF-8\">\r\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n  <title>Document<\/title>\r\n<\/head>\r\n\r\n<body>\r\n  <h2>Estimado(a)<\/h2>\r\n  <h3>{NOMBRE_APROBADOR}<\/h3>\r\n\r\n  <P>La Solicitud de {TIPO_SOLICITUD} {ID_SOLICITUD} para la posici\u00F3n de {DESCRIPCION_POSICION} est\u00E1 disponible para su\r\n    revisi\u00F3n.<\/P>\r\n\r\n  <p>\r\n    <b>\r\n      Favor ingresar al siguiente enlace: <a href=\"{URL_APROBACION}\">{URL_APROBACION}<\/a>\r\n      <br>\r\n      <br>\r\n      Gracias por su atenci\u00F3n.\r\n    <\/b>\r\n  <\/p>\r\n<\/body>\r\n\r\n<\/html>\r\n";
-																		
-																								const modifiedHtmlString = htmlString.replace("{NOMBRE_APROBADOR}", item.usuarioAprobador).replace("{TIPO_SOLICITUD}", resSolicitud.tipoSolicitud).replace("{ID_SOLICITUD}", resSolicitud.idSolicitud).replace("{DESCRIPCION_POSICION}", this.detalleSolicitud.descripcionPosicion).replace(new RegExp("{URL_APROBACION}", "g"), `${portalWorkFlow}tareas/consulta-tareas`);
-																					
-																								this.emailVariables = {
-																									de: "emisor",
-																									para: item.correo,
-																									// alias: this.solicitudes.modelDetalleAprobaciones.correo,
-																									alias: "Notificación 1",
-																									asunto: `Creación de Solicitud de ${resSolicitud.tipoSolicitud} ${resSolicitud.idSolicitud}`,
-																									cuerpo: modifiedHtmlString,
-																									password: "password"
-																								};
-																								this.solicitudes.sendEmail(this.emailVariables).subscribe({
-																									next: () => {
-																								},
-																								error: (error) => {
-																									console.error(error);
+																								if (item.nivelAprobacionRuta.toUpperCase().includes("REGISTRARSOLICITUD")) {
+																									const htmlString = "<!DOCTYPE html>\r\n<html lang=\"es\">\r\n\r\n<head>\r\n  <meta charset=\"UTF-8\">\r\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n  <title>Document<\/title>\r\n<\/head>\r\n\r\n<body>\r\n  <h2>Estimado(a)<\/h2>\r\n  <h3>{NOMBRE_APROBADOR}<\/h3>\r\n\r\n  <P>La Solicitud de {TIPO_SOLICITUD} {ID_SOLICITUD} para la posici\u00F3n de {DESCRIPCION_POSICION} est\u00E1 disponible para su\r\n    revisi\u00F3n.<\/P>\r\n\r\n  <p>\r\n    <b>\r\n      Favor ingresar al siguiente enlace: <a href=\"{URL_APROBACION}\">{URL_APROBACION}<\/a>\r\n      <br>\r\n      <br>\r\n      Gracias por su atenci\u00F3n.\r\n    <\/b>\r\n  <\/p>\r\n<\/body>\r\n\r\n<\/html>\r\n";
+
+																									const modifiedHtmlString = htmlString.replace("{NOMBRE_APROBADOR}", item.usuarioAprobador).replace("{TIPO_SOLICITUD}", resSolicitud.tipoSolicitud).replace("{ID_SOLICITUD}", resSolicitud.idSolicitud).replace("{DESCRIPCION_POSICION}", this.detalleSolicitud.descripcionPosicion).replace(new RegExp("{URL_APROBACION}", "g"), `${portalWorkFlow}tareas/consulta-tareas`);
+
+																									this.emailVariables = {
+																										de: "emisor",
+																										para: item.correo,
+																										// alias: this.solicitudes.modelDetalleAprobaciones.correo,
+																										alias: "Notificación 1",
+																										asunto: `Creación de Solicitud de ${resSolicitud.tipoSolicitud} ${resSolicitud.idSolicitud}`,
+																										cuerpo: modifiedHtmlString,
+																										password: "password"
+																									};
+																									this.solicitudes.sendEmail(this.emailVariables).subscribe({
+																										next: () => {
+																										},
+																										error: (error) => {
+																											console.error(error);
+																										}
+																									});
 																								}
-																								});			
-																								}
-																							});}	
-																						});
-																					
-																				 });
+																							});
+																						}
+																					});
+
+																				});
 																			}
 																		});
 																	}

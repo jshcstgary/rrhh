@@ -1,9 +1,11 @@
+import { DatePipe } from "@angular/common";
 import { HttpErrorResponse } from "@angular/common/http";
 import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
 import { IColumnsTable } from "src/app/component/table/table.interface";
 import { TableService } from "src/app/component/table/table.service";
 import { PageCodes } from "src/app/enums/codes.enum";
+import { LocalStorageKeys } from "src/app/enums/local-storage-keys.enum";
 import { AprobadorFijoPageControlPermission } from "src/app/enums/page-control-permisions.enum";
 import { DataFilterNivelesAprobacion } from "src/app/eschemas/DataFilterNivelesAprobacion";
 import { MantenimientoService } from "src/app/services/mantenimiento/mantenimiento.service";
@@ -15,9 +17,6 @@ import { PageControlPermiso } from "src/app/types/page-control-permiso.type";
 import { Control } from "src/app/types/permiso.type";
 import { AprobadoresFijosData } from "./aprobadores-fijos.data";
 import { AprobadoresFijosService } from "./aprobadores-fijos.service";
-import { LocalStorageKeys } from "src/app/enums/local-storage-keys.enum";
-import { format } from "date-fns";
-import { DatePipe } from "@angular/common";
 
 @Component({
 	selector: "app-aprobadores-fijos",
@@ -83,7 +82,7 @@ export class AprobadoresFijosComponent implements OnInit {
 	}
 
 	ngOnInit(): void {
-		localStorage.removeItem(LocalStorageKeys.Reloaded);
+		sessionStorage.removeItem(LocalStorageKeys.Reloaded);
 		this.utilService.openLoadingSpinner("Cargando información. Espere por favor...");
 
 		this.columnsTable[this.columnsTable.length - 1].actions.forEach(action => {

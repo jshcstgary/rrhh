@@ -139,9 +139,9 @@ export class CompletarAccionPersonalComponent extends CompleteTaskComponent {
 	  { id: 3, descripcion: "Pasante" },
 	  { id: 4, descripcion: "Reemplazo" },
 	];
-  
+
 	// public dataTipoAccion: any;
-  
+
 	public dataTipoAccion: any = [
 	  { id: 1, descripcion: "Motivo1" },
 	  { id: 2, descripcion: "Motivo2" },
@@ -338,13 +338,13 @@ export class CompletarAccionPersonalComponent extends CompleteTaskComponent {
 		this.dataEmpleadoEvolution.map((empleado) => empleado.nombreCompleto)
 	  ),
 	];
-  
+
 	subledgers: string[] = [
 	  ...new Set(
 		this.dataEmpleadoEvolution.map((empleado) => empleado.subledger)
 	  ),
 	];
-  
+
 	codigosPosicion: string[] = [
 	  ...new Set(
 		this.dataEmpleadoEvolution.map((empleado) => empleado.codigoPosicion)
@@ -399,13 +399,13 @@ export class CompletarAccionPersonalComponent extends CompleteTaskComponent {
 		this.utilService.openLoadingSpinner("Cargando información, espere por favor...");
 
 		try {
-			this.starterService.getUser(localStorage.getItem(LocalStorageKeys.IdUsuario)!).subscribe({
+			this.starterService.getUser(sessionStorage.getItem(LocalStorageKeys.IdUsuario)!).subscribe({
 				next: (res) => {
 					return this.consultaTareasService.getTareasUsuario(res.evType[0].subledger).subscribe({
 						next: async (response) => {
 							this.existe = response.solicitudes.some(({ idSolicitud, rootProcInstId }) => idSolicitud === this.id_solicitud_by_params && rootProcInstId === this.idDeInstancia);
 
-							const permisos: Permiso[] = JSON.parse(localStorage.getItem(LocalStorageKeys.Permisos)!);
+							const permisos: Permiso[] = JSON.parse(sessionStorage.getItem(LocalStorageKeys.Permisos)!);
 
 							this.existeMatenedores = permisos.some(permiso => permiso.codigo === PageCodes.AprobadorFijo);
 
@@ -561,7 +561,7 @@ export class CompletarAccionPersonalComponent extends CompleteTaskComponent {
 				/*this.mostrarTipoJustificacionYMision = this.restrictionsIds.includes(
 				  this.solicitud.idTipoMotivo
 				);
-		
+
 				this.mostrarSubledger = this.restrictionsSubledgerIds.includes(
 				  this.solicitud.idTipoMotivo
 				);*/ // comentado mmunoz
@@ -645,11 +645,11 @@ export class CompletarAccionPersonalComponent extends CompleteTaskComponent {
 			this.solicitud.request.idTipoSolicitud = this.dataTipoSolicitud.id;
 			this.solicitud.request.tipoSolicitud =
 			  this.dataTipoSolicitud.tipoSolicitud;
-	  
+
 			this.solicitud.infoGeneral.idTipoMotivo = this.dataTipoMotivo.id;
 			this.solicitud.infoGeneral.tipoMotivo = this.dataTipoMotivo.tipoMotivo;
 			this.solicitud.request.idTipoMotivo = this.dataTipoMotivo.id;
-	  
+
 			this.solicitud.infoGeneral.idTipoAccion = this.dataTipoAccion.id;
 			this.solicitud.infoGeneral.tipoAccion = this.dataTipoAccion.tipoAccion;
 			this.solicitud.request.idTipoAccion = this.dataTipoAccion.id;
@@ -823,7 +823,7 @@ export class CompletarAccionPersonalComponent extends CompleteTaskComponent {
 
 				//console.log("aprobacion: ",aprobacion);
 				/* console.log(`Elemento en la posición Miguel1 ${this.keySelected}:`, this.dataAprobacionesPorPosicion[this.keySelected][0].nivelAprobacionType.idNivelAprobacion);
-		
+
 				 for (const key in this.dataAprobacionesPorPosicion[this.keySelected]) {
 				   if (this.dataAprobacionesPorPosicion.hasOwnProperty(key)) {
 					 console.log(`Clave: ${key}`);

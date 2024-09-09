@@ -17,7 +17,7 @@ export class EditarAprobadorFijoService {
 
 	public actualizarAprobadorFijo(request: any): Observable<any> {
 		request.fechA_MODIFICACION = new Date();
-		request.usuariO_MODIFICACION = localStorage.getItem(LocalStorageKeys.IdLogin);
+		request.usuariO_MODIFICACION = sessionStorage.getItem(LocalStorageKeys.IdLogin);
 
 		convertTimeZonedDate(request.fechA_MODIFICACION);
 
@@ -31,14 +31,14 @@ export class EditarAprobadorFijoService {
 	// public guardarNivelAprobacion(request: any): Observable<any> {
 	// 	request.fechaCreacion = new Date();
 	// 	request.fechaActualizacion = new Date();
-	// 	request.usuarioCreacion = localStorage.getItem(LocalStorageKeys.IdLogin);
+	// 	request.usuarioCreacion = sessionStorage.getItem(LocalStorageKeys.IdLogin);
 	// 	request.usuarioActualizacion = null;
 	// 	return this.http.post<any>(this.apiUrlNivelAprobacion, request);
 	// }
 
 	// public actualizarNivelAprobacion(request: any): Observable<any> {
 	// 	request.fechaActualizacion = new Date();
-	// 	request.usuarioActualizacion = localStorage.getItem(LocalStorageKeys.IdLogin);
+	// 	request.usuarioActualizacion = sessionStorage.getItem(LocalStorageKeys.IdLogin);
 	// 	return this.http.put<any>(this.apiUrlNivelAprobacion, request);
 	// }
 

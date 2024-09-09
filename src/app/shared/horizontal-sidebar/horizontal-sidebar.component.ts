@@ -52,9 +52,9 @@ export class HorizontalSidebarComponent {
 		"height": "100%"
 	};
 
-	public permisos: Permiso[] = JSON.parse(localStorage.getItem(LocalStorageKeys.Permisos)) || [];
+	public permisos: Permiso[] = JSON.parse(sessionStorage.getItem(LocalStorageKeys.Permisos)) || [];
 	//public pagesToSearch: ISelectOptions = [];
-	public userName: string = "User: " + localStorage.getItem(LocalStorageKeys.IdLogin) + " - Perfil: " + localStorage.getItem(LocalStorageKeys.Perfil);
+	public userName: string = "User: " + sessionStorage.getItem(LocalStorageKeys.IdLogin) + " - Perfil: " + sessionStorage.getItem(LocalStorageKeys.Perfil);
 	public profile: string = "Supervisor";
 	public profiles: IDropdownOptions = [
 		{

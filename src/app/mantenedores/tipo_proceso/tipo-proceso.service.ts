@@ -26,9 +26,9 @@ export class TipoProcesoService {
 	}
 
 	public store(request: ITipoproceso): Observable<ITipoproceso> {
-		request.usuarioCreacion = localStorage.getItem(LocalStorageKeys.IdLogin);
+		request.usuarioCreacion = sessionStorage.getItem(LocalStorageKeys.IdLogin);
 		request.fechaCreacion = new Date();
-		request.usuarioActualizacion = localStorage.getItem(LocalStorageKeys.IdLogin);
+		request.usuarioActualizacion = sessionStorage.getItem(LocalStorageKeys.IdLogin);
 		request.fechaActualizacion = new Date();
 
 		convertTimeZonedDate(request.fechaCreacion);
@@ -38,7 +38,7 @@ export class TipoProcesoService {
 	}
 
 	public update(request: ITipoproceso): Observable<ITipoproceso> {
-		request.usuarioActualizacion = localStorage.getItem(LocalStorageKeys.IdLogin);
+		request.usuarioActualizacion = sessionStorage.getItem(LocalStorageKeys.IdLogin);
 		request.fechaActualizacion = new Date();
 
 		convertTimeZonedDate(request.fechaActualizacion);

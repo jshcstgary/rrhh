@@ -14,8 +14,10 @@ import { DetalleSolicitud } from 'src/app/eschemas/DetalleSolicitud';
 import { RegistrarData } from 'src/app/eschemas/RegistrarData';
 import { Solicitud } from 'src/app/eschemas/Solicitud';
 import { MantenimientoService } from 'src/app/services/mantenimiento/mantenimiento.service';
+import { convertTimeZonedDate } from 'src/app/services/util/dates.util';
 import { UtilService } from 'src/app/services/util/util.service';
 import { DialogComponents, dialogComponentList } from 'src/app/shared/dialogComponents/dialog.components';
+import { DialogReasignarUsuarioComponent } from 'src/app/shared/reasginar-usuario/reasignar-usuario.component';
 import { StarterService } from 'src/app/starter/starter.service';
 import { ConsultaTareasService } from 'src/app/tareas/consulta-tareas/consulta-tareas.service';
 import { Permiso } from "src/app/types/permiso.type";
@@ -26,8 +28,6 @@ import { RegistrarCandidatoService } from '../registrar-candidato/registrar-cand
 import { SolicitudesService } from '../registrar-solicitud/solicitudes.service';
 import { ComentarioSalidaJefeService } from './comentario-salida-jefe.service';
 import { columnsAprobadores, dataTableAprobadores } from './registrar-comentario-salida-jefe.data';
-import { convertTimeZonedDate } from 'src/app/services/util/dates.util';
-import { DialogReasignarUsuarioComponent } from 'src/app/shared/reasginar-usuario/reasignar-usuario.component';
 
 @Component({
 	selector: 'app-registrar-comentario-salida-jefe',
@@ -177,9 +177,9 @@ export class RegistrarComentarioSalidaJefeComponent extends CompleteTaskComponen
 	  { id: 3, descripcion: "Pasante" },
 	  { id: 4, descripcion: "Reemplazo" },
 	];
-  
+
 	// public dataTipoAccion: any;
-  
+
 	public dataTipoAccion: any = [
 	  { id: 1, descripcion: "Motivo1" },
 	  { id: 2, descripcion: "Motivo2" },
@@ -226,7 +226,7 @@ export class RegistrarComentarioSalidaJefeComponent extends CompleteTaskComponen
 	public mostrarSubledger = false;
 
 	public comentariosJefeInmediato: any = {};
-	public contadorComentarios: number=1;
+	public contadorComentarios: number = 1;
 
 
 	public comentariosRRHH: any = {};
@@ -387,13 +387,13 @@ export class RegistrarComentarioSalidaJefeComponent extends CompleteTaskComponen
 		this.dataEmpleadoEvolution.map((empleado) => empleado.nombreCompleto)
 	  ),
 	];
-  
+
 	subledgers: string[] = [
 	  ...new Set(
 		this.dataEmpleadoEvolution.map((empleado) => empleado.subledger)
 	  ),
 	];
-  
+
 	codigosPosicion: string[] = [
 	  ...new Set(
 		this.dataEmpleadoEvolution.map((empleado) => empleado.codigoPosicion)
@@ -458,13 +458,13 @@ export class RegistrarComentarioSalidaJefeComponent extends CompleteTaskComponen
 		this.utilService.openLoadingSpinner("Cargando información, espere por favor...");
 
 		try {
-			this.starterService.getUser(localStorage.getItem(LocalStorageKeys.IdUsuario)!).subscribe({
+			this.starterService.getUser(sessionStorage.getItem(LocalStorageKeys.IdUsuario)!).subscribe({
 				next: (res) => {
 					return this.consultaTareasService.getTareasUsuario(res.evType[0].subledger).subscribe({
 						next: async (response) => {
 							this.existe = response.solicitudes.some(({ idSolicitud, rootProcInstId }) => idSolicitud === this.id_solicitud_by_params && rootProcInstId === this.idDeInstancia);
 							this.taskType_Activity_subledger = response.solicitudes.filter(({ idSolicitud, rootProcInstId }) => idSolicitud === this.id_solicitud_by_params && rootProcInstId === this.idDeInstancia);
-							const permisos: Permiso[] = JSON.parse(localStorage.getItem(LocalStorageKeys.Permisos)!);
+							const permisos: Permiso[] = JSON.parse(sessionStorage.getItem(LocalStorageKeys.Permisos)!);
 							this.existeMatenedores = permisos.some(permiso => permiso.codigo === PageCodes.AprobadorFijo);
 
 							if (this.existe || this.existeMatenedores) {
@@ -600,7 +600,7 @@ export class RegistrarComentarioSalidaJefeComponent extends CompleteTaskComponen
 					} else {
 						this.comentariosRRHH = comentario;
 					}
-					this.contadorComentarios=this.contadorComentarios+1;
+					this.contadorComentarios = this.contadorComentarios + 1;
 				})
 			}
 		});
@@ -639,7 +639,7 @@ export class RegistrarComentarioSalidaJefeComponent extends CompleteTaskComponen
 		});
 	}
 	mapearDetallesAprobadores(nivelAprobacionPosicionType: any[]) {
-		this.starterService.getUser(localStorage.getItem(LocalStorageKeys.IdUsuario)).subscribe({
+		this.starterService.getUser(sessionStorage.getItem(LocalStorageKeys.IdUsuario)).subscribe({
 			next: (res) => {
 				this.detalleNivelAprobacion = nivelAprobacionPosicionType.map(({ nivelAprobacionType, aprobador }, index) => ({
 					id_Solicitud: this.solicitudRG.idSolicitud,
@@ -1318,35 +1318,36 @@ export class RegistrarComentarioSalidaJefeComponent extends CompleteTaskComponen
 		this.camundaRestService.postCompleteTask(this.uniqueTaskId, variables).subscribe({
 			next: () => {
 				console.log(this.contadorComentarios);
-				if(this.contadorComentarios===2){
-				this.solicitudes.getDetalleAprobadoresSolicitudesById(this.solicitudRG.idSolicitud).subscribe({
-					next: (resJefe) => {
-					resJefe.detalleAprobadorSolicitud.forEach((item) => {
-						if(item.estadoAprobacion.toUpperCase().includes("COMENTARIOSOLICITANTE")){
-						const htmlString = "<!DOCTYPE html>\r\n<html lang=\"es\">\r\n\r\n<head>\r\n  <meta charset=\"UTF-8\">\r\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n  <title>Document<\/title>\r\n<\/head>\r\n\r\n<body>\r\n  <h2>Estimado(a)<\/h2>\r\n  <h3>{NOMBRE_APROBADOR}<\/h3>\r\n\r\n  <P>La Solicitud de {TIPO_SOLICITUD} {ID_SOLICITUD} para la posici\u00F3n de {DESCRIPCION_POSICION} est\u00E1 disponible para su\r\n    revisi\u00F3n y registro de Comentario de Reingreso del Empleado.<\/P>\r\n\r\n  <p>\r\n    <b>\r\n      Favor ingresar al siguiente enlace: <a href=\"{URL_APROBACION}\">{URL_APROBACION}<\/a>\r\n      <br>\r\n      <br>\r\n      Gracias por su atenci\u00F3n.\r\n    <\/b>\r\n  <\/p>\r\n<\/body>\r\n\r\n<\/html>\r\n";
+				if (this.contadorComentarios === 2) {
+					this.solicitudes.getDetalleAprobadoresSolicitudesById(this.solicitudRG.idSolicitud).subscribe({
+						next: (resJefe) => {
+							resJefe.detalleAprobadorSolicitud.forEach((item) => {
+								if (item.estadoAprobacion.toUpperCase().includes("COMENTARIOSOLICITANTE")) {
+									const htmlString = "<!DOCTYPE html>\r\n<html lang=\"es\">\r\n\r\n<head>\r\n  <meta charset=\"UTF-8\">\r\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n  <title>Document<\/title>\r\n<\/head>\r\n\r\n<body>\r\n  <h2>Estimado(a)<\/h2>\r\n  <h3>{NOMBRE_APROBADOR}<\/h3>\r\n\r\n  <P>La Solicitud de {TIPO_SOLICITUD} {ID_SOLICITUD} para la posici\u00F3n de {DESCRIPCION_POSICION} est\u00E1 disponible para su\r\n    revisi\u00F3n y registro de Comentario de Reingreso del Empleado.<\/P>\r\n\r\n  <p>\r\n    <b>\r\n      Favor ingresar al siguiente enlace: <a href=\"{URL_APROBACION}\">{URL_APROBACION}<\/a>\r\n      <br>\r\n      <br>\r\n      Gracias por su atenci\u00F3n.\r\n    <\/b>\r\n  <\/p>\r\n<\/body>\r\n\r\n<\/html>\r\n";
 
-						const modifiedHtmlString = htmlString.replace("{NOMBRE_APROBADOR}", item.usuarioAprobador).replace("{TIPO_SOLICITUD}", this.solicitudRG.tipoSolicitud).replace("{ID_SOLICITUD}", this.solicitudRG.idSolicitud).replace("{DESCRIPCION_POSICION}", this.detalleSolicitudRG.descripcionPosicion).replace(new RegExp("{URL_APROBACION}", "g"), `${portalWorkFlow}tareas/consulta-tareas`);
-			
-						this.emailVariables = {
-							de: "emisor",
-							para: item.correo,
-							// alias: this.solicitudes.modelDetalleAprobaciones.correo,
-							alias: "Notificación 1",
-							asunto: `Registro de Comentarios para la Solicitud de ${this.solicitudRG.tipoSolicitud} ${this.solicitudRG.idSolicitud}`,
-							cuerpo: modifiedHtmlString,
-							password: "password"
-						};
-						this.solicitudes.sendEmail(this.emailVariables).subscribe({
-							next: () => {
-						},
-						error: (error) => {
-							console.error(error);
+									const modifiedHtmlString = htmlString.replace("{NOMBRE_APROBADOR}", item.usuarioAprobador).replace("{TIPO_SOLICITUD}", this.solicitudRG.tipoSolicitud).replace("{ID_SOLICITUD}", this.solicitudRG.idSolicitud).replace("{DESCRIPCION_POSICION}", this.detalleSolicitudRG.descripcionPosicion).replace(new RegExp("{URL_APROBACION}", "g"), `${portalWorkFlow}tareas/consulta-tareas`);
+
+									this.emailVariables = {
+										de: "emisor",
+										para: item.correo,
+										// alias: this.solicitudes.modelDetalleAprobaciones.correo,
+										alias: "Notificación 1",
+										asunto: `Registro de Comentarios para la Solicitud de ${this.solicitudRG.tipoSolicitud} ${this.solicitudRG.idSolicitud}`,
+										cuerpo: modifiedHtmlString,
+										password: "password"
+									};
+									this.solicitudes.sendEmail(this.emailVariables).subscribe({
+										next: () => {
+										},
+										error: (error) => {
+											console.error(error);
+										}
+									});
+								}
+							});
 						}
-						});			
-						}
-					});}	
-				});
-			}
+					});
+				}
 				this.utilService.closeLoadingSpinner();
 
 				this.utilService.modalResponse(`Solicitud registrada correctamente [${this.solicitud.idSolicitud}]. Será redirigido en un momento...`, "success");

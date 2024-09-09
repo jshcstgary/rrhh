@@ -420,13 +420,13 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
 		this.utilService.openLoadingSpinner("Cargando información, espere por favor...");
 
 		try {
-			this.starterService.getUser(localStorage.getItem(LocalStorageKeys.IdUsuario)!).subscribe({
+			this.starterService.getUser(sessionStorage.getItem(LocalStorageKeys.IdUsuario)!).subscribe({
 				next: (res) => {
 					return this.consultaTareasService.getTareasUsuario(res.evType[0].subledger).subscribe({
 						next: async (response) => {
 							this.existe = response.solicitudes.some(({ idSolicitud, rootProcInstId }) => idSolicitud === this.id_solicitud_by_params && rootProcInstId === this.idDeInstancia);
 
-							const permisos: Permiso[] = JSON.parse(localStorage.getItem(LocalStorageKeys.Permisos)!);
+							const permisos: Permiso[] = JSON.parse(sessionStorage.getItem(LocalStorageKeys.Permisos)!);
 
 							this.existeMatenedores = permisos.some(permiso => permiso.codigo === PageCodes.AprobadorFijo);
 
@@ -1727,7 +1727,7 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
 	}
 
 	mapearDetallesAprobadores(nivelAprobacionPosicionType: any[]) {
-		this.starterService.getUser(localStorage.getItem(LocalStorageKeys.IdUsuario)).subscribe({
+		this.starterService.getUser(sessionStorage.getItem(LocalStorageKeys.IdUsuario)).subscribe({
 			next: (res) => {
 				this.detalleNivelAprobacion = nivelAprobacionPosicionType.map(({ nivelAprobacionType, aprobador }, index) => {
 					const detalleNivel = {
@@ -1771,7 +1771,7 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
 	}
 
 	crearAnuladorSolicitud() {
-		this.starterService.getUser(localStorage.getItem(LocalStorageKeys.IdUsuario)!).subscribe({
+		this.starterService.getUser(sessionStorage.getItem(LocalStorageKeys.IdUsuario)!).subscribe({
 			next: (res) => {
 				this.solicitudes.modelDetalleAprobaciones.id_Solicitud = this.solicitud.idSolicitud;
 				this.solicitudes.modelDetalleAprobaciones.id_NivelAprobacion = 200001;
@@ -1920,7 +1920,7 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
 
 			this.emailVariables = {
 				de: "emisor",
-				para: localStorage.getItem(LocalStorageKeys.IdUsuario),
+				para: sessionStorage.getItem(LocalStorageKeys.IdUsuario),
 				// alias: this.solicitudes.modelDetalleAprobaciones.correo,
 				alias: "Notificación 1",
 				asunto: `Notificación por Anulación de Solicitud de ${this.solicitud.tipoSolicitud} ${this.solicitud.idSolicitud}`,
@@ -1971,9 +1971,6 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
 	public onCancel(): void { }
 
 	save() {
-		console.log(this.model);
-		return;
-
 		this.utilService.openLoadingSpinner("Guardando información, espere por favor...");
 
 		this.submitted = true;

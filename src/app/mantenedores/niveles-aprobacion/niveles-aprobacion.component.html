@@ -85,7 +85,7 @@
 
 					<td>{{ nivel.nivelDireccion }}</td>
 
-					<td *ngFor="let ruta of nivel.rutas">{{ ruta }}</td>
+					<td *ngFor="let ruta of nivel.rutas">{{ ruta.nivelAprobacion }}</td>
 
 					<td class="text-center fixed-col-end action">
 						<i tabindex="0" class="material-icons text-info cursor-pointer action-icon" (click)="onRowActionClicked(i)">edit</i>

@@ -4,6 +4,7 @@ import {
 	HttpResponse,
 } from "@angular/common/http";
 import { Injectable } from "@angular/core";
+import { LocalStorageKeys } from "src/app/enums/local-storage-keys.enum";
 import { environment } from "src/environments/environment";
 import Swal, { SweetAlertIcon } from "sweetalert2";
 import {
@@ -11,7 +12,6 @@ import {
 	IUtilReporte,
 	IUtilReporteDetail,
 } from "./util.interface";
-import { LocalStorageKeys } from "src/app/enums/local-storage-keys.enum";
 
 @Injectable({
 	providedIn: "root",
@@ -79,13 +79,13 @@ export class UtilService {
 		contenidoColumnas: string[][]
 	) {
 		this.openLoadingSpinner("Obteniendo documento...");
-		
+
 		const reporteDetail: IUtilReporteDetail = {
 			fechaReporte: new Date().toLocaleString(),
 			codigoReporte: codigoReporte,
 			compania: "ReyBanpac",
 			tituloReporte: tituloReporte,
-			usuario: localStorage.getItem(LocalStorageKeys.IdLogin),
+			usuario: sessionStorage.getItem(LocalStorageKeys.IdLogin),
 			columnas: columnas,
 			contenidoColumnas: contenidoColumnas,
 		};

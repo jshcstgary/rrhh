@@ -6,11 +6,9 @@ import { Component } from "@angular/core";
 import { NgForm } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
-import { Observable, OperatorFunction, Subject } from "rxjs";
+import { Subject } from "rxjs";
 import {
-	debounceTime,
-	distinctUntilChanged,
-	map
+	debounceTime
 } from "rxjs/operators";
 import { PageCodes } from "src/app/enums/codes.enum";
 import { LocalStorageKeys } from "src/app/enums/local-storage-keys.enum";
@@ -20,6 +18,7 @@ import { DetalleSolicitud } from "src/app/eschemas/DetalleSolicitud";
 import { RegistrarData } from "src/app/eschemas/RegistrarData";
 import { Solicitud } from "src/app/eschemas/Solicitud";
 import { MantenimientoService } from "src/app/services/mantenimiento/mantenimiento.service";
+import { convertTimeZonedDate } from "src/app/services/util/dates.util";
 import { UtilService } from "src/app/services/util/util.service";
 import { DialogComponents } from "src/app/shared/dialogComponents/dialog.components";
 import { DialogReasignarUsuarioComponent } from "src/app/shared/reasginar-usuario/reasignar-usuario.component";
@@ -29,10 +28,9 @@ import { Permiso } from "src/app/types/permiso.type";
 import Swal from "sweetalert2";
 import { environment, portalWorkFlow } from "../../../environments/environment";
 import { CamundaRestService } from "../../camunda-rest.service";
+import { BuscarEmpleadoComponent } from "../buscar-empleado/buscar-empleado.component";
 import { CompleteTaskComponent } from "../general/complete-task.component";
 import { SolicitudesService } from "./solicitudes.service";
-import { BuscarEmpleadoComponent } from "../buscar-empleado/buscar-empleado.component";
-import { convertTimeZonedDate } from "src/app/services/util/dates.util";
 
 const dialogComponentList: DialogComponents = {
 	dialogBuscarEmpleados: undefined,
@@ -266,13 +264,13 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
 		this.utilService.openLoadingSpinner("Cargando información, espere por favor...");
 
 		try {
-			this.starterService.getUser(localStorage.getItem(LocalStorageKeys.IdUsuario)!).subscribe({
+			this.starterService.getUser(sessionStorage.getItem(LocalStorageKeys.IdUsuario)!).subscribe({
 				next: (res) => {
 					return this.consultaTareasService.getTareasUsuario(res.evType[0].subledger).subscribe({
 						next: async (response) => {
 							this.existe = response.solicitudes.some(({ idSolicitud, rootProcInstId }) => idSolicitud === this.id_solicitud_by_params && rootProcInstId === this.idDeInstancia);
 
-							const permisos: Permiso[] = JSON.parse(localStorage.getItem(LocalStorageKeys.Permisos)!);
+							const permisos: Permiso[] = JSON.parse(sessionStorage.getItem(LocalStorageKeys.Permisos)!);
 
 							this.existeMatenedores = permisos.some(permiso => permiso.codigo === PageCodes.AprobadorFijo);
 							console.log(this.existeMatenedores);
@@ -404,7 +402,7 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
 	}
 
 	mapearDetallesAprobadores(nivelAprobacionPosicionType: any[]) {
-		this.starterService.getUser(localStorage.getItem(LocalStorageKeys.IdUsuario)).subscribe({
+		this.starterService.getUser(sessionStorage.getItem(LocalStorageKeys.IdUsuario)).subscribe({
 			next: (res) => {
 				this.detalleNivelAprobacion = nivelAprobacionPosicionType.map(({ nivelAprobacionType, aprobador }, index) => {
 					const detalleNivel = {
@@ -1458,7 +1456,7 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
 	}
 
 	crearRegistradorSolicitud() {
-		this.starterService.getUser(localStorage.getItem(LocalStorageKeys.IdUsuario)!).subscribe({
+		this.starterService.getUser(sessionStorage.getItem(LocalStorageKeys.IdUsuario)!).subscribe({
 			next: (res) => {
 				this.solicitudes.modelDetalleAprobaciones.id_Solicitud = this.solicitud.idSolicitud;
 				this.solicitudes.modelDetalleAprobaciones.id_NivelAprobacion = 100000;
@@ -1492,7 +1490,7 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
 	}
 
 	crearAnuladorSolicitud() {
-		this.starterService.getUser(localStorage.getItem(LocalStorageKeys.IdUsuario)!).subscribe({
+		this.starterService.getUser(sessionStorage.getItem(LocalStorageKeys.IdUsuario)!).subscribe({
 			next: (res) => {
 				this.solicitudes.modelDetalleAprobaciones.id_Solicitud = this.solicitud.idSolicitud;
 				this.solicitudes.modelDetalleAprobaciones.id_NivelAprobacion = 200001;
@@ -1641,7 +1639,7 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
 
 			this.emailVariables = {
 				de: "emisor",
-				para: localStorage.getItem(LocalStorageKeys.IdUsuario),
+				para: sessionStorage.getItem(LocalStorageKeys.IdUsuario),
 				// alias: this.solicitudes.modelDetalleAprobaciones.correo,
 				alias: "Notificación 1",
 				asunto: `Notificación por Anulación de Solicitud de ${this.solicitud.tipoSolicitud} ${this.solicitud.idSolicitud}`,

@@ -26,9 +26,9 @@ export class TipoMotivoService {
 	}
 
 	public store(request: ITipomotivo): Observable<ITipomotivo> {
-		request.usuarioCreacion = localStorage.getItem(LocalStorageKeys.IdLogin);
+		request.usuarioCreacion = sessionStorage.getItem(LocalStorageKeys.IdLogin);
 		request.fechaCreacion = new Date();
-		request.usuarioActualizacion = localStorage.getItem(LocalStorageKeys.IdLogin);
+		request.usuarioActualizacion = sessionStorage.getItem(LocalStorageKeys.IdLogin);
 		request.fechaActualizacion = new Date();
 
 		convertTimeZonedDate(request.fechaCreacion);
@@ -38,7 +38,7 @@ export class TipoMotivoService {
 	}
 
 	public update(request: ITipomotivo): Observable<ITipomotivo> {
-		request.usuarioActualizacion = localStorage.getItem(LocalStorageKeys.IdLogin);
+		request.usuarioActualizacion = sessionStorage.getItem(LocalStorageKeys.IdLogin);
 		request.fechaActualizacion = new Date();
 
 		convertTimeZonedDate(request.fechaActualizacion);

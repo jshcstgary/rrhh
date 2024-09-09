@@ -17,9 +17,9 @@ export class CrearAprobadorFijoService {
 
 	public guardarAprobadorFijo(request: any): Observable<any> {
 		request.fechA_CREACION = new Date();
-		request.usuariO_CREACION = localStorage.getItem(LocalStorageKeys.IdLogin);
+		request.usuariO_CREACION = sessionStorage.getItem(LocalStorageKeys.IdLogin);
 		request.fechA_MODIFICACION = new Date();
-		request.usuariO_MODIFICACION = localStorage.getItem(LocalStorageKeys.IdLogin);
+		request.usuariO_MODIFICACION = sessionStorage.getItem(LocalStorageKeys.IdLogin);
 
 		convertTimeZonedDate(request.fechA_CREACION);
 		convertTimeZonedDate(request.fechA_MODIFICACION);
@@ -31,7 +31,7 @@ export class CrearAprobadorFijoService {
 	// 	console.log("2");
 	// 	request.fechaCreacion = new Date();
 	// 	request.fechaActualizacion = new Date();
-	// 	request.usuarioCreacion = localStorage.getItem(LocalStorageKeys.IdLogin);
+	// 	request.usuarioCreacion = sessionStorage.getItem(LocalStorageKeys.IdLogin);
 	// 	request.usuarioActualizacion = null;
 
 	// 	return this.http.post<any>(this.apiUrlNivelAprobacion, request);
@@ -39,7 +39,7 @@ export class CrearAprobadorFijoService {
 
 	// public actualizarNivelAprobacion(request: any): Observable<any> {
 	// 	request.fechA_MODIFICACION = new Date();
-	// 	request.usuariO_MODIFICACION = localStorage.getItem(LocalStorageKeys.IdLogin);
+	// 	request.usuariO_MODIFICACION = sessionStorage.getItem(LocalStorageKeys.IdLogin);
 
 	// 	convertTimeZonedDate(request.usuariO_MODIFICACION);
 

@@ -1,19 +1,19 @@
-import { Component } from '@angular/core';
-import { LocalStorageKeys } from './enums/local-storage-keys.enum';
+import { Component } from "@angular/core";
+import { LocalStorageKeys } from "./enums/local-storage-keys.enum";
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+	selector: "app-root",
+	templateUrl: "./app.component.html",
+	styleUrls: ["./app.component.css"]
 })
 export class AppComponent {
-  title = 'app';
+	title = "app";
 
-  constructor() {
-	  const reloaded = localStorage.getItem(LocalStorageKeys.Reloaded);
+	constructor() {
+		const reloaded = sessionStorage.getItem(LocalStorageKeys.Reloaded);
 
-	if (reloaded === undefined || reloaded === null || reloaded === "0") {
-		localStorage.setItem(LocalStorageKeys.Reloaded, "0");
+		if (reloaded === undefined || reloaded === null || reloaded === "0") {
+			sessionStorage.setItem(LocalStorageKeys.Reloaded, "0");
+		}
 	}
-  }
 }

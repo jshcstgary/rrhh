@@ -37,6 +37,7 @@ import {
 
 import { DatePipe } from "@angular/common";
 import { NgSelectComponent } from "@ng-select/ng-select";
+import { format } from "date-fns";
 import { TableComponentData } from "src/app/component/table/table.data";
 import { PageCodes } from "src/app/enums/codes.enum";
 import { LocalStorageKeys } from "src/app/enums/local-storage-keys.enum";
@@ -45,15 +46,14 @@ import { DataFilterSolicitudes } from "src/app/eschemas/DataFilterSolicitudes";
 import { DatosProcesoInicio } from "src/app/eschemas/DatosProcesoInicio";
 import { DetalleSolicitud } from "src/app/eschemas/DetalleSolicitud";
 import { PermisoService } from "src/app/services/permiso/permiso.service";
+import { convertTimeZonedDate } from "src/app/services/util/dates.util";
 import { StarterService } from "src/app/starter/starter.service";
 import { PageControlPermiso } from "src/app/types/page-control-permiso.type";
 import { Control, Permiso } from "src/app/types/permiso.type";
+import { portalWorkFlow } from "src/environments/environment";
+import { RegistrarCandidatoService } from "../registrar-candidato/registrar-candidato.service";
 import { ConsultaGraficosData } from "./consulta-grafico.data";
 import { ConsultaSolicitudesService } from "./consulta-solicitudes.service";
-import { convertTimeZonedDate } from "src/app/services/util/dates.util";
-import { portalWorkFlow } from "src/environments/environment";
-import { format } from "date-fns";
-import { RegistrarCandidatoService } from "../registrar-candidato/registrar-candidato.service";
 
 //import { single} from './chartData';
 declare var require: any;
@@ -389,7 +389,7 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 	}
 
 	public mostrarBotonesAdmin(): boolean {
-		const permisos: Permiso[] = JSON.parse(localStorage.getItem(LocalStorageKeys.Permisos)!);
+		const permisos: Permiso[] = JSON.parse(sessionStorage.getItem(LocalStorageKeys.Permisos)!);
 
 		return permisos.some(({ codigo }) => codigo === PageCodes.Mantenedores);
 	}
@@ -474,7 +474,7 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 						this.solicitud.estado = "Creado"; //tveas TODO improve [Activo]
 						this.solicitud.estadoSolicitud = "3"; // tveas TODO improve [Creado]
 						if (this.solicitud.idInstancia !== undefined) {
-							this.starterService.getUser(localStorage.getItem(LocalStorageKeys.IdUsuario)!).subscribe({
+							this.starterService.getUser(sessionStorage.getItem(LocalStorageKeys.IdUsuario)!).subscribe({
 								next: (res) => {
 									this.solicitud.usuarioCreacion = res.evType[0].nombreCompleto;
 									this.solicitud.usuarioActualizacion = res.evType[0].nombreCompleto;
@@ -815,15 +815,15 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 		}
 
 		if (this.dataFilterSolicitudes.fechaDesde !== undefined && this.dataFilterSolicitudes.fechaDesde !== null && (this.dataFilterSolicitudes.fechaHasta === undefined || this.dataFilterSolicitudes.fechaHasta === null)) {
-            const currentDate: string = new Date().toISOString().split("T")[0];
+			const currentDate: string = new Date().toISOString().split("T")[0];
 
-			if(data.fechaDesde === currentDate.substring(0,5).concat(currentDate.substring(6).replaceAll("0",""))) {
-                this.dataFilterSolicitudes.fechaHasta = this.dataFilterSolicitudes.fechaDesde;
-                this.dataFilterSolicitudes.fechaHasta.day = this.dataFilterSolicitudes.fechaHasta.day + 1;
-                data.fechaHasta = this.formatFecha(this.dataFilterSolicitudes, "fechaHasta");
-                this.dataFilterSolicitudes.fechaHasta=null;
-            }
-        }
+			if (data.fechaDesde === currentDate.substring(0, 5).concat(currentDate.substring(6).replaceAll("0", ""))) {
+				this.dataFilterSolicitudes.fechaHasta = this.dataFilterSolicitudes.fechaDesde;
+				this.dataFilterSolicitudes.fechaHasta.day = this.dataFilterSolicitudes.fechaHasta.day + 1;
+				data.fechaHasta = this.formatFecha(this.dataFilterSolicitudes, "fechaHasta");
+				this.dataFilterSolicitudes.fechaHasta = null;
+			}
+		}
 
 		if (this.dataFilterSolicitudes.fechaDesde !== undefined && this.dataFilterSolicitudes.fechaDesde !== null && this.dataFilterSolicitudes.fechaHasta !== undefined && this.dataFilterSolicitudes.fechaHasta !== null && data.fechaDesde === data.fechaHasta) {
 			this.dataFilterSolicitudes.fechaHasta.day = this.dataFilterSolicitudes.fechaHasta.day + 1;
@@ -978,7 +978,7 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 	}
 
 	private getDataToTable() {
-		localStorage.removeItem(LocalStorageKeys.Reloaded);
+		sessionStorage.removeItem(LocalStorageKeys.Reloaded);
 		//this.ObtenerServicioEstado();
 
 		this.utilService.openLoadingSpinner("Cargando información, espere por favor...");

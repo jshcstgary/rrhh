@@ -33,7 +33,6 @@ import { CompleteTaskComponent } from "../general/complete-task.component";
 import { dialogComponentList } from "../registrar-candidato/registrar-candidato.component";
 import { RegistrarCandidatoService } from "../registrar-candidato/registrar-candidato.service";
 import { SolicitudesService } from "../registrar-solicitud/solicitudes.service";
-import { convertTimeZonedDate } from "src/app/services/util/dates.util";
 
 @Component({
 	selector: 'completaSolicitud',
@@ -417,13 +416,13 @@ export class CompletaSolicitudComponent extends CompleteTaskComponent {
 		this.utilService.openLoadingSpinner("Cargando información, espere por favor...");
 
 		try {
-			this.starterService.getUser(localStorage.getItem(LocalStorageKeys.IdUsuario)!).subscribe({
+			this.starterService.getUser(sessionStorage.getItem(LocalStorageKeys.IdUsuario)!).subscribe({
 				next: (res) => {
 					return this.consultaTareasService.getTareasUsuario(res.evType[0].subledger).subscribe({
 						next: async (response) => {
 							this.existe = response.solicitudes.some(({ idSolicitud, rootProcInstId }) => idSolicitud === this.id_solicitud_by_params && rootProcInstId === this.idDeInstancia);
 
-							const permisos: Permiso[] = JSON.parse(localStorage.getItem(LocalStorageKeys.Permisos)!);
+							const permisos: Permiso[] = JSON.parse(sessionStorage.getItem(LocalStorageKeys.Permisos)!);
 
 							this.existeMatenedores = permisos.some(permiso => permiso.codigo === PageCodes.AprobadorFijo);
 
@@ -1440,7 +1439,7 @@ export class CompletaSolicitudComponent extends CompleteTaskComponent {
 	}
 
 	crearRegistradorSolicitud() {
-		this.starterService.getUser(localStorage.getItem(LocalStorageKeys.IdUsuario)!).subscribe({
+		this.starterService.getUser(sessionStorage.getItem(LocalStorageKeys.IdUsuario)!).subscribe({
 			next: (res) => {
 				this.solicitudes.modelDetalleAprobaciones.id_Solicitud = this.solicitud.idSolicitud;
 				this.solicitudes.modelDetalleAprobaciones.id_NivelAprobacion = 200000;

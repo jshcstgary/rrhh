@@ -1,12 +1,10 @@
 import {
 	Component,
-	ElementRef,
 	HostListener,
 	Input,
 	OnChanges,
 	OnInit,
-	Renderer2,
-	SimpleChanges,
+	SimpleChanges
 } from "@angular/core";
 import { UtilService } from "src/app/services/util/util.service";
 import { IInputsComponent } from "../input/input.interface";

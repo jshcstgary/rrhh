@@ -113,7 +113,7 @@ export class TipoRutaComponent implements OnInit {
 		});
 	}
 
-	private getDataToTable() {
+	private getDataToTable(modalMessage: string = "") {
 		return this.tiporutaesService.index().subscribe({
 			next: (response) => {
 				this.dataTable = response.tipoRutaType
@@ -128,6 +128,10 @@ export class TipoRutaComponent implements OnInit {
 				this.dataTableInactive = this.dataTable.filter(data => !data.estado);
 
 				this.utilService.closeLoadingSpinner();
+
+				if (modalMessage !== "") {
+					this.utilService.modalResponse(modalMessage, "success");
+				}
 			},
 			error: (error: HttpErrorResponse) => {
 				this.utilService.closeLoadingSpinner();
@@ -144,8 +148,7 @@ export class TipoRutaComponent implements OnInit {
 	private onDelete(key: string) {
 		this.tiporutaesService.delete(key).subscribe({
 			next: (response) => {
-				this.getDataToTable();
-				this.utilService.modalResponse(response, "success");
+				this.getDataToTable(response);
 			},
 			error: (error: HttpErrorResponse) =>
 				this.utilService.modalResponse(error.error, "error"),
@@ -164,9 +167,7 @@ export class TipoRutaComponent implements OnInit {
 				next: (response) => {
 					this.tableService.changeStateIsAnyEditRowActive(false);
 
-					this.utilService.modalResponse("Campos actualizados correctamente", "success");
-
-					this.getDataToTable().add(() => {
+					this.getDataToTable("Campos actualizados correctamente").add(() => {
 						if (finishedClonningRow) {
 							this.IdRowToClone = response.id.toString();
 						}
@@ -183,9 +184,7 @@ export class TipoRutaComponent implements OnInit {
 				next: (response) => {
 					this.tableService.changeStateIsAnyEditRowActive(false);
 
-					this.utilService.modalResponse("Datos ingresados correctamente", "success");
-
-					this.getDataToTable().add(() => {
+					this.getDataToTable("Datos ingresados correctamente").add(() => {
 						if (finishedClonningRow) {
 							this.IdRowToClone = response.id.toString();
 						}

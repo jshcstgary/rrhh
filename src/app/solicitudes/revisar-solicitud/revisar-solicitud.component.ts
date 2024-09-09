@@ -6,6 +6,7 @@ import { Component, Type } from "@angular/core";
 import { NgForm } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
+import { addDays } from "date-fns";
 import { Observable, OperatorFunction, Subject } from "rxjs";
 import {
 	debounceTime,
@@ -22,6 +23,7 @@ import { RegistrarData } from "src/app/eschemas/RegistrarData";
 import { Solicitud } from "src/app/eschemas/Solicitud";
 import { IEmpleadoData } from "src/app/services/mantenimiento/empleado.interface";
 import { FamiliaresCandidatos, MantenimientoService } from "src/app/services/mantenimiento/mantenimiento.service";
+import { convertTimeZonedDate } from "src/app/services/util/dates.util";
 import { UtilService } from "src/app/services/util/util.service";
 import { DialogReasignarUsuarioComponent } from "src/app/shared/reasginar-usuario/reasignar-usuario.component";
 import { columnsDatosFamiliares } from "src/app/solicitudes/revisar-solicitud/registrar-familiares.data";
@@ -36,8 +38,6 @@ import { RegistrarCandidatoService } from "../registrar-candidato/registrar-cand
 import { DialogBuscarEmpleadosFamiliaresComponent } from "../registrar-familiares/dialog-buscar-empleados-familiares/dialog-buscar-empleados-familiares.component";
 import { SolicitudesService } from "../registrar-solicitud/solicitudes.service";
 import { ComentarioSalidaJefeService } from './comentario-salida-jefe.service';
-import { addDays } from "date-fns";
-import { convertTimeZonedDate } from "src/app/services/util/dates.util";
 
 interface DialogComponents {
 	dialogBuscarEmpleados: Type<DialogBuscarEmpleadosFamiliaresComponent>;
@@ -396,10 +396,10 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
 						  "descripcionPosicion": "string",
 						  "codigoPosicionReportaA": "string",
 						  "reportaA": "string",
-			
+
 						  "subledger": "string",
 						  "estado": "string",
-			
+
 						  "codigoPosicion": "string",
 						  "idSolicitud": "string",
 						  "nombreEmpleado": "string",
@@ -469,13 +469,13 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
 		this.utilService.openLoadingSpinner("Cargando información, espere por favor...");
 
 		try {
-			this.starterService.getUser(localStorage.getItem(LocalStorageKeys.IdUsuario)!).subscribe({
+			this.starterService.getUser(sessionStorage.getItem(LocalStorageKeys.IdUsuario)!).subscribe({
 				next: (res) => {
 					return this.consultaTareasService.getTareasUsuario(res.evType[0].subledger).subscribe({
 						next: async (response) => {
 							this.existe = response.solicitudes.some(({ idSolicitud, rootProcInstId }) => idSolicitud === this.id_solicitud_by_params && rootProcInstId === this.idDeInstancia);
 
-							const permisos: Permiso[] = JSON.parse(localStorage.getItem(LocalStorageKeys.Permisos)!);
+							const permisos: Permiso[] = JSON.parse(sessionStorage.getItem(LocalStorageKeys.Permisos)!);
 
 							this.existeMatenedores = permisos.some(permiso => permiso.codigo === PageCodes.AprobadorFijo);
 
@@ -1923,7 +1923,7 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
 		if (this.taskType_Activity == environment.taskType_Revisar) { //APROBADORES DINAMICOS
 
 			variables.atencionRevision = { value: this.buttonValue };
-			variables.comentariosAtencion = { value: localStorage.getItem(LocalStorageKeys.IdLogin) + ' - ' + this.datosAprobadores.nivelDireccion + ' - ' + this.textareaContent };
+			variables.comentariosAtencion = { value: sessionStorage.getItem(LocalStorageKeys.IdLogin) + ' - ' + this.datosAprobadores.nivelDireccion + ' - ' + this.textareaContent };
 
 			//RQ_GRRHH_RevisarSolicitud
 
@@ -1943,7 +1943,7 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
 				value: `${portalWorkFlow}solicitudes/revisar-solicitud/${this.idDeInstancia}/${this.id_solicitud_by_params}`
 			};
 			variables.atencionRevisionGerente = { value: this.buttonValue };
-			variables.comentariosAtencionGerenteRRHH = { value: localStorage.getItem(LocalStorageKeys.IdLogin) + ' - ' + this.datosAprobadores.nivelDireccion + ' - ' + this.textareaContent };
+			variables.comentariosAtencionGerenteRRHH = { value: sessionStorage.getItem(LocalStorageKeys.IdLogin) + ' - ' + this.datosAprobadores.nivelDireccion + ' - ' + this.textareaContent };
 
 		} else if (this.taskType_Activity == environment.taskType_CREM
 			|| this.taskType_Activity == environment.taskType_AP_Remuneraciones
@@ -1955,7 +1955,7 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
 
 
 			variables.atencionRevisionRemuneraciones = { value: this.buttonValue };
-			variables.comentariosAtencionRemuneraciones = { value: localStorage.getItem(LocalStorageKeys.IdLogin) + ' - ' + this.datosAprobadores.nivelDireccion + ' - ' + this.textareaContent };
+			variables.comentariosAtencionRemuneraciones = { value: sessionStorage.getItem(LocalStorageKeys.IdLogin) + ' - ' + this.datosAprobadores.nivelDireccion + ' - ' + this.textareaContent };
 
 
 			/*
@@ -1970,8 +1970,8 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
 					},
 					"withVariablesInReturn": true
 				  }
-	  
-	  
+
+
 			*/
 		}
 

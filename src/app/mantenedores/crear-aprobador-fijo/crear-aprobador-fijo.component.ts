@@ -1,16 +1,16 @@
 import { HttpErrorResponse } from "@angular/common/http";
 import { Component } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
+import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { NgSelectConfig } from "@ng-select/ng-select";
+import { format } from "date-fns";
+import { LocalStorageKeys } from "src/app/enums/local-storage-keys.enum";
 import { AprobadorFijo } from "src/app/eschemas/AprobadorFijo";
 import { MantenimientoService } from "src/app/services/mantenimiento/mantenimiento.service";
 import { UtilService } from "src/app/services/util/util.service";
 import Swal from "sweetalert2";
-import { CrearAprobadorFijoService } from "./crear-aprobador-fijo.service";
 import { BuscarAprobadorFijoComponent } from "../buscar-aprobador-fijo/buscar-aprobador-fijo.component";
-import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
-import { format } from "date-fns";
-import { LocalStorageKeys } from "src/app/enums/local-storage-keys.enum";
+import { CrearAprobadorFijoService } from "./crear-aprobador-fijo.service";
 
 @Component({
 	selector: "app-crear-aprobador-fijo",
@@ -60,8 +60,8 @@ export class CrearAprobadorFijoComponent {
 					this.modelo.estado = true;
 					this.modelo.fechA_CREACION = currentdate;
 					this.modelo.fechA_MODIFICACION = currentdate;
-					this.modelo.usuariO_CREACION = localStorage.getItem(LocalStorageKeys.IdLogin);
-					this.modelo.usuariO_MODIFICACION =  localStorage.getItem(LocalStorageKeys.IdLogin);
+					this.modelo.usuariO_CREACION = sessionStorage.getItem(LocalStorageKeys.IdLogin);
+					this.modelo.usuariO_MODIFICACION = sessionStorage.getItem(LocalStorageKeys.IdLogin);
 					this.modelo.descripcioN_POSICION = epelado.descrPosicion;
 					this.modelo.supervisA_A = "N/A";
 					this.modelo.niveL_REPORTE = epelado.nivelReporte;

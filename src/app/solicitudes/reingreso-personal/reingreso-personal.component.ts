@@ -24,16 +24,16 @@ import { ConsultaTareasService } from "src/app/tareas/consulta-tareas/consulta-t
 import { Permiso } from "src/app/types/permiso.type";
 import { environment, portalWorkFlow } from "src/environments/environment";
 import Swal from "sweetalert2";
+import { BuscarEmpleadoComponent } from "../buscar-empleado/buscar-empleado.component";
 import { CompleteTaskComponent } from "../general/complete-task.component";
 import { RegistrarCandidatoService } from "../registrar-candidato/registrar-candidato.service";
 import { SolicitudesService } from "../registrar-solicitud/solicitudes.service";
+import { BuscarExempleadoComponent } from "./buscar-exempleado/buscar-exempleado.component";
 import { DialogBuscarEmpleadosReingresoComponent } from "./dialog-buscar-empleados-reingreso/dialog-buscar-empleados-reingreso.component";
 import {
 	columnsAprobadores,
 	dataTableAprobadores,
 } from "./reingreso-personal.data";
-import { BuscarEmpleadoComponent } from "../buscar-empleado/buscar-empleado.component";
-import { BuscarExempleadoComponent } from "./buscar-exempleado/buscar-exempleado.component";
 
 interface DialogComponents {
 	dialogBuscarEmpleados: Type<DialogBuscarEmpleadosReingresoComponent>;
@@ -195,9 +195,9 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
 	  { id: 3, descripcion: "Pasante" },
 	  { id: 4, descripcion: "Reemplazo" },
 	];
-  
+
 	// public dataTipoAccion: any;
-  
+
 	public dataTipoAccion: any = [
 	  { id: 1, descripcion: "Motivo1" },
 	  { id: 2, descripcion: "Motivo2" },
@@ -398,13 +398,13 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
 		this.dataEmpleadoEvolution.map((empleado) => empleado.nombreCompleto)
 	  ),
 	];
-  
+
 	subledgers: string[] = [
 	  ...new Set(
 		this.dataEmpleadoEvolution.map((empleado) => empleado.subledger)
 	  ),
 	];
-  
+
 	codigosPosicion: string[] = [
 	  ...new Set(
 		this.dataEmpleadoEvolution.map((empleado) => empleado.codigoPosicion)
@@ -468,13 +468,13 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
 		this.utilService.openLoadingSpinner("Cargando información, espere por favor...");
 
 		try {
-			this.starterService.getUser(localStorage.getItem(LocalStorageKeys.IdUsuario)!).subscribe({
+			this.starterService.getUser(sessionStorage.getItem(LocalStorageKeys.IdUsuario)!).subscribe({
 				next: (res) => {
 					return this.consultaTareasService.getTareasUsuario(res.evType[0].subledger).subscribe({
 						next: async (response) => {
 							this.existe = response.solicitudes.some(({ idSolicitud, rootProcInstId }) => idSolicitud === this.id_solicitud_by_params && rootProcInstId === this.idDeInstancia);
 
-							const permisos: Permiso[] = JSON.parse(localStorage.getItem(LocalStorageKeys.Permisos)!);
+							const permisos: Permiso[] = JSON.parse(sessionStorage.getItem(LocalStorageKeys.Permisos)!);
 
 							this.existeMatenedores = permisos.some(permiso => permiso.codigo === PageCodes.AprobadorFijo);
 
@@ -1333,7 +1333,7 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
 	}
 
 	mapearDetallesAprobadores(nivelAprobacionPosicionType: any[]) {
-		this.starterService.getUser(localStorage.getItem(LocalStorageKeys.IdUsuario)).subscribe({
+		this.starterService.getUser(sessionStorage.getItem(LocalStorageKeys.IdUsuario)).subscribe({
 			next: (res) => {
 				this.detalleNivelAprobacion = nivelAprobacionPosicionType.map(({ nivelAprobacionType, aprobador }, index) => ({
 					id_Solicitud: this.solicitudRG.idSolicitud,
@@ -1379,7 +1379,7 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
 		this.utilService.openLoadingSpinner("Completando Tarea, espere por favor...");
 
 		let variables = this.generateVariablesFromFormFields();
-		
+
 		if (this.detalleNivelAprobacion.length > 0) {
 			this.solicitudes.cargarDetalleAprobacionesArreglo(this.detalleNivelAprobacion).subscribe({
 				next: (res) => {
@@ -1395,37 +1395,38 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
 							this.solicitudes.actualizarSolicitud(this.solicitudRG).subscribe({
 								next: (responseSolicitud) => {
 									// setTimeout(() => {
-									//   this.consultarNextTaskAprobador(this.solicitudRG.idSolicitud);						
-							this.solicitudes.getDetalleAprobadoresSolicitudesById(this.solicitudRG.idSolicitud).subscribe({
-								next: (resJefe) => {
-								resJefe.detalleAprobadorSolicitud.forEach((item) => {
-									if(item.estadoAprobacion.toUpperCase().includes("COMENTARIOJEFE")
-									|| item.estadoAprobacion.toUpperCase().includes("COMENTARIORRHH")){
-									const htmlString = item.estadoAprobacion.toUpperCase().includes("COMENTARIORRHH") ? "<!DOCTYPE html>\r\n<html lang=\"es\">\r\n\r\n<head>\r\n  <meta charset=\"UTF-8\">\r\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n  <title>Document<\/title>\r\n<\/head>\r\n\r\n<body>\r\n  <h2>Estimado(a)<\/h2>\r\n  <h3>{NOMBRE_APROBADOR}<\/h3>\r\n\r\n  <P>La Solicitud de {TIPO_SOLICITUD} {ID_SOLICITUD} para la posici\u00F3n de {DESCRIPCION_POSICION} est\u00E1 disponible para su\r\n    revisi\u00F3n y registro de Comentario de Salida del Empleado.<\/P>\r\n\r\n  <p>\r\n    <b>\r\n      Favor ingresar al siguiente enlace: <a href=\"{URL_APROBACION}\">{URL_APROBACION}<\/a>\r\n      <br>\r\n      <br>\r\n      Gracias por su atenci\u00F3n.\r\n    <\/b>\r\n  <\/p>\r\n<\/body>\r\n\r\n<\/html>\r\n"
-									: "<!DOCTYPE html>\r\n<html lang=\"es\">\r\n\r\n<head>\r\n  <meta charset=\"UTF-8\">\r\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n  <title>Document<\/title>\r\n<\/head>\r\n\r\n<body>\r\n  <h2>Estimado(a)<\/h2>\r\n  <h3>{NOMBRE_APROBADOR}<\/h3>\r\n\r\n  <P>La Solicitud de {TIPO_SOLICITUD} {ID_SOLICITUD} para la posici\u00F3n de {DESCRIPCION_POSICION} est\u00E1 disponible para su\r\n    revisi\u00F3n y registro de Comentario de Desempeño del Empleado en el área.<\/P>\r\n\r\n  <p>\r\n    <b>\r\n      Favor ingresar al siguiente enlace: <a href=\"{URL_APROBACION}\">{URL_APROBACION}<\/a>\r\n      <br>\r\n      <br>\r\n      Gracias por su atenci\u00F3n.\r\n    <\/b>\r\n  <\/p>\r\n<\/body>\r\n\r\n<\/html>\r\n";
+									//   this.consultarNextTaskAprobador(this.solicitudRG.idSolicitud);
+									this.solicitudes.getDetalleAprobadoresSolicitudesById(this.solicitudRG.idSolicitud).subscribe({
+										next: (resJefe) => {
+											resJefe.detalleAprobadorSolicitud.forEach((item) => {
+												if (item.estadoAprobacion.toUpperCase().includes("COMENTARIOJEFE")
+													|| item.estadoAprobacion.toUpperCase().includes("COMENTARIORRHH")) {
+													const htmlString = item.estadoAprobacion.toUpperCase().includes("COMENTARIORRHH") ? "<!DOCTYPE html>\r\n<html lang=\"es\">\r\n\r\n<head>\r\n  <meta charset=\"UTF-8\">\r\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n  <title>Document<\/title>\r\n<\/head>\r\n\r\n<body>\r\n  <h2>Estimado(a)<\/h2>\r\n  <h3>{NOMBRE_APROBADOR}<\/h3>\r\n\r\n  <P>La Solicitud de {TIPO_SOLICITUD} {ID_SOLICITUD} para la posici\u00F3n de {DESCRIPCION_POSICION} est\u00E1 disponible para su\r\n    revisi\u00F3n y registro de Comentario de Salida del Empleado.<\/P>\r\n\r\n  <p>\r\n    <b>\r\n      Favor ingresar al siguiente enlace: <a href=\"{URL_APROBACION}\">{URL_APROBACION}<\/a>\r\n      <br>\r\n      <br>\r\n      Gracias por su atenci\u00F3n.\r\n    <\/b>\r\n  <\/p>\r\n<\/body>\r\n\r\n<\/html>\r\n"
+														: "<!DOCTYPE html>\r\n<html lang=\"es\">\r\n\r\n<head>\r\n  <meta charset=\"UTF-8\">\r\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n  <title>Document<\/title>\r\n<\/head>\r\n\r\n<body>\r\n  <h2>Estimado(a)<\/h2>\r\n  <h3>{NOMBRE_APROBADOR}<\/h3>\r\n\r\n  <P>La Solicitud de {TIPO_SOLICITUD} {ID_SOLICITUD} para la posici\u00F3n de {DESCRIPCION_POSICION} est\u00E1 disponible para su\r\n    revisi\u00F3n y registro de Comentario de Desempeño del Empleado en el área.<\/P>\r\n\r\n  <p>\r\n    <b>\r\n      Favor ingresar al siguiente enlace: <a href=\"{URL_APROBACION}\">{URL_APROBACION}<\/a>\r\n      <br>\r\n      <br>\r\n      Gracias por su atenci\u00F3n.\r\n    <\/b>\r\n  <\/p>\r\n<\/body>\r\n\r\n<\/html>\r\n";
 
-									const modifiedHtmlString = htmlString.replace("{NOMBRE_APROBADOR}", item.usuarioAprobador).replace("{TIPO_SOLICITUD}", this.solicitudRG.tipoSolicitud).replace("{ID_SOLICITUD}", this.solicitudRG.idSolicitud).replace("{DESCRIPCION_POSICION}", this.detalleSolicitudRG.descripcionPosicion).replace(new RegExp("{URL_APROBACION}", "g"), `${portalWorkFlow}tareas/consulta-tareas`);
-						
-									this.emailVariables = {
-										de: "emisor",
-										para: item.correo,
-										// alias: this.solicitudes.modelDetalleAprobaciones.correo,
-										alias: "Notificación 1",
-										asunto: `Registro de Comentarios para la Solicitud de ${this.solicitudRG.tipoSolicitud} ${this.solicitudRG.idSolicitud}`,
-										cuerpo: modifiedHtmlString,
-										password: "password"
-									};
-									this.solicitudes.sendEmail(this.emailVariables).subscribe({
-										next: () => {
-									},
-									error: (error) => {
-										console.error(error);
-									}
-									});			
-									}
-								});}	
-							});	
-									
+													const modifiedHtmlString = htmlString.replace("{NOMBRE_APROBADOR}", item.usuarioAprobador).replace("{TIPO_SOLICITUD}", this.solicitudRG.tipoSolicitud).replace("{ID_SOLICITUD}", this.solicitudRG.idSolicitud).replace("{DESCRIPCION_POSICION}", this.detalleSolicitudRG.descripcionPosicion).replace(new RegExp("{URL_APROBACION}", "g"), `${portalWorkFlow}tareas/consulta-tareas`);
+
+													this.emailVariables = {
+														de: "emisor",
+														para: item.correo,
+														// alias: this.solicitudes.modelDetalleAprobaciones.correo,
+														alias: "Notificación 1",
+														asunto: `Registro de Comentarios para la Solicitud de ${this.solicitudRG.tipoSolicitud} ${this.solicitudRG.idSolicitud}`,
+														cuerpo: modifiedHtmlString,
+														password: "password"
+													};
+													this.solicitudes.sendEmail(this.emailVariables).subscribe({
+														next: () => {
+														},
+														error: (error) => {
+															console.error(error);
+														}
+													});
+												}
+											});
+										}
+									});
+
 									//   this.utilService.closeLoadingSpinner();
 
 									//   this.utilService.modalResponse(`Solicitud registrada correctamente [${this.solicitudRG.idSolicitud}]. Será redirigido en un momento...`, "success");

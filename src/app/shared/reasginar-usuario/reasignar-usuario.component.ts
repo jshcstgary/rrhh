@@ -11,8 +11,7 @@ import { EvType } from "src/app/services/mantenimiento/empleado.interface";
 import { MantenimientoService } from "src/app/services/mantenimiento/mantenimiento.service";
 import { UtilService } from "src/app/services/util/util.service";
 import { SolicitudesService } from "src/app/solicitudes/registrar-solicitud/solicitudes.service";
-import { LoginRequest } from "src/app/types/permiso.type";
-import { appCode, environment, portalWorkFlow } from "src/environments/environment";
+import { environment, portalWorkFlow } from "src/environments/environment";
 import Swal from "sweetalert2";
 
 @Component({
@@ -115,7 +114,7 @@ export class DialogReasignarUsuarioComponent {
 	constructor(private activeModal: NgbActiveModal, private mantenimientoService: MantenimientoService, private utilService: UtilService, private solicitudes: SolicitudesService, private formBuilder: FormBuilder, private loginService: LoginServices) {
 		this.utilService.openLoadingSpinner("Cargando información, espere por favor...");
 	}
-	
+
 	ngOnInit() {
 		this.getNivelesAprobacion();
 	}
@@ -360,9 +359,9 @@ export class DialogReasignarUsuarioComponent {
 		this.dataAprobador.sudlegerAprobador = this.modelo.subledger;
 		this.dataAprobador.codigoPosicionReportaA = this.modelo.codigoPosicionReportaA;
 		this.dataAprobador.correo = this.modelo.correo;
-		this.dataAprobador.usuarioCreacion = localStorage.getItem(LocalStorageKeys.IdLogin);
+		this.dataAprobador.usuarioCreacion = sessionStorage.getItem(LocalStorageKeys.IdLogin);
 		this.dataAprobador.comentario = this.textareaContent;
-		this.dataAprobador.usuarioModificacion = localStorage.getItem(LocalStorageKeys.IdLogin);
+		this.dataAprobador.usuarioModificacion = sessionStorage.getItem(LocalStorageKeys.IdLogin);
 		this.dataAprobador.fechaCreacion = new Date().toISOString();
 		this.dataAprobador.fechaModificacion = new Date().toISOString();
 		const htmlString = "<!DOCTYPE html>\r\n<html lang=\"es\">\r\n\r\n<head>\r\n  <meta charset=\"UTF-8\">\r\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n  <title>Document<\/title>\r\n<\/head>\r\n\r\n<body>\r\n  <h2>Estimado(a)<\/h2>\r\n  <h3>{NOMBRE_APROBADOR}<\/h3>\r\n\r\n  <P>La Solicitud de {TIPO_SOLICITUD} {ID_SOLICITUD} le ha sido reasignada para su\r\n    revisi\u00F3n y aprobaci\u00F3n.<\/P>\r\n\r\n  <p>\r\n    <b>\r\n      Favor ingresar al siguiente enlace: <a href=\"{URL_APROBACION}\">{URL_APROBACION}<\/a>\r\n      <br>\r\n      <br>\r\n      Gracias por su atenci\u00F3n.\r\n    <\/b>\r\n  <\/p>\r\n<\/body>\r\n\r\n<\/html>\r\n";

@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { lastValueFrom } from 'rxjs';
+import { LocalStorageKeys } from 'src/app/enums/local-storage-keys.enum';
 import { Solicitud } from 'src/app/eschemas/Solicitud';
 import { UtilService } from 'src/app/services/util/util.service';
 import { SolicitudesService } from '../registrar-solicitud/solicitudes.service';
-import { LocalStorageKeys } from 'src/app/enums/local-storage-keys.enum';
 
 @Component({
 	selector: 'app-trazabilidad-solicitud',
@@ -55,6 +55,6 @@ export class TrazabilidadSolicitudComponent {
 	}
 
 	public getPerfil(): string {
-		return localStorage.getItem(LocalStorageKeys.Perfil);
+		return sessionStorage.getItem(LocalStorageKeys.Perfil);
 	}
 }
