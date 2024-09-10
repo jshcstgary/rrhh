@@ -1,6 +1,5 @@
 import {
 	Component,
-	HostListener,
 	Input,
 	OnChanges,
 	OnInit,
@@ -70,6 +69,11 @@ export class TableComponent implements OnInit, OnChanges {
 
 	public isSticky: boolean = false;
 
+	// private observer: IntersectionObserver | null = null;
+	// private isObserverInitialized = false
+
+	// @ViewChild("observed-element") observedElement!: ElementRef | null;
+
 	constructor(public tableService: TableService, public utilService: UtilService) { }
 
 	public ngOnInit(): void {
@@ -81,40 +85,93 @@ export class TableComponent implements OnInit, OnChanges {
 		this.ValidateInitDataTable();
 	}
 
-	@HostListener("window:scroll", [])
-	onWindowScroll() {
-		const stickyOffset = 128; // 128px del tope de la pantalla
-		const scrollPosition = window.scrollY || document.documentElement.scrollTop;
+	// ngAfterViewInit(): void {
+	// 	const observer = new IntersectionObserver(
+	// 		(entries) => {
+	// 			entries.forEach(entry => {
+	// 				if (entry.isIntersecting) {
+	// 					console.log('El elemento ha llegado al top de la pantalla.');
+	// 					// Aquí puedes ejecutar el código que necesitas
+	// 				}
+	// 			});
+	// 		},
+	// 		{
+	// 			root: null, // Observa con respecto al viewport
+	// 			threshold: 0, // 0 significa que se activará tan pronto como el elemento esté visible
+	// 			rootMargin: '-100px 0px 0px 0px' // Ajusta este margen superior si necesitas que el evento se dispare antes de que el elemento alcance el top
+	// 		}
+	// 	);
 
-		// Verificar cuando el desplazamiento sea mayor a 128px
-		if (scrollPosition >= stickyOffset) {
-			this.isSticky = true;
-		} else {
-			this.isSticky = false;
-		}
-	}
+	// 	observer.observe(this.observedElement.nativeElement);
+	// }
+
+	// ngAfterViewChecked(): void {
+	// 	// Verifica si el thead está presente y si el observador no ha sido inicializado
+	// 	console.log(this.observedElement);
+	// 	console.log(this.dataTable);
+	// 	console.log(!this.isObserverInitialized);
+	// 	if (this.observedElement && this.dataTable.length > 0 && !this.isObserverInitialized) {
+	// 		console.log("DATA");
+	// 		this.isObserverInitialized = true; // Evita inicializarlo múltiples veces
+	// 		this.initObserver();
+	// 	}
+	// }
+
+	// initObserver() {
+	// 	this.observer = new IntersectionObserver(
+	// 		(entries) => {
+	// 			entries.forEach(entry => {
+	// 				if (entry.isIntersecting) {
+	// 					console.log("El elemento ha llegado al top de la pantalla.");
+	// 					// Aquí puedes ejecutar el código que necesitas
+	// 				}
+	// 			});
+	// 		},
+	// 		{
+	// 			root: null, // Observa con respecto al viewport
+	// 			threshold: 0, // 0 significa que se activará tan pronto como el elemento esté visible
+	// 			rootMargin: "-200px 0px 0px 0px" // Ajusta este margen superior si necesitas que el evento se dispare antes de que el elemento alcance el top
+	// 		}
+	// 	);
+
+	// 	this.observer.observe(this.observedElement!.nativeElement);
+	// }
+
+	// @HostListener("window:scroll", [])
+	// onWindowScroll() {
+	// 	const stickyOffset = 324; // 128px del tope de la pantalla
+	// 	const scrollPosition = window.scrollY || document.documentElement.scrollTop;
+
+	// 	// Verificar cuando el desplazamiento sea mayor a 128px
+	// 	if (scrollPosition >= stickyOffset) {
+	// 		this.isSticky = true;
+	// 	} else {
+	// 		this.isSticky = false;
+	// 	}
+	// }
 
 	/**
 	 * Función para ejecutar los procesos respectivos cuando se carga la informacion al inico o se actualiza la tabla
 	 */
 	private ValidateInitDataTable() {
 		this.isTableEmpty = this.dataTable.length === 0;
+
 		if (!this.isTableEmpty) {
 			let data: any[] = this.dataTable;
+
 			/* Valido si debe ordenarse la data o no */
 			if (this.validateisSomeSortActive()) {
 				this.formatSortByOne(this.sortIndexColActive);
-				this.filterBySortColType(
-					this.sortColActive.dataIndex,
-					this.sortColActive.sortTypeOrder,
-					this.sortColActive.colType
-				);
+
+				this.filterBySortColType(this.sortColActive.dataIndex, this.sortColActive.sortTypeOrder, this.sortColActive.colType);
 			}
+
 			/* Valido si tiene atributos de configuracion para la columna de checkbox */
 			if (this.selectOptionsTable !== null) {
 				this.cleanInputChecked();
 				this.validateHeaderInputState();
 			}
+
 			this.validateIsEditableRowActive();
 			this.data = data;
 		}

@@ -571,19 +571,19 @@ export class NivelesAprobacionComponent implements OnInit {
 				rutas: this.dataRuta.map(ruta => this.showData(data, ruta))
 			}))
 			.sort((a, b) => a.tipoSolicitud.toUpperCase().localeCompare(b.tipoSolicitud.toUpperCase()))
-		// .reduce((acc, item) => {
-		// 	if (!acc[item.tipoSolicitud]) {
-		// 		acc[item.tipoSolicitud] = [];
-		// 	}
+			.reduce((acc, item) => {
+				if (!acc[item.tipoSolicitud]) {
+					acc[item.tipoSolicitud] = [];
+				}
 
-		// 	acc[item.tipoSolicitud].push(item);
+				acc[item.tipoSolicitud].push(item);
 
-		// 	return acc;
-		// }, {});
+				return acc;
+			}, {});
 
-		// Object.keys(newData).forEach(key => {
-		// 	newData[key].sort((a, b) => a.tipoRuta.toUpperCase().localeCompare(b.tipoRuta.toUpperCase()));
-		// });
+		Object.keys(newData).forEach(key => {
+			newData[key].sort((a, b) => a.tipoRuta.toUpperCase().localeCompare(b.tipoRuta.toUpperCase()));
+		});
 
 		this.finalData = Object.values(newData).flat();
 	}
