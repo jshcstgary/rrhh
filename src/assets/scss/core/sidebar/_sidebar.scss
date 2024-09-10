@@ -74,14 +74,14 @@ sidebar navigation
 				}
 			}
 
-			&.selected>.sidebar-link,
-			&:hover>.sidebar-link {
+			&.selected > .sidebar-link,
+			&:hover > .sidebar-link {
 				/*background: rgba(0, 0, 0, 0.04);*/
 				opacity: 1;
 			}
 
 			&.active {
-				>.sidebar-link {
+				> .sidebar-link {
 					border-left: 3px solid $white;
 					color: $white;
 
@@ -97,7 +97,7 @@ sidebar navigation
 			.first-level {
 				padding: $sidebar-first-level-padding;
 
-				.sidebar-item.active>.sidebar-link {
+				.sidebar-item.active > .sidebar-link {
 					opacity: 1;
 					border-left: 3px solid transparent;
 				}
@@ -197,8 +197,8 @@ Down arrow
 /*.sidebar-nav .active > .has-arrow::after,*/
 
 /*.sidebar-nav li.selected > .has-arrow::after,*/
-.sidebar-nav li.active>.has-arrow::after,
-.sidebar-nav li>.has-arrow.active::after,
+.sidebar-nav li.active > .has-arrow::after,
+.sidebar-nav li > .has-arrow.active::after,
 .sidebar-nav .has-arrow[aria-expanded="true"]::after {
 	-webkit-transform: rotate(-135deg) translate(0, -50%);
 	-ms-transform: rotate(-135deg) translate(0, -50%);
@@ -240,7 +240,7 @@ use profile section
 		position: relative;
 		text-align: center;
 
-		>a {
+		> a {
 			color: $text-muted;
 			padding: 0 5px;
 
@@ -255,11 +255,11 @@ use profile section
 	}
 
 	.dropdown-menu {
-		left: 0px !important;
+		// left: 0px !important;
 		right: 0px;
-		top: 28px !important;
-		width: 180px;
-		margin: 0 auto;
+		// top: 28px !important;
+		// width: 180px;
+		// margin: 0 auto;
 	}
 }
 

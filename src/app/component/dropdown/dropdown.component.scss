@@ -6,10 +6,10 @@
 // }
 
 .dropdown-item-component:hover {
-  background-color: $blue;
-  color: white !important;
+	background-color: $blue;
+	color: white !important;
 }
 
 .dropdown-toggle::after {
-  display: none;
+	display: none;
 }

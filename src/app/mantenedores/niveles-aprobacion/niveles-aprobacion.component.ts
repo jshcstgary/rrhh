@@ -368,7 +368,7 @@ export class NivelesAprobacionComponent implements OnInit {
 
 		return found !== undefined ? {
 			id: found.idNivelAprobacion,
-			nivelAprobacion: found.nivelAprobacionRuta
+			nivelAprobacion: found.nivelAprobacionRuta === null || found.nivelAprobacionRuta === undefined || found.nivelAprobacionRuta === "" ? "-" : found.nivelAprobacionRuta
 		} : {
 			id: 0,
 			nivelAprobacion: "-"
@@ -545,17 +545,14 @@ export class NivelesAprobacionComponent implements OnInit {
 			...this.dataRuta.map(({ descripcion }) => descripcion)
 		];
 
-		// const bodyReport = this.dataTable.map(data => {
-		const bodyReport = this.finalData.map(data => {
-			return [
-				data[0].tipoSolicitud,
-				data[0].tipoRuta,
-				this.mostrarTipoMotivo(data[0].idTipoMotivo),
-				data[0].accion,
-				data[0].nivelDireccion,
-				...this.dataRuta.map((ruta) => this.showData(data, ruta))
-			]
-		});
+		const bodyReport = this.finalData.map(data => ([
+			data.tipoSolicitud,
+			data.tipoRuta,
+			data.tipoMotivo,
+			data.accion,
+			data.nivelDireccion,
+			...data.rutas.map(ruta => ruta.nivelAprobacion)
+		]));
 
 		this.utilService.generateReport(formato, reportCodeEnum.MANTENIMIENTO_NIVELES_APROBACION, "NIVELES DE APROBACIÓN", headerTitles, bodyReport);
 	}
@@ -563,11 +560,11 @@ export class NivelesAprobacionComponent implements OnInit {
 	private mostrarNiveles() {
 		const newData = this.dataTable
 			.map((data) => ({
-				tipoSolicitud: data[0].tipoSolicitud,
-				tipoRuta: data[0].tipoRuta,
+				tipoSolicitud: data[0].tipoSolicitud === null || data[0].tipoSolicitud === undefined || data[0].tipoSolicitud === "" ? "-" : data[0].tipoSolicitud,
+				tipoRuta: data[0].tipoRuta === null || data[0].tipoRuta === undefined || data[0].tipoRuta === "" ? "-" : data[0].tipoRuta,
 				tipoMotivo: this.mostrarTipoMotivo(data[0].idTipoMotivo),
-				accion: data[0].accion,
-				nivelDireccion: data[0].nivelDireccion,
+				accion: data[0].accion === null || data[0].accion === undefined || data[0].accion === "" ? "-" : data[0].accion,
+				nivelDireccion: data[0].nivelDireccion === null || data[0].nivelDireccion === undefined || data[0].nivelDireccion === "" ? "-" : data[0].nivelDireccion,
 				rutas: this.dataRuta.map(ruta => this.showData(data, ruta))
 			}))
 			.sort((a, b) => a.tipoSolicitud.toUpperCase().localeCompare(b.tipoSolicitud.toUpperCase()))
@@ -586,5 +583,6 @@ export class NivelesAprobacionComponent implements OnInit {
 		});
 
 		this.finalData = Object.values(newData).flat();
+		console.log(this.finalData);
 	}
 }

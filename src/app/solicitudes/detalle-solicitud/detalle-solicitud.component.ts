@@ -2671,8 +2671,8 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 						}
 					}
 				],
-				["Fecha de ingreso:", format(new Date(this.model.fechaIngreso), "dd/MM/yyyy"), "Fecha de cambio:", format(new Date(this.model.fechaIngreso), "dd/MM/yyyy")],
-				["Cargo:", this.model.nombreCargo, "Cargo:", this.modelPropuestos.nombreCompleto],
+				["Fecha de ingreso:", format(new Date(this.model.fechaIngreso), "dd/MM/yyyy"), "Fecha de cambio:", format(new Date(this.modelPropuestos.fechaIngreso), "dd/MM/yyyy")],
+				["Cargo:", this.model.descrPuesto, "Cargo:", this.modelPropuestos.descrPuesto],
 				["Unidad:", this.model.unidadNegocio, "Unidad:", this.modelPropuestos.unidadNegocio],
 				["Área/Departamento:", this.model.departamento, "Área/Departamento::", this.modelPropuestos.departamento],
 				["Localidad:", this.model.localidad, "Localidad:", this.modelPropuestos.localidad],
@@ -2683,7 +2683,7 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 				["Centro de Costos:", this.model.nomCCosto, "Centro de Costos:", this.modelPropuestos.nomCCosto],
 				["Grupo de pago:", this.model.grupoPago, "Grupo de pago:", this.modelPropuestos.grupoPago],
 				["Sucursal (Nómina):", this.model.sucursal, "Scursal (Nómina):", this.modelPropuestos.sucursal],
-				["Distribución contable:", this.model.subledger, "Distribución Contable:", this.modelPropuestos.subledger]
+				["Distribución contable:", this.model.nomCCosto.split(";")[1], "Distribución Contable:", this.modelPropuestos.nomCCosto.split(";")[1]]
 			],
 			columnStyles: {
 				0: {
