@@ -91,7 +91,7 @@
 				<button class="accordion-button" type="button" data-bs-toggle="collapse" [attr.data-bs-target]="'#collapse' + i" aria-expanded="true" [attr.aria-controls]="'collapse' + i" style="display: block">
 					<div class="row" style="align-items: center; justify-content: space-around">
 						<div class="col">
-							{{ nivelItem.ruta.toUpperCase().includes("REGISTRARSOLICITUD") ? "Registrar Solicitud" : nivelItem.ruta.toUpperCase().includes("CANDIDATO") ? "Selección de Candidato" : nivelItem.ruta.toUpperCase().includes("COMENTARIOJEFE") ? "Registrar Comentario Jefe" : nivelItem.ruta.toUpperCase().includes("COMENTARIORRHH") ? "Registrar Comentario RR.HH." : nivelItem.ruta.toUpperCase().includes("COMENTARIOSOLICITANTE") ? "Registrar Comentario Solicitante" : nivelItem.ruta }}
+							{{ nivelItem.ruta.toUpperCase().includes("REGISTRARSOLICITUD") ? "Registrar Solicitud" : nivelItem.ruta.toUpperCase().includes("CANDIDATO") ? "Selección de Candidato" : nivelItem.ruta.toUpperCase().includes("COMENTARIOJEFE") ? "Registrar Comentario Jefe Anterior o Referencia" : nivelItem.ruta.toUpperCase().includes("COMENTARIORRHH") ? "Registrar Comentario RR.HH." : nivelItem.ruta.toUpperCase().includes("COMENTARIOSOLICITANTE") ? "Registrar Comentario Jefe Solicitante" : nivelItem.ruta }}
 						</div>
 
 						<div class="col">
@@ -99,7 +99,7 @@
 						</div>
 
 						<div class="col">
-							{{ nivelItem.nivelAprobacionRuta.toUpperCase().includes("REGISTRARSOLICITUD") ? "Registrar Solicitud" : nivelItem.nivelAprobacionRuta.toUpperCase().includes("CANDIDATO") ? "Selección de Candidato" : nivelItem.nivelAprobacionRuta.toUpperCase().includes("COMENTARIOJEFE") ? "Registrar Comentario Jefe" : nivelItem.nivelAprobacionRuta.toUpperCase().includes("COMENTARIORRHH") ? "Registrar Comentario RR.HH." : nivelItem.nivelAprobacionRuta.toUpperCase().includes("COMENTARIOSOLICITANTE") ? "Registrar Comentario Solicitante" : nivelItem.nivelAprobacionRuta }}
+							{{ nivelItem.nivelAprobacionRuta.toUpperCase().includes("REGISTRARSOLICITUD") ? "Registrar Solicitud" : nivelItem.nivelAprobacionRuta.toUpperCase().includes("CANDIDATO") ? "Selección de Candidato" : nivelItem.nivelAprobacionRuta.toUpperCase().includes("COMENTARIOJEFE") ? "Registrar Comentario Jefe Anterior o Referencia" : nivelItem.nivelAprobacionRuta.toUpperCase().includes("COMENTARIORRHH") ? "Registrar Comentario RR.HH." : nivelItem.nivelAprobacionRuta.toUpperCase().includes("COMENTARIOSOLICITANTE") ? "Registrar Comentario Jefe Solicitante" : nivelItem.nivelAprobacionRuta }}
 						</div>
 
 						<div class="col">{{ nivelItem.fechaModificacion | date : "dd/MM/YYYY HH:mm:ss" }}</div>

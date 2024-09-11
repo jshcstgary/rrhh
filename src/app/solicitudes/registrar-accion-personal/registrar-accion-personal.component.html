@@ -109,13 +109,10 @@
 							</div>
 
 							<div class="row">
-								<div class="col-12">
-									<div class="col-12 input-group mb-3 align-items-center">
-										<label class="input-group-text text-start label-estilo" for="tipoSolicitud">Fecha de Ingreso</label>
+								<div class="col-12 input-group mb-3 align-items-center">
+									<label class="input-group-text text-start label-estilo" for="tipoSolicitud">Fecha de Ingreso</label>
 
-										<!-- <span #mivar id="tipoSolicitud" name="tipoSolicitud" style="color: black; font-size: 14px" class="text-start">{{ model.fechaIngreso | date : "yyyy/MM/dd" }}</span> -->
-										<span #mivar id="tipoSolicitud" name="tipoSolicitud" style="color: black; font-size: 14px" class="text-start">{{ model.fechaIngresogrupo | date : "yyyy/MM/dd" }}</span>
-									</div>
+									<span #mivar id="tipoSolicitud" name="tipoSolicitud" style="color: black; font-size: 14px" class="text-start w-50">{{ model.fechaIngresogrupo | date : "yyyy/MM/dd" }}</span>
 								</div>
 							</div>
 
@@ -123,7 +120,7 @@
 								<div class="col-12 input-group mb-3 align-items-center">
 									<label class="input-group-text text-start label-estilo" for="tipoMotivo">Compañía</label>
 
-									<span id="comp" name="comp" style="color: black; font-size: 14px" class="text-start">{{ model.compania }}</span>
+									<span id="comp" name="comp" style="color: black; font-size: 14px" class="text-start w-50">{{ model.compania }}</span>
 								</div>
 							</div>
 
@@ -131,7 +128,7 @@
 								<div class="col-12 input-group mb-3 align-items-center">
 									<label class="input-group-text text-start label-estilo" for="tipoMotivo">Unidad</label>
 
-									<span id="unidad" name="unidad" style="color: black; font-size: 14px" class="text-start">{{ model.unidadNegocio }}</span>
+									<span id="unidad" name="unidad" style="color: black; font-size: 14px" class="text-start w-50">{{ model.unidadNegocio }}</span>
 								</div>
 							</div>
 
@@ -139,7 +136,7 @@
 								<div class="col-12 input-group mb-3 align-items-center">
 									<label class="input-group-text text-start label-estilo" for="tipoMotivo">Área/Departamento</label>
 
-									<span id="comp" name="comp" style="color: black; font-size: 14px" class="text-start">{{ model.departamento }}</span>
+									<span id="comp" name="comp" style="color: black; font-size: 14px" class="text-start w-50">{{ model.departamento }}</span>
 								</div>
 							</div>
 
@@ -147,7 +144,7 @@
 								<div class="col-12 input-group mb-3 align-items-center">
 									<label class="input-group-text text-start label-estilo" for="tipoMotivo">Localidad/Zona</label>
 
-									<span id="unidad" name="unidad" style="color: black; font-size: 14px" class="text-start">{{ model.localidad }}</span>
+									<span id="unidad" name="unidad" style="color: black; font-size: 14px" class="text-start w-50">{{ model.localidad }}</span>
 								</div>
 							</div>
 
@@ -155,7 +152,7 @@
 								<div class="col-12 input-group mb-3 align-items-center">
 									<label class="input-group-text text-start label-estilo" for="tipoMotivo">Grupo de Pago</label>
 
-									<span id="unidad" name="unidad" style="color: black; font-size: 14px" class="text-start">{{ model.grupoPago }}</span>
+									<span id="unidad" name="unidad" style="color: black; font-size: 14px" class="text-start w-50">{{ model.grupoPago }}</span>
 								</div>
 							</div>
 
@@ -163,7 +160,7 @@
 								<div class="col-12 input-group mb-3 align-items-center">
 									<label class="input-group-text text-start label-estilo" for="tipoMotivo">Puesto</label>
 
-									<span id="comp" name="comp" style="color: black; font-size: 14px" class="text-start">{{ model.descrPuesto }}</span>
+									<span id="comp" name="comp" style="color: black; font-size: 14px" class="text-start w-50">{{ model.descrPuesto }}</span>
 								</div>
 							</div>
 
@@ -171,7 +168,7 @@
 								<div class="col-12 input-group mb-3 align-items-center">
 									<label class="input-group-text text-start label-estilo" for="tipoMotivo">Centro de Costo</label>
 
-									<span id="unidad" name="unidad" style="color: black; font-size: 14px" class="text-start">{{ model.nomCCosto }}</span>
+									<span id="unidad" name="unidad" style="color: black; font-size: 14px" class="text-start w-50">{{ model.nomCCosto }}</span>
 								</div>
 							</div>
 
@@ -179,7 +176,7 @@
 								<div class="col-12 input-group mb-3 align-items-center">
 									<label class="input-group-text text-start label-estilo" for="tipoMotivo">Sucursal (Nómina)</label>
 
-									<span id="unidad" name="unidad" style="color: black; font-size: 14px" class="text-start">{{ model.sucursal }}</span>
+									<span id="unidad" name="unidad" style="color: black; font-size: 14px" class="text-start w-50">{{ model.sucursal }}</span>
 								</div>
 							</div>
 
@@ -187,7 +184,7 @@
 								<div class="col-12 input-group mb-3 align-items-center">
 									<label class="input-group-text text-start label-estilo" for="mov">Movilización</label>
 
-									<span id="mov" name="mov" style="color: black; font-size: 14px" class="text-start">{{ 0 }}</span>
+									<span id="mov" name="mov" style="color: black; font-size: 14px" class="text-start w-50">{{ 0 }}</span>
 								</div>
 							</div>
 
@@ -195,7 +192,7 @@
 								<div class="col-12 input-group mb-3 align-items-center">
 									<label class="input-group-text text-start label-estilo" for="al">Alimentación</label>
 
-									<span id="al" name="al" style="color: black; font-size: 14px" class="text-start">{{ 0 }}</span>
+									<span id="al" name="al" style="color: black; font-size: 14px" class="text-start w-50">{{ 0 }}</span>
 								</div>
 							</div>
 
@@ -209,7 +206,7 @@
 								<div class="col-12 input-group mb-3 align-items-center">
 									<label class="input-group-text text-start label-estilo" for="tipoMotivo">Sueldo</label>
 
-									<span id="comp" name="comp" style="color: black; font-size: 14px" class="text-start">$ {{ model.sueldo | number : "1.2-2" }}</span>
+									<span id="comp" name="comp" style="color: black; font-size: 14px" class="text-start w-50">$ {{ model.sueldo | number : "1.2-2" }}</span>
 								</div>
 							</div>
 
@@ -217,7 +214,7 @@
 								<div class="col-12 input-group mb-3 align-items-center">
 									<label class="input-group-text text-start label-estilo" for="me">Mensual</label>
 
-									<span id="me" name="me" style="color: black; font-size: 14px" class="text-start">$ {{ model.sueldoMensual | number : "1.2-2" }}</span>
+									<span id="me" name="me" style="color: black; font-size: 14px" class="text-start w-50">$ {{ model.sueldoMensual | number : "1.2-2" }}</span>
 								</div>
 							</div>
 
@@ -225,7 +222,7 @@
 								<div class="col-12 input-group mb-3 align-items-center">
 									<label class="input-group-text text-start label-estilo" for="al">Trimestral</label>
 
-									<span id="al" name="al" style="color: black; font-size: 14px" class="text-start">$ {{ model.sueldoTrimestral | number : "1.2-2" }}</span>
+									<span id="al" name="al" style="color: black; font-size: 14px" class="text-start w-50">$ {{ model.sueldoTrimestral | number : "1.2-2" }}</span>
 								</div>
 							</div>
 
@@ -233,7 +230,7 @@
 								<div class="col-12 input-group mb-3 align-items-center">
 									<label class="input-group-text text-start label-estilo" for="al">Semestral</label>
 
-									<span id="al" name="al" style="color: black; font-size: 14px" class="text-start">$ {{ model.sueldoSemestral | number : "1.2-2" }}</span>
+									<span id="al" name="al" style="color: black; font-size: 14px" class="text-start w-50">$ {{ model.sueldoSemestral | number : "1.2-2" }}</span>
 								</div>
 							</div>
 
@@ -241,7 +238,7 @@
 								<div class="col-12 input-group mb-3 align-items-center">
 									<label class="input-group-text text-start label-estilo" for="al">Anual</label>
 
-									<span id="al" name="al" style="color: black; font-size: 14px" class="text-start">$ {{ model.sueldoAnual | number : "1.2-2" }}</span>
+									<span id="al" name="al" style="color: black; font-size: 14px" class="text-start w-50">$ {{ model.sueldoAnual | number : "1.2-2" }}</span>
 								</div>
 							</div>
 						</div>
@@ -444,19 +441,7 @@
 										</div>
 
 										<div class="col">
-											{{
-												nivelItem.nivelAprobacionType.nivelAprobacionRuta.toUpperCase().includes("REGISTRARSOLICITUD")
-													? "Registrar Solicitud"
-													: nivelItem.nivelAprobacionType.nivelAprobacionRuta.toUpperCase().includes("CANDIDATO")
-														? "Selección de Candidato"
-														: nivelItem.nivelAprobacionType.nivelAprobacionRuta.toUpperCase().includes("COMENTARIOJEFE")
-															? "Registrar Comentario Jefe"
-															: nivelItem.nivelAprobacionType.nivelAprobacionRuta.toUpperCase().includes("COMENTARIORRHH")
-																? "Registrar Comentario RR.HH."
-																: nivelItem.nivelAprobacionType.nivelAprobacionRuta.toUpperCase().includes("COMENTARIOSOLICITANTE")
-																	? "Registrar Comentario Solicitante"
-																	: nivelItem.nivelAprobacionType.nivelAprobacionRuta
-											}}
+											{{ nivelItem.nivelAprobacionType.nivelAprobacionRuta.toUpperCase().includes("REGISTRARSOLICITUD") ? "Registrar Solicitud" : nivelItem.nivelAprobacionType.nivelAprobacionRuta.toUpperCase().includes("CANDIDATO") ? "Selección de Candidato" : nivelItem.nivelAprobacionType.nivelAprobacionRuta.toUpperCase().includes("COMENTARIOJEFE") ? "Registrar Comentario Jefe Anterior o Referencia" : nivelItem.nivelAprobacionType.nivelAprobacionRuta.toUpperCase().includes("COMENTARIORRHH") ? "Registrar Comentario RR.HH." : nivelItem.nivelAprobacionType.nivelAprobacionRuta.toUpperCase().includes("COMENTARIOSOLICITANTE") ? "Registrar Comentario Jefe Solicitante" : nivelItem.nivelAprobacionType.nivelAprobacionRuta }}
 										</div>
 									</div>
 								</button>
@@ -486,7 +471,7 @@
 							<div class="input-group mb-3 align-items-center">
 								<label class="input-group-text text-start label-estilo2">Tipo de acción</label>
 
-								<span>{{ solicitud.tipoAccion }}</span>
+								<span style="color: black; font-size: 14px" class="text-start w-50">{{ solicitud.tipoAccion }}</span>
 							</div>
 						</div>
 					</div>
