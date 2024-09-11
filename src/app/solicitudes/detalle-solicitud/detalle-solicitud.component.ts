@@ -864,7 +864,8 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 		return this.solicitudes.getDetalleSolicitudById(id).subscribe({
 			next: (response: any) => {
 				if (id.toUpperCase().includes("AP")) {
-					this.viewInputs = response.detalleSolicitudType[0].codigo === "100" ? false : true;
+					// this.viewInputs = response.detalleSolicitudType[0].codigo === "100" ? false : true;
+					this.viewInputs = !(response.detalleSolicitudType[0].codigo === "100");
 
 					this.totalRegistrosDetallesolicitud = response.totalRegistros;
 
@@ -2678,8 +2679,8 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 				["Localidad:", this.model.localidad, "Localidad:", this.modelPropuestos.localidad],
 				["Sueldo:", `$ ${parseInt(this.model.sueldo).toFixed(2)}`, "Sueldo:", `$ ${parseInt(this.modelPropuestos.sueldo).toFixed(2)}`],
 				["Variable máxima:", `$ ${variableMaxima.toFixed(2)}`, "Variable máxima:", `$ ${variableMaximaPropuestos.toFixed(2)}`],
-				["Movilizavión:", this.detalleSolicitudPropuestos.movilizacion !== "" ? `$ ${parseInt(this.detalleSolicitudPropuestos.movilizacion).toFixed(2)}` : "$ 0.00", "Movilización:", this.detalleSolicitudPropuestos.movilizacion !== "" ? `$ ${parseInt(this.detalleSolicitudPropuestos.movilizacion).toFixed(2)}` : "$ 0.00"],
-				["Alimentación:", this.detalleSolicitudPropuestos.alimentacion !== "" ? `$ ${parseInt(this.detalleSolicitudPropuestos.alimentacion).toFixed(2)}` : "$ 0.00", "Alimentación:", this.detalleSolicitudPropuestos.alimentacion !== "" ? `$ ${parseInt(this.detalleSolicitudPropuestos.alimentacion).toFixed(2)}` : "$ 0.00"],
+				["Movilizavión:", this.detalleSolicitud.movilizacion !== "" ? `$ ${parseInt(this.detalleSolicitudPropuestos.movilizacion).toFixed(2)}` : "$ 0.00", "Movilización:", this.detalleSolicitudPropuestos.movilizacion !== "" ? `$ ${parseInt(this.detalleSolicitudPropuestos.movilizacion).toFixed(2)}` : "$ 0.00"],
+				["Alimentación:", this.detalleSolicitud.alimentacion !== "" ? `$ ${parseInt(this.detalleSolicitudPropuestos.alimentacion).toFixed(2)}` : "$ 0.00", "Alimentación:", this.detalleSolicitudPropuestos.alimentacion !== "" ? `$ ${parseInt(this.detalleSolicitudPropuestos.alimentacion).toFixed(2)}` : "$ 0.00"],
 				["Centro de Costos:", this.model.nomCCosto, "Centro de Costos:", this.modelPropuestos.nomCCosto],
 				["Grupo de pago:", this.model.grupoPago, "Grupo de pago:", this.modelPropuestos.grupoPago],
 				["Sucursal (Nómina):", this.model.sucursal, "Scursal (Nómina):", this.modelPropuestos.sucursal],

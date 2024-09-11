@@ -206,7 +206,7 @@ export interface FamiliaresCandidatos {
 	estado?: string;
 	usuarioCreacion?: string;
 	usuarioModificacion?: string;
-	fechaCreacion: Date | String;
-	fechaModificacion: Date | String;
+	fechaCreacion: Date | string;
+	fechaModificacion: Date | string;
 	isEditingRow?: Boolean;
 }

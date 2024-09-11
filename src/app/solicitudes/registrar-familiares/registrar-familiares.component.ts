@@ -1,3 +1,4 @@
+import { DatePipe } from "@angular/common";
 import {
 	HttpClientModule,
 	HttpErrorResponse
@@ -1172,9 +1173,12 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
 			next: (response) => {
 				const data = response?.familiaresCandidato || [];
 
-				this.dataTableDatosFamiliares = data.filter(
-					(d) => d.idSolicitud === idSolicitud
-				);
+				this.dataTableDatosFamiliares = data
+					.filter((d) => d.idSolicitud === idSolicitud)
+					.map(data => ({
+						...data,
+						fechaCreacion: new DatePipe("en-CO").transform(new Date(data.fechaCreacion), "dd/MM/yyyy")
+					}));
 			},
 			error: (error: HttpErrorResponse) => {
 				this.utilService.modalResponse(error.error, "error");

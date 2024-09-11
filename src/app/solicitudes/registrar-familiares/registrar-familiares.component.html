@@ -59,7 +59,7 @@
 							<div class="input-group mb-3 align-items-center">
 								<label class="input-group-text text-start label-estilo2" for="tipoSolicitud">Nro de Solicitud de Requisicion</label>
 
-								<span #mivar id="tipoSolicitud" name="idTipoSolicitud" style="color: black; font-size: 14px" class="text-start">{{ idSolicitudRP }}</span>
+								<span #mivar id="tipoSolicitud" name="idTipoSolicitud" style="color: black; font-size: 14px" class="text-start w-75">{{ idSolicitudRP }}</span>
 							</div>
 						</div>
 					</div>
@@ -77,12 +77,9 @@
 					<div class="row">
 						<div class="col-md-12">
 							<div class="input-group mb-3 align-items-center">
-								<label class="input-group-text text-start label-estilo2" for="codigoposicion"
-									>Nombre del candidato <br />
-									seleccionado</label
-								>
+								<label class="input-group-text text-start label-estilo2" for="codigoposicion">Nombre del candidato seleccionado</label>
 
-								<span #mivar id="tipoSolicitud" name="idTipoSolicitud" style="color: black; font-size: 14px" class="text-start">{{ nombreCompletoCandidato }}</span>
+								<span #mivar id="tipoSolicitud" name="idTipoSolicitud" style="color: black; font-size: 14px" class="text-start w-75">{{ nombreCompletoCandidato }}</span>
 							</div>
 						</div>
 					</div>
@@ -92,7 +89,7 @@
 							<div class="input-group mb-3 align-items">
 								<label class="input-group-text text-start label-estilo2" for="compania">Compañía</label>
 
-								<span id="compania" name="" style="color: black; font-size: 14px" class="text-start">{{ model.compania }}</span>
+								<span id="compania" name="" style="color: black; font-size: 14px" class="text-start w-75">{{ model.compania }}</span>
 							</div>
 						</div>
 					</div>
@@ -102,7 +99,7 @@
 							<div class="input-group mb-3 align-items-center">
 								<label class="input-group-text text-start label-estilo" for="unidadnegocio">Unidad de negocio</label>
 
-								<span id="unidadnegocio" name="" style="color: black; font-size: 14px" class="text-start">{{ model.unidadNegocio }}</span>
+								<span style="color: black; font-size: 14px" class="text-start w-50">{{ model.unidadNegocio }}</span>
 							</div>
 						</div>
 
@@ -110,7 +107,7 @@
 							<div class="input-group mb-3 align-items-center">
 								<label class="input-group-text text-start label-estilo" for="departamento">Área/Departamento</label>
 
-								<span id="departamento" name="" style="color: black; font-size: 14px" class="text-start">{{ model.departamento }}</span>
+								<span style="color: black; font-size: 14px" class="text-start w-50">{{ model.departamento }}</span>
 							</div>
 						</div>
 					</div>
@@ -120,7 +117,7 @@
 							<div class="input-group mb-3 align-items-center">
 								<label class="input-group-text text-start label-estilo" for="tipocargo">Localidad/Zona</label>
 
-								<span id="cargo" name="" style="color: black; font-size: 14px" class="text-start">{{ model.localidad }}</span>
+								<span style="color: black; font-size: 14px" class="text-start w-50">{{ model.localidad }}</span>
 							</div>
 						</div>
 
@@ -128,7 +125,7 @@
 							<div class="input-group mb-3 align-items-center">
 								<label class="input-group-text text-start label-estilo" for="localidadzona">Cargo</label>
 
-								<span id="localidadzona" name="" style="color: black; font-size: 14px" class="text-start">{{ model.nombreCargo }}</span>
+								<span style="color: black; font-size: 14px" class="text-start w-50">{{ model.nombreCargo }}</span>
 							</div>
 						</div>
 					</div>
@@ -138,7 +135,7 @@
 							<div class="input-group mb-3 align-items-center">
 								<label class="input-group-text text-start label-estilo" for="niveldirección">Tipo de contrato</label>
 
-								<span id="niveldirección" name="" style="color: black; font-size: 14px" class="text-start">{{ model.tipoContrato }}</span>
+								<span style="color: black; font-size: 14px" class="text-start w-50">{{ model.tipoContrato }}</span>
 							</div>
 						</div>
 
@@ -146,7 +143,7 @@
 							<div class="input-group mb-3 align-items-center">
 								<label class="input-group-text text-start label-estilo" for="centrocosto">Jefe solicitante</label>
 
-								<span id="centrocosto" name="" style="color: black; font-size: 14px" class="text-start">{{ detalleSolicitud.nombreJefeSolicitante }}</span>
+								<span style="color: black; font-size: 14px" class="text-start w-50">{{ detalleSolicitud.nombreJefeSolicitante }}</span>
 							</div>
 						</div>
 					</div>
@@ -156,7 +153,7 @@
 							<div class="input-group mb-3 align-items-center">
 								<label class="input-group-text text-start label-estilo" for="centrocosto">Responsable de RRHH</label>
 
-								<span id="centrocosto" name="" style="color: black; font-size: 14px" class="text-start">{{ solicitud.usuarioCreacion }}</span>
+								<span style="color: black; font-size: 14px" class="text-start w-50">{{ solicitud.usuarioCreacion }}</span>
 							</div>
 						</div>
 					</div>
@@ -206,19 +203,7 @@
 										</div>
 
 										<div class="col">
-											{{
-												nivelItem.nivelAprobacionType.nivelAprobacionRuta.toUpperCase().includes("REGISTRARSOLICITUD")
-													? "Registrar Solicitud"
-													: nivelItem.nivelAprobacionType.nivelAprobacionRuta.toUpperCase().includes("CANDIDATO")
-														? "Selección de Candidato"
-														: nivelItem.nivelAprobacionType.nivelAprobacionRuta.toUpperCase().includes("COMENTARIOJEFE")
-															? "Registrar Comentario Jefe Anterior o Referencia"
-															: nivelItem.nivelAprobacionType.nivelAprobacionRuta.toUpperCase().includes("COMENTARIORRHH")
-																? "Registrar Comentario RR.HH."
-																: nivelItem.nivelAprobacionType.nivelAprobacionRuta.toUpperCase().includes("COMENTARIOSOLICITANTE")
-																	? "Registrar Comentario Jefe Solicitante"
-																	: nivelItem.nivelAprobacionType.nivelAprobacionRuta
-											}}
+											{{ nivelItem.nivelAprobacionType.nivelAprobacionRuta.toUpperCase().includes("REGISTRARSOLICITUD") ? "Registrar Solicitud" : nivelItem.nivelAprobacionType.nivelAprobacionRuta.toUpperCase().includes("CANDIDATO") ? "Selección de Candidato" : nivelItem.nivelAprobacionType.nivelAprobacionRuta.toUpperCase().includes("COMENTARIOJEFE") ? "Registrar Comentario Jefe Anterior o Referencia" : nivelItem.nivelAprobacionType.nivelAprobacionRuta.toUpperCase().includes("COMENTARIORRHH") ? "Registrar Comentario RR.HH." : nivelItem.nivelAprobacionType.nivelAprobacionRuta.toUpperCase().includes("COMENTARIOSOLICITANTE") ? "Registrar Comentario Jefe Solicitante" : nivelItem.nivelAprobacionType.nivelAprobacionRuta }}
 										</div>
 									</div>
 								</button>

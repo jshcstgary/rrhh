@@ -1963,25 +1963,25 @@
 						<div class="input-group mb-3 align-items-center">
 							<label class="input-group-text label-estilo text-start" for="tipoMotivo">Nombre de Empleado</label>
 
-							<span id="comp" name="comp" style="color: black; font-size: 14px" class="text-start">{{ model.nombreCompleto }}</span>
+							<span id="comp" name="comp" style="color: black; font-size: 14px" class="text-start w-50">{{ model.nombreCompleto }}</span>
 						</div>
 					</div>
 
-					<div class="col-md-5">
+					<div class="col-md-6">
 						<div class="input-group mb-3 align-items-center">
 							<label class="input-group-text label-estilo text-center" for="tipoMotivo">Subledger</label>
 
-							<span id="comp" name="comp" style="color: black; font-size: 14px" class="text-start">{{ model.subledger }}</span>
+							<span id="comp" name="comp" style="color: black; font-size: 14px" class="text-start w-50">{{ model.subledger }}</span>
 						</div>
 					</div>
 				</div>
 
 				<div class="row">
 					<div class="col-md-12">
-						<div class="input-group mb-3">
+						<div class="input-group mb-3 align-items-center">
 							<label class="input-group-text label-estilo2" for="justificacion">Justificación</label>
 
-							<span style="color: black; font-size: 14px" class="text-start">{{ model.justificacionCargo }}</span>
+							<span style="color: black; font-size: 14px" class="text-start w-75">{{ model.justificacionCargo }}</span>
 						</div>
 					</div>
 				</div>
@@ -1996,6 +1996,7 @@
 					</div>
 				</div>
 
+				<!-- ! Información del Empleado -->
 				<app-solicitud-seccion-desplegable titleSummary="Información del Empleado">
 					<div>
 						<div class="row">
@@ -2009,7 +2010,7 @@
 										<div class="input-group mb-3">
 											<label class="input-group-text label-estilo text-center" for="tipoSolicitud">Fecha de Ingreso</label>
 
-											<span #mivar id="tipoSolicitud" name="tipoSolicitud" style="color: black; font-size: 14px" class="text-start">{{ model.fechaIngreso | date : "yyyy/MM/dd" }}</span>
+											<span #mivar id="tipoSolicitud" name="tipoSolicitud" style="color: black; font-size: 14px" class="text-start w-50">{{ model.fechaIngreso | date : "yyyy/MM/dd" }}</span>
 										</div>
 									</div>
 								</div>
@@ -2019,7 +2020,7 @@
 										<div class="input-group mb-3 align-items-center">
 											<label class="input-group-text label-estilo text-center" for="tipoMotivo">Compañía</label>
 
-											<span id="comp" name="comp" style="color: black; font-size: 14px" class="text-start">{{ model.compania }}</span>
+											<span id="comp" name="comp" style="color: black; font-size: 14px" class="text-start w-50">{{ model.compania }}</span>
 										</div>
 									</div>
 								</div>
@@ -2029,7 +2030,7 @@
 										<div class="input-group mb-3 align-items-center">
 											<label class="input-group-text label-estilo text-center" for="tipoMotivo">Unidad</label>
 
-											<span id="unidad" name="unidad" style="color: black; font-size: 14px" class="text-start">{{ model.unidadNegocio }}</span>
+											<span id="unidad" name="unidad" style="color: black; font-size: 14px" class="text-start w-50">{{ model.unidadNegocio }}</span>
 										</div>
 									</div>
 								</div>
@@ -2039,7 +2040,7 @@
 										<div class="input-group mb-3 align-items-center">
 											<label class="input-group-text label-estilo text-center" for="tipoMotivo">Área/Departamento</label>
 
-											<span id="comp" name="comp" style="color: black; font-size: 14px" class="text-start">{{ model.departamento }}</span>
+											<span id="comp" name="comp" style="color: black; font-size: 14px" class="text-start w-50">{{ model.departamento }}</span>
 										</div>
 									</div>
 								</div>
@@ -2049,7 +2050,7 @@
 										<div class="input-group mb-3 align-items-center">
 											<label class="input-group-text label-estilo text-center" for="tipoMotivo">Localidad/Zona</label>
 
-											<span id="unidad" name="unidad" style="color: black; font-size: 14px" class="text-start">{{ model.localidad }}</span>
+											<span id="unidad" name="unidad" style="color: black; font-size: 14px" class="text-start w-50">{{ model.localidad }}</span>
 										</div>
 									</div>
 								</div>
@@ -2059,7 +2060,7 @@
 										<div class="input-group mb-3 align-items-center">
 											<label class="input-group-text label-estilo text-center" for="tipoMotivo">Grupo de Pago</label>
 
-											<span id="unidad" name="unidad" style="color: black; font-size: 14px" class="text-start">{{ model.grupoPago }}</span>
+											<span id="unidad" name="unidad" style="color: black; font-size: 14px" class="text-start w-50">{{ model.grupoPago }}</span>
 										</div>
 									</div>
 								</div>
@@ -2069,7 +2070,7 @@
 										<div class="input-group mb-3 align-items-center">
 											<label class="input-group-text label-estilo text-center" for="tipoMotivo">Puesto</label>
 
-											<span id="comp" name="comp" style="color: black; font-size: 14px" class="text-start">{{ model.descrPuesto }}</span>
+											<span id="comp" name="comp" style="color: black; font-size: 14px" class="text-start w-50">{{ model.descrPuesto }}</span>
 										</div>
 									</div>
 								</div>
@@ -2079,7 +2080,7 @@
 										<div class="input-group mb-3 align-items-center">
 											<label class="input-group-text label-estilo text-center" for="tipoMotivo">Centro de Costo</label>
 
-											<span id="unidad" name="unidad" style="color: black; font-size: 14px" class="text-start">{{ model.nomCCosto }}</span>
+											<span id="unidad" name="unidad" style="color: black; font-size: 14px" class="text-start w-50">{{ model.nomCCosto }}</span>
 										</div>
 									</div>
 								</div>
@@ -2089,7 +2090,7 @@
 										<div class="input-group mb-3 align-items-center">
 											<label class="input-group-text label-estilo text-center" for="tipoMotivo">Sucursal (Nómina)</label>
 
-											<span id="unidad" name="unidad" style="color: black; font-size: 14px" class="text-start">{{ model.sucursal }}</span>
+											<span id="unidad" name="unidad" style="color: black; font-size: 14px" class="text-start w-50">{{ model.sucursal }}</span>
 										</div>
 									</div>
 								</div>
@@ -2099,7 +2100,7 @@
 										<div class="input-group mb-3 align-items-center">
 											<label class="input-group-text label-estilo text-center" for="mov">Movilización</label>
 
-											<span id="mov" name="mov" style="color: black; font-size: 14px" class="text-start">{{ detalleSolicitudPropuestos.movilizacion }}</span>
+											<span id="mov" name="mov" style="color: black; font-size: 14px" class="text-start w-50">{{ detalleSolicitud.movilizacion === "" ? "0" : detalleSolicitud.movilizacion }}</span>
 										</div>
 									</div>
 								</div>
@@ -2109,7 +2110,7 @@
 										<div class="input-group mb-3 align-items-center">
 											<label class="input-group-text label-estilo text-center" for="al">Alimentación</label>
 
-											<span id="al" name text-center="al" style="color: black; font-size: 14px" class="text-start">{{ detalleSolicitudPropuestos.alimentacion }}</span>
+											<span id="al" name text-center="al" style="color: black; font-size: 14px" class="text-start w-50">{{ detalleSolicitud.alimentacion === "" ? "0" : detalleSolicitud.alimentacion }}</span>
 										</div>
 									</div>
 								</div>
@@ -2125,7 +2126,7 @@
 										<div class="input-group mb-3 align-items-center">
 											<label class="input-group-text label-estilo text-center" for="tipoMotivo">Sueldo</label>
 
-											<span id="comp" name="comp" style="color: black; font-size: 14px" class="text-start">$ {{ model.sueldo | number : "1.2-2" }}</span>
+											<span id="comp" name="comp" style="color: black; font-size: 14px" class="text-start w-50">$ {{ model.sueldo | number : "1.2-2" }}</span>
 										</div>
 									</div>
 								</div>
@@ -2135,7 +2136,7 @@
 										<div class="input-group mb-3 align-items-center">
 											<label class="input-group-text label-estilo text-center" for="me">Mensual</label>
 
-											<span id="me" name="me" style="color: black; font-size: 14px" class="text-start">$ {{ model.sueldoMensual | number : "1.2-2" }}</span>
+											<span id="me" name="me" style="color: black; font-size: 14px" class="text-start w-50">$ {{ model.sueldoMensual | number : "1.2-2" }}</span>
 										</div>
 									</div>
 								</div>
@@ -2145,7 +2146,7 @@
 										<div class="input-group mb-3 align-items-center">
 											<label class="input-group-text label-estilo text-center" for="al">Trimestral</label>
 
-											<span id="al" name="al" style="color: black; font-size: 14px" class="text-start">$ {{ model.sueldoTrimestral | number : "1.2-2" }}</span>
+											<span id="al" name="al" style="color: black; font-size: 14px" class="text-start w-50">$ {{ model.sueldoTrimestral | number : "1.2-2" }}</span>
 										</div>
 									</div>
 								</div>
@@ -2155,7 +2156,7 @@
 										<div class="input-group mb-3 align-items-center">
 											<label class="input-group-text label-estilo text-center" for="al">Semestral</label>
 
-											<span id="al" name="al" style="color: black; font-size: 14px" class="text-start">$ {{ model.sueldoSemestral | number : "1.2-2" }}</span>
+											<span id="al" name="al" style="color: black; font-size: 14px" class="text-start w-50">$ {{ model.sueldoSemestral | number : "1.2-2" }}</span>
 										</div>
 									</div>
 								</div>
@@ -2165,7 +2166,7 @@
 										<div class="input-group mb-3 align-items-center">
 											<label class="input-group-text label-estilo text-center" for="al">Anual</label>
 
-											<span id="al" name="al" style="color: black; font-size: 14px" class="text-start">$ {{ model.sueldoAnual | number : "1.2-2" }}</span>
+											<span id="al" name="al" style="color: black; font-size: 14px" class="text-start w-50">$ {{ model.sueldoAnual | number : "1.2-2" }}</span>
 										</div>
 									</div>
 								</div>
@@ -2181,7 +2182,7 @@
 										<div class="input-group mb-3 align-items-center">
 											<label class="input-group-text label-estilo text-center" for="tipoSolicitud">Fecha de Cambio</label>
 
-											<span #mivar id="tipoSolicitud" name="tipoSolicitud" style="color: black; font-size: 14px" class="text-start">{{ modelPropuestos.fechaIngreso | date : "yyyy/MM/dd" }}</span>
+											<span #mivar id="tipoSolicitud" name="tipoSolicitud" style="color: black; font-size: 14px" class="text-start w-50">{{ modelPropuestos.fechaIngreso | date : "yyyy/MM/dd" }}</span>
 										</div>
 									</div>
 								</div>
@@ -2191,7 +2192,7 @@
 										<div class="input-group mb-3 align-items-center">
 											<label class="input-group-text label-estilo text-center" for="tipoMotivo">Compañía</label>
 
-											<span id="comp" name="comp" style="color: black; font-size: 14px" class="text-start">{{ modelPropuestos.compania }}</span>
+											<span id="comp" name="comp" style="color: black; font-size: 14px" class="text-start w-50">{{ modelPropuestos.compania }}</span>
 										</div>
 									</div>
 								</div>
@@ -2201,7 +2202,7 @@
 										<div class="input-group mb-3 align-items-center">
 											<label class="input-group-text label-estilo text-center" for="tipoMotivo">Unidad</label>
 
-											<span id="comp" name="comp" style="color: black; font-size: 14px" class="text-start">{{ modelPropuestos.unidadNegocio }}</span>
+											<span id="comp" name="comp" style="color: black; font-size: 14px" class="text-start w-50">{{ modelPropuestos.unidadNegocio }}</span>
 										</div>
 									</div>
 								</div>
@@ -2211,7 +2212,7 @@
 										<div class="input-group mb-3 align-items-center">
 											<label class="input-group-text label-estilo text-center" for="tipoMotivo">Área/Departamento</label>
 
-											<span id="comp" name="comp" style="color: black; font-size: 14px" class="text-start">{{ modelPropuestos.departamento }}</span>
+											<span id="comp" name="comp" style="color: black; font-size: 14px" class="text-start w-50">{{ modelPropuestos.departamento }}</span>
 										</div>
 									</div>
 								</div>
@@ -2221,7 +2222,7 @@
 										<div class="input-group mb-3 align-items-center">
 											<label class="input-group-text label-estilo text-center" for="tipoMotivo">Localidad/Zona</label>
 
-											<span id="comp" name="comp" style="color: black; font-size: 14px" class="text-start">{{ modelPropuestos.localidad }}</span>
+											<span id="comp" name="comp" style="color: black; font-size: 14px" class="text-start w-50">{{ modelPropuestos.localidad }}</span>
 										</div>
 									</div>
 								</div>
@@ -2231,7 +2232,7 @@
 										<div class="input-group mb-3 align-items-center">
 											<label class="input-group-text label-estilo text-center" for="tipoMotivo">Grupo de Pago</label>
 
-											<span id="comp" name="comp" style="color: black; font-size: 14px" class="text-start">{{ modelPropuestos.grupoPago }}</span>
+											<span id="comp" name="comp" style="color: black; font-size: 14px" class="text-start w-50">{{ modelPropuestos.grupoPago }}</span>
 										</div>
 									</div>
 								</div>
@@ -2241,8 +2242,7 @@
 										<div class="input-group mb-3 align-items-center">
 											<label class="input-group-text label-estilo text-center" for="tipoMotivo">Puesto</label>
 
-											<!-- <span id="comp" name="comp" style="color: black; font-size: 14px" class="text-start">{{ modelPropuestos.nombreCargo }}</span> -->
-											<span id="comp" name="comp" style="color: black; font-size: 14px" class="text-start">{{ modelPropuestos.descrPuesto }}</span>
+											<span id="comp" name="comp" style="color: black; font-size: 14px" class="text-start w-50">{{ modelPropuestos.descrPuesto }}</span>
 										</div>
 									</div>
 								</div>
@@ -2252,7 +2252,7 @@
 										<div class="input-group mb-3 align-items-center">
 											<label class="input-group-text label-estilo text-center" for="tipoMotivo">Centro de Costo</label>
 
-											<span id="comp" name="comp" style="color: black; font-size: 14px" class="text-start">{{ modelPropuestos.nomCCosto }}</span>
+											<span id="comp" name="comp" style="color: black; font-size: 14px" class="text-start w-50">{{ modelPropuestos.nomCCosto }}</span>
 										</div>
 									</div>
 								</div>
@@ -2262,7 +2262,7 @@
 										<div class="input-group mb-3 align-items-center">
 											<label class="input-group-text label-estilo text-center" for="tipoMotivo">Sucursal (Nómina)</label>
 
-											<span id="comp" name="comp" style="color: black; font-size: 14px" class="text-start">{{ modelPropuestos.sucursal }}</span>
+											<span id="comp" name="comp" style="color: black; font-size: 14px" class="text-start w-50">{{ modelPropuestos.sucursal }}</span>
 										</div>
 									</div>
 								</div>
@@ -2272,7 +2272,7 @@
 										<div class="input-group mb-3 align-items-center">
 											<label class="input-group-text label-estilo text-center" for="mov">Movilización</label>
 
-											<span id="comp" name="comp" style="color: black; font-size: 14px" class="text-start">{{ detalleSolicitudPropuestos.movilizacion }}</span>
+											<span id="comp" name="comp" style="color: black; font-size: 14px" class="text-start w-50">{{ detalleSolicitudPropuestos.movilizacion }}</span>
 										</div>
 									</div>
 								</div>
@@ -2282,7 +2282,7 @@
 										<div class="input-group mb-3 align-items-center">
 											<label class="input-group-text label-estilo text-center" for="al">Alimentación</label>
 
-											<span id="comp" name="comp" style="color: black; font-size: 14px" class="text-start">{{ detalleSolicitudPropuestos.alimentacion }}</span>
+											<span id="comp" name="comp" style="color: black; font-size: 14px" class="text-start w-50">{{ detalleSolicitudPropuestos.alimentacion }}</span>
 										</div>
 									</div>
 								</div>
@@ -2298,7 +2298,7 @@
 										<div class="input-group mb-3 align-items-center">
 											<label class="input-group-text label-estilo text-center" for="tipoMotivo">Sueldo</label>
 
-											<span id="comp" name="comp" style="color: black; font-size: 14px" class="text-start">$ {{ modelPropuestos.sueldo | number : "1.2-2" }}</span>
+											<span id="comp" name="comp" style="color: black; font-size: 14px" class="text-start w-50">$ {{ modelPropuestos.sueldo | number : "1.2-2" }}</span>
 										</div>
 									</div>
 								</div>
@@ -2308,7 +2308,7 @@
 										<div class="input-group mb-3 align-items-center">
 											<label class="input-group-text label-estilo text-center" for="me">Mensual</label>
 
-											<span id="comp" name="comp" style="color: black; font-size: 14px" class="text-start">$ {{ modelPropuestos.sueldoMensual | number : "1.2-2" }}</span>
+											<span id="comp" name="comp" style="color: black; font-size: 14px" class="text-start w-50">$ {{ modelPropuestos.sueldoMensual | number : "1.2-2" }}</span>
 										</div>
 									</div>
 								</div>
@@ -2318,7 +2318,7 @@
 										<div class="input-group mb-3 align-items-center">
 											<label class="input-group-text label-estilo text-center" for="al">Trimestral</label>
 
-											<span id="comp" name="comp" style="color: black; font-size: 14px" class="text-start">$ {{ modelPropuestos.sueldoTrimestral | number : "1.2-2" }}</span>
+											<span id="comp" name="comp" style="color: black; font-size: 14px" class="text-start w-50">$ {{ modelPropuestos.sueldoTrimestral | number : "1.2-2" }}</span>
 										</div>
 									</div>
 								</div>
@@ -2328,7 +2328,7 @@
 										<div class="input-group mb-3 align-items-center">
 											<label class="input-group-text label-estilo text-center" for="al">Semestral</label>
 
-											<span id="comp" name="comp" style="color: black; font-size: 14px" class="text-start">$ {{ modelPropuestos.sueldoSemestral | number : "1.2-2" }}</span>
+											<span id="comp" name="comp" style="color: black; font-size: 14px" class="text-start w-50">$ {{ modelPropuestos.sueldoSemestral | number : "1.2-2" }}</span>
 										</div>
 									</div>
 								</div>
@@ -2338,7 +2338,7 @@
 										<div class="input-group mb-3 align-items-center">
 											<label class="input-group-text label-estilo text-center" for="al">Anual</label>
 
-											<span id="comp" name="comp" style="color: black; font-size: 14px" class="text-start">$ {{ modelPropuestos.sueldoAnual | number : "1.2-2" }}</span>
+											<span id="comp" name="comp" style="color: black; font-size: 14px" class="text-start w-50">$ {{ modelPropuestos.sueldoAnual | number : "1.2-2" }}</span>
 										</div>
 									</div>
 								</div>
@@ -2396,8 +2396,6 @@
 						<div class="row">
 							<div class="col">
 								<div class="input-group mb-3 contenedor">
-									&nbsp;
-
 									<span>{{ solicitud.tipoAccion }}</span>
 								</div>
 							</div>
