@@ -169,6 +169,9 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
 	dataUnidadesNegocio: string[] = [];
 	dataEmpresa: string[] = [];
 
+	transferenciaCompania: string = "";
+	transferenciaUnidadNegocio: string = "";
+
 	// public dataTipoAccion: any;
 
 	public dataTipoAccion: any = [];
@@ -190,7 +193,7 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
 
 	public dataNivelDireccion: any[] = [];
 
-	// getDataNivelesAprobacionPorCodigoPosicion
+	// oDataNivelesAprobacionPorCodigoPosicion
 	public dataNivelesAprobacionPorCodigoPosicion: { [key: string]: any[] } = {};
 
 	public dataNivelesAprobacion: any;
@@ -387,6 +390,15 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
 	jsonResult: string;
 
 	emailVariables = {
+		de: "",
+		password: "",
+		alias: "",
+		para: "",
+		asunto: "",
+		cuerpo: ""
+	};
+
+	emailVariables2 = {
 		de: "",
 		password: "",
 		alias: "",
@@ -1116,6 +1128,9 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
 					this.codigoReportaA = detallePropuestos.jefeSolicitante;
 					this.unidadNegocioEmp = detallePropuestos.unidadNegocio;
 
+					this.transferenciaCompania = detallePropuestos.compania;
+					this.transferenciaUnidadNegocio = detallePropuestos.unidadNegocio;
+
 					if (this.unidadNegocioEmp.toUpperCase().includes("AREAS") || this.unidadNegocioEmp.toUpperCase().includes("ÁREAS")) {
 						this.mantenimientoService.getTipoRuta().subscribe({
 							next: (response) => {
@@ -1421,6 +1436,16 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
 						cuerpo: modifiedHtmlString,
 						password: variables.password.value
 					};
+
+					this.emailVariables2 = {
+						de: this.solicitudes.modelDetalleAprobaciones.correo,
+						para: elemento.aprobador.correo,
+						// alias: this.solicitudes.modelDetalleAprobaciones.correo,
+						alias: "Notificación 1",
+						asunto: variables.asunto_revision_solicitud.value,
+						cuerpo: modifiedHtmlString,
+						password: variables.password.value
+					};
 				}
 
 				if (elemento.aprobador.nivelDireccion === this.NIVEL_APROBACION_GERENCIA_MEDIA) {
@@ -1594,7 +1619,7 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
 			}
 
 			variables.transferenciaCompania = {
-				value: !this.viewInputs
+				value: this.viewInputs
 			};
 			variables.urlTarea = {
 				value: `${portalWorkFlow}solicitudes/revisar-solicitud/${this.idDeInstancia}/${this.id_solicitud_by_params}`
@@ -1892,7 +1917,6 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
 								this.emailVariables = {
 									de: "emisor",
 									para: res.evType[0].correo,
-									// alias: this.solicitudes.modelDetalleAprobaciones.correo,
 									alias: "Notificación 1",
 									asunto: `Asignación Temporal de Solicitud de ${this.solicitud.tipoSolicitud} ${this.solicitud.idSolicitud}`,
 									cuerpo: modifiedHtmlString,
@@ -2021,13 +2045,14 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
 					});
 				}
 			});
-			return;
 
+			return;
 		}
 
 		if (!this.solicitud.estadoSolicitud.includes("AN") && this.detalleNivelAprobacion.length > 0) {
 			this.solicitudes.cargarDetalleAprobacionesArreglo(this.detalleNivelAprobacion).subscribe({
 				next: (res) => {
+
 					this.camundaRestService.postCompleteTask(this.uniqueTaskId, variables).subscribe({
 						next: (res) => {
 							this.solicitud.empresa = this.model.compania;
@@ -2038,9 +2063,7 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
 							this.solicitudes.actualizarSolicitud(this.solicitud).subscribe({
 								next: (responseSolicitud) => {
 									setTimeout(() => {
-										//this.consultarNextTaskAprobador(this.solicitud.idInstancia);
-
-										this.solicitudes.sendEmail(this.emailVariables).subscribe({
+										this.solicitudes.sendEmail(this.emailVariables2).subscribe({
 											next: () => {
 											},
 											error: (error) => {
@@ -2269,6 +2292,9 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
 
 						this.detalleSolicitud.alimentacion = this.detalleSolicitudPropuestos.alimentacion.toString();
 						this.detalleSolicitud.movilizacion = this.detalleSolicitudPropuestos.movilizacion.toString();
+
+						this.detalleSolicitud.compania = this.transferenciaCompania;
+						this.detalleSolicitud.unidadNegocio = this.transferenciaUnidadNegocio;
 
 						if (this.totalRegistrosDetallesolicitud === 2) {
 
@@ -2553,8 +2579,8 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
 						},
 					});
 
-					this.modelPropuestos.compania = this.model.compania;
-					this.modelPropuestos.unidadNegocio = this.model.unidadNegocio;
+					this.transferenciaCompania = this.model.compania;
+					this.transferenciaUnidadNegocio = this.model.unidadNegocio;
 
 					this.unidadNegocioEmp = datosEmpleado.unidadNegocio;
 

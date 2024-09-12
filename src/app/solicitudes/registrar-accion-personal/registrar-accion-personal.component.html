@@ -58,9 +58,9 @@
 					<div class="input-group mb-3 align-items-center">
 						<label class="input-group-text text-start label-estilo" for="nombre-empleado">Nombre de Empleado</label>
 
-						<input type="text" name="nombre-empleado" [(ngModel)]="model.nombreCompleto" style="color: black; font-size: 14px; width: 33%" class="form-control" id="codigoposicion" aria-describedby="inputGroupPrepend" required placeholder="Nombre del empleado" (click)="openModal()" readonly />
+						<input type="text" name="nombre-empleado" [(ngModel)]="model.nombreCompleto" style="color: black; font-size: 14px; width: 33%" class="form-control" id="codigoposicion" aria-describedby="inputGroupPrepend" required placeholder="Nombre del empleado" (click)="taskType_Activity.toUpperCase() !== 'AP_COMPLETARSOLICITUD' ? openModal() : null" readonly />
 
-						<button class="btn btn-light" type="button" (click)="openModal()">
+						<button *ngIf="taskType_Activity.toUpperCase() !== 'AP_COMPLETARSOLICITUD'" class="btn btn-light" type="button" (click)="openModal()">
 							<i class="ti-search"></i>
 						</button>
 					</div>
@@ -70,9 +70,9 @@
 					<div class="input-group mb-3 align-items-center">
 						<label class="input-group-text text-start label-estilo" for="subledger">Subledger</label>
 
-						<input type="text" name="subledger" [(ngModel)]="model.subledger" style="color: black; font-size: 14px; width: 30%" class="form-control" id="codigoposicion" aria-describedby="inputGroupPrepend" required placeholder="Subledger" (click)="openModal()" readonly />
+						<input type="text" name="subledger" [(ngModel)]="model.subledger" style="color: black; font-size: 14px; width: 30%" class="form-control" id="codigoposicion" aria-describedby="inputGroupPrepend" required placeholder="Subledger" (click)="taskType_Activity.toUpperCase() !== 'AP_COMPLETARSOLICITUD' ? openModal() : null" readonly />
 
-						<button class="btn btn-light" type="button" (click)="openModal()">
+						<button *ngIf="taskType_Activity.toUpperCase() !== 'AP_COMPLETARSOLICITUD'" class="btn btn-light" type="button" (click)="openModal()">
 							<i class="ti-search"></i>
 						</button>
 					</div>
@@ -273,7 +273,7 @@
 								<div class="col-12 input-group mb-3 align-items-center">
 									<label class="input-group-text text-start label-estilo" for="tipoMotivo">Compañía</label>
 
-									<ng-select #inputSelectHacienda class="flex-fill" [(ngModel)]="modelPropuestos.compania" name="compania" placeholder="Seleccione la Compañia" [disabled]="!viewInputs">
+									<ng-select #inputSelectHacienda class="flex-fill" [(ngModel)]="transferenciaCompania" name="compania" placeholder="Seleccione la Compañia" [disabled]="!viewInputs">
 										<ng-option *ngFor="let data of dataEmpresa" [value]="data">{{ data }}</ng-option>
 									</ng-select>
 								</div>
@@ -283,7 +283,7 @@
 								<div class="col-12 input-group mb-3">
 									<label class="input-group-text text-start label-estilo" for="tipoMotivo">Unidad</label>
 
-									<ng-select #inputSelectProducto class="flex-fill" [(ngModel)]="modelPropuestos.unidadNegocio" name="unidad" placeholder="Seleccione la Unidad de Negocio" [disabled]="!viewInputs">
+									<ng-select #inputSelectProducto class="flex-fill" [(ngModel)]="transferenciaUnidadNegocio" name="unidad" placeholder="Seleccione la Unidad de Negocio" [disabled]="!viewInputs">
 										<ng-option *ngFor="let data of dataUnidadesNegocio" [value]="data">{{ data }}</ng-option>
 									</ng-select>
 								</div>
