@@ -6,7 +6,7 @@
 				<div class="mb-3">
 					<label class="azul">Número de solicitud o tarea</label>
 
-					<input-component [id]="'searchInputFilter'" [type]="'string'" [buttonIcon]="'ti-search'" buttonFunction="filterStringInTable" onChangeFunction="filterStringInTable" [contexto]="this" [disabled]="disabledSolicitudTareaFilter"></input-component>
+					<input-component [validateInput]="validateInput" [id]="'searchInputFilter'" [type]="'string'" [buttonIcon]="'ti-search'" buttonFunction="filterStringInTable" onChangeFunction="filterStringInTable" [contexto]="this" [disabled]="disabledSolicitudTareaFilter"></input-component>
 				</div>
 			</div>
 		</div>

@@ -134,7 +134,7 @@ export class EditarNivelesAprobacionComponent {
 					id: r.codigo,
 					descripcion: r.valor,
 				}))
-				.sort((a, b) => a.descripcion.toUpperCase().localeCompare(b.descripcion.toUpperCase()));
+					.sort((a, b) => a.descripcion.toUpperCase().localeCompare(b.descripcion.toUpperCase()));
 
 				this.getNivelesById();
 			}
@@ -248,13 +248,13 @@ export class EditarNivelesAprobacionComponent {
 	}
 
 	procesarNivelAprobacion() {
-		if(this.modelHead.idTipoMotivo===null){
-			this.modelHead.idTipoMotivo=0;
-		}if(this.modelHead.idAccion===null){
-			this.modelHead.idAccion=0;
+		if (this.modelHead.idTipoMotivo === null) {
+			this.modelHead.idTipoMotivo = 0;
+		} if (this.modelHead.idAccion === null) {
+			this.modelHead.idAccion = 0;
 		}
 		const nivelesAprobacion = Object.entries(this.idNivelesAprobacionRuta)
-		    .filter(([_, value]) => value !== "")
+			.filter(([_, value]) => value !== "")
 			.map(([key, value]) => {
 				let modelo: DatosNivelesAprobacion = new DatosNivelesAprobacion();
 
@@ -291,12 +291,12 @@ export class EditarNivelesAprobacionComponent {
 			if (tipoSolicitud === undefined) {
 				return true;
 			}
-	
+
 			const codigoSolicitudIncluded = this.restrictionsIds.includes(tipoSolicitud.codigoTipoSolicitud);
 			if (codigoSolicitudIncluded) {
 				this.modelHead.idAccion = null;
 				this.modelHead.idTipoMotivo = null;
-	
+
 				this.desactivarTipoMotivoYAccion = true;
 				return !codigoSolicitudIncluded || this.modelHead.idNivelDireccion === null || this.modelHead.idTipoRuta === null || this.modelHead.idTipoSolicitud === null;
 			}
@@ -311,5 +311,11 @@ export class EditarNivelesAprobacionComponent {
 	public validateNivelesAprobacion(): boolean {
 		return true;
 		// return Object.values(this.nivelesAprobacion).some(({ idNivelAprobacionRuta }) => idNivelAprobacionRuta !== "");
+	}
+
+	public deshabilitarAccion() {
+		const tipoSolicitud = this.dataTipoSolicitudes.find(data => data.id === this.modelHead.idTipoSolicitud)
+
+		return tipoSolicitud.codigoTipoSolicitud.toUpperCase() !== "RP";
 	}
 }

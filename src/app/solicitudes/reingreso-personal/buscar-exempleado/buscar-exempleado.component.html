@@ -13,13 +13,11 @@
 				<tr>
 					<th></th>
 
-					<!-- <th>Código de Posición</th> -->
-
-					<!-- <th>Posición</th> -->
-
 					<th>Nombre</th>
 
 					<th>Subledger</th>
+
+					<th>Correo</th>
 
 					<th>Compañía</th>
 
@@ -42,13 +40,11 @@
 						<input class="form-check-input" type="radio" [value]="empleado" [checked]="empleadoSeleccionado === empleado" (change)="$event.stopPropagation(); seleccionarUsuario(empleado)" />
 					</td>
 
-					<!-- <td>{{ empleado.codigoPosicion }}</td> -->
-
-					<!-- <td>{{ empleado.descrPosicion }}</td> -->
-
 					<td>{{ empleado.nombreCompleto }}</td>
 
 					<td>{{ empleado.subledger ?? "-" }}</td>
+
+					<td>{{ empleado.correo ?? "-" }}</td>
 
 					<td>{{ empleado.nombreCompania ?? empleado.compania }}</td>
 

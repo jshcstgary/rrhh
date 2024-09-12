@@ -17,7 +17,36 @@
 								</div>
 							</div>
 
-							<plantilla-c-component [dataFilterNivelesAprobacion]="dataFilterNivelesAprobacion" [dataTipoMotivo]="dataTipoMotivo" [dataTipoSolicitudes]="dataTipoSolicitudes" [dataNivelDireccion]="dataNivelDireccion" [dataTipoAccion]="dataTipoAccion" [selected_empresa]="selected_empresa" [selected_producto]="selected_producto" [selected_tipo_solicitud]="selected_tipo_solicitud" [selected_estado]="selected_estado" [data_empresas]="data_empresas" [data_productos]="dataUnidadesNegocio" [data_estado]="data_estado" [model]="model" *ngIf="hasFiltered" [columnsTable]="columnsTableGraphic" [originalDataTable]="solicitudesTipo" [placeholderHeaderInputText]="'Buscar niveles de aprobacion...'" [contexto]="this" keyNameTable="id" clickOnActionRow="onRowActionGraphics" clickOnFilter="filterDataTable" clickOnMostrarModalCrearSolicitudes="mostrarModalCrearSolicitudes" clickOnToggleDisabled="toggleDisabled" clickOnPageCrear="pageCrear" [IdRowToClone]="IdRowToClone" colIdToDisable="id" titleReport="NIVELES DE APROBACION" [codigoReport]="codigoReporte"></plantilla-c-component>
+							<plantilla-c-component
+								[dataFilterNivelesAprobacion]="dataFilterNivelesAprobacion"
+								[dataTipoMotivo]="dataTipoMotivo"
+								[dataTipoSolicitudes]="dataTipoSolicitudes"
+								[dataNivelDireccion]="dataNivelDireccion"
+								[dataTipoAccion]="dataTipoAccion"
+								[selected_empresa]="selected_empresa"
+								[selected_producto]="selected_producto"
+								[selected_tipo_solicitud]="selected_tipo_solicitud"
+								[selected_estado]="selected_estado"
+								[data_empresas]="data_empresas"
+								[data_productos]="dataUnidadesNegocio"
+								[data_estado]="data_estado"
+								[model]="model"
+								*ngIf="hasFiltered"
+								[columnsTable]="columnsTableGraphic"
+								[originalDataTable]="solicitudesTipo"
+								[placeholderHeaderInputText]="'Buscar niveles de aprobacion...'"
+								[contexto]="this"
+								keyNameTable="id"
+								clickOnActionRow="onRowActionGraphics"
+								clickOnFilter="filterDataTable"
+								clickOnMostrarModalCrearSolicitudes="mostrarModalCrearSolicitudes"
+								clickOnToggleDisabled="toggleDisabled"
+								clickOnPageCrear="pageCrear"
+								[IdRowToClone]="IdRowToClone"
+								colIdToDisable="id"
+								titleReport="NIVELES DE APROBACION"
+								[codigoReport]="codigoReporte"
+							></plantilla-c-component>
 						</ng-template>
 					</li>
 
@@ -98,7 +127,7 @@
 											<label class="azul">Estado</label>
 
 											<ng-select #inputSelectTrabajador [disabled]="!controlsPermissions[pageControlPermission.FiltroEstado].habilitar || searchInputFilter !== ''" [(ngModel)]="dataFilterSolicitudes.estado" name="id_trabajador" placeholder="Seleccione">
-												<ng-option *ngFor="let data of data_estado" [value]="data.codigo">{{ data.codigo }} - {{ data.descripcion }}</ng-option>
+												<ng-option *ngFor="let data of data_estado" [value]="data.codigo">{{ data.descripcion }}</ng-option>
 											</ng-select>
 										</div>
 									</div>
@@ -167,7 +196,39 @@
 								</div> -->
 							</form>
 
-							<plantilla-c-component [fixedLastColumnOnTable]="true" overflowX="auto" tableWidth="250%" [dataFilterNivelesAprobacion]="dataFilterNivelesAprobacion" [dataTipoMotivo]="dataTipoMotivo" [dataTipoSolicitudes]="dataTipoSolicitudes" [dataNivelDireccion]="dataNivelDireccion" [dataTipoAccion]="dataTipoAccion" [selected_empresa]="selected_empresa" [selected_producto]="selected_producto" [selected_tipo_solicitud]="selected_tipo_solicitud" [selected_estado]="selected_estado" [data_empresas]="data_empresas" [data_productos]="dataUnidadesNegocio" [data_estado]="data_estado" [model]="model" *ngIf="hasFiltered" [columnsTable]="columnsTable" [originalDataTable]="dataTable" [placeholderHeaderInputText]="'Buscar niveles de aprobacion...'" [contexto]="this" keyNameTable="id" clickOnActionRow="onRowActionClicked" clickOnFilter="filterDataTable" clickOnMostrarModalCrearSolicitudes="mostrarModalCrearSolicitudes" clickOnToggleDisabled="toggleDisabled" clickOnPageCrear="pageCrear" [IdRowToClone]="IdRowToClone" colIdToDisable="id" titleReport="NIVELES DE APROBACION" [codigoReport]="codigoReporte"></plantilla-c-component>
+							<plantilla-c-component
+								[fixedLastColumnOnTable]="true"
+								overflowX="auto"
+								tableWidth="250%"
+								[dataFilterNivelesAprobacion]="dataFilterNivelesAprobacion"
+								[dataTipoMotivo]="dataTipoMotivo"
+								[dataTipoSolicitudes]="dataTipoSolicitudes"
+								[dataNivelDireccion]="dataNivelDireccion"
+								[dataTipoAccion]="dataTipoAccion"
+								[selected_empresa]="selected_empresa"
+								[selected_producto]="selected_producto"
+								[selected_tipo_solicitud]="selected_tipo_solicitud"
+								[selected_estado]="selected_estado"
+								[data_empresas]="data_empresas"
+								[data_productos]="dataUnidadesNegocio"
+								[data_estado]="data_estado"
+								[model]="model"
+								*ngIf="hasFiltered"
+								[columnsTable]="columnsTable"
+								[originalDataTable]="dataTable"
+								[placeholderHeaderInputText]="'Buscar niveles de aprobacion...'"
+								[contexto]="this"
+								keyNameTable="id"
+								clickOnActionRow="onRowActionClicked"
+								clickOnFilter="filterDataTable"
+								clickOnMostrarModalCrearSolicitudes="mostrarModalCrearSolicitudes"
+								clickOnToggleDisabled="toggleDisabled"
+								clickOnPageCrear="pageCrear"
+								[IdRowToClone]="IdRowToClone"
+								colIdToDisable="id"
+								titleReport="NIVELES DE APROBACION"
+								[codigoReport]="codigoReporte"
+							></plantilla-c-component>
 						</ng-template>
 					</li>
 				</ul>
@@ -190,7 +251,7 @@
 								<b style="color: rgb(227, 199, 22); font-size: xx-large; margin: 20px">Crear Solicitud</b>
 							</div>
 
-							<div class="col-md-6 text-end">
+							<div *ngIf="!isRequestCompleted" class="col-md-6 text-end">
 								<button style="margin: 10px; color: black" type="button" (click)="modal.dismiss('Cross click')" class="mr-10 fz-14 btn btn-outline-secondary btn-icon-end">Cancelar</button>
 
 								<button type="button" class="mr-10 fz-14 btn btn-info btn-icon-end" (click)="CrearInstanciaSolicitud()" aria-label="Close" aria-label="Close" [disabled]="solicitud.idTipoSolicitud === null || (desactivarTipoMotivo && solicitud.idTipoMotivo === 0) || (desactivarTipoAccion && solicitud.idTipoAccion === 0)"><i class="fas fa-save"></i> Guardar</button>

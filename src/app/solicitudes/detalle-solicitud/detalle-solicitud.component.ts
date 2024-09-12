@@ -2785,7 +2785,7 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 			}
 		});
 
-		// doc.line(70, 270, 140, 270)
+		// Log del flujo
 
 		// Log del flujo
 		autoTable(doc, {

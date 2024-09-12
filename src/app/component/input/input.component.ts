@@ -36,6 +36,11 @@ export class InputComponent implements OnInit {
 	})
 	public restrictionType: "code" | "text" = "text";
 
+	@Input({
+		required: false
+	})
+	public validateInput: boolean = true;
+
 	@Input() public theValue: string = "";
 
 	@Input({

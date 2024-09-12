@@ -59,7 +59,7 @@
 							<div class="input-group mb-3 align-items-center">
 								<label class="input-group-text text-start label-estilo2" for="tipoSolicitud">Nro Solicitud de Requisicion</label>
 
-								<span #mivar id="tipoSolicitud" name="tipoSolicitud" style="color: black; font-size: 14px" class="text-start">{{ idSolicitudRP }}</span>
+								<span style="color: black; font-size: 14px" class="text-start w-75">{{ idSolicitudRP }}</span>
 							</div>
 						</div>
 					</div>
@@ -69,7 +69,7 @@
 							<div class="input-group mb-3 align-items-center">
 								<label class="input-group-text text-start label-estilo2" for="tipoMotivo">Apellidos y nombres completos</label>
 
-								<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{ nombreCompletoCandidato }}</span>
+								<span style="color: black; font-size: 14px" class="text-start w-75">{{ nombreCompletoCandidato }}</span>
 							</div>
 						</div>
 					</div>
@@ -79,7 +79,8 @@
 							<div class="input-group mb-3 align-items-center">
 								<label class="input-group-text text-start label-estilo2" for="observaciones">Observaciones</label>
 
-								<textarea name="descripcionposicion" style="color: black; font-size: 14px; resize: none" [(ngModel)]="detalleSolicitudRG.justificacion" class="form-control" id="observaciones" rows="3" required></textarea>
+								<span style="color: black; font-size: 14px" class="text-start w-75">{{ detalleSolicitudRG.justificacion }}</span>
+								<!-- <textarea name="descripcionposicion" style="color: black; font-size: 14px; resize: none" [(ngModel)]="detalleSolicitudRG.justificacion" class="form-control" id="observaciones" rows="3" required></textarea> -->
 							</div>
 						</div>
 					</div>
@@ -90,15 +91,15 @@
 			<app-solicitud-seccion-desplegable titleSummary="Datos de contratación" [isOpen]="true">
 				<div>
 					<div class="d-flex justify-content-end">
-						<button type="button" (click)="openModalBuscarExempleado()" class="btn btn-info"><i class="ti-search me-1"></i> Buscar exempleado</button>
+						<button type="button" (click)="openModalBuscarExempleado()" class="btn btn-info"><i class="ti-search me-1"></i> Buscar ex-empleado</button>
 					</div>
 
 					<div class="row">
-						<div class="col-md-6">
+						<div class="col-md-12">
 							<div class="input-group mb-3 align-items-center">
-								<label class="input-group-text text-start label-estilo" for="tipoMotivo">Empleado</label>
+								<label class="input-group-text text-start label-estilo2" for="tipoMotivo">Empleado</label>
 
-								<span id="empleado" name="empleado" style="color: black; font-size: 14px" class="text-start">{{ detalleSolicitudRG.supervisaA === "N/A" ? "" : modelRG.nombreCompleto }}</span>
+								<span style="color: black; font-size: 14px" class="text-start w-75">{{ detalleSolicitudRG.supervisaA === "N/A" ? "" : modelRG.nombreCompleto }}</span>
 							</div>
 						</div>
 					</div>
@@ -113,19 +114,20 @@
 						</div>
 					</div>
 
-					<div class="row mt-4">
-						<div class="col">
+					<div class="row">
+						<div class="col-md-6">
 							<div class="input-group mb-3 align-items-center">
 								<label class="input-group-text text-start label-estilo" for="tipoMotivo">Compañía</label>
 
-								<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{ detalleSolicitudRG.supervisaA === "N/A" ? "" : modelRG.compania }}</span>
+								<span style="color: black; font-size: 14px" class="text-start w-50">{{ detalleSolicitudRG.supervisaA === "N/A" ? "" : modelRG.compania }}</span>
 							</div>
 						</div>
-						<div class="col">
+
+						<div class="col-md-6">
 							<div class="input-group mb-3 align-items-center">
 								<label class="input-group-text text-start label-estilo" for="tipoMotivo">Compañía</label>
 
-								<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">{{ model.compania }}</span>
+								<span style="color: black; font-size: 14px" class="text-start w-50">{{ model.compania }}</span>
 							</div>
 						</div>
 					</div>
@@ -135,7 +137,7 @@
 							<div class="input-group mb-3 align-items-center">
 								<label class="input-group-text text-start label-estilo" for="tipoMotivo">Unidad de Negocio</label>
 
-								<span style="color: black; font-size: 14px" class="text-start">{{ detalleSolicitudRG.supervisaA === "N/A" ? "" : modelRG.unidadNegocio }}</span>
+								<span style="color: black; font-size: 14px" class="text-start w-50">{{ detalleSolicitudRG.supervisaA === "N/A" ? "" : modelRG.unidadNegocio }}</span>
 							</div>
 						</div>
 
@@ -143,7 +145,7 @@
 							<div class="input-group mb-3 align-items-center">
 								<label class="input-group-text text-start label-estilo" for="tipoMotivo">Unidad de Negocio</label>
 
-								<span style="color: black; font-size: 14px" class="text-start">{{ model.unidadNegocio }}</span>
+								<span style="color: black; font-size: 14px" class="text-start w-50">{{ model.unidadNegocio }}</span>
 							</div>
 						</div>
 					</div>
@@ -153,7 +155,7 @@
 							<div class="input-group mb-3 align-items-center">
 								<label class="input-group-text text-start label-estilo" for="tipoMotivo">Área/Departamento</label>
 
-								<span style="color: black; font-size: 14px" class="text-start">{{ detalleSolicitudRG.supervisaA === "N/A" ? "" : modelRG.departamento }}</span>
+								<span style="color: black; font-size: 14px" class="text-start w-50">{{ detalleSolicitudRG.supervisaA === "N/A" ? "" : modelRG.departamento }}</span>
 							</div>
 						</div>
 
@@ -161,7 +163,7 @@
 							<div class="input-group mb-3 align-items-center">
 								<label class="input-group-text text-start label-estilo" for="tipoMotivo">Área/Departamento</label>
 
-								<span style="color: black; font-size: 14px" class="text-start">{{ model.departamento }}</span>
+								<span style="color: black; font-size: 14px" class="text-start w-50">{{ model.departamento }}</span>
 							</div>
 						</div>
 					</div>
@@ -171,7 +173,7 @@
 							<div class="input-group mb-3 align-items-center">
 								<label class="input-group-text text-start label-estilo" for="tipoMotivo">Localidad/Zona</label>
 
-								<span style="color: black; font-size: 14px" class="text-start">{{ detalleSolicitudRG.supervisaA === "N/A" ? "" : modelRG.localidad }}</span>
+								<span style="color: black; font-size: 14px" class="text-start w-50">{{ detalleSolicitudRG.supervisaA === "N/A" ? "" : modelRG.localidad }}</span>
 							</div>
 						</div>
 
@@ -179,7 +181,7 @@
 							<div class="input-group mb-3 align-items-center">
 								<label class="input-group-text text-start label-estilo" for="tipoMotivo">Localidad/Zona</label>
 
-								<span style="color: black; font-size: 14px" class="text-start">{{ model.localidad }}</span>
+								<span style="color: black; font-size: 14px" class="text-start w-50">{{ model.localidad }}</span>
 							</div>
 						</div>
 					</div>
@@ -189,7 +191,7 @@
 							<div class="input-group mb-3 align-items-center">
 								<label class="input-group-text text-start label-estilo" for="tipoMotivo">Puesto</label>
 
-								<span style="color: black; font-size: 14px" class="text-start">{{ detalleSolicitudRG.supervisaA === "N/A" ? "" : modelRG.descrPosicion }}</span>
+								<span style="color: black; font-size: 14px" class="text-start w-50">{{ detalleSolicitudRG.supervisaA === "N/A" ? "" : modelRG.descrPosicion }}</span>
 							</div>
 						</div>
 
@@ -197,7 +199,7 @@
 							<div class="input-group mb-3 align-items-center">
 								<label class="input-group-text text-start label-estilo" for="tipoMotivo">Puesto</label>
 
-								<span style="color: black; font-size: 14px" class="text-start">{{ model.descrPosicion }}</span>
+								<span style="color: black; font-size: 14px" class="text-start w-50">{{ model.descrPosicion }}</span>
 							</div>
 						</div>
 					</div>
@@ -205,10 +207,7 @@
 					<div class="row">
 						<div class="col-md-6">
 							<div class="input-group mb-3 align-items-center">
-								<label class="input-group-text text-start label-estilo" for="tipoMotivo"
-									>Jefe Inmediato Superior <br />
-									o Referencia</label
-								>
+								<label class="input-group-text text-start label-estilo" for="tipoMotivo">Jefe Inmediato Superior o Referencia</label>
 
 								<input name="jefe-superior" type="text" class="form-control" id="searchInp" [(ngModel)]="jefeReferenciaQuery.nombreCompleto" readonly (click)="getDataEmpleadosEvolution('nombresJefeReferencia')" />
 
@@ -222,7 +221,7 @@
 							<div class="input-group mb-3 align-items-center">
 								<label class="input-group-text text-start label-estilo" for="tipoMotivo">Jefe Inmediato Superior</label>
 
-								<span style="color: black; font-size: 14px" class="text-start">{{ model.jefeInmediatoSuperior }}</span>
+								<span style="color: black; font-size: 14px" class="text-start w-50">{{ model.jefeInmediatoSuperior }}</span>
 							</div>
 						</div>
 					</div>
@@ -230,12 +229,9 @@
 					<div class="row">
 						<div class="col-md-6">
 							<div class="input-group mb-3 align-items-center">
-								<label class="input-group-text text-start label-estilo" for="tipoMotivo"
-									>Puesto Jefe Inmediato Superior <br />
-									o Referencia</label
-								>
+								<label class="input-group-text text-start label-estilo" for="tipoMotivo">Puesto Jefe Inmediato Superior o Referencia</label>
 
-								<span style="color: black; font-size: 14px" class="text-start">{{ jefeReferenciaQuery.descrPuesto }}</span>
+								<span style="color: black; font-size: 14px" class="text-start w-50">{{ jefeReferenciaQuery.descrPuesto }}</span>
 							</div>
 						</div>
 
@@ -243,7 +239,7 @@
 							<div class="input-group mb-3 align-items-center">
 								<label class="input-group-text text-start label-estilo" for="tipoMotivo">Puesto Jefe Inmediato</label>
 
-								<span style="color: black; font-size: 14px" class="text-start">{{ model.puestoJefeInmediato }}</span>
+								<span style="color: black; font-size: 14px" class="text-start w-50">{{ model.puestoJefeInmediato }}</span>
 							</div>
 						</div>
 					</div>
@@ -253,7 +249,7 @@
 							<div class="input-group mb-3 align-items-center">
 								<label class="input-group-text text-start label-estilo" for="tipoMotivo">Fecha de Ingreso</label>
 
-								<span style="color: black; font-size: 14px" class="text-start">{{ detalleSolicitudRG.supervisaA === "N/A" ? "" : (modelRG.fechaIngreso | date : "dd/MM/yyyy") }}</span>
+								<span style="color: black; font-size: 14px" class="text-start w-50">{{ detalleSolicitudRG.supervisaA === "N/A" ? "" : (modelRG.fechaIngreso | date : "dd/MM/yyyy") }}</span>
 							</div>
 						</div>
 
@@ -261,7 +257,7 @@
 							<div class="input-group mb-3 align-items-center">
 								<label class="input-group-text text-start label-estilo" for="tipoMotivo">Responsable RRHH</label>
 
-								<span style="color: black; font-size: 14px" class="text-start">{{ solicitud.usuarioCreacion }}</span>
+								<span style="color: black; font-size: 14px" class="text-start w-50">{{ solicitud.usuarioCreacion }}</span>
 							</div>
 						</div>
 					</div>
@@ -271,18 +267,15 @@
 							<div class="input-group mb-3 align-items-center">
 								<label class="input-group-text text-start label-estilo" for="tipoMotivo">Fecha de Salida</label>
 
-								<span style="color: black; font-size: 14px" class="text-start">{{ fechaSalida | date : "dd/mm/yyyy" }}</span>
+								<span style="color: black; font-size: 14px" class="text-start w-50">{{ fechaSalida | date : "dd/mm/yyyy" }}</span>
 							</div>
 						</div>
 
 						<div class="col-md-6">
 							<div class="input-group mb-3 align-items-center">
-								<label class="input-group-text text-start label-estilo" for="tipoMotivo"
-									>Observaciones del comité <br />
-									de Remuneraciones</label
-								>
+								<label class="input-group-text text-start label-estilo" for="tipoMotivo">Observaciones del comité de Remuneraciones</label>
 
-								<span style="color: black; font-size: 14px" class="text-start">{{ observacionRemuneraciones }}</span>
+								<span style="color: black; font-size: 14px" class="text-start w-50">{{ observacionRemuneraciones }}</span>
 							</div>
 						</div>
 					</div>
@@ -316,20 +309,20 @@
 						</div>
 					</div>
 
-					<div class="row mt-4 mb-4">
-						<div class="col">
+					<div class="row">
+						<div class="col-md-6">
 							<div class="input-group mb-3 align-items-center">
 								<label class="input-group-text text-start label-estilo" for="tipoMotivo">Sueldo</label>
 
-								<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">$ {{ detalleSolicitudRG.supervisaA === "N/A" ? "" : (modelRG.sueldo | number : "1.2-2") }}</span>
+								<span style="color: black; font-size: 14px" class="text-start w-50">$ {{ detalleSolicitudRG.supervisaA === "N/A" ? "" : (modelRG.sueldo | number : "1.2-2") }}</span>
 							</div>
 						</div>
 
-						<div class="col">
+						<div class="col-md-6">
 							<div class="input-group mb-3 align-items-center">
 								<label class="input-group-text text-start label-estilo" for="tipoMotivo">Sueldo</label>
 
-								<span id="tipoMotivo" name="tipoMotivo" style="color: black; font-size: 14px" class="text-start">$ {{ model.sueldo | number : "1.2-2" }}</span>
+								<span style="color: black; font-size: 14px" class="text-start w-50">$ {{ model.sueldo | number : "1.2-2" }}</span>
 							</div>
 						</div>
 					</div>
@@ -339,7 +332,7 @@
 							<div class="input-group mb-3 align-items-center">
 								<label class="input-group-text text-start label-estilo" for="tipoMotivo">Mensual</label>
 
-								<span style="color: black; font-size: 14px" class="text-start">$ {{ detalleSolicitudRG.supervisaA === "N/A" ? "" : (modelRG.sueldoMensual | number : "1.2-2") }}</span>
+								<span style="color: black; font-size: 14px" class="text-start w-50">$ {{ detalleSolicitudRG.supervisaA === "N/A" ? "" : (modelRG.sueldoMensual | number : "1.2-2") }}</span>
 							</div>
 						</div>
 
@@ -347,7 +340,7 @@
 							<div class="input-group mb-3 align-items-center">
 								<label class="input-group-text text-start label-estilo" for="tipoMotivo">Mensual</label>
 
-								<span style="color: black; font-size: 14px" class="text-start">$ {{ model.sueldoMensual | number : "1.2-2" }}</span>
+								<span style="color: black; font-size: 14px" class="text-start w-50">$ {{ model.sueldoMensual | number : "1.2-2" }}</span>
 							</div>
 						</div>
 					</div>
@@ -357,7 +350,7 @@
 							<div class="input-group mb-3 align-items-center">
 								<label class="input-group-text text-start label-estilo" for="tipoMotivo">Trimestral</label>
 
-								<span style="color: black; font-size: 14px" class="text-start">$ {{ detalleSolicitudRG.supervisaA === "N/A" ? "" : (modelRG.sueldoTrimestral | number : "1.2-2") }}</span>
+								<span style="color: black; font-size: 14px" class="text-start w-50">$ {{ detalleSolicitudRG.supervisaA === "N/A" ? "" : (modelRG.sueldoTrimestral | number : "1.2-2") }}</span>
 							</div>
 						</div>
 
@@ -365,7 +358,7 @@
 							<div class="input-group mb-3 align-items-center">
 								<label class="input-group-text text-start label-estilo" for="tipoMotivo">Trimestral</label>
 
-								<span style="color: black; font-size: 14px" class="text-start">$ {{ model.sueldoTrimestral | number : "1.2-2" }}</span>
+								<span style="color: black; font-size: 14px" class="text-start w-50">$ {{ model.sueldoTrimestral | number : "1.2-2" }}</span>
 							</div>
 						</div>
 					</div>
@@ -375,7 +368,7 @@
 							<div class="input-group mb-3 align-items-center">
 								<label class="input-group-text text-start label-estilo" for="tipoMotivo">Semestral</label>
 
-								<span style="color: black; font-size: 14px" class="text-start">$ {{ detalleSolicitudRG.supervisaA === "N/A" ? "" : (modelRG.sueldoSemestral | number : "1.2-2") }}</span>
+								<span style="color: black; font-size: 14px" class="text-start w-50">$ {{ detalleSolicitudRG.supervisaA === "N/A" ? "" : (modelRG.sueldoSemestral | number : "1.2-2") }}</span>
 							</div>
 						</div>
 
@@ -383,7 +376,7 @@
 							<div class="input-group mb-3 align-items-center">
 								<label class="input-group-text text-start label-estilo" for="tipoMotivo">Semestral</label>
 
-								<span style="color: black; font-size: 14px" class="text-start">$ {{ model.sueldoSemestral | number : "1.2-2" }}</span>
+								<span style="color: black; font-size: 14px" class="text-start w-50">$ {{ model.sueldoSemestral | number : "1.2-2" }}</span>
 							</div>
 						</div>
 					</div>
@@ -393,7 +386,7 @@
 							<div class="input-group mb-3 align-items-center">
 								<label class="input-group-text text-start label-estilo" for="tipoMotivo">Anual</label>
 
-								<span style="color: black; font-size: 14px" class="text-start">$ {{ detalleSolicitudRG.supervisaA === "N/A" ? "" : (modelRG.sueldoAnual | number : "1.2-2") }}</span>
+								<span style="color: black; font-size: 14px" class="text-start w-50">$ {{ detalleSolicitudRG.supervisaA === "N/A" ? "" : (modelRG.sueldoAnual | number : "1.2-2") }}</span>
 							</div>
 						</div>
 
@@ -401,7 +394,7 @@
 							<div class="input-group mb-3 align-items-center">
 								<label class="input-group-text text-start label-estilo" for="tipoMotivo">Anual</label>
 
-								<span style="color: black; font-size: 14px" class="text-start">$ {{ model.sueldoAnual | number : "1.2-2" }}</span>
+								<span style="color: black; font-size: 14px" class="text-start w-50">$ {{ model.sueldoAnual | number : "1.2-2" }}</span>
 							</div>
 						</div>
 					</div>
@@ -411,7 +404,7 @@
 							<div class="input-group mb-3 align-items-center">
 								<label class="input-group-text text-start label-estilo" for="tipoMotivo">Remuneración mensual</label>
 
-								<span style="color: black; font-size: 14px" class="text-start">$ {{ detalleSolicitudRG.supervisaA === "N/A" ? "" : (remuneracion | number : "1.2-2") }}</span>
+								<span style="color: black; font-size: 14px" class="text-start w-50">$ {{ detalleSolicitudRG.supervisaA === "N/A" ? "" : (remuneracion | number : "1.2-2") }}</span>
 							</div>
 						</div>
 
@@ -419,7 +412,7 @@
 							<div class="input-group mb-3 align-items-center">
 								<label class="input-group-text text-start label-estilo" for="tipoMotivo">Remuneración mensual</label>
 
-								<span style="color: black; font-size: 14px" class="text-start">$ {{ modelRemuneracion | number : "1.2-2" }}</span>
+								<span style="color: black; font-size: 14px" class="text-start w-50">$ {{ modelRemuneracion | number : "1.2-2" }}</span>
 							</div>
 						</div>
 					</div>

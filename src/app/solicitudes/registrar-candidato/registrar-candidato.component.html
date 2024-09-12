@@ -498,12 +498,9 @@
 					<div class="row">
 						<div class="col-md-12">
 							<div class="input-group mb-3 align-items-center">
-								<label class="input-group-text text-start label-estilo2" for="nombre-candidato"
-									>Nombre del candidato <br />
-									seleccionado</label
-								>
+								<label class="input-group-text text-start label-estilo2" for="nombre-candidato">Nombre del candidato seleccionado</label>
 
-								<input type="text" appValidateAlphanumeric name="nombre-candidato" style="color: black; font-size: 14px; width: 30%" placeholder="Nombre del candidato" [(ngModel)]="nombreCandidato" class="form-control" id="nombre-candidato" />
+								<input type="text" [appValidateAlphanumeric]="true" name="nombre-candidato" style="color: black; font-size: 14px; width: 30%" placeholder="Nombre del candidato" [(ngModel)]="nombreCandidato" class="form-control" id="nombre-candidato" />
 							</div>
 						</div>
 					</div>

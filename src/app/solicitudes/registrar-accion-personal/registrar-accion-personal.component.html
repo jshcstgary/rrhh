@@ -15,7 +15,7 @@
 						<button *ngIf="existeMatenedores" type="button" (click)="openModalReasignarUsuario()" class="btn btn-info me-2 mt-1"><i class="fas fa-redo"></i> Reasignar</button>
 
 						<div *ngIf="!existeMatenedores || existe">
-							<button type="submit" class="btn btn-info me-2 mt-1" aria-label="Close" [disabled]="!solicitudForm.form.valid || !existenNivelesAprobacion || selectedOption === 'Si'"><i class="fas fa-save"></i> Guardar</button>
+							<button type="submit" class="btn btn-info me-2 mt-1" aria-label="Close" [disabled]="!solicitudForm.form.valid || !existenNivelesAprobacion || selectedOption === 'Si' || model.justificacionCargo === ''"><i class="fas fa-save"></i> Guardar</button>
 
 							<button *ngIf="RegistrarsolicitudCompletada || selectedOption === 'Si'" type="button" (click)="onCompletar()" class="btn btn-info me-2 mt-1"><i class="fas fa-check-circle"></i> Enviar Solicitud</button>
 						</div>
@@ -58,9 +58,11 @@
 					<div class="input-group mb-3 align-items-center">
 						<label class="input-group-text text-start label-estilo" for="nombre-empleado">Nombre de Empleado</label>
 
-						<input type="text" name="nombre-empleado" [(ngModel)]="model.nombreCompleto" style="color: black; font-size: 14px; width: 33%" class="form-control" id="codigoposicion" aria-describedby="inputGroupPrepend" required placeholder="Nombre del empleado" (click)="taskType_Activity.toUpperCase() !== 'AP_COMPLETARSOLICITUD' ? openModal() : null" readonly />
+						<span *ngIf="taskType_Activity === 'AP_CompletarSolicitud'" style="color: black; font-size: 14px" class="text-start w-50">{{ model.nombreCompleto }}</span>
 
-						<button *ngIf="taskType_Activity.toUpperCase() !== 'AP_COMPLETARSOLICITUD'" class="btn btn-light" type="button" (click)="openModal()">
+						<input *ngIf="taskType_Activity !== 'AP_CompletarSolicitud'" type="text" name="nombre-empleado" [(ngModel)]="model.nombreCompleto" style="color: black; font-size: 14px; width: 33%" class="form-control" id="codigoposicion" aria-describedby="inputGroupPrepend" required placeholder="Nombre del empleado" (click)="openModal()" readonly />
+
+						<button *ngIf="taskType_Activity !== 'AP_CompletarSolicitud'" class="btn btn-light" type="button" (click)="openModal()">
 							<i class="ti-search"></i>
 						</button>
 					</div>
@@ -70,9 +72,11 @@
 					<div class="input-group mb-3 align-items-center">
 						<label class="input-group-text text-start label-estilo" for="subledger">Subledger</label>
 
-						<input type="text" name="subledger" [(ngModel)]="model.subledger" style="color: black; font-size: 14px; width: 30%" class="form-control" id="codigoposicion" aria-describedby="inputGroupPrepend" required placeholder="Subledger" (click)="taskType_Activity.toUpperCase() !== 'AP_COMPLETARSOLICITUD' ? openModal() : null" readonly />
+						<span *ngIf="taskType_Activity === 'AP_CompletarSolicitud'" style="color: black; font-size: 14px" class="text-start w-50">{{ model.subledger }}</span>
 
-						<button *ngIf="taskType_Activity.toUpperCase() !== 'AP_COMPLETARSOLICITUD'" class="btn btn-light" type="button" (click)="openModal()">
+						<input *ngIf="taskType_Activity !== 'AP_CompletarSolicitud'" type="text" name="subledger" [(ngModel)]="model.subledger" style="color: black; font-size: 14px; width: 30%" class="form-control" id="codigoposicion" aria-describedby="inputGroupPrepend" required placeholder="Subledger" (click)="openModal()" readonly />
+
+						<button *ngIf="taskType_Activity !== 'AP_CompletarSolicitud'" class="btn btn-light" type="button" (click)="openModal()">
 							<i class="ti-search"></i>
 						</button>
 					</div>
@@ -89,11 +93,24 @@
 				</div>
 			</div>
 
+			<div class="row">
+				<div class="col-md-6">
+					<div class="input-group mb-3 align-items-center">
+						<label class="input-group-text text-start label-estilo" for="tipo-accion">Tipo de acción</label>
+
+						<select class="form-select w-50" name="tipo-accion" [(ngModel)]="solicitud.idTipoAccion" [disabled]="solicitud.idTipoAccion !== 0">
+							<option value="" hidden>Seleccione...</option>
+
+							<option *ngFor="let tipoAccion of tiposAcciones" [value]="tipoAccion.id">{{ tipoAccion.tipoAccion }}</option>
+						</select>
+					</div>
+				</div>
+			</div>
+
 			<div class="mx-auto mb-3">
 				<div class="form-check form-check-inline">
 					<div class="form-check text-center">
-						<!-- <input type="checkbox" class="form-check-input" name="customCheck1" [(ngModel)]="viewInputs" id="customCheck1" checked (change)="onCheckedComp($event)" /> -->
-						<input type="checkbox" class="form-check-input" name="customCheck1" [(ngModel)]="viewInputs" id="customCheck1" />
+						<input type="checkbox" class="form-check-input" name="customCheck1" [(ngModel)]="viewInputs" id="customCheck1" [checked]="taskType_Activity === 'AP_CompletarSolicitud'" />
 
 						<label class="form-check-label" for="customCheck1">Transferencia de Compañía</label>
 					</div>
@@ -257,7 +274,8 @@
 										<mat-form-field appearance="outline">
 											<!-- <mat-label>Fecha (dd/mm/yyyy)</mat-label> -->
 
-											<input matInput [matDatepicker]="picker" [min]="minDateValidation" [max]="maxDateValidation" [(ngModel)]="modelPropuestos.fechaIngreso" class="form-control" id="fecha-ingreso" required name="fecha-ingreso" />
+											<!-- <input matInput [matDatepicker]="picker" [min]="minDateValidation" [max]="maxDateValidation" [(ngModel)]="modelPropuestos.fechaIngreso" class="form-control" id="fecha-ingreso" required name="fecha-ingreso" /> -->
+											<input matInput [matDatepicker]="picker" [min]="minDateValidation" [max]="maxDateValidation" [(ngModel)]="fechaCambioPropuesta" class="form-control" id="fecha-ingreso" required name="fecha-ingreso" />
 
 											<!-- <mat-hint>DD/MM/YYYY</mat-hint> -->
 
@@ -493,20 +511,6 @@
 			<!-- ! Anulación de la solicitud -->
 			<app-solicitud-seccion-desplegable titleSummary="Anulación de Solicitud">
 				<div>
-					<div class="row">
-						<div class="col-md-6">
-							<div class="input-group mb-3 align-items-center">
-								<label class="input-group-text text-start label-estilo" for="tipo-accion">Tipo de acción</label>
-
-								<select class="form-select w-50" name="tipo-accion" [(ngModel)]="solicitud.idTipoAccion">
-									<option value="" hidden>Seleccione...</option>
-
-									<option *ngFor="let tipoAccion of tiposAcciones" [value]="tipoAccion.id">{{ tipoAccion.tipoAccion }}</option>
-								</select>
-							</div>
-						</div>
-					</div>
-
 					<div class="row">
 						<div class="col-md-12">
 							<div class="input-group mb-3 align-items-center">

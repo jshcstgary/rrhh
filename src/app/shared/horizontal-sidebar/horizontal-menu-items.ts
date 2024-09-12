@@ -53,16 +53,6 @@ export const ROUTES: RouteInfo[] = [
 		codigo: "wf_mantenimiento",
 		submenu: [
 			{
-				path: "/mantenedores/niveles-aprobacion",
-				title: "Niveles de Aprobación",
-				icon: "",
-				class: "",
-				ddclass: "",
-				extralink: false,
-				codigo: "wf_niveles_aprobacion",
-				submenu: [],
-			},
-			{
 				path: "/mantenedores/tipo-solicitud",
 				title: "Tipo de Solicitudes",
 				icon: "",
@@ -141,17 +131,17 @@ export const ROUTES: RouteInfo[] = [
 				extralink: false,
 				codigo: "wf_aprobadores_fijos",
 				submenu: [],
+			},
+			{
+				path: "/mantenedores/niveles-aprobacion",
+				title: "Niveles de Aprobación",
+				icon: "",
+				class: "",
+				ddclass: "",
+				extralink: false,
+				codigo: "wf_niveles_aprobacion",
+				submenu: [],
 			}
-			// {
-			// 	path: "/mantenedores/reasignar-tareas-usuarios",
-			// 	title: "Reasignar Usuario",
-			// 	icon: "",
-			// 	class: "",
-			// 	ddclass: "",
-			// 	extralink: false,
-			// 	codigo: "wf_niveles_aprobacion",
-			// 	submenu: [],
-			// }
 		],
 	},
 ];

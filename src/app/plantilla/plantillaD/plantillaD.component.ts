@@ -22,6 +22,7 @@ import {
 	sortColOrderType,
 } from "src/app/component/table/table.interface";
 import { TableService } from "src/app/component/table/table.service";
+import { DataFilterNivelesAprobacion } from "src/app/eschemas/DataFilterNivelesAprobacion";
 import {
 	FormatoUtilReporte,
 	reportCodeEnum,
@@ -30,7 +31,6 @@ import { UtilService } from "src/app/services/util/util.service";
 import { environment } from "src/environments/environment";
 import Swal from "sweetalert2";
 import { PlantillaDData } from "./plantillaD.data";
-import { DataFilterNivelesAprobacion } from "src/app/eschemas/DataFilterNivelesAprobacion";
 @Component({
 	selector: "plantilla-d-component",
 	templateUrl: "./plantillaD.component.html",
@@ -49,6 +49,11 @@ export class PlantillaDComponent implements AfterViewInit, OnInit, OnChanges {
 		required: false
 	})
 	public showButtonInfo: boolean = true;
+
+	@Input({
+		required: false
+	})
+	public validateInput: boolean = true;
 
 	@Input({ required: false }) public disabledSolicitudTareaFilter: boolean = false;
 	@Input({ required: false }) public colIdToDisable: string | string[] = "";

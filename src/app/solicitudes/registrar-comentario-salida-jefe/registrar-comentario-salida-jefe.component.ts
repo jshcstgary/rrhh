@@ -471,7 +471,7 @@ export class RegistrarComentarioSalidaJefeComponent extends CompleteTaskComponen
 								try {
 									await this.loadDataCamunda();
 
-									this.utilService.closeLoadingSpinner();
+									// this.utilService.closeLoadingSpinner();
 								} catch (error) {
 									this.utilService.modalResponse(error.error, "error");
 								}
@@ -501,15 +501,15 @@ export class RegistrarComentarioSalidaJefeComponent extends CompleteTaskComponen
 	}
 
 	async ngOnInit() {
-		this.utilService.openLoadingSpinner("Cargando información, espere por favor...");
+		// this.utilService.openLoadingSpinner("Cargando información, espere por favor...");
 
-		try {
-			// await this.loadDataCamunda();
+		// try {
+		// 	// await this.loadDataCamunda();
 
-			this.utilService.closeLoadingSpinner();
-		} catch (error) {
-			this.utilService.modalResponse(error.error, "error");
-		}
+		// 	this.utilService.closeLoadingSpinner();
+		// } catch (error) {
+		// 	this.utilService.modalResponse(error.error, "error");
+		// }
 
 	}
 
@@ -740,9 +740,7 @@ export class RegistrarComentarioSalidaJefeComponent extends CompleteTaskComponen
 
 					this.solicitudes.getTaskId(this.idDeInstancia).subscribe({
 						next: (result) => {
-							this.tareasPorCompletar = result.filter((empleado) => {
-								return empleado["deleteReason"] === null;
-							});
+							this.tareasPorCompletar = result.filter((empleado) => empleado["deleteReason"] === null);
 
 							if (this.tareasPorCompletar.length === 0) {
 								return;
@@ -764,7 +762,6 @@ export class RegistrarComentarioSalidaJefeComponent extends CompleteTaskComponen
 					this.uniqueTaskId = this.taskType_Activity_subledger[0].taskId;
 					this.date = this.taskType_Activity_subledger[0].startTime;
 				}
-				// this.getCandidatoValues();
 
 				this.getCandidatoValues();
 			} else {
@@ -793,10 +790,6 @@ export class RegistrarComentarioSalidaJefeComponent extends CompleteTaskComponen
 			} else if (campo == "nombreCompleto") {
 				this.model.nombreCompleto = tempSearch;
 			}
-			/*this.utilService.modalResponse(
-			  "No existe un registro para este autocompletado",
-			  "error"
-			);*/
 		}
 	}
 
@@ -936,6 +929,8 @@ export class RegistrarComentarioSalidaJefeComponent extends CompleteTaskComponen
 
 				this.mostrarTipoJustificacionYMision = this.restrictionsIds.includes(this.solicitud.idTipoMotivo);
 				this.mostrarSubledger = this.restrictionsSubledgerIds.includes(this.solicitud.idTipoMotivo);
+
+				this.utilService.closeLoadingSpinner();
 			},
 			error: (error: HttpErrorResponse) => {
 				this.utilService.modalResponse(error.error, "error");

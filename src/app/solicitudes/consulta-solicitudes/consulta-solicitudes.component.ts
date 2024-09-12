@@ -67,6 +67,7 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 	private pageCode: string = PageCodes.ConsultaSolicitudes;
 	public pageControlPermission: typeof ConsultaSolicitudPageControlPermission = ConsultaSolicitudPageControlPermission;
 
+	public isRequestCompleted: boolean = false;
 	public controlsPermissions: PageControlPermiso = {
 		[ConsultaSolicitudPageControlPermission.FiltroEmpresa]: {
 			"codigo_Control": "",
@@ -473,6 +474,7 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 						this.solicitud.idInstancia = instanceOutput.id;
 						this.solicitud.estado = "Creado"; //tveas TODO improve [Activo]
 						this.solicitud.estadoSolicitud = "3"; // tveas TODO improve [Creado]
+
 						if (this.solicitud.idInstancia !== undefined) {
 							this.starterService.getUser(sessionStorage.getItem(LocalStorageKeys.IdUsuario)!).subscribe({
 								next: (res) => {
@@ -499,8 +501,9 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 												next: () => {
 													this.solicitudes.guardarDetallesAprobacionesSolicitud(this.solicitudes.modelDetalleAprobaciones).subscribe({
 														next: () => {
-															setTimeout(() => {
+															this.isRequestCompleted = true;
 
+															setTimeout(() => {
 																this.solicitudes.getDetalleAprobadoresSolicitudesById(this.solicitud.idSolicitud).subscribe({
 																	next: (resJefe) => {
 																		resJefe.detalleAprobadorSolicitud.forEach((item) => {
@@ -518,6 +521,7 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 																					cuerpo: modifiedHtmlString,
 																					password: "password"
 																				};
+
 																				this.solicitudes.sendEmail(this.emailVariables).subscribe({
 																					next: () => {
 																					},
@@ -529,6 +533,7 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 																		});
 																	}
 																});
+
 																this.router.navigate([
 																	this.codigoTipoSolicitud === "AP" ? "/solicitudes/accion-personal/registrar-solicitud" : "/solicitudes/registrar-solicitud",
 																	this.solicitud.idInstancia,
@@ -948,28 +953,18 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 				);
 			},
 		});
-
-		/*return this.solicitudes.getSolicitudes().subscribe({
-		  next: (response) => {
-			this.dataTable = response.nivelAprobacionType.map((nivelAprobacionResponse=>({
-			  ...nivelAprobacionResponse,
-			  estado: nivelAprobacionResponse.estado === "A",
-			})));
-		  },
-		  error: (error: HttpErrorResponse) => {
-			this.utilService.modalResponse(error.error, "error");
-		  },
-		});*/
 	}
 
 	ObtenerServicioEstado() {
 		return this.mantenimientoService.getCatalogo("RBPEST").subscribe({
 			next: (response) => {
-				this.data_estado = response.itemCatalogoTypes.map((r) => ({
-					id: r.id,
-					codigo: r.codigo,
-					descripcion: r.valor,
-				})); //verificar la estructura mmunoz
+				this.data_estado = response.itemCatalogoTypes
+					.map((r) => ({
+						id: r.id,
+						codigo: r.codigo,
+						descripcion: r.valor,
+					}))
+					.sort((a, b) => a.descripcion.toUpperCase().localeCompare(b.descripcion.toUpperCase()));
 			},
 			error: (error: HttpErrorResponse) => {
 				this.utilService.modalResponse(error.error, "error");
