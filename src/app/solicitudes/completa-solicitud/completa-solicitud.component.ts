@@ -33,6 +33,7 @@ import { CompleteTaskComponent } from "../general/complete-task.component";
 import { dialogComponentList } from "../registrar-candidato/registrar-candidato.component";
 import { RegistrarCandidatoService } from "../registrar-candidato/registrar-candidato.service";
 import { SolicitudesService } from "../registrar-solicitud/solicitudes.service";
+import { convertTimeZonedDate } from "src/app/services/util/dates.util";
 
 @Component({
 	selector: 'completaSolicitud',
@@ -1468,6 +1469,7 @@ export class CompletaSolicitudComponent extends CompleteTaskComponent {
 				this.solicitudes.modelDetalleAprobaciones.usuarioModificacion = res.evType[0].nombreCompleto;
 				this.solicitudes.modelDetalleAprobaciones.fechaCreacion = new Date().toISOString();
 				this.solicitudes.modelDetalleAprobaciones.fechaModificacion = new Date().toISOString();
+
 			}
 		});
 	}

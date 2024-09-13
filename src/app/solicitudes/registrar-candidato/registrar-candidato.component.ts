@@ -1266,6 +1266,7 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
 		this.solicitudes.modelDetalleAprobaciones.usuarioModificacion = res.evType[0].nombreCompleto;
 		this.solicitudes.modelDetalleAprobaciones.fechaCreacion = new Date().toISOString();
 		this.solicitudes.modelDetalleAprobaciones.fechaModificacion = new Date().toISOString();
+		this.solicitudes.modelDetalleAprobaciones.comentario="Selección de Candidato";
 	}
 
 	llenarModelDetalleAprobacionesCF_RG(res: any, idSolicitud: string, idTipoSolicitud: string, descripcionTipoSolicitud: string) {
@@ -1456,7 +1457,6 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
 				this.starterService.getUser(sessionStorage.getItem(LocalStorageKeys.IdUsuario)!).subscribe({
 					next: (res) => {
 						this.llenarModelDetalleAprobaciones(res);
-
 						this.saveDetalleAprobaciones()
 
 						this.tipoProcesoSaved = this.model.tipoProceso;

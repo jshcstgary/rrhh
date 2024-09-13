@@ -947,38 +947,6 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
 						this.codigoReportaA = this.detalleSolicitud.jefeSolicitante;
 						this.modelRemuneracion = +this.model.sueldoAnual / 12 + +this.model.sueldoSemestral / 6 + +this.model.sueldoTrimestral / 3 + +this.model.sueldoMensual;
 						this.unidadNegocioEmp = this.model.unidadNegocio;
-						if (this.unidadNegocioEmp.toUpperCase().includes("AREAS") || this.unidadNegocioEmp.toUpperCase().includes("ÁREAS")) {
-							this.mantenimientoService.getTipoRuta().subscribe({
-								next: (response) => {
-									this.dataTipoRutaEmp = response.tipoRutaType
-										.filter(({ estado }) => estado === "A")
-										.filter(({ tipoRuta }) => tipoRuta.toUpperCase().includes("CORPORATIV"))
-										.map((r) => ({
-											id: r.id,
-											descripcion: r.tipoRuta,
-										}));
-								},
-								error: (error: HttpErrorResponse) => {
-									this.utilService.modalResponse(error.error, "error");
-								},
-							});
-						} else {
-							this.mantenimientoService.getTipoRuta().subscribe({
-								next: (response) => {
-									this.dataTipoRutaEmp = response.tipoRutaType
-										.filter(({ estado }) => estado === "A")
-										.filter(({ tipoRuta }) => tipoRuta.toUpperCase().includes("UNIDAD"))
-										.map((r) => ({
-											id: r.id,
-											descripcion: r.tipoRuta,
-										}));
-								},
-								error: (error: HttpErrorResponse) => {
-									this.utilService.modalResponse(error.error, "error");
-								},
-							});
-						}
-
 					}
 				} else if (id.toUpperCase().includes("RG")) {
 					if (this.detalleSolicitudRG.codigoPosicion.length > 0) {
@@ -993,7 +961,7 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
 											id: r.id,
 											descripcion: r.tipoRuta,
 										}));
-									this.keySelected = this.solicitud.idTipoSolicitud + "_" + this.solicitud.idTipoMotivo + "_" + this.model.nivelDir;
+									this.keySelected = this.solicitudRG.idTipoSolicitud + "_" + this.solicitudRG.idTipoMotivo + "_" + this.model.nivelDir;
 
 									if (!this.dataAprobacionesPorPosicion[this.keySelected]) {
 										this.getNivelesAprobacion();
@@ -1087,8 +1055,8 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
 				next: (response) => {
 					this.solicitudes
 						.obtenerAprobacionesPorPosicionRuta(
-							this.solicitud.idTipoSolicitud,
-							this.solicitud.idTipoMotivo,
+							this.solicitudRG.idTipoSolicitud,
+							this.solicitudRG.idTipoMotivo,
 							this.model.codigoPosicion,
 							this.model.nivelDir,
 							this.dataTipoRutaEmp[0].id,
@@ -1120,7 +1088,7 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
 	}
 
 	obtenerAprobacionesPorPosicionAPS() {
-		return this.solicitudes.obtenerAprobacionesPorPosicionRuta(this.solicitudRG.idTipoSolicitud, this.solicitudRG.idTipoMotivo, this.modelRG.codigoPosicion, this.modelRG.nivelDir, this.dataTipoRutaEmp[0].id, "APS").subscribe({
+		return this.solicitudes.obtenerAprobacionesPorPosicionRuta(this.solicitudRG.idTipoSolicitud, this.solicitudRG.idTipoMotivo,this.detalleSolicitudRG.codigoPosicion, this.detalleSolicitudRG.nivelDireccion, this.dataTipoRutaEmp[0].id, "APS").subscribe({
 			next: (response) => {
 				this.dataTipoRuta.length = 0;
 				this.dataRuta.length = 0;
@@ -1141,7 +1109,7 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
 
 	obtenerAprobacionesPorPosicionAPD() {
 		return this.solicitudes
-			.obtenerAprobacionesPorPosicionRuta(this.solicitudRG.idTipoSolicitud, this.solicitudRG.idTipoMotivo, this.modelRG.codigoPosicion, this.modelRG.nivelDir, this.dataTipoRutaEmp[0].id, "APD")
+			.obtenerAprobacionesPorPosicionRuta(this.solicitudRG.idTipoSolicitud, this.solicitudRG.idTipoMotivo, this.detalleSolicitudRG.codigoPosicion, this.detalleSolicitudRG.nivelDireccion, this.dataTipoRutaEmp[0].id, "APD")
 			.subscribe({
 				next: (response) => {
 					this.dataAprobadoresDinamicos.length = 0;
@@ -1211,6 +1179,38 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
 					};
 				}
 			});
+			
+			variables.tipoSolicitud = {
+				value: this.solicitudRG.tipoSolicitud
+			};
+			variables.urlTarea = {
+				value: `${portalWorkFlow}tareas/consulta-tareas`
+			};
+
+			variables.tipoRuta = {
+				value: this.dataTipoRuta,
+				type: "String",
+				valueInfo: {
+					objectTypeName: "java.util.ArrayList",
+					serializationDataFormat: "application/json"
+				}
+			};
+			variables.ruta = {
+				value: this.dataRuta,
+				type: "String",
+				valueInfo: {
+					objectTypeName: "java.util.ArrayList",
+					serializationDataFormat: "application/json"
+				}
+			};
+			variables.resultadoRutaAprobacion = {
+				value: JSON.stringify(this.dataAprobadoresDinamicos),
+				type: "Object",
+				valueInfo: {
+					objectTypeName: "java.util.ArrayList",
+					serializationDataFormat: "application/json"
+				}
+			};
 
 		}
 
