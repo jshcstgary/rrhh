@@ -1581,7 +1581,8 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
 											this.dataAprobacionesPorPosicionAPS = responseAPS.nivelAprobacionPosicionType;
 											this.aprobacion = this.dataAprobacionesPorPosicionAPS.find(elemento => elemento.nivelAprobacionType.nivelAprobacionRuta.toUpperCase().includes("REGISTRARSOLICITUD"));
 											if (this.id_solicitud_by_params.includes("RG")) {
-												const htmlString = "<!DOCTYPE html>\r\n<html lang=\"es\">\r\n\r\n<head>\r\n  <meta charset=\"UTF-8\">\r\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n  <title>Document<\/title>\r\n<\/head>\r\n\r\n<body>\r\n  <h2>Estimado(a)<\/h2>\r\n  <h3>{NOMBRE_APROBADOR}<\/h3>\r\n\r\n  <P>Se le informa que ha sido rechazada la solucitud {ID_SOLICITUD} - {TIPO_SOLICITUD} <\/P>\r\n\r\n  <p>\r\n    <b>\r\n      Favor ingresar al siguiente enlace: <a href=\"{URL_APROBACION}\">{URL_APROBACION}<\/a>\r\n      <br>\r\n      <br>\r\n      Gracias por su atenci\u00F3n.\r\n    <\/b>\r\n  <\/p>\r\n<\/body>\r\n\r\n<\/html>\r\n";
+												// const htmlString = "<!DOCTYPE html>\r\n<html lang=\"es\">\r\n\r\n<head>\r\n  <meta charset=\"UTF-8\">\r\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n  <title>Document<\/title>\r\n<\/head>\r\n\r\n<body>\r\n  <h2>Estimado(a)<\/h2>\r\n  <h3>{NOMBRE_APROBADOR}<\/h3>\r\n\r\n  <P>Se le informa que ha sido rechazada la solucitud {ID_SOLICITUD} - {TIPO_SOLICITUD} <\/P>\r\n\r\n  <p>\r\n    <b>\r\n      Favor ingresar al siguiente enlace: <a href=\"{URL_APROBACION}\">{URL_APROBACION}<\/a>\r\n      <br>\r\n      <br>\r\n      Gracias por su atenci\u00F3n.\r\n    <\/b>\r\n  <\/p>\r\n<\/body>\r\n\r\n<\/html>\r\n";
+												const htmlString = "<!DOCTYPE html>\r\n<html lang=\"es\">\r\n\r\n<head>\r\n  <meta charset=\"UTF-8\">\r\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n  <title>Document<\/title>\r\n<\/head>\r\n\r\n<body>\r\n  <h2>Estimado(a)<\/h2>\r\n  <h3>{NOMBRE_APROBADOR}<\/h3>\r\n\r\n  <P>Se le informa que ha sido cancelada la solucitud {ID_SOLICITUD} - {TIPO_SOLICITUD} <\/P>\r\n\r\n  <p>\r\n    <b>\r\n      Favor ingresar al siguiente enlace: <a href=\"{URL_APROBACION}\">{URL_APROBACION}<\/a>\r\n      <br>\r\n      <br>\r\n      Gracias por su atenci\u00F3n.\r\n    <\/b>\r\n  <\/p>\r\n<\/body>\r\n\r\n<\/html>\r\n";
 
 												const modifiedHtmlString = htmlString.replace("{NOMBRE_APROBADOR}", this.aprobacion.aprobador.usuario).replace("{TIPO_SOLICITUD}", this.solicitudRG.tipoSolicitud).replace("{ID_SOLICITUD}", this.solicitudRG.idSolicitud).replace("{DESCRIPCION_POSICION}", this.detalleSolicitudRG.descripcionPosicion).replace(new RegExp("{URL_APROBACION}", "g"), `${portalWorkFlow}tareas/consulta-tareas`);
 
@@ -1590,7 +1591,8 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
 													para: this.aprobacion.aprobador.correo,
 													// alias: this.solicitudes.modelDetalleAprobaciones.correo,
 													alias: "Notificación 1",
-													asunto: `Notificación por rechazo de ${this.solicitudRG.tipoSolicitud} ${this.solicitudRG.idSolicitud}`,
+													// asunto: `Notificación por rechazo de ${this.solicitudRG.tipoSolicitud} ${this.solicitudRG.idSolicitud}`,
+													asunto: `Notificación por cancelación de ${this.solicitudRG.tipoSolicitud} ${this.solicitudRG.idSolicitud}`,
 													cuerpo: modifiedHtmlString,
 													password: "password"
 												};
@@ -1602,7 +1604,8 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
 													}
 												});
 											} else {
-												const htmlString = "<!DOCTYPE html>\r\n<html lang=\"es\">\r\n\r\n<head>\r\n  <meta charset=\"UTF-8\">\r\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n  <title>Document<\/title>\r\n<\/head>\r\n\r\n<body>\r\n  <h2>Estimado(a)<\/h2>\r\n  <h3>{NOMBRE_APROBADOR}<\/h3>\r\n\r\n  <P>Se le informa que ha sido rechazada la solucitud {ID_SOLICITUD} - {TIPO_SOLICITUD} <\/P>\r\n\r\n  <p>\r\n    <b>\r\n      Favor ingresar al siguiente enlace: <a href=\"{URL_APROBACION}\">{URL_APROBACION}<\/a>\r\n      <br>\r\n      <br>\r\n      Gracias por su atenci\u00F3n.\r\n    <\/b>\r\n  <\/p>\r\n<\/body>\r\n\r\n<\/html>\r\n";
+												// const htmlString = "<!DOCTYPE html>\r\n<html lang=\"es\">\r\n\r\n<head>\r\n  <meta charset=\"UTF-8\">\r\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n  <title>Document<\/title>\r\n<\/head>\r\n\r\n<body>\r\n  <h2>Estimado(a)<\/h2>\r\n  <h3>{NOMBRE_APROBADOR}<\/h3>\r\n\r\n  <P>Se le informa que ha sido rechazada la solucitud {ID_SOLICITUD} - {TIPO_SOLICITUD} <\/P>\r\n\r\n  <p>\r\n    <b>\r\n      Favor ingresar al siguiente enlace: <a href=\"{URL_APROBACION}\">{URL_APROBACION}<\/a>\r\n      <br>\r\n      <br>\r\n      Gracias por su atenci\u00F3n.\r\n    <\/b>\r\n  <\/p>\r\n<\/body>\r\n\r\n<\/html>\r\n";
+												const htmlString = "<!DOCTYPE html>\r\n<html lang=\"es\">\r\n\r\n<head>\r\n  <meta charset=\"UTF-8\">\r\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n  <title>Document<\/title>\r\n<\/head>\r\n\r\n<body>\r\n  <h2>Estimado(a)<\/h2>\r\n  <h3>{NOMBRE_APROBADOR}<\/h3>\r\n\r\n  <P>Se le informa que ha sido cancelada la solucitud {ID_SOLICITUD} - {TIPO_SOLICITUD} <\/P>\r\n\r\n  <p>\r\n    <b>\r\n      Favor ingresar al siguiente enlace: <a href=\"{URL_APROBACION}\">{URL_APROBACION}<\/a>\r\n      <br>\r\n      <br>\r\n      Gracias por su atenci\u00F3n.\r\n    <\/b>\r\n  <\/p>\r\n<\/body>\r\n\r\n<\/html>\r\n";
 
 												const modifiedHtmlString = htmlString.replace("{NOMBRE_APROBADOR}", this.aprobacion.aprobador.usuario).replace("{TIPO_SOLICITUD}", this.solicitud.tipoSolicitud).replace("{ID_SOLICITUD}", this.solicitud.idSolicitud).replace("{DESCRIPCION_POSICION}", this.detalleSolicitud.descripcionPosicion).replace(new RegExp("{URL_APROBACION}", "g"), `${portalWorkFlow}tareas/consulta-tareas`);
 
@@ -1611,7 +1614,8 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
 													para: this.aprobacion.aprobador.correo,
 													// alias: this.solicitudes.modelDetalleAprobaciones.correo,
 													alias: "Notificación 1",
-													asunto: `Notificación por rechazo de ${this.solicitud.tipoSolicitud} ${this.solicitud.idSolicitud}`,
+													// asunto: `Notificación por rechazo de ${this.solicitud.tipoSolicitud} ${this.solicitud.idSolicitud}`,
+													asunto: `Notificación por cancelación de ${this.solicitud.tipoSolicitud} ${this.solicitud.idSolicitud}`,
 													cuerpo: modifiedHtmlString,
 													password: "password"
 												};

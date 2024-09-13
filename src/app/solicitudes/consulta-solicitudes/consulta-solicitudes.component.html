@@ -117,7 +117,7 @@
 											<label class="azul">Tipo de Solicitud</label>
 
 											<ng-select #inputSelectLabor [disabled]="!controlsPermissions[pageControlPermission.FiltroTipoSolicitud].habilitar || searchInputFilter !== ''" [(ngModel)]="dataFilterSolicitudes.idTipoSolicitud" name="idTipoSolicitud" placeholder="Seleccione">
-												<ng-option *ngFor="let data of dataTipoSolicitudes" [value]="data.id">{{ data.id }} - {{ data.descripcion }}</ng-option>
+												<ng-option *ngFor="let data of dataTipoSolicitudes" [value]="data.id">{{ data.descripcion }}</ng-option>
 											</ng-select>
 										</div>
 									</div>

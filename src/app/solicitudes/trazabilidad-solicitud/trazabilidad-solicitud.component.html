@@ -54,7 +54,7 @@
 			<div class="row">
 				<div class="label-estilo col-4">Responsable</div>
 
-				<div class="col-8">{{ dataDetalleAprobadorSolicitud.length !== -1 && indexToShow !== -1 ? dataDetalleAprobadorSolicitud[indexToShow].usuarioAprobador : solicitud.usuarioCreacion}}</div>
+				<div class="col-8">{{ dataDetalleAprobadorSolicitud.length !== -1 && indexToShow !== -1 ? dataDetalleAprobadorSolicitud[indexToShow].usuarioAprobador : solicitud.usuarioCreacion }}</div>
 			</div>
 		</div>
 	</div>
@@ -65,7 +65,33 @@
 				<div class="label-estilo col-4">Estado Aprobación:</div>
 
 				<div class="col-8">
-					{{ dataDetalleAprobadorSolicitud.length !== -1 && indexToShow !== -1 ? (dataDetalleAprobadorSolicitud[indexToShow].estadoAprobacion.toUpperCase() === "APROBAR" ? "Aprobado" : dataDetalleAprobadorSolicitud[indexToShow].estadoAprobacion.toUpperCase().includes("PORREVISAR") ? "Por Revisar" : dataDetalleAprobadorSolicitud[indexToShow].estadoAprobacion.toUpperCase().includes("ESPERA") ? "En Espera" : dataDetalleAprobadorSolicitud[indexToShow].estadoAprobacion.toUpperCase() === "DEVOLVER" ? "Devuelto" : dataDetalleAprobadorSolicitud[indexToShow].estadoAprobacion.toUpperCase().includes("PENDIENTE") ? "Por Revisar" : dataDetalleAprobadorSolicitud[indexToShow].estadoAprobacion.toUpperCase().includes("RECHAZA") ? "Cancelado" : dataDetalleAprobadorSolicitud[indexToShow].estadoAprobacion.toUpperCase().includes("COMENTARIO") ? "Registrar Comentario" : dataDetalleAprobadorSolicitud[indexToShow].estadoAprobacion): this.idSolicitudParam.includes('RP') ? "Selección de Candidato" : this.idSolicitudParam.includes('RG') ? "Creado" :  this.idSolicitudParam.includes('CF') ? "Creado" : "-"}}
+					{{
+						dataDetalleAprobadorSolicitud.length !== -1 && indexToShow !== -1
+							? dataDetalleAprobadorSolicitud[indexToShow].estadoAprobacion.toUpperCase() === "APROBAR"
+								? "Aprobado"
+								: dataDetalleAprobadorSolicitud[indexToShow].estadoAprobacion.toUpperCase().includes("PORREVISAR")
+								? "Por Revisar"
+								: dataDetalleAprobadorSolicitud[indexToShow].estadoAprobacion.toUpperCase().includes("ESPERA")
+								? "En Espera"
+								: dataDetalleAprobadorSolicitud[indexToShow].estadoAprobacion.toUpperCase() === "DEVOLVER"
+								? "Devuelto"
+								: dataDetalleAprobadorSolicitud[indexToShow].estadoAprobacion.toUpperCase().includes("PENDIENTE")
+								? "Por Revisar"
+								: dataDetalleAprobadorSolicitud[indexToShow].estadoAprobacion.toUpperCase().includes("RECHAZA")
+								? "Cancelado"
+								: dataDetalleAprobadorSolicitud[indexToShow].estadoAprobacion.toUpperCase().includes("COMENTARIO")
+								? "Registrar Comentario"
+								: dataDetalleAprobadorSolicitud[indexToShow].estadoAprobacion.toUpperCase().includes("CANDIDATO")
+								? "Selección de candidato"
+								: dataDetalleAprobadorSolicitud[indexToShow].estadoAprobacion
+							: this.idSolicitudParam.includes("RP")
+							? "Creado"
+							: this.idSolicitudParam.includes("RG")
+							? "Creado"
+							: this.idSolicitudParam.includes("CF")
+							? "Creado"
+							: "-"
+					}}
 				</div>
 			</div>
 		</div>

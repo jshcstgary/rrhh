@@ -15,7 +15,6 @@ import { Solicitud } from "src/app/eschemas/Solicitud";
 import { FamiliaresCandidatos, MantenimientoService } from "src/app/services/mantenimiento/mantenimiento.service";
 import { UtilService } from "src/app/services/util/util.service";
 import { columnsDatosFamiliares } from "src/app/solicitudes/revisar-solicitud/registrar-familiares.data";
-import { ConsultaTareasService } from "src/app/tareas/consulta-tareas/consulta-tareas.service";
 import Swal from "sweetalert2";
 import { codigosSolicitudReporte, environment } from "../../../environments/environment";
 import { CamundaRestService } from "../../camunda-rest.service";
@@ -408,10 +407,8 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 		private mantenimientoService: MantenimientoService,
 		private solicitudes: SolicitudesService,
 		private utilService: UtilService,
-		private consultaTareasService: ConsultaTareasService,
 		private seleccionCandidatoService: RegistrarCandidatoService,
 		private comentarioSalidaJefeService: ComentarioSalidaJefeService
-
 	) {
 		super(route, router, camundaRestService);
 
@@ -474,40 +471,28 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 
 
 				this.fechas.actualizacionPerfil = candidatoValues.actualizacionDelPerfil === null ? "" : this.getFormattedDate(candidatoValues.actualizacionDelPerfil);
-				// this.disabledFechas.actualizacionPerfil = this.fechas.actualizacionPerfil !== null && this.fechas.actualizacionPerfil !== "";
 
 				this.fechas.busquedaCandidatos = candidatoValues.busquedaDeCandidatos === null ? "" : this.getFormattedDate(candidatoValues.busquedaDeCandidatos);
-				// this.disabledFechas.busquedaCandidatos = this.fechas.busquedaCandidatos !== null && this.fechas.busquedaCandidatos !== "";
 
 				this.fechas.entrevista = candidatoValues.entrevista === null ? "" : this.getFormattedDate(candidatoValues.entrevista);
-				// this.disabledFechas.entrevista = this.fechas.entrevista !== null && this.fechas.entrevista !== "";
 
 				this.fechas.pruebas = candidatoValues.pruebas === null ? "" : this.getFormattedDate(candidatoValues.pruebas);
-				// this.disabledFechas.pruebas = this.fechas.pruebas !== null && this.fechas.pruebas !== "";
 
 				this.fechas.referencias = candidatoValues.referencias === null ? "" : this.getFormattedDate(candidatoValues.referencias);
-				// this.disabledFechas.referencias = this.fechas.referencias !== null && this.fechas.referencias !== "";
 
 				this.fechas.elaboracionInforme = candidatoValues.elaboracionDeInforme === null ? "" : this.getFormattedDate(candidatoValues.elaboracionDeInforme);
-				// this.disabledFechas.elaboracionInforme = this.fechas.elaboracionInforme !== null && this.fechas.elaboracionInforme !== "";
 
 				this.fechas.entregaJefe = candidatoValues.entregaAlJefeSol === null ? "" : this.getFormattedDate(candidatoValues.entregaAlJefeSol);
-				// this.disabledFechas.entregaJefe = this.fechas.entregaJefe !== null && this.fechas.entregaJefe !== "";
 
 				this.fechas.entrevistaJefatura = candidatoValues.entrevistaPorJefatura === null ? "" : this.getFormattedDate(candidatoValues.entrevistaPorJefatura);
-				// this.disabledFechas.entrevistaJefatura = this.fechas.entrevistaJefatura !== null && this.fechas.entrevistaJefatura !== "";
 
 				this.fechas.tomaDecisiones = candidatoValues.tomaDeDesiciones === null ? "" : this.getFormattedDate(candidatoValues.tomaDeDesiciones);
-				// this.disabledFechas.tomaDecisiones = this.fechas.tomaDecisiones !== null && this.fechas.tomaDecisiones !== "";
 
 				this.fechas.candidatoSeleccionado = candidatoValues.candidatoSeleccionado === null ? "" : this.getFormattedDate(candidatoValues.candidatoSeleccionado);
-				// this.disabledFechas.candidatoSeleccionado = this.fechas.candidatoSeleccionado !== null && this.fechas.candidatoSeleccionado !== "";
 
 				this.fechas.procesoContratacion = candidatoValues.procesoDeContratacion === null ? "" : this.getFormattedDate(candidatoValues.procesoDeContratacion);
-				// this.disabledFechas.procesoContratacion = this.fechas.procesoContratacion !== null && this.fechas.procesoContratacion !== "";
 
 				this.fechas.finProcesoContratacion = candidatoValues.finProcesoContratacion === null ? "" : this.getFormattedDate(candidatoValues.finProcesoContratacion);
-				// this.disabledFechas.finProcesoContratacion = this.fechas.finProcesoContratacion !== null && this.fechas.finProcesoContratacion !== "";
 
 				this.fechas.reingreso = candidatoValues.fechaInicioReingreso === null ? "" : this.getFormattedDate(candidatoValues.fechaInicioReingreso);
 
@@ -817,7 +802,6 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 			// Manejar errores aquí de manera centralizada
 			this.utilService.modalResponse(error.error, "error");
 		}
-
 	}
 
 	ObtenerServicioNivelDireccion() {

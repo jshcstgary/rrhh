@@ -115,14 +115,29 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
 
 	modelPropuestos: RegistrarData = new RegistrarData();
 
-	// public solicitud = new Solicitud();
+	public oldData = {
+		subledger: "",
+		justificacion: "",
+		idTipoAccion: 0,
+		fechaCambioPropuesto: new Date(""),
+		companiaPropuesto: "",
+		unidadPropuesto: "",
+		codigoPosicionPropuesto: "",
+		movilizacionPropuesto: "",
+		alimentacionPropuesto: "",
+		sueldoPropuesto: "",
+		sueldoMensualPropuesto: "",
+		sueldoTrimestralPropuesto: "",
+		sueldoSemestralPropuesto: "",
+		sueldoAnualPropuesto: ""
+	};
 
 	private searchSubject = new Subject<{
 		campo: string;
 		valor: string;
 	}>();
 
-	// private
+	public estadoSolicitud: string = "";
 
 	public solicitudDataInicial = new Solicitud();
 	public tipo_solicitud_descripcion: string;
@@ -963,14 +978,38 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
 					this.detalleSolicitud = response.detalleSolicitudType[0];
 					this.RegistrarsolicitudCompletada = true;
 
+					// if (this.RegistrarsolicitudCompletada) {
+					// 	Swal.fire({
+					// 		text: "Solicitud guardada, puede proceder a enviarla.",
+					// 		icon: "info",
+					// 		confirmButtonColor: "rgb(227, 199, 22)",
+					// 		confirmButtonText: "Ok",
+					// 		timer: 30000
+					// 	});
+					// }
+
 					if (this.RegistrarsolicitudCompletada) {
-						Swal.fire({
-							text: "Solicitud guardada, puede proceder a enviarla.",
-							icon: "info",
-							confirmButtonColor: "rgb(227, 199, 22)",
-							confirmButtonText: "Ok",
-							timer: 30000
-						});
+						if (this.solicitud.estadoSolicitud.toUpperCase() === "DV") {
+							this.estadoSolicitud = this.detalleSolicitud.estado;
+
+							if (this.estadoSolicitud === "DV") {
+								Swal.fire({
+									text: "Solicitud guardada, puede proceder a enviarla.",
+									icon: "info",
+									confirmButtonColor: "rgb(227, 199, 22)",
+									confirmButtonText: "Ok",
+									timer: 30000
+								});
+							}
+						} else {
+							Swal.fire({
+								text: "Solicitud guardada, puede proceder a enviarla.",
+								icon: "info",
+								confirmButtonColor: "rgb(227, 199, 22)",
+								confirmButtonText: "Ok",
+								timer: 30000
+							});
+						}
 					}
 
 					const detalleActual = response.detalleSolicitudType.find(detalle => detalle.idDetalleSolicitud === 1);
@@ -1206,6 +1245,23 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
 						});
 					}
 				}
+
+				this.oldData = structuredClone({
+					subledger: this.model.subledger,
+					justificacion: this.model.justificacionCargo,
+					idTipoAccion: this.solicitud.idTipoAccion,
+					fechaCambioPropuesto: new Date(this.fechaCambioPropuesta),
+					companiaPropuesto: this.transferenciaCompania,
+					unidadPropuesto: this.transferenciaUnidadNegocio,
+					codigoPosicionPropuesto: this.modelPropuestos.codigoPosicion,
+					movilizacionPropuesto: this.detalleSolicitudPropuestos.movilizacion,
+					alimentacionPropuesto: this.detalleSolicitudPropuestos.alimentacion,
+					sueldoPropuesto: this.sueldoEmpleado.sueldo,
+					sueldoMensualPropuesto: this.sueldoEmpleado.variableMensual,
+					sueldoTrimestralPropuesto: this.sueldoEmpleado.variableTrimestral,
+					sueldoSemestralPropuesto: this.sueldoEmpleado.variableSemestral,
+					sueldoAnualPropuesto: this.sueldoEmpleado.variableAnual
+				});
 
 				this.utilService.closeLoadingSpinner();
 			},
@@ -2214,6 +2270,10 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
 		this.solicitudes
 			.actualizarSolicitud(this.solicitud)
 			.subscribe((responseSolicitud) => {
+				if (this.solicitud.estadoSolicitud.toUpperCase() === "DV") {
+					this.detalleSolicitud.estado = "DV";
+				}
+
 				this.detalleSolicitud.idSolicitud = this.solicitud.idSolicitud;
 
 				this.detalleSolicitud.areaDepartamento = this.model.departamento;
@@ -2796,5 +2856,53 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
 					console.log(`Dismissed with: ${reason}`);
 				}
 			);
+	}
+
+	public bloquearEnDevolver() {
+		if (this.solicitud.estadoSolicitud.toUpperCase() !== "DV") {
+			return false;
+		}
+
+		if (this.estadoSolicitud === "DV") {
+			return false;
+		}
+
+		if (this.oldData.subledger !== this.model.subledger) {
+			return false;
+		} else if (this.oldData.justificacion !== this.model.justificacionCargo) {
+			return false;
+		} else if (this.solicitud.idTipoAccion !== 0 && this.oldData.idTipoAccion !== this.solicitud.idTipoAccion) {
+			return false;
+		} else if (this.oldData.fechaCambioPropuesto.getTime() !== new Date(this.fechaCambioPropuesta).getTime()) {
+			return false;
+		} else if (this.viewInputs) {
+			if (this.oldData.companiaPropuesto !== this.transferenciaCompania) {
+				return false;
+			} else if (this.oldData.unidadPropuesto !== this.transferenciaUnidadNegocio) {
+				return false;
+			} else {
+				return true;
+			}
+		} else {
+			if (this.oldData.codigoPosicionPropuesto !== this.modelPropuestos.codigoPosicion) {
+				return false;
+			} else if (this.oldData.movilizacionPropuesto !== this.detalleSolicitudPropuestos.movilizacion) {
+				return false;
+			} else if (this.oldData.alimentacionPropuesto !== this.detalleSolicitudPropuestos.alimentacion) {
+				return false;
+			} else if (parseFloat(this.oldData.sueldoPropuesto).toFixed(2) !== parseFloat(this.model.sueldo).toFixed(2)) {
+				return false;
+			} else if (parseFloat(this.oldData.sueldoMensualPropuesto).toFixed(2) !== parseFloat(this.model.sueldoMensual).toFixed(2)) {
+				return false;
+			} else if (parseFloat(this.oldData.sueldoTrimestralPropuesto).toFixed(2) !== parseFloat(this.model.sueldoTrimestral).toFixed(2)) {
+				return false;
+			} else if (parseFloat(this.oldData.sueldoSemestralPropuesto).toFixed(2) !== parseFloat(this.model.sueldoSemestral).toFixed(2)) {
+				return false;
+			} else if (parseFloat(this.oldData.sueldoAnualPropuesto).toFixed(2) !== parseFloat(this.model.sueldoAnual).toFixed(2)) {
+				return false;
+			} else {
+				return true;
+			}
+		}
 	}
 }

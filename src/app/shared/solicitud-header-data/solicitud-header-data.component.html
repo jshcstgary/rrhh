@@ -1,0 +1,25 @@
+<div class="row mt-4">
+	<div class="col-md-7">
+		<div class="input-group mb-3 align-items-center">
+			<label class="input-group-text label-estilo2" for="origin">Creado por:</label>
+
+			<span style="color: black; font-size: 14px" class="text-start w-75">{{ usuarioCreacion }}</span>
+		</div>
+	</div>
+
+	<div class="col-md-2">
+		<div class="input-group mb-3 align-items-center">
+			<label class="input-group-text label-estilo text-center" for="unidadnegocio">Fecha:</label>
+
+			<span style="color: black; font-size: 14px" class="text-start">{{ fechaCreacion | date : "yyyy/MM/dd" }}</span>
+		</div>
+	</div>
+
+	<div class="col-md-3">
+		<div class="input-group mb-3 align-items-center">
+			<label style="width: 50%" class="input-group-text label-estilo" for="unidadnegocio">Nro. Solicitud:</label>
+
+			<span style="color: black; font-size: 14px; width: 50%" class="text-start">{{ idSolicitud }}</span>
+		</div>
+	</div>
+</div>

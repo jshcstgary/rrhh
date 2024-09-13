@@ -87,12 +87,12 @@ export const ConsultaSolicitudesData: IConsultaSolicitudesData = {
 			type: "actions",
 			width: "100px",
 			actions: [
-				// {
-				// 	materialIcon: "print",
-				// 	id: "redirect",
-				// 	tooltip: "Imprimir reporte",
-				// 	showed: true
-				// },
+				{
+					materialIcon: "print",
+					id: "redirect",
+					tooltip: "Imprimir reporte",
+					showed: true
+				},
 				{
 					materialIcon: "info",
 					id: "editOnTable",

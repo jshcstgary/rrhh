@@ -33,6 +33,9 @@ import { SolicitudesRoutes } from "./solicitudes.routing";
 import { ReactiveFormsModule } from "@angular/forms";
 import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from "ngx-mask";
 import { DirectivesModule } from "../directives/directives.module";
+import { SolicitudHeaderDataComponent } from "../shared/solicitud-header-data/solicitud-header-data.component";
+import { SolicitudSeccionDesplegableComponent } from "../shared/solicitud-seccion-desplegable/solicitud-seccion-desplegable.component";
+import { BuscarEmpleadoComponent } from "./buscar-empleado/buscar-empleado.component";
 import { CompletaSolicitudComponent } from "./completa-solicitud/completa-solicitud.component";
 import { CompletarAccionPersonalComponent } from "./completar-accion-personal/completar-accion-personal.component";
 import { RegistrarAccionPersonalComponent } from "./registrar-accion-personal/registrar-accion-personal.component";
@@ -42,12 +45,10 @@ import { RegistrarComentarioSalidaJefeComponent } from "./registrar-comentario-s
 import { RegistrarComentarioSalidaRRHHComponent } from "./registrar-comentario-salida-rrhh/registrar-comentario-salida-rrhh.component";
 import { DialogBuscarEmpleadosFamiliaresComponent } from "./registrar-familiares/dialog-buscar-empleados-familiares/dialog-buscar-empleados-familiares.component";
 import { RegistrarFamiliaresComponent } from "./registrar-familiares/registrar-familiares.component";
+import { BuscarExempleadoComponent } from "./reingreso-personal/buscar-exempleado/buscar-exempleado.component";
 import { DialogBuscarEmpleadosReingresoComponent } from "./reingreso-personal/dialog-buscar-empleados-reingreso/dialog-buscar-empleados-reingreso.component";
 import { ReingresoPersonalComponent } from "./reingreso-personal/reingreso-personal.component";
 import { TrazabilidadSolicitudComponent } from "./trazabilidad-solicitud/trazabilidad-solicitud.component";
-import { BuscarEmpleadoComponent } from "./buscar-empleado/buscar-empleado.component";
-import { SolicitudSeccionDesplegableComponent } from "../shared/solicitud-seccion-desplegable/solicitud-seccion-desplegable.component";
-import { BuscarExempleadoComponent } from "./reingreso-personal/buscar-exempleado/buscar-exempleado.component";
 
 @NgModule({
 	declarations: [
@@ -98,7 +99,8 @@ import { BuscarExempleadoComponent } from "./reingreso-personal/buscar-exemplead
 		DirectivesModule,
 		NgxMaskDirective,
 		NgxMaskPipe,
-		SolicitudSeccionDesplegableComponent
+		SolicitudSeccionDesplegableComponent,
+		SolicitudHeaderDataComponent
 	],
 	exports: [
 		RevisarSolicitudComponent,

@@ -8,6 +8,9 @@ import { RegistrarSolicitudComponent } from "./registrar-solicitud/registrar-sol
 import { RevisarSolicitudComponent } from "./revisar-solicitud/revisar-solicitud.component";
 
 // HISTORIAS - CGARCIA
+import { PageCodes } from "../enums/codes.enum";
+import { routeAccessGuard } from "../guards/route-access.guard";
+import { ReasignarTareasUsuariosComponent } from "../mantenedores/reasignar-tareas-usuarios/reasignar-tareas-usuarios.component";
 import { CompletarAccionPersonalComponent } from "./completar-accion-personal/completar-accion-personal.component";
 import { RegistrarAccionPersonalComponent } from "./registrar-accion-personal/registrar-accion-personal.component";
 import { RegistrarComentarioReingresoComponent } from "./registrar-comentario-reingreso/registrar-comentario-reingreso.component";
@@ -16,9 +19,6 @@ import { RegistrarComentarioSalidaRRHHComponent } from "./registrar-comentario-s
 import { RegistrarFamiliaresComponent } from "./registrar-familiares/registrar-familiares.component";
 import { ReingresoPersonalComponent } from "./reingreso-personal/reingreso-personal.component";
 import { TrazabilidadSolicitudComponent } from "./trazabilidad-solicitud/trazabilidad-solicitud.component";
-import { routeAccessGuard } from "../guards/route-access.guard";
-import { ReasignarTareasUsuariosComponent } from "../mantenedores/reasignar-tareas-usuarios/reasignar-tareas-usuarios.component";
-import { PageCodes } from "../enums/codes.enum";
 
 export const SolicitudesRoutes: Routes = [
 	{

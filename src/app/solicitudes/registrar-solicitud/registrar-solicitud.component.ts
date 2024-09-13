@@ -72,6 +72,18 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
 	private readonly NIVEL_APROBACION_VICEPRESIDENCIA: string = "VICEPRESIDENCIA";
 	private readonly NIVEL_APROBACION_RRHH: string = "Gerente de RRHH Corporativo";
 
+	public oldData = {
+		codigoPosicion: "",
+		mision: "",
+		justificacion: "",
+		tipoContrato: "",
+		sueldo: "",
+		sueldoMensual: "",
+		sueldoTrimestral: "",
+		sueldoSemestral: "",
+		sueldoAnual: ""
+	};
+
 	override model: RegistrarData = new RegistrarData(
 		"",
 		"",
@@ -123,6 +135,8 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
 	public solicitud = new Solicitud();
 
 	public titulo: string = "Formulario De Registro";
+
+	public estadoSolicitud: string = "";
 
 	public sueldoEmpleado: {
 		sueldo: string;
@@ -1028,6 +1042,7 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
 		return this.solicitudes.getDetalleSolicitudById(id).subscribe({
 			next: (response: any) => {
 				this.detalleSolicitud = response.detalleSolicitudType[0];
+
 				if (this.detalleSolicitud.codigoPosicion.length > 0) {
 					this.unidadNegocioEmp = this.detalleSolicitud.unidadNegocio;
 					if (this.unidadNegocioEmp.toUpperCase().includes("AREAS") || this.unidadNegocioEmp.toUpperCase().includes("ÁREAS")) {
@@ -1094,13 +1109,27 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
 					this.RegistrarsolicitudCompletada = true;
 
 					if (this.RegistrarsolicitudCompletada) {
-						Swal.fire({
-							text: "Solicitud guardada, puede proceder a enviarla.",
-							icon: "info",
-							confirmButtonColor: "rgb(227, 199, 22)",
-							confirmButtonText: "Ok",
-							timer: 30000
-						});
+						if (this.solicitud.estadoSolicitud.toUpperCase() === "DV") {
+							this.estadoSolicitud = this.detalleSolicitud.estado;
+
+							if (this.estadoSolicitud === "DV") {
+								Swal.fire({
+									text: "Solicitud guardada, puede proceder a enviarla.",
+									icon: "info",
+									confirmButtonColor: "rgb(227, 199, 22)",
+									confirmButtonText: "Ok",
+									timer: 30000
+								});
+							}
+						} else {
+							Swal.fire({
+								text: "Solicitud guardada, puede proceder a enviarla.",
+								icon: "info",
+								confirmButtonColor: "rgb(227, 199, 22)",
+								confirmButtonText: "Ok",
+								timer: 30000
+							});
+						}
 					}
 
 					this.model.codigoPosicion = this.detalleSolicitud.codigoPosicion;
@@ -1129,8 +1158,7 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
 					this.model.fechaIngreso = this.detalleSolicitud.fechaIngreso;
 					this.codigoReportaA = this.detalleSolicitud.jefeSolicitante;
 
-					if (this.solicitud.estadoSolicitud === "DV") //Devuelto
-					{
+					if (this.solicitud.estadoSolicitud === "DV") {
 						this.mantenimientoService.getDataEmpleadosEvolutionPorId(this.detalleSolicitud.codigoPosicion).subscribe({
 							next: (response) => {
 								if (response.evType.length === 0) {
@@ -1143,12 +1171,12 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
 
 									return;
 								}
+
 								this.sueldoEmpleado.sueldo = response.evType[0].sueldo;
 								this.sueldoEmpleado.variableMensual = response.evType[0].sueldoVariableMensual;
 								this.sueldoEmpleado.variableTrimestral = response.evType[0].sueldoVariableTrimestral;
 								this.sueldoEmpleado.variableSemestral = response.evType[0].sueldoVariableSemestral;
 								this.sueldoEmpleado.variableAnual = response.evType[0].sueldoVariableAnual;
-
 							},
 							error: (error: HttpErrorResponse) => {
 								this.utilService.modalResponse(error.error, "error");
@@ -1156,6 +1184,18 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
 						});
 					}
 				}
+
+				this.oldData = structuredClone({
+					codigoPosicion: this.model.codigoPosicion,
+					justificacion: this.model.justificacionCargo,
+					mision: this.model.misionCargo,
+					sueldo: this.sueldoEmpleado.sueldo,
+					sueldoMensual: this.sueldoEmpleado.variableMensual,
+					sueldoTrimestral: this.sueldoEmpleado.variableTrimestral,
+					sueldoSemestral: this.sueldoEmpleado.variableSemestral,
+					sueldoAnual: this.sueldoEmpleado.variableAnual,
+					tipoContrato: this.model.tipoContrato
+				});
 
 				this.loadingComplete++;
 
@@ -1376,82 +1416,74 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
 		this.solicitud.unidadNegocio = this.model.unidadNegocio;
 		this.solicitud.idUnidadNegocio = this.model.unidadNegocio;
 
-		this.solicitudes
-			.actualizarSolicitud(this.solicitud)
-			.subscribe((responseSolicitud) => {
-				this.detalleSolicitud.idSolicitud = this.solicitud.idSolicitud;
+		this.solicitudes.actualizarSolicitud(this.solicitud).subscribe((responseSolicitud) => {
+			if (this.solicitud.estadoSolicitud.toUpperCase() === "DV") {
+				this.detalleSolicitud.estado = "DV";
+			}
 
-				this.detalleSolicitud.areaDepartamento = this.model.departamento;
+			this.detalleSolicitud.idSolicitud = this.solicitud.idSolicitud;
 
-				this.detalleSolicitud.cargo = this.model.nombreCargo;
-				this.detalleSolicitud.centroCosto = this.model.nomCCosto;
-				this.detalleSolicitud.codigoPosicion = this.model.codigoPosicion;
-				this.detalleSolicitud.compania = this.model.compania; //idEmpresa
-				this.detalleSolicitud.departamento = this.model.departamento;
-				this.detalleSolicitud.descripcionPosicion = this.model.descrPosicion;
+			this.detalleSolicitud.areaDepartamento = this.model.departamento;
 
-
-				this.detalleSolicitud.localidad = this.model.localidad;
-				this.detalleSolicitud.localidadZona = this.model.localidad;
-
-				this.detalleSolicitud.misionCargo = this.model.misionCargo;
-				this.detalleSolicitud.nivelDireccion = this.model.nivelDir;
-				this.detalleSolicitud.nivelReporteA = this.model.nivelRepa;
-
-				this.detalleSolicitud.nombreEmpleado = this.model.nombreCompleto;
-				this.detalleSolicitud.jefeInmediatoSuperior = this.model.jefeInmediatoSuperior;
-				this.detalleSolicitud.puestoJefeInmediato = this.model.puestoJefeInmediato;
-				this.detalleSolicitud.nombreJefeSolicitante = this.model.jefeInmediatoSuperior;
-				this.detalleSolicitud.responsableRRHH = this.solicitud.usuarioCreacion;
-				this.detalleSolicitud.jefeSolicitante = this.codigoReportaA;
+			this.detalleSolicitud.cargo = this.model.nombreCargo;
+			this.detalleSolicitud.centroCosto = this.model.nomCCosto;
+			this.detalleSolicitud.codigoPosicion = this.model.codigoPosicion;
+			this.detalleSolicitud.compania = this.model.compania; //idEmpresa
+			this.detalleSolicitud.departamento = this.model.departamento;
+			this.detalleSolicitud.descripcionPosicion = this.model.descrPosicion;
 
 
+			this.detalleSolicitud.localidad = this.model.localidad;
+			this.detalleSolicitud.localidadZona = this.model.localidad;
 
-				this.detalleSolicitud.reportaA = this.model.reportaA;
+			this.detalleSolicitud.misionCargo = this.model.misionCargo;
+			this.detalleSolicitud.nivelDireccion = this.model.nivelDir;
+			this.detalleSolicitud.nivelReporteA = this.model.nivelRepa;
 
-				this.detalleSolicitud.subledger = this.model.subledger;
+			this.detalleSolicitud.nombreEmpleado = this.model.nombreCompleto;
+			this.detalleSolicitud.jefeInmediatoSuperior = this.model.jefeInmediatoSuperior;
+			this.detalleSolicitud.puestoJefeInmediato = this.model.puestoJefeInmediato;
+			this.detalleSolicitud.nombreJefeSolicitante = this.model.jefeInmediatoSuperior;
+			this.detalleSolicitud.responsableRRHH = this.solicitud.usuarioCreacion;
+			this.detalleSolicitud.jefeSolicitante = this.codigoReportaA;
 
-				this.detalleSolicitud.subledgerEmpleado = this.model.subledger;
+			this.detalleSolicitud.reportaA = this.model.reportaA;
 
-				this.detalleSolicitud.sucursal = this.model.sucursal;
+			this.detalleSolicitud.subledger = this.model.subledger;
 
-				this.detalleSolicitud.misionCargo = this.model.misionCargo == "" || this.model.misionCargo == undefined || this.model.misionCargo == null ? "" : this.model.misionCargo;
-				this.detalleSolicitud.justificacion = this.model.justificacionCargo == "" || this.model.justificacionCargo == undefined || this.model.justificacionCargo == null ? "" : this.model.justificacionCargo;
-				this.detalleSolicitud.sueldo = this.model.sueldo;
-				this.detalleSolicitud.sueldoVariableMensual = this.model.sueldoMensual;
-				this.detalleSolicitud.sueldoVariableTrimestral = this.model.sueldoTrimestral;
-				this.detalleSolicitud.sueldoVariableSemestral = this.model.sueldoSemestral;
-				this.detalleSolicitud.sueldoVariableAnual = this.model.sueldoAnual;
-				this.detalleSolicitud.tipoContrato = this.model.tipoContrato;
-				this.detalleSolicitud.unidadNegocio = this.model.unidadNegocio;
+			this.detalleSolicitud.subledgerEmpleado = this.model.subledger;
 
-				this.detalleSolicitud.correo = this.model.correo;
+			this.detalleSolicitud.sucursal = this.model.sucursal;
 
-				this.detalleSolicitud.supervisaA = this.model.supervisaA;
+			this.detalleSolicitud.misionCargo = this.model.misionCargo == "" || this.model.misionCargo == undefined || this.model.misionCargo == null ? "" : this.model.misionCargo;
+			this.detalleSolicitud.justificacion = this.model.justificacionCargo == "" || this.model.justificacionCargo == undefined || this.model.justificacionCargo == null ? "" : this.model.justificacionCargo;
+			this.detalleSolicitud.sueldo = this.model.sueldo;
+			this.detalleSolicitud.sueldoVariableMensual = this.model.sueldoMensual;
+			this.detalleSolicitud.sueldoVariableTrimestral = this.model.sueldoTrimestral;
+			this.detalleSolicitud.sueldoVariableSemestral = this.model.sueldoSemestral;
+			this.detalleSolicitud.sueldoVariableAnual = this.model.sueldoAnual;
+			this.detalleSolicitud.tipoContrato = this.model.tipoContrato;
+			this.detalleSolicitud.unidadNegocio = this.model.unidadNegocio;
 
-				this.detalleSolicitud.fechaIngreso = this.model.fechaIngresogrupo === "" ? this.model.fechaIngreso : this.model.fechaIngresogrupo;
+			this.detalleSolicitud.correo = this.model.correo;
 
+			this.detalleSolicitud.supervisaA = this.model.supervisaA;
 
-				this.solicitudes
-					.actualizarDetalleSolicitud(this.detalleSolicitud)
-					.subscribe((responseDetalle) => {
+			this.detalleSolicitud.fechaIngreso = this.model.fechaIngresogrupo === "" ? this.model.fechaIngreso : this.model.fechaIngresogrupo;
 
-						this.utilService.closeLoadingSpinner(); //comentado mmunoz
-						this.utilService.modalResponse(
-							"Datos ingresados correctamente",
-							"success"
-						);
+			this.solicitudes.actualizarDetalleSolicitud(this.detalleSolicitud).subscribe((responseDetalle) => {
+				this.utilService.closeLoadingSpinner();
 
-						setTimeout(() => {
-							this.router.navigate([
-								"/solicitudes/registrar-solicitud/" + this.solicitud.idInstancia + "/" + this.solicitud.idSolicitud,
-							]).then(() => {
-								// Recarga la página actual
-								window.location.reload();
-							});
-						}, 1800);
+				this.utilService.modalResponse("Datos ingresados correctamente", "success");
+
+				setTimeout(() => {
+					this.router.navigate(["/solicitudes/registrar-solicitud/" + this.solicitud.idInstancia + "/" + this.solicitud.idSolicitud]).then(() => {
+						window.location.reload();
 					});
-			}); //aqui debe crear los aprobadores
+				}, 1800);
+			});
+		});
+
 		this.submitted = true;
 	}
 
@@ -2218,5 +2250,37 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
 				console.error(err);
 			}
 		});
+	}
+
+	public bloquearEnDevolver() {
+		if (this.solicitud.estadoSolicitud.toUpperCase() !== "DV") {
+			return false;
+		}
+
+		if (this.estadoSolicitud === "DV") {
+			return false;
+		}
+
+		if (this.oldData.codigoPosicion !== this.model.codigoPosicion) {
+			return false;
+		} else if (this.oldData.mision !== this.model.misionCargo) {
+			return false;
+		} else if (this.oldData.justificacion !== this.model.justificacionCargo) {
+			return false;
+		} else if (this.oldData.tipoContrato !== this.model.tipoContrato) {
+			return false;
+		} else if (parseFloat(this.oldData.sueldo).toFixed(2) !== parseFloat(this.model.sueldo).toFixed(2)) {
+			return false;
+		} else if (parseFloat(this.oldData.sueldoMensual).toFixed(2) !== parseFloat(this.model.sueldoMensual).toFixed(2)) {
+			return false;
+		} else if (parseFloat(this.oldData.sueldoTrimestral).toFixed(2) !== parseFloat(this.model.sueldoTrimestral).toFixed(2)) {
+			return false;
+		} else if (parseFloat(this.oldData.sueldoSemestral).toFixed(2) !== parseFloat(this.model.sueldoSemestral).toFixed(2)) {
+			return false;
+		} else if (parseFloat(this.oldData.sueldoAnual).toFixed(2) !== parseFloat(this.model.sueldoAnual).toFixed(2)) {
+			return false;
+		} else {
+			return true;
+		}
 	}
 }

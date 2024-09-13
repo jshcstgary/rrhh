@@ -368,15 +368,7 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 	}
 
 	ngDoCheck(): void {
-		this.typeSolicitudSelected = this.dataTipoSolicitudes.filter(
-			(data) => data.descripcion == "Acción de Personal"
-		)[0]?.id;
-
-		/*id: r.id,
-			  descripcion: r.tipoSolicitud*/
-
-		//Called before any other lifecycle hook. Use it to inject dependencies, but avoid any serious work here.
-		//Add '${implements OnChanges}' to the class.
+		this.typeSolicitudSelected = this.dataTipoSolicitudes.filter((data) => data.descripcion == "Acción de Personal")[0]?.id;
 	}
 
 	ngOnInit() {
@@ -711,9 +703,7 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 				});
 		}
 
-		this.solicitud.tipoSolicitud = this.dataTipoSolicitudes.filter(
-			(data) => data.id == idTipoSolicitud
-		)[0]?.descripcion;
+		this.solicitud.tipoSolicitud = this.dataTipoSolicitudes.filter((data) => data.id == idTipoSolicitud)[0]?.descripcion;
 	}
 
 	onChangeTipoMotivo(idTipoMotivo: number) {
@@ -723,9 +713,7 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 	}
 
 	onChangeTipoAccion(idTipoAccion: number) {
-		this.solicitud.tipoAccion = this.dataTipoAccion.filter(
-			(data) => data.id == idTipoAccion
-		)[0]?.descripcion;
+		this.solicitud.tipoAccion = this.dataTipoAccion.filter((data) => data.id == idTipoAccion)[0]?.descripcion;
 	}
 
 	//LLenar combo Tipo Solicitud
@@ -739,7 +727,9 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 						descripcion: r.tipoSolicitud,
 						codigoTipoSolicitud: r.codigoTipoSolicitud,
 						estado: r.estado
-					}));
+					}))
+					.sort((a, b) => a.descripcion.toUpperCase().localeCompare(b.descripcion.toUpperCase()));
+
 				this.dataTipoSolicitudesModal = response.tipoSolicitudType
 					.filter((r) => r.estado === "A" && (r.codigoTipoSolicitud === "RP" || r.codigoTipoSolicitud === "AP" || r.codigoTipoSolicitud === "DP"))
 					.map((r) => ({
@@ -747,7 +737,8 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 						descripcion: r.tipoSolicitud,
 						codigoTipoSolicitud: r.codigoTipoSolicitud,
 						estado: r.estado
-					}));
+					}))
+					.sort((a, b) => a.descripcion.toUpperCase().localeCompare(b.descripcion.toUpperCase()));
 			},
 			error: (error: HttpErrorResponse) => {
 				this.utilService.modalResponse(error.error, "error");
@@ -980,11 +971,13 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 
 		this.mantenimientoService.getCatalogo("RBPEST").subscribe({
 			next: (response) => {
-				this.data_estado = response.itemCatalogoTypes.map((r) => ({
-					id: r.id,
-					codigo: r.codigo,
-					descripcion: r.valor,
-				})); //verificar la estructura mmunoz
+				this.data_estado = response.itemCatalogoTypes
+					.map((r) => ({
+						id: r.id,
+						codigo: r.codigo,
+						descripcion: r.valor,
+					}))
+					.sort((a, b) => a.descripcion.toUpperCase().localeCompare(b.descripcion.toUpperCase()));
 
 				forkJoin([this.solicitudes.getSolicitudes(), this.solicitudes.getDetalleSolicitud(), this.solicitudes.getConteo()])
 					.pipe(
@@ -1067,7 +1060,7 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 				this.dataTipoAccion = response.map((r) => ({
 					id: r.id,
 					descripcion: r.tipoAccion,
-				})); //verificar la estructura mmunoz
+				}));
 			},
 			error: (error: HttpErrorResponse) => {
 				this.utilService.modalResponse(error.error, "error");
