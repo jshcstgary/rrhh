@@ -24,7 +24,7 @@ import { TableService } from "src/app/component/table/table.service";
 import { DataFilterNivelesAprobacion } from "src/app/eschemas/DataFilterNivelesAprobacion";
 import { DatosInstanciaProceso } from "src/app/eschemas/DatosInstanciaProceso";
 import { Solicitud } from "src/app/eschemas/Solicitud";
-import { MantenimientoService } from "src/app/services/mantenimiento/mantenimiento.service";
+import { FamiliaresCandidatos, MantenimientoService } from "src/app/services/mantenimiento/mantenimiento.service";
 import { FormatoUtilReporte, reportCodeEnum } from "src/app/services/util/util.interface";
 import { UtilService } from "src/app/services/util/util.service";
 import { ValidationsService } from "src/app/services/validations/validations.service";
@@ -50,10 +50,14 @@ import { convertTimeZonedDate } from "src/app/services/util/dates.util";
 import { StarterService } from "src/app/starter/starter.service";
 import { PageControlPermiso } from "src/app/types/page-control-permiso.type";
 import { Control, Permiso } from "src/app/types/permiso.type";
-import { portalWorkFlow } from "src/environments/environment";
+import { codigosSolicitudReporte, portalWorkFlow } from "src/environments/environment";
 import { RegistrarCandidatoService } from "../registrar-candidato/registrar-candidato.service";
 import { ConsultaGraficosData } from "./consulta-grafico.data";
 import { ConsultaSolicitudesService } from "./consulta-solicitudes.service";
+import { RegistrarData } from "src/app/eschemas/RegistrarData";
+import { ComentarioSalidaJefeService } from "../detalle-solicitud/comentario-salida-jefe.service";
+import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
 
 //import { single} from './chartData';
 declare var require: any;
@@ -67,7 +71,7 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 	private pageCode: string = PageCodes.ConsultaSolicitudes;
 	public pageControlPermission: typeof ConsultaSolicitudPageControlPermission = ConsultaSolicitudPageControlPermission;
 
-	public isRequestCompleted: boolean = false;
+	public showButtons: boolean = true;
 	public controlsPermissions: PageControlPermiso = {
 		[ConsultaSolicitudPageControlPermission.FiltroEmpresa]: {
 			"codigo_Control": "",
@@ -218,8 +222,63 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 		| ConsultaSolicitudesComponent
 		| any;
 
+	// PROPS FOR PRINTING
 	public solicitud = new Solicitud();
 	public detalleSolicitud = new DetalleSolicitud();
+	public muestraRemuneracion: boolean = false;
+	private modelPrint: RegistrarData = new RegistrarData();
+	private modelPrintPropuestos: RegistrarData = new RegistrarData();
+	private modelPrintRG: RegistrarData = new RegistrarData();
+	private modelPrintRemuneracion: number = 0;
+	public viewInputs: boolean = false;
+	private detalleSolicitudPrint = new DetalleSolicitud();
+	private detalleSolicitudPrintPropuestos = new DetalleSolicitud();
+	private detalleSolicitudPrintRG = new DetalleSolicitud();
+	private causaSalidaPrint: string = "";
+	private remuneracionPrint: number = 0;
+	private keySelectedPrint: string = "";
+	private mostrarTipoJustificacionYMisionPrint: boolean = false;
+	private mostrarSubledgerPrint: boolean = false;
+	private restrictionsIdsPrint: any[] = ["1", "2", 1, 2];
+	private restrictionsSubledgerIdsPrint: any[] = ["4", 4];
+	private dataAprobacionesPorPosicionPrint: { [key: string]: any[] } = {};
+	private selectedOptionPrint: string = "";
+	private optionPrint: { codigo: string; valor: string } = {
+		codigo: "",
+		valor: ""
+	};
+	private comentariosJefeInmediatoPrint: any = {};
+	private comentariosPrint: string = "";
+	private comentariosRRHHPrint: any = {};
+	private Comentario_Jefe_SolicitantePrint: any = {};
+	private dataComentariosAprobacionesPrint: any[] = [];
+	private dataComentariosAprobacionesPrintPorPosicion: any[] = [];
+	private dataComentariosAprobacionesPrintRRHH: any[] = [];
+	private dataComentariosAprobacionesPrintCREM: any[] = [];
+	private nombreCompletoCandidatoPrint: string = "";
+	private isCheckedPrint: boolean = false;
+	private idSolicitudRPPrint: string = "";
+	private nombreCandidatoPrint: string = "";
+	private fechasPrint: any = {
+		actualizacionPerfil: "",
+		busquedaCandidatos: "",
+		entrevista: "",
+		pruebas: "",
+		referencias: "",
+		elaboracionInforme: "",
+		entregaJefe: "",
+		entrevistaJefatura: "",
+		tomaDecisiones: "",
+		candidatoSeleccionado: "",
+		procesoContratacion: "",
+		finProcesoContratacion: "",
+		reingreso: "",
+		finProceso: "",
+		contratacionFamiliares: "",
+		finProcesoFamiliares: ""
+	};
+	private dataTableDatosFamiliaresPrint: FamiliaresCandidatos[] = [];
+	private currentDatePrint: Date = new Date();
 
 	public dropdownOptionsExport = [
 		{
@@ -276,23 +335,7 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 
 	gradient6: boolean = true;
 
-	constructor(
-		private config: NgSelectConfig,
-		public consultaSolicitudesService: ConsultaSolicitudesService,
-		private seleccionCandidatoService: RegistrarCandidatoService,
-		private tableService: TableService,
-		private route: ActivatedRoute,
-		private validationsService: ValidationsService,
-		private solicitudes: SolicitudesService,
-		private utilService: UtilService,
-		private mantenimientoService: MantenimientoService,
-		private router: Router,
-		private calendar: NgbCalendar,
-		private camundaRestService: CamundaRestService,
-		private modalService: NgbModal,
-		private starterService: StarterService,
-		private permissionService: PermisoService
-	) {
+	constructor(private config: NgSelectConfig, public consultaSolicitudesService: ConsultaSolicitudesService, private seleccionCandidatoService: RegistrarCandidatoService, private route: ActivatedRoute, private solicitudes: SolicitudesService, private utilService: UtilService, private mantenimientoService: MantenimientoService, private router: Router, private calendar: NgbCalendar, private camundaRestService: CamundaRestService, private modalService: NgbModal, private starterService: StarterService, private permissionService: PermisoService, private comentarioSalidaJefeService: ComentarioSalidaJefeService) {
 		this.getPermissions();
 
 		this.model = calendar.getToday();
@@ -436,6 +479,8 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 			return;
 		}
 
+		this.showButtons = false;
+
 		this.codigoTipoSolicitud = this.dataTipoSolicitudes.filter((data) => data.id == this.solicitud.idTipoSolicitud)[0]?.codigoTipoSolicitud;
 
 		this.solicitud.tipoSolicitud = this.dataTipoSolicitudes.filter((data) => data.id == this.solicitud.idTipoSolicitud)[0]?.descripcion;
@@ -493,8 +538,6 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 												next: () => {
 													this.solicitudes.guardarDetallesAprobacionesSolicitud(this.solicitudes.modelDetalleAprobaciones).subscribe({
 														next: () => {
-															this.isRequestCompleted = true;
-
 															setTimeout(() => {
 																this.solicitudes.getDetalleAprobadoresSolicitudesById(this.solicitud.idSolicitud).subscribe({
 																	next: (resJefe) => {
@@ -1033,11 +1076,347 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 	}
 
 	onRowActionClicked(id: string, key: string, tooltip: string, id_edit) {
-		if (tooltip === "Info") {
+		if (tooltip === "Formulario") {
+			this.printForm(id_edit);
+		} else if (tooltip === "Info") {
 			this.router.navigate(["/solicitudes/detalle-solicitud", id_edit]);
 		} else {
 			this.router.navigate(["/solicitudes/trazabilidad", id_edit]);
 		}
+	}
+
+	private printForm(idPrint: string) {
+		this.utilService.openLoadingSpinner("Obteniendo datos...");
+		debugger;
+
+		if (!idPrint.toUpperCase().includes("AP") && !idPrint.toUpperCase().includes("DP")) {
+			this.getCandidatoValues(idPrint);
+		} else {
+			this.getSolicitudById(idPrint);
+		}
+	}
+
+	private getSolicitudById(idPrint: any) {
+		return this.solicitudes.getSolicitudById(idPrint).subscribe({
+			next: (response: any) => {
+				debugger;
+				this.solicitud = response;
+
+				if (this.solicitud.tipoAccion.toUpperCase().includes("ASIGNA")) {
+					this.muestraRemuneracion = true;
+				}
+
+				// this.mostrarRequisicion = this.solicitud.idSolicitud.includes("RP-");
+				// this.mostrarFormularioFamiliares = this.solicitud.idSolicitud.includes("CF-");
+				// this.mostrarFormularioReingreso = this.solicitud.idSolicitud.includes("RG-");
+				// this.mostrarAccionPersonal = this.solicitud.idSolicitud.includes("AP-");
+				// this.loadingComplete += 2;
+
+				this.getDetalleSolicitudById(idPrint);
+			},
+			error: (error: HttpErrorResponse) => {
+				this.utilService.modalResponse(error.error, "error");
+			},
+		});
+	}
+
+	private getDetalleSolicitudById(idPrint: any) {
+		return this.solicitudes.getDetalleSolicitudById(idPrint).subscribe({
+			next: (response: any) => {
+				debugger;
+				if (idPrint.toUpperCase().includes("AP")) {
+					this.viewInputs = !(response.detalleSolicitudType[0].codigo === "100");
+
+					const detalleActual = response.detalleSolicitudType.find(detalle => detalle.idDetalleSolicitud === 1);
+
+					this.modelPrint.codigoPosicion = detalleActual.codigoPosicion;
+					this.modelPrint.descrPosicion = detalleActual.descripcionPosicion;
+					this.modelPrint.subledger = detalleActual.subledger;
+					this.modelPrint.nombreCompleto = detalleActual.nombreEmpleado;
+					this.modelPrint.compania = detalleActual.compania;
+					this.modelPrint.unidadNegocio = detalleActual.unidadNegocio;
+					this.modelPrint.departamento = detalleActual.departamento;
+					this.modelPrint.nombreCargo = detalleActual.cargo;
+					this.modelPrint.localidad = detalleActual.localidad;
+					this.modelPrint.nivelDir = detalleActual.nivelDireccion;
+					this.modelPrint.nomCCosto = detalleActual.centroCosto;
+					this.modelPrint.misionCargo = detalleActual.misionCargo;
+					this.modelPrint.justificacionCargo = detalleActual.justificacion;
+					this.modelPrint.reportaA = detalleActual.reportaA;
+					this.modelPrint.supervisaA = detalleActual.supervisaA;
+					this.modelPrint.tipoContrato = detalleActual.tipoContrato;
+					this.modelPrint.nivelRepa = detalleActual.nivelReporteA;
+					this.modelPrint.sueldo = detalleActual.sueldo;
+					this.modelPrint.sueldoMensual = detalleActual.sueldoVariableMensual;
+					this.modelPrint.sueldoTrimestral = detalleActual.sueldoVariableTrimestral;
+					this.modelPrint.sueldoSemestral = detalleActual.sueldoVariableSemestral;
+					this.modelPrint.sueldoAnual = detalleActual.sueldoVariableAnual;
+					this.modelPrint.correo = detalleActual.correo;
+					this.modelPrint.fechaIngreso = detalleActual.fechaIngreso;
+					this.modelPrint.sucursal = detalleActual.sucursal;
+					this.modelPrint.fechaIngreso = detalleActual.fechaIngreso;
+					this.modelPrint.grupoPago = detalleActual.grupoDePago;
+					this.modelPrint.descrPuesto = detalleActual.descripcionPosicion;
+
+					if (response.totalRegistros === 2) {
+						const detallePropuestos = response.detalleSolicitudType.find(detalle => detalle.idDetalleSolicitud === 2);
+
+						this.modelPrintPropuestos.codigoPosicion = detallePropuestos.codigoPosicion;
+						this.modelPrintPropuestos.descrPosicion = detallePropuestos.descripcionPosicion;
+						this.modelPrintPropuestos.subledger = detallePropuestos.subledger;
+						this.modelPrintPropuestos.nombreCompleto = detallePropuestos.nombreEmpleado;
+						this.modelPrintPropuestos.compania = detallePropuestos.compania;
+						this.modelPrintPropuestos.unidadNegocio = detallePropuestos.unidadNegocio;
+						this.modelPrintPropuestos.departamento = detallePropuestos.departamento;
+						this.modelPrintPropuestos.nombreCargo = detallePropuestos.cargo;
+						this.modelPrintPropuestos.localidad = detallePropuestos.localidad;
+						this.modelPrintPropuestos.nivelDir = detallePropuestos.nivelDireccion;
+						this.modelPrintPropuestos.nomCCosto = detallePropuestos.centroCosto;
+						this.modelPrintPropuestos.misionCargo = detallePropuestos.misionCargo;
+						this.modelPrintPropuestos.justificacionCargo = detallePropuestos.justificacion;
+						this.modelPrintPropuestos.reportaA = detallePropuestos.reportaA;
+						this.modelPrintPropuestos.supervisaA = detallePropuestos.supervisaA;
+						this.modelPrintPropuestos.tipoContrato = detallePropuestos.tipoContrato;
+						this.modelPrintPropuestos.nivelRepa = detallePropuestos.nivelReporteA;
+						this.modelPrintPropuestos.sueldo = detallePropuestos.sueldo;
+						this.modelPrintPropuestos.sueldoMensual = detallePropuestos.sueldoVariableMensual;
+						this.modelPrintPropuestos.sueldoTrimestral = detallePropuestos.sueldoVariableTrimestral;
+						this.modelPrintPropuestos.sueldoSemestral = detallePropuestos.sueldoVariableSemestral;
+						this.modelPrintPropuestos.sueldoAnual = detallePropuestos.sueldoVariableAnual;
+						this.modelPrintPropuestos.correo = detallePropuestos.correo;
+						this.modelPrintPropuestos.fechaIngreso = detallePropuestos.fechaIngreso;
+						this.modelPrintPropuestos.sucursal = detallePropuestos.sucursal;
+						this.modelPrintPropuestos.fechaIngreso = detallePropuestos.fechaIngreso;
+						this.modelPrintPropuestos.grupoPago = detallePropuestos.grupoDePago;
+						this.modelPrintPropuestos.descrPuesto = detallePropuestos.descripcionPosicion;
+						this.detalleSolicitudPrintPropuestos.movilizacion = detallePropuestos.movilizacion;
+						this.detalleSolicitudPrintPropuestos.alimentacion = detallePropuestos.alimentacion;
+					}
+				}
+				else {
+					this.detalleSolicitudPrint = response.detalleSolicitudType[0];
+					this.detalleSolicitudPrintRG = response.detalleSolicitudType[0];
+
+					if (!(idPrint.toUpperCase().includes("RG")) && this.detalleSolicitudPrint.codigoPosicion.length > 0) {
+						this.modelPrint.codigoPosicion = this.detalleSolicitudPrint.codigoPosicion;
+						this.modelPrint.descrPosicion = this.detalleSolicitudPrint.descripcionPosicion;
+						this.modelPrint.subledger = this.detalleSolicitudPrint.subledger;
+						this.modelPrint.nombreCompleto = this.detalleSolicitudPrint.nombreEmpleado;
+						this.detalleSolicitudPrint.nombreJefeSolicitante = this.detalleSolicitudPrint.nombreJefeSolicitante;
+						this.modelPrint.compania = this.detalleSolicitudPrint.compania;
+						this.modelPrint.unidadNegocio = this.detalleSolicitudPrint.unidadNegocio;
+						this.modelPrint.departamento = this.detalleSolicitudPrint.departamento;
+						this.modelPrint.nombreCargo = this.detalleSolicitudPrint.cargo;
+						this.modelPrint.localidad = this.detalleSolicitudPrint.localidad;
+						this.modelPrint.nivelDir = this.detalleSolicitudPrint.nivelDireccion;
+						this.modelPrint.nomCCosto = this.detalleSolicitudPrint.centroCosto;
+						this.modelPrint.misionCargo = this.detalleSolicitudPrint.misionCargo;
+						this.modelPrint.justificacionCargo = this.detalleSolicitudPrint.justificacion;
+						this.modelPrint.reportaA = this.detalleSolicitudPrint.reportaA;
+						this.modelPrint.supervisaA = this.detalleSolicitudPrint.supervisaA;
+						this.modelPrint.tipoContrato = this.detalleSolicitudPrint.tipoContrato;
+						this.modelPrint.nivelRepa = this.detalleSolicitudPrint.nivelReporteA;
+						this.modelPrint.sueldo = this.detalleSolicitudPrint.sueldo;
+						this.modelPrint.sueldoMensual = this.detalleSolicitudPrint.sueldoVariableMensual;
+						this.modelPrint.sueldoTrimestral = this.detalleSolicitudPrint.sueldoVariableTrimestral;
+						this.modelPrint.sueldoSemestral = this.detalleSolicitudPrint.sueldoVariableSemestral;
+						this.modelPrint.sueldoAnual = this.detalleSolicitudPrint.sueldoVariableAnual
+						this.modelPrint.correo = this.detalleSolicitudPrint.correo;
+						this.modelPrint.fechaIngreso = this.detalleSolicitudPrint.fechaIngreso;
+						this.modelPrintRemuneracion = Number(this.modelPrint.sueldoAnual) / 12 + Number(this.modelPrint.sueldoSemestral) / 6 + Number(this.modelPrint.sueldoTrimestral) / 3 + Number(this.modelPrint.sueldoMensual);
+					} else if (idPrint.toUpperCase().includes("RG")) {
+						if (this.detalleSolicitudPrintRG.codigoPosicion.length > 0) {
+							this.modelPrintRG.codigoPosicion = this.detalleSolicitudPrintRG.codigoPosicion;
+							this.modelPrintRG.puestoJefeInmediato = this.detalleSolicitudPrintRG.puestoJefeInmediato;
+							this.modelPrintRG.jefeInmediatoSuperior = this.detalleSolicitudPrintRG.jefeInmediatoSuperior;
+							this.modelPrintRG.descrPosicion = this.detalleSolicitudPrintRG.descripcionPosicion;
+							this.modelPrintRG.subledger = this.detalleSolicitudPrintRG.subledger;
+							this.modelPrintRG.nombreCompleto = this.detalleSolicitudPrintRG.nombreEmpleado;
+							this.modelPrintRG.compania = this.detalleSolicitudPrintRG.compania;
+							this.modelPrintRG.unidadNegocio = this.detalleSolicitudPrintRG.unidadNegocio;
+							this.modelPrintRG.departamento = this.detalleSolicitudPrintRG.departamento;
+							this.modelPrintRG.nombreCargo = this.detalleSolicitudPrintRG.cargo;
+							this.modelPrintRG.localidad = this.detalleSolicitudPrintRG.localidad;
+							this.modelPrintRG.nivelDir = this.detalleSolicitudPrintRG.nivelDireccion;
+							this.modelPrintRG.nomCCosto = this.detalleSolicitudPrintRG.centroCosto;
+							this.modelPrintRG.misionCargo = this.detalleSolicitudPrintRG.misionCargo;
+							this.modelPrintRG.justificacionCargo = this.detalleSolicitudPrintRG.justificacion;
+							this.modelPrintRG.reportaA = this.detalleSolicitudPrintRG.reportaA;
+							this.modelPrintRG.supervisaA = this.detalleSolicitudPrintRG.supervisaA;
+							this.modelPrintRG.tipoContrato = this.detalleSolicitudPrintRG.tipoContrato;
+							this.modelPrintRG.nivelRepa = this.detalleSolicitudPrintRG.nivelReporteA;
+							this.modelPrintRG.sueldo = this.detalleSolicitudPrintRG.sueldo;
+							this.modelPrintRG.sueldoMensual = this.detalleSolicitudPrintRG.sueldoVariableMensual;
+							this.modelPrintRG.sueldoTrimestral = this.detalleSolicitudPrintRG.sueldoVariableTrimestral;
+							this.modelPrintRG.sueldoSemestral = this.detalleSolicitudPrintRG.sueldoVariableSemestral;
+							this.modelPrintRG.sueldoAnual = this.detalleSolicitudPrintRG.sueldoVariableAnual;
+							this.modelPrintRG.correo = this.detalleSolicitudPrintRG.correo;
+							// this.modelPrintRG.correo = this.detalleSolicitudPrintRG.correo;
+							this.causaSalidaPrint = this.detalleSolicitudPrintRG.causaSalida;
+							this.modelPrintRG.fechaIngreso = (this.detalleSolicitudPrintRG.fechaIngreso as string).split("T")[0];
+							this.remuneracionPrint = Number(this.modelPrintRG.sueldoAnual) / 12 + Number(this.modelPrintRG.sueldoSemestral) / 6 + Number(this.modelPrintRG.sueldoTrimestral) / 3 + Number(this.modelPrintRG.sueldoMensual);
+
+							this.keySelectedPrint = this.solicitud.idTipoSolicitud + "_" + this.solicitud.idTipoMotivo + "_" + this.modelPrint.nivelDir;
+							this.getComentarios();
+						}
+					}
+				}
+
+				this.mostrarTipoJustificacionYMisionPrint = this.restrictionsIdsPrint.includes(this.solicitud.idTipoMotivo);
+
+				this.mostrarSubledgerPrint = this.restrictionsSubledgerIdsPrint.includes(this.solicitud.idTipoMotivo);
+
+				this.keySelectedPrint = `${this.solicitud.idTipoSolicitud}_${this.solicitud.idTipoMotivo}_${this.modelPrint.nivelDir}`;
+
+				if (!this.dataAprobacionesPorPosicionPrint[this.keySelectedPrint]) {
+					this.getNivelesAprobacion(idPrint);
+					// this.obtenerComentariosAtencionPorInstanciaRaiz();
+				}
+
+				// this.mantenimientoService.getCatalogo("RBPTF").subscribe({
+				// 	next: (response) => {
+				// 		this.optionPrint = response.itemCatalogoTypes.find(({ codigo }) => codigo === this.selectedOptionPrint);
+				// 	}
+				// });
+
+				// this.exportar();
+			},
+			error: (error: HttpErrorResponse) => {
+				this.utilService.modalResponse(error.error, "error");
+			},
+		});
+	}
+
+	private getNivelesAprobacion(idPrint: string) {
+		if (this.solicitud !== null) {
+			this.solicitudes.obtenerNivelesAprobacionRegistrados(idPrint).subscribe({
+				next: (response) => {
+					debugger;
+					this.dataAprobacionesPorPosicionPrint = {
+						[this.keySelectedPrint]: response.nivelAprobacionPosicionType
+					}
+
+					this.obtenerComentariosAtencionPorInstanciaRaiz(idPrint);
+				},
+				error: (error: HttpErrorResponse) => {
+					this.utilService.modalResponse("No existen niveles de aprobación para este empleado", "error");
+				},
+			});
+		}
+	}
+
+	private getComentarios() {
+		this.comentarioSalidaJefeService.obtenerComentarios(this.detalleSolicitudPrintRG.idSolicitud).subscribe({
+			next: ({ comentarios }) => {
+				debugger;
+				comentarios.forEach(comentario => {
+					if (comentario.tipo_Solicitud === "Comentario_Salida_Jefe") {
+						this.comentariosJefeInmediatoPrint = comentario;
+					} if (comentario.tipo_Solicitud === "Comentario_Jefe_Solicitante") {
+						this.Comentario_Jefe_SolicitantePrint = comentario;
+					} if (comentario.tipo_Solicitud === "Comentario_RRHH") {
+						this.comentariosRRHHPrint = comentario;
+					}
+				});
+			}
+		});
+	}
+
+	private obtenerComentariosAtencionPorInstanciaRaiz(idPrint) {
+		return this.solicitudes.obtenerComentariosAtencionPorInstanciaRaiz(`${this.solicitud.idInstancia}COMENT`).subscribe({
+			next: (response) => {
+				debugger;
+				this.dataComentariosAprobacionesPrint.length = 0;
+				this.dataComentariosAprobacionesPrintPorPosicion = response.variableType;
+				this.dataComentariosAprobacionesPrint = this.filterDataComentarios(this.solicitud.idInstancia, 'RevisionSolicitud', 'comentariosAtencion');
+				this.dataComentariosAprobacionesPrintRRHH = this.filterDataComentarios(this.solicitud.idInstancia, 'RequisicionPersonal', 'comentariosAtencionGerenteRRHH');
+				this.dataComentariosAprobacionesPrintCREM = this.filterDataComentarios(this.solicitud.idInstancia, 'RequisicionPersonal', 'comentariosAtencionRemuneraciones');
+
+				this.mantenimientoService.getCatalogo("RBPTF").subscribe({
+					next: (response) => {
+						debugger;
+						this.optionPrint = response.itemCatalogoTypes.find(({ codigo }) => codigo === this.selectedOptionPrint);
+
+						this.obtenerServicioFamiliaresCandidatos(idPrint);
+					}
+				});
+			},
+			error: (error: HttpErrorResponse) => {
+				this.utilService.modalResponse("No existe comentarios de aprobadores", "error");
+			},
+		});
+	}
+
+	private filterDataComentarios(idInstancia: string, taskKey: string, name: string) {
+		return this.dataComentariosAprobacionesPrintPorPosicion.filter(item =>
+			(idInstancia ? item.rootProcInstId === idInstancia : true) && //Id de instancia
+			(taskKey ? item.procDefKey === taskKey : true) &&
+			(name ? item.name === name : true)
+		);
+	}
+
+	getCandidatoValues(idPrint: string) {
+		this.seleccionCandidatoService.getCandidatoById(idPrint).subscribe({
+			next: (res) => {
+				const candidatoValues = res.seleccionCandidatoType[0];
+				this.nombreCompletoCandidatoPrint = res.seleccionCandidatoType[0].candidato;
+
+				this.modelPrint.tipoProceso = candidatoValues.tipoProceso;
+				this.selectedOptionPrint = candidatoValues.fuenteExterna;
+				this.isCheckedPrint = candidatoValues.tipoFuente;
+				this.idSolicitudRPPrint = res.seleccionCandidatoType[0].iD_SOLICITUD;
+
+				this.fechasPrint.actualizacionPerfil = candidatoValues.actualizacionDelPerfil === null ? "" : format(new Date(candidatoValues.actualizacionDelPerfil), "yyyy-MM-dd HH:mm:ss");
+				this.fechasPrint.busquedaCandidatos = candidatoValues.busquedaDeCandidatos === null ? "" : format(new Date(candidatoValues.busquedaDeCandidatos), "yyyy-MM-dd HH:mm:ss");
+				this.fechasPrint.entrevista = candidatoValues.entrevista === null ? "" : format(new Date(candidatoValues.entrevista), "yyyy-MM-dd HH:mm:ss");
+				this.fechasPrint.pruebas = candidatoValues.pruebas === null ? "" : format(new Date(candidatoValues.pruebas), "yyyy-MM-dd HH:mm:ss");
+				this.fechasPrint.referencias = candidatoValues.referencias === null ? "" : format(new Date(candidatoValues.referencias), "yyyy-MM-dd HH:mm:ss");
+				this.fechasPrint.elaboracionInforme = candidatoValues.elaboracionDeInforme === null ? "" : format(new Date(candidatoValues.elaboracionDeInforme), "yyyy-MM-dd HH:mm:ss");
+				this.fechasPrint.entregaJefe = candidatoValues.entregaAlJefeSol === null ? "" : format(new Date(candidatoValues.entregaAlJefeSol), "yyyy-MM-dd HH:mm:ss");
+				this.fechasPrint.entrevistaJefatura = candidatoValues.entrevistaPorJefatura === null ? "" : format(new Date(candidatoValues.entrevistaPorJefatura), "yyyy-MM-dd HH:mm:ss");
+				this.fechasPrint.tomaDecisiones = candidatoValues.tomaDeDesiciones === null ? "" : format(new Date(candidatoValues.tomaDeDesiciones), "yyyy-MM-dd HH:mm:ss");
+				this.fechasPrint.candidatoSeleccionado = candidatoValues.candidatoSeleccionado === null ? "" : format(new Date(candidatoValues.candidatoSeleccionado), "yyyy-MM-dd HH:mm:ss");
+				this.fechasPrint.procesoContratacion = candidatoValues.procesoDeContratacion === null ? "" : format(new Date(candidatoValues.procesoDeContratacion), "yyyy-MM-dd HH:mm:ss");
+				this.fechasPrint.finProcesoContratacion = candidatoValues.finProcesoContratacion === null ? "" : format(new Date(candidatoValues.finProcesoContratacion), "yyyy-MM-dd HH:mm:ss");
+				this.fechasPrint.reingreso = candidatoValues.fechaInicioReingreso === null ? "" : format(new Date(candidatoValues.fechaInicioReingreso), "yyyy-MM-dd HH:mm:ss");
+				this.fechasPrint.finProceso = candidatoValues.fechaFinReingreso === null ? "" : format(new Date(candidatoValues.fechaFinReingreso), "yyyy-MM-dd HH:mm:ss");
+				this.fechasPrint.contratacionFamiliares = candidatoValues.fechaInicioContratacionFamiliares === null ? "" : format(new Date(candidatoValues.fechaInicioContratacionFamiliares), "yyyy-MM-dd HH:mm:ss");
+				this.fechasPrint.finProcesoFamiliares = candidatoValues.fechaFinContratacionFamiliares === null ? "" : format(new Date(candidatoValues.fechaFinContratacionFamiliares), "yyyy-MM-dd HH:mm:ss");
+
+				this.nombreCandidatoPrint = candidatoValues.candidato;
+
+				if (idPrint.toUpperCase().includes("RG")) {
+					this.getSolicitudById(this.idSolicitudRPPrint);
+					this.getSolicitudById(idPrint);
+				} else {
+					this.getSolicitudById(idPrint);
+				}
+			},
+			error: (err) => {
+				this.getSolicitudById(idPrint);
+			}
+		});
+	}
+
+	obtenerServicioFamiliaresCandidatos(idPrint: string) {
+		return this.mantenimientoService.getFamiliaresCandidatoBySolicitud(idPrint).subscribe({
+			next: (response) => {
+				debugger;
+				const data = response?.familiaresCandidato || [];
+
+				this.dataTableDatosFamiliaresPrint = data.filter((d) => d.idSolicitud === idPrint);
+
+				this.dataTableDatosFamiliaresPrint = this.dataTableDatosFamiliaresPrint.map(dataFamiliar => ({
+					...dataFamiliar,
+					fechaCreacion: format(new Date(dataFamiliar.fechaCreacion as string), "dd/MM/yyyy")
+				}));
+
+				this.exportar();
+			},
+			error: (error: HttpErrorResponse) => {
+				this.utilService.modalResponse(error.error, "error");
+			},
+		});
 	}
 
 	mostrarModalCrearInstanciaSolicitud() {
@@ -1157,7 +1536,6 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 		this.router.navigate(["/mantenedores/crear-niveles-aprobacion"]);
 	}
 
-	// 6
 	onSelect6(data: any): void {
 		console.log("Item clicked", JSON.parse(JSON.stringify(data)));
 	}
@@ -1171,36 +1549,7 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 	}
 
 	private isAnyRowCheckedInTable(formato: FormatoUtilReporte) {
-		// let rowsCheckedInTable: any[] = this.tableService.rowsCheckedByTable[this.mainTableName];
-
-		// if (rowsCheckedInTable.length === 0) {
-		// 	rowsCheckedInTable = this.originalDataTable.map((x) => x.key);
-		// }
-
 		const headerTitles = ["Compañía", "Unidad de Negocio", "Localidad", "Nombre del jefe solicitante", "Àrea/Departamento", "Cargo requerido", "Nivel de dirección", "Tipo de requerimiento", "Estatus del proceso", "Fuente de reclutamiento", "Número de solicitud", "Fecha de aprobación de solicitud", "Fecha de cierre del proceso/Finalización del proceso", "Fecha de ingreso del nuevo colaborador", "Número de días de requisición en proceso (Workflow)", "Número de días de requisición hasta el ingreso del colaborador", "Etapa actual del proceso", "Apellidos y nombres del ocupante anterior"];
-
-		console.log(this.dataTable);
-		// forkJoin([...this.dataTable.map(({ idSolicitud }) => (this.solicitudes.getDetalleSolicitudById(idSolicitud)))]).subscribe({
-		// 	next: (response) => {
-		// 		const detalleSolicitudes = response.map(({ detalleSolicitudType }) => (detalleSolicitudType[0]));
-
-		// 		console.log(detalleSolicitudes);
-
-		// 		const lookup = detalleSolicitudes.reduce((acc, item) => {
-		// 			acc[item.idSolicitud] = item;
-
-		// 			return acc;
-		// 		}, {});
-
-		// 		// Combinar usando el objeto de referencia
-		// 		const combined = this.dataTable.map(item => ({
-		// 			solicitud: item,
-		// 			detalle: lookup[item.idSolicitud]
-		// 		}));
-
-		// 		console.log(combined);
-		// 	}
-		// });
 
 		const solicitudesData: any = this.dataTable;
 
@@ -1244,54 +1593,1244 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 				this.utilService.generateReport(formato, reportCodeEnum.MANTENIMIENTO_NIVELES_APROBACION, "NIVELES DE APROBACIÓN", headerTitles, bodyReport);
 			}
 		});
+	}
 
-		// const { headerTitles, dataIndexTitles } = this.columnsTable.reduce(
-		// 	(acc, col) => {
-		// 		if (col.title && col.title !== "Acciones") {
-		// 			acc.headerTitles.push(col.title);
+	public exportar(): void {
+		const backgroundCellColor: [number, number, number] = [218, 238, 243];
+		const textColor: [number, number, number] = [56, 95, 147];
+		const lineColor: [number, number, number] = [149, 179, 215];
 
-		// 			acc.dataIndexTitles.push({
-		// 				dataIndex: col.dataIndex,
-		// 				dataIndexesToJoin: col.dataIndexesToJoin,
-		// 			});
-		// 		}
+		const doc: jsPDF = new jsPDF();
 
-		// 		return acc;
-		// 	},
-		// 	{
-		// 		headerTitles: [],
-		// 		dataIndexTitles: []
-		// 	}
-		// );
+		const esquinaDeHoja = {
+			theme: "plain",
+			body: [
+				[
+					{
+						content: "",
+						styles: {
+							halign: "right",
+							fontStyle: "bold"
+						}
+					}
+				],
+			]
+		};
 
-		// const bodyReport = this.originalDataTable
-		// 	.filter((row) => rowsCheckedInTable.some((keyChecked) => keyChecked === row.key))
-		// 	.map((row) => dataIndexTitles.map((colDataIndex: { dataIndex: string; dataIndexesToJoin: string[]; }) => {
-		// 		let value: string;
+		const tituloDeHoja = {
+			theme: "plain",
+			body: [
+				[
+					{
+						content: "",
+						styles: {
+							halign: "center",
+							fontSize: 20,
+							fontStyle: "bold",
+							textColor
+						}
+					}
+				],
+			]
+		};
 
-		// 		if (colDataIndex.dataIndex === "otrasCausales" || colDataIndex.dataIndex === "estado") {
-		// 			// Procesar solo la columna "otrasCausales"
-		// 			value = row[colDataIndex.dataIndex]?.toString() ?? "";
+		if (this.solicitud.idSolicitud.toUpperCase().includes("RP")) {
+			esquinaDeHoja.body[0][0].content = codigosSolicitudReporte.requisicionPersonal;
+			tituloDeHoja.body[0][0].content = "REQUERIMIENTO DE PERSONAL";
 
-		// 			if (value === "true" || value === "1") {
-		// 				value = "Activo";
-		// 			} else if (value === "false" || value === "0") {
-		// 				value = "Inactivo";
-		// 			}
-		// 		} else {
-		// 			// Mantener los valores de otras columnas sin cambios
-		// 			if (colDataIndex.dataIndexesToJoin) {
-		// 				value = colDataIndex.dataIndexesToJoin
-		// 					.map((index) => row[index])
-		// 					.join(" - ");
-		// 			} else {
-		// 				value = row[colDataIndex.dataIndex]?.toString() ?? "";
-		// 			}
-		// 		}
+			this.exportarRequisicionPersonal(doc, esquinaDeHoja, tituloDeHoja, backgroundCellColor, textColor, lineColor);
+		} else if (this.solicitud.idSolicitud.toUpperCase().includes("CF")) {
+			esquinaDeHoja.body[0][0].content = codigosSolicitudReporte.contratacionFamiliares;
+			tituloDeHoja.body[0][0].content = "CONTRATACIÓN DE FAMILIAR";
 
-		// 		return value;
-		// 	}));
+			this.exportarContratacionFamiliar(doc, esquinaDeHoja, tituloDeHoja, backgroundCellColor, textColor, lineColor);
+		} else if (this.solicitud.idSolicitud.toUpperCase().includes("RG")) {
+			esquinaDeHoja.body[0][0].content = codigosSolicitudReporte.reingresoPersonal;
+			tituloDeHoja.body[0][0].content = "REINGRESO DE PERSONAL";
 
-		// this.utilService.generateReport(formato, reportCodeEnum.MANTENIMIENTO_NIVELES_APROBACION, "NIVELES DE APROBACIÓN", headerTitles, bodyReport);
+			this.exportarReingresoPersonal(doc, esquinaDeHoja, tituloDeHoja, backgroundCellColor, textColor, lineColor);
+		} else if (this.solicitud.idSolicitud.toUpperCase().includes("AP")) {
+			esquinaDeHoja.body[0][0].content = codigosSolicitudReporte.accionPersonal;
+			tituloDeHoja.body[0][0].content = "ACCIÓN DE PERSONAL";
+
+			this.exportarAccionPersonal(doc, esquinaDeHoja, tituloDeHoja, backgroundCellColor, textColor, lineColor);
+		}
+
+		this.utilService.closeLoadingSpinner();
+	}
+
+	private exportarRequisicionPersonal(doc: jsPDF, esquinaDeHoja: any, tituloDeHoja: any, backgroundCellColor: [number, number, number], textColor: [number, number, number], lineColor: [number, number, number]): void {
+		// Equina de la hoja
+		autoTable(doc, esquinaDeHoja);
+
+		// Título
+		autoTable(doc, tituloDeHoja);
+
+		// Encabezado de la solicitud
+		autoTable(doc, {
+			theme: "grid",
+			bodyStyles: {
+				lineColor
+			},
+			body: [
+				["Creado por:", this.solicitud.usuarioCreacion, "Fecha:", format(new Date(this.solicitud.fechaCreacion), "dd/MM/yyyy"), "Solicitud No:", this.solicitud.idSolicitud],
+			],
+			columnStyles: {
+				0: {
+					fontStyle: "bold",
+					halign: "right"
+				},
+				2: {
+					fontStyle: "bold",
+					halign: "right"
+				},
+				4: {
+					fontStyle: "bold",
+					halign: "right"
+				}
+			}
+		});
+
+		// Información de la posición
+		autoTable(doc, {
+			theme: "grid",
+			headStyles: {
+				fillColor: backgroundCellColor,
+				textColor,
+				halign: "center",
+				lineColor
+			},
+			bodyStyles: {
+				lineColor
+			},
+			head: [
+				[
+					{
+						content: "INFORMACIÓN DE LA POSICIÓN",
+						colSpan: 4
+					}
+				]
+			],
+			body: [
+				["Unidad:", this.modelPrint.unidadNegocio, "Motivo", this.solicitud.tipoMotivo],
+				["Ciudad/Localidad:", this.modelPrint.localidad, "Empleado a reemplazar", this.modelPrint.nombreCompleto],
+				["Cargo solicitado:", this.modelPrint.nombreCargo, "Sueldo", `$ ${parseFloat(this.modelPrint.sueldo).toFixed(2)}`],
+				["Área/Dpto:", this.modelPrint.departamento, "Variable máxima:", `$ ${parseFloat(this.modelPrint.sueldoMensual).toFixed(2)}`],
+				["Centro de Costos", this.modelPrint.nomCCosto, "Total", `$ ${(parseFloat(this.modelPrint.sueldo) + parseFloat(this.modelPrint.sueldoMensual)).toFixed(2)}`],
+				[
+					"Justificación:",
+					{
+						content: this.modelPrint.justificacionCargo,
+						colSpan: 3
+					}
+				]
+			],
+			columnStyles: {
+				0: {
+					fontStyle: "bold",
+					cellWidth: 30
+				},
+				1: {
+					cellWidth: 60
+				},
+				2: {
+					fontStyle: "bold",
+					cellWidth: 30
+				},
+				3: {
+					cellWidth: 60
+				}
+			}
+		});
+
+		// Funciones y responsabilidades
+		autoTable(doc, {
+			theme: "grid",
+			headStyles: {
+				fillColor: backgroundCellColor,
+				textColor,
+				halign: "center",
+				lineColor
+			},
+			bodyStyles: {
+				lineColor
+			},
+			head: [
+				[
+					{
+						content: "FUNCIONES Y RESPONSABILIDADES",
+						colSpan: 4
+					}
+				]
+			],
+			body: [
+				["Reporta a:", this.modelPrint.reportaA, "Supervisa a:", this.modelPrint.supervisaA],
+				[
+					"Misión del cargo:",
+					{
+						content: this.modelPrint.misionCargo,
+						colSpan: 3
+					}
+				]
+			],
+			columnStyles: {
+				0: {
+					fontStyle: "bold",
+					cellWidth: 30
+				},
+				1: {
+					cellWidth: 60
+				},
+				2: {
+					fontStyle: "bold",
+					cellWidth: 30
+				},
+				3: {
+					cellWidth: 60
+				}
+			}
+		});
+
+		// Sección de candidato
+		autoTable(doc, {
+			theme: "grid",
+			headStyles: {
+				fillColor: backgroundCellColor,
+				textColor,
+				halign: "center",
+				lineColor
+			},
+			bodyStyles: {
+				lineColor
+			},
+			head: [
+				[
+					{
+						content: "SELECCIÓN DE CANDIDATO",
+						colSpan: 2
+					}
+				]
+			],
+			body: [
+				[
+					{
+						content: "TAREA:",
+						styles: {
+							halign: "center",
+							textColor,
+							fontStyle: "bold"
+						}
+					},
+					{
+						content: "FECHA:",
+						styles: {
+							halign: "center",
+							textColor,
+							fontStyle: "bold"
+						}
+					}
+				],
+				["Actualización del perfil:", this.fechasPrint.actualizacionPerfil],
+				["Búsqueda del candidato:", this.fechasPrint.busquedaCandidatos],
+				["Entrevistas:", this.fechasPrint.entrevista],
+				["Pruebas:", this.fechasPrint.pruebas],
+				["Referencias:", this.fechasPrint.referencias],
+				["Elaboración del Informe:", this.fechasPrint.elaboracionInforme],
+				["Entrega al Jefe Solicitante el informe de selección:", this.fechasPrint.entregaJefe],
+				["Entrevistas por parte de jefaturas:", this.fechasPrint.entrevistaJefatura],
+				["Toma de decisiones por parte de jefaturas:", this.fechasPrint.tomaDecisiones],
+				["Candidato seleccionado:", this.fechasPrint.candidatoSeleccionado],
+				["Proceso de Contratación:", this.fechasPrint.procesoContratacion],
+				["Fin del Proceso de Selección y Proceso de Contratación:", this.fechasPrint.finProcesoContratacion],
+				[
+					{
+						content: "",
+						colSpan: 2,
+						styles: {
+							fillColor: backgroundCellColor,
+							cellPadding: "2px"
+						}
+					}
+				],
+				["Nombre del candidato escogido:", this.nombreCandidatoPrint],
+				["Fecha de ingreso:", this.fechasPrint.reingreso === "" ? this.fechasPrint.contratacionFamiliares : this.fechasPrint.reingreso]
+			],
+			columnStyles: {
+				0: {
+					fontStyle: "bold",
+					cellWidth: 110
+				},
+				1: {
+					cellWidth: 70,
+					halign: "center"
+				}
+			}
+		});
+
+		// Log del flujo
+		autoTable(doc, {
+			theme: "grid",
+			headStyles: {
+				fillColor: backgroundCellColor,
+				textColor,
+				lineColor
+			},
+			bodyStyles: {
+				lineColor
+			},
+			head: [
+				[
+					{
+						content: "Log del flujo",
+						colSpan: 3
+					}
+				]
+			],
+			body: [
+				[
+					{
+						content: "Fecha",
+						styles: {
+							halign: "center",
+							textColor,
+							fontStyle: "bold"
+						}
+					},
+					{
+						content: "Acción",
+						styles: {
+							halign: "center",
+							textColor,
+							fontStyle: "bold"
+						}
+					},
+					{
+						content: "Responsable",
+						styles: {
+							halign: "center",
+							textColor,
+							fontStyle: "bold"
+						}
+					}
+				],
+				...this.dataAprobacionesPorPosicionPrint[this.keySelectedPrint].map(dataAprobador => ([format(new Date(dataAprobador.nivelAprobacionType.fechaCreacion), "dd/MM/yyyy"), dataAprobador.nivelAprobacionType.ruta, dataAprobador.aprobador.usuario === "" ? "No aplica" : dataAprobador.aprobador.usuario]))
+			],
+			columnStyles: {
+				0: {
+					cellWidth: 30,
+					halign: "center"
+				},
+				1: {
+					cellWidth: 75
+				},
+				2: {
+					cellWidth: 75
+				}
+			}
+		});
+
+		doc.save(`${this.solicitud.idSolicitud}-${format(new Date(), "dd-MM-yyyy")}.pdf`)
+	}
+
+	private exportarContratacionFamiliar(doc: jsPDF, esquinaDeHoja: any, tituloDeHoja: any, backgroundCellColor: [number, number, number], textColor: [number, number, number], lineColor: [number, number, number]): void {
+		// Esquina de la hoja
+		autoTable(doc, esquinaDeHoja);
+
+		// Títutlo
+		autoTable(doc, tituloDeHoja);
+
+		// Encabezado de la solicitud
+		autoTable(doc, {
+			theme: "grid",
+			bodyStyles: {
+				lineColor
+			},
+			body: [
+				[
+					{
+						content: "Creado por:",
+						rowSpan: 2,
+						styles: {
+							valign: "middle"
+						}
+					},
+					{
+						content: this.solicitud.usuarioCreacion,
+						rowSpan: 2,
+						styles: {
+							valign: "middle"
+						}
+					},
+					{
+						content: "Fecha:",
+						rowSpan: 2,
+						styles: {
+							valign: "middle"
+						}
+					},
+					{
+						content: format(new Date(this.solicitud.fechaCreacion), "dd/MM/yyyy"),
+						rowSpan: 2,
+						styles: {
+							valign: "middle"
+						}
+					},
+					"Solicitud No:",
+					this.solicitud.idSolicitud
+				],
+				["Requisición de Personal No:", this.idSolicitudRPPrint]
+			],
+			columnStyles: {
+				0: {
+					fontStyle: "bold",
+					halign: "right"
+				},
+				2: {
+					fontStyle: "bold",
+					halign: "right"
+				},
+				4: {
+					fontStyle: "bold",
+					halign: "right"
+				}
+			}
+		});
+
+		// Información de la persona a contratar
+		autoTable(doc, {
+			theme: "grid",
+			headStyles: {
+				fillColor: backgroundCellColor,
+				textColor,
+				halign: "center",
+				lineColor
+			},
+			bodyStyles: {
+				lineColor
+			},
+			head: [
+				[
+					{
+						content: "INFORMACIÓN DE LA PERSONA A CONTRATAR",
+						colSpan: 2
+					}
+				]
+			],
+			body: [
+				["Apellidos y nombres:", this.nombreCompletoCandidatoPrint],
+				["Unidad:", this.modelPrint.unidadNegocio],
+				["Departamento:", this.modelPrint.departamento],
+				["Cargo:", this.modelPrint.nombreCargo],
+				["Localidad:", this.modelPrint.localidad],
+				["Jefe Solicitante:", this.solicitud.usuarioCreacion],
+				["Responsable de RR.HH.:", this.solicitud.usuarioCreacion],
+				["Justificación:", this.modelPrint.justificacionCargo]
+			],
+			columnStyles: {
+				0: {
+					fontStyle: "bold",
+					cellWidth: 50
+				},
+				1: {
+					cellWidth: 130
+				}
+			}
+		});
+
+		// Datos de familiares que ya laboran en la empresa
+		autoTable(doc, {
+			theme: "grid",
+			headStyles: {
+				fillColor: backgroundCellColor,
+				textColor,
+				halign: "center",
+				lineColor
+			},
+			bodyStyles: {
+				lineColor
+			},
+			head: [
+				[
+					{
+						content: "DATOS DE FAMILIARES QUE YA LABORAN EN LA EMPRESA",
+						colSpan: 7
+					}
+				]
+			],
+			body: [
+				[
+					{
+						content: "Nombre",
+						styles: {
+							fontStyle: "bold",
+							halign: "center"
+						}
+					},
+					{
+						content: "Fecha de ingreso",
+						styles: {
+							fontStyle: "bold",
+							halign: "center"
+						}
+					},
+					{
+						content: "Cargo",
+						styles: {
+							fontStyle: "bold",
+							halign: "center"
+						}
+					},
+					{
+						content: "Unidad",
+						styles: {
+							fontStyle: "bold",
+							halign: "center"
+						}
+					},
+					{
+						content: "Departamento",
+						styles: {
+							fontStyle: "bold",
+							halign: "center"
+						}
+					},
+					{
+						content: "Localidad",
+						styles: {
+							fontStyle: "bold",
+							halign: "center"
+						}
+					},
+					{
+						content: "Parentezco",
+						styles: {
+							fontStyle: "bold",
+							halign: "center"
+						}
+					}
+				],
+				...this.dataTableDatosFamiliaresPrint.map(datoFamiliar => ([datoFamiliar.nombreEmpleado, datoFamiliar.fechaCreacion as string, datoFamiliar.cargo, datoFamiliar.unidad, datoFamiliar.departamento, datoFamiliar.localidad, datoFamiliar.parentesco]))
+			],
+			columnStyles: {
+				0: {
+					cellWidth: 25
+				},
+				1: {
+					cellWidth: 25
+				},
+				2: {
+					cellWidth: 25
+				},
+				3: {
+					cellWidth: 25
+				},
+				4: {
+					cellWidth: 30
+				},
+				5: {
+					cellWidth: 25
+				},
+				6: {
+					cellWidth: 25
+				}
+			}
+		});
+
+		// Log del flujo
+		autoTable(doc, {
+			theme: "grid",
+			headStyles: {
+				fillColor: backgroundCellColor,
+				textColor,
+				lineColor
+			},
+			bodyStyles: {
+				lineColor
+			},
+			head: [
+				[
+					{
+						content: "Log del flujo",
+						colSpan: 3
+					}
+				]
+			],
+			body: [
+				[
+					{
+						content: "Fecha",
+						styles: {
+							halign: "center",
+							textColor,
+							fontStyle: "bold"
+						}
+					},
+					{
+						content: "Acción",
+						styles: {
+							halign: "center",
+							textColor,
+							fontStyle: "bold"
+						}
+					},
+					{
+						content: "Responsable",
+						styles: {
+							halign: "center",
+							textColor,
+							fontStyle: "bold"
+						}
+					}
+				],
+				...this.dataAprobacionesPorPosicionPrint[this.keySelectedPrint].map(dataAprobador => ([format(new Date(dataAprobador.nivelAprobacionType.fechaCreacion), "dd/MM/yyyy"), dataAprobador.nivelAprobacionType.ruta, dataAprobador.aprobador.usuario === "" ? "No aplica" : dataAprobador.aprobador.usuario]))
+			],
+			columnStyles: {
+				0: {
+					cellWidth: 30,
+					halign: "center"
+				},
+				1: {
+					cellWidth: 75
+				},
+				2: {
+					cellWidth: 75
+				}
+			}
+		});
+
+		doc.save(`${this.solicitud.idSolicitud}-${format(new Date(), "dd-MM-yyyy")}.pdf`)
+	}
+
+	private exportarReingresoPersonal(doc: jsPDF, esquinaDeHoja: any, tituloDeHoja: any, backgroundCellColor: [number, number, number], textColor: [number, number, number], lineColor: [number, number, number]): void {
+		const variableMaxima = Math.max(...[parseInt(this.modelPrint.sueldoAnual), parseInt(this.modelPrint.sueldoMensual), parseInt(this.modelPrint.sueldoSemestral), parseInt(this.modelPrint.sueldoTrimestral)]);
+		const variableMaximaRG = Math.max(...[parseInt(this.modelPrintRG.sueldoAnual), parseInt(this.modelPrintRG.sueldoMensual), parseInt(this.modelPrintRG.sueldoSemestral), parseInt(this.modelPrintRG.sueldoTrimestral)]);
+
+		// Esquina de la hoja
+		autoTable(doc, esquinaDeHoja);
+
+		// Títutlo
+		autoTable(doc, tituloDeHoja);
+
+		// Encabezado de la solicitud
+		autoTable(doc, {
+			theme: "grid",
+			bodyStyles: {
+			},
+			body: [
+				[
+					{
+						content: "Creado por:",
+						rowSpan: 2,
+						styles: {
+							valign: "middle"
+						}
+					},
+					{
+						content: this.solicitud.usuarioCreacion,
+						rowSpan: 2,
+						styles: {
+							valign: "middle"
+						}
+					},
+					{
+						content: "Fecha:",
+						rowSpan: 2,
+						styles: {
+							valign: "middle"
+						}
+					},
+					{
+						content: format(new Date(this.solicitud.fechaCreacion), "dd/MM/yyyy"),
+						rowSpan: 2,
+						styles: {
+							valign: "middle"
+						}
+					},
+					"Solicitud No:",
+					this.solicitud.idSolicitud
+				],
+				["Requisición de Personal No:", this.idSolicitudRPPrint]
+			],
+			columnStyles: {
+				0: {
+					fontStyle: "bold",
+					halign: "right"
+				},
+				2: {
+					fontStyle: "bold",
+					halign: "right"
+				},
+				4: {
+					fontStyle: "bold",
+					halign: "right"
+				}
+			}
+		});
+
+		// Información de la persona a contratar
+		autoTable(doc, {
+			theme: "grid",
+			headStyles: {
+				fillColor: backgroundCellColor,
+				textColor,
+				halign: "center",
+				lineColor
+			},
+			bodyStyles: {
+				lineColor
+			},
+			head: [
+				[
+					{
+						content: "INFORMACIÓN DE LA PERSONA A CONTRATAR",
+						colSpan: 4
+					}
+				]
+			],
+			body: [
+				["Apellidos y nombres:", this.nombreCompletoCandidatoPrint, "Fecha de ingreso:", "dd/MM/yyyy"]
+			],
+			columnStyles: {
+				0: {
+					fontStyle: "bold",
+					cellWidth: 40
+				},
+				1: {
+					cellWidth: 75
+				},
+				2: {
+					fontStyle: "bold",
+					cellWidth: 35
+				},
+				3: {
+					cellWidth: 30
+				}
+			}
+		});
+
+		// Datos de contratación
+		autoTable(doc, {
+			theme: "grid",
+			headStyles: {
+				fillColor: backgroundCellColor,
+				textColor,
+				halign: "center",
+				lineColor
+			},
+			bodyStyles: {
+				lineColor
+			},
+			head: [
+				[
+					{
+						content: "DATOS DE CONTRTACIÓN",
+						colSpan: 3
+					}
+				]
+			],
+			body: [
+				[
+					{
+						content: "Descripción",
+						styles: {
+							halign: "center",
+							textColor,
+							fontStyle: "bold"
+						}
+					},
+					{
+						content: "Contratación anterior",
+						styles: {
+							halign: "center",
+							textColor,
+							fontStyle: "bold"
+						}
+					},
+					{
+						content: "Contratación actual",
+						styles: {
+							halign: "center",
+							textColor,
+							fontStyle: "bold"
+						}
+					}
+				],
+				["Compañía:", this.modelPrint.compania, this.modelPrintRG.compania],
+				["Sueldo:", this.modelPrint.sueldo, this.modelPrintRG.sueldo],
+				["Variable Máxima:", variableMaxima, variableMaximaRG],
+				["Remuneración Total:", "", ""],
+				["Cargo:", this.modelPrint.descrPosicion, this.modelPrintRG.descrPosicion],
+				["Departamento:", this.modelPrint.departamento, this.modelPrintRG.departamento],
+				["Fecha de Ingreso:", format(new Date(this.modelPrint.fechaIngreso), "dd/MM/yyyy"), format(new Date(this.modelPrintRG.fechaIngreso), "dd/MM/yyyy")],
+				["Fecha de Salida:", format(new Date(this.detalleSolicitudPrintRG.fechaSalida), "dd/MM/yyyy"), format(new Date(this.detalleSolicitud.fechaSalida), "dd/MM/yyyy")],
+				["Jefe Inmediato Superior:", this.detalleSolicitudPrintRG.jefeInmediatoSuperior, this.detalleSolicitud.jefeInmediatoSuperior],
+				["Cargo Jefe Inemdiato Superior:", this.detalleSolicitudPrintRG.puestoJefeInmediato, this.detalleSolicitud.puestoJefeInmediato],
+				["Responsable de RR.HH.:", this.detalleSolicitudPrintRG.responsableRRHH, this.detalleSolicitud.responsableRRHH]
+			],
+			columnStyles: {
+				0: {
+					fontStyle: "bold",
+					cellWidth: 60
+				},
+				1: {
+					cellWidth: 60
+				},
+				2: {
+					cellWidth: 60
+				}
+			}
+		});
+
+		// Referencia de recursos humanos
+		autoTable(doc, {
+			theme: "grid",
+			headStyles: {
+				fillColor: backgroundCellColor,
+				textColor,
+				halign: "center",
+				lineColor
+			},
+			bodyStyles: {
+				lineColor
+			},
+			head: [
+				[
+					{
+						content: "REFERENCIA DE RECURSOS HUMANOS",
+						colSpan: 4
+					}
+				]
+			],
+			body: [
+				[
+					"Forma de salida:",
+					{
+						content: this.comentariosRRHHPrint.comentario,
+						colSpan: 3
+					}
+				],
+				[
+					"Causa real de salida:",
+					{
+						content: this.causaSalidaPrint,
+						colSpan: 3
+					}
+				],
+				[
+					"Justificación", "", "Fecha:", format(this.currentDatePrint, "dd/MM/yyyy")
+				]
+			],
+			columnStyles: {
+				0: {
+					fontStyle: "bold",
+					cellWidth: 40
+				},
+				2: {
+					fontStyle: "bold",
+					cellWidth: 25
+				},
+				3: {
+					cellWidth: 35
+				}
+			}
+		});
+
+		// Referencia del último jefe
+		autoTable(doc, {
+			theme: "grid",
+			headStyles: {
+				fillColor: backgroundCellColor,
+				textColor,
+				halign: "center",
+				lineColor
+			},
+			bodyStyles: {
+				lineColor
+			},
+			head: [
+				[
+					{
+						content: "REFERENCIA DEL ÚLTIMO JEFE",
+						colSpan: 2
+					}
+				]
+			],
+			body: [
+				["¿Cómo fue el desempeño en el área?:", this.comentariosJefeInmediatoPrint.comentario],
+				["Fecha:", format(this.currentDatePrint, "dd/MM/yyyy")]
+			],
+			columnStyles: {
+				0: {
+					fontStyle: "bold",
+					cellWidth: 70
+				}
+			}
+		});
+
+		// Jefe solicitante
+		autoTable(doc, {
+			theme: "grid",
+			headStyles: {
+				fillColor: backgroundCellColor,
+				textColor: textColor,
+				halign: "center",
+				lineColor
+			},
+			bodyStyles: {
+				lineColor
+			},
+			head: [
+				[
+					{
+						content: "JEFE SOLICITANTE",
+						colSpan: 4
+					}
+				]
+			],
+			body: [
+				["Nombre del jefe solicitante:", this.detalleSolicitudPrintRG.jefeSolicitante, "Cargo:", this.detalleSolicitudPrintRG.puesto],
+				["Justificación:", this.Comentario_Jefe_SolicitantePrint.comentario, "Fecha:", format(this.currentDatePrint, "dd/MM/yyyy")]
+			],
+			columnStyles: {
+				0: {
+					fontStyle: "bold",
+					cellWidth: 60
+				},
+				2: {
+					fontStyle: "bold",
+					cellWidth: 25
+				},
+				3: {
+					cellWidth: 25
+				}
+			}
+		});
+
+		// Log del flujo
+		autoTable(doc, {
+			theme: "grid",
+			headStyles: {
+				fillColor: backgroundCellColor,
+				textColor,
+				lineColor
+			},
+			bodyStyles: {
+				lineColor
+			},
+			head: [
+				[
+					{
+						content: "Log del flujo",
+						colSpan: 3
+					}
+				]
+			],
+			body: [
+				[
+					{
+						content: "Fecha",
+						styles: {
+							halign: "center",
+							textColor,
+							fontStyle: "bold"
+						}
+					},
+					{
+						content: "Acción",
+						styles: {
+							halign: "center",
+							textColor,
+							fontStyle: "bold"
+						}
+					},
+					{
+						content: "Responsable",
+						styles: {
+							halign: "center",
+							textColor,
+							fontStyle: "bold"
+						}
+					}
+				],
+				...this.dataAprobacionesPorPosicionPrint[this.keySelectedPrint].map(dataAprobador => ([format(new Date(dataAprobador.nivelAprobacionType.fechaCreacion), "dd/MM/yyyy"), dataAprobador.nivelAprobacionType.ruta, dataAprobador.aprobador.usuario === "" ? "No aplica" : dataAprobador.aprobador.usuario]))
+			],
+			columnStyles: {
+				0: {
+					cellWidth: 30,
+					halign: "center"
+				},
+				1: {
+					cellWidth: 75
+				},
+				2: {
+					cellWidth: 75
+				}
+			}
+		});
+
+		doc.save(`${this.solicitud.idSolicitud}-${format(new Date(), "dd-MM-yyyy")}.pdf`)
+	}
+
+	private exportarAccionPersonal(doc: jsPDF, esquinaDeHoja: any, tituloDeHoja: any, backgroundCellColor: [number, number, number], textColor: [number, number, number], lineColor: [number, number, number]): void {
+		const variableMaxima = Math.max(...[parseInt(this.modelPrint.sueldoAnual), parseInt(this.modelPrint.sueldoMensual), parseInt(this.modelPrint.sueldoSemestral), parseInt(this.modelPrint.sueldoTrimestral)]);
+		const variableMaximaPropuestos = Math.max(...[parseInt(this.modelPrintPropuestos.sueldoAnual), parseInt(this.modelPrintPropuestos.sueldoMensual), parseInt(this.modelPrintPropuestos.sueldoSemestral), parseInt(this.modelPrintPropuestos.sueldoTrimestral)]);
+
+		// Esquina de la hoja
+		autoTable(doc, esquinaDeHoja);
+
+		// Títutlo
+		autoTable(doc, tituloDeHoja);
+
+		// Encabezado de la solicitud
+		autoTable(doc, {
+			theme: "grid",
+			bodyStyles: {
+				lineColor
+			},
+			body: [
+				["Creado por:", this.solicitud.usuarioCreacion, "Fecha:", format(new Date(this.solicitud.fechaCreacion), "dd/MM/yyyy"), "Solicitud No:", this.solicitud.idSolicitud],
+			],
+			columnStyles: {
+				0: {
+					fontStyle: "bold",
+					halign: "right"
+				},
+				2: {
+					fontStyle: "bold",
+					halign: "right"
+				},
+				4: {
+					fontStyle: "bold",
+					halign: "right"
+				}
+			}
+		});
+
+		// Información
+		autoTable(doc, {
+			theme: "grid",
+			headStyles: {
+				fillColor: backgroundCellColor,
+				textColor,
+				halign: "center",
+				lineColor
+			},
+			bodyStyles: {
+				lineColor
+			},
+			head: [
+				[
+					{
+						content: "INFORMACIÓN",
+						colSpan: 4
+					}
+				]
+			],
+			body: [
+				[
+					{
+						content: "Nombre empleado"
+					},
+					{
+						content: this.modelPrint.nombreCompleto,
+						colSpan: 3
+					}
+				],
+				[
+					{
+						content: "ORIGEN",
+						colSpan: 2,
+						styles: {
+							textColor,
+							halign: "center"
+						}
+					},
+					{
+						content: "DESTINO",
+						colSpan: 2,
+						styles: {
+							textColor,
+							halign: "center"
+						}
+					}
+				],
+				["Fecha de ingreso:", format(new Date(this.modelPrint.fechaIngreso), "dd/MM/yyyy"), "Fecha de cambio:", format(new Date(this.modelPrintPropuestos.fechaIngreso), "dd/MM/yyyy")],
+				["Cargo:", this.modelPrint.descrPuesto, "Cargo:", this.modelPrintPropuestos.descrPuesto],
+				["Unidad:", this.modelPrint.unidadNegocio, "Unidad:", this.modelPrintPropuestos.unidadNegocio],
+				["Área/Departamento:", this.modelPrint.departamento, "Área/Departamento::", this.modelPrintPropuestos.departamento],
+				["Localidad:", this.modelPrint.localidad, "Localidad:", this.modelPrintPropuestos.localidad],
+				["Sueldo:", `$ ${parseInt(this.modelPrint.sueldo).toFixed(2)}`, "Sueldo:", `$ ${parseInt(this.modelPrintPropuestos.sueldo).toFixed(2)}`],
+				["Variable máxima:", `$ ${variableMaxima.toFixed(2)}`, "Variable máxima:", `$ ${variableMaximaPropuestos.toFixed(2)}`],
+				["Movilizavión:", this.detalleSolicitudPrint.movilizacion !== "" ? `$ ${parseInt(this.detalleSolicitudPrintPropuestos.movilizacion).toFixed(2)}` : "$ 0.00", "Movilización:", this.detalleSolicitudPrintPropuestos.movilizacion !== "" ? `$ ${parseInt(this.detalleSolicitudPrintPropuestos.movilizacion).toFixed(2)}` : "$ 0.00"],
+				["Alimentación:", this.detalleSolicitudPrint.alimentacion !== "" ? `$ ${parseInt(this.detalleSolicitudPrintPropuestos.alimentacion).toFixed(2)}` : "$ 0.00", "Alimentación:", this.detalleSolicitudPrintPropuestos.alimentacion !== "" ? `$ ${parseInt(this.detalleSolicitudPrintPropuestos.alimentacion).toFixed(2)}` : "$ 0.00"],
+				["Centro de Costos:", this.modelPrint.nomCCosto, "Centro de Costos:", this.modelPrintPropuestos.nomCCosto],
+				["Grupo de pago:", this.modelPrint.grupoPago, "Grupo de pago:", this.modelPrintPropuestos.grupoPago],
+				["Sucursal (Nómina):", this.modelPrint.sucursal, "Scursal (Nómina):", this.modelPrintPropuestos.sucursal],
+				["Distribución contable:", this.modelPrint.nomCCosto.split(";")[1], "Distribución Contable:", this.modelPrintPropuestos.nomCCosto.split(";")[1]]
+			],
+			columnStyles: {
+				0: {
+					fontStyle: "bold",
+					cellWidth: 40
+				},
+				1: {
+					cellWidth: 50
+				},
+				2: {
+					fontStyle: "bold",
+					cellWidth: 40
+				},
+				3: {
+					cellWidth: 50
+				}
+			}
+		});
+
+		// Descripción
+		autoTable(doc, {
+			theme: "grid",
+			headStyles: {
+				fillColor: backgroundCellColor,
+				textColor,
+				halign: "center",
+				lineColor
+			},
+			bodyStyles: {
+				lineColor
+			},
+			head: [
+				[
+					{
+						content: "DESCRIPCIÓN",
+						colSpan: 2
+					}
+				]
+			],
+			body: [
+				["Tipo de Acción:", this.solicitud.tipoAccion],
+				["Justificación:", this.modelPrint.justificacionCargo]
+			],
+			columnStyles: {
+				0: {
+					fontStyle: "bold",
+					cellWidth: 30
+				}
+			}
+		});
+
+		// Sección para recursos humanos
+		autoTable(doc, {
+			theme: "grid",
+			headStyles: {
+				fillColor: backgroundCellColor,
+				textColor,
+				halign: "center",
+				lineColor
+			},
+			bodyStyles: {
+				lineColor
+			},
+			head: [
+				[
+					{
+						content: "SECCIÓN PARA RECURSOS HUMANOS",
+						colSpan: 2
+					}
+				]
+			],
+			body: [
+				["Observaciones:", ""],
+				[
+					{
+						content: "",
+						colSpan: 2,
+						styles: {
+							minCellHeight: 20
+						}
+					}
+				],
+				[
+					{
+						content: "ACEPTACIÓN DEL EMPLEADO",
+						colSpan: 2,
+						styles: {
+							halign: "center"
+						}
+					}
+				]
+			],
+			columnStyles: {
+				0: {
+					fontStyle: "bold",
+					cellWidth: 30
+				}
+			}
+		});
+
+		// Log del flujo
+
+		// Log del flujo
+		autoTable(doc, {
+			theme: "grid",
+			headStyles: {
+				fillColor: backgroundCellColor,
+				textColor,
+				lineColor
+			},
+			bodyStyles: {
+				lineColor
+			},
+			head: [
+				[
+					{
+						content: "Log del flujo",
+						colSpan: 3
+					}
+				]
+			],
+			body: [
+				[
+					{
+						content: "Fecha",
+						styles: {
+							halign: "center",
+							textColor,
+							fontStyle: "bold"
+						}
+					},
+					{
+						content: "Acción",
+						styles: {
+							halign: "center",
+							textColor,
+							fontStyle: "bold"
+						}
+					},
+					{
+						content: "Responsable",
+						styles: {
+							halign: "center",
+							textColor,
+							fontStyle: "bold"
+						}
+					}
+				],
+				...this.dataAprobacionesPorPosicionPrint[this.keySelectedPrint].map(dataAprobador => ([format(new Date(dataAprobador.nivelAprobacionType.fechaCreacion), "dd/MM/yyyy"), dataAprobador.nivelAprobacionType.ruta, dataAprobador.aprobador.usuario === "" ? "No aplica" : dataAprobador.aprobador.usuario]))
+			],
+			columnStyles: {
+				0: {
+					cellWidth: 30,
+					halign: "center"
+				},
+				1: {
+					cellWidth: 75
+				},
+				2: {
+					cellWidth: 75
+				}
+			}
+		});
+
+		doc.save(`${this.solicitud.idSolicitud}-${format(new Date(), "dd-MM-yyyy")}.pdf`)
 	}
 }

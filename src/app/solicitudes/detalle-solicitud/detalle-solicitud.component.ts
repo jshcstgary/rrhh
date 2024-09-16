@@ -439,6 +439,7 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 		const hours = String(date.getHours()).padStart(2, '0');
 		const minutes = String(date.getMinutes()).padStart(2, '0');
 		const seconds = String(date.getSeconds()).padStart(2, '0');
+
 		return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 	}
 
@@ -842,13 +843,13 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 			},
 		});
 	}
+
 	totalRegistrosDetallesolicitud: number = 0;
 
 	getDetalleSolicitudById(id: any) {
 		return this.solicitudes.getDetalleSolicitudById(id).subscribe({
 			next: (response: any) => {
 				if (id.toUpperCase().includes("AP")) {
-					// this.viewInputs = response.detalleSolicitudType[0].codigo === "100" ? false : true;
 					this.viewInputs = !(response.detalleSolicitudType[0].codigo === "100");
 
 					this.totalRegistrosDetallesolicitud = response.totalRegistros;
@@ -1383,10 +1384,7 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 					}
 				},
 				error: (error: HttpErrorResponse) => {
-					this.utilService.modalResponse(
-						"No existen niveles de aprobación para este empleado",
-						"error"
-					);
+					this.utilService.modalResponse("No existen niveles de aprobación para este empleado", "error");
 				},
 			});
 		}
@@ -1439,27 +1437,18 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 	}
 
 	obtenerComentariosAtencionPorInstanciaRaiz() {
-
-		return this.solicitudes
-			.obtenerComentariosAtencionPorInstanciaRaiz(
-				this.solicitud.idInstancia + 'COMENT'
-			)
-			.subscribe({
-				next: (response) => {
-					this.dataComentariosAprobaciones.length = 0;
-					this.dataComentariosAprobacionesPorPosicion = response.variableType;
-					this.dataComentariosAprobaciones = this.filterDataComentarios(this.solicitud.idInstancia, 'RevisionSolicitud', 'comentariosAtencion');
-					this.dataComentariosAprobacionesRRHH = this.filterDataComentarios(this.solicitud.idInstancia, 'RequisicionPersonal', 'comentariosAtencionGerenteRRHH');
-					this.dataComentariosAprobacionesCREM = this.filterDataComentarios(this.solicitud.idInstancia, 'RequisicionPersonal', 'comentariosAtencionRemuneraciones');
-				},
-				error: (error: HttpErrorResponse) => {
-					this.utilService.modalResponse(
-						"No existe comentarios de aprobadores",
-						"error"
-					);
-				},
-			});
-
+		return this.solicitudes.obtenerComentariosAtencionPorInstanciaRaiz(`${this.solicitud.idInstancia}COMENT`).subscribe({
+			next: (response) => {
+				this.dataComentariosAprobaciones.length = 0;
+				this.dataComentariosAprobacionesPorPosicion = response.variableType;
+				this.dataComentariosAprobaciones = this.filterDataComentarios(this.solicitud.idInstancia, 'RevisionSolicitud', 'comentariosAtencion');
+				this.dataComentariosAprobacionesRRHH = this.filterDataComentarios(this.solicitud.idInstancia, 'RequisicionPersonal', 'comentariosAtencionGerenteRRHH');
+				this.dataComentariosAprobacionesCREM = this.filterDataComentarios(this.solicitud.idInstancia, 'RequisicionPersonal', 'comentariosAtencionRemuneraciones');
+			},
+			error: (error: HttpErrorResponse) => {
+				this.utilService.modalResponse("No existe comentarios de aprobadores", "error");
+			},
+		});
 	}
 
 	filterDataComentarios(idInstancia: string, taskKey: string, name: string) {

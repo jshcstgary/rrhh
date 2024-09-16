@@ -90,7 +90,7 @@ export const ConsultaSolicitudesData: IConsultaSolicitudesData = {
 				{
 					materialIcon: "print",
 					id: "redirect",
-					tooltip: "Imprimir reporte",
+					tooltip: "Formulario",
 					showed: true
 				},
 				{

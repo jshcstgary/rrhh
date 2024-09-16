@@ -191,7 +191,8 @@
 							<div class="input-group mb-3 align-item-center">
 								<label class="input-group-text text-start label-estilo" for="misioncargo">Misión del cargo <span style="color: red">*</span></label>
 
-								<input type="text" name="misioncargo" placeholder="Campo obligatorio" [(ngModel)]="model.misionCargo" class="form-control" id="misioncargo" #misioncargo="ngModel" required />
+								<!-- <input type="text" name="misioncargo" placeholder="Campo obligatorio" [(ngModel)]="model.misionCargo" class="form-control" id="misioncargo" #misioncargo="ngModel" required /> -->
+								<textarea class="form-control" id="misioncargo" name="misioncargo" placeholder="Campo obligatorio" [(ngModel)]="model.misionCargo" style="color: black; font-size: 14px" required #justificacion="ngModel"></textarea>
 							</div>
 						</div>
 					</div>
