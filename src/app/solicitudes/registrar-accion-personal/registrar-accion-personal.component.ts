@@ -20,7 +20,7 @@ import { environment, portalWorkFlow } from "../../../environments/environment";
 import { CompleteTaskComponent } from "../general/complete-task.component";
 import { SolicitudesService } from "../registrar-solicitud/solicitudes.service";
 
-import { addDays } from "date-fns";
+import { endOfMonth, startOfMonth } from "date-fns";
 import { PageCodes } from "src/app/enums/codes.enum";
 import { LocalStorageKeys } from "src/app/enums/local-storage-keys.enum";
 import {
@@ -143,8 +143,8 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
 	public tipo_solicitud_descripcion: string;
 	public tipo_motivo_descripcion: string;
 	public tipo_accion_descripcion: string;
-	public minDateValidation = new Date();
-	public maxDateValidation = addDays(new Date(), 30);
+	public minDateValidation = startOfMonth(new Date());
+	public maxDateValidation = endOfMonth(new Date());
 
 	public keySelected: any;
 
@@ -604,7 +604,7 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
 		return this.solicitudes.getSolicitudById(id).subscribe({
 			next: (response: any) => {
 				this.solicitud = response;
-				this.minDateValidation = this.solicitud.fechaCreacion;
+				// this.minDateValidation = this.solicitud.fechaCreacion;
 
 				this.model.codigo = this.solicitud.idSolicitud;
 				this.model.idEmpresa = this.solicitud.idEmpresa;

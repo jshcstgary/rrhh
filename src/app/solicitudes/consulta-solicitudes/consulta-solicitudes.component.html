@@ -1,6 +1,6 @@
 <div class="row">
 	<div class="col-12">
-		<div class="card data-container">
+		<div class="card data-container m-0">
 			<div class="card-body border-top">
 				<ul ngbNav #nav="ngbNav" [(activeId)]="active" class="nav-pills">
 					<li [ngbNavItem]="1">
@@ -65,6 +65,16 @@
 										</div>
 									</div>
 
+									<div *ngIf="controlsPermissions[pageControlPermission.FiltroEstado].visualizar" class="col-md-3">
+										<div class="mb-3">
+											<label class="azul">Estado</label>
+
+											<ng-select #inputSelectTrabajador [disabled]="!controlsPermissions[pageControlPermission.FiltroEstado].habilitar || searchInputFilter !== ''" [(ngModel)]="dataFilterSolicitudes.estado" name="id_trabajador" placeholder="Seleccione">
+												<ng-option *ngFor="let data of data_estado" [value]="data.codigo">{{ data.descripcion }}</ng-option>
+											</ng-select>
+										</div>
+									</div>
+
 									<div [hidden]="!controlsPermissions[pageControlPermission.FiltroFechaDesde].visualizar" class="col-md-3">
 										<div class="mb-3">
 											<label class="azul">Fecha Creación Desde</label>
@@ -93,20 +103,14 @@
 										</div>
 									</div>
 
-									<div *ngIf="controlsPermissions[pageControlPermission.FiltroEstado].visualizar" class="col-md-3">
-										<div class="mb-3">
-											<label class="azul">Estado</label>
-
-											<ng-select #inputSelectTrabajador [disabled]="!controlsPermissions[pageControlPermission.FiltroEstado].habilitar || searchInputFilter !== ''" [(ngModel)]="dataFilterSolicitudes.estado" name="id_trabajador" placeholder="Seleccione">
-												<ng-option *ngFor="let data of data_estado" [value]="data.codigo">{{ data.descripcion }}</ng-option>
-											</ng-select>
-										</div>
-									</div>
-
 									<div class="col-md-3">
 										<div class="mb-3">
 											<div class="text-end">
 												<button #buttonSearch *ngIf="controlsPermissions[pageControlPermission.ButtonBuscar].visualizar" (click)="filterDataTable()" type="submit" class="btn btn-info me-2"><i class="fas fa-filter"></i> Buscar</button>
+
+												<button type="button" *ngIf="controlsPermissions[pageControlPermission.ButtonAgregar].visualizar" (click)="mostrarModalCrearSolicitudes()" class="btn btn-info me-2"><i class="fas fa-plus"></i> Agregar</button>
+
+												<a type="button" class="btn btn-primary" *ngIf="mostrarBotonesAdmin()" routerLink="/solicitudes/reasignar-tareas-usuarios" role="button"> <i class="fas fa-redo"></i> Reasignar </a>
 											</div>
 										</div>
 									</div>
@@ -130,28 +134,6 @@
 							</ng-template>
 
 							<form>
-								<div class="row">
-									<div class="col-md-4"></div>
-
-									<div class="col-md-8">
-										<div class="mb-3">
-											<div class="d-flex align-items-center justify-content-end gap-3">
-												<button type="button" *ngIf="controlsPermissions[pageControlPermission.ButtonAgregar].visualizar" (click)="mostrarModalCrearSolicitudes()" class="btn btn-info me-2"><i class="fas fa-plus"></i> Agregar</button>
-
-												<a class="btn btn-primary" *ngIf="mostrarBotonesAdmin()" routerLink="/solicitudes/reasignar-tareas-usuarios" role="button"> <i class="fas fa-redo"></i> Reasignar </a>
-
-												<!-- <button type="button" *ngIf="controlsPermissions[pageControlPermission.ButtonReasignar].visualizar" (click)="pageCrear()" class="btn btn-info me-2">
-													<i class="fas fa-redo"></i> Reasignar
-												</button> -->
-
-												<!-- <button type="submit" *ngIf="false" [disabled]="dataTable.length === 0" class="btn btn-outline-info me-2">
-													<i class="fas fa-file-excel"></i> Exportar
-												</button> -->
-											</div>
-										</div>
-									</div>
-								</div>
-
 								<!-- <div class="row">
 									<div class="col-md-4">
 										<dropdown-component *ngIf="mostrarBotonesAdmin()" [options]="dropdownOptionsExport" textButton="Exportar bitácora de selección" [buttonClasses]="['btn-outline-info']" [iconButton]="'fas fa-file-pdf'" [contexto]="this" onDropDownClickFunction="isAnyRowCheckedInTable"></dropdown-component>
@@ -167,7 +149,7 @@
 								</div> -->
 							</form>
 
-							<plantilla-c-component [fixedLastColumnOnTable]="true" overflowX="auto" tableWidth="250%" [dataFilterNivelesAprobacion]="dataFilterNivelesAprobacion" [dataTipoMotivo]="dataTipoMotivo" [dataTipoSolicitudes]="dataTipoSolicitudes" [dataNivelDireccion]="dataNivelDireccion" [dataTipoAccion]="dataTipoAccion" [selected_empresa]="selected_empresa" [selected_producto]="selected_producto" [selected_tipo_solicitud]="selected_tipo_solicitud" [selected_estado]="selected_estado" [data_empresas]="data_empresas" [data_productos]="dataUnidadesNegocio" [data_estado]="data_estado" [model]="model" *ngIf="hasFiltered" [columnsTable]="columnsTable" [originalDataTable]="dataTable" [placeholderHeaderInputText]="'Buscar niveles de aprobacion...'" [contexto]="this" keyNameTable="id" clickOnActionRow="onRowActionClicked" clickOnFilter="filterDataTable" clickOnMostrarModalCrearSolicitudes="mostrarModalCrearSolicitudes" clickOnToggleDisabled="toggleDisabled" clickOnPageCrear="pageCrear" [IdRowToClone]="IdRowToClone" colIdToDisable="id" titleReport="NIVELES DE APROBACION" [codigoReport]="codigoReporte"></plantilla-c-component>
+							<plantilla-c-component [fixedFirstColumnOnTable]="true" [fixedLastColumnOnTable]="true" overflowX="auto" tableWidth="250%" [dataFilterNivelesAprobacion]="dataFilterNivelesAprobacion" [dataTipoMotivo]="dataTipoMotivo" [dataTipoSolicitudes]="dataTipoSolicitudes" [dataNivelDireccion]="dataNivelDireccion" [dataTipoAccion]="dataTipoAccion" [selected_empresa]="selected_empresa" [selected_producto]="selected_producto" [selected_tipo_solicitud]="selected_tipo_solicitud" [selected_estado]="selected_estado" [data_empresas]="data_empresas" [data_productos]="dataUnidadesNegocio" [data_estado]="data_estado" [model]="model" *ngIf="hasFiltered" [columnsTable]="columnsTable" [originalDataTable]="dataTable" [placeholderHeaderInputText]="'Buscar niveles de aprobacion...'" [contexto]="this" keyNameTable="id" clickOnActionRow="onRowActionClicked" clickOnFilter="filterDataTable" clickOnMostrarModalCrearSolicitudes="mostrarModalCrearSolicitudes" clickOnToggleDisabled="toggleDisabled" clickOnPageCrear="pageCrear" [IdRowToClone]="IdRowToClone" colIdToDisable="id" titleReport="NIVELES DE APROBACION" [codigoReport]="codigoReporte"></plantilla-c-component>
 						</ng-template>
 					</li>
 				</ul>

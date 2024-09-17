@@ -9,6 +9,7 @@ import {
 	IAprobacionesPosicion,
 	ITareasResponse,
 } from "./registrar-solicitudes.interface";
+import { convertTimeZonedDate } from "src/app/services/util/dates.util";
 
 const httpOptions = {
 	headers: new HttpHeaders({
@@ -50,9 +51,7 @@ export class SolicitudesService {
 	}
 
 	public getDetalleSolicitudById(idSolicitud: any): Observable<any> {
-		return this.http.get<any>(
-			`${this.apiUrlSolicitudes}/detalle-solicitud/${idSolicitud}`
-		);
+		return this.http.get<any>(`${this.apiUrlSolicitudes}/detalle-solicitud/${idSolicitud}`);
 	}
 
 	public getDetalleSolicitud(): Observable<any> {
@@ -94,76 +93,23 @@ export class SolicitudesService {
 	}
 
 	public actualizarDetalleSolicitud(request: any): Observable<any> {
-		return this.http.put<any>(
-			this.apiUrlSolicitudes + "/detalle-solicitud",
-			request
-		);
+		return this.http.put<any>(this.apiUrlSolicitudes + "/detalle-solicitud", request);
 	}
 
 	public guardarDetalleSolicitud(request: any): Observable<any> {
-		return this.http.post<any>(
-			this.apiUrlSolicitudes + "/detalle-solicitud",
-			request
-		);
+		return this.http.post<any>(this.apiUrlSolicitudes + "/detalle-solicitud", request);
 	}
 
-	public getNivelesAprobacion(
-		idTipoSolicitud: any,
-		idTipoMotivo: any,
-		idNivelDireccion: any
-	): Observable<any> {
-		return this.http.get<any>(
-			`${this.apiUrlNivelAprobacion}/${idTipoSolicitud}/${idTipoMotivo}/${idNivelDireccion}`
-		);
+	public getNivelesAprobacion(idTipoSolicitud: any, idTipoMotivo: any, idNivelDireccion: any): Observable<any> {
+		return this.http.get<any>(`${this.apiUrlNivelAprobacion}/${idTipoSolicitud}/${idTipoMotivo}/${idNivelDireccion}`);
 	}
 
 
 	public guardarDetallesAprobacionesSolicitud(request: any): Observable<any> {
-		return this.http.post<any>(
-			this.apiDetalleAprobaciones,
-			request
-		);
+		return this.http.post<any>(this.apiDetalleAprobaciones, request);
 	}
 
-
-	/*
-  
-  
-	const headers = new HttpHeaders({
-		idNivelDireccion: idNivelDireccion,
-	  });
-	  console.log("Headers: ", headers);
-	  return this.http.get<IConsultaNivelesAprobacionResponse>(
-		`${this.apiUrlNivelAprobacion}/aprobacionesporfiltro/${idTipoSolicitud}/${idTipoMotivo}`,
-		{ headers: headers }
-	  );
-  
-  
-	*/
-
-	/*
-		const queConsulta: string = 'Tecnico/Asistencia';
-		const headers = new HttpHeaders().set('IdNivelDireccion', queConsulta);
-
-		const myObject: any = { this: 'thisThing', that: 'thatThing', other: 'otherThing', filter: 'A' };
-		const httpParams: HttpParamsOptions = { fromObject: myObject } as HttpParamsOptions;
-
-		const options = { params: new HttpParams(httpParams), headers: headers };
-
-		this.httpClient.get<any>('https://server:port/api/endpoint', options)
-		  .subscribe((data: any) => {
-			  this.localvar = data;
-		});
-
-	*/
-
-	public obtenerAprobacionesPorPosicion(
-		idTipoSolicitud: any,
-		idTipoMotivo: any,
-		codigoPosicion: any,
-		idNivelDireccion: any,
-		filtro: string
-	): Observable<IAprobacionesPosicion> {
+	public obtenerAprobacionesPorPosicion(idTipoSolicitud: any, idTipoMotivo: any, codigoPosicion: any, idNivelDireccion: any, filtro: string): Observable<IAprobacionesPosicion> {
 		const headers = new HttpHeaders({
 			idNivelDireccion: idNivelDireccion,
 		});
@@ -175,6 +121,7 @@ export class SolicitudesService {
 			IdNivelDireccion: idNivelDireccion,
 			filter: filtro
 		};
+
 		const httpParams: HttpParamsOptions = { fromObject: myObject } as HttpParamsOptions;
 
 		return this.http.get<IAprobacionesPosicion>(`${this.apiUrlNivelAprobacion}/aprobacionesporposicion`, {
@@ -222,9 +169,7 @@ export class SolicitudesService {
 	public obtenerComentariosAtencionPorInstanciaRaiz(
 		idDeInstanciaRaiz: string
 	): Observable<any> {
-		return this.http.get<any>(
-			`${this.apiHistoricaCamundaUrl}/variable/${idDeInstanciaRaiz}`
-		);
+		return this.http.get<any>(`${this.apiHistoricaCamundaUrl}/variable/${idDeInstanciaRaiz}`);
 	}
 
 	public getDataNivelesAprobacionPorCodigoPosicion(

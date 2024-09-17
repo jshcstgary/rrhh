@@ -65,10 +65,8 @@ export class ConsultaTareasComponent implements OnInit {
 	public dataTable: any[] = [];
 
 	// public tableInputsEditRow: IInputsComponent = ConsultaSolicitudesData.tableInputsEditRow;
-	public colsToFilterByTextIdSolicitud: string[] =
-		ConsultaTareasData.colsToFilterByTextIdSolicitud;
-	public colsToFilterByTextName: string[] =
-		ConsultaTareasData.colsToFilterByTextName;
+	public colsToFilterByTextIdSolicitud: string[] = ConsultaTareasData.colsToFilterByTextIdSolicitud;
+	public colsToFilterByTextName: string[] = ConsultaTareasData.colsToFilterByTextName;
 	public isFilterByIdSolicitud: boolean = true;
 	public IdRowToClone: string = null;
 	// public defaultEmptyRowTable: ITiporutaTable = ConsultaSolicitudesData.defaultEmptyRowTable;
@@ -178,16 +176,15 @@ export class ConsultaTareasComponent implements OnInit {
 	}
 
 	private getDataToTable() {
-		this.utilService.openLoadingSpinner(
-			"Cargando información. Espere por favor..."
-		);
+		this.utilService.openLoadingSpinner("Cargando información. Espere por favor...");
 
 		this.starterService.getUser(sessionStorage.getItem(LocalStorageKeys.IdUsuario)!).subscribe({
 			next: (res) => {
 				return this.consultaTareasService.getTareasUsuario(res.evType[0].subledger).subscribe({
 					next: (response) => {
 						this.dataTable = response.solicitudes.map((item) => ({
-							idSolicitud: item.idSolicitud + "," + item.rootProcInstId,
+							// idSolicitud: item.idSolicitud + "," + item.rootProcInstId,
+							idSolicitud: item.idSolicitud,
 							startTime: item.startTime.toString().split(" ")[0],
 							name: item.name,
 							tipoSolicitud: item.tipoSolicitud,

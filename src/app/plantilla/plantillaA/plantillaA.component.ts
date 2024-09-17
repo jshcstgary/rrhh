@@ -211,6 +211,9 @@ export class PlantillaAComponent implements AfterViewInit, OnInit, OnChanges {
 				return value;
 			}));
 
+		console.log(formato, this.codigoReport, 
+			
+		);
 		this.utilService.generateReport(formato, this.codigoReport, this.titleReport, headerTitles, bodyReport);
 	}
 

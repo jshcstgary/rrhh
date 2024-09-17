@@ -1086,8 +1086,7 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 	}
 
 	private printForm(idPrint: string) {
-		this.utilService.openLoadingSpinner("Obteniendo datos...");
-		debugger;
+		this.utilService.openLoadingSpinner("Generando reporte...");
 
 		if (!idPrint.toUpperCase().includes("AP") && !idPrint.toUpperCase().includes("DP")) {
 			this.getCandidatoValues(idPrint);
@@ -1099,7 +1098,6 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 	private getSolicitudById(idPrint: any) {
 		return this.solicitudes.getSolicitudById(idPrint).subscribe({
 			next: (response: any) => {
-				debugger;
 				this.solicitud = response;
 
 				if (this.solicitud.tipoAccion.toUpperCase().includes("ASIGNA")) {
@@ -1123,7 +1121,6 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 	private getDetalleSolicitudById(idPrint: any) {
 		return this.solicitudes.getDetalleSolicitudById(idPrint).subscribe({
 			next: (response: any) => {
-				debugger;
 				if (idPrint.toUpperCase().includes("AP")) {
 					this.viewInputs = !(response.detalleSolicitudType[0].codigo === "100");
 
@@ -1271,6 +1268,8 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 				if (!this.dataAprobacionesPorPosicionPrint[this.keySelectedPrint]) {
 					this.getNivelesAprobacion(idPrint);
 					// this.obtenerComentariosAtencionPorInstanciaRaiz();
+				// } else {
+				// 	this.exportar();
 				}
 
 				// this.mantenimientoService.getCatalogo("RBPTF").subscribe({
@@ -1291,7 +1290,6 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 		if (this.solicitud !== null) {
 			this.solicitudes.obtenerNivelesAprobacionRegistrados(idPrint).subscribe({
 				next: (response) => {
-					debugger;
 					this.dataAprobacionesPorPosicionPrint = {
 						[this.keySelectedPrint]: response.nivelAprobacionPosicionType
 					}
@@ -1308,7 +1306,6 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 	private getComentarios() {
 		this.comentarioSalidaJefeService.obtenerComentarios(this.detalleSolicitudPrintRG.idSolicitud).subscribe({
 			next: ({ comentarios }) => {
-				debugger;
 				comentarios.forEach(comentario => {
 					if (comentario.tipo_Solicitud === "Comentario_Salida_Jefe") {
 						this.comentariosJefeInmediatoPrint = comentario;
@@ -1325,7 +1322,6 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 	private obtenerComentariosAtencionPorInstanciaRaiz(idPrint) {
 		return this.solicitudes.obtenerComentariosAtencionPorInstanciaRaiz(`${this.solicitud.idInstancia}COMENT`).subscribe({
 			next: (response) => {
-				debugger;
 				this.dataComentariosAprobacionesPrint.length = 0;
 				this.dataComentariosAprobacionesPrintPorPosicion = response.variableType;
 				this.dataComentariosAprobacionesPrint = this.filterDataComentarios(this.solicitud.idInstancia, 'RevisionSolicitud', 'comentariosAtencion');
@@ -1334,7 +1330,6 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 
 				this.mantenimientoService.getCatalogo("RBPTF").subscribe({
 					next: (response) => {
-						debugger;
 						this.optionPrint = response.itemCatalogoTypes.find(({ codigo }) => codigo === this.selectedOptionPrint);
 
 						this.obtenerServicioFamiliaresCandidatos(idPrint);
@@ -1401,15 +1396,18 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 	obtenerServicioFamiliaresCandidatos(idPrint: string) {
 		return this.mantenimientoService.getFamiliaresCandidatoBySolicitud(idPrint).subscribe({
 			next: (response) => {
-				debugger;
 				const data = response?.familiaresCandidato || [];
 
 				this.dataTableDatosFamiliaresPrint = data.filter((d) => d.idSolicitud === idPrint);
 
-				this.dataTableDatosFamiliaresPrint = this.dataTableDatosFamiliaresPrint.map(dataFamiliar => ({
-					...dataFamiliar,
-					fechaCreacion: format(new Date(dataFamiliar.fechaCreacion as string), "dd/MM/yyyy")
-				}));
+				this.dataTableDatosFamiliaresPrint = this.dataTableDatosFamiliaresPrint.map(dataFamiliar => {
+					console.log(dataFamiliar.fechaCreacion);
+
+					return {
+						...dataFamiliar,
+						fechaCreacion: format(new Date(dataFamiliar.fechaCreacion), "dd/MM/yyyy")
+					};
+				});
 
 				this.exportar();
 			},
@@ -2288,7 +2286,7 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 				]
 			],
 			body: [
-				["Apellidos y nombres:", this.nombreCompletoCandidatoPrint, "Fecha de ingreso:", "dd/MM/yyyy"]
+				["Apellidos y nombres:", this.nombreCompletoCandidatoPrint, "Fecha de ingreso:", format(new Date(this.modelPrintRG.fechaIngreso), "dd/MM/yyyy")]
 			],
 			columnStyles: {
 				0: {
@@ -2356,8 +2354,8 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 					}
 				],
 				["Compañía:", this.modelPrint.compania, this.modelPrintRG.compania],
-				["Sueldo:", this.modelPrint.sueldo, this.modelPrintRG.sueldo],
-				["Variable Máxima:", variableMaxima, variableMaximaRG],
+				["Sueldo:", `$ ${parseFloat(this.modelPrint.sueldo).toFixed(2)}`, `$ ${parseFloat(this.modelPrintRG.sueldo).toFixed(2)}`],
+				["Variable Máxima:", `$ ${variableMaxima.toFixed(2)}`, `$ ${variableMaximaRG.toFixed(2)}`],
 				["Remuneración Total:", "", ""],
 				["Cargo:", this.modelPrint.descrPosicion, this.modelPrintRG.descrPosicion],
 				["Departamento:", this.modelPrint.departamento, this.modelPrintRG.departamento],
@@ -2488,7 +2486,7 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 				]
 			],
 			body: [
-				["Nombre del jefe solicitante:", this.detalleSolicitudPrintRG.jefeSolicitante, "Cargo:", this.detalleSolicitudPrintRG.puesto],
+				["Nombre del jefe solicitante:", this.detalleSolicitudPrintRG.nombreJefeSolicitante, "Cargo:", this.detalleSolicitudPrintRG.puesto],
 				["Justificación:", this.Comentario_Jefe_SolicitantePrint.comentario, "Fecha:", format(this.currentDatePrint, "dd/MM/yyyy")]
 			],
 			columnStyles: {
@@ -2605,6 +2603,7 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 				}
 			}
 		});
+		console.log(this.modelPrint.sueldo);
 
 		// Información
 		autoTable(doc, {
@@ -2654,12 +2653,12 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 						}
 					}
 				],
-				["Fecha de ingreso:", format(new Date(this.modelPrint.fechaIngreso), "dd/MM/yyyy"), "Fecha de cambio:", format(new Date(this.modelPrintPropuestos.fechaIngreso), "dd/MM/yyyy")],
+				["Fecha de ingreso:", format(new Date(this.modelPrint.fechaIngreso), "dd/MM/yyyy"), "Fecha de cambio:", this.modelPrintPropuestos.fechaIngreso === "" || this.modelPrintPropuestos.fechaIngreso === undefined || this.modelPrintPropuestos.fechaIngreso === null ? "" : format(new Date(this.modelPrintPropuestos.fechaIngreso), "dd/MM/yyyy")],
 				["Cargo:", this.modelPrint.descrPuesto, "Cargo:", this.modelPrintPropuestos.descrPuesto],
 				["Unidad:", this.modelPrint.unidadNegocio, "Unidad:", this.modelPrintPropuestos.unidadNegocio],
 				["Área/Departamento:", this.modelPrint.departamento, "Área/Departamento::", this.modelPrintPropuestos.departamento],
 				["Localidad:", this.modelPrint.localidad, "Localidad:", this.modelPrintPropuestos.localidad],
-				["Sueldo:", `$ ${parseInt(this.modelPrint.sueldo).toFixed(2)}`, "Sueldo:", `$ ${parseInt(this.modelPrintPropuestos.sueldo).toFixed(2)}`],
+				["Sueldo:", this.modelPrint.sueldo === "" ? "$ 0.00" : `$ ${parseInt(this.modelPrint.sueldo).toFixed(2)}`, "Sueldo:", this.modelPrintPropuestos.sueldo === "" ? "$ 0.00" : `$ ${parseInt(this.modelPrintPropuestos.sueldo).toFixed(2)}`],
 				["Variable máxima:", `$ ${variableMaxima.toFixed(2)}`, "Variable máxima:", `$ ${variableMaximaPropuestos.toFixed(2)}`],
 				["Movilizavión:", this.detalleSolicitudPrint.movilizacion !== "" ? `$ ${parseInt(this.detalleSolicitudPrintPropuestos.movilizacion).toFixed(2)}` : "$ 0.00", "Movilización:", this.detalleSolicitudPrintPropuestos.movilizacion !== "" ? `$ ${parseInt(this.detalleSolicitudPrintPropuestos.movilizacion).toFixed(2)}` : "$ 0.00"],
 				["Alimentación:", this.detalleSolicitudPrint.alimentacion !== "" ? `$ ${parseInt(this.detalleSolicitudPrintPropuestos.alimentacion).toFixed(2)}` : "$ 0.00", "Alimentación:", this.detalleSolicitudPrintPropuestos.alimentacion !== "" ? `$ ${parseInt(this.detalleSolicitudPrintPropuestos.alimentacion).toFixed(2)}` : "$ 0.00"],

@@ -1,29 +1,3 @@
-<plantilla-d-component
-  [dataFilterNivelesAprobacion]="dataFilterNivelesAprobacion"
-  [dataTipoMotivo]="dataTipoMotivo"
-  [dataTipoSolicitudes]="dataTipoSolicitudes"
-  [dataNivelDireccion]="dataNivelDireccion"
-  *ngIf="hasFiltered"
-  [columnsTable]="columnsTable"
-  [originalDataTable]="dataTable"
-  [placeholderHeaderInputText]="'Buscar por número de solicitud...'"
-  [contexto]="this"
-  keyNameTable="id"
-  [colsToFilterByTextIdSolicitud]="colsToFilterByTextIdSolicitud"
-  [colsToFilterByTextName]="colsToFilterByTextName"
-  [isFilterByIdSolicitud]="isFilterByIdSolicitud"
-  clickOnActionRow="onRowActionClicked"
-  [isTarea]="isTarea"
-  clickOnFilter="filterDataTable"
-  clickOnPageCrear="pageCrear"
-  [IdRowToClone]="IdRowToClone"
-  colIdToDisable="id"
-  titleReport="Tareas"
-  [codigoReport]="codigoReporte"
-  [showAddButton]="false"
-  [showFilterSolicitudTarea]="true"
-  [disabledSolicitudTareaFilter]="false"
-  [showButtonExportar]="false"
-  [showButtonInfo]="this.controlsPermissions[pageControlPermission.ButtonInfo].visualizar"
->
-</plantilla-d-component>
+<div class="mt-4"></div>
+
+<plantilla-d-component [dataFilterNivelesAprobacion]="dataFilterNivelesAprobacion" [dataTipoMotivo]="dataTipoMotivo" [dataTipoSolicitudes]="dataTipoSolicitudes" [dataNivelDireccion]="dataNivelDireccion" *ngIf="hasFiltered" [columnsTable]="columnsTable" [originalDataTable]="dataTable" [placeholderHeaderInputText]="'Buscar por número de solicitud...'" [contexto]="this" keyNameTable="id" [colsToFilterByTextIdSolicitud]="colsToFilterByTextIdSolicitud" [colsToFilterByTextName]="colsToFilterByTextName" [isFilterByIdSolicitud]="isFilterByIdSolicitud" clickOnActionRow="onRowActionClicked" [isTarea]="isTarea" clickOnFilter="filterDataTable" clickOnPageCrear="pageCrear" [IdRowToClone]="IdRowToClone" colIdToDisable="id" titleReport="Tareas" [codigoReport]="codigoReporte" [showAddButton]="false" [showFilterSolicitudTarea]="true" [disabledSolicitudTareaFilter]="false" [showButtonExportar]="false" [showButtonInfo]="this.controlsPermissions[pageControlPermission.ButtonInfo].visualizar"> </plantilla-d-component>

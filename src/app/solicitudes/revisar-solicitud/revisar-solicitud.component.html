@@ -1399,12 +1399,12 @@
 						</div>
 					</div>
 
-					<div class="row">
+					<div class="row" *ngIf="!existeMatenedores">
 						<div class="col-md-12">
 							<div class="input-group mb-3 align-items-center">
-								<label *ngIf="!existeMatenedores" class="input-group-text text-start label-estilo2" for="desicion">Decisión a tomar</label>
+								<label class="input-group-text text-start label-estilo2" for="desicion">Decisión a tomar</label>
 
-								<div *ngIf="!existeMatenedores" class="d-flex gap-3" role="group" aria-label="Basic example" id="desicion">
+								<div class="d-flex gap-3" role="group" aria-label="Basic example" id="desicion">
 									<button type="button" class="btn" (click)="process('aprobar')" [ngClass]="{ 'btn-primary btn-unselected': !isSelected('aprobar'), 'btn-selected': isSelected('aprobar') }" value="aprobar">Aprobar</button>
 
 									<button type="button" class="btn" [ngClass]="{ 'btn-primary btn-unselected': !isSelected('devolver'), 'btn-selected': isSelected('devolver') }" (click)="process('devolver')" value="devolver">Devolver</button>
@@ -1417,12 +1417,12 @@
 						</div>
 					</div>
 
-					<div class="row">
+					<div class="row" *ngIf="!existeMatenedores">
 						<div class="col-md-12">
 							<div class="input-group mb-3 align-items-center">
-								<label *ngIf="!existeMatenedores" class="input-group-text text-start label-estilo2" for="observacion">{{ observaciontexto }}</label>
+								<label class="input-group-text text-start label-estilo2" for="observacion">{{ observaciontexto }}</label>
 
-								<textarea *ngIf="!existeMatenedores" [(ngModel)]="textareaContent" id="observacion" name="observacion" #observacion="ngModel" [required]="isRequired" style="color: black; font-size: 14px" [placeholder]="campoObligatorio"></textarea>
+								<textarea [(ngModel)]="textareaContent" id="observacion" name="observacion" #observacion="ngModel" [required]="isRequired" style="color: black; font-size: 14px" [placeholder]="campoObligatorio"></textarea>
 							</div>
 						</div>
 					</div>

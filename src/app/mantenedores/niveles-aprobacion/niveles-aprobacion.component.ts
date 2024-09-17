@@ -385,7 +385,8 @@ export class NivelesAprobacionComponent implements OnInit {
 						id: r.id,
 						descripcion: r.tipoSolicitud,
 						codigoTipoSolicitud: r.codigoTipoSolicitud
-					}));
+					}))
+					.sort((a, b) => a.descripcion.toUpperCase().localeCompare(b.descripcion.toUpperCase()));
 			},
 			error: (error: HttpErrorResponse) => {
 				this.utilService.modalResponse(error.error, "error");
@@ -412,8 +413,9 @@ export class NivelesAprobacionComponent implements OnInit {
 					.map((r) => ({
 						id: r.id,
 						descripcion: r.tipoMotivo,
-					}));
-			},
+					}))
+					.sort((a, b) => a.descripcion.toUpperCase().localeCompare(b.descripcion.toUpperCase()));
+				},
 			error: (error: HttpErrorResponse) => {
 				this.utilService.modalResponse(error.error, "error");
 			},
@@ -429,8 +431,9 @@ export class NivelesAprobacionComponent implements OnInit {
 					.map((r) => ({
 						id: r.id,
 						descripcion: r.tipoRuta,
-					}));
-			},
+					}))
+					.sort((a, b) => a.descripcion.toUpperCase().localeCompare(b.descripcion.toUpperCase()));
+				},
 			error: (error: HttpErrorResponse) => {
 				this.utilService.modalResponse(error.error, "error");
 			},
@@ -445,8 +448,9 @@ export class NivelesAprobacionComponent implements OnInit {
 					.map((r) => ({
 						id: r.id,
 						descripcion: r.accion,
-					}));
-			},
+					}))
+					.sort((a, b) => a.descripcion.toUpperCase().localeCompare(b.descripcion.toUpperCase()));
+				},
 			error: (error: HttpErrorResponse) => {
 				this.utilService.modalResponse(error.error, "error");
 			},

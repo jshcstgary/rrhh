@@ -30,10 +30,13 @@ export class InputService {
 	 * @returns Un array de opciones de selección con etiquetas y valores extraídos de los objetos de entrada.
 	 */
 	public formatDataToOptionsValueInLabel<T>(data: T[], labelName: keyof T, valueName: keyof T): ISelectOptions {
-		return data.map((x) => ({
-			label: x.hasOwnProperty(labelName) ? String(`${String(x[valueName])} - ${String(x[labelName])}`) : "",
-			value: x.hasOwnProperty(valueName) ? String(x[valueName]) : "",
-		}));
+		return data
+			.map((x) => ({
+				// label: x.hasOwnProperty(labelName) ? String(`${String(x[valueName])} - ${String(x[labelName])}`) : "",
+				label: x.hasOwnProperty(labelName) ? String(x[labelName]) : "",
+				value: x.hasOwnProperty(valueName) ? String(x[valueName]) : "",
+			}))
+			.sort((a, b) => a.label.toUpperCase().localeCompare(b.label.toUpperCase()));
 	}
 	/**
 	 * Convierte un array de objetos en un array de opciones de selección.

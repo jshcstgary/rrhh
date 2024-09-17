@@ -162,9 +162,7 @@ export class MantenimientoService {
 	}
 
 	public getFamiliaresCandidatoBySolicitud(idSolicitud: string): Observable<FamiliaresCandidatosService> {
-		return this.http.get<FamiliaresCandidatosService>(
-			`${this.apiFamiliaresCandidato}/${idSolicitud}`
-		);
+		return this.http.get<FamiliaresCandidatosService>(`${this.apiFamiliaresCandidato}/${idSolicitud}`);
 	}
 
 	public guardarFamiliaresCandidato(

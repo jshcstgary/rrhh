@@ -154,27 +154,6 @@ export class EditarNivelesAprobacionComponent {
 			const restricted = this.restrictionsIds.includes(codigoTipoSolicitud);
 			this.desactivarTipoMotivoYAccion = restricted;
 
-			// if (!this.desactivarTipoMotivoYAccion) {
-			//   forkJoin([this.mantenimientoService.getTipoMotivo(), this.mantenimientoService.getAccion()]).subscribe({
-			//     next: ([tipoMotivo, accion]) => {
-			//       this.dataTipoMotivo = tipoMotivo
-			//         .filter(data => data.estado === "A")
-			//         .map((r) => ({
-			//           id: r.id,
-			//           descripcion: r.tipoMotivo,
-			//         }));
-
-			//       this.dataAccion = accion.map((r) => ({
-			//         id: r.id,
-			//         descripcion: r.accion,
-			//       }));
-
-			//       this.fillTable(nivelAprobacionType);
-
-			//       this.validateData();
-			//     }
-			//   });
-			// } else {
 			this.onChangeTipoRuta();
 
 			this.validateData();
@@ -209,7 +188,8 @@ export class EditarNivelesAprobacionComponent {
 						.map((r) => ({
 							id: r.id,
 							descripcion: r.accion,
-						}));
+						}))
+						.sort((a, b) => a.descripcion.toUpperCase().localeCompare(b.descripcion.toUpperCase()));
 				}
 			});
 		}

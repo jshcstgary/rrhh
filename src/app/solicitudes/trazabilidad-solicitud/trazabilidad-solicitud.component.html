@@ -125,7 +125,7 @@
 						</div>
 
 						<div class="col">
-							{{ nivelItem.nivelAprobacionRuta.toUpperCase().includes("REGISTRARSOLICITUD") ? "Registrar Solicitud" : nivelItem.nivelAprobacionRuta.toUpperCase().includes("CANDIDATO") ? "Selección de Candidato" : nivelItem.nivelAprobacionRuta.toUpperCase().includes("COMENTARIOJEFE") ? "Registrar Comentario Jefe Anterior o Referencia" : nivelItem.nivelAprobacionRuta.toUpperCase().includes("COMENTARIORRHH") ? "Registrar Comentario RR.HH." : nivelItem.nivelAprobacionRuta.toUpperCase().includes("COMENTARIOSOLICITANTE") ? "Registrar Comentario Jefe Solicitante" : nivelItem.nivelAprobacionRuta }}
+							{{ nivelItem.nivelAprobacionRuta.toUpperCase().includes("REGISTRARSOLICITUD") ? "Registrar Solicitud" : nivelItem.nivelAprobacionRuta.toUpperCase().includes("CANDIDATO") ? "Selección de Candidato" : nivelItem.nivelAprobacionRuta.toUpperCase().includes("COMENTARIOJEFE") ? "Registrar Jefe Anterior o Referencia" : nivelItem.nivelAprobacionRuta.toUpperCase().includes("COMENTARIORRHH") ? "Registrar RR.HH." : nivelItem.nivelAprobacionRuta.toUpperCase().includes("COMENTARIOSOLICITANTE") ? "Registrar Jefe Solicitante" : nivelItem.nivelAprobacionRuta }}
 						</div>
 
 						<div class="col">{{ nivelItem.fechaModificacion | date : "dd/MM/YYYY HH:mm:ss" }}</div>

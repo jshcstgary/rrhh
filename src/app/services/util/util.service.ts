@@ -71,13 +71,7 @@ export class UtilService {
 			elementHTML?.focus();
 		}, 500);
 	}
-	public generateReport(
-		formatoReporte: FormatoUtilReporte,
-		codigoReporte: string,
-		tituloReporte: string,
-		columnas: string[],
-		contenidoColumnas: string[][]
-	) {
+	public generateReport( formatoReporte: FormatoUtilReporte, codigoReporte: string, tituloReporte: string, columnas: string[], contenidoColumnas: string[][]) {
 		this.openLoadingSpinner("Obteniendo documento...");
 
 		const reporteDetail: IUtilReporteDetail = {
@@ -89,10 +83,12 @@ export class UtilService {
 			columnas: columnas,
 			contenidoColumnas: contenidoColumnas,
 		};
+
 		const request: IUtilReporte = {
 			formatoInforme: formatoReporte,
 			reporteType: reporteDetail,
 		};
+
 		this.http
 			.post(this.apiReporteUrl, request, {
 				responseType: "blob",
@@ -102,9 +98,11 @@ export class UtilService {
 				next: (response: HttpResponse<Blob>) => {
 					const contentType = response.headers.get("Content-Type");
 					const formattContentType = contentType.split(";")[0];
+
 					const blob = new Blob([response.body], {
 						type: formattContentType,
 					});
+
 					const url = window.URL.createObjectURL(blob);
 					window.open(url, "_blank");
 

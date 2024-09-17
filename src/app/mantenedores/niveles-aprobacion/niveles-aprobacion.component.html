@@ -1,5 +1,5 @@
 <div class="p-3">
-	<div class="row mb-3">
+	<div class="row mb-3 align-items-end">
 		<div class="col-md-3 mb-3">
 			<label class="azul mb-1">Nivel de Dirección <span class="obligatorio">(Obligatorio)</span></label>
 
@@ -12,7 +12,7 @@
 			<label class="azul mb-1">Tipo de Solicitud</label>
 
 			<ng-select [(ngModel)]="dataFilterNivelesAprobacion.tipoSolicitud" (change)="onChangeTipoSolicitud()" placeholder="Seleccione">
-				<ng-option *ngFor="let tipoSolicitud of dataTipoSolicitudes" [value]="tipoSolicitud.id">{{ tipoSolicitud.id }} - {{ tipoSolicitud.descripcion }}</ng-option>
+				<ng-option *ngFor="let tipoSolicitud of dataTipoSolicitudes" [value]="tipoSolicitud.id">{{ tipoSolicitud.descripcion }}</ng-option>
 			</ng-select>
 		</div>
 
@@ -20,7 +20,7 @@
 			<label class="azul mb-1">Tipo Motivo</label>
 
 			<ng-select [(ngModel)]="dataFilterNivelesAprobacion.tipoMotivo" placeholder="Seleccione" [disabled]="tipoMotivoDeshablitado">
-				<ng-option *ngFor="let tipoMotivo of dataTipoMotivo" [value]="tipoMotivo.id">{{ tipoMotivo.id }} - {{ tipoMotivo.descripcion }}</ng-option>
+				<ng-option *ngFor="let tipoMotivo of dataTipoMotivo" [value]="tipoMotivo.id">{{ tipoMotivo.descripcion }}</ng-option>
 			</ng-select>
 		</div>
 
@@ -40,22 +40,18 @@
 			</ng-select>
 		</div>
 
-		<div *ngIf="this.controlsPermissions[pageControlPermission.ButtonBuscar].visualizar" class="col-md-3 ms-auto align-self-center">
-			<div class="text-end">
+		<div *ngIf="this.controlsPermissions[pageControlPermission.ButtonBuscar].visualizar" class="col-md-3 align-self-center">
+			<div>
 				<button (click)="getDataToTableFilter()" type="button" class="btn btn-info"><i class="fas fa-filter"></i> Buscar</button>
 			</div>
 		</div>
-	</div>
 
-	<div class="row">
-		<div class="col-md-3 offset-md-9">
+		<div class="col-md-3 offset-md-3 mb-3">
 			<form>
-				<div class="mb-3">
-					<div class="text-end">
-						<button *ngIf="this.controlsPermissions[pageControlPermission.ButtonAgregar].visualizar" type="button" (click)="pageCrear()" class="btn btn-info me-3"><i class="fas fa-plus"></i> Agregar</button>
+				<div class="text-end">
+					<button *ngIf="this.controlsPermissions[pageControlPermission.ButtonAgregar].visualizar" type="button" (click)="pageCrear()" class="btn btn-info me-3"><i class="fas fa-plus"></i> Agregar</button>
 
-						<dropdown-component [options]="dropdownOptionsExport" textButton="Exportar" [buttonClasses]="['btn-outline-info']" [iconButton]="'fas fa-file-pdf'" [contexto]="this" onDropDownClickFunction="isAnyRowCheckedInTable"></dropdown-component>
-					</div>
+					<dropdown-component [options]="dropdownOptionsExport" textButton="Exportar" [buttonClasses]="['btn-outline-info']" [iconButton]="'fas fa-file-pdf'" [contexto]="this" onDropDownClickFunction="isAnyRowCheckedInTable"></dropdown-component>
 				</div>
 			</form>
 		</div>

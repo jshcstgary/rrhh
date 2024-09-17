@@ -3,7 +3,7 @@
 		<thead id="observed-element" [ngClass]="{ 'sticky-thead': isSticky }">
 			<!-- <thead> -->
 			<tr>
-				<th [ngClass]="{ 'fixed-col-end': columns.length === i + 1 && fixedLastColumn }" *ngFor="let head of columns; let i = index" [ngStyle]="{ width: head.type === 'actions' && !showActionColumn ? 0 : head.width }">
+				<th [ngClass]="{ 'fixed-col-end': columns.length === i + 1 && fixedLastColumn, 'fixed-col-start': i === 0 && fixedFirstColumn }" *ngFor="let head of columns; let i = index" [ngStyle]="{ width: head.type === 'actions' && !showActionColumn ? 0 : head.width }">
 					<div *ngIf="head.type === 'actions' && !showActionColumn; else columnShowed"></div>
 
 					<ng-template #columnShowed>
@@ -44,7 +44,7 @@
 
 		<tbody *ngIf="!isTableEmpty; else emptytable">
 			<tr *ngFor="let row of data; let indexRow = index">
-				<td [ngClass]="{ 'fixed-col-end': columns.length === i + 1 && fixedLastColumn }" *ngFor="let head of columns; let i = index; let indexCol = index">
+				<td [ngClass]="{ 'fixed-col-end': columns.length === i + 1 && fixedLastColumn, 'fixed-col-start': i === 0 && fixedFirstColumn }" *ngFor="let head of columns; let i = index; let indexCol = index">
 					<!-- Entra en caso la columna no este editando -->
 					<div *ngIf="!row.isEditingRow; else cellInputRows">
 						<!-- Valido si la columna es especial o solo presento la data normal -->

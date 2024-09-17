@@ -65,7 +65,7 @@
 							<div class="input-group mb-3 align-items-center">
 								<label class="input-group-text text-start label-estilo" for="codigoposicion">Código de posición</label>
 
-								<span *ngIf="solicitud.tipoMotivo === 'Reemplazo'; else editablePosition" id="descripcionposicion" name="descripcionposicion" style="color: black; font-size: 14px" class="text-start w-50">{{ model.codigoPosicion }}</span>
+								<span *ngIf="solicitud.tipoMotivo === 'Reemplazo' || existeMatenedores; else editablePosition" id="descripcionposicion" name="descripcionposicion" style="color: black; font-size: 14px" class="text-start w-50">{{ model.codigoPosicion }}</span>
 
 								<ng-template #editablePosition>
 									<input name="codigoposicion" type="text" class="form-control w-25" [(ngModel)]="model.codigoPosicion" readonly (click)="openModal()" />
@@ -83,7 +83,7 @@
 							<div class="input-group mb-3 align-items-center">
 								<label class="input-group-text text-start label-estilo2" for="descripcionposicion">Descripción de posición</label>
 
-								<span *ngIf="solicitud.tipoMotivo === 'Reemplazo'; else editableDescPosition" id="descripcionposicion" name="descripcionposicion" style="color: black; font-size: 14px" class="text-start">{{ model.descrPosicion }}</span>
+								<span *ngIf="solicitud.tipoMotivo === 'Reemplazo' || existeMatenedores; else editableDescPosition" style="color: black; font-size: 14px" class="text-start w-75">{{ model.descrPosicion }}</span>
 
 								<ng-template #editableDescPosition>
 									<input name="descripcion-posicion" type="text" class="form-control w-25" [(ngModel)]="model.descrPosicion" readonly (click)="openModal()" />
@@ -101,11 +101,15 @@
 							<div class="input-group mb-3 align-items-center">
 								<label class="input-group-text text-start label-estilo" for="subledger">Subledger</label>
 
-								<input name="subledger" type="text" class="form-control w-25" [(ngModel)]="model.subledger" readonly (click)="openModal()" />
+								<span *ngIf="existeMatenedores; else editableSubledger" style="color: black; font-size: 14px" class="text-start w-50">{{ model.subledger }}</span>
 
-								<button class="btn btn-light" type="button" (click)="openModal()">
-									<i class="ti-search"></i>
-								</button>
+								<ng-template #editableSubledger>
+									<input name="subledger" type="text" class="form-control w-25" [(ngModel)]="model.subledger" readonly (click)="openModal()" />
+
+									<button class="btn btn-light" type="button" (click)="openModal()">
+										<i class="ti-search"></i>
+									</button>
+								</ng-template>
 							</div>
 						</div>
 
@@ -113,11 +117,15 @@
 							<div class="input-group mb-3 align-items-center">
 								<label class="input-group-text text-start label-estilo" for="nombreempleado"> Empleado </label>
 
-								<input name="nombreCompleto" type="text" class="form-control w-25" [(ngModel)]="model.nombreCompleto" readonly (click)="openModal()" />
+								<span *ngIf="existeMatenedores; else editableNombreCompleto" style="color: black; font-size: 14px" class="text-start w-50">{{ model.nombreCompleto }}</span>
 
-								<button class="btn btn-light" type="button" (click)="openModal()">
-									<i class="ti-search"></i>
-								</button>
+								<ng-template #editableNombreCompleto>
+									<input name="nombreCompleto" type="text" class="form-control w-25" [(ngModel)]="model.nombreCompleto" readonly (click)="openModal()" />
+
+									<button class="btn btn-light" type="button" (click)="openModal()">
+										<i class="ti-search"></i>
+									</button>
+								</ng-template>
 							</div>
 						</div>
 					</div>
@@ -187,12 +195,15 @@
 					</div>
 
 					<div class="row" *ngIf="mostrarTipoJustificacionYMision">
-						<div class="col-md-6">
+						<div class="col-md-12">
 							<div class="input-group mb-3 align-item-center">
-								<label class="input-group-text text-start label-estilo" for="misioncargo">Misión del cargo <span style="color: red">*</span></label>
+								<label class="input-group-text text-start label-estilo2" for="misioncargo">Misión del cargo <span style="color: red">*</span></label>
 
-								<!-- <input type="text" name="misioncargo" placeholder="Campo obligatorio" [(ngModel)]="model.misionCargo" class="form-control" id="misioncargo" #misioncargo="ngModel" required /> -->
-								<textarea class="form-control" id="misioncargo" name="misioncargo" placeholder="Campo obligatorio" [(ngModel)]="model.misionCargo" style="color: black; font-size: 14px" required #justificacion="ngModel"></textarea>
+								<span *ngIf="existeMatenedores; else editableMision" style="color: black; font-size: 14px" class="text-start w-75">{{ model.misionCargo }}</span>
+
+								<ng-template #editableMision>
+									<textarea class="form-control" id="misioncargo" name="misioncargo" placeholder="Campo obligatorio" [(ngModel)]="model.misionCargo" style="color: black; font-size: 14px" required #justificacion="ngModel"></textarea>
+								</ng-template>
 							</div>
 						</div>
 					</div>
@@ -202,7 +213,11 @@
 							<div class="input-group mb-3">
 								<label class="input-group-text text-start label-estilo2" for="justificacion">Justificación <span style="color: red">*</span></label>
 
-								<textarea class="form-control" id="justificacion" name="justificacion" placeholder="Campo obligatorio" [(ngModel)]="model.justificacionCargo" style="color: black; font-size: 14px" required #justificacion="ngModel"></textarea>
+								<span *ngIf="existeMatenedores; else editableJustificacion" style="color: black; font-size: 14px" class="text-start w-75">{{ model.justificacionCargo }}</span>
+
+								<ng-template #editableJustificacion>
+									<textarea class="form-control" id="justificacion" name="justificacion" placeholder="Campo obligatorio" [(ngModel)]="model.justificacionCargo" style="color: black; font-size: 14px" required #justificacion="ngModel"></textarea>
+								</ng-template>
 							</div>
 						</div>
 					</div>
@@ -235,13 +250,17 @@
 							<div class="input-group mb-3 align-items-center">
 								<label class="input-group-text text-start label-estilo" for="tipocontrato">Tipo de contrato</label>
 
-								<select id="tipocontrato" name="tipocontrato" class="form-select" [(ngModel)]="model.tipoContrato" style="font-size: 14px" required>
-									<option selected>Eventual</option>
+								<span *ngIf="existeMatenedores; else editableTipoContrato" style="color: black; font-size: 14px" class="text-start w-50">{{ model.tipoContrato }}</span>
 
-									<option>Temporal</option>
+								<ng-template #editableTipoContrato>
+									<select id="tipocontrato" name="tipocontrato" class="form-select" [(ngModel)]="model.tipoContrato" style="font-size: 14px" required>
+										<option selected>Eventual</option>
 
-									<option>Mixto</option>
-								</select>
+										<option>Temporal</option>
+
+										<option>Mixto</option>
+									</select>
+								</ng-template>
 							</div>
 						</div>
 					</div>
@@ -270,7 +289,11 @@
 									<span class="fs-6">$</span>
 								</div>
 
-								<input [(ngModel)]="model.sueldo" type="text" mask="separator.2" [leadZero]="true" name="sueldo" class="form-control" id="sueldo" />
+								<span *ngIf="existeMatenedores; else editableSueldo" style="color: black; font-size: 14px" class="text-start w-50">{{ model.sueldo }}</span>
+
+								<ng-template #editableSueldo>
+									<input [(ngModel)]="model.sueldo" type="text" mask="separator.2" [leadZero]="true" name="sueldo" class="form-control" id="sueldo" />
+								</ng-template>
 							</div>
 						</div>
 					</div>
@@ -284,7 +307,11 @@
 									<span class="fs-6">$</span>
 								</div>
 
-								<input [(ngModel)]="model.sueldoMensual" type="text" mask="separator.2" [leadZero]="true" name="mensual" class="form-control" id="mensual" />
+								<span *ngIf="existeMatenedores; else editableSueldoMensual" style="color: black; font-size: 14px" class="text-start w-50">{{ model.sueldoMensual }}</span>
+
+								<ng-template #editableSueldoMensual>
+									<input [(ngModel)]="model.sueldoMensual" type="text" mask="separator.2" [leadZero]="true" name="mensual" class="form-control" id="mensual" />
+								</ng-template>
 							</div>
 						</div>
 
@@ -296,7 +323,11 @@
 									<span class="fs-6">$</span>
 								</div>
 
-								<input [(ngModel)]="model.sueldoTrimestral" type="text" mask="separator.2" [leadZero]="true" name="trimestral" class="form-control" id="trimestral" />
+								<span *ngIf="existeMatenedores; else editableSueldoTrimestral" style="color: black; font-size: 14px" class="text-start w-50">{{ model.sueldoTrimestral }}</span>
+
+								<ng-template #editableSueldoTrimestral>
+									<input [(ngModel)]="model.sueldoTrimestral" type="text" mask="separator.2" [leadZero]="true" name="trimestral" class="form-control" id="trimestral" />
+								</ng-template>
 							</div>
 						</div>
 					</div>
@@ -310,7 +341,11 @@
 									<span class="fs-6">$</span>
 								</div>
 
-								<input [(ngModel)]="model.sueldoSemestral" type="text" mask="separator.2" [leadZero]="true" name="semestral" class="form-control" id="semestral" />
+								<span *ngIf="existeMatenedores; else editableSueldoSemestral" style="color: black; font-size: 14px" class="text-start w-50">{{ model.sueldoSemestral }}</span>
+
+								<ng-template #editableSueldoSemestral>
+									<input [(ngModel)]="model.sueldoSemestral" type="text" mask="separator.2" [leadZero]="true" name="semestral" class="form-control" id="semestral" />
+								</ng-template>
 							</div>
 						</div>
 
@@ -322,7 +357,11 @@
 									<span class="fs-6">$</span>
 								</div>
 
-								<input [(ngModel)]="model.sueldoAnual" type="text" mask="separator.2" [leadZero]="true" name="anual" class="form-control" id="anual" />
+								<span *ngIf="existeMatenedores; else editableSueldoAnual" style="color: black; font-size: 14px" class="text-start w-50">{{ model.sueldoAnual }}</span>
+
+								<ng-template #editableSueldoAnual>
+									<input [(ngModel)]="model.sueldoAnual" type="text" mask="separator.2" [leadZero]="true" name="anual" class="form-control" id="anual" />
+								</ng-template>
 							</div>
 						</div>
 					</div>
@@ -369,7 +408,7 @@
 			</app-solicitud-seccion-desplegable>
 
 			<!-- ! Anulación de Solicitud -->
-			<app-solicitud-seccion-desplegable titleSummary="Anulación de Solicitud">
+			<app-solicitud-seccion-desplegable titleSummary="Anulación de Solicitud" *ngIf="!existeMatenedores">
 				<div>
 					<div class="row">
 						<div class="col-md-12">

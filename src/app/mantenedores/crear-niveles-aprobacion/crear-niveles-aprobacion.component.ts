@@ -175,12 +175,15 @@ export class CrearNivelesAprobacionComponent implements OnInit {
 						.map((r) => ({
 							id: r.id,
 							descripcion: r.tipoMotivo,
-						}));
+						}))
+						.sort((a, b) => a.descripcion.toUpperCase().localeCompare(b.descripcion.toUpperCase()));
 
-					this.dataAccion = accion.map((r) => ({
-						id: r.id,
-						descripcion: r.accion,
-					}));
+					this.dataAccion = accion
+						.map((r) => ({
+							id: r.id,
+							descripcion: r.accion,
+						}))
+						.sort((a, b) => a.descripcion.toUpperCase().localeCompare(b.descripcion.toUpperCase()));
 				}
 			});
 		}
@@ -195,8 +198,9 @@ export class CrearNivelesAprobacionComponent implements OnInit {
 						id: r.id,
 						descripcion: r.tipoSolicitud,
 						codigoTipoSolicitud: r.codigoTipoSolicitud
-					}));
-			},
+					}))
+					.sort((a, b) => a.descripcion.toUpperCase().localeCompare(b.descripcion.toUpperCase()));
+				},
 			error: (error: HttpErrorResponse) => {
 				this.utilService.modalResponse(error.error, "error");
 			},
@@ -233,22 +237,6 @@ export class CrearNivelesAprobacionComponent implements OnInit {
 		});
 	}
 
-	// ObtenerServicioRuta() {
-	//   return this.mantenimientoService.getRuta().subscribe({
-	//     next: (response) => {
-	//       this.dataRuta = response
-	//         .filter(({ estado }) => estado === "A")
-	//         .map((r) => ({
-	//           id: r.id,
-	//           descripcion: r.ruta,
-	//         }));
-	//     },
-	//     error: (error: HttpErrorResponse) => {
-	//       this.utilService.modalResponse(error.error, "error");
-	//     },
-	//   });
-	// }
-
 	ObtenerServicioTipoRuta() {
 		return this.mantenimientoService.getTipoRuta().subscribe({
 			next: (response) => {
@@ -260,7 +248,8 @@ export class CrearNivelesAprobacionComponent implements OnInit {
 					.map((r) => ({
 						id: r.id,
 						descripcion: r.tipoRuta,
-					}));
+					}))
+					.sort((a, b) => a.descripcion.toUpperCase().localeCompare(b.descripcion.toUpperCase()));
 			},
 			error: (error: HttpErrorResponse) => {
 				this.utilService.modalResponse(error.error, "error");
@@ -271,48 +260,19 @@ export class CrearNivelesAprobacionComponent implements OnInit {
 	ObtenerServicioNivelDireccion() {
 		return this.mantenimientoService.getNivelesPorTipo("ND").subscribe({
 			next: (response) => {
-				this.dataNivelDireccion = [...new Set(response.evType.map(({ nivelDir }) => nivelDir))];
+				this.dataNivelDireccion = [
+					...new Set(
+						response.evType
+							.map(({ nivelDir }) => nivelDir)
+							.sort((a, b) => a.toUpperCase().localeCompare(b.toUpperCase()))
+					)
+				];
 			},
 			error: (error: HttpErrorResponse) => {
 				this.utilService.modalResponse(error.error, "error");
 			},
 		});
 	}
-
-	// ObtenerServicioNivelAprobacion() {
-	//   return this.mantenimientoService.getNivelesPorTipo("NA").subscribe({
-	//     next: (response) => {
-	//       this.dataNivelAprobacion = [
-	//         ...new Set(
-	//           response.evType.map((item) => {
-	//             return item.nivelDir;
-	//           })
-	//         ),
-	//       ];
-	//     },
-	//     error: (error: HttpErrorResponse) => {
-	//       this.utilService.modalResponse(error.error, "error");
-	//     },
-	//   });
-	// }
-
-	// Cambio en el consumo del API comentado tveas
-	/*ObtenerServicioNivelDireccion() {
-	  console.log("Executing ObtenerServicioNivelDireccion() method");
-	  return this.mantenimientoService.getCatalogo("RBPND").subscribe({
-		// return this.mantenimientoService.getCatalogoRBPND().subscribe({
-		next: (response) => {
-		  this.dataNivelDireccion = response.itemCatalogoTypes.map((r) => ({
-			id: r.codigo,
-			descripcion: r.valor,
-		  })); //verificar la estructura mmunoz
-		  this.utilService.closeLoadingSpinner();
-		},
-		error: (error: HttpErrorResponse) => {
-		  this.utilService.modalResponse(error.error, "error");
-		},
-	  });
-	}*/
 
 	// Cambio en el consumo del API comentado tveas
 	ObtenerServicioNivelAprobacion() {

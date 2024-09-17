@@ -478,6 +478,8 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
 					},
 					error: (error: HttpErrorResponse) => {
 						this.utilService.modalResponse("No existe aprobadores de solicitud para los datos ingresados", "error");
+
+						// this.existenNivelesAprobacion = false;
 					},
 				});
 			}
@@ -1355,16 +1357,11 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
 				confirmButtonColor: "rgb(227, 199, 22)",
 				confirmButtonText: "OK",
 			});
-			return;
 
+			return;
 		}
 
-		if (parseFloat(this.sueldoEmpleado.sueldo) < parseFloat(this.model.sueldo)
-			|| parseFloat(this.sueldoEmpleado.variableMensual) < parseFloat(this.model.sueldoMensual)
-			|| parseFloat(this.sueldoEmpleado.variableTrimestral) < parseFloat(this.model.sueldoTrimestral)
-			|| parseFloat(this.sueldoEmpleado.variableSemestral) < parseFloat(this.model.sueldoSemestral)
-			|| parseFloat(this.sueldoEmpleado.variableAnual) < parseFloat(this.model.sueldoAnual)
-		) {
+		if (parseFloat(this.sueldoEmpleado.sueldo) < parseFloat(this.model.sueldo) || parseFloat(this.sueldoEmpleado.variableMensual) < parseFloat(this.model.sueldoMensual) || parseFloat(this.sueldoEmpleado.variableTrimestral) < parseFloat(this.model.sueldoTrimestral) || parseFloat(this.sueldoEmpleado.variableSemestral) < parseFloat(this.model.sueldoSemestral) || parseFloat(this.sueldoEmpleado.variableAnual) < parseFloat(this.model.sueldoAnual)) {
 			Swal.fire({
 				text: "No se puede registrar valores variables mayores a los obtenidos del sistema",
 				icon: "info",

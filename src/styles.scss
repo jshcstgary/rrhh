@@ -4,6 +4,10 @@
 @import "~bootstrap-icons/font/bootstrap-icons.css";
 @import '~material-icons/iconfont/material-icons.css';
 
+@import "./assets/scss/variable";
+
+$border-table-radius: 10px;
+
 @font-face {
 	font-family: "Raleway";
 	src: url("./assets/fonts/Raleway-VariableFont_wght.ttf");
@@ -40,12 +44,12 @@ a.link:focus {
 }
 
 
-.sidebar-nav > ul > .sidebar-item {
-	&.active > a.sidebar-link {
+.sidebar-nav>ul>.sidebar-item {
+	&.active>a.sidebar-link {
 		color: white !important;
 	}
 
-	& > a.sidebar-link {
+	&>a.sidebar-link {
 		color: white !important;
 	}
 }
@@ -129,7 +133,7 @@ body {
 					flex-basis: 100px;
 				}
 
-				& > .item-percent {
+				&>.item-percent {
 					display: none;
 				}
 			}
@@ -158,7 +162,7 @@ thead th.fixed-col-start {
 
 .fixed-col-end {
 	position: sticky;
-	right: 0px;
+	right: -1px;
 	background-color: #efefef !important;
 	z-index: 2;
 }
@@ -168,7 +172,7 @@ thead th.fixed-col-end {
 	background-color: rgba(0, 86, 179) !important;
 	color: white;
 	top: 0;
-	right: 0px;
+	right: -1px;
 	z-index: 2;
 }
 
@@ -180,12 +184,13 @@ thead th.fixed-col-end {
 }
 
 .with-table {
-	max-height: 600px;
+	border-radius: $border-table-radius;
+	max-height: 500px;
 	overflow-x: auto;
 	overflow-y: auto;
 	box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.5);
 
-	& > table > thead {
+	&>table>thead {
 		background-color: #B2CCE8;
 		position: sticky;
 		top: 0;
@@ -218,7 +223,7 @@ thead th.fixed-col-end {
  * DETAILS
  */
 details[open] {
-	& > summary i {
+	&>summary i {
 		transform: rotate(180deg);
 	}
 
@@ -239,7 +244,7 @@ details {
 		color: white;
 		border-radius: 5px;
 
-		& > div {
+		&>div {
 			align-items: center;
 
 			h3 {

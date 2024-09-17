@@ -262,40 +262,38 @@ export class PlantillaDComponent implements AfterViewInit, OnInit, OnChanges {
 	 *
 	 * @param textToFilter texto a filtrar
 	 */
-	private filterSortFormatAndPaginateData(
-		textToFilter: string = this.textToFilter,
-		clickOnSort: boolean = false
-	) {
+	private filterSortFormatAndPaginateData(textToFilter: string = this.textToFilter, clickOnSort: boolean = false) {
+		console.log(textToFilter);
 		this.tableService.changeStateIsAnyEditRowActive(false);
+
 		this.textToFilter = textToFilter;
+
 		let data = [...this.originalDataTable].map((x: IRowTableAttributes) => {
 			delete x.isEditingRow;
+
 			return x;
 		});
+
 		/* Filtro */
 		if (textToFilter.length > 0) {
 			if (this.isFilterByIdSolicitud) {
-				data = this.tableService.filterDataByProps(
-					data,
-					this.colsToFilterByTextIdSolicitud,
-					textToFilter
-				);
+				data = this.tableService.filterDataByProps(data, this.colsToFilterByTextIdSolicitud, textToFilter);
 			}
+
 			if (!this.isFilterByIdSolicitud) {
-				data = this.tableService.filterDataByProps(
-					data,
-					this.colsToFilterByTextName,
-					textToFilter
-				);
+				data = this.tableService.filterDataByProps(data, this.colsToFilterByTextName, textToFilter);
 			}
 		}
+
 		/* Ordeno */
 		const rowIndexToSort = this.colIndexSorted;
 		if (rowIndexToSort !== undefined) {
 			const colProps = this.columnsTable[rowIndexToSort];
 			const sortTypeOrder = colProps.sortTypeOrder;
 			const sortColType = colProps.colType ?? "string";
+
 			let sortTypeChanged: sortColOrderType;
+
 			switch (sortTypeOrder) {
 				case "asc":
 					sortTypeChanged = clickOnSort ? "desc" : sortTypeOrder;
@@ -306,11 +304,12 @@ export class PlantillaDComponent implements AfterViewInit, OnInit, OnChanges {
 				case undefined:
 					sortTypeChanged = clickOnSort ? "asc" : sortTypeOrder;
 					break;
-
 				default:
 					break;
 			}
+
 			this.columnsTable[rowIndexToSort].sortTypeOrder = sortTypeChanged;
+
 			if (sortTypeChanged !== undefined) {
 				data = this.tableService.filterBySortColType(
 					data,

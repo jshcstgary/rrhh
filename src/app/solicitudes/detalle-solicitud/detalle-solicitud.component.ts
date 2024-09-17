@@ -1460,6 +1460,8 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 	}
 
 	public exportar(): void {
+		this.utilService.openLoadingSpinner("Generando reporte...");
+		
 		const backgroundCellColor: [number, number, number] = [218, 238, 243];
 		const textColor: [number, number, number] = [56, 95, 147];
 		const lineColor: [number, number, number] = [149, 179, 215];
@@ -1519,6 +1521,8 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 
 			this.exportarAccionPersonal(doc, esquinaDeHoja, tituloDeHoja, backgroundCellColor, textColor, lineColor);
 		}
+
+		this.utilService.closeLoadingSpinner();
 	}
 
 	private exportarRequisicionPersonal(doc: jsPDF, esquinaDeHoja: any, tituloDeHoja: any, backgroundCellColor: [number, number, number], textColor: [number, number, number], lineColor: [number, number, number]): void {
@@ -2247,7 +2251,7 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 				]
 			],
 			body: [
-				["Apellidos y nombres:", this.nombreCompletoCandidato, "Fecha de ingreso:", "dd/MM/yyyy"]
+				["Apellidos y nombres:", this.nombreCompletoCandidato, "Fecha de ingreso:", format(new Date(this.modelRG.fechaIngreso), "dd/MM/yyyy")]
 			],
 			columnStyles: {
 				0: {
@@ -2315,8 +2319,8 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 					}
 				],
 				["Compañía:", this.model.compania, this.modelRG.compania],
-				["Sueldo:", this.model.sueldo, this.modelRG.sueldo],
-				["Variable Máxima:", variableMaxima, variableMaximaRG],
+				["Sueldo:", `$ ${parseFloat(this.model.sueldo).toFixed(2)}`, `$ ${parseFloat(this.modelRG.sueldo).toFixed(2)}`],
+				["Variable Máxima:", `$ ${variableMaxima.toFixed(2)}`, `$ ${variableMaximaRG.toFixed(2)}`],
 				["Remuneración Total:", "", ""],
 				["Cargo:", this.model.descrPosicion, this.modelRG.descrPosicion],
 				["Departamento:", this.model.departamento, this.modelRG.departamento],
@@ -2447,7 +2451,7 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 				]
 			],
 			body: [
-				["Nombre del jefe solicitante:", this.detalleSolicitudRG.jefeSolicitante, "Cargo:", this.detalleSolicitudRG.puesto],
+				["Nombre del jefe solicitante:", this.detalleSolicitudRG.nombreJefeSolicitante, "Cargo:", this.detalleSolicitudRG.puesto],
 				["Justificación:", this.Comentario_Jefe_Solicitante.comentario, "Fecha:", format(this.currentDate, "dd/MM/yyyy")]
 			],
 			columnStyles: {
@@ -2531,8 +2535,8 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 	}
 
 	private exportarAccionPersonal(doc: jsPDF, esquinaDeHoja: any, tituloDeHoja: any, backgroundCellColor: [number, number, number], textColor: [number, number, number], lineColor: [number, number, number]): void {
-		const variableMaxima = Math.max(...[parseInt(this.model.sueldoAnual), parseInt(this.model.sueldoMensual), parseInt(this.model.sueldoSemestral), parseInt(this.model.sueldoTrimestral)]);
-		const variableMaximaPropuestos = Math.max(...[parseInt(this.modelPropuestos.sueldoAnual), parseInt(this.modelPropuestos.sueldoMensual), parseInt(this.modelPropuestos.sueldoSemestral), parseInt(this.modelPropuestos.sueldoTrimestral)]);
+		const variableMaxima = Math.max(...[parseInt(this.model.sueldoAnual === "" ? "0" : this.model.sueldoAnual), parseInt(this.model.sueldoMensual === "" ? "0" : this.model.sueldoMensual), parseInt(this.model.sueldoSemestral === "" ? "0" : this.model.sueldoSemestral), parseInt(this.model.sueldoTrimestral === "" ? "0" : this.model.sueldoTrimestral)]);
+		const variableMaximaPropuestos = Math.max(...[parseInt(this.modelPropuestos.sueldoAnual === "" ? "0" : this.modelPropuestos.sueldoAnual), parseInt(this.modelPropuestos.sueldoMensual === "" ? "0" : this.modelPropuestos.sueldoMensual), parseInt(this.modelPropuestos.sueldoSemestral === "" ? "0" : this.modelPropuestos.sueldoSemestral), parseInt(this.modelPropuestos.sueldoTrimestral === "" ? "0" : this.modelPropuestos.sueldoTrimestral)]);
 
 		// const doc = new jsPDF();
 
@@ -2645,12 +2649,12 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 						}
 					}
 				],
-				["Fecha de ingreso:", format(new Date(this.model.fechaIngreso), "dd/MM/yyyy"), "Fecha de cambio:", format(new Date(this.modelPropuestos.fechaIngreso), "dd/MM/yyyy")],
+				["Fecha de ingreso:", format(new Date(this.model.fechaIngreso), "dd/MM/yyyy"), "Fecha de cambio:", this.modelPropuestos.fechaIngreso === "" || this.modelPropuestos.fechaIngreso === undefined || this.modelPropuestos.fechaIngreso === null ? "" : format(new Date(this.modelPropuestos.fechaIngreso), "dd/MM/yyyy")],
 				["Cargo:", this.model.descrPuesto, "Cargo:", this.modelPropuestos.descrPuesto],
 				["Unidad:", this.model.unidadNegocio, "Unidad:", this.modelPropuestos.unidadNegocio],
 				["Área/Departamento:", this.model.departamento, "Área/Departamento::", this.modelPropuestos.departamento],
 				["Localidad:", this.model.localidad, "Localidad:", this.modelPropuestos.localidad],
-				["Sueldo:", `$ ${parseInt(this.model.sueldo).toFixed(2)}`, "Sueldo:", `$ ${parseInt(this.modelPropuestos.sueldo).toFixed(2)}`],
+				["Sueldo:", this.model.sueldo === "" ? "$ 0.00" : `$ ${parseInt(this.model.sueldo).toFixed(2)}`, "Sueldo:", this.modelPropuestos.sueldo === "" ? "$ 0.00" : `$ ${parseInt(this.modelPropuestos.sueldo).toFixed(2)}`],
 				["Variable máxima:", `$ ${variableMaxima.toFixed(2)}`, "Variable máxima:", `$ ${variableMaximaPropuestos.toFixed(2)}`],
 				["Movilizavión:", this.detalleSolicitud.movilizacion !== "" ? `$ ${parseInt(this.detalleSolicitudPropuestos.movilizacion).toFixed(2)}` : "$ 0.00", "Movilización:", this.detalleSolicitudPropuestos.movilizacion !== "" ? `$ ${parseInt(this.detalleSolicitudPropuestos.movilizacion).toFixed(2)}` : "$ 0.00"],
 				["Alimentación:", this.detalleSolicitud.alimentacion !== "" ? `$ ${parseInt(this.detalleSolicitudPropuestos.alimentacion).toFixed(2)}` : "$ 0.00", "Alimentación:", this.detalleSolicitudPropuestos.alimentacion !== "" ? `$ ${parseInt(this.detalleSolicitudPropuestos.alimentacion).toFixed(2)}` : "$ 0.00"],

@@ -39,7 +39,8 @@ export const ConsultaTareasData: IConsultaTareasData = {
 			],
 		},
 	],
-	colsToFilterByTextIdSolicitud: ["idSolicitud", "name"],
+	// colsToFilterByTextIdSolicitud: ["idSolicitud", "name"],
+	colsToFilterByTextIdSolicitud: ["idSolicitud"],
 	colsToFilterByTextName: ["name"],
 };
 interface IConsultaTareasData {

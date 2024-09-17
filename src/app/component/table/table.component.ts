@@ -32,6 +32,11 @@ export class TableComponent implements OnInit, OnChanges {
 	})
 	public fixedLastColumn: boolean = false;
 
+	@Input({
+		required: false
+	})
+	public fixedFirstColumn: boolean = false;
+
 	@Input({ required: false }) public allowCloneButton: boolean = false;
 	@Input({ required: false }) public tableName: string;
 	@Input({ required: false }) public onChangeEditRowFunction: string;
