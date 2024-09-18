@@ -721,26 +721,26 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 
 
 		if (!this.dataTiposMotivosPorTipoSolicitud[idTipoSolicitud]) {
-			this.mantenimientoService
-				.getTiposMotivosPorTipoSolicitud(idTipoSolicitud)
-				.subscribe({
-					next: (response) => {
-						this.dataTiposMotivosPorTipoSolicitud[idTipoSolicitud] = response;
-					},
-					error: (error: HttpErrorResponse) => {
-						this.utilService.modalResponse(error.error, "error");
-					},
-				});
+			this.mantenimientoService.getTiposMotivosPorTipoSolicitud(idTipoSolicitud).subscribe({
+				next: (response) => {
+					this.dataTiposMotivosPorTipoSolicitud[idTipoSolicitud] = response.sort((a, b) => a.tipoMotivo.toUpperCase().localeCompare(b.tipoMotivo.toUpperCase()));
+				},
+				error: (error: HttpErrorResponse) => {
+					this.dataTiposMotivosPorTipoSolicitud[idTipoSolicitud] = [];
+
+					this.utilService.modalResponse(error.error, "error");
+				},
+			});
 		}
 
 		if (!this.dataTiposAccionesPorTipoSolicitud[idTipoSolicitud]) {
-			this.mantenimientoService
-				.getTiposAccionesPorTipoSolicitud(idTipoSolicitud)
-				.subscribe({
+			this.mantenimientoService.getTiposAccionesPorTipoSolicitud(idTipoSolicitud).subscribe({
 					next: (response) => {
-						this.dataTiposAccionesPorTipoSolicitud[idTipoSolicitud] = response;
+						this.dataTiposAccionesPorTipoSolicitud[idTipoSolicitud] = response.sort((a, b) => a.tipoAccion.toUpperCase().localeCompare(b.tipoAccion.toUpperCase()));
 					},
 					error: (error: HttpErrorResponse) => {
+						this.dataTiposAccionesPorTipoSolicitud[idTipoSolicitud] = [];
+
 						this.utilService.modalResponse(error.error, "error");
 					},
 				});
@@ -1719,7 +1719,10 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 					"Justificación:",
 					{
 						content: this.modelPrint.justificacionCargo,
-						colSpan: 3
+						colSpan: 3,
+						styles: {
+							halign: "justify"
+						}
 					}
 				]
 			],
@@ -2022,7 +2025,15 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 				["Localidad:", this.modelPrint.localidad],
 				["Jefe Solicitante:", this.solicitud.usuarioCreacion],
 				["Responsable de RR.HH.:", this.solicitud.usuarioCreacion],
-				["Justificación:", this.modelPrint.justificacionCargo]
+				[
+					"Justificación:",
+					{
+						content: this.modelPrint.justificacionCargo,
+						styles: {
+							halign: "justify"
+						}
+					}
+				]
 			],
 			columnStyles: {
 				0: {
@@ -2354,9 +2365,9 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 					}
 				],
 				["Compañía:", this.modelPrint.compania, this.modelPrintRG.compania],
-				["Sueldo:", `$ ${parseFloat(this.modelPrint.sueldo).toFixed(2)}`, `$ ${parseFloat(this.modelPrintRG.sueldo).toFixed(2)}`],
-				["Variable Máxima:", `$ ${variableMaxima.toFixed(2)}`, `$ ${variableMaximaRG.toFixed(2)}`],
-				["Remuneración Total:", "", ""],
+				["Sueldo:", `$ ${parseFloat(this.modelPrintRG.sueldo).toFixed(2)}`, `$ ${parseFloat(this.modelPrint.sueldo).toFixed(2)}`],
+				["Variable Máxima:", `$ ${variableMaximaRG.toFixed(2)}`, `$ ${variableMaxima.toFixed(2)}`],
+				["Remuneración Total:", `$ ${(parseFloat(this.modelPrintRG.sueldo) + variableMaximaRG).toFixed(2)}`, `$ ${(parseFloat(this.modelPrint.sueldo) + variableMaxima).toFixed(2)}`],
 				["Cargo:", this.modelPrint.descrPosicion, this.modelPrintRG.descrPosicion],
 				["Departamento:", this.modelPrint.departamento, this.modelPrintRG.departamento],
 				["Fecha de Ingreso:", format(new Date(this.modelPrint.fechaIngreso), "dd/MM/yyyy"), format(new Date(this.modelPrintRG.fechaIngreso), "dd/MM/yyyy")],
@@ -2487,7 +2498,17 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 			],
 			body: [
 				["Nombre del jefe solicitante:", this.detalleSolicitudPrintRG.nombreJefeSolicitante, "Cargo:", this.detalleSolicitudPrintRG.puesto],
-				["Justificación:", this.Comentario_Jefe_SolicitantePrint.comentario, "Fecha:", format(this.currentDatePrint, "dd/MM/yyyy")]
+				[
+					"Justificación:",
+					{
+						content: this.Comentario_Jefe_SolicitantePrint.comentario,
+						styles: {
+							halign: "justify"
+						}
+					},
+					"Fecha:",
+					format(this.currentDatePrint, "dd/MM/yyyy")
+				]
 			],
 			columnStyles: {
 				0: {
@@ -2707,7 +2728,15 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 			],
 			body: [
 				["Tipo de Acción:", this.solicitud.tipoAccion],
-				["Justificación:", this.modelPrint.justificacionCargo]
+				[
+					"Justificación:",
+					{
+						content: this.modelPrint.justificacionCargo,
+						styles: {
+							halign: "justify"
+						}
+					}
+				]
 			],
 			columnStyles: {
 				0: {

@@ -16,7 +16,7 @@
 
 						<button *ngIf="!existeMatenedores || existe" type="button" class="btn btn-info me-2 mt-1" aria-label="Close" (click)="onSubmit()" [disabled]="this.jefeReferenciaQuery === '' || this.responsableRRHHQuery === ''"><i class="fas fa-save"></i> Guardar</button>
 
-						<button *ngIf="!existeMatenedores || existe" type="button" (click)="onCompletar()" class="btn btn-info me-2 mt-1" [disabled]="this.detalleSolicitudRG.supervisaA !== 'NA'"><i class="fas fa-check-circle"></i> Envar Solicitud</button>
+						<button *ngIf="!existeMatenedores || existe" type="button" (click)="onCompletar()" class="btn btn-info me-2 mt-1" [disabled]="this.detalleSolicitudRG.supervisaA !== 'NA'"><i class="fas fa-check-circle"></i> Enviar Solicitud</button>
 					</div>
 				</div>
 

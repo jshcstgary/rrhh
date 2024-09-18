@@ -2044,6 +2044,7 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
 	}
 
 	saveDetalleAprobaciones() {
+		debugger;
 		this.utilService.openLoadingSpinner("Guardando información, espere por favor...");
 
 		this.solicitudes.modelDetalleAprobaciones.estadoAprobacion = this.buttonValue;
@@ -2079,6 +2080,7 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
 				}
 			});
 		}
+		debugger;
 
 		this.onCompletar();
 

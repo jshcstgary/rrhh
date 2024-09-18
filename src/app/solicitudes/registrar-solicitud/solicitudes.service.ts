@@ -106,6 +106,7 @@ export class SolicitudesService {
 
 
 	public guardarDetallesAprobacionesSolicitud(request: any): Observable<any> {
+		request.modelDetalleAprobaciones.fechaModificacion = ""
 		return this.http.post<any>(this.apiDetalleAprobaciones, request);
 	}
 

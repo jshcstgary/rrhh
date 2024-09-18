@@ -2319,9 +2319,9 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 					}
 				],
 				["Compañía:", this.model.compania, this.modelRG.compania],
-				["Sueldo:", `$ ${parseFloat(this.model.sueldo).toFixed(2)}`, `$ ${parseFloat(this.modelRG.sueldo).toFixed(2)}`],
-				["Variable Máxima:", `$ ${variableMaxima.toFixed(2)}`, `$ ${variableMaximaRG.toFixed(2)}`],
-				["Remuneración Total:", "", ""],
+				["Sueldo:", `$ ${parseFloat(this.modelRG.sueldo).toFixed(2)}`, `$ ${parseFloat(this.model.sueldo).toFixed(2)}`],
+				["Variable Máxima:", `$ ${variableMaximaRG.toFixed(2)}`, `$ ${variableMaxima.toFixed(2)}`],
+				["Remuneración Total:", `$ ${(parseFloat(this.modelRG.sueldo) + variableMaximaRG).toFixed(2)}`, `$ ${(parseFloat(this.model.sueldo) + variableMaxima).toFixed(2)}`],
 				["Cargo:", this.model.descrPosicion, this.modelRG.descrPosicion],
 				["Departamento:", this.model.departamento, this.modelRG.departamento],
 				["Fecha de Ingreso:", format(new Date(this.model.fechaIngreso), "dd/MM/yyyy"), format(new Date(this.modelRG.fechaIngreso), "dd/MM/yyyy")],
