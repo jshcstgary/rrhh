@@ -6,7 +6,7 @@
 					<div class="col-md-8">
 						<div class="mb-3">
 							<h3 class="sol-danger">
-								<a routerLink="/tareas/consulta-tareas"> <i class="bi bi-arrow-left-circle azul"></i> {{ solicitud.idSolicitud }} </a>
+								<a [routerLink]="existeMatenedores ? '/solicitudes/reasignar-tareas-usuarios' : '/tareas/consulta-tareas'"> <i class="bi bi-arrow-left-circle azul"></i> {{ solicitud.idSolicitud }} </a>
 							</h3>
 						</div>
 					</div>

@@ -335,7 +335,7 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 
 	gradient6: boolean = true;
 
-	constructor(private config: NgSelectConfig, public consultaSolicitudesService: ConsultaSolicitudesService, private seleccionCandidatoService: RegistrarCandidatoService, private route: ActivatedRoute, private solicitudes: SolicitudesService, private utilService: UtilService, private mantenimientoService: MantenimientoService, private router: Router, private calendar: NgbCalendar, private camundaRestService: CamundaRestService, private modalService: NgbModal, private starterService: StarterService, private permissionService: PermisoService, private comentarioSalidaJefeService: ComentarioSalidaJefeService) {
+	constructor(private config: NgSelectConfig, public consultaSolicitudesService: ConsultaSolicitudesService, private seleccionCandidatoService: RegistrarCandidatoService, private route: ActivatedRoute, private solicitudes: SolicitudesService, private utilService: UtilService, private mantenimientoService: MantenimientoService, private router: Router, private calendar: NgbCalendar, private camundaRestService: CamundaRestService, private modalService: NgbModal, private starterService: StarterService, private permissionService: PermisoService, private comentarioSalidaJefeService: ComentarioSalidaJefeService, private solicitudesService: SolicitudesService) {
 		this.getPermissions();
 
 		this.model = calendar.getToday();
@@ -674,6 +674,10 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 		let variables: any = {};
 
 		variables.tipoSolicitud = { value: this.solicitud.tipoSolicitud };
+
+		variables.usuario_logged = {
+			value: `Usuario:${sessionStorage.getItem(LocalStorageKeys.IdLogin)}|Acción:"Registrar Solicitud"}|Fecha:${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
+		};
 
 		if (this.solicitud.idTipoSolicitud == this.typeSolicitudSelected) {
 			if (this.solicitud.tipoAccion.toUpperCase().includes("TEMPORAL")) {
@@ -1632,32 +1636,41 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 			]
 		};
 
-		if (this.solicitud.idSolicitud.toUpperCase().includes("RP")) {
-			esquinaDeHoja.body[0][0].content = codigosSolicitudReporte.requisicionPersonal;
-			tituloDeHoja.body[0][0].content = "REQUERIMIENTO DE PERSONAL";
+		this.solicitudesService.obtenerTareasPorInstanciaRaiz(this.solicitud.idInstancia).subscribe({
+			next: ({ tareaType }) => {
+				const logs = tareaType.map(({ parentTaskId }) => parentTaskId);
 
-			this.exportarRequisicionPersonal(doc, esquinaDeHoja, tituloDeHoja, backgroundCellColor, textColor, lineColor);
-		} else if (this.solicitud.idSolicitud.toUpperCase().includes("CF")) {
-			esquinaDeHoja.body[0][0].content = codigosSolicitudReporte.contratacionFamiliares;
-			tituloDeHoja.body[0][0].content = "CONTRATACIÓN DE FAMILIAR";
-
-			this.exportarContratacionFamiliar(doc, esquinaDeHoja, tituloDeHoja, backgroundCellColor, textColor, lineColor);
-		} else if (this.solicitud.idSolicitud.toUpperCase().includes("RG")) {
-			esquinaDeHoja.body[0][0].content = codigosSolicitudReporte.reingresoPersonal;
-			tituloDeHoja.body[0][0].content = "REINGRESO DE PERSONAL";
-
-			this.exportarReingresoPersonal(doc, esquinaDeHoja, tituloDeHoja, backgroundCellColor, textColor, lineColor);
-		} else if (this.solicitud.idSolicitud.toUpperCase().includes("AP")) {
-			esquinaDeHoja.body[0][0].content = codigosSolicitudReporte.accionPersonal;
-			tituloDeHoja.body[0][0].content = "ACCIÓN DE PERSONAL";
-
-			this.exportarAccionPersonal(doc, esquinaDeHoja, tituloDeHoja, backgroundCellColor, textColor, lineColor);
-		}
-
-		this.utilService.closeLoadingSpinner();
+				if (this.solicitud.idSolicitud.toUpperCase().includes("RP")) {
+					esquinaDeHoja.body[0][0].content = codigosSolicitudReporte.requisicionPersonal;
+					tituloDeHoja.body[0][0].content = "REQUERIMIENTO DE PERSONAL";
+		
+					this.exportarRequisicionPersonal(doc, esquinaDeHoja, tituloDeHoja, backgroundCellColor, textColor, lineColor, logs);
+				} else if (this.solicitud.idSolicitud.toUpperCase().includes("CF")) {
+					esquinaDeHoja.body[0][0].content = codigosSolicitudReporte.contratacionFamiliares;
+					tituloDeHoja.body[0][0].content = "CONTRATACIÓN DE FAMILIAR";
+		
+					this.exportarContratacionFamiliar(doc, esquinaDeHoja, tituloDeHoja, backgroundCellColor, textColor, lineColor, logs);
+				} else if (this.solicitud.idSolicitud.toUpperCase().includes("RG")) {
+					esquinaDeHoja.body[0][0].content = codigosSolicitudReporte.reingresoPersonal;
+					tituloDeHoja.body[0][0].content = "REINGRESO DE PERSONAL";
+		
+					this.exportarReingresoPersonal(doc, esquinaDeHoja, tituloDeHoja, backgroundCellColor, textColor, lineColor, logs);
+				} else if (this.solicitud.idSolicitud.toUpperCase().includes("AP")) {
+					esquinaDeHoja.body[0][0].content = codigosSolicitudReporte.accionPersonal;
+					tituloDeHoja.body[0][0].content = "ACCIÓN DE PERSONAL";
+		
+					this.exportarAccionPersonal(doc, esquinaDeHoja, tituloDeHoja, backgroundCellColor, textColor, lineColor, logs);
+				}
+		
+				this.utilService.closeLoadingSpinner();
+			},
+			error: (err) => {
+				console.error(err);
+			}
+		});
 	}
 
-	private exportarRequisicionPersonal(doc: jsPDF, esquinaDeHoja: any, tituloDeHoja: any, backgroundCellColor: [number, number, number], textColor: [number, number, number], lineColor: [number, number, number]): void {
+	private exportarRequisicionPersonal(doc: jsPDF, esquinaDeHoja: any, tituloDeHoja: any, backgroundCellColor: [number, number, number], textColor: [number, number, number], lineColor: [number, number, number], logs: any[]): void {
 		// Equina de la hoja
 		autoTable(doc, esquinaDeHoja);
 
@@ -1770,7 +1783,10 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 					"Misión del cargo:",
 					{
 						content: this.modelPrint.misionCargo,
-						colSpan: 3
+						colSpan: 3,
+						styles: {
+							halign: "justify"
+						}
 					}
 				]
 			],
@@ -1869,6 +1885,8 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 		});
 
 		// Log del flujo
+		const logData = logs.map(log => log.split("|"));
+		
 		autoTable(doc, {
 			theme: "grid",
 			headStyles: {
@@ -1914,7 +1932,8 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 						}
 					}
 				],
-				...this.dataAprobacionesPorPosicionPrint[this.keySelectedPrint].map(dataAprobador => ([format(new Date(dataAprobador.nivelAprobacionType.fechaCreacion), "dd/MM/yyyy"), dataAprobador.nivelAprobacionType.ruta, dataAprobador.aprobador.usuario === "" ? "No aplica" : dataAprobador.aprobador.usuario]))
+				// ...this.dataAprobacionesPorPosicionPrint[this.keySelectedPrint].map(dataAprobador => ([format(new Date(dataAprobador.nivelAprobacionType.fechaCreacion), "dd/MM/yyyy"), dataAprobador.nivelAprobacionType.ruta, dataAprobador.aprobador.usuario === "" ? "No aplica" : dataAprobador.aprobador.usuario]))
+				...logData.map(data => ([data[2].split("=")[1], data[1].split("=")[1], data[0].split("=")[1]]))
 			],
 			columnStyles: {
 				0: {
@@ -1933,7 +1952,7 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 		doc.save(`${this.solicitud.idSolicitud}-${format(new Date(), "dd-MM-yyyy")}.pdf`)
 	}
 
-	private exportarContratacionFamiliar(doc: jsPDF, esquinaDeHoja: any, tituloDeHoja: any, backgroundCellColor: [number, number, number], textColor: [number, number, number], lineColor: [number, number, number]): void {
+	private exportarContratacionFamiliar(doc: jsPDF, esquinaDeHoja: any, tituloDeHoja: any, backgroundCellColor: [number, number, number], textColor: [number, number, number], lineColor: [number, number, number], logs: any[]): void {
 		// Esquina de la hoja
 		autoTable(doc, esquinaDeHoja);
 
@@ -2146,6 +2165,8 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 		});
 
 		// Log del flujo
+		const logData = logs.map(log => log.split("|"));
+		
 		autoTable(doc, {
 			theme: "grid",
 			headStyles: {
@@ -2191,7 +2212,8 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 						}
 					}
 				],
-				...this.dataAprobacionesPorPosicionPrint[this.keySelectedPrint].map(dataAprobador => ([format(new Date(dataAprobador.nivelAprobacionType.fechaCreacion), "dd/MM/yyyy"), dataAprobador.nivelAprobacionType.ruta, dataAprobador.aprobador.usuario === "" ? "No aplica" : dataAprobador.aprobador.usuario]))
+				// ...this.dataAprobacionesPorPosicionPrint[this.keySelectedPrint].map(dataAprobador => ([format(new Date(dataAprobador.nivelAprobacionType.fechaCreacion), "dd/MM/yyyy"), dataAprobador.nivelAprobacionType.ruta, dataAprobador.aprobador.usuario === "" ? "No aplica" : dataAprobador.aprobador.usuario]))
+				...logData.map(data => ([data[2].split("=")[1], data[1].split("=")[1], data[0].split("=")[1]]))
 			],
 			columnStyles: {
 				0: {
@@ -2210,7 +2232,7 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 		doc.save(`${this.solicitud.idSolicitud}-${format(new Date(), "dd-MM-yyyy")}.pdf`)
 	}
 
-	private exportarReingresoPersonal(doc: jsPDF, esquinaDeHoja: any, tituloDeHoja: any, backgroundCellColor: [number, number, number], textColor: [number, number, number], lineColor: [number, number, number]): void {
+	private exportarReingresoPersonal(doc: jsPDF, esquinaDeHoja: any, tituloDeHoja: any, backgroundCellColor: [number, number, number], textColor: [number, number, number], lineColor: [number, number, number], logs: any[]): void {
 		const variableMaxima = Math.max(...[parseInt(this.modelPrint.sueldoAnual), parseInt(this.modelPrint.sueldoMensual), parseInt(this.modelPrint.sueldoSemestral), parseInt(this.modelPrint.sueldoTrimestral)]);
 		const variableMaximaRG = Math.max(...[parseInt(this.modelPrintRG.sueldoAnual), parseInt(this.modelPrintRG.sueldoMensual), parseInt(this.modelPrintRG.sueldoSemestral), parseInt(this.modelPrintRG.sueldoTrimestral)]);
 
@@ -2526,6 +2548,8 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 		});
 
 		// Log del flujo
+		const logData = logs.map(log => log.split("|"));
+		
 		autoTable(doc, {
 			theme: "grid",
 			headStyles: {
@@ -2571,7 +2595,8 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 						}
 					}
 				],
-				...this.dataAprobacionesPorPosicionPrint[this.keySelectedPrint].map(dataAprobador => ([format(new Date(dataAprobador.nivelAprobacionType.fechaCreacion), "dd/MM/yyyy"), dataAprobador.nivelAprobacionType.ruta, dataAprobador.aprobador.usuario === "" ? "No aplica" : dataAprobador.aprobador.usuario]))
+				// ...this.dataAprobacionesPorPosicionPrint[this.keySelectedPrint].map(dataAprobador => ([format(new Date(dataAprobador.nivelAprobacionType.fechaCreacion), "dd/MM/yyyy"), dataAprobador.nivelAprobacionType.ruta, dataAprobador.aprobador.usuario === "" ? "No aplica" : dataAprobador.aprobador.usuario]))
+				...logData.map(data => ([data[2].split("=")[1], data[1].split("=")[1], data[0].split("=")[1]]))
 			],
 			columnStyles: {
 				0: {
@@ -2590,7 +2615,7 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 		doc.save(`${this.solicitud.idSolicitud}-${format(new Date(), "dd-MM-yyyy")}.pdf`)
 	}
 
-	private exportarAccionPersonal(doc: jsPDF, esquinaDeHoja: any, tituloDeHoja: any, backgroundCellColor: [number, number, number], textColor: [number, number, number], lineColor: [number, number, number]): void {
+	private exportarAccionPersonal(doc: jsPDF, esquinaDeHoja: any, tituloDeHoja: any, backgroundCellColor: [number, number, number], textColor: [number, number, number], lineColor: [number, number, number], logs: any[]): void {
 		const variableMaxima = Math.max(...[parseInt(this.modelPrint.sueldoAnual), parseInt(this.modelPrint.sueldoMensual), parseInt(this.modelPrint.sueldoSemestral), parseInt(this.modelPrint.sueldoTrimestral)]);
 		const variableMaximaPropuestos = Math.max(...[parseInt(this.modelPrintPropuestos.sueldoAnual), parseInt(this.modelPrintPropuestos.sueldoMensual), parseInt(this.modelPrintPropuestos.sueldoSemestral), parseInt(this.modelPrintPropuestos.sueldoTrimestral)]);
 
@@ -2796,8 +2821,8 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 		});
 
 		// Log del flujo
-
-		// Log del flujo
+		const logData = logs.map(log => log.split("|"));
+		
 		autoTable(doc, {
 			theme: "grid",
 			headStyles: {
@@ -2843,7 +2868,8 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 						}
 					}
 				],
-				...this.dataAprobacionesPorPosicionPrint[this.keySelectedPrint].map(dataAprobador => ([format(new Date(dataAprobador.nivelAprobacionType.fechaCreacion), "dd/MM/yyyy"), dataAprobador.nivelAprobacionType.ruta, dataAprobador.aprobador.usuario === "" ? "No aplica" : dataAprobador.aprobador.usuario]))
+				// ...this.dataAprobacionesPorPosicionPrint[this.keySelectedPrint].map(dataAprobador => ([format(new Date(dataAprobador.nivelAprobacionType.fechaCreacion), "dd/MM/yyyy"), dataAprobador.nivelAprobacionType.ruta, dataAprobador.aprobador.usuario === "" ? "No aplica" : dataAprobador.aprobador.usuario]))
+				...logData.map(data => ([data[2].split("=")[1], data[1].split("=")[1], data[0].split("=")[1]]))
 			],
 			columnStyles: {
 				0: {

@@ -17,7 +17,7 @@ export class CrearNivelesAprobacionService {
 	public guardarNivelesAprobacion(request: any[]): Observable<any> {
 		request.forEach(data => {
 			data.fechaCreacion = new Date(),
-				data.fechaActualizacion = new Date();
+			data.fechaActualizacion = new Date();
 			data.usuarioCreacion = sessionStorage.getItem(LocalStorageKeys.IdLogin);
 			data.usuarioActualizacion = sessionStorage.getItem(LocalStorageKeys.IdLogin);
 

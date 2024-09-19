@@ -6,7 +6,7 @@ import { Component } from "@angular/core";
 import { NgForm } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
-import { addDays } from "date-fns";
+import { addDays, format } from "date-fns";
 import { Observable, OperatorFunction, Subject } from "rxjs";
 import {
 	debounceTime,
@@ -1305,8 +1305,6 @@ export class CompletaSolicitudComponent extends CompleteTaskComponent {
 	override generateVariablesFromFormFields() {
 		let variables: any = {};
 
-		//variables.codigo = { value: this.model.codigo };
-		//variables.idEmpresa = { value: this.model.idEmpresa };
 		if (this.solicitud.tipoSolicitud.toUpperCase().includes("REQUISICION") || this.solicitud.tipoSolicitud.toUpperCase().includes("REQUISICIÓN")) {
 			if (this.taskType_Activity == environment.taskType_Revisar) { //APROBADORES DINAMICOS
 				variables.atencionRevision = { value: this.buttonValue };
@@ -1323,6 +1321,21 @@ export class CompletaSolicitudComponent extends CompleteTaskComponent {
 				variables.atencionCompletarRequisicion = { value: this.buttonValue };
 			}
 		}
+
+		let accion = "";
+
+		if (this.buttonValue.toUpperCase() === "APROBAR") {
+			accion = "Completar Solicitud: Solicitud Aprobada"
+		} else if (this.buttonValue.toUpperCase() === "DEVOLVER") {
+			accion = "Completar Solicitud: Solicitud Devuelta"
+		} else {
+			accion = "Completar Solicitud: Solicitud Cancelada"
+		}
+
+		variables.usuario_logged_completa_RP = {
+			value: `Usuario=${sessionStorage.getItem(LocalStorageKeys.IdLogin)}|Acción=${accion}|Fecha=${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
+		};
+		
 		return { variables };
 	}
 

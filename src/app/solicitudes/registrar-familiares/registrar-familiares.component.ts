@@ -47,6 +47,7 @@ import { DialogBuscarEmpleadosFamiliaresComponent } from "./dialog-buscar-emplea
 import {
 	columnsDatosFamiliares
 } from "./registrar-familiares.data";
+import { format } from "date-fns";
 
 interface DialogComponents {
 	dialogBuscarEmpleados: Type<DialogBuscarEmpleadosFamiliaresComponent>;
@@ -1693,6 +1694,10 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
 				}
 			});
 
+			variables.usuario_logged = {
+				value: `Usuario=${sessionStorage.getItem(LocalStorageKeys.IdLogin)}|Acción=Registrar Solicitud: Solicitud Enviada|Fecha=${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
+			};
+
 			variables.anularSolicitud = {
 				value: this.selectedOption
 			};
@@ -2013,6 +2018,7 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
 		const newRow = {
 			id: this.dataTableDatosFamiliares.length + 1,
 			...obj,
+			fechaCreacion: new DatePipe("en-CO").transform(new Date(obj.fechaCreacion), "dd/MM/yyyy"),
 			isEditingRow: false,
 		};
 

@@ -7,7 +7,7 @@ import { Component, Type } from "@angular/core";
 import { NgForm } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
-import { addDays } from "date-fns";
+import { addDays, format } from "date-fns";
 import { Observable, OperatorFunction, Subject } from "rxjs";
 import {
 	debounceTime,
@@ -445,6 +445,8 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
 						confirmButtonText: "Ok",
 					}).then((result) => {
 						if (result.isConfirmed) {
+							
+
 							this.router.navigate(["/solicitudes/reasignar-tareas-usuarios"]);
 							if (this.submitted) {
 							}
@@ -1445,6 +1447,7 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
 
 					default:
 				}
+
 				this.solicitudes.actualizarSolicitud(this.solicitud).subscribe({
 					next: () => {
 						setTimeout(() => {
@@ -1516,9 +1519,10 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
 											this.dataAprobacionesPorPosicionAPS = responseAPS.nivelAprobacionPosicionType;
 											this.aprobacion = this.dataAprobacionesPorPosicionAPS.find(elemento => elemento.nivelAprobacionType.nivelAprobacionRuta.toUpperCase().includes("REGISTRARSOLICITUD"));
 											if (this.id_solicitud_by_params.includes("RG")) {
-												const htmlString = "<!DOCTYPE html>\r\n<html lang=\"es\">\r\n\r\n<head>\r\n  <meta charset=\"UTF-8\">\r\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n  <title>Document<\/title>\r\n<\/head>\r\n\r\n<body>\r\n  <h2>Estimado(a)<\/h2>\r\n  <h3>{NOMBRE_APROBADOR}<\/h3>\r\n\r\n  <P>Se le informa que ha sido devuelta la solucitud {ID_SOLICITUD} - {TIPO_SOLICITUD} <\/P>\r\n\r\n  <p>\r\n    <b>\r\n      Favor ingresar al siguiente enlace: <a href=\"{URL_APROBACION}\">{URL_APROBACION}<\/a>\r\n      <br>\r\n      <br>\r\n      Gracias por su atenci\u00F3n.\r\n    <\/b>\r\n  <\/p>\r\n<\/body>\r\n\r\n<\/html>\r\n";
+												// const htmlString = "<!DOCTYPE html>\r\n<html lang=\"es\">\r\n\r\n<head>\r\n  <meta charset=\"UTF-8\">\r\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n  <title>Document<\/title>\r\n<\/head>\r\n\r\n<body>\r\n  <h2>Estimado(a)<\/h2>\r\n  <h3>{NOMBRE_APROBADOR}<\/h3>\r\n\r\n  <P>Se le informa que ha sido devuelta la solucitud {ID_SOLICITUD} - {TIPO_SOLICITUD} <\/P>\r\n\r\n  <p>\r\n    <b>\r\n      Favor ingresar al siguiente enlace: <a href=\"{URL_APROBACION}\">{URL_APROBACION}<\/a>\r\n      <br>\r\n      <br>\r\n      Gracias por su atenci\u00F3n.\r\n    <\/b>\r\n  <\/p>\r\n<\/body>\r\n\r\n<\/html>\r\n";
+												const htmlString = "<!DOCTYPE html>\r\n<html lang=\"es\">\r\n\r\n<head>\r\n  <meta charset=\"UTF-8\">\r\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n  <title>Document<\/title>\r\n<\/head>\r\n\r\n<body>\r\n  <h2>Estimado(a)<\/h2>\r\n  <h3>{NOMBRE_APROBADOR}<\/h3>\r\n\r\n  <p>Se le informa que ha sido devuelta la solucitud {ID_SOLICITUD} - {TIPO_SOLICITUD} <\/p>\r\n\r\n  <p><strong>Motivo:<\/strong> {COMENTARIO}<\/p>\r\n\r\n  <p>\r\n    <b>\r\n      Favor ingresar al siguiente enlace: <a href=\"{URL_APROBACION}\">{URL_APROBACION}<\/a>\r\n      <br>\r\n      <br>\r\n      Gracias por su atenci\u00F3n.\r\n    <\/b>\r\n  <\/p>\r\n<\/body>\r\n\r\n<\/html>\r\n";
 
-												const modifiedHtmlString = htmlString.replace("{NOMBRE_APROBADOR}", this.aprobacion.aprobador.usuario).replace("{TIPO_SOLICITUD}", this.solicitudRG.tipoSolicitud).replace("{ID_SOLICITUD}", this.solicitudRG.idSolicitud).replace("{DESCRIPCION_POSICION}", this.detalleSolicitudRG.descripcionPosicion).replace(new RegExp("{URL_APROBACION}", "g"), `${portalWorkFlow}tareas/consulta-tareas`);
+												const modifiedHtmlString = htmlString.replace("{NOMBRE_APROBADOR}", this.aprobacion.aprobador.usuario).replace("{TIPO_SOLICITUD}", this.solicitudRG.tipoSolicitud).replace("{ID_SOLICITUD}", this.solicitudRG.idSolicitud).replace("{DESCRIPCION_POSICION}", this.detalleSolicitudRG.descripcionPosicion).replace(new RegExp("{URL_APROBACION}", "g"), `${portalWorkFlow}tareas/consulta-tareas`).replace("{COMENTARIO}", this.textareaContent);
 
 												this.emailVariables = {
 													de: "emisor",
@@ -1537,9 +1541,9 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
 													}
 												});
 											} else {
-												const htmlString = "<!DOCTYPE html>\r\n<html lang=\"es\">\r\n\r\n<head>\r\n  <meta charset=\"UTF-8\">\r\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n  <title>Document<\/title>\r\n<\/head>\r\n\r\n<body>\r\n  <h2>Estimado(a)<\/h2>\r\n  <h3>{NOMBRE_APROBADOR}<\/h3>\r\n\r\n  <P>Se le informa que ha sido devuelta la solucitud {ID_SOLICITUD} - {TIPO_SOLICITUD} <\/P>\r\n\r\n  <p>\r\n    <b>\r\n      Favor ingresar al siguiente enlace: <a href=\"{URL_APROBACION}\">{URL_APROBACION}<\/a>\r\n      <br>\r\n      <br>\r\n      Gracias por su atenci\u00F3n.\r\n    <\/b>\r\n  <\/p>\r\n<\/body>\r\n\r\n<\/html>\r\n";
+												const htmlString = "<!DOCTYPE html>\r\n<html lang=\"es\">\r\n\r\n<head>\r\n  <meta charset=\"UTF-8\">\r\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n  <title>Document<\/title>\r\n<\/head>\r\n\r\n<body>\r\n  <h2>Estimado(a)<\/h2>\r\n  <h3>{NOMBRE_APROBADOR}<\/h3>\r\n\r\n  <p>Se le informa que ha sido devuelta la solucitud {ID_SOLICITUD} - {TIPO_SOLICITUD} <\/p>\r\n\r\n  <p><strong>Motivo:<\/strong> {COMENTARIO}<\/p>\r\n\r\n  <p>\r\n    <b>\r\n      Favor ingresar al siguiente enlace: <a href=\"{URL_APROBACION}\">{URL_APROBACION}<\/a>\r\n      <br>\r\n      <br>\r\n      Gracias por su atenci\u00F3n.\r\n    <\/b>\r\n  <\/p>\r\n<\/body>\r\n\r\n<\/html>\r\n";
 
-												const modifiedHtmlString = htmlString.replace("{NOMBRE_APROBADOR}", this.aprobacion.aprobador.usuario).replace("{TIPO_SOLICITUD}", this.solicitud.tipoSolicitud).replace("{ID_SOLICITUD}", this.solicitud.idSolicitud).replace("{DESCRIPCION_POSICION}", this.detalleSolicitud.descripcionPosicion).replace(new RegExp("{URL_APROBACION}", "g"), `${portalWorkFlow}tareas/consulta-tareas`);
+												const modifiedHtmlString = htmlString.replace("{NOMBRE_APROBADOR}", this.aprobacion.aprobador.usuario).replace("{TIPO_SOLICITUD}", this.solicitud.tipoSolicitud).replace("{ID_SOLICITUD}", this.solicitud.idSolicitud).replace("{DESCRIPCION_POSICION}", this.detalleSolicitud.descripcionPosicion).replace(new RegExp("{URL_APROBACION}", "g"), `${portalWorkFlow}tareas/consulta-tareas`).replace("{COMENTARIO}", this.textareaContent);
 
 												this.emailVariables = {
 													de: "emisor",
@@ -1926,19 +1930,43 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
 		if (this.buttonValue.toUpperCase().includes("ESPERAR")) {
 			this.buttonValue = "enEspera";
 		}
+
 		if (this.taskType_Activity == environment.taskType_Revisar) { //APROBADORES DINAMICOS
+			let accion = "";
+
+			if (this.buttonValue.toUpperCase() === "APROBAR") {
+				accion = "Revisar Solicitud: Solicitud Aprobada"
+			} else if (this.buttonValue.toUpperCase() === "DEVOLVER") {
+				accion = "Revisar Solicitud: Solicitud Devuelta"
+			} else if (this.buttonValue.toUpperCase() === "RECHAZAR") {
+				accion = "Revisar Solicitud: Solicitud Cancelada"
+			} else {
+				accion = "Revisar Solicitud: Solicitud en Espera"
+			}
+
+			variables.usuario_logged = {
+				value: `Usuario=${sessionStorage.getItem(LocalStorageKeys.IdLogin)}|Acción=${accion}|Fecha=${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
+			};
 
 			variables.atencionRevision = { value: this.buttonValue };
 			variables.comentariosAtencion = { value: sessionStorage.getItem(LocalStorageKeys.IdLogin) + ' - ' + this.datosAprobadores.nivelDireccion + ' - ' + this.textareaContent };
+		} else if (this.taskType_Activity == environment.taskType_RRHH || this.taskType_Activity == environment.taskType_CF_RRHH || this.taskType_Activity == environment.taskType_AP_RRHH || this.taskType_Activity == environment.taskType_RG_RRHH) { //GERENTE RECURSOS HUMANOS
+			let accion = "";
 
-			//RQ_GRRHH_RevisarSolicitud
+			if (this.buttonValue.toUpperCase() === "APROBAR") {
+				accion = "Revisar Solicitud: Solicitud Aprobada"
+			} else if (this.buttonValue.toUpperCase() === "DEVOLVER") {
+				accion = "Revisar Solicitud: Solicitud Devuelta"
+			} else if (this.buttonValue.toUpperCase() === "RECHAZAR") {
+				accion = "Revisar Solicitud: Solicitud Cancelada"
+			} else {
+				accion = "Revisar Solicitud: Solicitud en Espera"
+			}
 
-		} else if (this.taskType_Activity == environment.taskType_RRHH
-			|| this.taskType_Activity == environment.taskType_CF_RRHH
-			|| this.taskType_Activity == environment.taskType_AP_RRHH
-			|| this.taskType_Activity == environment.taskType_RG_RRHH
+			variables.usuario_logged_RRHH = {
+				value: `Usuario=${sessionStorage.getItem(LocalStorageKeys.IdLogin)}|Acción=${accion}|Fecha=${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
+			};
 
-		) { //GERENTE RECURSOS HUMANOS
 			variables.idSolicitud = {
 				value: this.solicitud.idSolicitud
 			};
@@ -1951,34 +1979,25 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
 			variables.atencionRevisionGerente = { value: this.buttonValue };
 			variables.comentariosAtencionGerenteRRHH = { value: sessionStorage.getItem(LocalStorageKeys.IdLogin) + ' - ' + this.datosAprobadores.nivelDireccion + ' - ' + this.textareaContent };
 
-		} else if (this.taskType_Activity == environment.taskType_CREM
-			|| this.taskType_Activity == environment.taskType_AP_Remuneraciones
-			|| this.taskType_Activity == environment.taskType_RG_Remuneraciones
-			|| this.taskType_Activity == environment.taskType_CF_Remuneraciones
+		} else if (this.taskType_Activity == environment.taskType_CREM || this.taskType_Activity == environment.taskType_AP_Remuneraciones || this.taskType_Activity == environment.taskType_RG_Remuneraciones || this.taskType_Activity == environment.taskType_CF_Remuneraciones) {// COMITE DE REMUNERACION
+			let accion = "";
 
-		) {// COMITE DE REMUNERACION
+			if (this.buttonValue.toUpperCase() === "APROBAR") {
+				accion = "Revisar Solicitud: Solicitud Aprobada"
+			} else if (this.buttonValue.toUpperCase() === "DEVOLVER") {
+				accion = "Revisar Solicitud: Solicitud Devuelta"
+			} else if (this.buttonValue.toUpperCase() === "RECHAZAR") {
+				accion = "Revisar Solicitud: Solicitud Cancelada"
+			} else {
+				accion = "Revisar Solicitud: Solicitud en Espera"
+			}
 
-
+			variables.usuario_logged_Remunera = {
+				value: `Usuario=${sessionStorage.getItem(LocalStorageKeys.IdLogin)}|Acción=${accion}|Fecha=${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
+			};
 
 			variables.atencionRevisionRemuneraciones = { value: this.buttonValue };
 			variables.comentariosAtencionRemuneraciones = { value: sessionStorage.getItem(LocalStorageKeys.IdLogin) + ' - ' + this.datosAprobadores.nivelDireccion + ' - ' + this.textareaContent };
-
-
-			/*
-								{
-					"variables": {
-					"atencionRevisionRemuneraciones": {
-						"value": "aprobar"
-					  },
-					"comentariosAtencionRemuneraciones": {
-						"value": ""
-					  }
-					},
-					"withVariablesInReturn": true
-				  }
-
-
-			*/
 		}
 
 		return { variables };
@@ -2044,7 +2063,6 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
 	}
 
 	saveDetalleAprobaciones() {
-		debugger;
 		this.utilService.openLoadingSpinner("Guardando información, espere por favor...");
 
 		this.solicitudes.modelDetalleAprobaciones.estadoAprobacion = this.buttonValue;
@@ -2080,7 +2098,6 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
 				}
 			});
 		}
-		debugger;
 
 		this.onCompletar();
 

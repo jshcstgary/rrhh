@@ -35,6 +35,7 @@ import { CamundaRestService } from "../../camunda-rest.service";
 import { CompleteTaskComponent } from "../general/complete-task.component";
 import { SolicitudesService } from "../registrar-solicitud/solicitudes.service";
 import { RegistrarCandidatoService } from "./registrar-candidato.service";
+import { format } from "date-fns";
 
 export const dialogComponentList: DialogComponents = {
 	dialogBuscarEmpleados: undefined,
@@ -1696,12 +1697,9 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
 	}
 
 	override generateVariablesFromFormFields() {
-
 		let variables: any = {};
 
 		if (this.solicitud.tipoSolicitud.toUpperCase().includes("REQUISICION") || this.solicitud.tipoSolicitud.toUpperCase().includes("REQUISICIÓN")) {
-
-
 			if (this.taskType_Activity == environment.taskType_RegistrarCandidato) {
 				if (this.model.tipoProceso.toUpperCase().includes("FAMILIA")) {
 					variables.tipoSolicitud = {
@@ -1725,10 +1723,12 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
 						value: "nuevoIngresoReemplazo"
 					};
 				}
-
 			}
-
 		}
+
+		variables.usuario_logged_candidato = {
+			value: `Usuario:${sessionStorage.getItem(LocalStorageKeys.IdLogin)}|Acción:Candidato Seleccionado|Fecha:${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
+		};
 
 		return { variables };
 	}

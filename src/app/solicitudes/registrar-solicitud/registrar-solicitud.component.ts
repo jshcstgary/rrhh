@@ -31,6 +31,7 @@ import { CamundaRestService } from "../../camunda-rest.service";
 import { BuscarEmpleadoComponent } from "../buscar-empleado/buscar-empleado.component";
 import { CompleteTaskComponent } from "../general/complete-task.component";
 import { SolicitudesService } from "./solicitudes.service";
+import { format } from "date-fns";
 
 const dialogComponentList: DialogComponents = {
 	dialogBuscarEmpleados: undefined,
@@ -1110,11 +1111,21 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
 
 					this.RegistrarsolicitudCompletada = true;
 
-					if (this.RegistrarsolicitudCompletada) {
-						if (this.solicitud.estadoSolicitud.toUpperCase() === "DV") {
-							this.estadoSolicitud = this.detalleSolicitud.estado;
+					if (!this.existeMatenedores) {
+						if (this.RegistrarsolicitudCompletada) {
+							if (this.solicitud.estadoSolicitud.toUpperCase() === "DV") {
+								this.estadoSolicitud = this.detalleSolicitud.estado;
 
-							if (this.estadoSolicitud === "DV") {
+								if (this.estadoSolicitud === "DV") {
+									Swal.fire({
+										text: "Solicitud guardada, puede proceder a enviarla.",
+										icon: "info",
+										confirmButtonColor: "rgb(227, 199, 22)",
+										confirmButtonText: "Ok",
+										timer: 30000
+									});
+								}
+							} else {
 								Swal.fire({
 									text: "Solicitud guardada, puede proceder a enviarla.",
 									icon: "info",
@@ -1123,14 +1134,6 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
 									timer: 30000
 								});
 							}
-						} else {
-							Swal.fire({
-								text: "Solicitud guardada, puede proceder a enviarla.",
-								icon: "info",
-								confirmButtonColor: "rgb(227, 199, 22)",
-								confirmButtonText: "Ok",
-								timer: 30000
-							});
 						}
 					}
 
@@ -1868,6 +1871,7 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
 				});
 			});
 	}
+
 	override generateVariablesFromFormFields() {
 		let variables: any = {};
 
@@ -1991,6 +1995,9 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
 				}
 			});
 
+			variables.usuario_logged = {
+				value: `Usuario=${sessionStorage.getItem(LocalStorageKeys.IdLogin)}|Acción=${this.selectedOption.toUpperCase() === "SI" ? "Registrar Solicitud: Solicitud Anulada" : "Registrar Solicitud: Solicitud Registrada"}|Fecha=${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
+			};
 			variables.codigoPosicion = {
 				value: this.model.codigoPosicion
 			};

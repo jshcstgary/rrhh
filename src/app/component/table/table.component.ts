@@ -55,8 +55,7 @@ export class TableComponent implements OnInit, OnChanges {
 	@Input() public onCheck: string;
 	@Input() public clickOnActionRow: string;
 	@Input({ required: false }) public isTarea: boolean = false;
-	@Input() public rowsPerPageValue: number =
-		TableComponentData.defaultRowPerPage;
+	@Input() public rowsPerPageValue: number = TableComponentData.defaultRowPerPage;
 	@Input() public page: number = 1;
 	public showActionColumn: boolean = true;
 	public isTableEmpty: boolean = false;

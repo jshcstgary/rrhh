@@ -58,8 +58,7 @@ export class PlantillaDComponent implements AfterViewInit, OnInit, OnChanges {
 	@Input({ required: false }) public disabledSolicitudTareaFilter: boolean = false;
 	@Input({ required: false }) public colIdToDisable: string | string[] = "";
 	@Input({ required: false }) public keyNameTable: string = "";
-	@Input({ required: false }) public dataFilterNivelesAprobacion =
-		new DataFilterNivelesAprobacion();
+	@Input({ required: false }) public dataFilterNivelesAprobacion = new DataFilterNivelesAprobacion();
 
 	@Input({ required: false }) public dataTipoMotivo: any[] = [];
 	@Input({ required: false }) public dataTipoSolicitudes: any[] = [];

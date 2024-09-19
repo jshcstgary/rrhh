@@ -200,8 +200,6 @@ export class LoginComponent {
 			return;
 		}
 
-		this.isLoading = true;
-
 		if (this.perfilCodigo === null || this.perfilCodigo === undefined || this.perfilCodigo === "") {
 			Swal.fire({
 				text: "Seleccione un Perfil de Usuario",
@@ -214,6 +212,8 @@ export class LoginComponent {
 
 			return;
 		}
+
+		this.isLoading = true;
 
 		const loginRequest: LoginRequest = {
 			codigoAplicacion: appCode,

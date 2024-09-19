@@ -28,6 +28,7 @@ import { RegistrarCandidatoService } from '../registrar-candidato/registrar-cand
 import { SolicitudesService } from '../registrar-solicitud/solicitudes.service';
 import { ComentarioSalidaJefeService } from './comentario-salida-jefe.service';
 import { columnsAprobadores, dataTableAprobadores } from './registrar-comentario-salida-jefe.data';
+import { format } from 'date-fns';
 
 @Component({
 	selector: 'app-registrar-comentario-salida-jefe',
@@ -1243,11 +1244,10 @@ export class RegistrarComentarioSalidaJefeComponent extends CompleteTaskComponen
 			return;
 		}
 
-		let variables = this.generateVariablesFromFormFields();
+		// let variables = this.generateVariablesFromFormFields();
+		let variables: any = {};
 
 		if (this.taskKey === this.taskKeySolicitante) {
-
-			let variables: any = {};
 			const htmlString = "<!DOCTYPE html>\r\n<html lang=\"es\">\r\n\r\n<head>\r\n  <meta charset=\"UTF-8\">\r\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n  <title>Document<\/title>\r\n<\/head>\r\n\r\n<body>\r\n  <h2>Estimado(a)<\/h2>\r\n  <h3>{NOMBRE_APROBADOR}<\/h3>\r\n\r\n  <P>La Solicitud de {TIPO_SOLICITUD} {ID_SOLICITUD} para la posici\u00F3n de {DESCRIPCION_POSICION} est\u00E1 disponible para su\r\n    revisi\u00F3n y aprobaci\u00F3n.<\/P>\r\n\r\n  <p>\r\n    <b>\r\n      Favor ingresar al siguiente enlace: <a href=\"{URL_APROBACION}\">{URL_APROBACION}<\/a>\r\n      <br>\r\n      <br>\r\n      Gracias por su atenci\u00F3n.\r\n    <\/b>\r\n  <\/p>\r\n<\/body>\r\n\r\n<\/html>\r\n";
 			const modifiedHtmlString = htmlString.replace("{NOMBRE_APROBADOR}", this.detalleNivelAprobacionPrimario.aprobador.usuario).replace("{TIPO_SOLICITUD}", this.solicitudRG.tipoSolicitud).replace("{ID_SOLICITUD}", this.solicitudRG.idSolicitud).replace("{DESCRIPCION_POSICION}", this.detalleSolicitudRG.descripcionPosicion).replace(new RegExp("{URL_APROBACION}", "g"), `${portalWorkFlow}tareas/consulta-tareas`);
 
@@ -1258,6 +1258,10 @@ export class RegistrarComentarioSalidaJefeComponent extends CompleteTaskComponen
 				asunto: `Autorización de Solicitud de ${this.solicitudRG.tipoSolicitud} ${this.solicitudRG.idSolicitud}`,
 				cuerpo: modifiedHtmlString,
 				password: "p4$$w0rd"
+			};
+
+			variables.usuario_logged = {
+				value: `Usuario=${sessionStorage.getItem(LocalStorageKeys.IdLogin)}|Acción=Comentario Registrado del Jefe Solicitante|Fecha=${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
 			};
 
 			variables.anularSolicitud = {
@@ -1310,6 +1314,19 @@ export class RegistrarComentarioSalidaJefeComponent extends CompleteTaskComponen
 				}
 			});
 		}
+
+		if (this.taskKey === this.taskKeyUltimoJefe) {
+			variables.usuario_logged = {
+				value: `Usuario=${sessionStorage.getItem(LocalStorageKeys.IdLogin)}|Acción=Comentario Registrado del Jefe Anterior|Fecha=${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
+			};
+		}
+
+		if (this.taskKey === this.taskKeyRRHH) {
+			variables.usuario_logged = {
+				value: `Usuario=${sessionStorage.getItem(LocalStorageKeys.IdLogin)}|Acción=Comentario Registrado del Responsable de Recursos Humanos|Fecha=${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
+			};
+		}
+
 		this.camundaRestService.postCompleteTask(this.uniqueTaskId, variables).subscribe({
 			next: () => {
 				console.log(this.contadorComentarios);

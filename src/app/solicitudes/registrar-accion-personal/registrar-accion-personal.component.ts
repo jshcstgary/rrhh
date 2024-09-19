@@ -20,7 +20,7 @@ import { environment, portalWorkFlow } from "../../../environments/environment";
 import { CompleteTaskComponent } from "../general/complete-task.component";
 import { SolicitudesService } from "../registrar-solicitud/solicitudes.service";
 
-import { endOfMonth, startOfMonth } from "date-fns";
+import { endOfMonth, format, startOfMonth } from "date-fns";
 import { PageCodes } from "src/app/enums/codes.enum";
 import { LocalStorageKeys } from "src/app/enums/local-storage-keys.enum";
 import {
@@ -978,21 +978,21 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
 					this.detalleSolicitud = response.detalleSolicitudType[0];
 					this.RegistrarsolicitudCompletada = true;
 
-					// if (this.RegistrarsolicitudCompletada) {
-					// 	Swal.fire({
-					// 		text: "Solicitud guardada, puede proceder a enviarla.",
-					// 		icon: "info",
-					// 		confirmButtonColor: "rgb(227, 199, 22)",
-					// 		confirmButtonText: "Ok",
-					// 		timer: 30000
-					// 	});
-					// }
+					if (!this.existeMatenedores) {
+						if (this.RegistrarsolicitudCompletada) {
+							if (this.solicitud.estadoSolicitud.toUpperCase() === "DV") {
+								this.estadoSolicitud = this.detalleSolicitud.estado;
 
-					if (this.RegistrarsolicitudCompletada) {
-						if (this.solicitud.estadoSolicitud.toUpperCase() === "DV") {
-							this.estadoSolicitud = this.detalleSolicitud.estado;
-
-							if (this.estadoSolicitud === "DV") {
+								if (this.estadoSolicitud === "DV") {
+									Swal.fire({
+										text: "Solicitud guardada, puede proceder a enviarla.",
+										icon: "info",
+										confirmButtonColor: "rgb(227, 199, 22)",
+										confirmButtonText: "Ok",
+										timer: 30000
+									});
+								}
+							} else {
 								Swal.fire({
 									text: "Solicitud guardada, puede proceder a enviarla.",
 									icon: "info",
@@ -1001,14 +1001,6 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
 									timer: 30000
 								});
 							}
-						} else {
-							Swal.fire({
-								text: "Solicitud guardada, puede proceder a enviarla.",
-								icon: "info",
-								confirmButtonColor: "rgb(227, 199, 22)",
-								confirmButtonText: "Ok",
-								timer: 30000
-							});
 						}
 					}
 
@@ -1612,6 +1604,10 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
 					};
 				}
 			});
+
+			variables.usuario_logged = {
+				value: `Usuario=${sessionStorage.getItem(LocalStorageKeys.IdLogin)}|Acción=Registrar Solicitud: Solicitud Enviada|Fecha=${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
+			};
 
 			variables.codigoPosicion = {
 				value: this.modelPropuestos.codigoPosicion

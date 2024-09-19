@@ -1,7 +1,7 @@
 <div class="table-container" id="app-container-table-component" [style.overflow-x]="overflowX">
 	<table aria-label="" id="app-table-component" [style.width]="tableWidth">
-		<thead id="observed-element" [ngClass]="{ 'sticky-thead': isSticky }">
-			<!-- <thead> -->
+		<!-- <thead id="observed-element" [ngClass]="{ 'sticky-thead': isSticky }"> -->
+		<thead>
 			<tr>
 				<th [ngClass]="{ 'fixed-col-end': columns.length === i + 1 && fixedLastColumn, 'fixed-col-start': i === 0 && fixedFirstColumn }" *ngFor="let head of columns; let i = index" [ngStyle]="{ width: head.type === 'actions' && !showActionColumn ? 0 : head.width }">
 					<div *ngIf="head.type === 'actions' && !showActionColumn; else columnShowed"></div>

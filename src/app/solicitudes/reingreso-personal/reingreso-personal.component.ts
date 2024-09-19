@@ -34,6 +34,7 @@ import {
 	columnsAprobadores,
 	dataTableAprobadores,
 } from "./reingreso-personal.data";
+import { format } from "date-fns";
 
 interface DialogComponents {
 	dialogBuscarEmpleados: Type<DialogBuscarEmpleadosReingresoComponent>;
@@ -1179,6 +1180,10 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
 					};
 				}
 			});
+
+			variables.usuario_logged = {
+				value: `Usuario=${sessionStorage.getItem(LocalStorageKeys.IdLogin)}|Acción=Registrar Solicitud: Solicitud Enviada|Fecha=${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
+			};
 			
 			variables.tipoSolicitud = {
 				value: this.solicitudRG.tipoSolicitud

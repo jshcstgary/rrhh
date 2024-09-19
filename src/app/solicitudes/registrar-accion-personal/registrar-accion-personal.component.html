@@ -6,19 +6,13 @@
 					<div class="col-md-8">
 						<div class="mb-3">
 							<h3 class="sol-danger">
-								<a routerLink="/tareas/consulta-tareas"> <i class="bi bi-arrow-left-circle azul"></i> {{ solicitud.idSolicitud }} </a>
+								<a [routerLink]="existeMatenedores ? '/solicitudes/reasignar-tareas-usuarios' : '/tareas/consulta-tareas'"> <i class="bi bi-arrow-left-circle azul"></i> {{ solicitud.idSolicitud }} </a>
 							</h3>
 						</div>
 					</div>
 
 					<div class="col-md-4 text-end">
 						<button *ngIf="existeMatenedores" type="button" (click)="openModalReasignarUsuario()" class="btn btn-info me-2 mt-1"><i class="fas fa-redo"></i> Reasignar</button>
-
-						<!-- <div *ngIf="!existeMatenedores || existe">
-							<button type="submit" class="btn btn-info me-2 mt-1" aria-label="Close" [disabled]="!solicitudForm.form.valid || !existenNivelesAprobacion || selectedOption === 'Si' || model.justificacionCargo === ''"><i class="fas fa-save"></i> Guardar</button>
-
-							<button *ngIf="RegistrarsolicitudCompletada || selectedOption === 'Si'" type="button" (click)="onCompletar()" class="btn btn-info me-2 mt-1"><i class="fas fa-check-circle"></i> Enviar Solicitud</button>
-						</div> -->
 
 						<div *ngIf="!existeMatenedores || existe">
 							<div *ngIf="solicitud.estadoSolicitud !== 'DV'; else botonesDevuelto" class="d-flex justify-content-end gap-3">
@@ -50,13 +44,15 @@
 					<div class="input-group mb-3 align-items-center">
 						<label class="input-group-text text-start label-estilo" for="nombre-empleado">Nombre de Empleado</label>
 
-						<span *ngIf="taskType_Activity === 'AP_CompletarSolicitud'" style="color: black; font-size: 14px" class="text-start w-50">{{ model.nombreCompleto }}</span>
+						<span *ngIf="existeMatenedores; else nombreEmpleadoEditable" style="color: black; font-size: 14px" class="text-start w-50">{{ model.nombreCompleto }}</span>
 
-						<input *ngIf="taskType_Activity !== 'AP_CompletarSolicitud'" type="text" name="nombre-empleado" [(ngModel)]="model.nombreCompleto" style="color: black; font-size: 14px; width: 33%" class="form-control" id="codigoposicion" aria-describedby="inputGroupPrepend" required placeholder="Nombre del empleado" (click)="openModal()" readonly />
+						<ng-template #nombreEmpleadoEditable>
+							<input *ngIf="taskType_Activity !== 'AP_CompletarSolicitud'" type="text" name="nombre-empleado" [(ngModel)]="model.nombreCompleto" style="color: black; font-size: 14px; width: 33%" class="form-control" id="codigoposicion" aria-describedby="inputGroupPrepend" required placeholder="Nombre del empleado" (click)="openModal()" readonly />
 
-						<button *ngIf="taskType_Activity !== 'AP_CompletarSolicitud'" class="btn btn-light" type="button" (click)="openModal()">
-							<i class="ti-search"></i>
-						</button>
+							<button *ngIf="taskType_Activity !== 'AP_CompletarSolicitud'" class="btn btn-light" type="button" (click)="openModal()">
+								<i class="ti-search"></i>
+							</button>
+						</ng-template>
 					</div>
 				</div>
 
@@ -64,13 +60,15 @@
 					<div class="input-group mb-3 align-items-center">
 						<label class="input-group-text text-start label-estilo" for="subledger">Subledger</label>
 
-						<span *ngIf="taskType_Activity === 'AP_CompletarSolicitud'" style="color: black; font-size: 14px" class="text-start w-50">{{ model.subledger }}</span>
+						<span *ngIf="existeMatenedores; else subledgerEditable" style="color: black; font-size: 14px" class="text-start w-50">{{ model.subledger }}</span>
 
-						<input *ngIf="taskType_Activity !== 'AP_CompletarSolicitud'" type="text" name="subledger" [(ngModel)]="model.subledger" style="color: black; font-size: 14px; width: 30%" class="form-control" id="codigoposicion" aria-describedby="inputGroupPrepend" required placeholder="Subledger" (click)="openModal()" readonly />
+						<ng-template #subledgerEditable>
+							<input *ngIf="taskType_Activity !== 'AP_CompletarSolicitud'" type="text" name="subledger" [(ngModel)]="model.subledger" style="color: black; font-size: 14px; width: 30%" class="form-control" id="codigoposicion" aria-describedby="inputGroupPrepend" required placeholder="Subledger" (click)="openModal()" readonly />
 
-						<button *ngIf="taskType_Activity !== 'AP_CompletarSolicitud'" class="btn btn-light" type="button" (click)="openModal()">
-							<i class="ti-search"></i>
-						</button>
+							<button *ngIf="taskType_Activity !== 'AP_CompletarSolicitud'" class="btn btn-light" type="button" (click)="openModal()">
+								<i class="ti-search"></i>
+							</button>
+						</ng-template>
 					</div>
 				</div>
 			</div>
@@ -80,7 +78,11 @@
 					<div class="input-group mb-3 align-items-center">
 						<label class="input-group-text text-start label-estilo2" for="justificacion">Justificación <span style="color: red">*</span></label>
 
-						<textarea [(ngModel)]="model.justificacionCargo" id="justificaciono" name="justificaciono" style="color: black; font-size: 14px" placeholder="Campo obligatorio"></textarea>
+						<span *ngIf="existeMatenedores; else justificacionEditable" style="color: black; font-size: 14px" class="text-start w-75">{{ model.justificacionCargo }}</span>
+
+						<ng-template #justificacionEditable>
+							<textarea class="form-control" id="justificacion" name="justificacion" placeholder="Campo obligatorio" [(ngModel)]="model.justificacionCargo" style="color: black; font-size: 14px" required></textarea>
+						</ng-template>
 					</div>
 				</div>
 			</div>
@@ -90,7 +92,7 @@
 					<div class="input-group mb-3 align-items-center">
 						<label class="input-group-text text-start label-estilo" for="tipo-accion">Tipo de acción</label>
 
-						<select class="form-select w-50" name="tipo-accion" [(ngModel)]="solicitud.idTipoAccion" [disabled]="solicitud.idTipoAccion !== 0">
+						<select class="form-select w-50" name="tipo-accion" [(ngModel)]="solicitud.idTipoAccion" [disabled]="solicitud.idTipoAccion !== 0 || existeMatenedores">
 							<option value="" hidden>Seleccione...</option>
 
 							<option *ngFor="let tipoAccion of tiposAcciones" [value]="tipoAccion.id">{{ tipoAccion.tipoAccion }}</option>
@@ -102,7 +104,7 @@
 			<div class="mx-auto mb-3">
 				<div class="form-check form-check-inline">
 					<div class="form-check text-center">
-						<input type="checkbox" class="form-check-input" name="customCheck1" [(ngModel)]="viewInputs" id="customCheck1" [checked]="taskType_Activity === 'AP_CompletarSolicitud'" />
+						<input type="checkbox" class="form-check-input" name="customCheck1" [(ngModel)]="viewInputs" id="customCheck1" [checked]="taskType_Activity === 'AP_CompletarSolicitud'" [disabled]="existeMatenedores" />
 
 						<label class="form-check-label" for="customCheck1">Transferencia de Compañía</label>
 					</div>
@@ -262,15 +264,19 @@
 								<div class="col-12 input-group mb-3 align-items-center">
 									<label class="input-group-text text-start label-estilo" for="tipoSolicitud">Fecha de Cambio (dd/mm/yyyy)</label>
 
-									<div class="datepicker-container">
-										<mat-form-field appearance="outline">
-											<input matInput [matDatepicker]="picker" [min]="minDateValidation" [max]="maxDateValidation" [(ngModel)]="fechaCambioPropuesta" class="form-control" id="fecha-ingreso" required name="fecha-ingreso" />
+									<span *ngIf="existeMatenedores; else fechaCambioEditable" style="color: black; font-size: 14px" class="text-start w-50">{{ fechaCambioPropuesta | date : "yyyy/MM/dd" }}</span>
 
-											<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+									<ng-template #fechaCambioEditable>
+										<div class="datepicker-container">
+											<mat-form-field appearance="outline">
+												<input matInput [matDatepicker]="picker" [min]="minDateValidation" [max]="maxDateValidation" [(ngModel)]="fechaCambioPropuesta" class="form-control" id="fecha-ingreso" required name="fecha-ingreso" />
 
-											<mat-datepicker #picker></mat-datepicker>
-										</mat-form-field>
-									</div>
+												<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+
+												<mat-datepicker #picker></mat-datepicker>
+											</mat-form-field>
+										</div>
+									</ng-template>
 								</div>
 							</div>
 
@@ -278,9 +284,13 @@
 								<div class="col-12 input-group mb-3 align-items-center">
 									<label class="input-group-text text-start label-estilo" for="tipoMotivo">Compañía</label>
 
-									<ng-select #inputSelectHacienda class="flex-fill" [(ngModel)]="transferenciaCompania" name="compania" placeholder="Seleccione la Compañia" [disabled]="!viewInputs">
-										<ng-option *ngFor="let data of dataEmpresa" [value]="data">{{ data }}</ng-option>
-									</ng-select>
+									<span *ngIf="existeMatenedores; else companiaEditable" style="color: black; font-size: 14px" class="text-start w-50">{{ transferenciaCompania }}</span>
+
+									<ng-template #companiaEditable>
+										<ng-select #inputSelectHacienda class="flex-fill" [(ngModel)]="transferenciaCompania" name="compania" placeholder="Seleccione la Compañia" [disabled]="!viewInputs">
+											<ng-option *ngFor="let data of dataEmpresa" [value]="data">{{ data }}</ng-option>
+										</ng-select>
+									</ng-template>
 								</div>
 							</div>
 
@@ -288,9 +298,13 @@
 								<div class="col-12 input-group mb-3">
 									<label class="input-group-text text-start label-estilo" for="tipoMotivo">Unidad</label>
 
-									<ng-select #inputSelectProducto class="flex-fill" [(ngModel)]="transferenciaUnidadNegocio" name="unidad" placeholder="Seleccione la Unidad de Negocio" [disabled]="!viewInputs">
-										<ng-option *ngFor="let data of dataUnidadesNegocio" [value]="data">{{ data }}</ng-option>
-									</ng-select>
+									<span *ngIf="existeMatenedores; else unidadNegocioEditable" style="color: black; font-size: 14px" class="text-start w-50">{{ transferenciaUnidadNegocio }}</span>
+
+									<ng-template #unidadNegocioEditable>
+										<ng-select #inputSelectProducto class="flex-fill" [(ngModel)]="transferenciaUnidadNegocio" name="unidad" placeholder="Seleccione la Unidad de Negocio" [disabled]="!viewInputs">
+											<ng-option *ngFor="let data of dataUnidadesNegocio" [value]="data">{{ data }}</ng-option>
+										</ng-select>
+									</ng-template>
 								</div>
 							</div>
 
@@ -299,11 +313,15 @@
 									<div class="col-12 input-group mb-3 align-items-center">
 										<label class="input-group-text text-start label-estilo" for="codigoPosicionPropuesto">Código de posición</label>
 
-										<input type="text" name="codigoPosicionPropuesto" [(ngModel)]="modelPropuestos.codigoPosicion" style="color: black; font-size: 14px; width: 33%" class="form-control" id="codigoposicion" aria-describedby="inputGroupPrepend" required placeholder="Código de posición" (click)="openModalPropuestos()" readonly />
+										<span *ngIf="existeMatenedores; else codigoPosicionEditable" style="color: black; font-size: 14px" class="text-start w-50">{{ modelPropuestos.codigoPosicion }}</span>
 
-										<button class="btn btn-light" type="button" (click)="openModalPropuestos()">
-											<i class="ti-search"></i>
-										</button>
+										<ng-template #codigoPosicionEditable>
+											<input type="text" name="codigoPosicionPropuesto" [(ngModel)]="modelPropuestos.codigoPosicion" style="color: black; font-size: 14px; width: 33%" class="form-control" id="codigoposicion" aria-describedby="inputGroupPrepend" required placeholder="Código de posición" (click)="openModalPropuestos()" readonly />
+
+											<button class="btn btn-light" type="button" (click)="openModalPropuestos()">
+												<i class="ti-search"></i>
+											</button>
+										</ng-template>
 									</div>
 								</div>
 
@@ -312,7 +330,6 @@
 										<label class="input-group-text text-start label-estilo" for="tipoMotivo">Área/Departamento</label>
 
 										<span style="color: black; font-size: 14px" class="text-start w-50">{{ modelPropuestos.departamento }}</span>
-										<!-- <input type="text" name="departamento" placeholder="Campo obligatorio" [(ngModel)]="modelPropuestos.departamento" class="form-control" id="departamento" required /> -->
 									</div>
 								</div>
 
@@ -321,7 +338,6 @@
 										<label class="input-group-text text-start label-estilo" for="tipoMotivo">Localidad/Zona</label>
 
 										<span style="color: black; font-size: 14px" class="text-start w-50">{{ modelPropuestos.localidad }}</span>
-										<!-- <input type="text" name="localidad" placeholder="Campo obligatorio" [(ngModel)]="modelPropuestos.localidad" class="form-control" id="localidad" required /> -->
 									</div>
 								</div>
 
@@ -330,7 +346,6 @@
 										<label class="input-group-text text-start label-estilo" for="tipoMotivo">Grupo de Pago</label>
 
 										<span style="color: black; font-size: 14px" class="text-start w-50">{{ modelPropuestos.grupoPago }}</span>
-										<!-- <input type="text" name="grupoPago" placeholder="Campo obligatorio" [(ngModel)]="modelPropuestos.grupoPago" class="form-control" id="grupoPago" required /> -->
 									</div>
 								</div>
 
@@ -339,7 +354,6 @@
 										<label class="input-group-text text-start label-estilo" for="tipoMotivo">Puesto</label>
 
 										<span style="color: black; font-size: 14px" class="text-start w-50">{{ modelPropuestos.descrPuesto }}</span>
-										<!-- <input type="text" name="puesto" placeholder="Campo obligatorio" [(ngModel)]="modelPropuestos.descrPuesto" class="form-control" id="puesto" required /> -->
 									</div>
 								</div>
 
@@ -348,7 +362,6 @@
 										<label class="input-group-text text-start label-estilo" for="tipoMotivo">Centro de Costo</label>
 
 										<span style="color: black; font-size: 14px" class="text-start w-50">{{ modelPropuestos.nomCCosto }}</span>
-										<!-- <input type="text" name="centro-costos" placeholder="Campo obligatorio" [(ngModel)]="modelPropuestos.nomCCosto" class="form-control" id="centro-costos" required /> -->
 									</div>
 								</div>
 
@@ -357,7 +370,6 @@
 										<label class="input-group-text text-start label-estilo" for="tipoMotivo">Sucursal (Nómina)</label>
 
 										<span style="color: black; font-size: 14px" class="text-start w-50">{{ modelPropuestos.sucursal }}</span>
-										<!-- <input type="text" name="suursal" placeholder="Campo obligatorio" [(ngModel)]="modelPropuestos.sucursal" class="form-control" id="suursal" required /> -->
 									</div>
 								</div>
 
@@ -369,7 +381,11 @@
 											<span class="fs-6">$</span>
 										</div>
 
-										<input type="text" name="movilizacion" placeholder="Campo obligatorio" mask="separator.2" [(ngModel)]="detalleSolicitudPropuestos.movilizacion" class="form-control" id="movilizacion" required />
+										<span *ngIf="existeMatenedores; else movilizacionEditable" style="color: black; font-size: 14px" class="text-start w-50">{{ detalleSolicitudPropuestos.movilizacion }}</span>
+
+										<ng-template #movilizacionEditable>
+											<input type="text" name="movilizacion" placeholder="Campo obligatorio" mask="separator.2" [(ngModel)]="detalleSolicitudPropuestos.movilizacion" class="form-control" id="movilizacion" required />
+										</ng-template>
 									</div>
 								</div>
 
@@ -381,7 +397,11 @@
 											<span class="fs-6">$</span>
 										</div>
 
-										<input type="text" name="alimentacion" placeholder="Campo obligatorio" mask="separator.2" [(ngModel)]="detalleSolicitudPropuestos.alimentacion" class="form-control" id="alimentacion" required />
+										<span *ngIf="existeMatenedores; else alimentacionEditable" style="color: black; font-size: 14px" class="text-start w-50">{{ detalleSolicitudPropuestos.alimentacion }}</span>
+
+										<ng-template #alimentacionEditable>
+											<input type="text" name="alimentacion" placeholder="Campo obligatorio" mask="separator.2" [(ngModel)]="detalleSolicitudPropuestos.alimentacion" class="form-control" id="alimentacion" required />
+										</ng-template>
 									</div>
 								</div>
 
@@ -399,7 +419,11 @@
 											<span>$</span>
 										</div>
 
-										<input [(ngModel)]="modelPropuestos.sueldo" type="text" mask="separator.2" [leadZero]="true" name="sueldo" class="form-control" id="sueldo" />
+										<span *ngIf="existeMatenedores; else sueldoEditable" style="color: black; font-size: 14px" class="text-start w-50">{{ modelPropuestos.sueldo }}</span>
+
+										<ng-template #sueldoEditable>
+											<input [(ngModel)]="modelPropuestos.sueldo" type="text" mask="separator.2" [leadZero]="true" name="sueldo" class="form-control" id="sueldo" />
+										</ng-template>
 									</div>
 								</div>
 
@@ -411,7 +435,11 @@
 											<span>$</span>
 										</div>
 
-										<input [(ngModel)]="modelPropuestos.sueldoMensual" type="text" mask="separator.2" [leadZero]="true" name="sueldo-mensual" class="form-control" id="sueldo-mensual" />
+										<span *ngIf="existeMatenedores; else sueldoMensualEditable" style="color: black; font-size: 14px" class="text-start w-50">{{ modelPropuestos.sueldoMensual }}</span>
+
+										<ng-template #sueldoMensualEditable>
+											<input [(ngModel)]="modelPropuestos.sueldoMensual" type="text" mask="separator.2" [leadZero]="true" name="sueldo-mensual" class="form-control" id="sueldo-mensual" />
+										</ng-template>
 									</div>
 								</div>
 
@@ -423,7 +451,11 @@
 											<span>$</span>
 										</div>
 
-										<input [(ngModel)]="modelPropuestos.sueldoTrimestral" type="text" mask="separator.2" [leadZero]="true" name="sueldo-trimestral" class="form-control" id="sueldo-trimestral" />
+										<span *ngIf="existeMatenedores; else sueldoTrimestralEditable" style="color: black; font-size: 14px" class="text-start w-50">{{ modelPropuestos.sueldoTrimestral }}</span>
+
+										<ng-template #sueldoTrimestralEditable>
+											<input [(ngModel)]="modelPropuestos.sueldoTrimestral" type="text" mask="separator.2" [leadZero]="true" name="sueldo-trimestral" class="form-control" id="sueldo-trimestral" />
+										</ng-template>
 									</div>
 								</div>
 
@@ -435,7 +467,11 @@
 											<span>$</span>
 										</div>
 
-										<input [(ngModel)]="modelPropuestos.sueldoSemestral" type="text" mask="separator.2" [leadZero]="true" name="sueldo-semestral" class="form-control" id="sueldo-semestral" />
+										<span *ngIf="existeMatenedores; else sueldoSemestralEditable" style="color: black; font-size: 14px" class="text-start w-50">{{ modelPropuestos.sueldoSemestral }}</span>
+
+										<ng-template #sueldoSemestralEditable>
+											<input [(ngModel)]="modelPropuestos.sueldoSemestral" type="text" mask="separator.2" [leadZero]="true" name="sueldo-semestral" class="form-control" id="sueldo-semestral" />
+										</ng-template>
 									</div>
 								</div>
 
@@ -447,7 +483,11 @@
 											<span>$</span>
 										</div>
 
-										<input [(ngModel)]="modelPropuestos.sueldoAnual" type="text" mask="separator.2" [leadZero]="true" name="sueldo-anual" class="form-control" id="sueldo-anual" />
+										<span *ngIf="existeMatenedores; else sueldoAnualEditable" style="color: black; font-size: 14px" class="text-start w-50">{{ modelPropuestos.sueldoAnual }}</span>
+
+										<ng-template #sueldoAnualEditable>
+											<input [(ngModel)]="modelPropuestos.sueldoAnual" type="text" mask="separator.2" [leadZero]="true" name="sueldo-anual" class="form-control" id="sueldo-anual" />
+										</ng-template>
 									</div>
 								</div>
 							</div>

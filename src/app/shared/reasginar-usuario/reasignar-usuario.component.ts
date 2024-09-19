@@ -301,58 +301,6 @@ export class DialogReasignarUsuarioComponent {
 			return;
 		}
 
-		// const getPerfileRequest: LoginRequest = {
-		// 	codigoAplicacion: appCode,
-		// 	codigoPerfil: "",
-		// 	codigoRecurso: "PWFCAMUMET",
-		// 	usuario: this.user,
-		// 	password: btoa(this.password),
-		// 	isAutenticacionLocal: false,
-		// };
-		// this.loginService.getPerfilesUsuario(getPerfileRequest).subscribe({
-		// 	next: (response) => {
-		// 		this.perfilUsuario = response;
-		// 		if (this.perfilUsuario.length === 0) {
-		// 			Swal.fire({
-		// 				text: "Usuario no encontrado",
-		// 				icon: "error",
-		// 				confirmButtonColor: "rgb(227, 199, 22)",
-		// 				confirmButtonText: "Ok",
-		// 			});
-
-		// 			return;
-		// 		}
-		// 	},
-		// 	error: (err) => {
-		// 		if (this.perfilUrl.toUpperCase().includes("IGUANA")) {
-		// 			this.perfilUsuarioError[0].scg_per_codigo = "0001";
-		// 			this.perfilUsuarioError[0].scg_per_descripcion = "Admin";
-		// 			this.perfilUsuarioError[0].message = "Exito";
-
-		// 			this.perfilUsuarioError[1].scg_per_codigo = "0002";
-		// 			this.perfilUsuarioError[1].scg_per_descripcion = "Iniciador";
-		// 			this.perfilUsuarioError[1].message = "Exito";
-
-		// 			this.perfilUsuarioError[2].scg_per_codigo = "0003";
-		// 			this.perfilUsuarioError[2].scg_per_descripcion = "Aprobador";
-		// 			this.perfilUsuarioError[2].message = "Exito";
-
-		// 			this.perfilUsuarioError[3].scg_per_codigo = "0004";
-		// 			this.perfilUsuarioError[3].scg_per_descripcion = "Aprobador Fijo";
-		// 			this.perfilUsuarioError[3].message = "Exito";
-
-		// 			this.perfilUsuario = this.perfilUsuarioError;
-		// 		} else {
-		// 			Swal.fire({
-		// 				text: "Usuario no es valido",
-		// 				icon: "error",
-		// 				confirmButtonColor: "rgb(227, 199, 22)",
-		// 				confirmButtonText: "Ok",
-		// 			});
-		// 		}
-		// 	}
-		// });
-
 		this.dataAprobador.usuarioAprobador = this.modelo.nombreCompleto;
 		this.dataAprobador.codigoPosicionAprobador = this.modelo.codigoPosicion;
 		this.dataAprobador.descripcionPosicionAprobador = this.modelo.descrPosicion;

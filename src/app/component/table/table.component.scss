@@ -1,8 +1,8 @@
 $border-table-radius: 10px;
-$font-size: 16px;
+$font-size: 14px;
 $font-style: normal;
 $line-height: normal;
-$cell-padding: 12px 24px;
+$cell-padding: 6px 12px;
 @import "../../../assets/scss/variable";
 
 .table-container {
@@ -40,7 +40,7 @@ td {
 	font-style: $font-style;
 	font-weight: 500;
 	line-height: $line-height;
-	height: 64px;
+	height: 50px;
 	padding: $cell-padding;
 	border-bottom: 0.5px solid #506385;
 	background-color: #fff;

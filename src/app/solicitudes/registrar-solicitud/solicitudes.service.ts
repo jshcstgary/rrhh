@@ -106,7 +106,6 @@ export class SolicitudesService {
 
 
 	public guardarDetallesAprobacionesSolicitud(request: any): Observable<any> {
-		request.modelDetalleAprobaciones.fechaModificacion = ""
 		return this.http.post<any>(this.apiDetalleAprobaciones, request);
 	}
 
@@ -159,12 +158,8 @@ export class SolicitudesService {
 		);
 	}
 
-	public obtenerTareasPorInstanciaRaiz(
-		idDeInstanciaRaiz: string
-	): Observable<ITareasResponse> {
-		return this.http.get<ITareasResponse>(
-			`${this.apiHistoricaCamundaUrl}/tarea/${idDeInstanciaRaiz}`
-		);
+	public obtenerTareasPorInstanciaRaiz(idDeInstanciaRaiz: string): Observable<ITareasResponse> {
+		return this.http.get<ITareasResponse>(`${this.apiHistoricaCamundaUrl}/tarea/${idDeInstanciaRaiz}`);
 	}
 
 	public obtenerComentariosAtencionPorInstanciaRaiz(

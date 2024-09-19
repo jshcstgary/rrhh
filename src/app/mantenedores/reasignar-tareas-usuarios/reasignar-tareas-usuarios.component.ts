@@ -182,7 +182,8 @@ export class ReasignarTareasUsuariosComponent implements OnInit {
 				return this.consultaTareasService.getTareas().subscribe({
 					next: (response) => {
 						this.dataTable = response.solicitudes.map((item) => ({
-							idSolicitud: item.idSolicitud + "," + item.rootProcInstId,
+							idSolicitud: item.idSolicitud,
+							idInstancia: item.rootProcInstId,
 							startTime: item.startTime.toString().split(" ")[0],
 							name: item.name,
 							tipoSolicitud: item.tipoSolicitud,
@@ -250,71 +251,43 @@ export class ReasignarTareasUsuariosComponent implements OnInit {
 
 	onRowActionClicked(id: string, key: string, tooltip: string, id_edit) {
 		if (this.isTarea) {
-			let ids = id_edit.split(",");
+			const solicitud = this.dataTable.find(item => item.idSolicitud === id_edit);
 
-			this.consultaTareasService.getTareaIdParam(ids[0]).subscribe((tarea) => {
+			this.consultaTareasService.getTareaIdParam(solicitud.idSolicitud).subscribe((tarea) => {
 				let taeraopcion = tarea.solicitudes[0].tasK_DEF_KEY;
 				let registrar = environment.taskType_RRHH;
 
 				switch (tarea.solicitudes[0].tasK_DEF_KEY) {
 					case environment.taskType_Registrar:
 
-						this.router.navigate([
-							"/solicitudes/registrar-solicitud",
-							ids[1],
-							ids[0],
-						]);
+						this.router.navigate(["/solicitudes/registrar-solicitud", solicitud.idInstancia, solicitud.idSolicitud]);
 
 						break;
-
 					case environment.taskType_Revisar:
 
-						this.router.navigate([
-							"/solicitudes/revisar-solicitud",
-							ids[1],
-							ids[0],
-						]);
+						this.router.navigate(["/solicitudes/revisar-solicitud", solicitud.idInstancia, solicitud.idSolicitud]);
 
 						break;
 					case environment.taskType_RRHH:
 
-						this.router.navigate([
-							"/solicitudes/revisar-solicitud",
-							ids[1],
-							ids[0],
-						]);
+						this.router.navigate(["/solicitudes/revisar-solicitud", solicitud.idInstancia, solicitud.idSolicitud]);
 
 						break;
-
 					case environment.taskType_CREM:
 
-						this.router.navigate([
-							"/solicitudes/revisar-solicitud",
-							ids[1],
-							ids[0],
-						]);
+						this.router.navigate(["/solicitudes/revisar-solicitud", solicitud.idInstancia, solicitud.idSolicitud]);
 
 						break;
-
 					case environment.taskType_RegistrarCandidato:
 
-						this.router.navigate([
-							"/solicitudes/registrar-candidato",
-							ids[1],
-							ids[0],
-						]);
+						this.router.navigate(["/solicitudes/registrar-candidato", solicitud.idInstancia, solicitud.idSolicitud]);
 
 						break;
-
 					case environment.taskType_CompletarRequisicion:
 						if (tarea.solicitudes[0].tipoSolicitud.toUpperCase().includes("REQUISI")) {
-							this.router.navigate([
-								"/solicitudes/completa-solicitud",
-								ids[1],
-								ids[0],
-							]);
+							this.router.navigate(["/solicitudes/completa-solicitud", solicitud.idInstancia, solicitud.idSolicitud]);
 						} else {
-							this.seleccionCandidatoService.getCandidatoById(ids[0]).subscribe({
+							this.seleccionCandidatoService.getCandidatoById(solicitud.idSolicitud).subscribe({
 								next: ({ seleccionCandidatoType }) => {
 									const { iD_SOLICITUD } = seleccionCandidatoType[0];
 
@@ -332,16 +305,11 @@ export class ReasignarTareasUsuariosComponent implements OnInit {
 						}
 
 						break;
-
 					case environment.taskType_CF:
 						if (tarea.solicitudes[0].tipoSolicitud.toUpperCase().includes("FAMILIA")) {
-							this.router.navigate([
-								"/solicitudes/registrar-familiares",
-								ids[1],
-								ids[0],
-							]);
+							this.router.navigate(["/solicitudes/registrar-familiares", solicitud.idInstancia, solicitud.idSolicitud]);
 						} else {
-							this.seleccionCandidatoService.getCandidatoById(ids[0]).subscribe({
+							this.seleccionCandidatoService.getCandidatoById(solicitud.idSolicitud).subscribe({
 								next: ({ seleccionCandidatoType }) => {
 									const { iD_SOLICITUD_PROCESO } = seleccionCandidatoType[0];
 
@@ -359,16 +327,11 @@ export class ReasignarTareasUsuariosComponent implements OnInit {
 						}
 
 						break;
-
 					case environment.taskType_RG:
 						if (tarea.solicitudes[0].tipoSolicitud.toUpperCase().includes("REINGRESO")) {
-							this.router.navigate([
-								"/solicitudes/reingreso-personal",
-								ids[1],
-								ids[0],
-							]);
+							this.router.navigate(["/solicitudes/reingreso-personal", solicitud.idInstancia, solicitud.idSolicitud]);
 						} else {
-							this.seleccionCandidatoService.getCandidatoById(ids[0]).subscribe({
+							this.seleccionCandidatoService.getCandidatoById(solicitud.idSolicitud).subscribe({
 								next: ({ seleccionCandidatoType }) => {
 									const { iD_SOLICITUD_PROCESO } = seleccionCandidatoType[0];
 
@@ -386,16 +349,11 @@ export class ReasignarTareasUsuariosComponent implements OnInit {
 						}
 
 						break;
-
 					case environment.taskType_RGC_RRHH:
 						if (tarea.solicitudes[0].tipoSolicitud.toUpperCase().includes("REINGRESO")) {
-							this.router.navigate([
-								`/solicitudes/reingreso-personal/registro-comentarios`,
-								ids[1],
-								ids[0],
-							]);
+							this.router.navigate(["/solicitudes/reingreso-personal/registro-comentarios", solicitud.idInstancia, solicitud.idSolicitud]);
 						} else {
-							this.seleccionCandidatoService.getCandidatoById(ids[0]).subscribe({
+							this.seleccionCandidatoService.getCandidatoById(solicitud.idSolicitud).subscribe({
 								next: ({ seleccionCandidatoType }) => {
 									const { iD_SOLICITUD_PROCESO } = seleccionCandidatoType[0];
 
@@ -413,16 +371,11 @@ export class ReasignarTareasUsuariosComponent implements OnInit {
 						}
 
 						break;
-
 					case environment.taskType_RGC_ULTIMO_JEFE:
 						if (tarea.solicitudes[0].tipoSolicitud.toUpperCase().includes("REINGRESO")) {
-							this.router.navigate([
-								`/solicitudes/reingreso-personal/registro-comentarios`,
-								ids[1],
-								ids[0]
-							]);
+							this.router.navigate(["/solicitudes/reingreso-personal/registro-comentarios", solicitud.idInstancia, solicitud.idSolicitud]);
 						} else {
-							this.seleccionCandidatoService.getCandidatoById(ids[0]).subscribe({
+							this.seleccionCandidatoService.getCandidatoById(solicitud.idSolicitud).subscribe({
 								next: ({ seleccionCandidatoType }) => {
 									const { iD_SOLICITUD_PROCESO } = seleccionCandidatoType[0];
 
@@ -440,16 +393,11 @@ export class ReasignarTareasUsuariosComponent implements OnInit {
 						}
 
 						break;
-
 					case environment.taskType_RG_Jefe_Solicitante:
 						if (tarea.solicitudes[0].tipoSolicitud.toUpperCase().includes("REINGRESO")) {
-							this.router.navigate([
-								`/solicitudes/reingreso-personal/registro-comentarios`,
-								ids[1],
-								ids[0]
-							]);
+							this.router.navigate(["/solicitudes/reingreso-personal/registro-comentarios", solicitud.idInstancia, solicitud.idSolicitud]);
 						} else {
-							this.seleccionCandidatoService.getCandidatoById(ids[0]).subscribe({
+							this.seleccionCandidatoService.getCandidatoById(solicitud.idSolicitud).subscribe({
 								next: ({ seleccionCandidatoType }) => {
 									const { iD_SOLICITUD_PROCESO } = seleccionCandidatoType[0];
 
@@ -467,38 +415,23 @@ export class ReasignarTareasUsuariosComponent implements OnInit {
 						}
 
 						break;
-
 					case environment.taskType_RG_RRHH:
 						if (tarea.solicitudes[0].tipoSolicitud.toUpperCase().includes("REINGRESO")) {
-							this.router.navigate([
-								`/solicitudes/revisar-solicitud`,
-								ids[1],
-								ids[0]
-							]);
+							this.router.navigate(["/solicitudes/revisar-solicitud", solicitud.idInstancia, solicitud.idSolicitud]);
 						}
 
 						break;
-
 					case environment.taskType_RG_Remuneraciones:
 						if (tarea.solicitudes[0].tipoSolicitud.toUpperCase().includes("REINGRESO")) {
-							this.router.navigate([
-								`/solicitudes/revisar-solicitud`,
-								ids[1],
-								ids[0]
-							]);
+							this.router.navigate(["/solicitudes/revisar-solicitud", solicitud.idInstancia, solicitud.idSolicitud]);
 						}
 
 						break;
-
 					case environment.taskType_CF_Remuneraciones:
 						if (tarea.solicitudes[0].tipoSolicitud.toUpperCase().includes("FAMILIA")) {
-							this.router.navigate([
-								`/solicitudes/revisar-solicitud`,
-								ids[1],
-								ids[0]
-							]);
+							this.router.navigate(["/solicitudes/revisar-solicitud", solicitud.idInstancia, solicitud.idSolicitud]);
 						} else {
-							this.seleccionCandidatoService.getCandidatoById(ids[0]).subscribe({
+							this.seleccionCandidatoService.getCandidatoById(solicitud.idSolicitud).subscribe({
 								next: ({ seleccionCandidatoType }) => {
 									const { iD_SOLICITUD_PROCESO } = seleccionCandidatoType[0];
 
@@ -516,16 +449,11 @@ export class ReasignarTareasUsuariosComponent implements OnInit {
 						}
 
 						break;
-
 					case environment.taskType_CF_RRHH:
 						if (tarea.solicitudes[0].tipoSolicitud.toUpperCase().includes("FAMILIA")) {
-							this.router.navigate([
-								`/solicitudes/revisar-solicitud`,
-								ids[1],
-								ids[0]
-							]);
+							this.router.navigate(["/solicitudes/revisar-solicitud", solicitud.idInstancia, solicitud.idSolicitud]);
 						} else {
-							this.seleccionCandidatoService.getCandidatoById(ids[0]).subscribe({
+							this.seleccionCandidatoService.getCandidatoById(solicitud.idSolicitud).subscribe({
 								next: ({ seleccionCandidatoType }) => {
 									const { iD_SOLICITUD_PROCESO } = seleccionCandidatoType[0];
 
@@ -543,73 +471,42 @@ export class ReasignarTareasUsuariosComponent implements OnInit {
 						}
 
 						break;
-
 					case environment.taskType_AP_Completar:
 						if (tarea.solicitudes[0].tipoSolicitud.toUpperCase().includes("PERSONAL")) {
-							this.router.navigate([
-								`/solicitudes/accion-personal/registrar-solicitud`,
-								ids[1],
-								ids[0]
-							]);
+							this.router.navigate(["/solicitudes/accion-personal/registrar-solicitud", solicitud.idInstancia, solicitud.idSolicitud]);
 						}
 
 						break;
-
 					case environment.taskType_AP_Registrar:
 						if (tarea.solicitudes[0].tipoSolicitud.toUpperCase().includes("PERSONAL")) {
-							this.router.navigate([
-								`/solicitudes/accion-personal/registrar-solicitud`,
-								ids[1],
-								ids[0]
-							]);
+							this.router.navigate(["/solicitudes/accion-personal/registrar-solicitud", solicitud.idInstancia, solicitud.idSolicitud]);
 						}
 
 						break;
-
 					case environment.taskType_AP_Remuneraciones:
 						if (tarea.solicitudes[0].tipoSolicitud.toUpperCase().includes("PERSONAL")) {
-							this.router.navigate([
-								`/solicitudes/revisar-solicitud`,
-								ids[1],
-								ids[0]
-							]);
+							this.router.navigate(["/solicitudes/revisar-solicitud", solicitud.idInstancia, solicitud.idSolicitud]);
 						}
 
 						break;
-
 					case environment.taskType_AP_RV:
 						if (tarea.solicitudes[0].tipoSolicitud.toUpperCase().includes("PERSONAL")) {
-							this.router.navigate([
-								`/solicitudes/revisar-solicitud`,
-								ids[1],
-								ids[0]
-							]);
+							this.router.navigate(["/solicitudes/revisar-solicitud", solicitud.idInstancia, solicitud.idSolicitud]);
 						}
 
 						break;
-
 					case environment.taskType_AP_Remuneraciones:
 						if (tarea.solicitudes[0].tipoSolicitud.toUpperCase().includes("PERSONAL")) {
-							this.router.navigate([
-								`/solicitudes/revisar-solicitud`,
-								ids[1],
-								ids[0]
-							]);
+							this.router.navigate(["/solicitudes/revisar-solicitud", solicitud.idInstancia, solicitud.idSolicitud]);
 						}
 
 						break;
-
 					case environment.taskType_AP_RRHH:
 						if (tarea.solicitudes[0].tipoSolicitud.toUpperCase().includes("PERSONAL")) {
-							this.router.navigate([
-								`/solicitudes/revisar-solicitud`,
-								ids[1],
-								ids[0]
-							]);
+							this.router.navigate(["/solicitudes/revisar-solicitud", solicitud.idInstancia, solicitud.idSolicitud]);
 						}
 
 						break;
-
 					default:
 				}
 			});
