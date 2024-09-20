@@ -49,11 +49,13 @@ import { BuscarExempleadoComponent } from "./reingreso-personal/buscar-exemplead
 import { DialogBuscarEmpleadosReingresoComponent } from "./reingreso-personal/dialog-buscar-empleados-reingreso/dialog-buscar-empleados-reingreso.component";
 import { ReingresoPersonalComponent } from "./reingreso-personal/reingreso-personal.component";
 import { TrazabilidadSolicitudComponent } from "./trazabilidad-solicitud/trazabilidad-solicitud.component";
+import { ReporteSolicitudesComponent } from "./reporte-solicitudes/reporte-solicitudes.component";
 
 @NgModule({
 	declarations: [
 		RegistrarSolicitudComponent,
 		ConsultaSolicitudesComponent,
+		ReporteSolicitudesComponent,
 		DetalleSolicitudComponent,
 		RevisarSolicitudComponent,
 		RegistrarCandidatoComponent,

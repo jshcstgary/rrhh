@@ -43,6 +43,9 @@ export class PlantillaAComponent implements AfterViewInit, OnInit, OnChanges {
 	})
 	public activeRecordsCheckbox: boolean = true;
 
+	@Input()
+	public rowsPerPageValue: number = TableComponentData.defaultRowPerPage;
+
 	@Input({ required: false }) public showFilterTipoSolicitud: boolean = true;
 	@Input({ required: false }) public disabledFilterTipoSolicitud: boolean = false;
 	@Input({ required: false }) public showButtonExportar: boolean = true
@@ -75,12 +78,14 @@ export class PlantillaAComponent implements AfterViewInit, OnInit, OnChanges {
 	@Output()
 	public onChangeActiveRecordsCheckbox: EventEmitter<boolean> = new EventEmitter<boolean>();
 
+	@Input()
+	public rowsPerPageTable: number = TableComponentData.defaultRowPerPage;
+
 	public dropdownButtonClasses: string[] = ["btn-outline-info"];
 	public filterFormContainsSearchButton: boolean = false;
 	public textButtonDropdowm: string = "Exportar";
 	public mainTableName: string = "mainTable";
 	public pageNumberTable: number = 1;
-	public rowsPerPageTable: number = TableComponentData.defaultRowPerPage;
 	public dataToTable: any[] = [];
 	public totalRowsInTable: number = 0;
 	public dropdownOptionsExport: IDropdownOptions = PlantillaAData.dropdownOptionsExport;

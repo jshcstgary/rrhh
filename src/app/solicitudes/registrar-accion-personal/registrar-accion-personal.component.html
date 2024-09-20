@@ -16,7 +16,9 @@
 
 						<div *ngIf="!existeMatenedores || existe">
 							<div *ngIf="solicitud.estadoSolicitud !== 'DV'; else botonesDevuelto" class="d-flex justify-content-end gap-3">
-								<button type="submit" class="btn btn-info me-2 d-flex align-items-center justify-content-center button-custom" aria-label="Close" [disabled]="!solicitudForm.form.valid || !existenNivelesAprobacion || selectedOption === 'Si' || model.justificacionCargo === ''"><i class="fas fa-save me-2 icon-size"></i> Guardar</button>
+								<button *ngIf="!viewInputs" type="submit" class="btn btn-info me-2 d-flex align-items-center justify-content-center button-custom" aria-label="Close" [disabled]="!solicitudForm.form.valid || !existenNivelesAprobacion || selectedOption === 'Si' || model.justificacionCargo === ''"><i class="fas fa-save me-2 icon-size"></i> Guardar</button>
+
+								<button *ngIf="viewInputs" type="submit" class="btn btn-info me-2 d-flex align-items-center justify-content-center button-custom" aria-label="Close" [disabled]="selectedOption === 'Si' || model.justificacionCargo === '' || validateFechaCambioPropuesta() || transferenciaCompania === '' || transferenciaUnidadNegocio === ''"><i class="fas fa-save me-2 icon-size"></i> Guardar</button>
 
 								<button *ngIf="RegistrarsolicitudCompletada || selectedOption === 'Si'" type="button" (click)="onCompletar()" class="btn btn-info me-2 d-flex align-items-center justify-content-center button-custom"><i class="fas fa-check-circle me-2 icon-size"></i> Enviar Solicitud</button>
 							</div>
@@ -43,7 +45,7 @@
 				<div class="col-md-6">
 					<div class="input-group mb-3 align-items-center">
 						<label class="input-group-text text-start label-estilo" for="nombre-empleado">Nombre de Empleado</label>
-						<span *ngIf="existeMatenedores||taskType_Activity === 'AP_CompletarSolicitud'; else nombreEmpleadoEditable" style="color: black; font-size: 14px" class="text-start w-50">{{ model.nombreCompleto }}</span>
+						<span *ngIf="existeMatenedores || taskType_Activity === 'AP_CompletarSolicitud'; else nombreEmpleadoEditable" style="color: black; font-size: 14px" class="text-start w-50">{{ model.nombreCompleto }}</span>
 
 						<ng-template #nombreEmpleadoEditable>
 							<input *ngIf="taskType_Activity !== 'AP_CompletarSolicitud'" type="text" name="nombre-empleado" [(ngModel)]="model.nombreCompleto" style="color: black; font-size: 14px; width: 33%" class="form-control" id="codigoposicion" aria-describedby="inputGroupPrepend" required placeholder="Nombre del empleado" (click)="openModal()" readonly />
@@ -59,7 +61,7 @@
 					<div class="input-group mb-3 align-items-center">
 						<label class="input-group-text text-start label-estilo" for="subledger">Subledger</label>
 
-						<span *ngIf="existeMatenedores||taskType_Activity === 'AP_CompletarSolicitud'; else subledgerEditable" style="color: black; font-size: 14px" class="text-start w-50">{{ model.subledger }}</span>
+						<span *ngIf="existeMatenedores || taskType_Activity === 'AP_CompletarSolicitud'; else subledgerEditable" style="color: black; font-size: 14px" class="text-start w-50">{{ model.subledger }}</span>
 
 						<ng-template #subledgerEditable>
 							<input *ngIf="taskType_Activity !== 'AP_CompletarSolicitud'" type="text" name="subledger" [(ngModel)]="model.subledger" style="color: black; font-size: 14px; width: 30%" class="form-control" id="codigoposicion" aria-describedby="inputGroupPrepend" required placeholder="Subledger" (click)="openModal()" readonly />
@@ -140,6 +142,24 @@
 									<label class="input-group-text text-start label-estilo" for="tipoMotivo">Unidad</label>
 
 									<span id="unidad" name="unidad" style="color: black; font-size: 14px" class="text-start w-50">{{ model.unidadNegocio }}</span>
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col-12 input-group mb-3 align-items-center">
+									<label class="input-group-text text-start label-estilo" for="tipoMotivo">Nivel de Dirección</label>
+
+									<span id="unidad" name="unidad" style="color: black; font-size: 14px" class="text-start w-50">{{ model.nivelDir }}</span>
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col-md-12">
+									<div class="input-group mb-3 align-items-center">
+										<label class="input-group-text label-estilo text-center" for="tipoMotivo">Código de Posición</label>
+
+										<span id="unidad" name="unidad" style="color: black; font-size: 14px" class="text-start w-50">{{ model.codigoPosicion }}</span>
+									</div>
 								</div>
 							</div>
 
@@ -308,6 +328,14 @@
 							</div>
 
 							<div *ngIf="!viewInputs">
+								<div class="row">
+									<div class="col-12 input-group mb-3">
+										<label class="input-group-text text-start label-estilo" for="tipoMotivo">Nivel de Dirección</label>
+
+										<span style="color: black; font-size: 14px" class="text-start w-50">{{ modelPropuestos.nivelDir }}</span>
+									</div>
+								</div>
+
 								<div class="row">
 									<div class="col-12 input-group mb-3 align-items-center">
 										<label class="input-group-text text-start label-estilo" for="codigoPosicionPropuesto">Código de posición</label>

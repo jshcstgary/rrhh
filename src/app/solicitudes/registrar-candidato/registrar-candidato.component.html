@@ -21,31 +21,7 @@
 					</div>
 				</div>
 
-				<div class="row mt-4">
-					<div class="col-md-4">
-						<div class="input-group mb-3 align-items-center">
-							<label class="label-estilo" for="origin">Creado por:</label>
-
-							<span id="origin" name="" style="color: black; font-size: 14px" class="text-start">{{ solicitud.usuarioCreacion }}</span>
-						</div>
-					</div>
-
-					<div class="col-md-4">
-						<div class="input-group mb-3 align-items-center">
-							<label class="label-estilo" for="unidadnegocio">Fecha:</label>
-
-							<span id="date" name="" style="color: black; font-size: 14px" class="text-start">{{ this.solicitud.fechaCreacion | date : "yyyy/MM/dd" }}</span>
-						</div>
-					</div>
-
-					<div class="col-md-4">
-						<div class="input-group mb-3 align-items-center">
-							<label class="label-estilo" for="unidadnegocio">Nro. Solicitud:</label>
-
-							<span id="solicitud" name="" style="color: black; font-size: 14px" class="text-start">{{ solicitud.idSolicitud }}</span>
-						</div>
-					</div>
-				</div>
+				<app-solicitud-header-data [usuarioCreacion]="solicitud.usuarioCreacion" [fechaCreacion]="solicitud.fechaCreacion" [idSolicitud]="solicitud.idSolicitud"></app-solicitud-header-data>
 
 				<hr />
 			</div>

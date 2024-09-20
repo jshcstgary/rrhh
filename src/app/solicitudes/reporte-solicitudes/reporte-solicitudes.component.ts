@@ -30,10 +30,10 @@ import { UtilService } from "src/app/services/util/util.service";
 import { ValidationsService } from "src/app/services/validations/validations.service";
 import Swal from "sweetalert2";
 import { SolicitudesService } from "../registrar-solicitud/solicitudes.service";
-import { ConsultaSolicitudesData } from "./consulta-solicitudes.data";
+import { ConsultaSolicitudesData } from "./reporte-solicitudes.data";
 import {
 	IConsultaSolicitudesTable
-} from "./consulta-solicitudes.interface";
+} from "./reporte-solicitudes.interface";
 
 import { DatePipe } from "@angular/common";
 import { NgSelectComponent } from "@ng-select/ng-select";
@@ -52,7 +52,6 @@ import { PageControlPermiso } from "src/app/types/page-control-permiso.type";
 import { Control, Permiso } from "src/app/types/permiso.type";
 import { codigosSolicitudReporte, portalWorkFlow } from "src/environments/environment";
 import { RegistrarCandidatoService } from "../registrar-candidato/registrar-candidato.service";
-import { ConsultaGraficosData } from "./consulta-grafico.data";
 import { ConsultaSolicitudesService } from "./consulta-solicitudes.service";
 import { RegistrarData } from "src/app/eschemas/RegistrarData";
 import { ComentarioSalidaJefeService } from "../detalle-solicitud/comentario-salida-jefe.service";
@@ -64,10 +63,10 @@ declare var require: any;
 const data: any = require("./company.json");
 @Component({
 	selector: "app-data-table",
-	templateUrl: "./consulta-solicitudes.component.html",
-	styleUrls: ["./consulta-solicitudes.component.scss"],
+	templateUrl: "./reporte-solicitudes.component.html",
+	styleUrls: ["./reporte-solicitudes.component.scss"],
 })
-export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
+export class ReporteSolicitudesComponent implements AfterViewInit, OnInit {
 	private pageCode: string = PageCodes.ConsultaSolicitudes;
 	public pageControlPermission: typeof ConsultaSolicitudPageControlPermission = ConsultaSolicitudPageControlPermission;
 
@@ -145,8 +144,6 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 	public codigoTipoSolicitud: string;
 	public processDefinitionKey: string;
 
-	public columnsTableGraphic: IColumnsTable = ConsultaGraficosData.columns
-
 	// public dataTiposMotivosPorTipoSolicitud : any[] = [];
 
 	public dataTiposMotivosPorTipoSolicitud: { [idSolicitud: number]: any[] } =
@@ -218,8 +215,8 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 
 	columns = [{ prop: "name" }, { name: "Gender" }, { name: "Company" }];
 
-	@ViewChild(ConsultaSolicitudesComponent) table:
-		| ConsultaSolicitudesComponent
+	@ViewChild(ReporteSolicitudesComponent) table:
+		| ReporteSolicitudesComponent
 		| any;
 
 	// PROPS FOR PRINTING
@@ -503,21 +500,6 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 
 				this.camundaRestService.postProcessInstance(this.processDefinitionKey, variables).subscribe({
 					next: (instanceOutput) => {
-						const key: string = `usuario_logged_creado-${this.codigoTipoSolicitud}`;
-
-						const request = {
-							processInstanceIds: [instanceOutput.id],
-							variables: {
-								[key]: {
-									value: `Usuario=${sessionStorage.getItem(LocalStorageKeys.NombreUsuario)}|Accion=Solicitud Creada por ${sessionStorage.getItem(LocalStorageKeys.NivelDireccion)}|Fecha=${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
-								}
-							}
-						};
-
-						this.camundaRestService.registrarVariable(request).subscribe({
-							next: () => { }
-						});
-
 						this.instanceCreated = new DatosInstanciaProceso(instanceOutput.businessKey, instanceOutput.definitionId, instanceOutput.id, instanceOutput.tenantId);
 
 						this.lookForError(instanceOutput);
@@ -538,7 +520,6 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 									convertTimeZonedDate(this.solicitud.fechaActualizacion);
 									convertTimeZonedDate(this.solicitud.fechaCreacion);
 
-									console.log(this.solicitud);
 									this.solicitudes.guardarSolicitud(this.solicitud).subscribe({
 										next: (responseSolicitud) => {
 											this.solicitud.idSolicitud = responseSolicitud.idSolicitud;
@@ -2517,7 +2498,7 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 				["Remuneración Total:", `$ ${(parseFloat(this.modelPrintRG.sueldo) + variableMaximaRG).toFixed(2)}`, `$ ${(parseFloat(this.modelPrint.sueldo) + variableMaxima).toFixed(2)}`],
 				["Cargo:", this.modelPrint.descrPosicion, this.modelPrintRG.descrPosicion],
 				["Departamento:", this.modelPrint.departamento, this.modelPrintRG.departamento],
-				["Fecha de Ingreso:", this.modelPrint.fechaIngreso === null || this.modelPrint.fechaIngreso === undefined || this.modelPrint.fechaIngreso === "" ? "-" : format(new Date(this.modelPrint.fechaIngreso), "dd/MM/yyyy"), this.modelPrintRG.fechaIngreso === null || this.modelPrintRG.fechaIngreso === undefined || this.modelPrintRG.fechaIngreso === "" ? "-" : format(new Date(this.modelPrintRG.fechaIngreso), "dd/MM/yyyy")],
+				["Fecha de Ingreso:", format(new Date(this.modelPrint.fechaIngreso), "dd/MM/yyyy"), format(new Date(this.modelPrintRG.fechaIngreso), "dd/MM/yyyy")],
 				["Fecha de Salida:", format(new Date(this.detalleSolicitudPrintRG.fechaSalida), "dd/MM/yyyy"), format(new Date(this.detalleSolicitud.fechaSalida), "dd/MM/yyyy")],
 				["Jefe Inmediato Superior:", this.detalleSolicitudPrintRG.jefeInmediatoSuperior, this.detalleSolicitud.jefeInmediatoSuperior],
 				["Cargo Jefe Inemdiato Superior:", this.detalleSolicitudPrintRG.puestoJefeInmediato, this.detalleSolicitud.puestoJefeInmediato],
@@ -2741,10 +2722,8 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 	}
 
 	private exportarAccionPersonal(doc: jsPDF, esquinaDeHoja: any, tituloDeHoja: any, backgroundCellColor: [number, number, number], textColor: [number, number, number], lineColor: [number, number, number], logs: any[]): void {
-		// const variableMaxima = Math.max(...[parseInt(this.modelPrint.sueldoAnual), parseInt(this.modelPrint.sueldoMensual), parseInt(this.modelPrint.sueldoSemestral), parseInt(this.modelPrint.sueldoTrimestral)]);
-		const variableMaxima = Math.max(...[parseInt(this.modelPrint.sueldoAnual === "" ? "0" : this.modelPrint.sueldoAnual), parseInt(this.modelPrint.sueldoMensual === "" ? "0" : this.modelPrint.sueldoMensual), parseInt(this.modelPrint.sueldoSemestral === "" ? "0" : this.modelPrint.sueldoSemestral), parseInt(this.modelPrint.sueldoTrimestral === "" ? "0" : this.modelPrint.sueldoTrimestral)]);
-		// const variableMaximaPropuestos = Math.max(...[parseInt(this.modelPrintPropuestos.sueldoAnual), parseInt(this.modelPrintPropuestos.sueldoMensual), parseInt(this.modelPrintPropuestos.sueldoSemestral), parseInt(this.modelPrintPropuestos.sueldoTrimestral)]);
-		const variableMaximaPropuestos = Math.max(...[parseInt(this.modelPrintPropuestos.sueldoAnual === "" ? "0" : this.modelPrintPropuestos.sueldoAnual), parseInt(this.modelPrintPropuestos.sueldoMensual === "" ? "0" : this.modelPrintPropuestos.sueldoMensual), parseInt(this.modelPrintPropuestos.sueldoSemestral === "" ? "0" : this.modelPrintPropuestos.sueldoSemestral), parseInt(this.modelPrintPropuestos.sueldoTrimestral === "" ? "0" : this.modelPrintPropuestos.sueldoTrimestral)]);
+		const variableMaxima = Math.max(...[parseInt(this.modelPrint.sueldoAnual), parseInt(this.modelPrint.sueldoMensual), parseInt(this.modelPrint.sueldoSemestral), parseInt(this.modelPrint.sueldoTrimestral)]);
+		const variableMaximaPropuestos = Math.max(...[parseInt(this.modelPrintPropuestos.sueldoAnual), parseInt(this.modelPrintPropuestos.sueldoMensual), parseInt(this.modelPrintPropuestos.sueldoSemestral), parseInt(this.modelPrintPropuestos.sueldoTrimestral)]);
 
 		// Esquina de la hoja
 		autoTable(doc, esquinaDeHoja);

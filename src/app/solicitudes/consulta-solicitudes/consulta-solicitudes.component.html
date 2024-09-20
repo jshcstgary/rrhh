@@ -89,6 +89,9 @@
 
 											<ng-select [disabled]="!controlsPermissions[pageControlPermission.FiltroUnidadNegocio].habilitar || searchInputFilter !== ''" #inputSelectProducto [(ngModel)]="dataFilterSolicitudes.unidadNegocio" name="unidadNegocio" placeholder="Seleccione">
 												<ng-option *ngFor="let data of dataUnidadesNegocio" [value]="data">{{ data }}</ng-option>
+												<ng-option>Areas Corporativas</ng-option>
+												<ng-option>Servicios Portuarios</ng-option>
+												<ng-option>Palma y Macadamia</ng-option>
 											</ng-select>
 										</div>
 									</div>
@@ -134,19 +137,19 @@
 							</ng-template>
 
 							<form>
-								<!-- <div class="row">
+								<div class="row">
 									<div class="col-md-4">
-										<dropdown-component *ngIf="mostrarBotonesAdmin()" [options]="dropdownOptionsExport" textButton="Exportar bitácora de selección" [buttonClasses]="['btn-outline-info']" [iconButton]="'fas fa-file-pdf'" [contexto]="this" onDropDownClickFunction="isAnyRowCheckedInTable"></dropdown-component>
+										<dropdown-component *ngIf="mostrarBotonesAdmin()" [options]="dropdownOptionsExport" textButton="Exportar bitácora de selección" [buttonClasses]="['btn-outline-info']" [iconButton]="'fas fa-file-pdf'" [contexto]="this" onDropDownClickFunction="exportarBitacoraSeleccion"></dropdown-component>
 									</div>
 
 									<div class="col-md-4">
-										<dropdown-component *ngIf="mostrarBotonesAdmin()" [options]="dropdownOptionsExport" textButton="Exportar proceso de selección por solicitud" [buttonClasses]="['btn-outline-info']" [iconButton]="'fas fa-file-pdf'" [contexto]="this" onDropDownClickFunction="isAnyRowCheckedInTable"></dropdown-component>
+										<dropdown-component *ngIf="mostrarBotonesAdmin()" [options]="dropdownOptionsExport" textButton="Exportar proceso de selección por solicitud" [buttonClasses]="['btn-outline-info']" [iconButton]="'fas fa-file-pdf'" [contexto]="this" onDropDownClickFunction="exportarSeleccionPorSolicitud"></dropdown-component>
 									</div>
 
 									<div class="col-md-4">
-										<dropdown-component *ngIf="mostrarBotonesAdmin()" [options]="dropdownOptionsExport" textButton="Exportar aprobaciones de solicitud" [buttonClasses]="['btn-outline-info']" [iconButton]="'fas fa-file-pdf'" [contexto]="this" onDropDownClickFunction="isAnyRowCheckedInTable"></dropdown-component>
+										<dropdown-component *ngIf="mostrarBotonesAdmin()" [options]="dropdownOptionsExport" textButton="Exportar aprobaciones de solicitud" [buttonClasses]="['btn-outline-info']" [iconButton]="'fas fa-file-pdf'" [contexto]="this" onDropDownClickFunction="exportarAprobacionSolicitudesPorResponsable"></dropdown-component>
 									</div>
-								</div> -->
+								</div>
 							</form>
 
 							<plantilla-c-component [fixedFirstColumnOnTable]="true" [fixedLastColumnOnTable]="true" overflowX="auto" tableWidth="250%" [dataFilterNivelesAprobacion]="dataFilterNivelesAprobacion" [dataTipoMotivo]="dataTipoMotivo" [dataTipoSolicitudes]="dataTipoSolicitudes" [dataNivelDireccion]="dataNivelDireccion" [dataTipoAccion]="dataTipoAccion" [selected_empresa]="selected_empresa" [selected_producto]="selected_producto" [selected_tipo_solicitud]="selected_tipo_solicitud" [selected_estado]="selected_estado" [data_empresas]="data_empresas" [data_productos]="dataUnidadesNegocio" [data_estado]="data_estado" [model]="model" *ngIf="hasFiltered" [columnsTable]="columnsTable" [originalDataTable]="dataTable" [placeholderHeaderInputText]="'Buscar niveles de aprobacion...'" [contexto]="this" keyNameTable="id" clickOnActionRow="onRowActionClicked" clickOnFilter="filterDataTable" clickOnMostrarModalCrearSolicitudes="mostrarModalCrearSolicitudes" clickOnToggleDisabled="toggleDisabled" clickOnPageCrear="pageCrear" [IdRowToClone]="IdRowToClone" colIdToDisable="id" titleReport="NIVELES DE APROBACION" [codigoReport]="codigoReporte"></plantilla-c-component>

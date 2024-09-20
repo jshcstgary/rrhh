@@ -445,7 +445,7 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
 						confirmButtonText: "Ok",
 					}).then((result) => {
 						if (result.isConfirmed) {
-							
+
 
 							this.router.navigate(["/solicitudes/reasignar-tareas-usuarios"]);
 							if (this.submitted) {
@@ -1932,56 +1932,46 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
 		}
 
 		if (this.taskType_Activity == environment.taskType_Revisar) { //APROBADORES DINAMICOS
-			let accion = "";
+			let accion = "Revisar Solicitud: Solicitud";
 
 			if (this.buttonValue.toUpperCase() === "APROBAR") {
-				accion = "Revisar Solicitud: Solicitud Aprobada"
 				variables.usuario_loggedAprobar = {
-					value: `Usuario=${sessionStorage.getItem(LocalStorageKeys.IdLogin)}|Acción=${accion}|Fecha=${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
+					value: `Usuario=${sessionStorage.getItem(LocalStorageKeys.NombreUsuario)}|Accion=${accion} Aprobada por ${sessionStorage.getItem(LocalStorageKeys.NivelDireccion)}|Fecha=${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
 				};
 			} else if (this.buttonValue.toUpperCase() === "DEVOLVER") {
-				accion = "Revisar Solicitud: Solicitud Devuelta"
 				variables.usuario_loggedDevolver = {
-					value: `Usuario=${sessionStorage.getItem(LocalStorageKeys.IdLogin)}|Acción=${accion}|Fecha=${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
+					value: `Usuario=${sessionStorage.getItem(LocalStorageKeys.NombreUsuario)}|Accion=${accion} Devuelta por ${sessionStorage.getItem(LocalStorageKeys.NivelDireccion)}|Fecha=${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
 				};
 			} else if (this.buttonValue.toUpperCase() === "RECHAZAR") {
-				accion = "Revisar Solicitud: Solicitud Cancelada"
 				variables.usuario_loggedRechazar = {
-					value: `Usuario=${sessionStorage.getItem(LocalStorageKeys.IdLogin)}|Acción=${accion}|Fecha=${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
+					value: `Usuario=${sessionStorage.getItem(LocalStorageKeys.NombreUsuario)}|Accion=${accion} Cancelada por ${sessionStorage.getItem(LocalStorageKeys.NivelDireccion)}|Fecha=${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
 				};
 			} else {
-				accion = "Revisar Solicitud: Solicitud en Espera"
 				variables.usuario_loggedEsperar = {
-					value: `Usuario=${sessionStorage.getItem(LocalStorageKeys.IdLogin)}|Acción=${accion}|Fecha=${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
+					value: `Usuario=${sessionStorage.getItem(LocalStorageKeys.NombreUsuario)}|Accion=${accion} en Espera por ${sessionStorage.getItem(LocalStorageKeys.NivelDireccion)}|Fecha=${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
 				};
 			}
-
-			
 
 			variables.atencionRevision = { value: this.buttonValue };
 			variables.comentariosAtencion = { value: sessionStorage.getItem(LocalStorageKeys.IdLogin) + ' - ' + this.datosAprobadores.nivelDireccion + ' - ' + this.textareaContent };
 		} else if (this.taskType_Activity == environment.taskType_RRHH || this.taskType_Activity == environment.taskType_CF_RRHH || this.taskType_Activity == environment.taskType_AP_RRHH || this.taskType_Activity == environment.taskType_RG_RRHH) { //GERENTE RECURSOS HUMANOS
-			let accion = "";
+			let accion = "Revisar Solicitud: Solicitud";
 
 			if (this.buttonValue.toUpperCase() === "APROBAR") {
-				accion = "Revisar Solicitud: Solicitud Aprobada"
 				variables.usuario_logged_RRHHAprobar = {
-					value: `Usuario=${sessionStorage.getItem(LocalStorageKeys.IdLogin)}|Acción=${accion}|Fecha=${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
+					value: `Usuario=${sessionStorage.getItem(LocalStorageKeys.NombreUsuario)}|Accion=${accion} Aprobada por ${sessionStorage.getItem(LocalStorageKeys.NivelDireccion)}|Fecha=${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
 				};
 			} else if (this.buttonValue.toUpperCase() === "DEVOLVER") {
-				accion = "Revisar Solicitud: Solicitud Devuelta"
 				variables.usuario_logged_RRHHDevolver = {
-					value: `Usuario=${sessionStorage.getItem(LocalStorageKeys.IdLogin)}|Acción=${accion}|Fecha=${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
+					value: `Usuario=${sessionStorage.getItem(LocalStorageKeys.NombreUsuario)}|Accion=${accion} Devuelta por ${sessionStorage.getItem(LocalStorageKeys.NivelDireccion)}|Fecha=${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
 				};
 			} else if (this.buttonValue.toUpperCase() === "RECHAZAR") {
-				accion = "Revisar Solicitud: Solicitud Cancelada"
 				variables.usuario_logged_RRHHRechazar = {
-					value: `Usuario=${sessionStorage.getItem(LocalStorageKeys.IdLogin)}|Acción=${accion}|Fecha=${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
+					value: `Usuario=${sessionStorage.getItem(LocalStorageKeys.NombreUsuario)}|Accion=${accion} Cancelada por ${sessionStorage.getItem(LocalStorageKeys.NivelDireccion)}|Fecha=${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
 				};
 			} else {
-				accion = "Revisar Solicitud: Solicitud en Espera"
 				variables.usuario_logged_RRHHEsperar = {
-					value: `Usuario=${sessionStorage.getItem(LocalStorageKeys.IdLogin)}|Acción=${accion}|Fecha=${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
+					value: `Usuario=${sessionStorage.getItem(LocalStorageKeys.NombreUsuario)}|Accion=${accion} en Espera por ${sessionStorage.getItem(LocalStorageKeys.NivelDireccion)}|Fecha=${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
 				};
 			}
 
@@ -1998,27 +1988,23 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
 			variables.comentariosAtencionGerenteRRHH = { value: sessionStorage.getItem(LocalStorageKeys.IdLogin) + ' - ' + this.datosAprobadores.nivelDireccion + ' - ' + this.textareaContent };
 
 		} else if (this.taskType_Activity == environment.taskType_CREM || this.taskType_Activity == environment.taskType_AP_Remuneraciones || this.taskType_Activity == environment.taskType_RG_Remuneraciones || this.taskType_Activity == environment.taskType_CF_Remuneraciones) {// COMITE DE REMUNERACION
-			let accion = "";
+			let accion = "Revisar Solicitud: Solicitud";
 
 			if (this.buttonValue.toUpperCase() === "APROBAR") {
-				accion = "Revisar Solicitud: Solicitud Aprobada"
 				variables.usuario_logged_RemuneraAprobar = {
-					value: `Usuario=${sessionStorage.getItem(LocalStorageKeys.IdLogin)}|Acción=${accion}|Fecha=${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
+					value: `Usuario=${sessionStorage.getItem(LocalStorageKeys.NombreUsuario)}|Accion=${accion} Aprobada por ${sessionStorage.getItem(LocalStorageKeys.NivelDireccion)}|Fecha=${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
 				};
 			} else if (this.buttonValue.toUpperCase() === "DEVOLVER") {
-				accion = "Revisar Solicitud: Solicitud Devuelta"
 				variables.usuario_logged_RemuneraDevolver = {
-					value: `Usuario=${sessionStorage.getItem(LocalStorageKeys.IdLogin)}|Acción=${accion}|Fecha=${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
+					value: `Usuario=${sessionStorage.getItem(LocalStorageKeys.NombreUsuario)}|Accion=${accion} Devuelta por ${sessionStorage.getItem(LocalStorageKeys.NivelDireccion)}|Fecha=${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
 				};
 			} else if (this.buttonValue.toUpperCase() === "RECHAZAR") {
-				accion = "Revisar Solicitud: Solicitud Cancelada"
 				variables.usuario_logged_RemuneraRechazar = {
-					value: `Usuario=${sessionStorage.getItem(LocalStorageKeys.IdLogin)}|Acción=${accion}|Fecha=${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
+					value: `Usuario=${sessionStorage.getItem(LocalStorageKeys.NombreUsuario)}|Accion=${accion} Cancelada por ${sessionStorage.getItem(LocalStorageKeys.NivelDireccion)}|Fecha=${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
 				};
 			} else {
-				accion = "Revisar Solicitud: Solicitud en Espera"
 				variables.usuario_logged_RemuneraEsperar = {
-					value: `Usuario=${sessionStorage.getItem(LocalStorageKeys.IdLogin)}|Acción=${accion}|Fecha=${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
+					value: `Usuario=${sessionStorage.getItem(LocalStorageKeys.NombreUsuario)}|Accion=${accion} en Espera por ${sessionStorage.getItem(LocalStorageKeys.NivelDireccion)}|Fecha=${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
 				};
 			}
 

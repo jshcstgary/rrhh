@@ -1260,7 +1260,7 @@ export class RegistrarComentarioSalidaJefeComponent extends CompleteTaskComponen
 			};
 
 			variables.usuario_logged_comentario_jefe_soli = {
-				value: `Usuario=${sessionStorage.getItem(LocalStorageKeys.IdLogin)}|Acción=Comentario Registrado del Jefe Solicitante|Fecha=${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
+				value: `Usuario=${sessionStorage.getItem(LocalStorageKeys.NombreUsuario)}|Accion=Comentario de Jefe Solicitante Registrado por ${sessionStorage.getItem(LocalStorageKeys.NivelDireccion)}|Fecha=${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
 			};
 
 			variables.anularSolicitud = {
@@ -1315,13 +1315,13 @@ export class RegistrarComentarioSalidaJefeComponent extends CompleteTaskComponen
 		}
 		if (this.taskKey === this.taskKeyUltimoJefe) {
 			variables.usuario_logged_comentario_ult_jefe = {
-				value: `Usuario=${sessionStorage.getItem(LocalStorageKeys.IdLogin)}|Acción=Comentario Registrado del Jefe Anterior|Fecha=${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
+				value: `Usuario=${sessionStorage.getItem(LocalStorageKeys.NombreUsuario)}|Accion=Comentario de Jefe Anterior Registrado por ${sessionStorage.getItem(LocalStorageKeys.NivelDireccion)}|Fecha=${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
 			};
 		}
 
 		if (this.taskKey === this.taskKeyRRHH) {
 			variables.usuario_logged_comentario_RRHH = {
-				value: `Usuario=${sessionStorage.getItem(LocalStorageKeys.IdLogin)}|Acción=Comentario Registrado del Responsable de Recursos Humanos|Fecha=${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
+				value: `Usuario=${sessionStorage.getItem(LocalStorageKeys.NombreUsuario)}|Accion=Comentario de Responsble de Recursos Humanos Registrado por ${sessionStorage.getItem(LocalStorageKeys.NivelDireccion)}|Fecha=${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
 			};
 		}
 

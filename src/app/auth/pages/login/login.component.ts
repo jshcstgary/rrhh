@@ -129,6 +129,8 @@ export class LoginComponent {
 					sessionStorage.removeItem(LocalStorageKeys.Reloaded);
 					sessionStorage.removeItem(LocalStorageKeys.Perfiles);
 					sessionStorage.removeItem(LocalStorageKeys.Perfil);
+					sessionStorage.removeItem(LocalStorageKeys.NivelDireccion);
+					sessionStorage.removeItem(LocalStorageKeys.NombreUsuario);
 
 					this.isLoading = false;
 
@@ -182,6 +184,8 @@ export class LoginComponent {
 				sessionStorage.removeItem(LocalStorageKeys.IdUsuario);
 				sessionStorage.removeItem(LocalStorageKeys.Permisos);
 				sessionStorage.removeItem(LocalStorageKeys.Reloaded);
+				sessionStorage.removeItem(LocalStorageKeys.NombreUsuario);
+				sessionStorage.removeItem(LocalStorageKeys.NivelDireccion);
 
 				this.isLoading = false;
 			}
@@ -243,6 +247,8 @@ export class LoginComponent {
 					sessionStorage.removeItem(LocalStorageKeys.Reloaded);
 					sessionStorage.removeItem(LocalStorageKeys.Perfil);
 					sessionStorage.removeItem(LocalStorageKeys.Perfiles);
+					sessionStorage.removeItem(LocalStorageKeys.NombreUsuario);
+					sessionStorage.removeItem(LocalStorageKeys.NivelDireccion);
 
 					this.isLoading = false;
 
@@ -253,11 +259,16 @@ export class LoginComponent {
 				sessionStorage.setItem(LocalStorageKeys.IdUsuario, email);
 				sessionStorage.setItem(LocalStorageKeys.Permisos, JSON.stringify(vistas));
 
-				this.isLoading = false;
+				this.starterService.getUser(sessionStorage.getItem(LocalStorageKeys.IdUsuario)).subscribe({
+					next: ({ evType }) => {
+						sessionStorage.setItem(LocalStorageKeys.NombreUsuario, evType[0].nombreCompleto);
+						sessionStorage.setItem(LocalStorageKeys.NivelDireccion, evType[0].nivelDir);
 
-				// const isTasksEnabled: boolean = vistas.some(vista => vista.codigo === PageCodes.Tareas);
+						this.isLoading = false;
 
-				this.router.navigate(["/solicitudes/consulta-solicitudes"]);
+						this.router.navigate(["/solicitudes/consulta-solicitudes"]);
+					}
+				});
 			},
 			error: (err) => {
 				console.error(err);
@@ -268,6 +279,8 @@ export class LoginComponent {
 				sessionStorage.removeItem(LocalStorageKeys.Reloaded);
 				sessionStorage.removeItem(LocalStorageKeys.Perfil);
 				sessionStorage.removeItem(LocalStorageKeys.Perfiles);
+				sessionStorage.removeItem(LocalStorageKeys.NombreUsuario);
+				sessionStorage.removeItem(LocalStorageKeys.NivelDireccion);
 
 				this.isLoading = false;
 

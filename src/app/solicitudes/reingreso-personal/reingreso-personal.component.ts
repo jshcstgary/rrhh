@@ -1089,7 +1089,7 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
 	}
 
 	obtenerAprobacionesPorPosicionAPS() {
-		return this.solicitudes.obtenerAprobacionesPorPosicionRuta(this.solicitudRG.idTipoSolicitud, this.solicitudRG.idTipoMotivo,this.detalleSolicitudRG.codigoPosicion, this.detalleSolicitudRG.nivelDireccion, this.dataTipoRutaEmp[0].id, "APS").subscribe({
+		return this.solicitudes.obtenerAprobacionesPorPosicionRuta(this.solicitudRG.idTipoSolicitud, this.solicitudRG.idTipoMotivo, this.detalleSolicitudRG.codigoPosicion, this.detalleSolicitudRG.nivelDireccion, this.dataTipoRutaEmp[0].id, "APS").subscribe({
 			next: (response) => {
 				this.dataTipoRuta.length = 0;
 				this.dataRuta.length = 0;
@@ -1183,14 +1183,14 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
 
 			if (this.solicitudRG.estadoSolicitud.toUpperCase() === "DV") {
 				variables.usuario_logged_reingresoDevolver = {
-					value: `Usuario=${sessionStorage.getItem(LocalStorageKeys.IdLogin)}|Acción=Reingreso de Personal: Solicitud Enviada|Fecha=${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
-				};				
-			}else{
+					value: `Usuario=${sessionStorage.getItem(LocalStorageKeys.NombreUsuario)}|Accion=Reingreso de Personal: Solicitud Enviada por ${sessionStorage.getItem(LocalStorageKeys.NivelDireccion)}|Fecha=${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
+				};
+			} else {
 				variables.usuario_logged_reingreso = {
-					value: `Usuario=${sessionStorage.getItem(LocalStorageKeys.IdLogin)}|Acción=Reingreso de Personal: Solicitud Enviada|Fecha=${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
-				};				
+					value: `Usuario=${sessionStorage.getItem(LocalStorageKeys.NombreUsuario)}|Accion=Reingreso de Personal: Solicitud Enviada por ${sessionStorage.getItem(LocalStorageKeys.NivelDireccion)}|Fecha=${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
+				};
 			}
-			
+
 			variables.tipoSolicitud = {
 				value: this.solicitudRG.tipoSolicitud
 			};

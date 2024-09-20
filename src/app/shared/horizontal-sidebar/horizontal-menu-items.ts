@@ -19,6 +19,16 @@ export const ROUTES: RouteInfo[] = [
 				extralink: false,
 				codigo: "wf_consulta_solicitudes",
 				submenu: [],
+			},
+			{
+				path: "/solicitudes/reportes-solicitudes",
+				title: "Reportes de Solicitudes",
+				icon: "",
+				class: "",
+				ddclass: "",
+				extralink: false,
+				codigo: "wf_consulta_solicitudes",
+				submenu: [],
 			}
 		],
 	},

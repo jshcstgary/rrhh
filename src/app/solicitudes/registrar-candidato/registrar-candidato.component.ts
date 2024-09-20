@@ -1265,9 +1265,12 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
 		this.solicitudes.modelDetalleAprobaciones.correo = res.evType[0].correo;
 		this.solicitudes.modelDetalleAprobaciones.usuarioCreacion = res.evType[0].nombreCompleto;
 		this.solicitudes.modelDetalleAprobaciones.usuarioModificacion = res.evType[0].nombreCompleto;
-		this.solicitudes.modelDetalleAprobaciones.fechaCreacion = new Date().toISOString();
-		this.solicitudes.modelDetalleAprobaciones.fechaModificacion = new Date().toISOString();
-		this.solicitudes.modelDetalleAprobaciones.comentario="Selección de Candidato";
+		this.solicitudes.modelDetalleAprobaciones.comentario = "Selección de Candidato";
+		this.solicitudes.modelDetalleAprobaciones.fechaCreacion = new Date();
+		this.solicitudes.modelDetalleAprobaciones.fechaModificacion = new Date();
+
+		convertTimeZonedDate(this.solicitudes.modelDetalleAprobaciones.fechaCreacion);
+		convertTimeZonedDate(this.solicitudes.modelDetalleAprobaciones.fechaModificacion);
 	}
 
 	llenarModelDetalleAprobacionesCF_RG(res: any, idSolicitud: string, idTipoSolicitud: string, descripcionTipoSolicitud: string) {
@@ -1296,12 +1299,14 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
 		this.solicitudes.modelDetalleAprobaciones.correo = res.evType[0].correo;
 		this.solicitudes.modelDetalleAprobaciones.usuarioCreacion = res.evType[0].nombreCompleto;
 		this.solicitudes.modelDetalleAprobaciones.usuarioModificacion = res.evType[0].nombreCompleto;
-		this.solicitudes.modelDetalleAprobaciones.fechaCreacion = new Date().toISOString();
-		this.solicitudes.modelDetalleAprobaciones.fechaModificacion = new Date().toISOString();
+		this.solicitudes.modelDetalleAprobaciones.fechaCreacion = new Date();
+		this.solicitudes.modelDetalleAprobaciones.fechaModificacion = new Date();
+
+		convertTimeZonedDate(this.solicitudes.modelDetalleAprobaciones.fechaCreacion);
+		convertTimeZonedDate(this.solicitudes.modelDetalleAprobaciones.fechaModificacion);
 	}
 
 	save() {
-
 		this.utilService.openLoadingSpinner(
 			"Guardando información, espere por favor..."
 		); // comentado mmunoz
@@ -1331,7 +1336,6 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
 				this.solicitudes
 					.actualizarSolicitud(this.solicitud)
 					.subscribe((responseSolicitud) => {
-
 						this.detalleSolicitud.idSolicitud = this.solicitud.idSolicitud;
 
 						this.detalleSolicitud.areaDepartamento = this.model.departamento;
@@ -1463,24 +1467,18 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
 						this.tipoProcesoSaved = this.model.tipoProceso;
 						this.disabledTipoProceso = this.tipoProcesoSaved !== "";
 
-						// this.disabledFechas.actualizacionPerfil = this.fechas.actualizacionPerfil !== null && this.fechas.actualizacionPerfil !== "";
-						// this.disabledFechas.busquedaCandidatos = this.fechas.busquedaCandidatos !== null && this.fechas.busquedaCandidatos !== "";
-						// this.disabledFechas.entrevista = this.fechas.entrevista !== null && this.fechas.entrevista !== "";
-						// this.disabledFechas.pruebas = this.fechas.pruebas !== null && this.fechas.pruebas !== "";
-						// this.disabledFechas.referencias = this.fechas.referencias !== null && this.fechas.referencias !== "";
-						// this.disabledFechas.elaboracionInforme = this.fechas.elaboracionInforme !== null && this.fechas.elaboracionInforme !== "";
-						// this.disabledFechas.entregaJefe = this.fechas.entregaJefe !== null && this.fechas.entregaJefe !== "";
-						// this.disabledFechas.entrevistaJefatura = this.fechas.entrevistaJefatura !== null && this.fechas.entrevistaJefatura !== "";
-						// this.disabledFechas.tomaDecisiones = this.fechas.tomaDecisiones !== null && this.fechas.tomaDecisiones !== "";
-						// this.disabledFechas.candidatoSeleccionado = this.fechas.candidatoSeleccionado !== null && this.fechas.candidatoSeleccionado !== "";
-						// this.disabledFechas.procesoContratacion = this.fechas.procesoContratacion !== null && this.fechas.procesoContratacion !== "";
-						// this.disabledFechas.finProcesoContratacion = this.fechas.finProcesoContratacion !== null && this.fechas.finProcesoContratacion !== "";
+						this.solicitudes.actualizarSolicitud(this.solicitud).subscribe({
+							next: (responseSolicitud) => {
+								this.utilService.modalResponse("Datos Guardados Correctamente", "success");
 
-						this.utilService.modalResponse("Datos Guardados Correctamente", "success");
-
-						setTimeout(() => {
-							window.location.reload();
-						}, 3000);
+								setTimeout(() => {
+									window.location.reload();
+								}, 3000);
+							},
+							error: (err) => {
+								this.utilService.modalResponse(err, "error");
+							}
+						});
 					}
 				});
 			},
@@ -1727,7 +1725,7 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
 		}
 
 		variables.usuario_logged_candidato = {
-			value: `Usuario=${sessionStorage.getItem(LocalStorageKeys.IdLogin)}|Acción=Candidato Seleccionado|Fecha=${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
+			value: `Usuario=${sessionStorage.getItem(LocalStorageKeys.NombreUsuario)}|Accion=Candidato Seleccionado por ${sessionStorage.getItem(LocalStorageKeys.NivelDireccion)}|Fecha=${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
 		};
 
 		return { variables };
