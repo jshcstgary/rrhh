@@ -1244,7 +1244,6 @@ export class RegistrarComentarioSalidaJefeComponent extends CompleteTaskComponen
 			return;
 		}
 
-		// let variables = this.generateVariablesFromFormFields();
 		let variables: any = {};
 
 		if (this.taskKey === this.taskKeySolicitante) {
@@ -1260,7 +1259,7 @@ export class RegistrarComentarioSalidaJefeComponent extends CompleteTaskComponen
 				password: "p4$$w0rd"
 			};
 
-			variables.usuario_logged = {
+			variables.usuario_logged_comentario_jefe_soli = {
 				value: `Usuario=${sessionStorage.getItem(LocalStorageKeys.IdLogin)}|Acción=Comentario Registrado del Jefe Solicitante|Fecha=${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
 			};
 
@@ -1314,20 +1313,24 @@ export class RegistrarComentarioSalidaJefeComponent extends CompleteTaskComponen
 				}
 			});
 		}
-
 		if (this.taskKey === this.taskKeyUltimoJefe) {
-			variables.usuario_logged = {
+			variables.usuario_logged_comentario_ult_jefe = {
 				value: `Usuario=${sessionStorage.getItem(LocalStorageKeys.IdLogin)}|Acción=Comentario Registrado del Jefe Anterior|Fecha=${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
 			};
 		}
 
 		if (this.taskKey === this.taskKeyRRHH) {
-			variables.usuario_logged = {
+			variables.usuario_logged_comentario_RRHH = {
 				value: `Usuario=${sessionStorage.getItem(LocalStorageKeys.IdLogin)}|Acción=Comentario Registrado del Responsable de Recursos Humanos|Fecha=${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
 			};
 		}
 
-		this.camundaRestService.postCompleteTask(this.uniqueTaskId, variables).subscribe({
+		const variables2 = {
+			variables
+		};
+
+		console.log(variables2);
+		this.camundaRestService.postCompleteTask(this.uniqueTaskId, variables2).subscribe({
 			next: () => {
 				console.log(this.contadorComentarios);
 				if (this.contadorComentarios === 2) {

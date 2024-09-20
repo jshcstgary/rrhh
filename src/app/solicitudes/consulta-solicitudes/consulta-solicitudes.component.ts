@@ -675,10 +675,6 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 
 		variables.tipoSolicitud = { value: this.solicitud.tipoSolicitud };
 
-		variables.usuario_logged = {
-			value: `Usuario:${sessionStorage.getItem(LocalStorageKeys.IdLogin)}|Acción:"Registrar Solicitud"}|Fecha:${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
-		};
-
 		if (this.solicitud.idTipoSolicitud == this.typeSolicitudSelected) {
 			if (this.solicitud.tipoAccion.toUpperCase().includes("TEMPORAL")) {
 				variables.tipoAccion = { value: "asignacionTemporal" };

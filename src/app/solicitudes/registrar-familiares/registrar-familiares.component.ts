@@ -1175,7 +1175,7 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
 				const data = response?.familiaresCandidato || [];
 
 				this.dataTableDatosFamiliares = data
-					.filter((d) => d.idSolicitud === idSolicitud)
+					.filter((d) => d.idSolicitud === idSolicitud && d.estado==='A')
 					.map(data => ({
 						...data,
 						fechaCreacion: new DatePipe("en-CO").transform(new Date(data.fechaCreacion), "dd/MM/yyyy")
@@ -1187,7 +1187,7 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
 		});
 	}
 
-	guardarServicioFamiliaresCanidatos() {
+	/*guardarServicioFamiliaresCanidatos() {
 		let requestFamiliares: FamiliaresCandidatos = {
 			idSolicitud: "string",
 			codigoPosicion: "string",
@@ -1218,7 +1218,7 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
 					"success"
 				);
 			});
-	}
+	}*/
 
 	guardarSolicitud() {
 		const id = Date.now().toString().slice(-6);
@@ -1694,8 +1694,8 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
 				}
 			});
 
-			variables.usuario_logged = {
-				value: `Usuario=${sessionStorage.getItem(LocalStorageKeys.IdLogin)}|Acción=Registrar Solicitud: Solicitud Enviada|Fecha=${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
+			variables.usuario_logged_familiar = {
+				value: `Usuario=${sessionStorage.getItem(LocalStorageKeys.IdLogin)}|Acción=Contratación de Familiares: Solicitud Enviada|Fecha=${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
 			};
 
 			variables.anularSolicitud = {
@@ -1936,8 +1936,8 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
 						const dtoFamiliares: FamiliaresCandidatos = {
 							idSolicitud: this.id_solicitud_by_params,
 							nombreEmpleado: data.nombreCompleto,
-							// fechaCreacion: new Date(data.fechaIngresogrupo) ?? new Date(),
-							fechaCreacion: new Date(),
+							fechaCreacion: new Date(data.fechaIngresogrupo) ?? new Date(),
+							//fechaCreacion: new Date(),
 							cargo: data.nombreCargo,
 							unidad: data.unidadNegocio,
 							departamento: data.departamento,
@@ -2070,7 +2070,7 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
 				this.utilService.openLoadingSpinner("Eliminando información, espere por favor...");
 
 				this.dataTableDatosFamiliares[index].estado = "I";
-
+				this.dataTableDatosFamiliares[index].fechaCreacion=new Date(this.dataTableDatosFamiliares[index].fechaCreacion);
 				await this.mantenimientoService.putFamiliaresCandidatos(this.dataTableDatosFamiliares[index]).subscribe((response) => {
 					this.utilService.modalResponse("Familiar eliminado correctamente", "success");
 				});
@@ -2100,11 +2100,12 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
 
 	updateRowData(updatedRow: any) {
 		this.utilService.openLoadingSpinner("Actualizando información, espere por favor...");
-
+		updatedRow.fechaCreacion=new Date(updatedRow.fechaCreacion);
 		this.mantenimientoService.putFamiliaresCandidatos(updatedRow).subscribe({
 			next: () => {
 				this.dataTableDatosFamiliares = this.dataTableDatosFamiliares.map((row) => {
 					if (row.subledger === updatedRow.subledger) {
+						updatedRow.fechaCreacion=new DatePipe("en-CO").transform(new Date(updatedRow.fechaCreacion), "dd/MM/yyyy")
 						return updatedRow;
 					}
 

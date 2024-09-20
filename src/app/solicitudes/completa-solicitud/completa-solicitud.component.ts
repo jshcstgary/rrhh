@@ -1326,16 +1326,21 @@ export class CompletaSolicitudComponent extends CompleteTaskComponent {
 
 		if (this.buttonValue.toUpperCase() === "APROBAR") {
 			accion = "Completar Solicitud: Solicitud Aprobada"
+			variables.usuario_logged_completa_RPAprobar = {
+				value: `Usuario=${sessionStorage.getItem(LocalStorageKeys.IdLogin)}|Acción=${accion}|Fecha=${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
+			};
 		} else if (this.buttonValue.toUpperCase() === "DEVOLVER") {
 			accion = "Completar Solicitud: Solicitud Devuelta"
+			variables.usuario_logged_completa_RPDevolver = {
+				value: `Usuario=${sessionStorage.getItem(LocalStorageKeys.IdLogin)}|Acción=${accion}|Fecha=${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
+			};
 		} else {
 			accion = "Completar Solicitud: Solicitud Cancelada"
+			variables.usuario_logged_completa_RPRechazar = {
+				value: `Usuario=${sessionStorage.getItem(LocalStorageKeys.IdLogin)}|Acción=${accion}|Fecha=${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
+			};
 		}
 
-		variables.usuario_logged_completa_RP = {
-			value: `Usuario=${sessionStorage.getItem(LocalStorageKeys.IdLogin)}|Acción=${accion}|Fecha=${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
-		};
-		
 		return { variables };
 	}
 

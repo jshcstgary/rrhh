@@ -1605,7 +1605,7 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
 				}
 			});
 
-			variables.usuario_logged = {
+			variables.usuario_logged_accion = {
 				value: `Usuario=${sessionStorage.getItem(LocalStorageKeys.IdLogin)}|Acción=Registrar Solicitud: Solicitud Enviada|Fecha=${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
 			};
 
