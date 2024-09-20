@@ -1995,9 +1995,16 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
 				}
 			});
 
-			variables.usuario_logged_RP = {
-				value: `Usuario=${sessionStorage.getItem(LocalStorageKeys.IdLogin)}|Acción=${this.selectedOption.toUpperCase() === "SI" ? "Registrar Solicitud: Solicitud Anulada" : "Registrar Solicitud: Solicitud Enviada"}|Fecha=${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
-			};
+			if (this.solicitud.estadoSolicitud.toUpperCase() === "DV") {
+				variables.usuario_logged_RPDevolver = {
+					value: `Usuario=${sessionStorage.getItem(LocalStorageKeys.IdLogin)}|Acción=${this.selectedOption.toUpperCase() === "SI" ? "Registrar Solicitud: Solicitud Anulada" : "Registrar Solicitud: Solicitud Enviada"}|Fecha=${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
+				};
+			}else{
+				variables.usuario_logged_RP = {
+					value: `Usuario=${sessionStorage.getItem(LocalStorageKeys.IdLogin)}|Acción=${this.selectedOption.toUpperCase() === "SI" ? "Registrar Solicitud: Solicitud Anulada" : "Registrar Solicitud: Solicitud Enviada"}|Fecha=${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
+				};
+			}
+
 			variables.codigoPosicion = {
 				value: this.model.codigoPosicion
 			};

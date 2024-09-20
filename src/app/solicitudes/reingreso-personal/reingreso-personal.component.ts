@@ -1181,9 +1181,15 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
 				}
 			});
 
-			variables.usuario_logged_reingreso = {
-				value: `Usuario=${sessionStorage.getItem(LocalStorageKeys.IdLogin)}|Acción=Reingreso de Personal: Solicitud Enviada|Fecha=${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
-			};
+			if (this.solicitudRG.estadoSolicitud.toUpperCase() === "DV") {
+				variables.usuario_logged_reingresoDevolver = {
+					value: `Usuario=${sessionStorage.getItem(LocalStorageKeys.IdLogin)}|Acción=Reingreso de Personal: Solicitud Enviada|Fecha=${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
+				};				
+			}else{
+				variables.usuario_logged_reingreso = {
+					value: `Usuario=${sessionStorage.getItem(LocalStorageKeys.IdLogin)}|Acción=Reingreso de Personal: Solicitud Enviada|Fecha=${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
+				};				
+			}
 			
 			variables.tipoSolicitud = {
 				value: this.solicitudRG.tipoSolicitud

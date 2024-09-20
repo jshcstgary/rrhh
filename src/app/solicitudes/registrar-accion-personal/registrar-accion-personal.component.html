@@ -43,8 +43,7 @@
 				<div class="col-md-6">
 					<div class="input-group mb-3 align-items-center">
 						<label class="input-group-text text-start label-estilo" for="nombre-empleado">Nombre de Empleado</label>
-
-						<span *ngIf="existeMatenedores; else nombreEmpleadoEditable" style="color: black; font-size: 14px" class="text-start w-50">{{ model.nombreCompleto }}</span>
+						<span *ngIf="existeMatenedores||taskType_Activity === 'AP_CompletarSolicitud'; else nombreEmpleadoEditable" style="color: black; font-size: 14px" class="text-start w-50">{{ model.nombreCompleto }}</span>
 
 						<ng-template #nombreEmpleadoEditable>
 							<input *ngIf="taskType_Activity !== 'AP_CompletarSolicitud'" type="text" name="nombre-empleado" [(ngModel)]="model.nombreCompleto" style="color: black; font-size: 14px; width: 33%" class="form-control" id="codigoposicion" aria-describedby="inputGroupPrepend" required placeholder="Nombre del empleado" (click)="openModal()" readonly />
@@ -60,7 +59,7 @@
 					<div class="input-group mb-3 align-items-center">
 						<label class="input-group-text text-start label-estilo" for="subledger">Subledger</label>
 
-						<span *ngIf="existeMatenedores; else subledgerEditable" style="color: black; font-size: 14px" class="text-start w-50">{{ model.subledger }}</span>
+						<span *ngIf="existeMatenedores||taskType_Activity === 'AP_CompletarSolicitud'; else subledgerEditable" style="color: black; font-size: 14px" class="text-start w-50">{{ model.subledger }}</span>
 
 						<ng-template #subledgerEditable>
 							<input *ngIf="taskType_Activity !== 'AP_CompletarSolicitud'" type="text" name="subledger" [(ngModel)]="model.subledger" style="color: black; font-size: 14px; width: 30%" class="form-control" id="codigoposicion" aria-describedby="inputGroupPrepend" required placeholder="Subledger" (click)="openModal()" readonly />

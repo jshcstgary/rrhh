@@ -1694,9 +1694,15 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
 				}
 			});
 
-			variables.usuario_logged_familiar = {
-				value: `Usuario=${sessionStorage.getItem(LocalStorageKeys.IdLogin)}|Acción=Contratación de Familiares: Solicitud Enviada|Fecha=${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
-			};
+			if (this.solicitud.estadoSolicitud.toUpperCase() === "DV") {
+				variables.usuario_logged_familiarDevolver = {
+					value: `Usuario=${sessionStorage.getItem(LocalStorageKeys.IdLogin)}|Acción=Contratación de Familiares: Solicitud Enviada|Fecha=${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
+				};
+			}else{
+				variables.usuario_logged_familiar = {
+					value: `Usuario=${sessionStorage.getItem(LocalStorageKeys.IdLogin)}|Acción=Contratación de Familiares: Solicitud Enviada|Fecha=${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
+				};
+			}
 
 			variables.anularSolicitud = {
 				value: this.selectedOption

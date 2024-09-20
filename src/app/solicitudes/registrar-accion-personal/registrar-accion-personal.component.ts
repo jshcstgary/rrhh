@@ -1605,9 +1605,15 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
 				}
 			});
 
-			variables.usuario_logged_accion = {
-				value: `Usuario=${sessionStorage.getItem(LocalStorageKeys.IdLogin)}|Acción=Registrar Solicitud: Solicitud Enviada|Fecha=${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
-			};
+			if (this.solicitud.estadoSolicitud.toUpperCase() === "DV") {
+					variables.usuario_logged_accionDevolver = {
+						value: `Usuario=${sessionStorage.getItem(LocalStorageKeys.IdLogin)}|Acción=Registrar Solicitud: Solicitud Enviada|Fecha=${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
+					};
+				}else{
+					variables.usuario_logged_accion = {
+						value: `Usuario=${sessionStorage.getItem(LocalStorageKeys.IdLogin)}|Acción=Registrar Solicitud: Solicitud Enviada|Fecha=${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
+					};
+				}
 
 			variables.codigoPosicion = {
 				value: this.modelPropuestos.codigoPosicion
@@ -1727,6 +1733,175 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
 				}
 			};
 		}
+		if(this.taskType_Activity.toUpperCase().includes("AP_COMPLETARSOLICITUD"))
+			{
+				this.dataAprobacionesPorPosicionAPS.forEach((elemento, index) => {
+					if (index === 0) {
+						const htmlString = "<!DOCTYPE html>\r\n<html lang=\"es\">\r\n\r\n<head>\r\n  <meta charset=\"UTF-8\">\r\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n  <title>Document<\/title>\r\n<\/head>\r\n\r\n<body>\r\n  <h2>Estimado(a)<\/h2>\r\n  <h3>{NOMBRE_APROBADOR}<\/h3>\r\n\r\n  <P>La Solicitud de {TIPO_SOLICITUD} {ID_SOLICITUD} para la posici\u00F3n de {DESCRIPCION_POSICION} est\u00E1 disponible para su\r\n    revisi\u00F3n y aprobaci\u00F3n.<\/P>\r\n\r\n  <p>\r\n    <b>\r\n      Favor ingresar al siguiente enlace: <a href=\"{URL_APROBACION}\">{URL_APROBACION}<\/a>\r\n      <br>\r\n      <br>\r\n      Gracias por su atenci\u00F3n.\r\n    <\/b>\r\n  <\/p>\r\n<\/body>\r\n\r\n<\/html>\r\n";
+	
+						const modifiedHtmlString = htmlString.replace("{NOMBRE_APROBADOR}", elemento.aprobador.usuario).replace("{TIPO_SOLICITUD}", this.solicitud.tipoSolicitud).replace("{ID_SOLICITUD}", this.solicitud.idSolicitud).replace("{DESCRIPCION_POSICION}", this.detalleSolicitud.descripcionPosicion).replace(new RegExp("{URL_APROBACION}", "g"), `${portalWorkFlow}tareas/consulta-tareas`);
+	
+						variables.correo_notificador_creador = {
+							value: this.solicitudes.modelDetalleAprobaciones.correo
+						};
+						variables.alias = {
+							value: this.solicitudes.modelDetalleAprobaciones.correo
+						};
+						variables.correo_aprobador = {
+							value: elemento.aprobador.correo
+						};
+						variables.asunto_revision_solicitud = {
+							value: `Autorización de Solicitud de ${this.solicitud.tipoSolicitud} ${this.solicitud.idSolicitud}`
+						};
+						variables.cuerpo_notificacion = {
+							value: modifiedHtmlString
+						};
+						variables.password = {
+							value: "p4$$w0rd"
+						};
+	
+						this.emailVariables = {
+							de: this.solicitudes.modelDetalleAprobaciones.correo,
+							para: elemento.aprobador.correo,
+							// alias: this.solicitudes.modelDetalleAprobaciones.correo,
+							alias: "Notificación 1",
+							asunto: variables.asunto_revision_solicitud.value,
+							cuerpo: modifiedHtmlString,
+							password: variables.password.value
+						};
+	
+						this.emailVariables2 = {
+							de: this.solicitudes.modelDetalleAprobaciones.correo,
+							para: elemento.aprobador.correo,
+							// alias: this.solicitudes.modelDetalleAprobaciones.correo,
+							alias: "Notificación 1",
+							asunto: variables.asunto_revision_solicitud.value,
+							cuerpo: modifiedHtmlString,
+							password: variables.password.value
+						};
+					}
+	
+					if (elemento.aprobador.nivelDireccion === this.NIVEL_APROBACION_GERENCIA_MEDIA) {
+						variables.correoNotificacionGerenciaMedia = {
+							value: elemento.aprobador.correo
+						};
+						variables.usuarioNotificacionGerenciaMedia = {
+							value: elemento.aprobador.usuario
+						};
+						variables.nivelDireccionNotificacionGerenciaMedia = {
+							value: elemento.aprobador.nivelDireccion
+						};
+						variables.descripcionPosicionNotificacionGerenciaMedia = {
+							value: elemento.aprobador.descripcionPosicion
+						};
+						variables.subledgerNotificacionGerenciaMedia = {
+							value: elemento.aprobador.subledger
+						};
+					} else if (elemento.aprobador.nivelDireccion === this.NIVEL_APROBACION_GERENCIA_UNIDAD) {
+						variables.correoNotificacionGerenciaUnidadCorporativa = {
+							value: elemento.aprobador.correo
+						};
+						variables.usuarioNotificacionGerenciaUnidadCorporativa = {
+							value: elemento.aprobador.usuario
+						};
+						variables.nivelDireccionNotificacionGerenciaUnidadCorporativa = {
+							value: elemento.aprobador.nivelDireccion
+						};
+						variables.descripcionPosicionNotificacionGerenciaUnidadCorporativa = {
+							value: elemento.aprobador.descripcionPosicion
+						};
+						variables.subledgerNotificacionGerenciaUnidadCorporativa = {
+							value: elemento.aprobador.subledger
+						};
+					} else if (elemento.aprobador.nivelDireccion === this.NIVEL_APROBACION_JEFATURA) {
+						variables.correoNotificacionJefatura = {
+							value: elemento.aprobador.correo
+						};
+						variables.usuarioNotificacionJefatura = {
+							value: elemento.aprobador.usuario
+						};
+						variables.nivelDireccionNotificacionJefatura = {
+							value: elemento.aprobador.nivelDireccion
+						};
+						variables.descripcionPosicionNotificacionJefatura = {
+							value: elemento.aprobador.descripcionPosicion
+						};
+						variables.subledgerNotificacionJefatura = {
+							value: elemento.aprobador.subledger
+						};
+					} else if (elemento.aprobador.nivelDireccion.toUpperCase().includes(this.NIVEL_APROBACION_VICEPRESIDENCIA)) {
+						variables.correoNotificacionVicepresidencia = {
+							value: elemento.aprobador.correo
+						};
+						variables.usuarioNotificacionVicepresidencia = {
+							value: elemento.aprobador.usuario
+						};
+						variables.nivelDireccionNotificacionVicepresidencia = {
+							value: elemento.aprobador.nivelDireccion
+						};
+						variables.descripcionPosicionNotificacionVicepresidencia = {
+							value: elemento.aprobador.descripcionPosicion
+						};
+						variables.subledgerNotificacionVicepresidencia = {
+							value: elemento.aprobador.subledger
+						};
+					} else if (elemento.aprobador.nivelDireccion === this.NIVEL_APROBACION_RRHH) {
+						variables.correoNotificacionGerenteRRHH = {
+							value: elemento.aprobador.correo
+						};
+						variables.usuarioNotificacionGerenteRRHH = {
+							value: elemento.aprobador.usuario
+						};
+						variables.nivelDireccionNotificacionGerenteRRHH = {
+							value: elemento.aprobador.nivelDireccion
+						};
+						variables.descripcionPosicionNotificacionGerenteRRHH = {
+							value: elemento.aprobador.descripcionPosicion
+						};
+						variables.subledgerNotificacionGerenteRRHH = {
+							value: elemento.aprobador.subledger
+						};
+					}
+				});
+
+				if (this.solicitud.estadoSolicitud.toUpperCase() === "DV") {
+					variables.usuario_logged_accion_completaDevolver = {
+						value: `Usuario=${sessionStorage.getItem(LocalStorageKeys.IdLogin)}|Acción=Transferencia de Compañia: Solicitud Enviada|Fecha=${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
+					};
+				}else{
+					variables.usuario_logged_accion_completa = {
+						value: `Usuario=${sessionStorage.getItem(LocalStorageKeys.IdLogin)}|Acción=Transferencia de Compañia: Solicitud Enviada|Fecha=${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
+					};
+				}
+
+				variables.urlTarea = {
+					value: `${portalWorkFlow}solicitudes/revisar-solicitud/${this.idDeInstancia}/${this.id_solicitud_by_params}`
+				};
+				variables.tipoRuta = {
+					value: this.dataTipoRuta,
+					type: "String",
+					valueInfo: {
+						objectTypeName: "java.util.ArrayList",
+						serializationDataFormat: "application/json"
+					}
+				};
+				variables.ruta = {
+					value: this.dataRuta,
+					type: "String",
+					valueInfo: {
+						objectTypeName: "java.util.ArrayList",
+						serializationDataFormat: "application/json"
+					}
+				};
+				variables.resultadoRutaAprobacion = {
+					value: JSON.stringify(this.dataAprobadoresDinamicos),
+					type: "Object",
+					valueInfo: {
+						objectTypeName: "java.util.ArrayList",
+						serializationDataFormat: "application/json"
+					}
+				};
+			}
 
 		return { variables };
 	}
