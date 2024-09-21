@@ -1048,7 +1048,9 @@
 					</div>
 				</app-solicitud-seccion-desplegable>
 
-				<div *ngIf="model.tipoProceso !== ''">
+				<div *ngIf="model.tipoProceso !== '' || fechas.actualizacionPerfil !== '' || fechas.busquedaCandidatos !== '' || fechas.entrevista !== ''
+				|| fechas.pruebas !== ''  || fechas.referencias !== ''  || fechas.elaboracionInforme !== ''  || fechas.entregaJefe !== ''  || fechas.entrevistaJefatura !== ''
+				|| fechas.tomaDecisiones !== ''  || fechas.candidatoSeleccionado !== ''  || fechas.procesoContratacion !== '' || fechas.finProcesoContratacion !== ''  || nombreCandidato !== ''">
 					<!-- ! Selección de Candidato -->
 					<app-solicitud-seccion-desplegable titleSummary="Selección de Candidato">
 						<div>

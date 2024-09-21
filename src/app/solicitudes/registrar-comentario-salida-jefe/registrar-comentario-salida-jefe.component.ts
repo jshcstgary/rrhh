@@ -1321,7 +1321,7 @@ export class RegistrarComentarioSalidaJefeComponent extends CompleteTaskComponen
 
 		if (this.taskKey === this.taskKeyRRHH) {
 			variables.usuario_logged_comentario_RRHH = {
-				value: `Usuario=${sessionStorage.getItem(LocalStorageKeys.NombreUsuario)}|Accion=Comentario de Responsble de Recursos Humanos Registrado por ${sessionStorage.getItem(LocalStorageKeys.NivelDireccion)}|Fecha=${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
+				value: `Usuario=${sessionStorage.getItem(LocalStorageKeys.NombreUsuario)}|Accion=Comentario de Responsable de Recursos Humanos Registrado por ${sessionStorage.getItem(LocalStorageKeys.NivelDireccion)}|Fecha=${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
 			};
 		}
 

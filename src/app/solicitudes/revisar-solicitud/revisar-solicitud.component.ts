@@ -1729,9 +1729,12 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
 												this.solicitudes.modelDetalleAprobaciones.correo = this.aprobacion.aprobador.correo;
 												this.solicitudes.modelDetalleAprobaciones.usuarioCreacion = this.aprobacion.aprobador.usuario;
 												this.solicitudes.modelDetalleAprobaciones.usuarioModificacion = this.aprobacion.aprobador.usuario;
-												this.solicitudes.modelDetalleAprobaciones.fechaCreacion = new Date().toISOString();
-												this.solicitudes.modelDetalleAprobaciones.fechaModificacion = new Date().toISOString();
 												this.solicitudes.modelDetalleAprobaciones.comentario = null;
+												this.solicitudes.modelDetalleAprobaciones.fechaCreacion = new Date();
+												this.solicitudes.modelDetalleAprobaciones.fechaModificacion = new Date();
+
+												convertTimeZonedDate(this.solicitudes.modelDetalleAprobaciones.fechaCreacion);
+												convertTimeZonedDate(this.solicitudes.modelDetalleAprobaciones.fechaModificacion);
 											}
 
 											this.solicitudes.guardarDetallesAprobacionesSolicitud(this.solicitudes.modelDetalleAprobaciones).subscribe({
@@ -1820,9 +1823,12 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
 												this.solicitudes.modelDetalleAprobaciones.correo = this.aprobacion.aprobador.correo;
 												this.solicitudes.modelDetalleAprobaciones.usuarioCreacion = this.aprobacion.aprobador.usuario;
 												this.solicitudes.modelDetalleAprobaciones.usuarioModificacion = this.aprobacion.aprobador.usuario;
-												this.solicitudes.modelDetalleAprobaciones.fechaCreacion = new Date().toISOString();
-												this.solicitudes.modelDetalleAprobaciones.fechaModificacion = new Date().toISOString();
 												this.solicitudes.modelDetalleAprobaciones.comentario = null;
+												this.solicitudes.modelDetalleAprobaciones.fechaCreacion = new Date();
+												this.solicitudes.modelDetalleAprobaciones.fechaModificacion = new Date();
+
+												convertTimeZonedDate(this.solicitudes.modelDetalleAprobaciones.fechaCreacion);
+												convertTimeZonedDate(this.solicitudes.modelDetalleAprobaciones.fechaModificacion);
 											}
 
 											this.solicitudes.guardarDetallesAprobacionesSolicitud(this.solicitudes.modelDetalleAprobaciones).subscribe({
