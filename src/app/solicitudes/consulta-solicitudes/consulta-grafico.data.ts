@@ -7,42 +7,31 @@ export const ConsultaGraficosData: IConsultaGraficosData = {
 		{
 			title: "TIPO DE SOLICITUD",
 			dataIndex: "name",
-			sortActive: true,
 			colType: "string",
 		},
 		{
 			title: "CREADAS",
 			dataIndex: "creadas",
-			align: "center",
-			sortActive: true,
 			colType: "number",
 		},
 		{
 			title: "ENVIADAS",
 			dataIndex: "enviadas",
-			align: "center",
-			sortActive: true,
 			colType: "number",
 		},
 		{
 			title: "REASIGNADAS",
 			dataIndex: "reasignadas",
-			align: "center",
-			sortActive: true,
 			colType: "number",
 		},
 		{
 			title: "DEVUELTAS",
 			dataIndex: "devueltas",
-			align: "center",
-			sortActive: true,
 			colType: "number",
 		},
 		{
 			title: "ANULADAS",
 			dataIndex: "anuladas",
-			align: "center",
-			sortActive: true,
 			colType: "number",
 		},
 		{
