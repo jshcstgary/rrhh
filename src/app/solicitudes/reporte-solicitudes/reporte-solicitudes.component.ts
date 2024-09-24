@@ -277,11 +277,6 @@ export class ReporteSolicitudesComponent implements AfterViewInit, OnInit {
 
 	public dropdownOptionsExport = [
 		{
-			id: "PDF",
-			name: "PDF",
-			icon: "fas fa-file-pdf",
-		},
-		{
 			id: "EXCEL",
 			name: "EXCEL",
 			icon: "fas fa-file-excel",
@@ -1548,8 +1543,13 @@ export class ReporteSolicitudesComponent implements AfterViewInit, OnInit {
 
 		const solicitudesData: any = structuredClone(this.dataTable);
 
+		const ids: string = solicitudesData
+			.map(({ idSolicitud }) => idSolicitud)
+			.join("_");
+		
 		// this.seleccionCandidatoService.getCandidato().subscribe({
 		forkJoin(solicitudesData.map(({ idSolicitud }) => this.seleccionCandidatoService.getCandidatoById(idSolicitud))).subscribe({
+		// this.seleccionCandidatoService.getCandidatoById(ids).subscribe({
 			next: (response: any[]) => {
 				const detalleSolicitudes = response;
 
@@ -1580,10 +1580,10 @@ export class ReporteSolicitudesComponent implements AfterViewInit, OnInit {
 					solicitud.fechaActualizacion === null || solicitud.fechaActualizacion === undefined || solicitud.fechaActualizacion === "" ? "-" : solicitud.fechaActualizacion,
 					solicitud.fechaSalida === null || solicitud.fechaSalida === undefined || solicitud.fechaSalida === "" ? "-" : solicitud.fechaSalida,
 					solicitud.fechaIngreso === null || solicitud.fechaIngreso === undefined || solicitud.fechaIngreso === "" ? "-" : solicitud.fechaIngreso,
+					"No sé", // Número de días desde que se registró hasta cuando se completa (anulado, rechazado o aprobado), si todavía no está completado, va vacío
+					"No sé", // Número de días desde que se registró hasta cuando se completa (anulado, rechazado o aprobado), si todavía no está completado, va vacío
 					"No sé",
-					"No sé",
-					"No sé",
-					"No sé",
+					"No sé"
 				]));
 
 				this.utilService.generateReport(formato, "RPTWF-TM", "RP", headerTitles, bodyReport);
@@ -1600,10 +1600,14 @@ export class ReporteSolicitudesComponent implements AfterViewInit, OnInit {
 		const headerTitles = ["N° Solicitud", "Compañía", "Unidad de Negocio", "Motivo", "Estado", "Actualización del Perfil", "Búsqueda de Candidatos", "Entrevista", "Pruebas", "Referencias", "Elaboración de Informe", "Entrega al Jefe Solicitante el Informe de Selección", "Entrevista por parte de Jefaturas", "Toma de decisiones por parte de Jefaturas", "Candidato Seleccionado", "Proceso de Contratación", "Fin del Proceso de Selección y Proceso de Contratación", "Inicio de Proceso de Reingreso", "Fin de Proceso de Reingreso", "Inicio de Proceso de Contratación de Familiares", "Fin de Proceso de Contratación de Familiares"];
 
 		const solicitudesData: any = structuredClone(this.dataTable).filter(({ idSolicitud }) => idSolicitud.toString().toUpperCase().includes("RP"));
-		console.log(solicitudesData);
+
+		const ids: string = solicitudesData
+			.map(({ idSolicitud }) => idSolicitud)
+			.join("_");
 
 		// this.seleccionCandidatoService.getCandidato().subscribe({
 		forkJoin(solicitudesData.map(({ idSolicitud }) => this.seleccionCandidatoService.getCandidatoById(idSolicitud))).subscribe({
+		// this.seleccionCandidatoService.getCandidatoById(ids).subscribe({
 			next: (response: any[]) => {
 				// console.log(response);
 				const detalleSolicitudes = response.map(({ seleccionCandidatoType }) => seleccionCandidatoType);
@@ -1666,10 +1670,15 @@ export class ReporteSolicitudesComponent implements AfterViewInit, OnInit {
 
 		const headerTitles = ["N° Solicitud", "Compañía", "Tipo de Solicitud", "Motivo", "Fecha de Creación", "1er Nivel de Aprobación", "Fecha de Aprobación", "2do Nivel de Aprobación", "Fecha de Aprobación", "3er Nivel de Aprobación", "Fecha de Aprobación", "4to Nivel de Aprobación", "Fecha de Aprobación", "Gerente de RR.HH. Corporativo", "Feca de Aprobación", "Comité de Remuneraciones", "Fecha de Aprobación"];
 
-		const solicitudesData: any = structuredClone(this.dataTable)
+		const solicitudesData: any = structuredClone(this.dataTable);
+
+		const ids: string = solicitudesData
+			.map(({ idSolicitud }) => idSolicitud)
+			.join("_");
 
 		// this.seleccionCandidatoService.getCandidato().subscribe({
 		forkJoin(solicitudesData.map(({ idSolicitud }) => this.solicitudes.getDetalleAprobadoresSolicitudesById(idSolicitud))).subscribe({
+		// this.seleccionCandidatoService.getCandidatoById(ids).subscribe({
 			next: (response: any) => {
 				const detalleSolicitudes = response.map(({ detalleAprobadorSolicitud }) => ({
 					iD_SOLICITUD: detalleAprobadorSolicitud[0].id_Solicitud,
@@ -1687,7 +1696,6 @@ export class ReporteSolicitudesComponent implements AfterViewInit, OnInit {
 					solicitud: item,
 					detalle: lookup[item.idSolicitud]
 				}));
-				console.log(combined);
 
 				const bodyReport = combined.map(({ solicitud, detalle }) => ([
 					solicitud.idSolicitud,

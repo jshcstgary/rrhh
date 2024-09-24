@@ -54,13 +54,8 @@ export class LoginComponent {
 
 	Session: Session;
 	private unsubscribeService = new Subject<void>();
-	constructor(
-		private router: Router,
-		private starterService: StarterService,
-		private loginService: LoginServices,
-		// private permisosService: PermisoService,
-		private utilService: UtilService
-	) {
+
+	constructor(private router: Router, private starterService: StarterService, private loginService: LoginServices, private utilService: UtilService) {
 		this.Session = {
 			Perfil: "",
 			IdEmpresa: "",
@@ -68,20 +63,8 @@ export class LoginComponent {
 			Token: "",
 			Usuario: "",
 			Perfiles: [],
-			// Programas: [],
 			Perfile: [],
 		};
-
-		// this.searchSubject
-		// 	.pipe(
-		// 		debounceTime(5000) // 300 ms de retraso
-		// 	)
-		// 	.subscribe(value => {
-		// 		// this.result = value;
-		// 		// console.log('Valor después de debounce:', value);
-
-		// 		this.getPerfilesUsuario();
-		// 	});
 	}
 
 	ngOnDestroy(): void {
@@ -167,7 +150,7 @@ export class LoginComponent {
 					this.isLoadingPerfil = true;
 				} else {
 					Swal.fire({
-						text: "Usuario no es valido",
+						text: "Usuario no es válido",
 						icon: "error",
 						confirmButtonColor: "rgb(227, 199, 22)",
 						confirmButtonText: "Ok",
@@ -235,7 +218,7 @@ export class LoginComponent {
 			next: ({ codigo, nombres, apellidos, email, vistas }: Perfil) => {
 				if (vistas.length === 0 || nombres === "" || apellidos === "" || email == "" || codigo === "") {
 					Swal.fire({
-						text: "Usuario o Contraseña Invalida",
+						text: "Usuario o Contraseña Inválida",
 						icon: "error",
 						confirmButtonColor: "rgb(227, 199, 22)",
 						confirmButtonText: "Ok",
@@ -246,7 +229,6 @@ export class LoginComponent {
 					sessionStorage.removeItem(LocalStorageKeys.Permisos);
 					sessionStorage.removeItem(LocalStorageKeys.Reloaded);
 					sessionStorage.removeItem(LocalStorageKeys.Perfil);
-					sessionStorage.removeItem(LocalStorageKeys.Perfiles);
 					sessionStorage.removeItem(LocalStorageKeys.NombreUsuario);
 					sessionStorage.removeItem(LocalStorageKeys.NivelDireccion);
 
@@ -278,7 +260,6 @@ export class LoginComponent {
 				sessionStorage.removeItem(LocalStorageKeys.Permisos);
 				sessionStorage.removeItem(LocalStorageKeys.Reloaded);
 				sessionStorage.removeItem(LocalStorageKeys.Perfil);
-				sessionStorage.removeItem(LocalStorageKeys.Perfiles);
 				sessionStorage.removeItem(LocalStorageKeys.NombreUsuario);
 				sessionStorage.removeItem(LocalStorageKeys.NivelDireccion);
 

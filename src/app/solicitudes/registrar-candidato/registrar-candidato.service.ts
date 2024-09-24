@@ -25,6 +25,12 @@ export class RegistrarCandidatoService {
 		return this.http.post<any>(this.apiUrlSeleccionCandidato, request);
 	}
 
+	getCandidatoByIds(ids: string): Observable<any> {
+		return this.http.post<any>(`${this.apiUrlSeleccionCandidato}/ids`, {
+			ids
+		});
+	}
+
 	getCandidatoById(idSolictud: string): Observable<any> {
 		return this.http.get<any>(`${this.apiUrlSeleccionCandidato}/${idSolictud}`);
 	}

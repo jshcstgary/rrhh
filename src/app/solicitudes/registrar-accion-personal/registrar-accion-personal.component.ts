@@ -2565,8 +2565,9 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
 		}
 
 		this.isDisabledFechaCambio = true;
+
 		if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) {
-			this.errorFechaCambio(`El formato ingresado no es valido`);
+			this.errorFechaCambio(`El formato ingresado no es válido`);
 			this.isDisabledFechaCambio = false;
 			return;
 		}
@@ -2576,6 +2577,7 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
 		if (isNaN(fechaIngresada.getTime())) {
 			this.errorFechaCambio(`La fecha ingresada no es valida, por favor verifique`);
 			this.isDisabledFechaCambio = false;
+
 			return;
 		}
 

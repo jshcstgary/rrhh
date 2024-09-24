@@ -45,8 +45,8 @@ export const ConsultaGraficosData: IConsultaGraficosData = {
 					tooltip: "Info",
 					showed: true
 				}
-			],
-		},
+			]
+		}
 	],
 	defaultEmptyRowTable: {
 		name: "",
