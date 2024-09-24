@@ -168,7 +168,6 @@ export class HorizontalSidebarComponent {
 
 	constructor(private menuServise: HorizontalSidebarService, private router: Router, private loginService: LoginServices, private utilService: UtilService) {
 		this.menuServise.items.subscribe((menuItems) => {
-			// ? FILTRAR ESTE ARREGLO
 			this.sidebarnavItems = menuItems.filter(menuItem => this.permisos.some(permiso => menuItem.codigo === permiso.codigo));
 
 			this.sidebarnavItems = this.sidebarnavItems.map(menuItem => {

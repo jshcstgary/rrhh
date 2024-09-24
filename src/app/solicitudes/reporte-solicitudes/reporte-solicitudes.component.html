@@ -25,7 +25,7 @@
 						<button ngbNavLink>Consultas</button>
 
 						<ng-template ngbNavContent>
-							
+
 						</ng-template>
 					</li>
 				</ul>
@@ -127,7 +127,7 @@
 </ng-template> -->
 
 
-<div class="form-body">
+<div class="form-body mt-3">
 	<div class="row align-items-end">
 		<div *ngIf="controlsPermissions[pageControlPermission.FiltroUnidadNegocio].visualizar" class="col-md-3">
 			<div class="mb-3">
@@ -207,6 +207,14 @@
 				</ng-select>
 			</div>
 		</div>
+
+		<div class="col-md-3">
+			<div class="mb-3">
+				<div class="text-end">
+					<button #buttonSearch *ngIf="controlsPermissions[pageControlPermission.ButtonBuscar].visualizar" (click)="filterDataTable()" type="submit" class="btn btn-info"><i class="fas fa-filter"></i> Buscar</button>
+				</div>
+			</div>
+		</div>
 	</div>
 </div>
 
@@ -226,20 +234,20 @@
 	<button class="btn btn-secondary btn-sm m-2 float-end" (click)="fechaHasta.close()">Close</button>
 </ng-template>
 
-<form>
+<form class="mb-3">
 	<div class="row">
 		<div class="col-md-4">
-			<dropdown-component *ngIf="mostrarBotonesAdmin()" [options]="dropdownOptionsExport" textButton="Exportar bitácora de selección" [buttonClasses]="['btn-outline-info']" [iconButton]="'fas fa-file-pdf'" [contexto]="this" onDropDownClickFunction="exportarBitacoraSeleccion"></dropdown-component>
+			<dropdown-component *ngIf="mostrarBotonesAdmin()" [options]="dropdownOptionsExport" textButton="Bitácora de selección" [buttonClasses]="['btn-outline-info']" [iconButton]="'fas fa-file-pdf'" [contexto]="this" onDropDownClickFunction="exportarBitacoraSeleccion"></dropdown-component>
 		</div>
 
-		<div class="col-md-4">
-			<dropdown-component *ngIf="mostrarBotonesAdmin()" [options]="dropdownOptionsExport" textButton="Exportar proceso de selección por solicitud" [buttonClasses]="['btn-outline-info']" [iconButton]="'fas fa-file-pdf'" [contexto]="this" onDropDownClickFunction="exportarSeleccionPorSolicitud"></dropdown-component>
+		<div class="col-md-4 text-center">
+			<dropdown-component *ngIf="mostrarBotonesAdmin()" [options]="dropdownOptionsExport" textButton="Proceso de selección por solicitud" [buttonClasses]="['btn-outline-info']" [iconButton]="'fas fa-file-pdf'" [contexto]="this" onDropDownClickFunction="exportarSeleccionPorSolicitud"></dropdown-component>
 		</div>
 
-		<div class="col-md-4">
-			<dropdown-component *ngIf="mostrarBotonesAdmin()" [options]="dropdownOptionsExport" textButton="Exportar aprobaciones de solicitud" [buttonClasses]="['btn-outline-info']" [iconButton]="'fas fa-file-pdf'" [contexto]="this" onDropDownClickFunction="exportarAprobacionSolicitudesPorResponsable"></dropdown-component>
+		<div class="col-md-4 text-end">
+			<dropdown-component *ngIf="mostrarBotonesAdmin()" [options]="dropdownOptionsExport" textButton="Aprobaciones de solicitud" [buttonClasses]="['btn-outline-info']" [iconButton]="'fas fa-file-pdf'" [contexto]="this" onDropDownClickFunction="exportarAprobacionSolicitudesPorResponsable"></dropdown-component>
 		</div>
 	</div>
 </form>
 
-<plantilla-c-component [fixedFirstColumnOnTable]="true" [fixedLastColumnOnTable]="true" overflowX="auto" tableWidth="250%" [dataFilterNivelesAprobacion]="dataFilterNivelesAprobacion" [dataTipoMotivo]="dataTipoMotivo" [dataTipoSolicitudes]="dataTipoSolicitudes" [dataNivelDireccion]="dataNivelDireccion" [dataTipoAccion]="dataTipoAccion" [selected_empresa]="selected_empresa" [selected_producto]="selected_producto" [selected_tipo_solicitud]="selected_tipo_solicitud" [selected_estado]="selected_estado" [data_empresas]="data_empresas" [data_productos]="dataUnidadesNegocio" [data_estado]="data_estado" [model]="model" *ngIf="hasFiltered" [columnsTable]="columnsTable" [originalDataTable]="dataTable" [placeholderHeaderInputText]="'Buscar niveles de aprobacion...'" [contexto]="this" keyNameTable="id" clickOnActionRow="onRowActionClicked" clickOnFilter="filterDataTable" clickOnMostrarModalCrearSolicitudes="mostrarModalCrearSolicitudes" clickOnToggleDisabled="toggleDisabled" clickOnPageCrear="pageCrear" [IdRowToClone]="IdRowToClone" colIdToDisable="id" titleReport="NIVELES DE APROBACION" [codigoReport]="codigoReporte"></plantilla-c-component>
+<plantilla-c-component [fixedFirstColumnOnTable]="true" overflowX="auto" tableWidth="250%" [dataFilterNivelesAprobacion]="dataFilterNivelesAprobacion" [dataTipoMotivo]="dataTipoMotivo" [dataTipoSolicitudes]="dataTipoSolicitudes" [dataNivelDireccion]="dataNivelDireccion" [dataTipoAccion]="dataTipoAccion" [selected_empresa]="selected_empresa" [selected_producto]="selected_producto" [selected_tipo_solicitud]="selected_tipo_solicitud" [selected_estado]="selected_estado" [data_empresas]="data_empresas" [data_productos]="dataUnidadesNegocio" [data_estado]="data_estado" [model]="model" *ngIf="hasFiltered" [columnsTable]="columnsTable" [originalDataTable]="dataTable" [placeholderHeaderInputText]="'Buscar niveles de aprobacion...'" [contexto]="this" keyNameTable="id" clickOnActionRow="onRowActionClicked" clickOnFilter="filterDataTable" clickOnMostrarModalCrearSolicitudes="mostrarModalCrearSolicitudes" clickOnToggleDisabled="toggleDisabled" clickOnPageCrear="pageCrear" [IdRowToClone]="IdRowToClone" colIdToDisable="id" titleReport="NIVELES DE APROBACION" [codigoReport]="codigoReporte"></plantilla-c-component>

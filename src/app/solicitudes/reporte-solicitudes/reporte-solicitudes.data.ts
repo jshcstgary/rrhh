@@ -81,32 +81,7 @@ export const ConsultaSolicitudesData: IConsultaSolicitudesData = {
 			title: "Fecha Modificación",
 			dataIndex: "fechaActualizacion",
 			colType: "string",
-		},
-		{
-			title: "Acciones",
-			type: "actions",
-			width: "100px",
-			actions: [
-				{
-					materialIcon: "print",
-					id: "redirect",
-					tooltip: "Formulario",
-					showed: true
-				},
-				{
-					materialIcon: "info",
-					id: "editOnTable",
-					tooltip: "Info",
-					showed: true
-				},
-				{
-					materialIcon: "trending_up",
-					id: "cloneOnTable",
-					tooltip: "Trazabilidad",
-					showed: true
-				}
-			],
-		},
+		}
 	],
 	defaultEmptyRowTable: {
 		idSolicitud: "0",

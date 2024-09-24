@@ -20,14 +20,12 @@ import { NgSelectConfig } from "@ng-select/ng-select";
 import { forkJoin, map } from "rxjs";
 import { CamundaRestService } from "src/app/camunda-rest.service";
 import { IColumnsTable } from "src/app/component/table/table.interface";
-import { TableService } from "src/app/component/table/table.service";
 import { DataFilterNivelesAprobacion } from "src/app/eschemas/DataFilterNivelesAprobacion";
 import { DatosInstanciaProceso } from "src/app/eschemas/DatosInstanciaProceso";
 import { Solicitud } from "src/app/eschemas/Solicitud";
 import { FamiliaresCandidatos, MantenimientoService } from "src/app/services/mantenimiento/mantenimiento.service";
 import { FormatoUtilReporte, reportCodeEnum } from "src/app/services/util/util.interface";
 import { UtilService } from "src/app/services/util/util.service";
-import { ValidationsService } from "src/app/services/validations/validations.service";
 import Swal from "sweetalert2";
 import { SolicitudesService } from "../registrar-solicitud/solicitudes.service";
 import { ConsultaSolicitudesData } from "./reporte-solicitudes.data";
@@ -38,6 +36,8 @@ import {
 import { DatePipe } from "@angular/common";
 import { NgSelectComponent } from "@ng-select/ng-select";
 import { format } from "date-fns";
+import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
 import { TableComponentData } from "src/app/component/table/table.data";
 import { PageCodes } from "src/app/enums/codes.enum";
 import { LocalStorageKeys } from "src/app/enums/local-storage-keys.enum";
@@ -45,18 +45,16 @@ import { ConsultaSolicitudPageControlPermission } from "src/app/enums/page-contr
 import { DataFilterSolicitudes } from "src/app/eschemas/DataFilterSolicitudes";
 import { DatosProcesoInicio } from "src/app/eschemas/DatosProcesoInicio";
 import { DetalleSolicitud } from "src/app/eschemas/DetalleSolicitud";
+import { RegistrarData } from "src/app/eschemas/RegistrarData";
 import { PermisoService } from "src/app/services/permiso/permiso.service";
 import { convertTimeZonedDate } from "src/app/services/util/dates.util";
 import { StarterService } from "src/app/starter/starter.service";
 import { PageControlPermiso } from "src/app/types/page-control-permiso.type";
 import { Control, Permiso } from "src/app/types/permiso.type";
 import { codigosSolicitudReporte, portalWorkFlow } from "src/environments/environment";
+import { ComentarioSalidaJefeService } from "../detalle-solicitud/comentario-salida-jefe.service";
 import { RegistrarCandidatoService } from "../registrar-candidato/registrar-candidato.service";
 import { ConsultaSolicitudesService } from "./consulta-solicitudes.service";
-import { RegistrarData } from "src/app/eschemas/RegistrarData";
-import { ComentarioSalidaJefeService } from "../detalle-solicitud/comentario-salida-jefe.service";
-import jsPDF from "jspdf";
-import autoTable from "jspdf-autotable";
 
 //import { single} from './chartData';
 declare var require: any;
@@ -1544,13 +1542,16 @@ export class ReporteSolicitudesComponent implements AfterViewInit, OnInit {
 	}
 
 	private exportarBitacoraSeleccion(formato: FormatoUtilReporte) {
+		this.utilService.openLoadingSpinner("Obteniendo documento...");
+
 		const headerTitles = ["Compañía", "Unidad de Negocio", "Localidad", "Nombre del jefe solicitante", "Àrea/Departamento", "Cargo requerido", "Nivel de dirección", "Tipo de requerimiento", "Estatus del proceso", "Fuente de reclutamiento", "Número de solicitud", "Fecha de aprobación de solicitud", "Fecha de cierre del proceso/Finalización del proceso", "Fecha de ingreso del nuevo colaborador", "Número de días de requisición en proceso (Workflow)", "Número de días de requisición hasta el ingreso del colaborador", "Etapa actual del proceso", "Apellidos y nombres del ocupante anterior"];
 
 		const solicitudesData: any = structuredClone(this.dataTable);
 
-		this.seleccionCandidatoService.getCandidato().subscribe({
-			next: (response) => {
-				const detalleSolicitudes = response.seleccionCandidatoType;
+		// this.seleccionCandidatoService.getCandidato().subscribe({
+		forkJoin(solicitudesData.map(({ idSolicitud }) => this.seleccionCandidatoService.getCandidatoById(idSolicitud))).subscribe({
+			next: (response: any[]) => {
+				const detalleSolicitudes = response;
 
 				const lookup = detalleSolicitudes.reduce((acc, item) => {
 					acc[item.iD_SOLICITUD] = item;
@@ -1586,19 +1587,24 @@ export class ReporteSolicitudesComponent implements AfterViewInit, OnInit {
 				]));
 
 				this.utilService.generateReport(formato, "RPTWF-TM", "RP", headerTitles, bodyReport);
+			},
+			error: (err) => {
+				this.utilService.modalResponse(err.message, "error");
 			}
 		});
 	}
 
 	private exportarSeleccionPorSolicitud(formato: FormatoUtilReporte) {
+		this.utilService.openLoadingSpinner("Obteniendo documento...");
+
 		const headerTitles = ["N° Solicitud", "Compañía", "Unidad de Negocio", "Motivo", "Estado", "Actualización del Perfil", "Búsqueda de Candidatos", "Entrevista", "Pruebas", "Referencias", "Elaboración de Informe", "Entrega al Jefe Solicitante el Informe de Selección", "Entrevista por parte de Jefaturas", "Toma de decisiones por parte de Jefaturas", "Candidato Seleccionado", "Proceso de Contratación", "Fin del Proceso de Selección y Proceso de Contratación", "Inicio de Proceso de Reingreso", "Fin de Proceso de Reingreso", "Inicio de Proceso de Contratación de Familiares", "Fin de Proceso de Contratación de Familiares"];
 
 		const solicitudesData: any = structuredClone(this.dataTable).filter(({ idSolicitud }) => idSolicitud.toString().toUpperCase().includes("RP"));
-		// console.log(solicitudesData);
+		console.log(solicitudesData);
 
-		this.seleccionCandidatoService.getCandidato().subscribe({
-			// forkJoin(solicitudesData.map(({ idSolicitud }) => this.seleccionCandidatoService.getCandidatoById(idSolicitud))).subscribe({
-			next: (response) => {
+		// this.seleccionCandidatoService.getCandidato().subscribe({
+		forkJoin(solicitudesData.map(({ idSolicitud }) => this.seleccionCandidatoService.getCandidatoById(idSolicitud))).subscribe({
+			next: (response: any[]) => {
 				// console.log(response);
 				const detalleSolicitudes = response.map(({ seleccionCandidatoType }) => seleccionCandidatoType);
 				// const detalleSolicitudes = response ?? [];
@@ -1648,18 +1654,23 @@ export class ReporteSolicitudesComponent implements AfterViewInit, OnInit {
 				if (bodyReport.length !== 0) {
 					this.utilService.generateReport(formato, "RPTWF-TM", "RP", headerTitles, bodyReport);
 				}
+			},
+			error: (err) => {
+				this.utilService.modalResponse(err, "error");
 			}
 		});
 	}
 
 	private exportarAprobacionSolicitudesPorResponsable(formato: FormatoUtilReporte) {
+		this.utilService.openLoadingSpinner("Obteniendo documento...");
+
 		const headerTitles = ["N° Solicitud", "Compañía", "Tipo de Solicitud", "Motivo", "Fecha de Creación", "1er Nivel de Aprobación", "Fecha de Aprobación", "2do Nivel de Aprobación", "Fecha de Aprobación", "3er Nivel de Aprobación", "Fecha de Aprobación", "4to Nivel de Aprobación", "Fecha de Aprobación", "Gerente de RR.HH. Corporativo", "Feca de Aprobación", "Comité de Remuneraciones", "Fecha de Aprobación"];
 
 		const solicitudesData: any = structuredClone(this.dataTable)
 
 		// this.seleccionCandidatoService.getCandidato().subscribe({
 		forkJoin(solicitudesData.map(({ idSolicitud }) => this.solicitudes.getDetalleAprobadoresSolicitudesById(idSolicitud))).subscribe({
-			next: (response: any[]) => {
+			next: (response: any) => {
 				const detalleSolicitudes = response.map(({ detalleAprobadorSolicitud }) => ({
 					iD_SOLICITUD: detalleAprobadorSolicitud[0].id_Solicitud,
 					detalleAprobadorSolicitud: detalleAprobadorSolicitud.filter(({ ruta }) => ruta.toUpperCase().includes("PRIMER") || ruta.toUpperCase().includes("SEGUND") || ruta.toUpperCase().includes("TERCER") || ruta.toUpperCase().includes("CUART") || ruta.toUpperCase().includes("RRHH") || ruta.toUpperCase().includes("RR.HH.") || ruta.toUpperCase().includes("REMUNERA"))
@@ -1699,6 +1710,9 @@ export class ReporteSolicitudesComponent implements AfterViewInit, OnInit {
 				]));
 
 				this.utilService.generateReport(formato, "RPTWF-TM", "RP", headerTitles, bodyReport);
+			},
+			error: (err) => {
+				this.utilService.modalResponse(err, "error");
 			}
 		});
 	}

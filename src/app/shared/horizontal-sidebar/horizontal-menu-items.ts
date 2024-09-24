@@ -21,7 +21,7 @@ export const ROUTES: RouteInfo[] = [
 				submenu: [],
 			},
 			{
-				path: "/solicitudes/reportes-solicitudes",
+				path: "/solicitudes/reportes",
 				title: "Reportes de Solicitudes",
 				icon: "",
 				class: "",

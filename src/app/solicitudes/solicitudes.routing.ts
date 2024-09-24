@@ -18,6 +18,7 @@ import { RegistrarComentarioSalidaJefeComponent } from "./registrar-comentario-s
 import { RegistrarComentarioSalidaRRHHComponent } from "./registrar-comentario-salida-rrhh/registrar-comentario-salida-rrhh.component";
 import { RegistrarFamiliaresComponent } from "./registrar-familiares/registrar-familiares.component";
 import { ReingresoPersonalComponent } from "./reingreso-personal/reingreso-personal.component";
+import { ReporteSolicitudesComponent } from "./reporte-solicitudes/reporte-solicitudes.component";
 import { TrazabilidadSolicitudComponent } from "./trazabilidad-solicitud/trazabilidad-solicitud.component";
 
 export const SolicitudesRoutes: Routes = [
@@ -253,6 +254,23 @@ export const SolicitudesRoutes: Routes = [
 						}
 					],
 				},
+			},
+			{
+				path: "reportes",
+				canActivate: [routeAccessGuard],
+				component: ReporteSolicitudesComponent,
+				data: {
+					code: PageCodes.AprobadorFijo,
+					title: "Reportes de Solicitudes",
+					urls: [
+						{
+							title: "Solicitudes"
+						},
+						{
+							title: "Reportes de Solicitudes"
+						}
+					],
+				}
 			}
 		],
 	},
