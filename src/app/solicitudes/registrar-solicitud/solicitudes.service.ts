@@ -46,6 +46,12 @@ export class SolicitudesService {
 		return this.http.get<any>(`${this.apiUrlSolicitudes}/${idSolicitud}`);
 	}
 
+	public getDetalleAprobadoresSolicitudesByIds(ids: string): Observable<any> {
+		return this.http.post<any>(`${this.apiDetalleAprobaciones}/filtrar/solicitudes`, {
+			iD_S: ids
+		});
+	}
+
 	public getDetalleAprobadoresSolicitudesById(idSolicitud: any): Observable<any> {
 		return this.http.get<any>(`${this.apiDetalleAprobaciones}/${idSolicitud}`);
 	}

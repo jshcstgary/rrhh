@@ -58,7 +58,7 @@
 
 					<td>{{ empleado.nomCCosto ?? "-" }}</td>
 
-					<td>{{ empleado.fechaIngresogrupo === null ? "-" : (empleado.fechaIngresogrupo | date : "dd-MM-yyyy") }}</td>
+					<td>{{ empleado.fechaIngresogrupo === null || empleado.fechaIngresogrupo === "" || empleado.fechaIngresogrupo === undefined ? (empleado.fechaIngreso === "" || empleado.fechaIngreso === null || empleado.fechaIngreso === undefined ? "-" : (empleado.fechaIngreso | date : "dd-MM-yyyy")) : (empleado.fechaIngresogrupo | date : "dd-MM-yyyy") }}</td>
 				</tr>
 			</tbody>
 		</table>

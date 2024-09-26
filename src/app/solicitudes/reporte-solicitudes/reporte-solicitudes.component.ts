@@ -35,7 +35,7 @@ import {
 
 import { DatePipe } from "@angular/common";
 import { NgSelectComponent } from "@ng-select/ng-select";
-import { format } from "date-fns";
+import { differenceInDays, format, parse } from "date-fns";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import { TableComponentData } from "src/app/component/table/table.data";
@@ -1012,44 +1012,46 @@ export class ReporteSolicitudesComponent implements AfterViewInit, OnInit {
 					}))
 					.sort((a, b) => a.descripcion.toUpperCase().localeCompare(b.descripcion.toUpperCase()));
 
-				forkJoin([this.solicitudes.getSolicitudes(), this.solicitudes.getDetalleSolicitud(), this.solicitudes.getConteo()])
-					.pipe(
-						map(([solicitudes, detallesSolicitud, conteo]) => {
-							this.solicitudesCompletadas = conteo.totalesCompletadasType;
-							this.solicitudesPendientes = conteo.totalesPendientesType;
+				// forkJoin([this.solicitudes.getSolicitudes(), this.solicitudes.getDetalleSolicitud(), this.solicitudes.getConteo()])
+				// 	.pipe(
+				// 		map(([solicitudes, detallesSolicitud, conteo]) => {
+				// 			this.solicitudesCompletadas = conteo.totalesCompletadasType;
+				// 			this.solicitudesPendientes = conteo.totalesPendientesType;
 
-							this.solicitudesTipo = conteo.listadoSolicitudes.map(data => ({
-								...data,
-								idSolicitud: data.id_solicitud
-							}));
+				// 			this.solicitudesTipo = conteo.listadoSolicitudes.map(data => ({
+				// 				...data,
+				// 				idSolicitud: data.id_solicitud
+				// 			}));
 
-							// Combinar las solicitudes y los detalles de la solicitud
-							return solicitudes.solicitudType
-								.map((solicitud) => {
-									const detalles = detallesSolicitud.detalleSolicitudType.find((detalle) => detalle.idSolicitud === solicitud.idSolicitud);
-									solicitud.fechaCreacion = new DatePipe('en-CO').transform(solicitud.fechaCreacion, 'dd/MM/yyyy HH:mm:ss');
-									solicitud.fechaActualizacion = new DatePipe('en-CO').transform(solicitud.fechaActualizacion, 'dd/MM/yyyy HH:mm:ss');
+				// 			// Combinar las solicitudes y los detalles de la solicitud
+				// 			return solicitudes.solicitudType
+				// 				.map((solicitud) => {
+				// 					const detalles = detallesSolicitud.detalleSolicitudType.find((detalle) => detalle.idSolicitud === solicitud.idSolicitud);
+				// 					solicitud.fechaCreacion = new DatePipe('en-CO').transform(solicitud.fechaCreacion, 'dd/MM/yyyy HH:mm:ss');
+				// 					solicitud.fechaActualizacion = new DatePipe('en-CO').transform(solicitud.fechaActualizacion, 'dd/MM/yyyy HH:mm:ss');
 
-									return {
-										...solicitud,
-										...detalles
-									};
-								})
-								.sort((a, b) => new Date(a.fechaCreacion).getTime() - new Date(b.fechaCreacion).getTime());
-						})
-					)
-					.subscribe((data) => {
-						this.dataTable = data.map((itemSolicitud) => {
-							const descripcionEstado = this.data_estado.find((itemEstado) => itemEstado.codigo == itemSolicitud.estadoSolicitud);
+				// 					return {
+				// 						...solicitud,
+				// 						...detalles
+				// 					};
+				// 				})
+				// 				.sort((a, b) => new Date(a.fechaCreacion).getTime() - new Date(b.fechaCreacion).getTime());
+				// 		})
+				// 	)
+				// 	.subscribe((data) => {
+				// 		this.dataTable = data.map((itemSolicitud) => {
+				// 			const descripcionEstado = this.data_estado.find((itemEstado) => itemEstado.codigo == itemSolicitud.estadoSolicitud);
 
-							return {
-								...itemSolicitud,
-								estado: descripcionEstado !== undefined ? descripcionEstado.descripcion : "N/A",
-							};
-						});
+				// 			return {
+				// 				...itemSolicitud,
+				// 				estado: descripcionEstado !== undefined ? descripcionEstado.descripcion : "N/A",
+				// 			};
+				// 		});
 
-						this.utilService.closeLoadingSpinner();
-					});
+				// 		this.utilService.closeLoadingSpinner();
+				// 	});
+
+				this.utilService.closeLoadingSpinner();
 			},
 			error: (error: HttpErrorResponse) => {
 				this.utilService.modalResponse(error.error, "error");
@@ -1539,7 +1541,7 @@ export class ReporteSolicitudesComponent implements AfterViewInit, OnInit {
 	private exportarBitacoraSeleccion(formato: FormatoUtilReporte) {
 		this.utilService.openLoadingSpinner("Obteniendo documento...");
 
-		const headerTitles = ["Compañía", "Unidad de Negocio", "Localidad", "Nombre del jefe solicitante", "Àrea/Departamento", "Cargo requerido", "Nivel de dirección", "Tipo de requerimiento", "Estatus del proceso", "Fuente de reclutamiento", "Número de solicitud", "Fecha de aprobación de solicitud", "Fecha de cierre del proceso/Finalización del proceso", "Fecha de ingreso del nuevo colaborador", "Número de días de requisición en proceso (Workflow)", "Número de días de requisición hasta el ingreso del colaborador", "Etapa actual del proceso", "Apellidos y nombres del ocupante anterior"];
+		const headerTitles = ["Compañía", "Unidad de Negocio", "Localidad", "Nombre del jefe solicitante", "Área/Departamento", "Cargo requerido", "Nivel de dirección", "Tipo de requerimiento", "Estatus del proceso", "Fuente de reclutamiento", "Número de solicitud", "Fecha de aprobación de solicitud", "Fecha de cierre del proceso/Finalización del proceso", "Fecha de ingreso del nuevo colaborador", "Número de días de requisición en proceso (Workflow)", "Número de días de requisición hasta el ingreso del colaborador", "Etapa actual del proceso", "Apellidos y nombres del ocupante anterior"];
 
 		const solicitudesData: any = structuredClone(this.dataTable);
 
@@ -1547,23 +1549,23 @@ export class ReporteSolicitudesComponent implements AfterViewInit, OnInit {
 			.map(({ idSolicitud }) => idSolicitud)
 			.join("_");
 		
-		// this.seleccionCandidatoService.getCandidato().subscribe({
-		forkJoin(solicitudesData.map(({ idSolicitud }) => this.seleccionCandidatoService.getCandidatoById(idSolicitud))).subscribe({
-		// this.seleccionCandidatoService.getCandidatoById(ids).subscribe({
-			next: (response: any[]) => {
-				const detalleSolicitudes = response;
+		this.seleccionCandidatoService.getCandidatoByIds(ids).subscribe({
+			next: (response: any) => {
+				const detalleSolicitudes = response.seleccionCandidatoType;
 
 				const lookup = detalleSolicitudes.reduce((acc, item) => {
+					// acc[item.iD_SOLICITUD_PROCESO === "" ? item.iD_SOLICITUD : item.iD_SOLICITUD_PROCESO] = item;
 					acc[item.iD_SOLICITUD] = item;
 
 					return acc;
 				}, {});
+				console.log(lookup);
 
-				// Combinar usando el objeto de referencia
 				const combined = solicitudesData.map(item => ({
 					solicitud: item,
 					detalle: lookup[item.idSolicitud]
 				}));
+				console.log(combined);
 
 				const bodyReport = combined.map(({ solicitud, detalle }) => ([
 					solicitud.compania === null || solicitud.compania === undefined || solicitud.compania === "" ? "-" : solicitud.compania,
@@ -1575,18 +1577,18 @@ export class ReporteSolicitudesComponent implements AfterViewInit, OnInit {
 					solicitud.nivelDireccion === null || solicitud.nivelDireccion === undefined || solicitud.nivelDireccion === "" ? "-" : solicitud.nivelDireccion,
 					solicitud.tipoMotivo === null || solicitud.tipoMotivo === undefined || solicitud.tipoMotivo === "" ? "-" : solicitud.tipoMotivo,
 					solicitud.estado === null || solicitud.estado === undefined || solicitud.estado === "" ? "-" : solicitud.estado,
-					detalle !== undefined ? (detalle.fuenteExterna === null || detalle.fuenteExterna === undefined || detalle.fuenteExterna === "" ? "-" : detalle.fuenteExterna) : "-",
+					detalle === undefined ? "-" : (detalle.fuenteExterna === null || detalle.fuenteExterna === undefined || detalle.fuenteExterna === "" ? "-" : detalle.fuenteExterna),
 					solicitud.idSolicitud,
 					solicitud.fechaActualizacion === null || solicitud.fechaActualizacion === undefined || solicitud.fechaActualizacion === "" ? "-" : solicitud.fechaActualizacion,
-					solicitud.fechaSalida === null || solicitud.fechaSalida === undefined || solicitud.fechaSalida === "" ? "-" : solicitud.fechaSalida,
-					solicitud.fechaIngreso === null || solicitud.fechaIngreso === undefined || solicitud.fechaIngreso === "" ? "-" : solicitud.fechaIngreso,
-					"No sé", // Número de días desde que se registró hasta cuando se completa (anulado, rechazado o aprobado), si todavía no está completado, va vacío
-					"No sé", // Número de días desde que se registró hasta cuando se completa (anulado, rechazado o aprobado), si todavía no está completado, va vacío
-					"No sé",
+					solicitud.fechaSalida === null || solicitud.fechaSalida === undefined || solicitud.fechaSalida === "" ? "-" : format(new Date(solicitud.fechaSalida), "dd/MM/yyyy HH:mm:ss"),
+					solicitud.fechaIngreso === null || solicitud.fechaIngreso === undefined || solicitud.fechaIngreso === "" ? "-" : format(new Date(solicitud.fechaIngreso), "dd/MM/yyyy HH:mm:ss"),
+					detalle === undefined ? "-" : (detalle.finProcesoContratacion === null || detalle.finProcesoContratacion === undefined || detalle.finProcesoContratacion === "" ? "-" : differenceInDays(new Date(detalle.finProcesoContratacion), new Date(parse(solicitud.fechaCreacion, "dd/MM/yyyy HH:mm:ss", new Date()))).toString()),
+					detalle === undefined ? "-" : (detalle.finProcesoContratacion === null || detalle.finProcesoContratacion === undefined || detalle.finProcesoContratacion === "" ? "-" : differenceInDays(new Date(detalle.finProcesoContratacion), new Date(parse(solicitud.fechaCreacion, "dd/MM/yyyy HH:mm:ss", new Date()))).toString()),
+					solicitud.estado === null || solicitud.estado === undefined || solicitud.estado === "" ? "-" : solicitud.estado,
 					"No sé"
 				]));
 
-				this.utilService.generateReport(formato, "RPTWF-TM", "RP", headerTitles, bodyReport);
+				this.utilService.generateReport(formato, "RPTWF-BS", "BS", headerTitles, bodyReport);
 			},
 			error: (err) => {
 				this.utilService.modalResponse(err.message, "error");
@@ -1594,24 +1596,41 @@ export class ReporteSolicitudesComponent implements AfterViewInit, OnInit {
 		});
 	}
 
-	private exportarSeleccionPorSolicitud(formato: FormatoUtilReporte) {
+	private async exportarSeleccionPorSolicitud(formato: FormatoUtilReporte) {
+		const { isConfirmed } = await Swal.fire({
+			text: "Este tipo de reporte solo permite solicitudes de Requisición de Personal, las solicitudes de otro tipo no se agregarán al reporte. ¿Desea continuar?",
+			icon: "question",
+			showCancelButton: true,
+			confirmButtonColor: "rgb(227, 199, 22)",
+			cancelButtonColor: "#77797a",
+			confirmButtonText: "Sí",
+			cancelButtonText: "No",
+
+		});
+
+		if (!isConfirmed) {
+			return;
+		}
+
 		this.utilService.openLoadingSpinner("Obteniendo documento...");
 
 		const headerTitles = ["N° Solicitud", "Compañía", "Unidad de Negocio", "Motivo", "Estado", "Actualización del Perfil", "Búsqueda de Candidatos", "Entrevista", "Pruebas", "Referencias", "Elaboración de Informe", "Entrega al Jefe Solicitante el Informe de Selección", "Entrevista por parte de Jefaturas", "Toma de decisiones por parte de Jefaturas", "Candidato Seleccionado", "Proceso de Contratación", "Fin del Proceso de Selección y Proceso de Contratación", "Inicio de Proceso de Reingreso", "Fin de Proceso de Reingreso", "Inicio de Proceso de Contratación de Familiares", "Fin de Proceso de Contratación de Familiares"];
 
-		const solicitudesData: any = structuredClone(this.dataTable).filter(({ idSolicitud }) => idSolicitud.toString().toUpperCase().includes("RP"));
+		const solicitudesData: any[] = structuredClone(this.dataTable).filter(({ idSolicitud }) => idSolicitud.toString().toUpperCase().includes("RP"));
+
+		if (solicitudesData.length === 0) {
+			this.utilService.modalResponse("La tabla no contiene ningún registro de Requisicón de Personal para generar el reporte.", "error");
+
+			return;
+		}
 
 		const ids: string = solicitudesData
 			.map(({ idSolicitud }) => idSolicitud)
 			.join("_");
 
-		// this.seleccionCandidatoService.getCandidato().subscribe({
-		forkJoin(solicitudesData.map(({ idSolicitud }) => this.seleccionCandidatoService.getCandidatoById(idSolicitud))).subscribe({
-		// this.seleccionCandidatoService.getCandidatoById(ids).subscribe({
-			next: (response: any[]) => {
-				// console.log(response);
-				const detalleSolicitudes = response.map(({ seleccionCandidatoType }) => seleccionCandidatoType);
-				// const detalleSolicitudes = response ?? [];
+		this.seleccionCandidatoService.getCandidatoByIds(ids).subscribe({
+			next: (response: any) => {
+				const detalleSolicitudes = response.seleccionCandidatoType;
 
 				const lookup = detalleSolicitudes.reduce((acc, item) => {
 					acc[item.iD_SOLICITUD] = item;
@@ -1624,6 +1643,7 @@ export class ReporteSolicitudesComponent implements AfterViewInit, OnInit {
 					solicitud: item,
 					detalle: lookup[item.idSolicitud]
 				}));
+				console.log(combined);
 
 				const bodyReport = [];
 
@@ -1634,30 +1654,28 @@ export class ReporteSolicitudesComponent implements AfterViewInit, OnInit {
 							solicitud.compania === null || solicitud.compania === undefined || solicitud.compania === "" ? "-" : solicitud.compania,
 							solicitud.unidadNegocio === null || solicitud.unidadNegocio === undefined || solicitud.unidadNegocio === "" ? "-" : solicitud.unidadNegocio,
 							solicitud.tipoMotivo === null || solicitud.tipoMotivo === undefined || solicitud.tipoMotivo === "" ? "-" : solicitud.tipoMotivo,
-							"No sé",
-							detalle !== undefined ? (detalle.actualizacionDelPerfil === null || detalle.actualizacionDelPerfil === undefined || detalle.actualizacionDelPerfil === "" ? "-" : format(new Date(detalle.actualizacionDelPerfil), "dd/MM/yyyy HH:mm:ss")) : "-",
-							detalle !== undefined ? (detalle.busquedaDeCandidatos === null || detalle.busquedaDeCandidatos === undefined || detalle.busquedaDeCandidatos === "" ? "-" : format(new Date(detalle.busquedaDeCandidatos), "dd/MM/yyyy HH:mm:ss")) : "-",
-							detalle !== undefined ? (detalle.entrevista === null || detalle.entrevista === undefined || detalle.entrevista === "" ? "-" : format(new Date(detalle.entrevista), "dd/MM/yyyy HH:mm:ss")) : "-",
-							detalle !== undefined ? (detalle.pruebas === null || detalle.pruebas === undefined || detalle.pruebas === "" ? "-" : format(new Date(detalle.pruebas), "dd/MM/yyyy HH:mm:ss")) : "-",
-							detalle !== undefined ? (detalle.referencias === null || detalle.referencias === undefined || detalle.referencias === "" ? "-" : format(new Date(detalle.referencias), "dd/MM/yyyy HH:mm:ss")) : "-",
-							detalle !== undefined ? (detalle.elaboracionDeInforme === null || detalle.elaboracionDeInforme === undefined || detalle.elaboracionDeInforme === "" ? "-" : format(new Date(detalle.elaboracionDeInforme), "dd/MM/yyyy HH:mm:ss")) : "-",
-							detalle !== undefined ? (detalle.entregaAlJefeSol === null || detalle.entregaAlJefeSol === undefined || detalle.entregaAlJefeSol === "" ? "-" : format(new Date(detalle.entregaAlJefeSol), "dd/MM/yyyy HH:mm:ss")) : "-",
-							detalle !== undefined ? (detalle.entrevistaPorJefatura === null || detalle.entrevistaPorJefatura === undefined || detalle.entrevistaPorJefatura === "" ? "-" : format(new Date(detalle.entrevistaPorJefatura), "dd/MM/yyyy HH:mm:ss")) : "-",
-							detalle !== undefined ? (detalle.tomaDeDesiciones === null || detalle.tomaDeDesiciones === undefined || detalle.tomaDeDesiciones === "" ? "-" : format(new Date(detalle.tomaDeDesiciones), "dd/MM/yyyy HH:mm:ss")) : "-",
-							detalle !== undefined ? (detalle.candidato === null || detalle.candidato === undefined || detalle.candidato === "" ? "-" : detalle.candidato) : "-",
-							detalle !== undefined ? (detalle.procesoDeContratacion === null || detalle.procesoDeContratacion === undefined || detalle.procesoDeContratacion === "" ? "-" : format(new Date(detalle.procesoDeContratacion), "dd/MM/yyyy HH:mm:ss")) : "-",
-							detalle !== undefined ? (detalle.finProcesoContratacion === null || detalle.finProcesoContratacion === undefined || detalle.finProcesoContratacion === "" ? "-" : format(new Date(detalle.finProcesoContratacion), "dd/MM/yyyy HH:mm:ss")) : "-",
-							detalle !== undefined ? (detalle.fechaInicioReingreso === null || detalle.fechaInicioReingreso === undefined || detalle.fechaInicioReingreso === "" ? "-" : format(new Date(detalle.fechaInicioReingreso), "dd/MM/yyyy HH:mm:ss")) : "-",
-							detalle !== undefined ? (detalle.fechaFinReingreso === null || detalle.fechaFinReingreso === undefined || detalle.fechaFinReingreso === "" ? "-" : format(new Date(detalle.fechaFinReingreso), "dd/MM/yyyy HH:mm:ss")) : "-",
-							detalle !== undefined ? (detalle.fechaInicioContratacionFamiliares === null || detalle.fechaInicioContratacionFamiliares === undefined || detalle.fechaInicioContratacionFamiliares === "" ? "-" : format(new Date(detalle.fechaInicioContratacionFamiliares), "dd/MM/yyyy HH:mm:ss")) : "-",
-							detalle !== undefined ? (detalle.fechaFinContratacionFamiliares === null || detalle.fechaFinContratacionFamiliares === undefined || detalle.fechaFinContratacionFamiliares === "" ? "-" : format(new Date(detalle.fechaFinContratacionFamiliares), "dd/MM/yyyy HH:mm:ss")) : "-"
+							solicitud.estado === null || solicitud.estado === undefined || solicitud.estado === "" ? "-" : solicitud.estado,
+							detalle === undefined ? "-" : (detalle.actualizacionDelPerfil === null || detalle.actualizacionDelPerfil === undefined || detalle.actualizacionDelPerfil === "" ? "-" : format(new Date(detalle.actualizacionDelPerfil), "dd/MM/yyyy HH:mm:ss")),
+							detalle === undefined ? "-" : (detalle.busquedaDeCandidatos === null || detalle.busquedaDeCandidatos === undefined || detalle.busquedaDeCandidatos === "" ? "-" : format(new Date(detalle.busquedaDeCandidatos), "dd/MM/yyyy HH:mm:ss")),
+							detalle === undefined ? "-" : (detalle.entrevista === null || detalle.entrevista === undefined || detalle.entrevista === "" ? "-" : format(new Date(detalle.entrevista), "dd/MM/yyyy HH:mm:ss")),
+							detalle === undefined ? "-" : (detalle.pruebas === null || detalle.pruebas === undefined || detalle.pruebas === "" ? "-" : format(new Date(detalle.pruebas), "dd/MM/yyyy HH:mm:ss")),
+							detalle === undefined ? "-" : (detalle.referencias === null || detalle.referencias === undefined || detalle.referencias === "" ? "-" : format(new Date(detalle.referencias), "dd/MM/yyyy HH:mm:ss")),
+							detalle === undefined ? "-" : (detalle.elaboracionDeInforme === null || detalle.elaboracionDeInforme === undefined || detalle.elaboracionDeInforme === "" ? "-" : format(new Date(detalle.elaboracionDeInforme), "dd/MM/yyyy HH:mm:ss")),
+							detalle === undefined ? "-" : (detalle.entregaAlJefeSol === null || detalle.entregaAlJefeSol === undefined || detalle.entregaAlJefeSol === "" ? "-" : format(new Date(detalle.entregaAlJefeSol), "dd/MM/yyyy HH:mm:ss")),
+							detalle === undefined ? "-" : (detalle.entrevistaPorJefatura === null || detalle.entrevistaPorJefatura === undefined || detalle.entrevistaPorJefatura === "" ? "-" : format(new Date(detalle.entrevistaPorJefatura), "dd/MM/yyyy HH:mm:ss")),
+							detalle === undefined ? "-" : (detalle.tomaDeDesiciones === null || detalle.tomaDeDesiciones === undefined || detalle.tomaDeDesiciones === "" ? "-" : format(new Date(detalle.tomaDeDesiciones), "dd/MM/yyyy HH:mm:ss")),
+							detalle === undefined ? "-" : (detalle.candidato === null || detalle.candidato === undefined || detalle.candidato === "" ? "-" : detalle.candidato),
+							detalle === undefined ? "-" : (detalle.procesoDeContratacion === null || detalle.procesoDeContratacion === undefined || detalle.procesoDeContratacion === "" ? "-" : format(new Date(detalle.procesoDeContratacion), "dd/MM/yyyy HH:mm:ss")),
+							detalle === undefined ? "-" : detalle.finProcesoContratacion === null || detalle.finProcesoContratacion === undefined || detalle.finProcesoContratacion === "" ? "-" : format(new Date(detalle.finProcesoContratacion), "dd/MM/yyyy HH:mm:ss"),
+							detalle === undefined ? "-" : (detalle.fechaInicioReingreso === null || detalle.fechaInicioReingreso === undefined || detalle.fechaInicioReingreso === "" ? "-" : format(new Date(detalle.fechaInicioReingreso), "dd/MM/yyyy HH:mm:ss")),
+							detalle === undefined ? "-" : (detalle.fechaInicioReingreso === null || detalle.fechaInicioReingreso === undefined || detalle.fechaInicioReingreso === "" ? "-" : (detalle.fechaFinReingreso === null || detalle.fechaFinReingreso === undefined || detalle.fechaFinReingreso === "" ? "-" : format(new Date(detalle.fechaFinReingreso), "dd/MM/yyyy HH:mm:ss"))),
+							detalle === undefined ? "-" : (detalle.fechaInicioContratacionFamiliares === null || detalle.fechaInicioContratacionFamiliares === undefined || detalle.fechaInicioContratacionFamiliares === "" ? "-" : format(new Date(detalle.fechaInicioContratacionFamiliares), "dd/MM/yyyy HH:mm:ss")),
+							detalle === undefined ? "-" : (detalle.fechaInicioContratacionFamiliares === null || detalle.fechaInicioContratacionFamiliares === undefined || detalle.fechaInicioContratacionFamiliares === "" ? "-" : (detalle.fechaFinContratacionFamiliares === null || detalle.fechaFinContratacionFamiliares === undefined || detalle.fechaFinContratacionFamiliares === "" ? "-" : format(new Date(detalle.fechaFinContratacionFamiliares), "dd/MM/yyyy HH:mm:ss")))
 						]);
 					}
 				});
 
-				if (bodyReport.length !== 0) {
-					this.utilService.generateReport(formato, "RPTWF-TM", "RP", headerTitles, bodyReport);
-				}
+				this.utilService.generateReport(formato, "RPTWF-TM", "RP", headerTitles, bodyReport);
 			},
 			error: (err) => {
 				this.utilService.modalResponse(err, "error");
@@ -1678,9 +1696,9 @@ export class ReporteSolicitudesComponent implements AfterViewInit, OnInit {
 
 		// this.seleccionCandidatoService.getCandidato().subscribe({
 		forkJoin(solicitudesData.map(({ idSolicitud }) => this.solicitudes.getDetalleAprobadoresSolicitudesById(idSolicitud))).subscribe({
-		// this.seleccionCandidatoService.getCandidatoById(ids).subscribe({
+		// this.solicitudes.getDetalleAprobadoresSolicitudesByIds(ids).subscribe({
 			next: (response: any) => {
-				const detalleSolicitudes = response.map(({ detalleAprobadorSolicitud }) => ({
+				const detalleSolicitudes = response.detalleAprobadorSolicitud.map(({ detalleAprobadorSolicitud }) => ({
 					iD_SOLICITUD: detalleAprobadorSolicitud[0].id_Solicitud,
 					detalleAprobadorSolicitud: detalleAprobadorSolicitud.filter(({ ruta }) => ruta.toUpperCase().includes("PRIMER") || ruta.toUpperCase().includes("SEGUND") || ruta.toUpperCase().includes("TERCER") || ruta.toUpperCase().includes("CUART") || ruta.toUpperCase().includes("RRHH") || ruta.toUpperCase().includes("RR.HH.") || ruta.toUpperCase().includes("REMUNERA"))
 				}));
@@ -1696,6 +1714,7 @@ export class ReporteSolicitudesComponent implements AfterViewInit, OnInit {
 					solicitud: item,
 					detalle: lookup[item.idSolicitud]
 				}));
+				console.log(combined);
 
 				const bodyReport = combined.map(({ solicitud, detalle }) => ([
 					solicitud.idSolicitud,
@@ -1704,17 +1723,17 @@ export class ReporteSolicitudesComponent implements AfterViewInit, OnInit {
 					solicitud.tipoMotivo === null || solicitud.tipoMotivo === undefined || solicitud.tipoMotivo === "" ? "-" : solicitud.tipoMotivo,
 					solicitud.fechaCreacion === null || solicitud.fechaCreacion === undefined || solicitud.fechaCreacion === "" ? "-" : solicitud.fechaCreacion,
 					detalle.detalleAprobadorSolicitud.some(({ ruta, usuarioAprobador }) => ruta.toUpperCase().includes("PRIMER") && usuarioAprobador !== "") ? detalle.detalleAprobadorSolicitud[0].usuarioAprobador : "-",
-					detalle.detalleAprobadorSolicitud.some(({ ruta, usuarioAprobador }) => ruta.toUpperCase().includes("PRIMER") && usuarioAprobador !== "") ? detalle.detalleAprobadorSolicitud[0].fechaCreacion : "-",
+					detalle.detalleAprobadorSolicitud.some(({ ruta, usuarioAprobador }) => ruta.toUpperCase().includes("PRIMER") && usuarioAprobador !== "") ? format(new Date(detalle.detalleAprobadorSolicitud[0].fechaCreacion), "dd/MM/yyyy HH:mm:ss") : "-",
 					detalle.detalleAprobadorSolicitud.some(({ ruta, usuarioAprobador }) => ruta.toUpperCase().includes("SEGUND") && usuarioAprobador !== "") ? detalle.detalleAprobadorSolicitud[1].usuarioAprobador : "-",
-					detalle.detalleAprobadorSolicitud.some(({ ruta, usuarioAprobador }) => ruta.toUpperCase().includes("SEGUND") && usuarioAprobador !== "") ? detalle.detalleAprobadorSolicitud[1].fechaCreacion : "-",
+					detalle.detalleAprobadorSolicitud.some(({ ruta, usuarioAprobador }) => ruta.toUpperCase().includes("SEGUND") && usuarioAprobador !== "") ? format(new Date(detalle.detalleAprobadorSolicitud[1].fechaCreacion), "dd/MM/yyyy HH:mm:ss") : "-",
 					detalle.detalleAprobadorSolicitud.some(({ ruta, usuarioAprobador }) => ruta.toUpperCase().includes("TERCER") && usuarioAprobador !== "") ? detalle.detalleAprobadorSolicitud[2].usuarioAprobador : "-",
-					detalle.detalleAprobadorSolicitud.some(({ ruta, usuarioAprobador }) => ruta.toUpperCase().includes("TERCER") && usuarioAprobador !== "") ? detalle.detalleAprobadorSolicitud[2].fechaCreacion : "-",
+					detalle.detalleAprobadorSolicitud.some(({ ruta, usuarioAprobador }) => ruta.toUpperCase().includes("TERCER") && usuarioAprobador !== "") ? format(new Date(detalle.detalleAprobadorSolicitud[2].fechaCreacion), "dd/MM/yyyy HH:mm:ss") : "-",
 					detalle.detalleAprobadorSolicitud.some(({ ruta, usuarioAprobador }) => ruta.toUpperCase().includes("CUART") && usuarioAprobador !== "") ? detalle.detalleAprobadorSolicitud[3].usuarioAprobador : "-",
-					detalle.detalleAprobadorSolicitud.some(({ ruta, usuarioAprobador }) => ruta.toUpperCase().includes("CUART") && usuarioAprobador !== "") ? detalle.detalleAprobadorSolicitud[3].fechaCreacion : "-",
+					detalle.detalleAprobadorSolicitud.some(({ ruta, usuarioAprobador }) => ruta.toUpperCase().includes("CUART") && usuarioAprobador !== "") ? format(new Date(detalle.detalleAprobadorSolicitud[3].fechaCreacion), "dd/MM/yyyy HH:mm:ss") : "-",
 					detalle.detalleAprobadorSolicitud.some(({ ruta, usuarioAprobador }) => (ruta.toUpperCase().includes("RRHH") || ruta.toUpperCase().includes("RR.HH.")) && usuarioAprobador !== "") ? detalle.detalleAprobadorSolicitud[4].usuarioAprobador : "-",
-					detalle.detalleAprobadorSolicitud.some(({ ruta, usuarioAprobador }) => (ruta.toUpperCase().includes("RRHH") || ruta.toUpperCase().includes("RR.HH.")) && usuarioAprobador !== "") ? detalle.detalleAprobadorSolicitud[4].fechaCreacion : "-",
+					detalle.detalleAprobadorSolicitud.some(({ ruta, usuarioAprobador }) => (ruta.toUpperCase().includes("RRHH") || ruta.toUpperCase().includes("RR.HH.")) && usuarioAprobador !== "") ? format(new Date(detalle.detalleAprobadorSolicitud[4].fechaCreacion), "dd/MM/yyyy HH:mm:ss") : "-",
 					detalle.detalleAprobadorSolicitud.some(({ ruta, usuarioAprobador }) => ruta.toUpperCase().includes("REMUNERA") && usuarioAprobador !== "") ? detalle.detalleAprobadorSolicitud[5].usuarioAprobador : "-",
-					detalle.detalleAprobadorSolicitud.some(({ ruta, usuarioAprobador }) => ruta.toUpperCase().includes("REMUNERA") && usuarioAprobador !== "") ? detalle.detalleAprobadorSolicitud[5].fechaCreacion : "-",
+					detalle.detalleAprobadorSolicitud.some(({ ruta, usuarioAprobador }) => ruta.toUpperCase().includes("REMUNERA") && usuarioAprobador !== "") ? format(new Date(detalle.detalleAprobadorSolicitud[5].fechaCreacion), "dd/MM/yyyy HH:mm:ss") : "-",
 				]));
 
 				this.utilService.generateReport(formato, "RPTWF-TM", "RP", headerTitles, bodyReport);

@@ -129,11 +129,21 @@
 
 <div class="form-body mt-3">
 	<div class="row align-items-end">
-		<div *ngIf="controlsPermissions[pageControlPermission.FiltroUnidadNegocio].visualizar" class="col-md-3">
+		<!-- <div *ngIf="controlsPermissions[pageControlPermission.FiltroUnidadNegocio].visualizar" class="col-md-3">
 			<div class="mb-3">
 				<label class="azul">Nº de Solicitud</label>
 
 				<input type="text" name="searchInputFilter" [(ngModel)]="searchInputFilter" style="color: black; font-size: 14px; width: 100%" class="form-control" id="searchInputFilter" placeholder="Nº de Solicitud" />
+			</div>
+		</div> -->
+
+		<div *ngIf="controlsPermissions[pageControlPermission.FiltroTipoSolicitud].visualizar" class="col-md-3">
+			<div class="mb-3">
+				<label class="azul">Tipo de Solicitud</label>
+
+				<ng-select #inputSelectLabor [disabled]="!controlsPermissions[pageControlPermission.FiltroTipoSolicitud].habilitar || searchInputFilter !== ''" [(ngModel)]="dataFilterSolicitudes.idTipoSolicitud" name="idTipoSolicitud" placeholder="Seleccione">
+					<ng-option *ngFor="let data of dataTipoSolicitudes" [value]="data.id">{{ data.descripcion }}</ng-option>
+				</ng-select>
 			</div>
 		</div>
 
@@ -191,24 +201,11 @@
 
 				<ng-select [disabled]="!controlsPermissions[pageControlPermission.FiltroUnidadNegocio].habilitar || searchInputFilter !== ''" #inputSelectProducto [(ngModel)]="dataFilterSolicitudes.unidadNegocio" name="unidadNegocio" placeholder="Seleccione">
 					<ng-option *ngFor="let data of dataUnidadesNegocio" [value]="data">{{ data }}</ng-option>
-					<ng-option>Areas Corporativas</ng-option>
-					<ng-option>Servicios Portuarios</ng-option>
-					<ng-option>Palma y Macadamia</ng-option>
 				</ng-select>
 			</div>
 		</div>
 
-		<div *ngIf="controlsPermissions[pageControlPermission.FiltroTipoSolicitud].visualizar" class="col-md-3">
-			<div class="mb-3">
-				<label class="azul">Tipo de Solicitud</label>
-
-				<ng-select #inputSelectLabor [disabled]="!controlsPermissions[pageControlPermission.FiltroTipoSolicitud].habilitar || searchInputFilter !== ''" [(ngModel)]="dataFilterSolicitudes.idTipoSolicitud" name="idTipoSolicitud" placeholder="Seleccione">
-					<ng-option *ngFor="let data of dataTipoSolicitudes" [value]="data.id">{{ data.descripcion }}</ng-option>
-				</ng-select>
-			</div>
-		</div>
-
-		<div class="col-md-3">
+		<div class="offset-md-3 col-md-3">
 			<div class="mb-3">
 				<div class="text-end">
 					<button #buttonSearch *ngIf="controlsPermissions[pageControlPermission.ButtonBuscar].visualizar" (click)="filterDataTable()" type="submit" class="btn btn-info"><i class="fas fa-filter"></i> Buscar</button>

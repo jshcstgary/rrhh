@@ -83,7 +83,7 @@ export class TableComponent implements OnInit, OnChanges {
 	public ngOnInit(): void {
 		this.ValidateInitDataTable();
 		this.tableService.onCheckTable(this.tableName, []);
-		this.showActionColumn = this.columns[this.columns.length - 1].actions.some(action => action.showed);
+		this.showActionColumn = this.columns[this.columns.length - 1].actions === null || this.columns[this.columns.length - 1].actions === undefined ? false : this.columns[this.columns.length - 1].actions.some(action => action.showed);
 	}
 	public ngOnChanges(changes: SimpleChanges): void {
 		this.ValidateInitDataTable();
