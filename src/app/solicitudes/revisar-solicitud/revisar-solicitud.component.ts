@@ -73,6 +73,7 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
 	campoObligatorio: string = '';
 	observaciontexto: string = 'Observación';
 	selectedDate: Date = new Date();
+	fechaComite: Date = new Date();
 	datosAprobadores: DatosAprobadores = new DatosAprobadores();
 	//buttonValue: string = '';
 
@@ -320,6 +321,7 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
 
 	public minDateValidation = new Date();
 	public maxDateValidation = addDays(new Date(), 365);
+	public maxDateComiteValidation = new Date();
 	public tareasPorCompletar: any;
 
 
@@ -913,11 +915,14 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
 					this.solicitud = response;
 				}
 
+				this.maxDateComiteValidation = new Date(this.solicitud.fechaCreacion);
+
 				this.mostrarRequisicion = this.id_solicitud_by_params.includes("RP-");
 				this.mostrarFormularioFamiliares = this.id_solicitud_by_params.includes("CF-");
 				this.mostrarFormularioReingreso = this.id_solicitud_by_params.includes("RG-");
 				this.mostrarAccionPersonal = this.id_solicitud_by_params.includes("AP-");
 				this.loadingComplete += 2;
+
 				this.getDetalleSolicitudById(id);
 			},
 			error: (error: HttpErrorResponse) => {
@@ -1942,19 +1947,19 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
 
 			if (this.buttonValue.toUpperCase() === "APROBAR") {
 				variables.usuario_loggedAprobar = {
-					value: `Usuario=${sessionStorage.getItem(LocalStorageKeys.NombreUsuario)}|Accion=${accion} Aprobada por ${sessionStorage.getItem(LocalStorageKeys.NivelDireccion)}|Fecha=${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
+					value: `Usuario{IGUAL}${sessionStorage.getItem(LocalStorageKeys.NombreUsuario)}{SEPARA}Accion{IGUAL}${accion} Aprobada por ${sessionStorage.getItem(LocalStorageKeys.NivelDireccion)}{SEPARA}Fecha{IGUAL}${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
 				};
 			} else if (this.buttonValue.toUpperCase() === "DEVOLVER") {
 				variables.usuario_loggedDevolver = {
-					value: `Usuario=${sessionStorage.getItem(LocalStorageKeys.NombreUsuario)}|Accion=${accion} Devuelta por ${sessionStorage.getItem(LocalStorageKeys.NivelDireccion)}|Fecha=${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
+					value: `Usuario{IGUAL}${sessionStorage.getItem(LocalStorageKeys.NombreUsuario)}{SEPARA}Accion{IGUAL}${accion} Devuelta por ${sessionStorage.getItem(LocalStorageKeys.NivelDireccion)}{SEPARA}Fecha{IGUAL}${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
 				};
 			} else if (this.buttonValue.toUpperCase() === "RECHAZAR") {
 				variables.usuario_loggedRechazar = {
-					value: `Usuario=${sessionStorage.getItem(LocalStorageKeys.NombreUsuario)}|Accion=${accion} Cancelada por ${sessionStorage.getItem(LocalStorageKeys.NivelDireccion)}|Fecha=${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
+					value: `Usuario{IGUAL}${sessionStorage.getItem(LocalStorageKeys.NombreUsuario)}{SEPARA}Accion{IGUAL}${accion} Cancelada por ${sessionStorage.getItem(LocalStorageKeys.NivelDireccion)}{SEPARA}Fecha{IGUAL}${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
 				};
 			} else {
 				variables.usuario_loggedEsperar = {
-					value: `Usuario=${sessionStorage.getItem(LocalStorageKeys.NombreUsuario)}|Accion=${accion} en Espera por ${sessionStorage.getItem(LocalStorageKeys.NivelDireccion)}|Fecha=${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
+					value: `Usuario{IGUAL}${sessionStorage.getItem(LocalStorageKeys.NombreUsuario)}{SEPARA}Accion{IGUAL}${accion} en Espera por ${sessionStorage.getItem(LocalStorageKeys.NivelDireccion)}{SEPARA}Fecha{IGUAL}${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
 				};
 			}
 
@@ -1965,19 +1970,19 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
 
 			if (this.buttonValue.toUpperCase() === "APROBAR") {
 				variables.usuario_logged_RRHHAprobar = {
-					value: `Usuario=${sessionStorage.getItem(LocalStorageKeys.NombreUsuario)}|Accion=${accion} Aprobada por ${sessionStorage.getItem(LocalStorageKeys.NivelDireccion)}|Fecha=${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
+					value: `Usuario{IGUAL}${sessionStorage.getItem(LocalStorageKeys.NombreUsuario)}{SEPARA}Accion{IGUAL}${accion} Aprobada por ${sessionStorage.getItem(LocalStorageKeys.NivelDireccion)}{SEPARA}Fecha{IGUAL}${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
 				};
 			} else if (this.buttonValue.toUpperCase() === "DEVOLVER") {
 				variables.usuario_logged_RRHHDevolver = {
-					value: `Usuario=${sessionStorage.getItem(LocalStorageKeys.NombreUsuario)}|Accion=${accion} Devuelta por ${sessionStorage.getItem(LocalStorageKeys.NivelDireccion)}|Fecha=${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
+					value: `Usuario{IGUAL}${sessionStorage.getItem(LocalStorageKeys.NombreUsuario)}{SEPARA}Accion{IGUAL}${accion} Devuelta por ${sessionStorage.getItem(LocalStorageKeys.NivelDireccion)}{SEPARA}Fecha{IGUAL}${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
 				};
 			} else if (this.buttonValue.toUpperCase() === "RECHAZAR") {
 				variables.usuario_logged_RRHHRechazar = {
-					value: `Usuario=${sessionStorage.getItem(LocalStorageKeys.NombreUsuario)}|Accion=${accion} Cancelada por ${sessionStorage.getItem(LocalStorageKeys.NivelDireccion)}|Fecha=${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
+					value: `Usuario{IGUAL}${sessionStorage.getItem(LocalStorageKeys.NombreUsuario)}{SEPARA}Accion{IGUAL}${accion} Cancelada por ${sessionStorage.getItem(LocalStorageKeys.NivelDireccion)}{SEPARA}Fecha{IGUAL}${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
 				};
 			} else {
 				variables.usuario_logged_RRHHEsperar = {
-					value: `Usuario=${sessionStorage.getItem(LocalStorageKeys.NombreUsuario)}|Accion=${accion} en Espera por ${sessionStorage.getItem(LocalStorageKeys.NivelDireccion)}|Fecha=${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
+					value: `Usuario{IGUAL}${sessionStorage.getItem(LocalStorageKeys.NombreUsuario)}{SEPARA}Accion{IGUAL}${accion} en Espera por ${sessionStorage.getItem(LocalStorageKeys.NivelDireccion)}{SEPARA}Fecha{IGUAL}${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
 				};
 			}
 
@@ -1998,19 +2003,19 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
 
 			if (this.buttonValue.toUpperCase() === "APROBAR") {
 				variables.usuario_logged_RemuneraAprobar = {
-					value: `Usuario=${sessionStorage.getItem(LocalStorageKeys.NombreUsuario)}|Accion=${accion} Aprobada por ${sessionStorage.getItem(LocalStorageKeys.NivelDireccion)}|Fecha=${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
+					value: `Usuario{IGUAL}${sessionStorage.getItem(LocalStorageKeys.NombreUsuario)}{SEPARA}Accion{IGUAL}${accion} Aprobada por ${sessionStorage.getItem(LocalStorageKeys.NivelDireccion)}{SEPARA}Fecha{IGUAL}${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
 				};
 			} else if (this.buttonValue.toUpperCase() === "DEVOLVER") {
 				variables.usuario_logged_RemuneraDevolver = {
-					value: `Usuario=${sessionStorage.getItem(LocalStorageKeys.NombreUsuario)}|Accion=${accion} Devuelta por ${sessionStorage.getItem(LocalStorageKeys.NivelDireccion)}|Fecha=${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
+					value: `Usuario{IGUAL}${sessionStorage.getItem(LocalStorageKeys.NombreUsuario)}{SEPARA}Accion{IGUAL}${accion} Devuelta por ${sessionStorage.getItem(LocalStorageKeys.NivelDireccion)}{SEPARA}Fecha{IGUAL}${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
 				};
 			} else if (this.buttonValue.toUpperCase() === "RECHAZAR") {
 				variables.usuario_logged_RemuneraRechazar = {
-					value: `Usuario=${sessionStorage.getItem(LocalStorageKeys.NombreUsuario)}|Accion=${accion} Cancelada por ${sessionStorage.getItem(LocalStorageKeys.NivelDireccion)}|Fecha=${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
+					value: `Usuario{IGUAL}${sessionStorage.getItem(LocalStorageKeys.NombreUsuario)}{SEPARA}Accion{IGUAL}${accion} Cancelada por ${sessionStorage.getItem(LocalStorageKeys.NivelDireccion)}{SEPARA}Fecha{IGUAL}${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
 				};
 			} else {
 				variables.usuario_logged_RemuneraEsperar = {
-					value: `Usuario=${sessionStorage.getItem(LocalStorageKeys.NombreUsuario)}|Accion=${accion} en Espera por ${sessionStorage.getItem(LocalStorageKeys.NivelDireccion)}|Fecha=${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
+					value: `Usuario{IGUAL}${sessionStorage.getItem(LocalStorageKeys.NombreUsuario)}{SEPARA}Accion{IGUAL}${accion} en Espera por ${sessionStorage.getItem(LocalStorageKeys.NivelDireccion)}{SEPARA}Fecha{IGUAL}${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
 				};
 			}
 
@@ -2107,7 +2112,8 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
 			}
 		}
 
-		if (this.taskType_Activity == environment.taskType_CREM) {
+		if (this.taskType_Activity.toUpperCase().includes("REMUNERA")) {
+			this.detalleSolicitud.fechaSalida = this.fechaComite;
 			this.detalleSolicitud.valor = this.textareaContent;
 			this.detalleSolicitud.unidad = this.detalleSolicitud.unidadNegocio;
 

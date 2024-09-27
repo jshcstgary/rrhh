@@ -40,15 +40,11 @@
 			</ng-select>
 		</div>
 
-		<div *ngIf="this.controlsPermissions[pageControlPermission.ButtonBuscar].visualizar" class="col-md-3 align-self-center">
-			<div>
-				<button (click)="getDataToTableFilter()" type="button" class="btn btn-info"><i class="fas fa-filter"></i> Buscar</button>
-			</div>
-		</div>
-
-		<div class="col-md-3 offset-md-3 mb-3">
+		<div class="col-md-4 offset-md-5 mb-3">
 			<form>
 				<div class="text-end">
+					<button *ngIf="this.controlsPermissions[pageControlPermission.ButtonBuscar].visualizar" (click)="getDataToTableFilter()" type="button" class="btn btn-info me-3"><i class="fas fa-filter"></i> Buscar</button>
+
 					<button *ngIf="this.controlsPermissions[pageControlPermission.ButtonAgregar].visualizar" type="button" (click)="pageCrear()" class="btn btn-info me-3"><i class="fas fa-plus"></i> Agregar</button>
 
 					<dropdown-component [options]="dropdownOptionsExport" textButton="Exportar" [buttonClasses]="['btn-outline-info']" [iconButton]="'fas fa-file-pdf'" [contexto]="this" onDropDownClickFunction="isAnyRowCheckedInTable"></dropdown-component>

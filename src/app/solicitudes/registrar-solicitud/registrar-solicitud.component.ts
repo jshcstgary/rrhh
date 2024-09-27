@@ -1997,11 +1997,11 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
 
 			if (this.solicitud.estadoSolicitud.toUpperCase() === "DV") {
 				variables.usuario_logged_RPDevolver = {
-					value: `Usuario=${sessionStorage.getItem(LocalStorageKeys.NombreUsuario)}|Accion=${this.selectedOption.toUpperCase() === "SI" ? "Registrar Solicitud: Solicitud Anulada" : "Registrar Solicitud: Solicitud Enviada"} por ${sessionStorage.getItem(LocalStorageKeys.NivelDireccion)}|Fecha=${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
+					value: `Usuario{IGUAL}${sessionStorage.getItem(LocalStorageKeys.NombreUsuario)}{SEPARA}Accion{IGUAL}${this.selectedOption.toUpperCase() === "SI" ? "Registrar Solicitud: Solicitud Anulada" : "Registrar Solicitud: Solicitud Enviada"} por ${sessionStorage.getItem(LocalStorageKeys.NivelDireccion)}{SEPARA}Fecha{IGUAL}${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
 				};
 			} else {
 				variables.usuario_logged_RP = {
-					value: `Usuario=${sessionStorage.getItem(LocalStorageKeys.NombreUsuario)}|Accion=${this.selectedOption.toUpperCase() === "SI" ? "Registrar Solicitud: Solicitud Anulada" : "Registrar Solicitud: Solicitud Enviada"} por ${sessionStorage.getItem(LocalStorageKeys.NivelDireccion)}|Fecha=${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
+					value: `Usuario{IGUAL}${sessionStorage.getItem(LocalStorageKeys.NombreUsuario)}{SEPARA}Accion{IGUAL}${this.selectedOption.toUpperCase() === "SI" ? "Registrar Solicitud: Solicitud Anulada" : "Registrar Solicitud: Solicitud Enviada"} por ${sessionStorage.getItem(LocalStorageKeys.NivelDireccion)}{SEPARA}Fecha{IGUAL}${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
 				};
 			}
 

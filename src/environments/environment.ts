@@ -6,7 +6,7 @@ const base = "http://10.35.3.162"; //base de servicios local
 const baseRBP = "http://192.168.44.180"; //base de servicios RBP http://10.35.3.162
 const baseG = "http://181.188.224.250:18043"; //base de servicios api gateway
 
-const pruebas_locales: boolean = true; //Varialbe boleana para las pruebas locales y pruebas en el ambiente del cliente, true para locales, false para RBP
+const pruebas_locales: boolean = false; //Varialbe boleana para las pruebas locales y pruebas en el ambiente del cliente, true para locales, false para RBP
 
 // export const portalWorkFlow: string = "http://10.35.3.162:4200/";
 
@@ -15,6 +15,7 @@ export const portalWorkFlow: string = pruebas_locales ? "http://10.35.3.162:4200
 
 export const appCode: string = "46";
 export const resourceCode: string = "PWFCAMUMET";
+export const codigosPerfilReporte: string[] = ["0001", "0002"];
 
 export const codigosSolicitudReporte = {
 	requisicionPersonal: "RRH PR 01 01",

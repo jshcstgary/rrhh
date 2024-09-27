@@ -1725,7 +1725,7 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
 		}
 
 		variables.usuario_logged_candidato = {
-			value: `Usuario=${sessionStorage.getItem(LocalStorageKeys.NombreUsuario)}|Accion=Candidato Seleccionado por ${sessionStorage.getItem(LocalStorageKeys.NivelDireccion)}|Fecha=${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
+			value: `Usuario{IGUAL}${sessionStorage.getItem(LocalStorageKeys.NombreUsuario)}{SEPARA}Accion{IGUAL}Candidato Seleccionado por ${sessionStorage.getItem(LocalStorageKeys.NivelDireccion)}{SEPARA}Fecha{IGUAL}${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
 		};
 
 		return { variables };

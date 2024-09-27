@@ -22,6 +22,8 @@ import { LoginServices } from "src/app/auth/services/login.services";
 import { LocalStorageKeys } from "src/app/enums/local-storage-keys.enum";
 import { UtilService } from "src/app/services/util/util.service";
 import { Permiso } from "../../types/permiso.type";
+import { PageCodes } from "src/app/enums/codes.enum";
+import { codigosPerfilReporte } from "src/environments/environment";
 
 @Component({
 	selector: "app-horizontal-sidebar",
@@ -173,8 +175,15 @@ export class HorizontalSidebarComponent {
 			this.sidebarnavItems = this.sidebarnavItems.map(menuItem => {
 				menuItem.submenu = menuItem.submenu.filter(sub => this.permisos.some(permiso => sub.codigo === permiso.codigo));
 
+				if (menuItem.codigo === PageCodes.Solicitudes) {
+					menuItem.submenu = menuItem.submenu
+						.map(sub => sub.path.includes("reportes") ? (codigosPerfilReporte.includes(sessionStorage.getItem(LocalStorageKeys.CodigoPefil)) ? sub : null) : sub)
+						.filter(sub => sub !== null);
+				}
+
 				return menuItem;
-			})
+			});
+			console.log(this.sidebarnavItems);
 
 			// Active menu
 			this.sidebarnavItems.filter((m) =>

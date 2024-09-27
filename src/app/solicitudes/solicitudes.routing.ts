@@ -260,7 +260,7 @@ export const SolicitudesRoutes: Routes = [
 				canActivate: [routeAccessGuard],
 				component: ReporteSolicitudesComponent,
 				data: {
-					code: PageCodes.Mantenedores,
+					code: `${PageCodes.Mantenedores}${PageCodes.ConsultaTareas}`,
 					title: "Reportes de Solicitudes",
 					urls: [
 						{

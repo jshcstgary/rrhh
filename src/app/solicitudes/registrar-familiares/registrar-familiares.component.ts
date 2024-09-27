@@ -1696,11 +1696,11 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
 
 			if (this.solicitud.estadoSolicitud.toUpperCase() === "DV") {
 				variables.usuario_logged_familiarDevolver = {
-					value: `Usuario=${sessionStorage.getItem(LocalStorageKeys.NombreUsuario)}|Accion=Contratación de Familiares: Solicitud Enviada por ${sessionStorage.getItem(LocalStorageKeys.NivelDireccion)}|Fecha=${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
+					value: `Usuario{IGUAL}${sessionStorage.getItem(LocalStorageKeys.NombreUsuario)}{SEPARA}Accion{IGUAL}Contratación de Familiares: Solicitud Enviada por ${sessionStorage.getItem(LocalStorageKeys.NivelDireccion)}{SEPARA}Fecha{IGUAL}${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
 				};
 			} else {
 				variables.usuario_logged_familiar = {
-					value: `Usuario=${sessionStorage.getItem(LocalStorageKeys.NombreUsuario)}|Accion=Contratación de Familiares: Solicitud Enviada por ${sessionStorage.getItem(LocalStorageKeys.NivelDireccion)}|Fecha=${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
+					value: `Usuario{IGUAL}${sessionStorage.getItem(LocalStorageKeys.NombreUsuario)}{SEPARA}Accion{IGUAL}Contratación de Familiares: Solicitud Enviada por ${sessionStorage.getItem(LocalStorageKeys.NivelDireccion)}{SEPARA}Fecha{IGUAL}${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
 				};
 			}
 

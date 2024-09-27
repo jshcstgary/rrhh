@@ -1477,12 +1477,12 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
 
 			if (this.solicitud.estadoSolicitud.toUpperCase() === "DV") {
 				variables.usuario_logged_accionDevolver = {
-					value: `Usuario=${sessionStorage.getItem(LocalStorageKeys.NombreUsuario)}|Accion=${this.selectedOption.toUpperCase() === "SI" ? "Registrar Solicitud: Solicitud Anulada" : "Registrar Solicitud: Solicitud Enviada"} por ${sessionStorage.getItem(LocalStorageKeys.NivelDireccion)}|Fecha=${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
+					value: `Usuario{IGUAL}${sessionStorage.getItem(LocalStorageKeys.NombreUsuario)}{SEPARA}Accion{IGUAL}${this.selectedOption.toUpperCase() === "SI" ? "Registrar Solicitud: Solicitud Anulada" : "Registrar Solicitud: Solicitud Enviada"} por ${sessionStorage.getItem(LocalStorageKeys.NivelDireccion)}{SEPARA}Fecha{IGUAL}${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
 
 				};
 			} else {
 				variables.usuario_logged_accion = {
-					value: `Usuario=${sessionStorage.getItem(LocalStorageKeys.NombreUsuario)}|Accion=${this.selectedOption.toUpperCase() === "SI" ? "Registrar Solicitud: Solicitud Anulada" : "Registrar Solicitud: Solicitud Enviada"} por ${sessionStorage.getItem(LocalStorageKeys.NivelDireccion)}|Fecha=${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
+					value: `Usuario{IGUAL}${sessionStorage.getItem(LocalStorageKeys.NombreUsuario)}{SEPARA}Accion{IGUAL}${this.selectedOption.toUpperCase() === "SI" ? "Registrar Solicitud: Solicitud Anulada" : "Registrar Solicitud: Solicitud Enviada"} por ${sessionStorage.getItem(LocalStorageKeys.NivelDireccion)}{SEPARA}Fecha{IGUAL}${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
 				};
 			}
 
@@ -1736,12 +1736,12 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
 
 			if (this.solicitud.estadoSolicitud.toUpperCase() === "DV") {
 				variables.usuario_logged_accion_completaDevolver = {
-					value: `Usuario=${sessionStorage.getItem(LocalStorageKeys.NombreUsuario)}|Accion=${this.selectedOption.toUpperCase() === "SI" ? "Transferencia de Compañia: Solicitud Anulada" : "Transferencia de Compañia: Solicitud Enviada"} por ${sessionStorage.getItem(LocalStorageKeys.NivelDireccion)}|Fecha=${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
+					value: `Usuario{IGUAL}${sessionStorage.getItem(LocalStorageKeys.NombreUsuario)}{SEPARA}Accion{IGUAL}${this.selectedOption.toUpperCase() === "SI" ? "Transferencia de Compañia: Solicitud Anulada" : "Transferencia de Compañia: Solicitud Enviada"} por ${sessionStorage.getItem(LocalStorageKeys.NivelDireccion)}{SEPARA}Fecha{IGUAL}${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
 
 				};
 			} else {
 				variables.usuario_logged_accion_completa = {
-					value: `Usuario=${sessionStorage.getItem(LocalStorageKeys.NombreUsuario)}|Accion=${this.selectedOption.toUpperCase() === "SI" ? "Transferencia de Compañia: Solicitud Anulada" : "Transferencia de Compañia: Solicitud Enviada"} por ${sessionStorage.getItem(LocalStorageKeys.NivelDireccion)}|Fecha=${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
+					value: `Usuario{IGUAL}${sessionStorage.getItem(LocalStorageKeys.NombreUsuario)}{SEPARA}Accion{IGUAL}${this.selectedOption.toUpperCase() === "SI" ? "Transferencia de Compañia: Solicitud Anulada" : "Transferencia de Compañia: Solicitud Enviada"} por ${sessionStorage.getItem(LocalStorageKeys.NivelDireccion)}{SEPARA}Fecha{IGUAL}${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
 				};
 			}
 

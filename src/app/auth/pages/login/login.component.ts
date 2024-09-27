@@ -114,6 +114,7 @@ export class LoginComponent {
 					sessionStorage.removeItem(LocalStorageKeys.Perfil);
 					sessionStorage.removeItem(LocalStorageKeys.NivelDireccion);
 					sessionStorage.removeItem(LocalStorageKeys.NombreUsuario);
+					sessionStorage.removeItem(LocalStorageKeys.CodigoPefil);
 
 					this.isLoading = false;
 
@@ -169,6 +170,7 @@ export class LoginComponent {
 				sessionStorage.removeItem(LocalStorageKeys.Reloaded);
 				sessionStorage.removeItem(LocalStorageKeys.NombreUsuario);
 				sessionStorage.removeItem(LocalStorageKeys.NivelDireccion);
+				sessionStorage.removeItem(LocalStorageKeys.CodigoPefil);
 
 				this.isLoading = false;
 			}
@@ -231,6 +233,7 @@ export class LoginComponent {
 					sessionStorage.removeItem(LocalStorageKeys.Perfil);
 					sessionStorage.removeItem(LocalStorageKeys.NombreUsuario);
 					sessionStorage.removeItem(LocalStorageKeys.NivelDireccion);
+					sessionStorage.removeItem(LocalStorageKeys.CodigoPefil);
 
 					this.isLoading = false;
 
@@ -239,6 +242,7 @@ export class LoginComponent {
 
 				sessionStorage.setItem(LocalStorageKeys.IdLogin, codigo);
 				sessionStorage.setItem(LocalStorageKeys.IdUsuario, email);
+				sessionStorage.setItem(LocalStorageKeys.CodigoPefil, this.perfilCodigo);
 				sessionStorage.setItem(LocalStorageKeys.Permisos, JSON.stringify(vistas));
 
 				this.starterService.getUser(sessionStorage.getItem(LocalStorageKeys.IdUsuario)).subscribe({
@@ -262,6 +266,7 @@ export class LoginComponent {
 				sessionStorage.removeItem(LocalStorageKeys.Perfil);
 				sessionStorage.removeItem(LocalStorageKeys.NombreUsuario);
 				sessionStorage.removeItem(LocalStorageKeys.NivelDireccion);
+				sessionStorage.removeItem(LocalStorageKeys.CodigoPefil);
 
 				this.isLoading = false;
 

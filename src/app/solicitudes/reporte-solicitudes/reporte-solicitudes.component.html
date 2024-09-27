@@ -195,7 +195,7 @@
 			</div>
 		</div>
 
-		<div *ngIf="controlsPermissions[pageControlPermission.FiltroUnidadNegocio].visualizar" class="col-md-2">
+		<div *ngIf="controlsPermissions[pageControlPermission.FiltroUnidadNegocio].visualizar" class="col-md-3">
 			<div class="mb-3">
 				<label class="azul">Unidad de Negocio</label>
 
@@ -205,7 +205,7 @@
 			</div>
 		</div>
 
-		<div class="offset-md-3 col-md-3">
+		<div class="offset-md-2 col-md-3">
 			<div class="mb-3">
 				<div class="text-end">
 					<button #buttonSearch *ngIf="controlsPermissions[pageControlPermission.ButtonBuscar].visualizar" (click)="filterDataTable()" type="submit" class="btn btn-info"><i class="fas fa-filter"></i> Buscar</button>

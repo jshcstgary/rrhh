@@ -6,5 +6,6 @@ export enum LocalStorageKeys {
 	Perfiles = "perfiles",
 	Perfil = "perfil",
 	NombreUsuario = "nombreUsuario",
-	NivelDireccion = "nivelDireccion"
+	NivelDireccion = "nivelDireccion",
+	CodigoPefil = "codigoPerfil"
 }

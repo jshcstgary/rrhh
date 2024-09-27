@@ -25,7 +25,7 @@ export class BuscarExempleadoComponent {
 	public seleccionarUsuario(empleado: any): void {
 		this.empleadoSeleccionado = empleado;
 	}
-	
+
 	public onSubmit(): void {
 		this.utilService.openLoadingSpinner("Obteniendo información, espere por favor...");
 
@@ -34,6 +34,8 @@ export class BuscarExempleadoComponent {
 			next: (response) => {
 				if (response.totalRegistros === 0) {
 					this.utilService.modalResponse("No existen registros.", "error");
+
+					this.empleados = [];
 
 					return;
 				}
@@ -44,6 +46,8 @@ export class BuscarExempleadoComponent {
 			},
 			error: (err) => {
 				console.error(err);
+
+				this.empleados = [];
 
 				this.utilService.modalResponse(err, "error");
 			}

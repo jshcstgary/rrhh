@@ -1183,11 +1183,11 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
 
 			if (this.solicitudRG.estadoSolicitud.toUpperCase() === "DV") {
 				variables.usuario_logged_reingresoDevolver = {
-					value: `Usuario=${sessionStorage.getItem(LocalStorageKeys.NombreUsuario)}|Accion=Reingreso de Personal: Solicitud Enviada por ${sessionStorage.getItem(LocalStorageKeys.NivelDireccion)}|Fecha=${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
+					value: `Usuario{IGUAL}${sessionStorage.getItem(LocalStorageKeys.NombreUsuario)}{SEPARA}Accion{IGUAL}Reingreso de Personal: Solicitud Enviada por ${sessionStorage.getItem(LocalStorageKeys.NivelDireccion)}{SEPARA}Fecha{IGUAL}${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
 				};
 			} else {
 				variables.usuario_logged_reingreso = {
-					value: `Usuario=${sessionStorage.getItem(LocalStorageKeys.NombreUsuario)}|Accion=Reingreso de Personal: Solicitud Enviada por ${sessionStorage.getItem(LocalStorageKeys.NivelDireccion)}|Fecha=${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
+					value: `Usuario{IGUAL}${sessionStorage.getItem(LocalStorageKeys.NombreUsuario)}{SEPARA}Accion{IGUAL}Reingreso de Personal: Solicitud Enviada por ${sessionStorage.getItem(LocalStorageKeys.NivelDireccion)}{SEPARA}Fecha{IGUAL}${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
 				};
 			}
 

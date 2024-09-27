@@ -1463,6 +1463,26 @@
 						</div>
 					</div>
 
+					<div class="row" *ngIf="!existeMatenedores && taskType_Activity.toUpperCase().includes('REMUNERA')">
+						<div class="col">
+							<div class="input-group mb-3 contenedor">
+								<label class="input-group-text text-start label-estilo2" for="aprobar">Fecha de Comité de Remuneraciones</label>
+
+								<div class="datepicker-container">
+									<mat-form-field appearance="outline">
+										<mat-label>Fecha de Comité</mat-label>
+
+										<input matInput [matDatepicker]="picker" [min]="minDateValidation" [max]="maxDateValidation" [(ngModel)]="fechaComite" name="fecha-comite" />
+
+										<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+
+										<mat-datepicker #picker></mat-datepicker>
+									</mat-form-field>
+								</div>
+							</div>
+						</div>
+					</div>
+
 					<div class="row" *ngIf="isFechaMaximaVisible">
 						<div class="col">
 							<div class="input-group mb-3 contenedor">

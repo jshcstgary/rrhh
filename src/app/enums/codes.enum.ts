@@ -1,4 +1,5 @@
 export enum PageCodes {
+	Solicitudes = "wf_solicitudes",
 	ConsultaSolicitudes = "wf_consulta_solicitudes",
 	Tareas = "wf_tareas",
 	ConsultaTareas = "wf_mis_tareas",

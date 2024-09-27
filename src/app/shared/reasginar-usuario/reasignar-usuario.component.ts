@@ -3,8 +3,10 @@ import { HttpErrorResponse } from "@angular/common/http";
 import { Component, Input } from "@angular/core";
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { NgbActiveModal, NgbTypeaheadModule } from "@ng-bootstrap/ng-bootstrap";
+import { format } from "date-fns";
 import { Validators } from "ngx-editor";
 import { LoginServices } from "src/app/auth/services/login.services";
+import { CamundaRestService } from "src/app/camunda-rest.service";
 import { LocalStorageKeys } from "src/app/enums/local-storage-keys.enum";
 import { Solicitud } from "src/app/eschemas/Solicitud";
 import { EvType } from "src/app/services/mantenimiento/empleado.interface";
@@ -111,7 +113,7 @@ export class DialogReasignarUsuarioComponent {
 	@Input("taskId")
 	public taskId: string = "";
 
-	constructor(private activeModal: NgbActiveModal, private mantenimientoService: MantenimientoService, private utilService: UtilService, private solicitudes: SolicitudesService, private formBuilder: FormBuilder, private loginService: LoginServices) {
+	constructor(private activeModal: NgbActiveModal, private mantenimientoService: MantenimientoService, private utilService: UtilService, private solicitudes: SolicitudesService, private formBuilder: FormBuilder, private camundaRestService: CamundaRestService) {
 		this.utilService.openLoadingSpinner("Cargando información, espere por favor...");
 	}
 
@@ -335,17 +337,31 @@ export class DialogReasignarUsuarioComponent {
 				this.activeModal.close({
 					data: `${this.mensaje} a ${this.modelo.nombreCompleto}`
 				});
-				this.solicitudes
-					.actualizarSolicitud(this.solicitud)
-					.subscribe((responseSolicitud) => {
-						this.solicitudes.sendEmail(this.emailVariables).subscribe({
-							next: () => {
-							},
-							error: (error) => {
-								console.error(error);
+
+				this.solicitudes.actualizarSolicitud(this.solicitud).subscribe((responseSolicitud) => {
+					const key: string = `usuario_logged_reasignado-${this.dataAprobador.nivelAprobacionRuta}`;
+
+					const request = {
+						processInstanceIds: [this.solicitud.idInstancia],
+						variables: {
+							[key]: {
+								value: `Usuario{IGUAL}${sessionStorage.getItem(LocalStorageKeys.NombreUsuario)}{SEPARA}Accion{IGUAL}Solicitud Reasiganda por ${sessionStorage.getItem(LocalStorageKeys.NivelDireccion)}{SEPARA}Fecha{IGUAL}${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
 							}
-						});
+						}
+					};
+
+					this.camundaRestService.registrarVariable(request).subscribe({
+						next: () => { }
 					});
+					
+					this.solicitudes.sendEmail(this.emailVariables).subscribe({
+						next: () => {
+						},
+						error: (error) => {
+							console.error(error);
+						}
+					});
+				});
 			}
 		});
 	}
@@ -370,6 +386,8 @@ export class DialogReasignarUsuarioComponent {
 	// );
 
 	getDataEmpleadosEvolution() {
+		this.utilService.openLoadingSpinner("Obteniendo información, espere por favor...");
+
 		return this.mantenimientoService.getDataEmpleadosEvolutionPorId(this.myForm.value.searchInput).subscribe({
 			next: (response) => {
 				if (response.evType.length === 0) {
@@ -380,20 +398,18 @@ export class DialogReasignarUsuarioComponent {
 						confirmButtonText: "Sí",
 					});
 
-					//   this.clearModel();
+					this.dataEmpleadoEvolution = [];
 
 					return;
 				}
 
 				this.dataEmpleadoEvolution = response.evType;
 
-				// this.eventSearch.item = this.dataEmpleadoEvolution[0].nombreCompleto;
-
-				// this.onSelectItem("nombreCompleto", this.eventSearch);
-
-				// this.nombresEmpleados = [...new Set(this.dataEmpleadoEvolution.map((empleado) => empleado.nombreCompleto))];
+				this.utilService.closeLoadingSpinner();
 			},
 			error: (error: HttpErrorResponse) => {
+				this.dataEmpleadoEvolution = [];
+
 				this.utilService.modalResponse(error.error, "error");
 			},
 		});

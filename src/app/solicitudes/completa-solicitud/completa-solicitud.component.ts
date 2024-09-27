@@ -1326,15 +1326,15 @@ export class CompletaSolicitudComponent extends CompleteTaskComponent {
 
 		if (this.buttonValue.toUpperCase() === "APROBAR") {
 			variables.usuario_logged_completa_RPAprobar = {
-				value: `Usuario=${sessionStorage.getItem(LocalStorageKeys.NombreUsuario)}|Accion=${accion} Solicitud Aprobada por ${sessionStorage.getItem(LocalStorageKeys.NivelDireccion)}|Fecha=${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
+				value: `Usuario{IGUAL}${sessionStorage.getItem(LocalStorageKeys.NombreUsuario)}{SEPARA}Accion{IGUAL}${accion} Solicitud Aprobada por ${sessionStorage.getItem(LocalStorageKeys.NivelDireccion)}{SEPARA}Fecha{IGUAL}${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
 			};
 		} else if (this.buttonValue.toUpperCase() === "DEVOLVER") {
 			variables.usuario_logged_completa_RPDevolver = {
-				value: `Usuario=${sessionStorage.getItem(LocalStorageKeys.NombreUsuario)}|Accion=${accion} Solicitud Devuelta por ${sessionStorage.getItem(LocalStorageKeys.NivelDireccion)}|Fecha=${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
+				value: `Usuario{IGUAL}${sessionStorage.getItem(LocalStorageKeys.NombreUsuario)}{SEPARA}Accion{IGUAL}${accion} Solicitud Devuelta por ${sessionStorage.getItem(LocalStorageKeys.NivelDireccion)}{SEPARA}Fecha{IGUAL}${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
 			};
 		} else {
 			variables.usuario_logged_completa_RPRechazar = {
-				value: `Usuario=${sessionStorage.getItem(LocalStorageKeys.NombreUsuario)}|Accion=${accion} Solicitud Cancelada por ${sessionStorage.getItem(LocalStorageKeys.NivelDireccion)}|Fecha=${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
+				value: `Usuario{IGUAL}${sessionStorage.getItem(LocalStorageKeys.NombreUsuario)}{SEPARA}Accion{IGUAL}${accion} Solicitud Cancelada por ${sessionStorage.getItem(LocalStorageKeys.NivelDireccion)}{SEPARA}Fecha{IGUAL}${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
 			};
 		}
 

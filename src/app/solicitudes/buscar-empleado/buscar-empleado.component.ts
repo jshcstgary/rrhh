@@ -34,6 +34,8 @@ export class BuscarEmpleadoComponent {
 				if (response.totalRegistros === 0) {
 					this.utilService.modalResponse("No existen registros.", "error");
 
+					this.empleados = [];
+
 					return;
 				}
 
@@ -43,6 +45,8 @@ export class BuscarEmpleadoComponent {
 			},
 			error: (err) => {
 				console.error(err);
+
+				this.empleados = [];
 
 				this.utilService.modalResponse(err, "error");
 			}

@@ -1503,7 +1503,7 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 		this.solicitudesService.obtenerTareasPorInstanciaRaiz(this.solicitud.idInstancia).subscribe({
 			next: ({ tareaType }) => {
 				const logs = tareaType.map(({ parentTaskId }) => parentTaskId);
-				
+
 				if (this.solicitud.idSolicitud.toUpperCase().includes("RP")) {
 					esquinaDeHoja.body[0][0].content = codigosSolicitudReporte.requisicionPersonal;
 					tituloDeHoja.body[0][0].content = "REQUERIMIENTO DE PERSONAL";
@@ -1778,7 +1778,7 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 		});
 
 		// Log del flujo
-		const logData = logs.map(log => log.split("|"));
+		const logData = logs.map(log => log.split("{SEPARA}"));
 
 		autoTable(doc, {
 			theme: "grid",
@@ -1826,7 +1826,7 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 					}
 				],
 				// ...this.dataAprobacionesPorPosicion[this.keySelected].map(dataAprobador => ([format(new Date(dataAprobador.nivelAprobacionType.fechaCreacion), "dd/MM/yyyy"), dataAprobador.nivelAprobacionType.ruta, dataAprobador.aprobador.usuario === "" ? "No aplica" : dataAprobador.aprobador.usuario]))
-				...logData.map(data => ([data[2].split("=")[1], data[1].split("=")[1], data[0].split("=")[1]]))
+				...logData.map(data => ([data[2].split("{IGUAL}")[1], data[1].split("{IGUAL}")[1], data[0].split("{IGUAL}")[1]]))
 			],
 			columnStyles: {
 				0: {
@@ -2082,7 +2082,7 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 		});
 
 		// Log del flujo
-		const logData = logs.map(log => log.split("|"));
+		const logData = logs.map(log => log.split("{SEPARA}"));
 
 		autoTable(doc, {
 			theme: "grid",
@@ -2130,7 +2130,7 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 					}
 				],
 				// ...this.dataAprobacionesPorPosicion[this.keySelected].map(dataAprobador => ([format(new Date(dataAprobador.nivelAprobacionType.fechaCreacion), "dd/MM/yyyy"), dataAprobador.nivelAprobacionType.ruta, dataAprobador.aprobador.usuario === "" ? "No aplica" : dataAprobador.aprobador.usuario]))
-				...logData.map(data => ([data[2].split("=")[1], data[1].split("=")[1], data[0].split("=")[1]]))
+				...logData.map(data => ([data[2].split("{IGUAL}")[1], data[1].split("{IGUAL}")[1], data[0].split("{IGUAL}")[1]]))
 			],
 			columnStyles: {
 				0: {
@@ -2488,7 +2488,7 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 		});
 
 		// Log del flujo
-		const logData = logs.map(log => log.split("|"));
+		const logData = logs.map(log => log.split("{SEPARA}"));
 
 		autoTable(doc, {
 			theme: "grid",
@@ -2535,7 +2535,7 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 						}
 					}
 				],
-				...logData.map(data => ([data[2].split("=")[1], data[1].split("=")[1], data[0].split("=")[1]]))
+				...logData.map(data => ([data[2].split("{IGUAL}")[1], data[1].split("{IGUAL}")[1], data[0].split("{IGUAL}")[1]]))
 			],
 			columnStyles: {
 				0: {
@@ -2783,7 +2783,7 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 		});
 
 		// Log del flujo
-		const logData = logs.map(log => log.split("|"));
+		const logData = logs.map(log => log.split("{SEPARA}"));
 
 
 		// Log del flujo
@@ -2832,7 +2832,7 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 						}
 					}
 				],
-				...logData.map(data => ([data[2].split("=")[1], data[1].split("=")[1], data[0].split("=")[1]]))
+				...logData.map(data => ([data[2].split("{IGUAL}")[1], data[1].split("{IGUAL}")[1], data[0].split("{IGUAL}")[1]]))
 			],
 			columnStyles: {
 				0: {

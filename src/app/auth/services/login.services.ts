@@ -31,6 +31,7 @@ export class LoginServices {
 		sessionStorage.removeItem(LocalStorageKeys.Perfil);
 		sessionStorage.removeItem(LocalStorageKeys.NombreUsuario);
 		sessionStorage.removeItem(LocalStorageKeys.NivelDireccion);
+		sessionStorage.removeItem(LocalStorageKeys.CodigoPefil);
 
 		return of(true);
 	}
