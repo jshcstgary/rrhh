@@ -1463,7 +1463,7 @@
 						</div>
 					</div>
 
-					<div class="row" *ngIf="!existeMatenedores && taskType_Activity.toUpperCase().includes('REMUNERA')">
+					<div class="row" *ngIf="!existeMatenedores && validateTaskType('REMUNERA')">
 						<div class="col">
 							<div class="input-group mb-3 contenedor">
 								<label class="input-group-text text-start label-estilo2" for="aprobar">Fecha de Comité de Remuneraciones</label>

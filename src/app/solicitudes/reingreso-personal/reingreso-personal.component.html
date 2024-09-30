@@ -55,8 +55,8 @@
 							<div class="input-group mb-3 align-items-center">
 								<label class="input-group-text text-start label-estilo2" for="observaciones">Observaciones</label>
 
-								<span style="color: black; font-size: 14px" class="text-start w-75">{{ detalleSolicitudRG.justificacion }}</span>
-								<!-- <textarea name="descripcionposicion" style="color: black; font-size: 14px; resize: none" [(ngModel)]="detalleSolicitudRG.justificacion" class="form-control" id="observaciones" rows="3" required></textarea> -->
+								<!-- <span style="color: black; font-size: 14px" class="text-start w-75">{{ detalleSolicitudRG.justificacion }}</span> -->
+								<textarea name="descripcionposicion" style="color: black; font-size: 14px; resize: none" [(ngModel)]="detalleSolicitudRG.justificacion" class="form-control" id="observaciones" rows="3" required></textarea>
 							</div>
 						</div>
 					</div>
@@ -227,6 +227,17 @@
 							<div class="input-group mb-3 align-items-center">
 								<label class="input-group-text text-start label-estilo" for="tipoMotivo">Fecha de Ingreso</label>
 
+								<!-- <span style="color: black; font-size: 14px" class="text-start w-50">
+									{{
+										detalleSolicitudRG.supervisaA === "N/A"
+											? ""
+											: modelRG.fechaIngresogrupo === "" || modelRG.fechaIngresogrupo === undefined || modelRG.fechaIngresogrupo === null
+												? (modelRG.fechaIngreso === "" || modelRG.fechaIngreso === undefined || modelRG.fechaIngreso === null
+													? ""
+													: (modelRG.fechaIngreso | date : "dd/MM/yyyy"))
+												: (modelRG.fechaIngresogrupo | date : "dd/MM/yyyy")
+									}}
+								</span> -->
 								<span style="color: black; font-size: 14px" class="text-start w-50">{{ detalleSolicitudRG.supervisaA === "N/A" ? "" : (modelRG.fechaIngreso | date : "dd/MM/yyyy") }}</span>
 							</div>
 						</div>
@@ -245,7 +256,7 @@
 							<div class="input-group mb-3 align-items-center">
 								<label class="input-group-text text-start label-estilo" for="tipoMotivo">Fecha de Salida</label>
 
-								<span style="color: black; font-size: 14px" class="text-start w-50">{{ fechaSalida | date : "dd/mm/yyyy" }}</span>
+								<span style="color: black; font-size: 14px" class="text-start w-50">{{ fechaSalida | date : "dd/MM/yyyy" }}</span>
 							</div>
 						</div>
 

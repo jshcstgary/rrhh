@@ -425,6 +425,55 @@
 						<hr />
 					</div>
 
+					<div class="mb-4">
+						<h3 class="sol-danger">Reingreso</h3>
+					</div>
+
+					<div class="row">
+						<div class="col-md-6">
+							<div class="input-group mb-3 align-items-center">
+								<label for="input1" class="input-group-text label-estilo">Inicio de proceso</label>
+
+								<input id="input1" type="text" class="form-control" readonly [value]="fechas.reingreso" />
+							</div>
+						</div>
+
+						<div class="col-md-6">
+							<div class="input-group mb-3 align-items-center">
+								<label for="input2" class="input-group-text label-estilo">Fin de proceso</label>
+
+								<input id="input2" type="text" class="form-control" readonly [value]="fechas.finProceso" />
+							</div>
+						</div>
+					</div>
+
+					<div class="mb-4">
+						<h3 class="sol-danger">Contratación de familiares</h3>
+					</div>
+
+					<div class="row">
+						<div class="col-md-6">
+							<div class="input-group mb-3 align-items-center">
+								<label for="input1" class="input-group-text label-estilo">Inicio de proceso</label>
+
+								<input id="input1" type="text" class="form-control" readonly [value]="fechas.contratacionFamiliares" />
+							</div>
+						</div>
+
+						<div class="col-md-6">
+							<div class="input-group mb-3 align-items-center">
+								<label for="input2" class="input-group-text label-estilo">Fin de proceso</label>
+
+								<input id="input2" type="text" class="form-control" readonly [value]="fechas.finProcesoFamiliares" />
+							</div>
+						</div>
+					</div>
+				</div>
+			</app-solicitud-seccion-desplegable>
+
+			<!-- ! Tipo de Proceso -->
+			<app-solicitud-seccion-desplegable titleSummary="Fechas" [isOpen]="true">
+				<div>
 					<div class="row">
 						<div class="col-md-6">
 							<div class="input-group mb-3 align-items-center">
@@ -477,55 +526,6 @@
 								<label class="input-group-text text-start label-estilo2" for="nombre-candidato">Nombre del candidato seleccionado</label>
 
 								<input type="text" [appValidateAlphanumeric]="true" name="nombre-candidato" style="color: black; font-size: 14px; width: 30%" placeholder="Nombre del candidato" [(ngModel)]="nombreCandidato" class="form-control" id="nombre-candidato" />
-							</div>
-						</div>
-					</div>
-				</div>
-			</app-solicitud-seccion-desplegable>
-
-			<!-- ! Fechas -->
-			<app-solicitud-seccion-desplegable titleSummary="Fechas" [isOpen]="true">
-				<div>
-					<div class="mb-4">
-						<h3 class="sol-danger">Reingreso</h3>
-					</div>
-
-					<div class="row">
-						<div class="col-md-6">
-							<div class="input-group mb-3 align-items-center">
-								<label for="input1" class="input-group-text label-estilo">Inicio de proceso</label>
-
-								<input id="input1" type="text" class="form-control" readonly [value]="fechas.reingreso" />
-							</div>
-						</div>
-
-						<div class="col-md-6">
-							<div class="input-group mb-3 align-items-center">
-								<label for="input2" class="input-group-text label-estilo">Fin de proceso</label>
-
-								<input id="input2" type="text" class="form-control" readonly [value]="fechas.finProceso" />
-							</div>
-						</div>
-					</div>
-
-					<div class="mb-4">
-						<h3 class="sol-danger">Contratación de familiares</h3>
-					</div>
-
-					<div class="row">
-						<div class="col-md-6">
-							<div class="input-group mb-3 align-items-center">
-								<label for="input1" class="input-group-text label-estilo">Inicio de proceso</label>
-
-								<input id="input1" type="text" class="form-control" readonly [value]="fechas.contratacionFamiliares" />
-							</div>
-						</div>
-
-						<div class="col-md-6">
-							<div class="input-group mb-3 align-items-center">
-								<label for="input2" class="input-group-text label-estilo">Fin de proceso</label>
-
-								<input id="input2" type="text" class="form-control" readonly [value]="fechas.finProcesoFamiliares" />
 							</div>
 						</div>
 					</div>

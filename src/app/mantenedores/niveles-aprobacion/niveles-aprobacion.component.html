@@ -3,6 +3,7 @@
 		<div class="col-md-3 mb-3">
 			<label class="azul mb-1">Nivel de Dirección <span class="obligatorio">(Obligatorio)</span></label>
 
+			{{ dataFilterNivelesAprobacion.nivelDireccion | json }}
 			<ng-select [(ngModel)]="dataFilterNivelesAprobacion.nivelDireccion" placeholder="Seleccione">
 				<ng-option *ngFor="let nivelDireccion of dataNivelDireccion" [value]="nivelDireccion">{{ nivelDireccion }}</ng-option>
 			</ng-select>

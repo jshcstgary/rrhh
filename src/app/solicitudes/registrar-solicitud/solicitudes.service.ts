@@ -158,10 +158,10 @@ export class SolicitudesService {
 		};
 		const httpParams: HttpParamsOptions = { fromObject: myObject } as HttpParamsOptions;
 
-		return this.http.get<IAprobacionesPosicion>(`${this.apiUrlNivelAprobacion}/aprobacionesporposicionruta`, {
+		// return this.http.get<IAprobacionesPosicion>(`${this.apiUrlNivelAprobacion}/aprobacionesporposicionruta`, {
+		return this.http.get<IAprobacionesPosicion>(`${this.apiUrlNivelAprobacion}/aprobacionesporposicion`, {
 			params: new HttpParams(httpParams)
-		}
-		);
+		});
 	}
 
 	public obtenerTareasPorInstanciaRaiz(idDeInstanciaRaiz: string): Observable<ITareasResponse> {

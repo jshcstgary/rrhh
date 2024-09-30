@@ -70,27 +70,29 @@
 							? dataDetalleAprobadorSolicitud[indexToShow].estadoAprobacion.toUpperCase() === "APROBAR"
 								? "Aprobado"
 								: dataDetalleAprobadorSolicitud[indexToShow].estadoAprobacion.toUpperCase().includes("PORREVISAR")
-								? "Por Revisar"
-								: dataDetalleAprobadorSolicitud[indexToShow].estadoAprobacion.toUpperCase().includes("ESPERA")
-								? "En Espera"
-								: dataDetalleAprobadorSolicitud[indexToShow].estadoAprobacion.toUpperCase() === "DEVOLVER"
-								? "Devuelto"
-								: dataDetalleAprobadorSolicitud[indexToShow].estadoAprobacion.toUpperCase().includes("PENDIENTE")
-								? "Por Revisar"
-								: dataDetalleAprobadorSolicitud[indexToShow].estadoAprobacion.toUpperCase().includes("RECHAZA")
-								? "Cancelado"
-								: dataDetalleAprobadorSolicitud[indexToShow].estadoAprobacion.toUpperCase().includes("COMENTARIO")
-								? "Registrar Comentario"
-								: dataDetalleAprobadorSolicitud[indexToShow].estadoAprobacion.toUpperCase().includes("CANDIDATO")
-								? "Selección de candidato"
-								: dataDetalleAprobadorSolicitud[indexToShow].estadoAprobacion
+									? "Por Revisar"
+									: dataDetalleAprobadorSolicitud[indexToShow].estadoAprobacion.toUpperCase().includes("ESPERA")
+										? "En Espera"
+										: dataDetalleAprobadorSolicitud[indexToShow].estadoAprobacion.toUpperCase() === "DEVOLVER"
+											? "Devuelto"
+											: dataDetalleAprobadorSolicitud[indexToShow].estadoAprobacion.toUpperCase().includes("PENDIENTE")
+												? "Por Revisar"
+												: dataDetalleAprobadorSolicitud[indexToShow].estadoAprobacion.toUpperCase().includes("RECHAZA")
+													? "Cancelado"
+													: dataDetalleAprobadorSolicitud[indexToShow].estadoAprobacion.toUpperCase().includes("COMENTARIO")
+														? "Registrar Comentario"
+														: dataDetalleAprobadorSolicitud[indexToShow].estadoAprobacion.toUpperCase().includes("CANDIDATO")
+															? "Selección de candidato"
+															: dataDetalleAprobadorSolicitud[indexToShow].estadoAprobacion.toUpperCase().includes("COMPLET")
+																? "Completado"
+																: dataDetalleAprobadorSolicitud[indexToShow].estadoAprobacion
 							: this.idSolicitudParam.includes("RP")
-							? "Creado"
-							: this.idSolicitudParam.includes("RG")
-							? "Creado"
-							: this.idSolicitudParam.includes("CF")
-							? "Creado"
-							: "-"
+								? "Creado"
+								: this.idSolicitudParam.includes("RG")
+									? "Creado"
+									: this.idSolicitudParam.includes("CF")
+										? "Creado"
+										: "-"
 					}}
 				</div>
 			</div>

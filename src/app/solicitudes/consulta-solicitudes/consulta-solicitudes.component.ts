@@ -1478,6 +1478,20 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 	}
 	//dataTipoMotivo
 
+	public onChangeIdSolicitud() {
+		if (this.searchInputFilter === "") {
+			return;
+		}
+		console.log("HAY VALOR");
+
+		this.dataFilterSolicitudes.estado = undefined;
+		this.dataFilterSolicitudes.fechaDesde = undefined;
+		this.dataFilterSolicitudes.fechaHasta = undefined;
+		this.dataFilterSolicitudes.unidadNegocio = undefined;
+		this.dataFilterSolicitudes.idTipoSolicitud = undefined;
+		this.dataFilterSolicitudes.empresa = undefined;
+	}
+
 	ObtenerServicioTipoMotivo() {
 		return this.mantenimientoService.getTipoMotivo().subscribe({
 			next: (response) => {

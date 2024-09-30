@@ -1048,9 +1048,7 @@
 					</div>
 				</app-solicitud-seccion-desplegable>
 
-				<div *ngIf="model.tipoProceso !== '' || fechas.actualizacionPerfil !== '' || fechas.busquedaCandidatos !== '' || fechas.entrevista !== ''
-				|| fechas.pruebas !== ''  || fechas.referencias !== ''  || fechas.elaboracionInforme !== ''  || fechas.entregaJefe !== ''  || fechas.entrevistaJefatura !== ''
-				|| fechas.tomaDecisiones !== ''  || fechas.candidatoSeleccionado !== ''  || fechas.procesoContratacion !== '' || fechas.finProcesoContratacion !== ''  || nombreCandidato !== ''">
+				<div *ngIf="model.tipoProceso !== '' || fechas.actualizacionPerfil !== '' || fechas.busquedaCandidatos !== '' || fechas.entrevista !== '' || fechas.pruebas !== '' || fechas.referencias !== '' || fechas.elaboracionInforme !== '' || fechas.entregaJefe !== '' || fechas.entrevistaJefatura !== '' || fechas.tomaDecisiones !== '' || fechas.candidatoSeleccionado !== '' || fechas.procesoContratacion !== '' || fechas.finProcesoContratacion !== '' || nombreCandidato !== ''">
 					<!-- ! Selección de Candidato -->
 					<app-solicitud-seccion-desplegable titleSummary="Selección de Candidato">
 						<div>
@@ -1138,50 +1136,56 @@
 								<hr />
 							</div>
 
+							<div class="mb-4">
+								<h3 class="sol-danger">Reingreso</h3>
+							</div>
+
 							<div class="row">
 								<div class="col-md-6">
 									<div class="input-group mb-3 align-items-center">
-										<label class="input-group-text text-start label-estilo" for="tipoSolicitud">Tipo Proceso</label>
+										<label for="input1" class="input-group-text label-estilo">Inicio de proceso</label>
 
-										<span style="font-size: 14px" class="w-50">{{ model.tipoProceso === "" ? "Ninguno" : model.tipoProceso }}</span>
+										<span style="font-size: 14px" class="w-50">{{ fechas.reingreso }}</span>
 									</div>
 								</div>
 
 								<div class="col-md-6">
 									<div class="input-group mb-3 align-items-center">
-										<label class="input-group-text text-start label-estilo" for="flexSwitchCheckChecked">Tipo de fuente</label>
+										<label for="input2" class="input-group-text label-estilo">Fin de proceso</label>
 
-										<span style="font-size: 14px" class="w-50">{{ model.tipoProceso === "" ? "Ninguno" : isChecked ? "Externo" : "Interno" }}</span>
+										<span style="font-size: 14px" class="w-50">{{ fechas.reingreso === "" || fechas.reingreso === null || fechas.reingreso === undefined ? "" : fechas.finProceso }}</span>
 									</div>
 								</div>
 							</div>
 
-							<div class="row" *ngIf="isChecked">
-								<div class="col-md-6">
-									<div class="input-group mb-3 align-items-center">
-										<label class="input-group-text text-start label-estilo">Fuente Externa</label>
-
-										<span style="font-size: 14px" class="w-50">{{ option.valor }}</span>
-									</div>
-								</div>
+							<div class="mb-4">
+								<h3 class="sol-danger">Contratación de familiares</h3>
 							</div>
 
 							<div class="row">
-								<div class="col-md-12">
+								<div class="col-md-6">
 									<div class="input-group mb-3 align-items-center">
-										<label class="input-group-text text-start label-estilo2" for="nombre-candidato">Nombre del candidato seleccionado</label>
+										<label for="input1" class="input-group-text label-estilo">Inicio de proceso</label>
 
-										<span style="font-size: 14px" class="w-75">{{ nombreCandidato }}</span>
+										<span style="font-size: 14px" class="w-50">{{ fechas.contratacionFamiliares }}</span>
+									</div>
+								</div>
+
+								<div class="col-md-6">
+									<div class="input-group mb-3 align-items-center">
+										<label for="input2" class="input-group-text label-estilo">Fin de proceso</label>
+
+										<span style="font-size: 14px" class="w-50">{{ fechas.contratacionFamiliares === "" || fechas.contratacionFamiliares === undefined || fechas.contratacionFamiliares === null ? "" : fechas.finProcesoFamiliares }}</span>
 									</div>
 								</div>
 							</div>
 						</div>
 					</app-solicitud-seccion-desplegable>
 
-					<!-- ! Fechas -->
-					<app-solicitud-seccion-desplegable titleSummary="Fechas">
+					<!-- ! Tipo de Proceso -->
+					<app-solicitud-seccion-desplegable titleSummary="Tipo de Procesos">
 						<div>
-							<div class="mb-4">
+							<!-- <div class="mb-4">
 								<h3 class="sol-danger">Reingreso</h3>
 							</div>
 
@@ -1221,6 +1225,54 @@
 										<label for="input2" class="input-group-text label-estilo">Fin de proceso</label>
 
 										<span style="font-size: 14px" class="w-50">{{ fechas.finProcesoFamiliares }}</span>
+									</div>
+								</div>
+							</div> -->
+
+							<div class="row">
+								<div class="col-md-6">
+									<div class="input-group mb-3 align-items-center">
+										<label class="input-group-text text-start label-estilo" for="tipoSolicitud">Tipo Proceso</label>
+
+										<span style="font-size: 14px" class="w-50">{{ model.tipoProceso === "" ? "Ninguno" : model.tipoProceso }}</span>
+									</div>
+								</div>
+
+								<div class="col-md-6">
+									<div class="input-group mb-3 align-items-center">
+										<label class="input-group-text text-start label-estilo" for="flexSwitchCheckChecked">Tipo de fuente</label>
+
+										<span style="font-size: 14px" class="w-50">{{ model.tipoProceso === "" ? "Ninguno" : isChecked ? "Externo" : "Interno" }}</span>
+									</div>
+								</div>
+							</div>
+
+							<div class="row" *ngIf="isChecked">
+								<div class="col-md-6">
+									<div class="input-group mb-3 align-items-center">
+										<label class="input-group-text text-start label-estilo">Fuente Externa</label>
+
+										<span style="font-size: 14px" class="w-50">{{ option.valor }}</span>
+									</div>
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col-md-12">
+									<div class="input-group mb-3 align-items-center">
+										<label class="input-group-text text-start label-estilo2" for="nombre-candidato">Nombre del candidato seleccionado</label>
+
+										<span style="font-size: 14px" class="w-75">{{ nombreCandidato }}</span>
+									</div>
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col-md-12">
+									<div class="input-group mb-3 align-items-center">
+										<label class="input-group-text text-start label-estilo2" for="nombre-candidato">Fecha de ingreso</label>
+
+										<span style="font-size: 14px" class="w-75">{{ fechas.finProcesoContratacion === "" || fechas.finProcesoContratacion === undefined || fechas.finProcesoContratacion === null ? "" : fechas.finProcesoContratacion }}</span>
 									</div>
 								</div>
 							</div>

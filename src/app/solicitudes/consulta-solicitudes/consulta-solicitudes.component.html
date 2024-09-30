@@ -27,15 +27,15 @@
 						<ng-template ngbNavContent>
 							<div class="form-body">
 								<div class="d-flex gap-3 flex-wrap">
-									<div *ngIf="controlsPermissions[pageControlPermission.FiltroUnidadNegocio].visualizar" style="width: calc(25% - .75rem)">
+									<div *ngIf="controlsPermissions[pageControlPermission.FiltroUnidadNegocio].visualizar" style="width: calc(25% - 0.75rem)">
 										<div class="mb-3">
 											<label class="azul">Nº de Solicitud</label>
 
-											<input type="text" name="searchInputFilter" [(ngModel)]="searchInputFilter" style="color: black; font-size: 14px; width: 100%" class="form-control" id="searchInputFilter" placeholder="Nº de Solicitud" />
+											<input type="text" name="searchInputFilter" [(ngModel)]="searchInputFilter" (input)="onChangeIdSolicitud()" style="color: black; font-size: 14px; width: 100%" class="form-control" id="searchInputFilter" placeholder="Nº de Solicitud" />
 										</div>
 									</div>
 
-									<div *ngIf="controlsPermissions[pageControlPermission.FiltroEstado].visualizar" style="width: calc(25% - .75rem)">
+									<div *ngIf="controlsPermissions[pageControlPermission.FiltroEstado].visualizar" style="width: calc(25% - 0.75rem)">
 										<div class="mb-3">
 											<label class="azul">Estado</label>
 
@@ -45,7 +45,7 @@
 										</div>
 									</div>
 
-									<div [hidden]="!controlsPermissions[pageControlPermission.FiltroFechaDesde].visualizar" style="width: calc(25% - .75rem)">
+									<div [hidden]="!controlsPermissions[pageControlPermission.FiltroFechaDesde].visualizar" style="width: calc(25% - 0.75rem)">
 										<div class="mb-3">
 											<label class="azul">Fecha Creación Desde</label>
 
@@ -59,7 +59,7 @@
 										</div>
 									</div>
 
-									<div [hidden]="!controlsPermissions[pageControlPermission.FiltroFechaDesde].visualizar" style="width: calc(25% - .75rem)">
+									<div [hidden]="!controlsPermissions[pageControlPermission.FiltroFechaDesde].visualizar" style="width: calc(25% - 0.75rem)">
 										<div class="mb-3">
 											<label class="azul">Fecha Creación Hasta</label>
 
@@ -75,7 +75,7 @@
 								</div>
 
 								<div class="d-flex gap-3 flex-wrap align-items-end">
-									<div *ngIf="controlsPermissions[pageControlPermission.FiltroEmpresa].visualizar" style="width: calc(30% - .75rem)">
+									<div *ngIf="controlsPermissions[pageControlPermission.FiltroEmpresa].visualizar" style="width: calc(30% - 0.75rem)">
 										<div class="mb-3">
 											<label class="azul">Empresa</label>
 
@@ -85,20 +85,17 @@
 										</div>
 									</div>
 
-									<div *ngIf="controlsPermissions[pageControlPermission.FiltroUnidadNegocio].visualizar" style="width: calc(20% - .75rem)">
+									<div *ngIf="controlsPermissions[pageControlPermission.FiltroUnidadNegocio].visualizar" style="width: calc(20% - 0.75rem)">
 										<div class="mb-3">
 											<label class="azul">Unidad de Negocio</label>
 
 											<ng-select [disabled]="!controlsPermissions[pageControlPermission.FiltroUnidadNegocio].habilitar || searchInputFilter !== ''" #inputSelectProducto [(ngModel)]="dataFilterSolicitudes.unidadNegocio" name="unidadNegocio" placeholder="Seleccione">
 												<ng-option *ngFor="let data of dataUnidadesNegocio" [value]="data">{{ data }}</ng-option>
-												<ng-option>Areas Corporativas</ng-option>
-												<ng-option>Servicios Portuarios</ng-option>
-												<ng-option>Palma y Macadamia</ng-option>
 											</ng-select>
 										</div>
 									</div>
 
-									<div *ngIf="controlsPermissions[pageControlPermission.FiltroTipoSolicitud].visualizar" style="width: calc(25% - .75rem)">
+									<div *ngIf="controlsPermissions[pageControlPermission.FiltroTipoSolicitud].visualizar" style="width: calc(25% - 0.75rem)">
 										<div class="mb-3">
 											<label class="azul">Tipo de Solicitud</label>
 

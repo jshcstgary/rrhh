@@ -1,6 +1,4 @@
-import {
-	HttpErrorResponse
-} from "@angular/common/http";
+import { HttpErrorResponse } from "@angular/common/http";
 import { Component } from "@angular/core";
 import { NgForm } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
@@ -21,7 +19,7 @@ import { CamundaRestService } from "../../camunda-rest.service";
 import { CompleteTaskComponent } from "../general/complete-task.component";
 import { RegistrarCandidatoService } from "../registrar-candidato/registrar-candidato.service";
 import { SolicitudesService } from "../registrar-solicitud/solicitudes.service";
-import { ComentarioSalidaJefeService } from './comentario-salida-jefe.service';
+import { ComentarioSalidaJefeService } from "./comentario-salida-jefe.service";
 
 import { format } from "date-fns";
 import jsPDF from "jspdf";
@@ -39,45 +37,17 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 	public viewInputs: boolean = false;
 	public muestraRemuneracion: boolean = false;
 
-
 	isFechaMaximaVisible: boolean = false;
-	campoObligatorio: string = '';
-	observaciontexto: string = 'Observación';
+	campoObligatorio: string = "";
+	observaciontexto: string = "Observación";
 	modelPropuestos: RegistrarData = new RegistrarData();
 
-	override model: RegistrarData = new RegistrarData(
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		""
-	);
+	override model: RegistrarData = new RegistrarData("", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "");
 
 	public detalleSolicitudPropuestos = new DetalleSolicitud();
 	public option: { codigo: string; valor: string } = {
 		codigo: "",
-		valor: ""
+		valor: "",
 	};
 
 	columnsDatosFamiliares = columnsDatosFamiliares.columns;
@@ -110,7 +80,7 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 		reingreso: "",
 		finProceso: "",
 		contratacionFamiliares: "",
-		finProcesoFamiliares: ""
+		finProcesoFamiliares: "",
 	};
 
 	// private
@@ -135,7 +105,6 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 
 	public solicitudRG: any;
 	currentDate: Date = new Date();
-
 
 	public solicitud = new Solicitud();
 
@@ -369,47 +338,9 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 	public comentarios: string = "";
 	public comentariosRRHH: any = {};
 	public Comentario_Jefe_Solicitante: any = {};
-	modelRG: RegistrarData = new RegistrarData(
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		""
-	);
+	modelRG: RegistrarData = new RegistrarData("", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "");
 
-
-	constructor(
-		route: ActivatedRoute,
-		router: Router,
-		camundaRestService: CamundaRestService,
-		private mantenimientoService: MantenimientoService,
-		private solicitudesService: SolicitudesService,
-		private utilService: UtilService,
-		private seleccionCandidatoService: RegistrarCandidatoService,
-		private comentarioSalidaJefeService: ComentarioSalidaJefeService
-	) {
+	constructor(route: ActivatedRoute, router: Router, camundaRestService: CamundaRestService, private mantenimientoService: MantenimientoService, private solicitudesService: SolicitudesService, private utilService: UtilService, private seleccionCandidatoService: RegistrarCandidatoService, private comentarioSalidaJefeService: ComentarioSalidaJefeService) {
 		super(route, router, camundaRestService);
 
 		this.searchSubject.pipe(debounceTime(0)).subscribe(({ campo, valor }) => {
@@ -433,12 +364,12 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 
 	getFormattedDate(dateValue: string = ""): string {
 		const date = dateValue === "" ? new Date() : new Date(dateValue);
-		const day = String(date.getDate()).padStart(2, '0');
-		const month = String(date.getMonth() + 1).padStart(2, '0'); // Enero es 0!
+		const day = String(date.getDate()).padStart(2, "0");
+		const month = String(date.getMonth() + 1).padStart(2, "0"); // Enero es 0!
 		const year = date.getFullYear();
-		const hours = String(date.getHours()).padStart(2, '0');
-		const minutes = String(date.getMinutes()).padStart(2, '0');
-		const seconds = String(date.getSeconds()).padStart(2, '0');
+		const hours = String(date.getHours()).padStart(2, "0");
+		const minutes = String(date.getMinutes()).padStart(2, "0");
+		const seconds = String(date.getSeconds()).padStart(2, "0");
 
 		return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 	}
@@ -446,16 +377,18 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 	getComentarios() {
 		this.comentarioSalidaJefeService.obtenerComentarios(this.detalleSolicitudRG.idSolicitud).subscribe({
 			next: ({ comentarios }) => {
-				comentarios.forEach(comentario => {
+				comentarios.forEach((comentario) => {
 					if (comentario.tipo_Solicitud === "Comentario_Salida_Jefe") {
 						this.comentariosJefeInmediato = comentario;
-					} if (comentario.tipo_Solicitud === "Comentario_Jefe_Solicitante") {
+					}
+					if (comentario.tipo_Solicitud === "Comentario_Jefe_Solicitante") {
 						this.Comentario_Jefe_Solicitante = comentario;
-					} if (comentario.tipo_Solicitud === "Comentario_RRHH") {
+					}
+					if (comentario.tipo_Solicitud === "Comentario_RRHH") {
 						this.comentariosRRHH = comentario;
 					}
 				});
-			}
+			},
 		});
 	}
 	getCandidatoValues() {
@@ -464,12 +397,10 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 				const candidatoValues = res.seleccionCandidatoType[0];
 				this.nombreCompletoCandidato = res.seleccionCandidatoType[0].candidato;
 
-
 				this.model.tipoProceso = candidatoValues.tipoProceso;
 				this.selectedOption = candidatoValues.fuenteExterna;
 				this.isChecked = candidatoValues.tipoFuente;
 				this.idSolicitudRP = res.seleccionCandidatoType[0].iD_SOLICITUD;
-
 
 				this.fechas.actualizacionPerfil = candidatoValues.actualizacionDelPerfil === null ? "" : this.getFormattedDate(candidatoValues.actualizacionDelPerfil);
 
@@ -511,57 +442,32 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 				} else {
 					this.getSolicitudById(this.id_solicitud_by_params);
 				}
-
 			},
 			error: (err) => {
 				this.getSolicitudById(this.id_solicitud_by_params);
-			}
+			},
 		});
 	}
 
-	searchCodigoPosicion: OperatorFunction<string, readonly string[]> = (
-		text$: Observable<string>
-	) =>
+	searchCodigoPosicion: OperatorFunction<string, readonly string[]> = (text$: Observable<string>) =>
 		text$.pipe(
 			debounceTime(200),
 			distinctUntilChanged(),
-			map((term) =>
-				term.length < 1
-					? []
-					: this.codigosPosicion
-						.filter((v) => v.toLowerCase().indexOf(term.toLowerCase()) > -1)
-						.slice(0, 10)
-			)
+			map((term) => (term.length < 1 ? [] : this.codigosPosicion.filter((v) => v.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10)))
 		);
 
-	searchSubledger: OperatorFunction<string, readonly string[]> = (
-		text$: Observable<string>
-	) =>
+	searchSubledger: OperatorFunction<string, readonly string[]> = (text$: Observable<string>) =>
 		text$.pipe(
 			debounceTime(200),
 			distinctUntilChanged(),
-			map((term) =>
-				term.length < 1
-					? []
-					: this.subledgers
-						.filter((v) => v.toLowerCase().indexOf(term.toLowerCase()) > -1)
-						.slice(0, 10)
-			)
+			map((term) => (term.length < 1 ? [] : this.subledgers.filter((v) => v.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10)))
 		);
 
-	searchNombreCompleto: OperatorFunction<string, readonly string[]> = (
-		text$: Observable<string>
-	) =>
+	searchNombreCompleto: OperatorFunction<string, readonly string[]> = (text$: Observable<string>) =>
 		text$.pipe(
 			debounceTime(200),
 			distinctUntilChanged(),
-			map((term) =>
-				term.length < 1
-					? []
-					: this.nombresEmpleados
-						.filter((v) => v.toLowerCase().indexOf(term.toLowerCase()) > -1)
-						.slice(0, 10)
-			)
+			map((term) => (term.length < 1 ? [] : this.nombresEmpleados.filter((v) => v.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10)))
 		);
 
 	loadDataCamunda() {
@@ -626,9 +532,7 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 		let valor = (val.target as HTMLInputElement).value;
 
 		this.searchSubject.next({ campo, valor });
-		this.suggestions = this.dataEmpleadoEvolution
-			.filter((empleado) => empleado[campo].startsWith(valor))
-			.map((empleado) => empleado[campo]);
+		this.suggestions = this.dataEmpleadoEvolution.filter((empleado) => empleado[campo].startsWith(valor)).map((empleado) => empleado[campo]);
 	}
 
 	selectSuggestion(suggestion: string) {
@@ -643,12 +547,7 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 		});
 		if (datosEmpleado) {
 			this.model = Object.assign({}, datosEmpleado);
-			this.keySelected =
-				this.solicitud.idTipoSolicitud +
-				"_" +
-				this.solicitud.idTipoMotivo +
-				"_" +
-				this.model.nivelDir;
+			this.keySelected = this.solicitud.idTipoSolicitud + "_" + this.solicitud.idTipoMotivo + "_" + this.model.nivelDir;
 			if (!this.dataNivelesDeAprobacion[this.keySelected]) {
 				this.getNivelesAprobacion();
 			}
@@ -675,27 +574,11 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 			next: (response) => {
 				this.dataEmpleadoEvolution = response.evType;
 
-				this.nombresEmpleados = [
-					...new Set(
-						this.dataEmpleadoEvolution.map(
-							(empleado) => empleado.nombreCompleto
-						)
-					),
-				];
+				this.nombresEmpleados = [...new Set(this.dataEmpleadoEvolution.map((empleado) => empleado.nombreCompleto))];
 
-				this.subledgers = [
-					...new Set(
-						this.dataEmpleadoEvolution.map((empleado) => empleado.subledger)
-					),
-				];
+				this.subledgers = [...new Set(this.dataEmpleadoEvolution.map((empleado) => empleado.subledger))];
 
-				this.codigosPosicion = [
-					...new Set(
-						this.dataEmpleadoEvolution.map(
-							(empleado) => empleado.codigoPosicion
-						)
-					),
-				];
+				this.codigosPosicion = [...new Set(this.dataEmpleadoEvolution.map((empleado) => empleado.codigoPosicion))];
 			},
 			error: (error: HttpErrorResponse) => {
 				this.utilService.modalResponse(error.error, "error");
@@ -730,59 +613,48 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 	override loadExistingVariables(taskId: String, variableNames: String) {
 		console.log("load existing variables ...", taskId);
 
-		this.camundaRestService
-			.getVariablesForTask(taskId, variableNames)
-			.subscribe((result) => {
-				this.lookForError(result);
-				// console.log(
-				//   "ESTAS SON LAS VARIABLES QUE ESTOY RECIBIENDO EN loadExistingVariables():",
-				//   result
-				// );
-				this.generateModelFromVariables(result);
-			});
+		this.camundaRestService.getVariablesForTask(taskId, variableNames).subscribe((result) => {
+			this.lookForError(result);
+			// console.log(
+			//   "ESTAS SON LAS VARIABLES QUE ESTOY RECIBIENDO EN loadExistingVariables():",
+			//   result
+			// );
+			this.generateModelFromVariables(result);
+		});
 	}
 
-	override generateModelFromVariables(variables: {
-		[x: string]: { value: any };
-	}) {
+	override generateModelFromVariables(variables: { [x: string]: { value: any } }) {
 		Object.keys(variables).forEach((variableName) => {
 			switch (variableName) {
 				case "tipoAccion":
-					this.tipo_accion_descripcion = this.dataTipoAccion?.filter(
-						(data) => data.tipoAccion == variables[variableName].value
-					)[0]?.tipoAccion;
+					this.tipo_accion_descripcion = this.dataTipoAccion?.filter((data) => data.tipoAccion == variables[variableName].value)[0]?.tipoAccion;
 					this.modelBase.tipo_cumplimiento = variables[variableName].value;
 					break;
 
 				case "tipoSolicitud":
-					this.tipo_solicitud_descripcion =
-						this.dataTipoSolicitud.tipoSolicitudType?.filter(
-							(data) => data.tipoSolicitud == variables[variableName].value
-						)[0]?.tipoSolicitud;
+					this.tipo_solicitud_descripcion = this.dataTipoSolicitud.tipoSolicitudType?.filter((data) => data.tipoSolicitud == variables[variableName].value)[0]?.tipoSolicitud;
 					this.modelBase.tipoSolicitud = variables[variableName].value;
 					break;
 
 				case "tipoMotivo":
-					this.tipo_motivo_descripcion = this.dataTipoMotivo?.filter(
-						(data) => data.tipoMotivo == variables[variableName].value
-					)[0]?.tipoMotivo;
+					this.tipo_motivo_descripcion = this.dataTipoMotivo?.filter((data) => data.tipoMotivo == variables[variableName].value)[0]?.tipoMotivo;
 					this.modelBase.tipoMotivo = variables[variableName].value;
 
 					break;
 			}
 		});
 	}
-	obtenerServicioFamiliaresCandidatos({ idSolicitud }: { idSolicitud: string; }) {
+	obtenerServicioFamiliaresCandidatos({ idSolicitud }: { idSolicitud: string }) {
 		return this.mantenimientoService.getFamiliaresCandidatoBySolicitud(this.id_solicitud_by_params).subscribe({
 			next: (response) => {
 				const data = response?.familiaresCandidato || [];
 
 				this.dataTableDatosFamiliares = data.filter((d) => d.idSolicitud === idSolicitud);
 
-				this.dataTableDatosFamiliares = this.dataTableDatosFamiliares.map(dataFamiliar => ({
+				this.dataTableDatosFamiliares = this.dataTableDatosFamiliares.map((dataFamiliar) => ({
 					...dataFamiliar,
-					fechaCreacion: format(new Date(dataFamiliar.fechaCreacion as string), "dd/MM/yyyy")
-				}))
+					fechaCreacion: format(new Date(dataFamiliar.fechaCreacion as string), "dd/MM/yyyy"),
+				}));
 			},
 			error: (error: HttpErrorResponse) => {
 				this.utilService.modalResponse(error.error, "error");
@@ -810,10 +682,7 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 			next: (response) => {
 				this.dataNivelDireccion = response.itemCatalogoTypes; //verificar la estructura mmunoz
 
-				this.detalleSolicitud.nivelDireccion =
-					response.itemCatalogoTypes.filter(
-						(data) => data.codigo == this.detalleSolicitud.nivelDireccion
-					)[0]?.valor;
+				this.detalleSolicitud.nivelDireccion = response.itemCatalogoTypes.filter((data) => data.codigo == this.detalleSolicitud.nivelDireccion)[0]?.valor;
 			},
 			error: (error: HttpErrorResponse) => {
 				this.utilService.modalResponse(error.error, "error");
@@ -854,7 +723,7 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 
 					this.totalRegistrosDetallesolicitud = response.totalRegistros;
 
-					const detalleActual = response.detalleSolicitudType.find(detalle => detalle.idDetalleSolicitud === 1);
+					const detalleActual = response.detalleSolicitudType.find((detalle) => detalle.idDetalleSolicitud === 1);
 
 					this.model.codigoPosicion = detalleActual.codigoPosicion;
 					this.model.descrPosicion = detalleActual.descripcionPosicion;
@@ -886,7 +755,7 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 					this.model.descrPuesto = detalleActual.descripcionPosicion;
 
 					if (response.totalRegistros === 2) {
-						const detallePropuestos = response.detalleSolicitudType.find(detalle => detalle.idDetalleSolicitud === 2);
+						const detallePropuestos = response.detalleSolicitudType.find((detalle) => detalle.idDetalleSolicitud === 2);
 
 						this.modelPropuestos.codigoPosicion = detallePropuestos.codigoPosicion;
 						this.modelPropuestos.descrPosicion = detallePropuestos.descripcionPosicion;
@@ -919,12 +788,11 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 						this.detalleSolicitudPropuestos.movilizacion = detallePropuestos.movilizacion;
 						this.detalleSolicitudPropuestos.alimentacion = detallePropuestos.alimentacion;
 					}
-				}
-				else {
+				} else {
 					this.detalleSolicitud = response.detalleSolicitudType[0];
 					this.detalleSolicitudRG = response.detalleSolicitudType[0];
 
-					if (!(id.toUpperCase().includes("RG")) && this.detalleSolicitud.codigoPosicion.length > 0) {
+					if (!id.toUpperCase().includes("RG") && this.detalleSolicitud.codigoPosicion.length > 0) {
 						this.model.codigoPosicion = this.detalleSolicitud.codigoPosicion;
 						this.model.descrPosicion = this.detalleSolicitud.descripcionPosicion;
 						this.model.subledger = this.detalleSolicitud.subledger;
@@ -947,7 +815,7 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 						this.model.sueldoMensual = this.detalleSolicitud.sueldoVariableMensual;
 						this.model.sueldoTrimestral = this.detalleSolicitud.sueldoVariableTrimestral;
 						this.model.sueldoSemestral = this.detalleSolicitud.sueldoVariableSemestral;
-						this.model.sueldoAnual = this.detalleSolicitud.sueldoVariableAnual
+						this.model.sueldoAnual = this.detalleSolicitud.sueldoVariableAnual;
 						this.model.correo = this.detalleSolicitud.correo;
 						this.model.fechaIngreso = this.detalleSolicitud.fechaIngreso;
 						this.modelRemuneracion = Number(this.model.sueldoAnual) / 12 + Number(this.model.sueldoSemestral) / 6 + Number(this.model.sueldoTrimestral) / 3 + Number(this.model.sueldoMensual);
@@ -1005,7 +873,7 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 				this.mantenimientoService.getCatalogo("RBPTF").subscribe({
 					next: (response) => {
 						this.option = response.itemCatalogoTypes.find(({ codigo }) => codigo === this.selectedOption);
-					}
+					},
 				});
 			},
 			error: (error: HttpErrorResponse) => {
@@ -1056,7 +924,7 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 
 	// Prueba servicio
 	getSolicitudes() {
-		this.solicitudesService.getSolicitudes().subscribe((data) => { });
+		this.solicitudesService.getSolicitudes().subscribe((data) => {});
 	}
 
 	guardarSolicitud() {
@@ -1083,14 +951,9 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 			estado: "En Espera",
 		};
 
-		this.solicitudesService
-			.guardarSolicitud(requestSolicitud)
-			.subscribe((response) => {
-				this.utilService.modalResponse(
-					"Datos ingresados correctamente",
-					"success"
-				);
-			});
+		this.solicitudesService.guardarSolicitud(requestSolicitud).subscribe((response) => {
+			this.utilService.modalResponse("Datos ingresados correctamente", "success");
+		});
 	}
 
 	// Handle any errors that may be present.
@@ -1104,8 +967,6 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 			});
 		}
 	}
-
-
 
 	onSubmit() {
 		Swal.fire({
@@ -1131,168 +992,141 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 	save() {
 		if (this.uniqueTaskId === null) {
 			//handle this as an error
-			this.errorMessage =
-				"Unique Task id is empty. Cannot initiate task complete.";
+			this.errorMessage = "Unique Task id is empty. Cannot initiate task complete.";
 			return;
 		}
-		this.utilService.openLoadingSpinner(
-			"Guardando información, espere por favor..."
-		);
+		this.utilService.openLoadingSpinner("Guardando información, espere por favor...");
 		const variables = this.generateVariablesFromFormFields();
 		// basis of completeing the task using the unique id
-		this.camundaRestService
-			.postCompleteTask(this.uniqueTaskId, variables)
-			.subscribe((res) => {
-				this.submitted = true;
-				let idInstancia = this.solicitudDataInicial.idInstancia;
+		this.camundaRestService.postCompleteTask(this.uniqueTaskId, variables).subscribe((res) => {
+			this.submitted = true;
+			let idInstancia = this.solicitudDataInicial.idInstancia;
 
-				let extra = {
-					idEmpresa: this.model.compania,
-					empresa: this.model.compania,
-					estadoSolicitud: "Pendiente",
-					unidadNegocio: this.model.unidadNegocio,
-					idUnidadNegocio: this.model.unidadNegocio,
-				};
+			let extra = {
+				idEmpresa: this.model.compania,
+				empresa: this.model.compania,
+				estadoSolicitud: "Pendiente",
+				unidadNegocio: this.model.unidadNegocio,
+				idUnidadNegocio: this.model.unidadNegocio,
+			};
 
-				this.solicitud.empresa = this.model.compania;
-				this.solicitud.idEmpresa = this.model.compania;
+			this.solicitud.empresa = this.model.compania;
+			this.solicitud.idEmpresa = this.model.compania;
 
-				this.solicitud.unidadNegocio = this.model.unidadNegocio;
-				this.solicitud.idUnidadNegocio = this.model.unidadNegocio;
-				this.solicitudesService
-					.actualizarSolicitud(this.solicitud)
-					.subscribe((responseSolicitud) => {
+			this.solicitud.unidadNegocio = this.model.unidadNegocio;
+			this.solicitud.idUnidadNegocio = this.model.unidadNegocio;
+			this.solicitudesService.actualizarSolicitud(this.solicitud).subscribe((responseSolicitud) => {
+				this.detalleSolicitud.areaDepartamento = this.model.departamento;
 
+				this.detalleSolicitud.cargo = this.model.nombreCargo;
+				this.detalleSolicitud.centroCosto = this.model.nomCCosto;
+				this.detalleSolicitud.codigoPosicion = this.model.codigoPosicion;
+				this.detalleSolicitud.compania = this.model.compania;
+				this.detalleSolicitud.departamento = this.model.departamento;
+				this.detalleSolicitud.descripcionPosicion = this.model.descrPosicion;
+				this.detalleSolicitud.fechaIngreso = this.model.fechaIngresogrupo;
 
-						this.detalleSolicitud.areaDepartamento = this.model.departamento;
+				this.detalleSolicitud.justificacion = this.model.justificacionCargo;
+				this.detalleSolicitud.localidad = this.model.localidad;
+				this.detalleSolicitud.localidadZona = this.model.localidad;
 
-						this.detalleSolicitud.cargo = this.model.nombreCargo;
-						this.detalleSolicitud.centroCosto = this.model.nomCCosto;
-						this.detalleSolicitud.codigoPosicion = this.model.codigoPosicion;
-						this.detalleSolicitud.compania = this.model.compania;
-						this.detalleSolicitud.departamento = this.model.departamento;
-						this.detalleSolicitud.descripcionPosicion =
-							this.model.descrPosicion;
-						this.detalleSolicitud.fechaIngreso = this.model.fechaIngresogrupo;
+				this.detalleSolicitud.misionCargo = this.model.misionCargo;
+				this.detalleSolicitud.nivelDireccion = this.model.nivelDir;
+				this.detalleSolicitud.nivelReporteA = this.model.nivelRepa;
 
-						this.detalleSolicitud.justificacion = this.model.justificacionCargo;
-						this.detalleSolicitud.localidad = this.model.localidad;
-						this.detalleSolicitud.localidadZona = this.model.localidad;
+				this.detalleSolicitud.nombreEmpleado = this.model.nombreCompleto;
 
-						this.detalleSolicitud.misionCargo = this.model.misionCargo;
-						this.detalleSolicitud.nivelDireccion = this.model.nivelDir;
-						this.detalleSolicitud.nivelReporteA = this.model.nivelRepa;
+				// this.detalleSolicitud.puesto = this.model.nombreCompleto;
 
-						this.detalleSolicitud.nombreEmpleado = this.model.nombreCompleto;
+				this.detalleSolicitud.reportaA = this.model.reportaA;
 
-						// this.detalleSolicitud.puesto = this.model.nombreCompleto;
+				this.detalleSolicitud.subledger = this.model.subledger;
 
-						this.detalleSolicitud.reportaA = this.model.reportaA;
+				this.detalleSolicitud.subledgerEmpleado = this.model.subledger;
 
-						this.detalleSolicitud.subledger = this.model.subledger;
+				this.detalleSolicitud.sucursal = this.model.sucursal;
 
-						this.detalleSolicitud.subledgerEmpleado = this.model.subledger;
+				this.detalleSolicitud.misionCargo = this.model.misionCargo;
+				this.detalleSolicitud.justificacion = this.model.justificacionCargo;
 
-						this.detalleSolicitud.sucursal = this.model.sucursal;
+				this.detalleSolicitud.sueldo = this.model.sueldo;
+				this.detalleSolicitud.sueldoVariableMensual = this.model.sueldoMensual;
+				this.detalleSolicitud.sueldoVariableTrimestral = this.model.sueldoTrimestral;
+				this.detalleSolicitud.sueldoVariableSemestral = this.model.sueldoSemestral;
+				this.detalleSolicitud.sueldoVariableAnual = this.model.sueldoAnual;
+				this.detalleSolicitud.tipoContrato = this.model.tipoContrato;
+				this.detalleSolicitud.unidad = this.model.unidadNegocio;
+				this.detalleSolicitud.unidadNegocio = this.model.unidadNegocio;
 
-						this.detalleSolicitud.misionCargo = this.model.misionCargo;
-						this.detalleSolicitud.justificacion = this.model.justificacionCargo;
+				this.solicitudesService.actualizarDetalleSolicitud(this.detalleSolicitud).subscribe((responseDetalle) => {
+					this.utilService.closeLoadingSpinner();
+					this.utilService.modalResponse("Datos ingresados correctamente", "success");
 
-						this.detalleSolicitud.sueldo = this.model.sueldo;
-						this.detalleSolicitud.sueldoVariableMensual =
-							this.model.sueldoMensual;
-						this.detalleSolicitud.sueldoVariableTrimestral =
-							this.model.sueldoTrimestral;
-						this.detalleSolicitud.sueldoVariableSemestral =
-							this.model.sueldoSemestral;
-						this.detalleSolicitud.sueldoVariableAnual = this.model.sueldoAnual;
-						this.detalleSolicitud.tipoContrato = this.model.tipoContrato;
-						this.detalleSolicitud.unidad = this.model.unidadNegocio;
-						this.detalleSolicitud.unidadNegocio = this.model.unidadNegocio;
-
-						this.solicitudesService
-							.actualizarDetalleSolicitud(this.detalleSolicitud)
-							.subscribe((responseDetalle) => {
-								this.utilService.closeLoadingSpinner();
-								this.utilService.modalResponse(
-									"Datos ingresados correctamente",
-									"success"
-								);
-
-								this.camundaRestService
-									.getTask(environment.taskType_Notificar, this.idDeInstancia)
-									.subscribe((result) => {
-										// if result is success - bingo, we got the task id
-										this.uniqueTaskId =
-											result[0].id; /* Es como la tarea que se crea en esa instancia */
-										this.taskId = this.idDeInstancia; /* Esta es la instancia */
-
-									});
-
-								// /solicitudes/consulta-solicitudes
-
-								setTimeout(() => {
-									this.router.navigate(["/solicitudes/consulta-solicitudes"], {
-										queryParams: { idInstancia },
-									});
-								}, 1800);
-
-							});
-
-						let dataSend = {
-							idSolicitud: responseSolicitud.idSolicitud,
-							codigo: "string",
-							valor: "string",
-							estado: "string",
-							fechaRegistro: "2024-04-25T20:23:37.819Z",
-							compania: "string",
-							unidadNegocio: "string",
-							codigoPosicion: "string",
-							descripcionPosicion: "string",
-							areaDepartamento: "string",
-							localidadZona: "string",
-							nivelDireccion: "string",
-							centroCosto: "string",
-							nombreEmpleado: "string",
-							subledger: "string",
-							reportaA: "string",
-							nivelReporteA: "string",
-							supervisaA: "string",
-							tipoContrato: "string",
-							departamento: "string",
-							cargo: "string",
-							jefeSolicitante: "string",
-							responsableRRHH: "string",
-							localidad: "string",
-							fechaIngreso: "2024-04-25T20:23:37.819Z",
-							unidad: "string",
-							puesto: "string",
-							jefeInmediatoSuperior: "string",
-							jefeReferencia: "string",
-							cargoReferencia: "string",
-							fechaSalida: "2024-04-25T20:23:37.819Z",
-							puestoJefeInmediato: "string",
-							subledgerEmpleado: "string",
-							grupoDePago: "string",
-							sucursal: "string",
-							movilizacion: "string",
-							alimentacion: "string",
-							jefeAnteriorJefeReferencia: "string",
-							causaSalida: "string",
-							nombreJefeSolicitante: "string",
-							misionCargo: "string",
-							justificacion: "string",
-						};
+					this.camundaRestService.getTask(environment.taskType_Notificar, this.idDeInstancia).subscribe((result) => {
+						// if result is success - bingo, we got the task id
+						this.uniqueTaskId = result[0].id; /* Es como la tarea que se crea en esa instancia */
+						this.taskId = this.idDeInstancia; /* Esta es la instancia */
 					});
 
+					// /solicitudes/consulta-solicitudes
 
+					setTimeout(() => {
+						this.router.navigate(["/solicitudes/consulta-solicitudes"], {
+							queryParams: { idInstancia },
+						});
+					}, 1800);
+				});
+
+				let dataSend = {
+					idSolicitud: responseSolicitud.idSolicitud,
+					codigo: "string",
+					valor: "string",
+					estado: "string",
+					fechaRegistro: "2024-04-25T20:23:37.819Z",
+					compania: "string",
+					unidadNegocio: "string",
+					codigoPosicion: "string",
+					descripcionPosicion: "string",
+					areaDepartamento: "string",
+					localidadZona: "string",
+					nivelDireccion: "string",
+					centroCosto: "string",
+					nombreEmpleado: "string",
+					subledger: "string",
+					reportaA: "string",
+					nivelReporteA: "string",
+					supervisaA: "string",
+					tipoContrato: "string",
+					departamento: "string",
+					cargo: "string",
+					jefeSolicitante: "string",
+					responsableRRHH: "string",
+					localidad: "string",
+					fechaIngreso: "2024-04-25T20:23:37.819Z",
+					unidad: "string",
+					puesto: "string",
+					jefeInmediatoSuperior: "string",
+					jefeReferencia: "string",
+					cargoReferencia: "string",
+					fechaSalida: "2024-04-25T20:23:37.819Z",
+					puestoJefeInmediato: "string",
+					subledgerEmpleado: "string",
+					grupoDePago: "string",
+					sucursal: "string",
+					movilizacion: "string",
+					alimentacion: "string",
+					jefeAnteriorJefeReferencia: "string",
+					causaSalida: "string",
+					nombreJefeSolicitante: "string",
+					misionCargo: "string",
+					justificacion: "string",
+				};
 			});
+		});
 		this.submitted = true;
 	}
 
-
 	override generateVariablesFromFormFields() {
-
 		let variables: any = {};
 
 		variables.codigo = { value: this.model.codigo };
@@ -1330,10 +1164,7 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 		variables.comentariosAtencion = { value: "SEND STATIC" };
 
 		if (this.tipo_solicitud_descripcion === "requisicionPersonal") {
-			if (
-				this.tipo_motivo_descripcion === "Nuevo" ||
-				this.tipo_motivo_descripcion === "Eventual"
-			) {
+			if (this.tipo_motivo_descripcion === "Nuevo" || this.tipo_motivo_descripcion === "Eventual") {
 				variables.codigoPosicion = { value: this.model.codigoPosicion };
 				variables.misionCargo = { value: this.model.misionCargo };
 				variables.justificacionCargo = { value: this.model.justificacionCargo };
@@ -1348,8 +1179,6 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 
 		return { variables };
 	}
-
-
 
 	onCancel() {
 		this.router.navigate(["solicitudes/consulta-solicitudes"], {
@@ -1380,8 +1209,8 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 			this.solicitudesService.obtenerNivelesAprobacionRegistrados(this.solicitud.idSolicitud).subscribe({
 				next: (response) => {
 					this.dataAprobacionesPorPosicion = {
-						[this.keySelected]: response.nivelAprobacionPosicionType
-					}
+						[this.keySelected]: response.nivelAprobacionPosicionType,
+					};
 				},
 				error: (error: HttpErrorResponse) => {
 					this.utilService.modalResponse("No existen niveles de aprobación para este empleado", "error");
@@ -1391,49 +1220,32 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 	}
 
 	getDataNivelesAprobacionPorCodigoPosicion() {
-		this.solicitudesService
-			.getDataNivelesAprobacionPorCodigoPosicion(
-				this.detalleSolicitud.codigoPosicion
-			)
-			.subscribe({
-				next: (response) => {
-					this.dataNivelesAprobacionPorCodigoPosicion[
-						this.model.codigoPosicion
-					] = response.evType;
+		this.solicitudesService.getDataNivelesAprobacionPorCodigoPosicion(this.detalleSolicitud.codigoPosicion).subscribe({
+			next: (response) => {
+				this.dataNivelesAprobacionPorCodigoPosicion[this.model.codigoPosicion] = response.evType;
 
-					for (let key1 of Object.keys(this.dataNivelesDeAprobacion)) {
-						let eachDataNivelesDeAprobacion =
-							this.dataNivelesDeAprobacion[key1];
+				for (let key1 of Object.keys(this.dataNivelesDeAprobacion)) {
+					let eachDataNivelesDeAprobacion = this.dataNivelesDeAprobacion[key1];
 
-						for (let eachData of eachDataNivelesDeAprobacion) {
-							for (let key2 of Object.keys(
-								this.dataNivelesAprobacionPorCodigoPosicion
-							)) {
-								let eachDataNivelPorCodigoPosicion =
-									this.dataNivelesAprobacionPorCodigoPosicion[key2];
+					for (let eachData of eachDataNivelesDeAprobacion) {
+						for (let key2 of Object.keys(this.dataNivelesAprobacionPorCodigoPosicion)) {
+							let eachDataNivelPorCodigoPosicion = this.dataNivelesAprobacionPorCodigoPosicion[key2];
 
-								for (let eachDataNivelPorCodigo of eachDataNivelPorCodigoPosicion) {
-									if (
-										eachData.nivelDireccion ==
-										eachDataNivelPorCodigo.nivelDireccion
-									) {
-										eachData["usuario"] = eachDataNivelPorCodigo.usuario;
-										eachData["descripcionPosicion"] =
-											eachDataNivelPorCodigo.descripcionPosicion;
-										break;
-									}
+							for (let eachDataNivelPorCodigo of eachDataNivelPorCodigoPosicion) {
+								if (eachData.nivelDireccion == eachDataNivelPorCodigo.nivelDireccion) {
+									eachData["usuario"] = eachDataNivelPorCodigo.usuario;
+									eachData["descripcionPosicion"] = eachDataNivelPorCodigo.descripcionPosicion;
+									break;
 								}
 							}
 						}
 					}
-				},
-				error: (error: HttpErrorResponse) => {
-					this.utilService.modalResponse(
-						"No existen niveles de aprobación para este empleado",
-						"error"
-					);
-				},
-			});
+				}
+			},
+			error: (error: HttpErrorResponse) => {
+				this.utilService.modalResponse("No existen niveles de aprobación para este empleado", "error");
+			},
+		});
 	}
 
 	obtenerComentariosAtencionPorInstanciaRaiz() {
@@ -1441,9 +1253,9 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 			next: (response) => {
 				this.dataComentariosAprobaciones.length = 0;
 				this.dataComentariosAprobacionesPorPosicion = response.variableType;
-				this.dataComentariosAprobaciones = this.filterDataComentarios(this.solicitud.idInstancia, 'RevisionSolicitud', 'comentariosAtencion');
-				this.dataComentariosAprobacionesRRHH = this.filterDataComentarios(this.solicitud.idInstancia, 'RequisicionPersonal', 'comentariosAtencionGerenteRRHH');
-				this.dataComentariosAprobacionesCREM = this.filterDataComentarios(this.solicitud.idInstancia, 'RequisicionPersonal', 'comentariosAtencionRemuneraciones');
+				this.dataComentariosAprobaciones = this.filterDataComentarios(this.solicitud.idInstancia, "RevisionSolicitud", "comentariosAtencion");
+				this.dataComentariosAprobacionesRRHH = this.filterDataComentarios(this.solicitud.idInstancia, "RequisicionPersonal", "comentariosAtencionGerenteRRHH");
+				this.dataComentariosAprobacionesCREM = this.filterDataComentarios(this.solicitud.idInstancia, "RequisicionPersonal", "comentariosAtencionRemuneraciones");
 			},
 			error: (error: HttpErrorResponse) => {
 				this.utilService.modalResponse("No existe comentarios de aprobadores", "error");
@@ -1452,10 +1264,11 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 	}
 
 	filterDataComentarios(idInstancia: string, taskKey: string, name: string) {
-		return this.dataComentariosAprobacionesPorPosicion.filter(item =>
-			(idInstancia ? item.rootProcInstId === idInstancia : true) && //Id de instancia
-			(taskKey ? item.procDefKey === taskKey : true) &&
-			(name ? item.name === name : true)
+		return this.dataComentariosAprobacionesPorPosicion.filter(
+			(item) =>
+				(idInstancia ? item.rootProcInstId === idInstancia : true) && //Id de instancia
+				(taskKey ? item.procDefKey === taskKey : true) &&
+				(name ? item.name === name : true)
 		);
 	}
 
@@ -1476,11 +1289,11 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 						content: "",
 						styles: {
 							halign: "right",
-							fontStyle: "bold"
-						}
-					}
+							fontStyle: "bold",
+						},
+					},
 				],
-			]
+			],
 		};
 
 		const tituloDeHoja = {
@@ -1493,11 +1306,11 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 							halign: "center",
 							fontSize: 20,
 							fontStyle: "bold",
-							textColor
-						}
-					}
+							textColor,
+						},
+					},
 				],
-			]
+			],
 		};
 
 		this.solicitudesService.obtenerTareasPorInstanciaRaiz(this.solicitud.idInstancia).subscribe({
@@ -1530,7 +1343,7 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 			},
 			error: (err) => {
 				console.error(err);
-			}
+			},
 		});
 	}
 
@@ -1577,25 +1390,23 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 		autoTable(doc, {
 			theme: "grid",
 			bodyStyles: {
-				lineColor
+				lineColor,
 			},
-			body: [
-				["Creado por:", this.solicitud.usuarioCreacion, "Fecha:", format(new Date(this.solicitud.fechaCreacion), "dd/MM/yyyy"), "Solicitud No:", this.solicitud.idSolicitud],
-			],
+			body: [["Creado por:", this.solicitud.usuarioCreacion, "Fecha:", format(new Date(this.solicitud.fechaCreacion), "dd/MM/yyyy"), "Solicitud No:", this.solicitud.idSolicitud]],
 			columnStyles: {
 				0: {
 					fontStyle: "bold",
-					halign: "right"
+					halign: "right",
 				},
 				2: {
 					fontStyle: "bold",
-					halign: "right"
+					halign: "right",
 				},
 				4: {
 					fontStyle: "bold",
-					halign: "right"
-				}
-			}
+					halign: "right",
+				},
+			},
 		});
 
 		// Información de la posición
@@ -1605,18 +1416,18 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 				fillColor: backgroundCellColor,
 				textColor,
 				halign: "center",
-				lineColor
+				lineColor,
 			},
 			bodyStyles: {
-				lineColor
+				lineColor,
 			},
 			head: [
 				[
 					{
 						content: "INFORMACIÓN DE LA POSICIÓN",
-						colSpan: 4
-					}
-				]
+						colSpan: 4,
+					},
+				],
 			],
 			body: [
 				["Unidad:", this.model.unidadNegocio, "Motivo", this.solicitud.tipoMotivo],
@@ -1628,26 +1439,26 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 					"Justificación:",
 					{
 						content: this.model.justificacionCargo,
-						colSpan: 3
-					}
-				]
+						colSpan: 3,
+					},
+				],
 			],
 			columnStyles: {
 				0: {
 					fontStyle: "bold",
-					cellWidth: 30
+					cellWidth: 30,
 				},
 				1: {
-					cellWidth: 60
+					cellWidth: 60,
 				},
 				2: {
 					fontStyle: "bold",
-					cellWidth: 30
+					cellWidth: 30,
 				},
 				3: {
-					cellWidth: 60
-				}
-			}
+					cellWidth: 60,
+				},
+			},
 		});
 
 		// Funciones y responsabilidades
@@ -1657,18 +1468,18 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 				fillColor: backgroundCellColor,
 				textColor,
 				halign: "center",
-				lineColor
+				lineColor,
 			},
 			bodyStyles: {
-				lineColor
+				lineColor,
 			},
 			head: [
 				[
 					{
 						content: "FUNCIONES Y RESPONSABILIDADES",
-						colSpan: 4
-					}
-				]
+						colSpan: 4,
+					},
+				],
 			],
 			body: [
 				["Reporta a:", this.model.reportaA, "Supervisa a:", this.model.supervisaA],
@@ -1678,48 +1489,49 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 						content: this.model.misionCargo,
 						colSpan: 3,
 						styles: {
-							halign: "justify"
-						}
-					}
-				]
+							halign: "justify",
+						},
+					},
+				],
 			],
 			columnStyles: {
 				0: {
 					fontStyle: "bold",
-					cellWidth: 30
+					cellWidth: 30,
 				},
 				1: {
-					cellWidth: 60
+					cellWidth: 60,
 				},
 				2: {
 					fontStyle: "bold",
-					cellWidth: 30
+					cellWidth: 30,
 				},
 				3: {
-					cellWidth: 60
-				}
-			}
+					cellWidth: 60,
+				},
+			},
 		});
 
 		// Sección de candidato
+		// ! Revisar fecha de ingreso que no aparece o no aparece bien
 		autoTable(doc, {
 			theme: "grid",
 			headStyles: {
 				fillColor: backgroundCellColor,
 				textColor,
 				halign: "center",
-				lineColor
+				lineColor,
 			},
 			bodyStyles: {
-				lineColor
+				lineColor,
 			},
 			head: [
 				[
 					{
 						content: "SELECCIÓN DE CANDIDATO",
-						colSpan: 2
-					}
-				]
+						colSpan: 2,
+					},
+				],
 			],
 			body: [
 				[
@@ -1728,17 +1540,17 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 						styles: {
 							halign: "center",
 							textColor,
-							fontStyle: "bold"
-						}
+							fontStyle: "bold",
+						},
 					},
 					{
 						content: "FECHA:",
 						styles: {
 							halign: "center",
 							textColor,
-							fontStyle: "bold"
-						}
-					}
+							fontStyle: "bold",
+						},
+					},
 				],
 				["Actualización del perfil:", this.fechas.actualizacionPerfil],
 				["Búsqueda del candidato:", this.fechas.busquedaCandidatos],
@@ -1758,45 +1570,45 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 						colSpan: 2,
 						styles: {
 							fillColor: backgroundCellColor,
-							cellPadding: "2px"
-						}
-					}
+							cellPadding: "2px",
+						},
+					},
 				],
 				["Nombre del candidato escogido:", this.nombreCandidato],
-				["Fecha de ingreso:", this.fechas.reingreso === "" ? this.fechas.contratacionFamiliares : this.fechas.reingreso]
+				["Fecha de ingreso:", this.fechas.reingreso === "" ? this.fechas.contratacionFamiliares : this.fechas.reingreso],
 			],
 			columnStyles: {
 				0: {
 					fontStyle: "bold",
-					cellWidth: 110
+					cellWidth: 110,
 				},
 				1: {
 					cellWidth: 70,
-					halign: "center"
-				}
-			}
+					halign: "center",
+				},
+			},
 		});
 
 		// Log del flujo
-		const logData = logs.map(log => log.split("{SEPARA}"));
+		const logData = logs.map((log) => log.split("{SEPARA}"));
 
 		autoTable(doc, {
 			theme: "grid",
 			headStyles: {
 				fillColor: backgroundCellColor,
 				textColor,
-				lineColor
+				lineColor,
 			},
 			bodyStyles: {
-				lineColor
+				lineColor,
 			},
 			head: [
 				[
 					{
 						content: "Log del flujo",
-						colSpan: 3
-					}
-				]
+						colSpan: 3,
+					},
+				],
 			],
 			body: [
 				[
@@ -1805,44 +1617,44 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 						styles: {
 							halign: "center",
 							textColor,
-							fontStyle: "bold"
-						}
+							fontStyle: "bold",
+						},
 					},
 					{
 						content: "Acción",
 						styles: {
 							halign: "center",
 							textColor,
-							fontStyle: "bold"
-						}
+							fontStyle: "bold",
+						},
 					},
 					{
 						content: "Responsable",
 						styles: {
 							halign: "center",
 							textColor,
-							fontStyle: "bold"
-						}
-					}
+							fontStyle: "bold",
+						},
+					},
 				],
 				// ...this.dataAprobacionesPorPosicion[this.keySelected].map(dataAprobador => ([format(new Date(dataAprobador.nivelAprobacionType.fechaCreacion), "dd/MM/yyyy"), dataAprobador.nivelAprobacionType.ruta, dataAprobador.aprobador.usuario === "" ? "No aplica" : dataAprobador.aprobador.usuario]))
-				...logData.map(data => ([data[2].split("{IGUAL}")[1], data[1].split("{IGUAL}")[1], data[0].split("{IGUAL}")[1]]))
+				...logData.map((data) => [data[2].split("{IGUAL}")[1], data[1].split("{IGUAL}")[1], data[0].split("{IGUAL}")[1]]),
 			],
 			columnStyles: {
 				0: {
 					cellWidth: 30,
-					halign: "center"
+					halign: "center",
 				},
 				1: {
-					cellWidth: 75
+					cellWidth: 75,
 				},
 				2: {
-					cellWidth: 75
-				}
-			}
+					cellWidth: 75,
+				},
+			},
 		});
 
-		doc.save(`${this.solicitud.idSolicitud}-${format(new Date(), "dd-MM-yyyy")}.pdf`)
+		doc.save(`${this.solicitud.idSolicitud}-${format(new Date(), "dd-MM-yyyy")}.pdf`);
 	}
 
 	private exportarContratacionFamiliar(doc: jsPDF, esquinaDeHoja: any, tituloDeHoja: any, backgroundCellColor: [number, number, number], textColor: [number, number, number], lineColor: [number, number, number], logs: any[]): void {
@@ -1888,7 +1700,7 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 		autoTable(doc, {
 			theme: "grid",
 			bodyStyles: {
-				lineColor
+				lineColor,
 			},
 			body: [
 				[
@@ -1896,49 +1708,49 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 						content: "Creado por:",
 						rowSpan: 2,
 						styles: {
-							valign: "middle"
-						}
+							valign: "middle",
+						},
 					},
 					{
 						content: this.solicitud.usuarioCreacion,
 						rowSpan: 2,
 						styles: {
-							valign: "middle"
-						}
+							valign: "middle",
+						},
 					},
 					{
 						content: "Fecha:",
 						rowSpan: 2,
 						styles: {
-							valign: "middle"
-						}
+							valign: "middle",
+						},
 					},
 					{
 						content: format(new Date(this.solicitud.fechaCreacion), "dd/MM/yyyy"),
 						rowSpan: 2,
 						styles: {
-							valign: "middle"
-						}
+							valign: "middle",
+						},
 					},
 					"Solicitud No:",
-					this.solicitud.idSolicitud
+					this.solicitud.idSolicitud,
 				],
-				["Requisición de Personal No:", this.idSolicitudRP]
+				["Requisición de Personal No:", this.idSolicitudRP],
 			],
 			columnStyles: {
 				0: {
 					fontStyle: "bold",
-					halign: "right"
+					halign: "right",
 				},
 				2: {
 					fontStyle: "bold",
-					halign: "right"
+					halign: "right",
 				},
 				4: {
 					fontStyle: "bold",
-					halign: "right"
-				}
-			}
+					halign: "right",
+				},
+			},
 		});
 
 		// Información de la persona a contratar
@@ -1948,18 +1760,18 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 				fillColor: backgroundCellColor,
 				textColor,
 				halign: "center",
-				lineColor
+				lineColor,
 			},
 			bodyStyles: {
-				lineColor
+				lineColor,
 			},
 			head: [
 				[
 					{
 						content: "INFORMACIÓN DE LA PERSONA A CONTRATAR",
-						colSpan: 2
-					}
-				]
+						colSpan: 2,
+					},
+				],
 			],
 			body: [
 				["Apellidos y nombres:", this.nombreCompletoCandidato],
@@ -1969,17 +1781,17 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 				["Localidad:", this.model.localidad],
 				["Jefe Solicitante:", this.solicitud.usuarioCreacion],
 				["Responsable de RR.HH.:", this.solicitud.usuarioCreacion],
-				["Justificación:", this.model.justificacionCargo]
+				["Justificación:", this.model.justificacionCargo],
 			],
 			columnStyles: {
 				0: {
 					fontStyle: "bold",
-					cellWidth: 50
+					cellWidth: 50,
 				},
 				1: {
-					cellWidth: 130
-				}
-			}
+					cellWidth: 130,
+				},
+			},
 		});
 
 		// Datos de familiares que ya laboran en la empresa
@@ -1989,18 +1801,18 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 				fillColor: backgroundCellColor,
 				textColor,
 				halign: "center",
-				lineColor
+				lineColor,
 			},
 			bodyStyles: {
-				lineColor
+				lineColor,
 			},
 			head: [
 				[
 					{
 						content: "DATOS DE FAMILIARES QUE YA LABORAN EN LA EMPRESA",
-						colSpan: 7
-					}
-				]
+						colSpan: 7,
+					},
+				],
 			],
 			body: [
 				[
@@ -2008,99 +1820,99 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 						content: "Nombre",
 						styles: {
 							fontStyle: "bold",
-							halign: "center"
-						}
+							halign: "center",
+						},
 					},
 					{
 						content: "Fecha de ingreso",
 						styles: {
 							fontStyle: "bold",
-							halign: "center"
-						}
+							halign: "center",
+						},
 					},
 					{
 						content: "Cargo",
 						styles: {
 							fontStyle: "bold",
-							halign: "center"
-						}
+							halign: "center",
+						},
 					},
 					{
 						content: "Unidad",
 						styles: {
 							fontStyle: "bold",
-							halign: "center"
-						}
+							halign: "center",
+						},
 					},
 					{
 						content: "Departamento",
 						styles: {
 							fontStyle: "bold",
-							halign: "center"
-						}
+							halign: "center",
+						},
 					},
 					{
 						content: "Localidad",
 						styles: {
 							fontStyle: "bold",
-							halign: "center"
-						}
+							halign: "center",
+						},
 					},
 					{
 						content: "Parentezco",
 						styles: {
 							fontStyle: "bold",
-							halign: "center"
-						}
-					}
+							halign: "center",
+						},
+					},
 				],
-				...this.dataTableDatosFamiliares.map(datoFamiliar => ([datoFamiliar.nombreEmpleado, datoFamiliar.fechaCreacion as string, datoFamiliar.cargo, datoFamiliar.unidad, datoFamiliar.departamento, datoFamiliar.localidad, datoFamiliar.parentesco]))
+				...this.dataTableDatosFamiliares.map((datoFamiliar) => [datoFamiliar.nombreEmpleado, datoFamiliar.fechaCreacion as string, datoFamiliar.cargo, datoFamiliar.unidad, datoFamiliar.departamento, datoFamiliar.localidad, datoFamiliar.parentesco]),
 			],
 			columnStyles: {
 				0: {
-					cellWidth: 25
+					cellWidth: 25,
 				},
 				1: {
-					cellWidth: 25
+					cellWidth: 25,
 				},
 				2: {
-					cellWidth: 25
+					cellWidth: 25,
 				},
 				3: {
-					cellWidth: 25
+					cellWidth: 25,
 				},
 				4: {
-					cellWidth: 30
+					cellWidth: 30,
 				},
 				5: {
-					cellWidth: 25
+					cellWidth: 25,
 				},
 				6: {
-					cellWidth: 25
-				}
-			}
+					cellWidth: 25,
+				},
+			},
 		});
 
 		// Log del flujo
-		const logData = logs.map(log => log.split("{SEPARA}"));
+		const logData = logs.map((log) => log.split("{SEPARA}"));
 
 		autoTable(doc, {
 			theme: "grid",
 			headStyles: {
 				fillColor: backgroundCellColor,
 				textColor,
-				lineColor
+				lineColor,
 			},
 			bodyStyles: {
-				lineColor
+				lineColor,
 			},
 			head: [
 				[
 					{
 						content: "Log del flujo",
-						colSpan: 3
-					}
-				]
+						colSpan: 3,
+					},
+				],
 			],
 			body: [
 				[
@@ -2109,44 +1921,44 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 						styles: {
 							halign: "center",
 							textColor,
-							fontStyle: "bold"
-						}
+							fontStyle: "bold",
+						},
 					},
 					{
 						content: "Acción",
 						styles: {
 							halign: "center",
 							textColor,
-							fontStyle: "bold"
-						}
+							fontStyle: "bold",
+						},
 					},
 					{
 						content: "Responsable",
 						styles: {
 							halign: "center",
 							textColor,
-							fontStyle: "bold"
-						}
-					}
+							fontStyle: "bold",
+						},
+					},
 				],
 				// ...this.dataAprobacionesPorPosicion[this.keySelected].map(dataAprobador => ([format(new Date(dataAprobador.nivelAprobacionType.fechaCreacion), "dd/MM/yyyy"), dataAprobador.nivelAprobacionType.ruta, dataAprobador.aprobador.usuario === "" ? "No aplica" : dataAprobador.aprobador.usuario]))
-				...logData.map(data => ([data[2].split("{IGUAL}")[1], data[1].split("{IGUAL}")[1], data[0].split("{IGUAL}")[1]]))
+				...logData.map((data) => [data[2].split("{IGUAL}")[1], data[1].split("{IGUAL}")[1], data[0].split("{IGUAL}")[1]]),
 			],
 			columnStyles: {
 				0: {
 					cellWidth: 30,
-					halign: "center"
+					halign: "center",
 				},
 				1: {
-					cellWidth: 75
+					cellWidth: 75,
 				},
 				2: {
-					cellWidth: 75
-				}
-			}
+					cellWidth: 75,
+				},
+			},
 		});
 
-		doc.save(`${this.solicitud.idSolicitud}-${format(new Date(), "dd-MM-yyyy")}.pdf`)
+		doc.save(`${this.solicitud.idSolicitud}-${format(new Date(), "dd-MM-yyyy")}.pdf`);
 	}
 
 	private exportarReingresoPersonal(doc: jsPDF, esquinaDeHoja: any, tituloDeHoja: any, backgroundCellColor: [number, number, number], textColor: [number, number, number], lineColor: [number, number, number], logs: any[]): void {
@@ -2195,7 +2007,7 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 		autoTable(doc, {
 			theme: "grid",
 			bodyStyles: {
-				lineColor
+				lineColor,
 			},
 			body: [
 				[
@@ -2203,49 +2015,49 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 						content: "Creado por:",
 						rowSpan: 2,
 						styles: {
-							valign: "middle"
-						}
+							valign: "middle",
+						},
 					},
 					{
 						content: this.solicitud.usuarioCreacion,
 						rowSpan: 2,
 						styles: {
-							valign: "middle"
-						}
+							valign: "middle",
+						},
 					},
 					{
 						content: "Fecha:",
 						rowSpan: 2,
 						styles: {
-							valign: "middle"
-						}
+							valign: "middle",
+						},
 					},
 					{
 						content: format(new Date(this.solicitud.fechaCreacion), "dd/MM/yyyy"),
 						rowSpan: 2,
 						styles: {
-							valign: "middle"
-						}
+							valign: "middle",
+						},
 					},
 					"Solicitud No:",
-					this.solicitud.idSolicitud
+					this.solicitud.idSolicitud,
 				],
-				["Requisición de Personal No:", this.idSolicitudRP]
+				["Requisición de Personal No:", this.idSolicitudRP],
 			],
 			columnStyles: {
 				0: {
 					fontStyle: "bold",
-					halign: "right"
+					halign: "right",
 				},
 				2: {
 					fontStyle: "bold",
-					halign: "right"
+					halign: "right",
 				},
 				4: {
 					fontStyle: "bold",
-					halign: "right"
-				}
-			}
+					halign: "right",
+				},
+			},
 		});
 
 		// Información de la persona a contratar
@@ -2255,38 +2067,36 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 				fillColor: backgroundCellColor,
 				textColor,
 				halign: "center",
-				lineColor
+				lineColor,
 			},
 			bodyStyles: {
-				lineColor
+				lineColor,
 			},
 			head: [
 				[
 					{
 						content: "INFORMACIÓN DE LA PERSONA A CONTRATAR",
-						colSpan: 4
-					}
-				]
+						colSpan: 4,
+					},
+				],
 			],
-			body: [
-				["Apellidos y nombres:", this.nombreCompletoCandidato, "Fecha de ingreso:", format(new Date(this.modelRG.fechaIngreso), "dd/MM/yyyy")]
-			],
+			body: [["Apellidos y nombres:", this.nombreCompletoCandidato, "Fecha de ingreso:", format(new Date(this.modelRG.fechaIngreso), "dd/MM/yyyy")]],
 			columnStyles: {
 				0: {
 					fontStyle: "bold",
-					cellWidth: 40
+					cellWidth: 40,
 				},
 				1: {
-					cellWidth: 75
+					cellWidth: 75,
 				},
 				2: {
 					fontStyle: "bold",
-					cellWidth: 35
+					cellWidth: 35,
 				},
 				3: {
-					cellWidth: 30
-				}
-			}
+					cellWidth: 30,
+				},
+			},
 		});
 
 		// Datos de contratación
@@ -2296,18 +2106,18 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 				fillColor: backgroundCellColor,
 				textColor,
 				halign: "center",
-				lineColor
+				lineColor,
 			},
 			bodyStyles: {
-				lineColor
+				lineColor,
 			},
 			head: [
 				[
 					{
 						content: "DATOS DE CONTRTACIÓN",
-						colSpan: 3
-					}
-				]
+						colSpan: 3,
+					},
+				],
 			],
 			body: [
 				[
@@ -2316,25 +2126,25 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 						styles: {
 							halign: "center",
 							textColor,
-							fontStyle: "bold"
-						}
+							fontStyle: "bold",
+						},
 					},
 					{
 						content: "Contratación anterior",
 						styles: {
 							halign: "center",
 							textColor,
-							fontStyle: "bold"
-						}
+							fontStyle: "bold",
+						},
 					},
 					{
 						content: "Contratación actual",
 						styles: {
 							halign: "center",
 							textColor,
-							fontStyle: "bold"
-						}
-					}
+							fontStyle: "bold",
+						},
+					},
 				],
 				["Compañía:", this.model.compania, this.modelRG.compania],
 				["Sueldo:", `$ ${parseFloat(this.modelRG.sueldo).toFixed(2)}`, `$ ${parseFloat(this.model.sueldo).toFixed(2)}`],
@@ -2346,20 +2156,20 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 				["Fecha de Salida:", format(new Date(this.detalleSolicitudRG.fechaSalida), "dd/MM/yyyy"), format(new Date(this.detalleSolicitud.fechaSalida), "dd/MM/yyyy")],
 				["Jefe Inmediato Superior:", this.detalleSolicitudRG.jefeInmediatoSuperior, this.detalleSolicitud.jefeInmediatoSuperior],
 				["Cargo Jefe Inemdiato Superior:", this.detalleSolicitudRG.puestoJefeInmediato, this.detalleSolicitud.puestoJefeInmediato],
-				["Responsable de RR.HH.:", this.detalleSolicitudRG.responsableRRHH, this.detalleSolicitud.responsableRRHH]
+				["Responsable de RR.HH.:", this.detalleSolicitudRG.responsableRRHH, this.detalleSolicitud.responsableRRHH],
 			],
 			columnStyles: {
 				0: {
 					fontStyle: "bold",
-					cellWidth: 60
+					cellWidth: 60,
 				},
 				1: {
-					cellWidth: 60
+					cellWidth: 60,
 				},
 				2: {
-					cellWidth: 60
-				}
-			}
+					cellWidth: 60,
+				},
+			},
 		});
 
 		// Referencia de recursos humanos
@@ -2369,51 +2179,49 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 				fillColor: backgroundCellColor,
 				textColor,
 				halign: "center",
-				lineColor
+				lineColor,
 			},
 			bodyStyles: {
-				lineColor
+				lineColor,
 			},
 			head: [
 				[
 					{
 						content: "REFERENCIA DE RECURSOS HUMANOS",
-						colSpan: 4
-					}
-				]
+						colSpan: 4,
+					},
+				],
 			],
 			body: [
 				[
 					"Forma de salida:",
 					{
 						content: this.comentariosRRHH.comentario,
-						colSpan: 3
-					}
+						colSpan: 3,
+					},
 				],
 				[
 					"Causa real de salida:",
 					{
 						content: this.causaSalida,
-						colSpan: 3
-					}
+						colSpan: 3,
+					},
 				],
-				[
-					"Justificación", "", "Fecha:", format(this.currentDate, "dd/MM/yyyy")
-				]
+				["Justificación", "", "Fecha:", format(this.currentDate, "dd/MM/yyyy")],
 			],
 			columnStyles: {
 				0: {
 					fontStyle: "bold",
-					cellWidth: 40
+					cellWidth: 40,
 				},
 				2: {
 					fontStyle: "bold",
-					cellWidth: 25
+					cellWidth: 25,
 				},
 				3: {
-					cellWidth: 35
-				}
-			}
+					cellWidth: 35,
+				},
+			},
 		});
 
 		// Referencia del último jefe
@@ -2423,29 +2231,29 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 				fillColor: backgroundCellColor,
 				textColor,
 				halign: "center",
-				lineColor
+				lineColor,
 			},
 			bodyStyles: {
-				lineColor
+				lineColor,
 			},
 			head: [
 				[
 					{
 						content: "REFERENCIA DEL ÚLTIMO JEFE",
-						colSpan: 2
-					}
-				]
+						colSpan: 2,
+					},
+				],
 			],
 			body: [
 				["¿Cómo fue el desempeño en el área?:", this.comentariosJefeInmediato.comentario],
-				["Fecha:", format(this.currentDate, "dd/MM/yyyy")]
+				["Fecha:", format(this.currentDate, "dd/MM/yyyy")],
 			],
 			columnStyles: {
 				0: {
 					fontStyle: "bold",
-					cellWidth: 70
-				}
-			}
+					cellWidth: 70,
+				},
+			},
 		});
 
 		// Jefe solicitante
@@ -2455,58 +2263,58 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 				fillColor: backgroundCellColor,
 				textColor: textColor,
 				halign: "center",
-				lineColor
+				lineColor,
 			},
 			bodyStyles: {
-				lineColor
+				lineColor,
 			},
 			head: [
 				[
 					{
 						content: "JEFE SOLICITANTE",
-						colSpan: 4
-					}
-				]
+						colSpan: 4,
+					},
+				],
 			],
 			body: [
 				["Nombre del jefe solicitante:", this.detalleSolicitudRG.nombreJefeSolicitante, "Cargo:", this.detalleSolicitudRG.puesto],
-				["Justificación:", this.Comentario_Jefe_Solicitante.comentario, "Fecha:", format(this.currentDate, "dd/MM/yyyy")]
+				["Justificación:", this.Comentario_Jefe_Solicitante.comentario, "Fecha:", format(this.currentDate, "dd/MM/yyyy")],
 			],
 			columnStyles: {
 				0: {
 					fontStyle: "bold",
-					cellWidth: 60
+					cellWidth: 60,
 				},
 				2: {
 					fontStyle: "bold",
-					cellWidth: 25
+					cellWidth: 25,
 				},
 				3: {
-					cellWidth: 25
-				}
-			}
+					cellWidth: 25,
+				},
+			},
 		});
 
 		// Log del flujo
-		const logData = logs.map(log => log.split("{SEPARA}"));
+		const logData = logs.map((log) => log.split("{SEPARA}"));
 
 		autoTable(doc, {
 			theme: "grid",
 			headStyles: {
 				fillColor: backgroundCellColor,
 				textColor,
-				lineColor
+				lineColor,
 			},
 			bodyStyles: {
-				lineColor
+				lineColor,
 			},
 			head: [
 				[
 					{
 						content: "Log del flujo",
-						colSpan: 3
-					}
-				]
+						colSpan: 3,
+					},
+				],
 			],
 			body: [
 				[
@@ -2515,43 +2323,43 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 						styles: {
 							halign: "center",
 							textColor,
-							fontStyle: "bold"
-						}
+							fontStyle: "bold",
+						},
 					},
 					{
 						content: "Acción",
 						styles: {
 							halign: "center",
 							textColor,
-							fontStyle: "bold"
-						}
+							fontStyle: "bold",
+						},
 					},
 					{
 						content: "Responsable",
 						styles: {
 							halign: "center",
 							textColor,
-							fontStyle: "bold"
-						}
-					}
+							fontStyle: "bold",
+						},
+					},
 				],
-				...logData.map(data => ([data[2].split("{IGUAL}")[1], data[1].split("{IGUAL}")[1], data[0].split("{IGUAL}")[1]]))
+				...logData.map((data) => [data[2].split("{IGUAL}")[1], data[1].split("{IGUAL}")[1], data[0].split("{IGUAL}")[1]]),
 			],
 			columnStyles: {
 				0: {
 					cellWidth: 30,
-					halign: "center"
+					halign: "center",
 				},
 				1: {
-					cellWidth: 75
+					cellWidth: 75,
 				},
 				2: {
-					cellWidth: 75
-				}
-			}
+					cellWidth: 75,
+				},
+			},
 		});
 
-		doc.save(`${this.solicitud.idSolicitud}-${format(new Date(), "dd-MM-yyyy")}.pdf`)
+		doc.save(`${this.solicitud.idSolicitud}-${format(new Date(), "dd-MM-yyyy")}.pdf`);
 	}
 
 	private exportarAccionPersonal(doc: jsPDF, esquinaDeHoja: any, tituloDeHoja: any, backgroundCellColor: [number, number, number], textColor: [number, number, number], lineColor: [number, number, number], logs: any[]): void {
@@ -2600,25 +2408,23 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 		autoTable(doc, {
 			theme: "grid",
 			bodyStyles: {
-				lineColor
+				lineColor,
 			},
-			body: [
-				["Creado por:", this.solicitud.usuarioCreacion, "Fecha:", format(new Date(this.solicitud.fechaCreacion), "dd/MM/yyyy"), "Solicitud No:", this.solicitud.idSolicitud],
-			],
+			body: [["Creado por:", this.solicitud.usuarioCreacion, "Fecha:", format(new Date(this.solicitud.fechaCreacion), "dd/MM/yyyy"), "Solicitud No:", this.solicitud.idSolicitud]],
 			columnStyles: {
 				0: {
 					fontStyle: "bold",
-					halign: "right"
+					halign: "right",
 				},
 				2: {
 					fontStyle: "bold",
-					halign: "right"
+					halign: "right",
 				},
 				4: {
 					fontStyle: "bold",
-					halign: "right"
-				}
-			}
+					halign: "right",
+				},
+			},
 		});
 
 		// Información
@@ -2628,28 +2434,28 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 				fillColor: backgroundCellColor,
 				textColor,
 				halign: "center",
-				lineColor
+				lineColor,
 			},
 			bodyStyles: {
-				lineColor
+				lineColor,
 			},
 			head: [
 				[
 					{
 						content: "INFORMACIÓN",
-						colSpan: 4
-					}
-				]
+						colSpan: 4,
+					},
+				],
 			],
 			body: [
 				[
 					{
-						content: "Nombre empleado"
+						content: "Nombre empleado",
 					},
 					{
 						content: this.model.nombreCompleto,
-						colSpan: 3
-					}
+						colSpan: 3,
+					},
 				],
 				[
 					{
@@ -2657,17 +2463,17 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 						colSpan: 2,
 						styles: {
 							textColor,
-							halign: "center"
-						}
+							halign: "center",
+						},
 					},
 					{
 						content: "DESTINO",
 						colSpan: 2,
 						styles: {
 							textColor,
-							halign: "center"
-						}
-					}
+							halign: "center",
+						},
+					},
 				],
 				["Fecha de ingreso:", format(new Date(this.model.fechaIngreso), "dd/MM/yyyy"), "Fecha de cambio:", this.modelPropuestos.fechaIngreso === "" || this.modelPropuestos.fechaIngreso === undefined || this.modelPropuestos.fechaIngreso === null ? "" : format(new Date(this.modelPropuestos.fechaIngreso), "dd/MM/yyyy")],
 				["Cargo:", this.model.descrPuesto, "Cargo:", this.modelPropuestos.descrPuesto],
@@ -2681,24 +2487,24 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 				["Centro de Costos:", this.model.nomCCosto, "Centro de Costos:", this.modelPropuestos.nomCCosto],
 				["Grupo de pago:", this.model.grupoPago, "Grupo de pago:", this.modelPropuestos.grupoPago],
 				["Sucursal (Nómina):", this.model.sucursal, "Scursal (Nómina):", this.modelPropuestos.sucursal],
-				["Distribución contable:", this.model.nomCCosto.split(";")[1], "Distribución Contable:", this.modelPropuestos.nomCCosto.split(";")[1]]
+				["Distribución contable:", this.model.nomCCosto.split(";")[1], "Distribución Contable:", this.modelPropuestos.nomCCosto.split(";")[1]],
 			],
 			columnStyles: {
 				0: {
 					fontStyle: "bold",
-					cellWidth: 40
+					cellWidth: 40,
 				},
 				1: {
-					cellWidth: 50
+					cellWidth: 50,
 				},
 				2: {
 					fontStyle: "bold",
-					cellWidth: 40
+					cellWidth: 40,
 				},
 				3: {
-					cellWidth: 50
-				}
-			}
+					cellWidth: 50,
+				},
+			},
 		});
 
 		// Descripción
@@ -2708,29 +2514,29 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 				fillColor: backgroundCellColor,
 				textColor,
 				halign: "center",
-				lineColor
+				lineColor,
 			},
 			bodyStyles: {
-				lineColor
+				lineColor,
 			},
 			head: [
 				[
 					{
 						content: "DESCRIPCIÓN",
-						colSpan: 2
-					}
-				]
+						colSpan: 2,
+					},
+				],
 			],
 			body: [
 				["Tipo de Acción:", this.solicitud.tipoAccion],
-				["Justificación:", this.model.justificacionCargo]
+				["Justificación:", this.model.justificacionCargo],
 			],
 			columnStyles: {
 				0: {
 					fontStyle: "bold",
-					cellWidth: 30
-				}
-			}
+					cellWidth: 30,
+				},
+			},
 		});
 
 		// Sección para recursos humanos
@@ -2740,18 +2546,18 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 				fillColor: backgroundCellColor,
 				textColor,
 				halign: "center",
-				lineColor
+				lineColor,
 			},
 			bodyStyles: {
-				lineColor
+				lineColor,
 			},
 			head: [
 				[
 					{
 						content: "SECCIÓN PARA RECURSOS HUMANOS",
-						colSpan: 2
-					}
-				]
+						colSpan: 2,
+					},
+				],
 			],
 			body: [
 				["Observaciones:", ""],
@@ -2760,31 +2566,30 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 						content: "",
 						colSpan: 2,
 						styles: {
-							minCellHeight: 20
-						}
-					}
+							minCellHeight: 20,
+						},
+					},
 				],
 				[
 					{
 						content: "ACEPTACIÓN DEL EMPLEADO",
 						colSpan: 2,
 						styles: {
-							halign: "center"
-						}
-					}
-				]
+							halign: "center",
+						},
+					},
+				],
 			],
 			columnStyles: {
 				0: {
 					fontStyle: "bold",
-					cellWidth: 30
-				}
-			}
+					cellWidth: 30,
+				},
+			},
 		});
 
 		// Log del flujo
-		const logData = logs.map(log => log.split("{SEPARA}"));
-
+		const logData = logs.map((log) => log.split("{SEPARA}"));
 
 		// Log del flujo
 		autoTable(doc, {
@@ -2792,18 +2597,18 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 			headStyles: {
 				fillColor: backgroundCellColor,
 				textColor,
-				lineColor
+				lineColor,
 			},
 			bodyStyles: {
-				lineColor
+				lineColor,
 			},
 			head: [
 				[
 					{
 						content: "Log del flujo",
-						colSpan: 3
-					}
-				]
+						colSpan: 3,
+					},
+				],
 			],
 			body: [
 				[
@@ -2812,42 +2617,42 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 						styles: {
 							halign: "center",
 							textColor,
-							fontStyle: "bold"
-						}
+							fontStyle: "bold",
+						},
 					},
 					{
 						content: "Acción",
 						styles: {
 							halign: "center",
 							textColor,
-							fontStyle: "bold"
-						}
+							fontStyle: "bold",
+						},
 					},
 					{
 						content: "Responsable",
 						styles: {
 							halign: "center",
 							textColor,
-							fontStyle: "bold"
-						}
-					}
+							fontStyle: "bold",
+						},
+					},
 				],
-				...logData.map(data => ([data[2].split("{IGUAL}")[1], data[1].split("{IGUAL}")[1], data[0].split("{IGUAL}")[1]]))
+				...logData.map((data) => [data[2].split("{IGUAL}")[1], data[1].split("{IGUAL}")[1], data[0].split("{IGUAL}")[1]]),
 			],
 			columnStyles: {
 				0: {
 					cellWidth: 30,
-					halign: "center"
+					halign: "center",
 				},
 				1: {
-					cellWidth: 75
+					cellWidth: 75,
 				},
 				2: {
-					cellWidth: 75
-				}
-			}
+					cellWidth: 75,
+				},
+			},
 		});
 
-		doc.save(`${this.solicitud.idSolicitud}-${format(new Date(), "dd-MM-yyyy")}.pdf`)
+		doc.save(`${this.solicitud.idSolicitud}-${format(new Date(), "dd-MM-yyyy")}.pdf`);
 	}
 }
