@@ -1247,6 +1247,10 @@ export class CompletaSolicitudComponent extends CompleteTaskComponent {
 			}
 
 			if (this.taskType_Activity == environment.taskType_CompletarRequisicion) {
+				if (this.buttonValue.toUpperCase().includes("ESPERA")) {
+					this.buttonValue = "enEspera";
+				}
+
 				variables.atencionCompletarRequisicion = { value: this.buttonValue };
 			}
 		}
@@ -1257,9 +1261,9 @@ export class CompletaSolicitudComponent extends CompleteTaskComponent {
 			variables.usuario_logged_completa_RPAprobar = {
 				value: `Usuario{IGUAL}${sessionStorage.getItem(LocalStorageKeys.NombreUsuario)}{SEPARA}Accion{IGUAL}${accion} Solicitud Aprobada por ${sessionStorage.getItem(LocalStorageKeys.NivelDireccion)}{SEPARA}Fecha{IGUAL}${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`,
 			};
-		} else if (this.buttonValue.toUpperCase() === "DEVOLVER") {
-			variables.usuario_logged_completa_RPDevolver = {
-				value: `Usuario{IGUAL}${sessionStorage.getItem(LocalStorageKeys.NombreUsuario)}{SEPARA}Accion{IGUAL}${accion} Solicitud Devuelta por ${sessionStorage.getItem(LocalStorageKeys.NivelDireccion)}{SEPARA}Fecha{IGUAL}${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`,
+		} else if (this.buttonValue.toUpperCase().includes("ESPERA")) {
+			variables.usuario_logged_completa_RPEsperar = {
+				value: `Usuario{IGUAL}${sessionStorage.getItem(LocalStorageKeys.NombreUsuario)}{SEPARA}Accion{IGUAL}${accion} Solicitud en Espera por ${sessionStorage.getItem(LocalStorageKeys.NivelDireccion)}{SEPARA}Fecha{IGUAL}${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`,
 			};
 		} else {
 			variables.usuario_logged_completa_RPRechazar = {
