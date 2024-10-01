@@ -17,7 +17,7 @@ const httpOptions = {
 export class CamundaRestService {
 	private engineRestUrl = environment.camundaUrl + "engine-rest/";
 
-	constructor(private http: HttpClient) { }
+	constructor(private http: HttpClient) {}
 
 	//metodos de registro y tareas
 	getTasks(): Observable<Task[]> {
@@ -29,9 +29,7 @@ export class CamundaRestService {
 	}
 
 	getTasksOfType(type: String): Observable<Task[]> {
-		const endpoint =
-			`${this.engineRestUrl}task?sortBy=created&sortOrder=desc&maxResults=50&taskDefinitionKey=` +
-			type;
+		const endpoint = `${this.engineRestUrl}task?sortBy=created&sortOrder=desc&maxResults=50&taskDefinitionKey=` + type;
 		return this.http.get<any>(endpoint, httpOptions).pipe(
 			tap((form) => this.log(`fetched tasks of type`)),
 			catchError(this.handleError("getTasksOfType", []))
@@ -44,7 +42,6 @@ export class CamundaRestService {
 	getTask(type: String, processInstanceId: String): Observable<Task[]> {
 		const endpoint = `${this.engineRestUrl}task?sortBy=created&sortOrder=desc&maxResults=1&processInstanceId=${processInstanceId}`;
 
-		console.log('Aqui endpoint de getTask', endpoint)
 		return this.http.get<any>(endpoint, httpOptions).pipe(
 			tap((form) => this.log(`fetched tasks of type`)),
 			catchError(this.handleError("getTask", []))
@@ -116,26 +113,18 @@ export class CamundaRestService {
 		return this.engineRestUrl;
 	}
 
-	private log(message: string) { }
+	private log(message: string) {}
 
 	//Definir los procesos que estan activos
 	getProcessDefinitions(): Observable<DefinicionProceso[]> {
-		return this.http
-			.get<DefinicionProceso[]>(
-				this.engineRestUrl + "process-definition?latestVersion=true",
-				httpOptions
-			)
-			.pipe(
-				tap((processDefinition) => this.log(`fetched processDefinitions`)),
-				catchError(this.ManejoErrores(`getProcessDefinitions`, []))
-			);
+		return this.http.get<DefinicionProceso[]>(this.engineRestUrl + "process-definition?latestVersion=true", httpOptions).pipe(
+			tap((processDefinition) => this.log(`fetched processDefinitions`)),
+			catchError(this.ManejoErrores(`getProcessDefinitions`, []))
+		);
 	}
 
 	//Crea el proceso de Instancia
-	postProcessInstance(
-		processDefinitionKey: string,
-		variables: any
-	): Observable<any> {
+	postProcessInstance(processDefinitionKey: string, variables: any): Observable<any> {
 		const endpoint = `${this.engineRestUrl}process-definition/key/${processDefinitionKey}/start`;
 		return this.http.post<any>(endpoint, variables, httpOptions).pipe(
 			tap((processDifinitions) => this.log(`posted process instance`)),

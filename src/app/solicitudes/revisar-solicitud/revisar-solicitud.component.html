@@ -1463,14 +1463,14 @@
 						</div>
 					</div>
 
-					<div class="row" *ngIf="!existeMatenedores && validateTaskType('REMUNERA')">
+					<div class="row" *ngIf="!existeMatenedores && validateTaskType('REM')">
 						<div class="col">
 							<div class="input-group mb-3 contenedor">
 								<label class="input-group-text text-start label-estilo2" for="aprobar">Fecha de Comité de Remuneraciones</label>
 
 								<div class="datepicker-container">
 									<mat-form-field appearance="outline">
-										<mat-label>Fecha de Comité</mat-label>
+										<!-- <mat-label>Fecha de Comité</mat-label> -->
 
 										<input matInput [matDatepicker]="picker" [min]="minDateValidation" [max]="maxDateValidation" [(ngModel)]="fechaComite" name="fecha-comite" />
 

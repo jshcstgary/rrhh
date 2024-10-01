@@ -31,23 +31,28 @@ export class LoginComponent {
 
 	public isLoadingPerfil: boolean = false;
 	public perfilUsuario: PerfilUsuarioResponse;
-	public perfilUsuarioError: PerfilUsuarioResponse = [{
-		scg_per_codigo: "",
-		scg_per_descripcion: "",
-		message: "",
-	}, {
-		scg_per_codigo: "",
-		scg_per_descripcion: "",
-		message: "",
-	}, {
-		scg_per_codigo: "",
-		scg_per_descripcion: "",
-		message: "",
-	}, {
-		scg_per_codigo: "",
-		scg_per_descripcion: "",
-		message: "",
-	}];
+	public perfilUsuarioError: PerfilUsuarioResponse = [
+		{
+			scg_per_codigo: "",
+			scg_per_descripcion: "",
+			message: "",
+		},
+		{
+			scg_per_codigo: "",
+			scg_per_descripcion: "",
+			message: "",
+		},
+		{
+			scg_per_codigo: "",
+			scg_per_descripcion: "",
+			message: "",
+		},
+		{
+			scg_per_codigo: "",
+			scg_per_descripcion: "",
+			message: "",
+		},
+	];
 	private perfilUrl: string = environment.loginES;
 
 	// private searchSubject: Subject<string> = new Subject();
@@ -161,7 +166,6 @@ export class LoginComponent {
 					sessionStorage.removeItem(LocalStorageKeys.Perfil);
 				}
 
-				console.log(this.perfilUsuario);
 				console.error(err);
 
 				sessionStorage.removeItem(LocalStorageKeys.IdLogin);
@@ -173,7 +177,7 @@ export class LoginComponent {
 				sessionStorage.removeItem(LocalStorageKeys.CodigoPefil);
 
 				this.isLoading = false;
-			}
+			},
 		});
 	}
 
@@ -213,7 +217,7 @@ export class LoginComponent {
 			isAutenticacionLocal: true,
 		};
 
-		this.perfilCodigoSeleccionado = JSON.parse(sessionStorage.getItem(LocalStorageKeys.Perfiles)).find(data => data.scg_per_codigo === this.perfilCodigo);
+		this.perfilCodigoSeleccionado = JSON.parse(sessionStorage.getItem(LocalStorageKeys.Perfiles)).find((data) => data.scg_per_codigo === this.perfilCodigo);
 		sessionStorage.setItem(LocalStorageKeys.Perfil, this.perfilCodigoSeleccionado.scg_per_descripcion);
 
 		this.loginService.login(loginRequest).subscribe({
@@ -253,7 +257,7 @@ export class LoginComponent {
 						this.isLoading = false;
 
 						this.router.navigate(["/solicitudes/consulta-solicitudes"]);
-					}
+					},
 				});
 			},
 			error: (err) => {
@@ -276,7 +280,7 @@ export class LoginComponent {
 					confirmButtonColor: "rgb(227, 199, 22)",
 					confirmButtonText: "Ok",
 				});
-			}
+			},
 		});
 	}
 }

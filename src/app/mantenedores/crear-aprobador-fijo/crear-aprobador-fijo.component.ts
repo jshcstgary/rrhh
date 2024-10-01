@@ -34,7 +34,7 @@ export class CrearAprobadorFijoComponent {
 		this.modalService
 			.open(BuscarAprobadorFijoComponent, {
 				backdrop: "static",
-				keyboard: false
+				keyboard: false,
 			})
 			.result.then(
 				(result) => {
@@ -46,7 +46,6 @@ export class CrearAprobadorFijoComponent {
 						return;
 					}
 
-					console.log(result?.data);
 					const epelado = result?.data;
 
 					const currentdate: string = format(new Date(), "dd-MM-yyyy HH:mm:ss");
@@ -65,7 +64,7 @@ export class CrearAprobadorFijoComponent {
 					this.modelo.descripcioN_POSICION = epelado.descrPosicion;
 					this.modelo.supervisA_A = "N/A";
 					this.modelo.niveL_REPORTE = epelado.nivelReporte;
-					this.modelo.correo = epelado.correo
+					this.modelo.correo = epelado.correo;
 				},
 				(reason) => {
 					console.log(`Dismissed with: ${reason}`);
@@ -105,7 +104,7 @@ export class CrearAprobadorFijoComponent {
 				},
 				error: (error: HttpErrorResponse) => {
 					this.utilService.modalResponse(`Ya existe un registro para el Nivel de Aprobación: ${model.niveL_DIRECCION}.`, "error");
-				}
+				},
 			});
 		});
 	}

@@ -1647,7 +1647,7 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
 					if (result?.data) {
 						const data: any = result.data;
 
-						this.fechaSalida = data.fechaSalida ?? new Date();
+						this.fechaSalida = data.fechaSalida ?? new Date("");
 						this.modelRG.nombreCompleto = data.nombreCompleto;
 						this.modelRG.subledger = data.subledger ?? "0";
 						this.causaSalida = data.nombreCompania === null ? data.supervisaA : data.descr_CausaSalida ?? "";

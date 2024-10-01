@@ -81,6 +81,7 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 		finProceso: "",
 		contratacionFamiliares: "",
 		finProcesoFamiliares: "",
+		fechaIngresoCandidato: ""
 	};
 
 	// private
@@ -433,6 +434,8 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 				this.fechas.contratacionFamiliares = candidatoValues.fechaInicioContratacionFamiliares === null ? "" : this.getFormattedDate(candidatoValues.fechaInicioContratacionFamiliares);
 
 				this.fechas.finProcesoFamiliares = candidatoValues.fechaFinContratacionFamiliares === null ? "" : this.getFormattedDate(candidatoValues.fechaFinContratacionFamiliares);
+
+				this.fechas.fechaIngresoCandidato = candidatoValues.fechaIngresoCandidato === null ? "" : this.getFormattedDate(candidatoValues.fechaIngresoCandidato);
 
 				this.nombreCandidato = candidatoValues.candidato;
 
@@ -1575,7 +1578,7 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 					},
 				],
 				["Nombre del candidato escogido:", this.nombreCandidato],
-				["Fecha de ingreso:", this.fechas.reingreso === "" ? this.fechas.contratacionFamiliares : this.fechas.reingreso],
+				["Fecha de ingreso:", this.fechas.fechaIngresoCandidato === "" || this.fechas.fechaIngresoCandidato === null || this.fechas.fechaIngresoCandidato === undefined ? "" : this.fechas.fechaIngresoCandidato],
 			],
 			columnStyles: {
 				0: {

@@ -158,8 +158,8 @@ export class SolicitudesService {
 		};
 		const httpParams: HttpParamsOptions = { fromObject: myObject } as HttpParamsOptions;
 
-		// return this.http.get<IAprobacionesPosicion>(`${this.apiUrlNivelAprobacion}/aprobacionesporposicionruta`, {
-		return this.http.get<IAprobacionesPosicion>(`${this.apiUrlNivelAprobacion}/aprobacionesporposicion`, {
+		// return this.http.get<IAprobacionesPosicion>(`${this.apiUrlNivelAprobacion}/aprobacionesporposicion`, {
+		return this.http.get<IAprobacionesPosicion>(`${this.apiUrlNivelAprobacion}/aprobacionesporposicionruta`, {
 			params: new HttpParams(httpParams)
 		});
 	}

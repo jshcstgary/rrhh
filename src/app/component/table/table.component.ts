@@ -1,20 +1,8 @@
-import {
-	Component,
-	Input,
-	OnChanges,
-	OnInit,
-	SimpleChanges
-} from "@angular/core";
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from "@angular/core";
 import { UtilService } from "src/app/services/util/util.service";
 import { IInputsComponent } from "../input/input.interface";
 import { TableComponentData } from "./table.data";
-import {
-	IColumnTable,
-	IColumnsTable,
-	ISelectOptionsTable,
-	colTypeTable,
-	sortColOrderType,
-} from "./table.interface";
+import { IColumnTable, IColumnsTable, ISelectOptionsTable, colTypeTable, sortColOrderType } from "./table.interface";
 import { TableService } from "./table.service";
 @Component({
 	selector: "table-component",
@@ -23,17 +11,17 @@ import { TableService } from "./table.service";
 })
 export class TableComponent implements OnInit, OnChanges {
 	@Input({
-		required: false
+		required: false,
 	})
 	public overflowX: string = "visible";
 
 	@Input({
-		required: false
+		required: false,
 	})
 	public fixedLastColumn: boolean = false;
 
 	@Input({
-		required: false
+		required: false,
 	})
 	public fixedFirstColumn: boolean = false;
 
@@ -78,81 +66,16 @@ export class TableComponent implements OnInit, OnChanges {
 
 	// @ViewChild("observed-element") observedElement!: ElementRef | null;
 
-	constructor(public tableService: TableService, public utilService: UtilService) { }
+	constructor(public tableService: TableService, public utilService: UtilService) {}
 
 	public ngOnInit(): void {
 		this.ValidateInitDataTable();
 		this.tableService.onCheckTable(this.tableName, []);
-		this.showActionColumn = this.columns[this.columns.length - 1].actions === null || this.columns[this.columns.length - 1].actions === undefined ? false : this.columns[this.columns.length - 1].actions.some(action => action.showed);
+		this.showActionColumn = this.columns[this.columns.length - 1].actions === null || this.columns[this.columns.length - 1].actions === undefined ? false : this.columns[this.columns.length - 1].actions.some((action) => action.showed);
 	}
 	public ngOnChanges(changes: SimpleChanges): void {
 		this.ValidateInitDataTable();
 	}
-
-	// ngAfterViewInit(): void {
-	// 	const observer = new IntersectionObserver(
-	// 		(entries) => {
-	// 			entries.forEach(entry => {
-	// 				if (entry.isIntersecting) {
-	// 					console.log('El elemento ha llegado al top de la pantalla.');
-	// 					// Aquí puedes ejecutar el código que necesitas
-	// 				}
-	// 			});
-	// 		},
-	// 		{
-	// 			root: null, // Observa con respecto al viewport
-	// 			threshold: 0, // 0 significa que se activará tan pronto como el elemento esté visible
-	// 			rootMargin: '-100px 0px 0px 0px' // Ajusta este margen superior si necesitas que el evento se dispare antes de que el elemento alcance el top
-	// 		}
-	// 	);
-
-	// 	observer.observe(this.observedElement.nativeElement);
-	// }
-
-	// ngAfterViewChecked(): void {
-	// 	// Verifica si el thead está presente y si el observador no ha sido inicializado
-	// 	console.log(this.observedElement);
-	// 	console.log(this.dataTable);
-	// 	console.log(!this.isObserverInitialized);
-	// 	if (this.observedElement && this.dataTable.length > 0 && !this.isObserverInitialized) {
-	// 		console.log("DATA");
-	// 		this.isObserverInitialized = true; // Evita inicializarlo múltiples veces
-	// 		this.initObserver();
-	// 	}
-	// }
-
-	// initObserver() {
-	// 	this.observer = new IntersectionObserver(
-	// 		(entries) => {
-	// 			entries.forEach(entry => {
-	// 				if (entry.isIntersecting) {
-	// 					console.log("El elemento ha llegado al top de la pantalla.");
-	// 					// Aquí puedes ejecutar el código que necesitas
-	// 				}
-	// 			});
-	// 		},
-	// 		{
-	// 			root: null, // Observa con respecto al viewport
-	// 			threshold: 0, // 0 significa que se activará tan pronto como el elemento esté visible
-	// 			rootMargin: "-200px 0px 0px 0px" // Ajusta este margen superior si necesitas que el evento se dispare antes de que el elemento alcance el top
-	// 		}
-	// 	);
-
-	// 	this.observer.observe(this.observedElement!.nativeElement);
-	// }
-
-	// @HostListener("window:scroll", [])
-	// onWindowScroll() {
-	// 	const stickyOffset = 324; // 128px del tope de la pantalla
-	// 	const scrollPosition = window.scrollY || document.documentElement.scrollTop;
-
-	// 	// Verificar cuando el desplazamiento sea mayor a 128px
-	// 	if (scrollPosition >= stickyOffset) {
-	// 		this.isSticky = true;
-	// 	} else {
-	// 		this.isSticky = false;
-	// 	}
-	// }
 
 	/**
 	 * Función para ejecutar los procesos respectivos cuando se carga la informacion al inico o se actualiza la tabla
@@ -201,11 +124,7 @@ export class TableComponent implements OnInit, OnChanges {
 	 * @param sortColType
 	 * @returns
 	 */
-	private filterBySortColType(
-		colName: string,
-		sortColOrder: sortColOrderType,
-		sortColType: colTypeTable = "string"
-	): any[] {
+	private filterBySortColType(colName: string, sortColOrder: sortColOrderType, sortColType: colTypeTable = "string"): any[] {
 		const dataToFilter = this.dataTable;
 		let dataFiltered: any[];
 		switch (sortColType) {
@@ -257,9 +176,7 @@ export class TableComponent implements OnInit, OnChanges {
 	 * @returns
 	 */
 	private onShortDescString(array: any[], propiedad: string) {
-		return array
-			.slice()
-			.sort((a, b) => a[propiedad].localeCompare(b[propiedad]));
+		return array.slice().sort((a, b) => a[propiedad].localeCompare(b[propiedad]));
 	}
 	/**
 	 * Funciòn para ordenar la data por columna de tipo string de forma descendente
@@ -269,9 +186,7 @@ export class TableComponent implements OnInit, OnChanges {
 	 * @returns
 	 */
 	private onShortAscString(array: any[], propiedad: string) {
-		return array
-			.slice()
-			.sort((a, b) => b[propiedad].localeCompare(a[propiedad]));
+		return array.slice().sort((a, b) => b[propiedad].localeCompare(a[propiedad]));
 	}
 	/**
 	 * Función para validar si hay algun sort en otra columna, distinta a la actual, activa
@@ -279,15 +194,11 @@ export class TableComponent implements OnInit, OnChanges {
 	 * @returns retorna si esta activo o no
 	 */
 	private validateisSomeSortActive(): boolean {
-		const someSortIsActive = this.columns.find(
-			(x) => x.sortTypeOrder !== undefined
-		);
+		const someSortIsActive = this.columns.find((x) => x.sortTypeOrder !== undefined);
 		const validationSortIsActive = someSortIsActive !== undefined;
 		if (validationSortIsActive) {
 			this.sortColActive = someSortIsActive;
-			this.sortIndexColActive = this.columns.findIndex(
-				(x) => x.sortTypeOrder !== undefined
-			);
+			this.sortIndexColActive = this.columns.findIndex((x) => x.sortTypeOrder !== undefined);
 		}
 		return validationSortIsActive;
 	}
@@ -357,14 +268,8 @@ export class TableComponent implements OnInit, OnChanges {
 	 * @returns si es o no indeterminado
 	 */
 	private validateIsIndeterminateHeaderInput(): boolean {
-		const allInputCheckedAreInTable = this.rowsChecked.every((key) =>
-			this.data.some((rowTable) => rowTable.key === key)
-		);
-		return (
-			allInputCheckedAreInTable &&
-			this.rowsChecked.length < this.data.length &&
-			this.rowsChecked.length > 0
-		);
+		const allInputCheckedAreInTable = this.rowsChecked.every((key) => this.data.some((rowTable) => rowTable.key === key));
+		return allInputCheckedAreInTable && this.rowsChecked.length < this.data.length && this.rowsChecked.length > 0;
 	}
 	/**
 	 * Valida si el input de checkbox del header esta checkeado
@@ -372,12 +277,8 @@ export class TableComponent implements OnInit, OnChanges {
 	 * @returns si es o no checkeado
 	 */
 	private validateIsCheckedHeaderInput(): boolean {
-		const allInputCheckedAreInTable = this.rowsChecked.every((key) =>
-			this.data.some((rowTable) => rowTable.key === key)
-		);
-		return (
-			allInputCheckedAreInTable && this.rowsChecked.length === this.data.length
-		);
+		const allInputCheckedAreInTable = this.rowsChecked.every((key) => this.data.some((rowTable) => rowTable.key === key));
+		return allInputCheckedAreInTable && this.rowsChecked.length === this.data.length;
 	}
 	/**
 	 * Función para validar el estado del checkobx de la cabecera
@@ -428,10 +329,7 @@ export class TableComponent implements OnInit, OnChanges {
 					element.blur();
 				}
 			});
-		this.contexto[this.onSaveRowTable](
-			this.rowDataModified,
-			finishedClonningRow
-		);
+		this.contexto[this.onSaveRowTable](this.rowDataModified, finishedClonningRow);
 	}
 
 	/**
@@ -501,15 +399,13 @@ export class TableComponent implements OnInit, OnChanges {
 			//
 			return head.dataIndexesToJoin
 				? head.dataIndexesToJoin
-					.map((prop) => {
-						return tareaRow[prop];
-					})
-					.join(" - ")
+						.map((prop) => {
+							return tareaRow[prop];
+						})
+						.join(" - ")
 				: tareaRow[head.dataIndex];
 		}
-		return head.dataIndexesToJoin
-			? head.dataIndexesToJoin.map((prop) => row[prop]).join(" - ")
-			: row[head.dataIndex];
+		return head.dataIndexesToJoin ? head.dataIndexesToJoin.map((prop) => row[prop]).join(" - ") : row[head.dataIndex];
 	}
 
 	public onRowChangeEmitter(value: any, id: any) {

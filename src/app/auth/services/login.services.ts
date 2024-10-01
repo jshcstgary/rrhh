@@ -12,7 +12,7 @@ export class LoginServices {
 	private loginUrl: string = environment.loginES;
 	private perfilUrl: string = environment.perfilUsuarioES;
 
-	constructor(private http: HttpClient) { }
+	constructor(private http: HttpClient) {}
 
 	public getPerfilesUsuario(PerfilBody: LoginRequest): Observable<PerfilUsuarioResponse> {
 		return this.http.post<PerfilUsuarioResponse>(`${this.perfilUrl}`, PerfilBody);
@@ -58,27 +58,23 @@ export class LoginServices {
 		//}
 	}
 
-	createHeaders(): HttpHeaders { //funcion global para el headers
+	createHeaders(): HttpHeaders {
+		//funcion global para el headers
 		this.isAuthenticated();
-		const currentUser = localStorage.getItem('EjTrSIkX8MUkIQGPRD6mLQwZ5y0gWK5FjV05Aj3bnxDIySz1EW');
+		const currentUser = localStorage.getItem("EjTrSIkX8MUkIQGPRD6mLQwZ5y0gWK5FjV05Aj3bnxDIySz1EW");
 		if (currentUser) {
 			const authData = JSON.parse(currentUser);
-			const token = authData ? authData.token : '';
+			const token = authData ? authData.token : "";
 			const headers = new HttpHeaders({
-				'Content-Type': 'application/json',
-				'Sesion': currentUser,
-				'Authorization': `Bearer ${token}`
+				"Content-Type": "application/json",
+				Sesion: currentUser,
+				Authorization: `Bearer ${token}`,
 			});
 
-			console.log("retorna headers");
-
 			return headers;
-
-		}
-		else {
-			console.log('No hay un usuario actual');
+		} else {
+			console.log("No hay un usuario actual");
 			return null;
 		}
 	}
-
 }

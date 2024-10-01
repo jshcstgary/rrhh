@@ -30,7 +30,6 @@ export class TablaComponent {
 
 		row[dataIndex] = input.value;
 
-		console.log(row);
 		return;
 	}
 

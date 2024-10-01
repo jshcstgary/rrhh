@@ -1,6 +1,6 @@
 <div class="p-2 buscar-aprobador-fijo-modal">
 	<form class="input-group my-2" [formGroup]="myForm" (ngSubmit)="onSubmit()">
-		<input type="text" class="form-control" formControlName="searchInput" placeholder="Ingrese código de posición, subledger, nombre o correo del empleado" />
+		<input type="text" class="form-control" formControlName="searchInput" placeholder="Ingrese código de posición, subledger, nombre, correo del empleado o cédula" />
 
 		<button type="submit" class="btn btn-info" [disabled]="myForm.invalid">Buscar</button>
 	</form>

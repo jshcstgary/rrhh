@@ -4,7 +4,7 @@
 	<hr />
 
 	<form class="input-group my-2" [formGroup]="myForm" (ngSubmit)="getDataEmpleadosEvolution()">
-		<input type="text" class="form-control" formControlName="searchInput" placeholder="Ingrese código de posición, subledger, nombre o correo del empleado" />
+		<input type="text" class="form-control" formControlName="searchInput" placeholder="Ingrese código de posición, subledger, nombre, correo del empleado o cédula" />
 
 		<button type="submit" class="btn btn-info" [disabled]="myForm.invalid">Buscar</button>
 	</form>
@@ -88,9 +88,9 @@
 
 	<div class="row mb-3">
 		<div class="col-12 input-group align-items-center">
-			<label class="label-estilo" for="fields.comentarios" style="font-size: 14px; width: 15%;">Usuario:</label>
+			<label class="label-estilo" for="fields.comentarios" style="font-size: 14px; width: 15%">Usuario:</label>
 
-			<span style="color: black; font-size: 14px;">{{ usuarioAprobador }}</span>
+			<span style="color: black; font-size: 14px">{{ usuarioAprobador }}</span>
 		</div>
 	</div>
 

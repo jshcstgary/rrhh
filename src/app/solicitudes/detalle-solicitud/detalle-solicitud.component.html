@@ -266,24 +266,6 @@
 						<div class="row">
 							<div class="col-md-6">
 								<div class="input-group mb-3 align-items-center">
-									<label class="input-group-text text-start label-estilo" for="tipoMotivo">Sueldo</label>
-
-									<span style="color: black; font-size: 14px" class="text-start w-50">$ {{ modelRG.sueldo | number : "1.2-2" }}</span>
-								</div>
-							</div>
-
-							<div class="col-md-6">
-								<div class="input-group mb-3 align-items-center">
-									<label class="input-group-text text-start label-estilo" for="tipoMotivo">Sueldo</label>
-
-									<span style="color: black; font-size: 14px" class="text-start w-50">$ {{ model.sueldo | number : "1.2-2" }}</span>
-								</div>
-							</div>
-						</div>
-
-						<div class="row">
-							<div class="col-md-6">
-								<div class="input-group mb-3 align-items-center">
 									<label class="input-group-text text-start label-estilo" for="tipoMotivo">Unidad de Negocio</label>
 
 									<span style="color: black; font-size: 14px" class="text-start w-50">{{ modelRG.unidadNegocio }}</span>
@@ -447,6 +429,24 @@
 
 							<div class="col-md-6">
 								<h2 class="label-estilo sol-danger text-center w-100">Actual</h2>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col-md-6">
+								<div class="input-group mb-3 align-items-center">
+									<label class="input-group-text text-start label-estilo" for="tipoMotivo">Sueldo</label>
+
+									<span style="color: black; font-size: 14px" class="text-start w-50">$ {{ modelRG.sueldo | number : "1.2-2" }}</span>
+								</div>
+							</div>
+
+							<div class="col-md-6">
+								<div class="input-group mb-3 align-items-center">
+									<label class="input-group-text text-start label-estilo" for="tipoMotivo">Sueldo</label>
+
+									<span style="color: black; font-size: 14px" class="text-start w-50">$ {{ model.sueldo | number : "1.2-2" }}</span>
+								</div>
 							</div>
 						</div>
 
@@ -1185,50 +1185,6 @@
 					<!-- ! Tipo de Proceso -->
 					<app-solicitud-seccion-desplegable titleSummary="Tipo de Procesos">
 						<div>
-							<!-- <div class="mb-4">
-								<h3 class="sol-danger">Reingreso</h3>
-							</div>
-
-							<div class="row">
-								<div class="col-md-6">
-									<div class="input-group mb-3 align-items-center">
-										<label for="input1" class="input-group-text label-estilo">Inicio de proceso</label>
-
-										<span style="font-size: 14px" class="w-50">{{ fechas.reingreso }}</span>
-									</div>
-								</div>
-
-								<div class="col-md-6">
-									<div class="input-group mb-3 align-items-center">
-										<label for="input2" class="input-group-text label-estilo">Fin de proceso</label>
-
-										<span style="font-size: 14px" class="w-50">{{ fechas.finProceso }}</span>
-									</div>
-								</div>
-							</div>
-
-							<div class="mb-4">
-								<h3 class="sol-danger">Contratación de familiares</h3>
-							</div>
-
-							<div class="row">
-								<div class="col-md-6">
-									<div class="input-group mb-3 align-items-center">
-										<label for="input1" class="input-group-text label-estilo">Inicio de proceso</label>
-
-										<span style="font-size: 14px" class="w-50">{{ fechas.contratacionFamiliares }}</span>
-									</div>
-								</div>
-
-								<div class="col-md-6">
-									<div class="input-group mb-3 align-items-center">
-										<label for="input2" class="input-group-text label-estilo">Fin de proceso</label>
-
-										<span style="font-size: 14px" class="w-50">{{ fechas.finProcesoFamiliares }}</span>
-									</div>
-								</div>
-							</div> -->
-
 							<div class="row">
 								<div class="col-md-6">
 									<div class="input-group mb-3 align-items-center">
@@ -1272,7 +1228,7 @@
 									<div class="input-group mb-3 align-items-center">
 										<label class="input-group-text text-start label-estilo2" for="nombre-candidato">Fecha de ingreso</label>
 
-										<span style="font-size: 14px" class="w-75">{{ fechas.finProcesoContratacion === "" || fechas.finProcesoContratacion === undefined || fechas.finProcesoContratacion === null ? "" : fechas.finProcesoContratacion }}</span>
+										<span style="font-size: 14px" class="w-75">{{ fechas.finProcesoContratacion === "" || fechas.finProcesoContratacion === undefined || fechas.finProcesoContratacion === null ? "" : fechas.fechaIngresoCandidato }}</span>
 									</div>
 								</div>
 							</div>

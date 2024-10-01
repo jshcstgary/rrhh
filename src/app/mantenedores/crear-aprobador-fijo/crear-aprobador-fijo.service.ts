@@ -9,8 +9,6 @@ import { environment } from "src/environments/environment";
 	providedIn: "root",
 })
 export class CrearAprobadorFijoService {
-	// private apiUrlNivelAprobacion = environment.nivelAprobacionServiceES;
-	// private nivelAprobacionRefreshServiceES = environment.nivelAprobacionRefreshServiceES;
 	private apiUrlAprobadoresFijos = environment.aprobadoresFijosServiceES;
 
 	constructor(private http: HttpClient) { }
@@ -26,31 +24,4 @@ export class CrearAprobadorFijoService {
 
 		return this.http.post<any>(this.apiUrlAprobadoresFijos, request);
 	}
-
-	// public guardarNivelAprobacion(request: any): Observable<any> {
-	// 	console.log("2");
-	// 	request.fechaCreacion = new Date();
-	// 	request.fechaActualizacion = new Date();
-	// 	request.usuarioCreacion = sessionStorage.getItem(LocalStorageKeys.IdLogin);
-	// 	request.usuarioActualizacion = null;
-
-	// 	return this.http.post<any>(this.apiUrlNivelAprobacion, request);
-	// }
-
-	// public actualizarNivelAprobacion(request: any): Observable<any> {
-	// 	request.fechA_MODIFICACION = new Date();
-	// 	request.usuariO_MODIFICACION = sessionStorage.getItem(LocalStorageKeys.IdLogin);
-
-	// 	convertTimeZonedDate(request.usuariO_MODIFICACION);
-
-	// 	return this.http.put<any>(this.apiUrlNivelAprobacion, request);
-	// }
-
-	// public getNivelById(id: number): Observable<any> {
-	// 	return this.http.get<any>(`${this.apiUrlNivelAprobacion}/${id}`);
-	// }
-
-	// refrescarNivelesAprobaciones(): Observable<any> {
-	// 	return this.http.get<any>(`${this.nivelAprobacionRefreshServiceES}`);
-	// }
 }

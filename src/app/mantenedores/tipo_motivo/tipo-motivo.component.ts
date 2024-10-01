@@ -21,10 +21,7 @@ import { Control } from "src/app/types/permiso.type";
 import { environment } from "src/environments/environment";
 import Swal from "sweetalert2";
 import { TipomotivoData } from "./tipo-motivo.data";
-import {
-	ITipomotivo,
-	ITipomotivoTable
-} from "./tipo-motivo.interface";
+import { ITipomotivo, ITipomotivoTable } from "./tipo-motivo.interface";
 import { TipoMotivoService } from "./tipo-motivo.service";
 
 @Component({
@@ -37,60 +34,48 @@ export class TipoMotivoComponent implements OnInit {
 
 	public controlsPermissions: PageControlPermiso = {
 		[TipoMotivoPageControlPermission.FiltroTipoSolicitud]: {
-			"codigo_Control": "",
-			"habilitar": false,
-			"modificar": false,
-			"visualizar": false
+			codigo_Control: "",
+			habilitar: false,
+			modificar: false,
+			visualizar: false,
 		},
 		[TipoMotivoPageControlPermission.ButtonAgregar]: {
-			"codigo_Control": "",
-			"habilitar": false,
-			"modificar": false,
-			"visualizar": false
+			codigo_Control: "",
+			habilitar: false,
+			modificar: false,
+			visualizar: false,
 		},
 		[TipoMotivoPageControlPermission.ButtonExportar]: {
-			"codigo_Control": "",
-			"habilitar": false,
-			"modificar": false,
-			"visualizar": false
+			codigo_Control: "",
+			habilitar: false,
+			modificar: false,
+			visualizar: false,
 		},
 		[TipoMotivoPageControlPermission.ButtonEditar]: {
-			"codigo_Control": "",
-			"habilitar": false,
-			"modificar": false,
-			"visualizar": false
+			codigo_Control: "",
+			habilitar: false,
+			modificar: false,
+			visualizar: false,
 		},
 		[TipoMotivoPageControlPermission.ButtonDuplicar]: {
-			"codigo_Control": "",
-			"habilitar": false,
-			"modificar": false,
-			"visualizar": false
-		}
+			codigo_Control: "",
+			habilitar: false,
+			modificar: false,
+			visualizar: false,
+		},
 	};
 
 	public columnsTable: IColumnsTable = TipomotivoData.columns;
 	public dataTable: any[] = [];
 	public dataTableActive: any[] = [];
 	public dataTableInactive: any[] = [];
-	public tableInputsEditRow: IInputsComponent =
-		TipomotivoData.tableInputsEditRow;
+	public tableInputsEditRow: IInputsComponent = TipomotivoData.tableInputsEditRow;
 	public colsToFilterByText: string[] = TipomotivoData.colsToFilterByText;
 	public IdRowToClone: string = null;
-	public defaultEmptyRowTable: ITipomotivoTable =
-		TipomotivoData.defaultEmptyRowTable;
+	public defaultEmptyRowTable: ITipomotivoTable = TipomotivoData.defaultEmptyRowTable;
 	public dataTipoSolicitudes: any[] = [];
-	public codigoReporte: reportCodeEnum =
-		reportCodeEnum.MANTENIMIENTO_TIPO_MOTIVO;
-	constructor(
-		private tipomotivosService: TipoMotivoService,
-		private tableService: TableService,
-		private validationsService: ValidationsService,
-		private utilService: UtilService,
-		private formService: FormService,
-		private inputService: InputService,
-		private mantenimientoService: MantenimientoService,
-		private permissionService: PermisoService
-	) {
+	public codigoReporte: reportCodeEnum = reportCodeEnum.MANTENIMIENTO_TIPO_MOTIVO;
+	constructor(private tipomotivosService: TipoMotivoService, private tableService: TableService, private validationsService: ValidationsService, private utilService: UtilService, private formService: FormService, private inputService: InputService, private mantenimientoService: MantenimientoService, private permissionService: PermisoService) {
 		if (sessionStorage.getItem(LocalStorageKeys.Reloaded)! === "0" || sessionStorage.getItem(LocalStorageKeys.Reloaded) === null) {
 			sessionStorage.setItem(LocalStorageKeys.Reloaded, "1");
 
@@ -103,11 +88,11 @@ export class TipoMotivoComponent implements OnInit {
 	ngOnInit(): void {
 		this.utilService.openLoadingSpinner("Cargando información, espere por favor...");
 
-		this.columnsTable[this.columnsTable.length - 1].actions.forEach(action => {
+		this.columnsTable[this.columnsTable.length - 1].actions.forEach((action) => {
 			if (action.id === "editOnTable") {
-				action.showed = this.controlsPermissions[TipoMotivoPageControlPermission.ButtonEditar].visualizar
+				action.showed = this.controlsPermissions[TipoMotivoPageControlPermission.ButtonEditar].visualizar;
 			} else if (action.id === "cloneOnTable") {
-				action.showed = this.controlsPermissions[TipoMotivoPageControlPermission.ButtonDuplicar].visualizar
+				action.showed = this.controlsPermissions[TipoMotivoPageControlPermission.ButtonDuplicar].visualizar;
 			}
 		});
 
@@ -117,7 +102,7 @@ export class TipoMotivoComponent implements OnInit {
 	private getPermissions(): void {
 		const controlsPermission: Control[] = this.permissionService.getPagePermission(this.pageCode);
 
-		controlsPermission.forEach(controlPermission => {
+		controlsPermission.forEach((controlPermission) => {
 			if (controlPermission.codigo_Control === "01") {
 				this.controlsPermissions[TipoMotivoPageControlPermission.FiltroTipoSolicitud] = controlPermission;
 			} else if (controlPermission.codigo_Control === "02") {
@@ -135,12 +120,15 @@ export class TipoMotivoComponent implements OnInit {
 	private getDataToCombo() {
 		return this.mantenimientoService.getTipoSolicitud().subscribe({
 			next: (response: any) => {
-				const comboTipoSolicitud = this.inputService.formatDataToOptionsValueInLabel(response.tipoSolicitudType.filter(data => data.estado === "A"), "tipoSolicitud", "id");
+				const comboTipoSolicitud = this.inputService.formatDataToOptionsValueInLabel(
+					response.tipoSolicitudType.filter((data) => data.estado === "A"),
+					"tipoSolicitud",
+					"id"
+				);
 
 				this.dataTipoSolicitudes = response.tipoSolicitudType;
 
 				this.tableInputsEditRow = this.formService.changeValuePropFormById("tipoSolicitudId", this.tableInputsEditRow, "options", comboTipoSolicitud);
-				console.log(this.tableInputsEditRow);
 
 				this.getDataToTable();
 			},
@@ -162,7 +150,7 @@ export class TipoMotivoComponent implements OnInit {
 						...motivoResponse,
 						estado: motivoResponse.estado === "A",
 						tipoSolicitudFormatted: this.formatTipoSolicitudEstaciones(motivoResponse),
-						fechaActualizacion: new DatePipe('en-CO').transform(motivoResponse.fechaActualizacion, "dd/MM/yyyy HH:mm:ss")
+						fechaActualizacion: new DatePipe("en-CO").transform(motivoResponse.fechaActualizacion, "dd/MM/yyyy HH:mm:ss"),
 					}))
 					.sort((a, b) => {
 						const tipoSolicitudComparacion = a.tipoSolicitudFormatted.localeCompare(b.tipoSolicitudFormatted);
@@ -174,8 +162,8 @@ export class TipoMotivoComponent implements OnInit {
 						return a.tipoMotivo.localeCompare(b.tipoMotivo);
 					});
 
-				this.dataTableActive = this.dataTable.filter(data => data.estado);
-				this.dataTableInactive = this.dataTable.filter(data => !data.estado);
+				this.dataTableActive = this.dataTable.filter((data) => data.estado);
+				this.dataTableInactive = this.dataTable.filter((data) => !data.estado);
 
 				this.utilService.closeLoadingSpinner();
 
@@ -187,13 +175,11 @@ export class TipoMotivoComponent implements OnInit {
 				this.utilService.closeLoadingSpinner();
 
 				this.utilService.modalResponse(error.error, "error");
-			}
+			},
 		});
 	}
 	private formatTipoSolicitudEstaciones(motivoResponse: ITipomotivo): string {
-		const tipoSolcicitud = this.dataTipoSolicitudes.find(
-			(tipoSolcicitud) => tipoSolcicitud.id == motivoResponse.tipoSolicitudId
-		);
+		const tipoSolcicitud = this.dataTipoSolicitudes.find((tipoSolcicitud) => tipoSolcicitud.id == motivoResponse.tipoSolicitudId);
 		if (tipoSolcicitud) {
 			return tipoSolcicitud.tipoSolicitud;
 		}
@@ -209,8 +195,7 @@ export class TipoMotivoComponent implements OnInit {
 			next: (response) => {
 				this.getDataToTable(response);
 			},
-			error: (error: HttpErrorResponse) =>
-				this.utilService.modalResponse(error.error, "error"),
+			error: (error: HttpErrorResponse) => this.utilService.modalResponse(error.error, "error"),
 		});
 	}
 	private onSaveRowTable(rowData: ITipomotivoTable, finishedClonningRow: boolean) {
@@ -232,8 +217,7 @@ export class TipoMotivoComponent implements OnInit {
 						}
 					});
 				},
-				error: (error: HttpErrorResponse) =>
-					this.utilService.modalResponse(error.error, "error"),
+				error: (error: HttpErrorResponse) => this.utilService.modalResponse(error.error, "error"),
 			});
 		} else {
 			/* Crear */
@@ -249,8 +233,7 @@ export class TipoMotivoComponent implements OnInit {
 						}
 					});
 				},
-				error: (error: HttpErrorResponse) =>
-					this.utilService.modalResponse(error.error, "error"),
+				error: (error: HttpErrorResponse) => this.utilService.modalResponse(error.error, "error"),
 			});
 		}
 	}

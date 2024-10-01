@@ -11,7 +11,7 @@ import { CrearNivelesAprobacionService } from "./crear-niveles-aprobacion.servic
 @Component({
 	selector: "app-crear-niveles-aprobacion",
 	templateUrl: "./crear-niveles-aprobacion.component.html",
-	styleUrls: ["./crear-niveles-aprobacion.component.scss"]
+	styleUrls: ["./crear-niveles-aprobacion.component.scss"],
 })
 export class CrearNivelesAprobacionComponent implements OnInit {
 	public dataTipoSolicitudes: any[] = [];
@@ -38,13 +38,13 @@ export class CrearNivelesAprobacionComponent implements OnInit {
 		idTipoMotivo: null,
 		idAccion: null,
 		idTipoRuta: null,
-		idNivelDireccion: null
+		idNivelDireccion: null,
 	};
 
 	public idNivelesAprobacionRuta: {
 		[key: string]: string;
 	} = {};
-	public idNivelesAprobacionRuta2: any[]=[];
+	public idNivelesAprobacionRuta2: any[] = [];
 	// public nivelesAprobacion = {
 	//   nivelAprobacion1: {
 	//     idNivelAprobacionRuta: "",
@@ -91,22 +91,14 @@ export class CrearNivelesAprobacionComponent implements OnInit {
 
 	public tipoSolicitudSeleccionada: any;
 
-	public dataTiposMotivosPorTipoSolicitud: { [idSolicitud: number]: any[] } =
-		{};
+	public dataTiposMotivosPorTipoSolicitud: { [idSolicitud: number]: any[] } = {};
 	public dataAccionesPorTipoSolicitud: { [idSolicitud: number]: any[] } = {};
 
 	public dataRutasPorTipoRuta: { [idSolicitud: number]: any[] } = {};
 
 	public codigoTipoSolicitud: string = "";
 
-	constructor(
-		private config: NgSelectConfig,
-		private router: Router,
-		private route: ActivatedRoute,
-		private mantenimientoService: MantenimientoService,
-		private utilService: UtilService,
-		private serviceNivelesAprobacion: CrearNivelesAprobacionService
-	) {
+	constructor(private config: NgSelectConfig, private router: Router, private route: ActivatedRoute, private mantenimientoService: MantenimientoService, private utilService: UtilService, private serviceNivelesAprobacion: CrearNivelesAprobacionService) {
 		this.config.notFoundText = "Custom not found";
 		this.config.appendTo = "body";
 		this.config.bindValue = "value";
@@ -130,7 +122,7 @@ export class CrearNivelesAprobacionComponent implements OnInit {
 					this.dataRuta = response;
 
 					this.mantenimientoService.getRutasPorTipoRuta(this.aprobadorFijoTipoRuta.id).subscribe({
-						next: response => {
+						next: (response) => {
 							this.dataRuta.push(...response);
 
 							this.idNivelesAprobacionRuta = {};
@@ -144,7 +136,7 @@ export class CrearNivelesAprobacionComponent implements OnInit {
 						},
 						error: (error: HttpErrorResponse) => {
 							this.utilService.modalResponse(error.error, "error");
-						}
+						},
 					});
 				},
 				error: (error: HttpErrorResponse) => {
@@ -159,7 +151,6 @@ export class CrearNivelesAprobacionComponent implements OnInit {
 
 		this.desactivarTipoMotivoYAccion = this.restrictionsIds.includes(codigoTipoSolicitud);
 
-		console.log(this.desactivarTipoMotivoYAccion);
 		if (this.desactivarTipoMotivoYAccion) {
 			this.modelHead.idTipoMotivo = 0;
 			// this.modelHead.idTipoMotivo = 0;
@@ -171,7 +162,7 @@ export class CrearNivelesAprobacionComponent implements OnInit {
 			forkJoin([this.mantenimientoService.getTiposMotivosPorTipoSolicitud(this.modelHead.idTipoSolicitud), this.mantenimientoService.getAccionesPorTipoSolicitud(this.modelHead.idTipoSolicitud)]).subscribe({
 				next: ([tipoMotivo, accion]) => {
 					this.dataTipoMotivo = tipoMotivo
-						.filter(data => data.estado === "A")
+						.filter((data) => data.estado === "A")
 						.map((r) => ({
 							id: r.id,
 							descripcion: r.tipoMotivo,
@@ -184,7 +175,7 @@ export class CrearNivelesAprobacionComponent implements OnInit {
 							descripcion: r.accion,
 						}))
 						.sort((a, b) => a.descripcion.toUpperCase().localeCompare(b.descripcion.toUpperCase()));
-				}
+				},
 			});
 		}
 	}
@@ -193,14 +184,14 @@ export class CrearNivelesAprobacionComponent implements OnInit {
 		return this.mantenimientoService.getTipoSolicitud().subscribe({
 			next: (response: any) => {
 				this.dataTipoSolicitudes = response.tipoSolicitudType
-					.filter(data => data.estado === "A")
+					.filter((data) => data.estado === "A")
 					.map((r) => ({
 						id: r.id,
 						descripcion: r.tipoSolicitud,
-						codigoTipoSolicitud: r.codigoTipoSolicitud
+						codigoTipoSolicitud: r.codigoTipoSolicitud,
 					}))
 					.sort((a, b) => a.descripcion.toUpperCase().localeCompare(b.descripcion.toUpperCase()));
-				},
+			},
 			error: (error: HttpErrorResponse) => {
 				this.utilService.modalResponse(error.error, "error");
 			},
@@ -211,7 +202,7 @@ export class CrearNivelesAprobacionComponent implements OnInit {
 		return this.mantenimientoService.getTipoMotivo().subscribe({
 			next: (response) => {
 				this.dataTipoMotivo = response
-					.filter(data => data.estado === "A")
+					.filter((data) => data.estado === "A")
 					.map((r) => ({
 						id: r.id,
 						descripcion: r.tipoMotivo,
@@ -240,10 +231,10 @@ export class CrearNivelesAprobacionComponent implements OnInit {
 	ObtenerServicioTipoRuta() {
 		return this.mantenimientoService.getTipoRuta().subscribe({
 			next: (response) => {
-				this.aprobadorFijoTipoRuta = response.tipoRutaType.find(data => data.tipoRuta.toUpperCase().includes("FIJ"));
+				this.aprobadorFijoTipoRuta = response.tipoRutaType.find((data) => data.tipoRuta.toUpperCase().includes("FIJ"));
 
 				this.dataTipoRuta = response.tipoRutaType
-					.filter(data => !data.tipoRuta.toUpperCase().includes("FIJ"))
+					.filter((data) => !data.tipoRuta.toUpperCase().includes("FIJ"))
 					.filter(({ estado }) => estado === "A")
 					.map((r) => ({
 						id: r.id,
@@ -260,13 +251,7 @@ export class CrearNivelesAprobacionComponent implements OnInit {
 	ObtenerServicioNivelDireccion() {
 		return this.mantenimientoService.getNivelesPorTipo("ND").subscribe({
 			next: (response) => {
-				this.dataNivelDireccion = [
-					...new Set(
-						response.evType
-							.map(({ nivelDir }) => nivelDir)
-							.sort((a, b) => a.toUpperCase().localeCompare(b.toUpperCase()))
-					)
-				];
+				this.dataNivelDireccion = [...new Set(response.evType.map(({ nivelDir }) => nivelDir).sort((a, b) => a.toUpperCase().localeCompare(b.toUpperCase())))];
 			},
 			error: (error: HttpErrorResponse) => {
 				this.utilService.modalResponse(error.error, "error");
@@ -276,7 +261,6 @@ export class CrearNivelesAprobacionComponent implements OnInit {
 
 	// Cambio en el consumo del API comentado tveas
 	ObtenerServicioNivelAprobacion() {
-		console.log("Executing ObtenerServicioNivelAprobacion() method");
 		return this.mantenimientoService.getCatalogo("RBPNA").subscribe({
 			next: (res) => {
 				this.dataNivelAprobacion = res.itemCatalogoTypes
@@ -285,12 +269,12 @@ export class CrearNivelesAprobacionComponent implements OnInit {
 						descripcion: r.valor,
 					}))
 					.sort((a, b) => a.descripcion.toUpperCase().localeCompare(b.descripcion.toUpperCase()));
-			}
+			},
 		});
 	}
 
 	public validateData(): boolean {
-		const tipoSolicitud = this.dataTipoSolicitudes.find(data => data.id === this.modelHead.idTipoSolicitud);
+		const tipoSolicitud = this.dataTipoSolicitudes.find((data) => data.id === this.modelHead.idTipoSolicitud);
 
 		if (tipoSolicitud === undefined) {
 			return true;
@@ -327,9 +311,9 @@ export class CrearNivelesAprobacionComponent implements OnInit {
 					...modelo,
 					...this.modelHead,
 					idRuta: parseInt(key),
-					tipoMotivo: this.idNivelesAprobacionRuta2.filter((x) => x.id===parseInt(key))[0].indice.toString(),
+					tipoMotivo: this.idNivelesAprobacionRuta2.filter((x) => x.id === parseInt(key))[0].indice.toString(),
 					idNivelAprobacionRuta: value,
-					estado: "A"
+					estado: "A",
 				};
 				return modelo;
 			});
@@ -347,7 +331,7 @@ export class CrearNivelesAprobacionComponent implements OnInit {
 			error: (error: HttpErrorResponse) => {
 				// this.utilService.modalResponse(error.error, "error");
 				this.utilService.modalResponse("Ya existe un Nivel de Aprobación para esta configuración.", "error");
-			}
+			},
 		});
 	}
 }

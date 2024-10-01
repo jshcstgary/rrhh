@@ -58,8 +58,7 @@ export class EditarAprobadorFijoComponent implements OnInit {
 				// let fechaActual = new Date();
 				this.modelo.subleger = response.subleger;
 				this.modelo.nombre = response.nombre;
-				this.modelo.codigO_POSICION_REPORTA_A =
-					response.codigO_POSICION_REPORTA_A;
+				this.modelo.codigO_POSICION_REPORTA_A = response.codigO_POSICION_REPORTA_A;
 				this.modelo.reportA_A = response.reportA_A;
 				this.modelo.estado = response.estado === "A";
 				this.modelo.fechA_CREACION = response.fechA_CREACION;
@@ -83,7 +82,7 @@ export class EditarAprobadorFijoComponent implements OnInit {
 		this.modalService
 			.open(BuscarAprobadorFijoComponent, {
 				backdrop: "static",
-				keyboard: false
+				keyboard: false,
 			})
 			.result.then(
 				(result) => {
@@ -95,7 +94,6 @@ export class EditarAprobadorFijoComponent implements OnInit {
 						return;
 					}
 
-					console.log(result?.data);
 					const epelado = result?.data;
 
 					const currentdate: string = format(new Date(), "dd-MM-yyyy HH:mm:ss");
@@ -109,12 +107,12 @@ export class EditarAprobadorFijoComponent implements OnInit {
 					this.modelo.estado = true;
 					this.modelo.fechA_CREACION = currentdate;
 					this.modelo.fechA_MODIFICACION = currentdate;
-					this.modelo.usuariO_CREACION = sessionStorage.getItem(LocalStorageKeys.IdLogin);;
-					this.modelo.usuariO_MODIFICACION = sessionStorage.getItem(LocalStorageKeys.IdLogin);;
+					this.modelo.usuariO_CREACION = sessionStorage.getItem(LocalStorageKeys.IdLogin);
+					this.modelo.usuariO_MODIFICACION = sessionStorage.getItem(LocalStorageKeys.IdLogin);
 					this.modelo.descripcioN_POSICION = epelado.descrPosicion;
 					this.modelo.supervisA_A = "N/A";
 					this.modelo.niveL_REPORTE = epelado.nivelReporte;
-					this.modelo.correo = epelado.correo
+					this.modelo.correo = epelado.correo;
 				},
 				(reason) => {
 					console.log(`Dismissed with: ${reason}`);
@@ -162,7 +160,7 @@ export class EditarAprobadorFijoComponent implements OnInit {
 				},
 				error: (error: HttpErrorResponse) => {
 					this.utilService.modalResponse(`Ya existe un registro para el Nivel de Aprobación: ${model.niveL_DIRECCION}.`, "error");
-				}
+				},
 			});
 		});
 	}

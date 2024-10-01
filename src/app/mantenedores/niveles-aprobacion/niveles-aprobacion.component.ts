@@ -42,53 +42,53 @@ export class NivelesAprobacionComponent implements OnInit {
 
 	public controlsPermissions: PageControlPermiso = {
 		[NivelAprobacionPageControlPermission.FiltroTipoSolicitud]: {
-			"codigo_Control": "",
-			"habilitar": false,
-			"modificar": false,
-			"visualizar": false
+			codigo_Control: "",
+			habilitar: false,
+			modificar: false,
+			visualizar: false,
 		},
 		[NivelAprobacionPageControlPermission.FiltroTipoMotivo]: {
-			"codigo_Control": "",
-			"habilitar": false,
-			"modificar": false,
-			"visualizar": false
+			codigo_Control: "",
+			habilitar: false,
+			modificar: false,
+			visualizar: false,
 		},
 		[NivelAprobacionPageControlPermission.FiltroNivelDireccion]: {
-			"codigo_Control": "",
-			"habilitar": false,
-			"modificar": false,
-			"visualizar": false
+			codigo_Control: "",
+			habilitar: false,
+			modificar: false,
+			visualizar: false,
 		},
 		[NivelAprobacionPageControlPermission.ButtonBuscar]: {
-			"codigo_Control": "",
-			"habilitar": false,
-			"modificar": false,
-			"visualizar": false
+			codigo_Control: "",
+			habilitar: false,
+			modificar: false,
+			visualizar: false,
 		},
 		[NivelAprobacionPageControlPermission.ButtonAgregar]: {
-			"codigo_Control": "",
-			"habilitar": false,
-			"modificar": false,
-			"visualizar": false
+			codigo_Control: "",
+			habilitar: false,
+			modificar: false,
+			visualizar: false,
 		},
 		[NivelAprobacionPageControlPermission.ButtonExportar]: {
-			"codigo_Control": "",
-			"habilitar": false,
-			"modificar": false,
-			"visualizar": false
+			codigo_Control: "",
+			habilitar: false,
+			modificar: false,
+			visualizar: false,
 		},
 		[NivelAprobacionPageControlPermission.ButtonEditar]: {
-			"codigo_Control": "",
-			"habilitar": false,
-			"modificar": false,
-			"visualizar": false
+			codigo_Control: "",
+			habilitar: false,
+			modificar: false,
+			visualizar: false,
 		},
 		[NivelAprobacionPageControlPermission.ButtonDuplicar]: {
-			"codigo_Control": "",
-			"habilitar": false,
-			"modificar": false,
-			"visualizar": false
-		}
+			codigo_Control: "",
+			habilitar: false,
+			modificar: false,
+			visualizar: false,
+		},
 	};
 
 	public columnsTable: IColumnsTable = NivelesAprobacionData.columns;
@@ -101,9 +101,9 @@ export class NivelesAprobacionComponent implements OnInit {
 		tipoSolicitud: string;
 		[key: string]: string;
 	} = {
-			tipoRuta: "",
-			tipoSolicitud: ""
-		};
+		tipoRuta: "",
+		tipoSolicitud: "",
+	};
 
 	private nivelesAprobacion: any[] = [];
 	public dataTableActive: any[] = [];
@@ -119,7 +119,7 @@ export class NivelesAprobacionComponent implements OnInit {
 		tipoSolicitud: null,
 		nivelDireccion: null,
 		tipoRuta: null,
-		accion: null
+		accion: null,
 	};
 	private noIdTipoMotivo: string = "";
 	public dataTipoMotivo: any[] = [];
@@ -143,16 +143,7 @@ export class NivelesAprobacionComponent implements OnInit {
 		},
 	];
 
-	constructor(
-		private nivelesAprobacionService: NivelesAprobacionService,
-		private tableService: TableService,
-		private validationsService: ValidationsService,
-		private utilService: UtilService,
-		private mantenimientoService: MantenimientoService,
-		private router: Router,
-		private permissionService: PermisoService,
-		private serviceNivelesAprobacion: CrearNivelesAprobacionService
-	) {
+	constructor(private nivelesAprobacionService: NivelesAprobacionService, private tableService: TableService, private validationsService: ValidationsService, private utilService: UtilService, private mantenimientoService: MantenimientoService, private router: Router, private permissionService: PermisoService, private serviceNivelesAprobacion: CrearNivelesAprobacionService) {
 		this.getPermissions();
 	}
 
@@ -171,7 +162,7 @@ export class NivelesAprobacionComponent implements OnInit {
 	private getPermissions(): void {
 		const controlsPermission: Control[] = this.permissionService.getPagePermission(this.pageCode);
 
-		controlsPermission.forEach(controlPermission => {
+		controlsPermission.forEach((controlPermission) => {
 			if (controlPermission.codigo_Control === "01") {
 				this.controlsPermissions[NivelAprobacionPageControlPermission.FiltroTipoSolicitud] = controlPermission;
 			} else if (controlPermission.codigo_Control === "02") {
@@ -249,9 +240,9 @@ export class NivelesAprobacionComponent implements OnInit {
 
 				if (this.isRequisicionPersonal) {
 					this.dataTable = response.nivelAprobacionType
-						.filter(data => data.estado === "A")
+						.filter((data) => data.estado === "A")
 						.reduce((acc, obj) => {
-							const grupo = acc.find(g => g[0].idTipoSolicitud === obj.idTipoSolicitud && g[0].idTipoRuta === obj.idTipoRuta && g[0].idTipoMotivo === obj.idTipoMotivo && g[0].idAccion === obj.idAccion && g[0].nivelDireccion === obj.nivelDireccion);
+							const grupo = acc.find((g) => g[0].idTipoSolicitud === obj.idTipoSolicitud && g[0].idTipoRuta === obj.idTipoRuta && g[0].idTipoMotivo === obj.idTipoMotivo && g[0].idAccion === obj.idAccion && g[0].nivelDireccion === obj.nivelDireccion);
 
 							if (grupo) {
 								grupo.push(obj);
@@ -265,9 +256,9 @@ export class NivelesAprobacionComponent implements OnInit {
 					this.mostrarNiveles();
 				} else {
 					this.dataTable = response.nivelAprobacionType
-						.filter(data => data.estado === "A")
+						.filter((data) => data.estado === "A")
 						.reduce((acc, obj) => {
-							const grupo = acc.find(g => g[0].idTipoSolicitud === obj.idTipoSolicitud && g[0].idTipoRuta === obj.idTipoRuta && g[0].idTipoMotivo === obj.idTipoMotivo && g[0].idAccion === obj.idAccion && g[0].nivelDireccion === obj.nivelDireccion);
+							const grupo = acc.find((g) => g[0].idTipoSolicitud === obj.idTipoSolicitud && g[0].idTipoRuta === obj.idTipoRuta && g[0].idTipoMotivo === obj.idTipoMotivo && g[0].idAccion === obj.idAccion && g[0].nivelDireccion === obj.nivelDireccion);
 
 							if (grupo) {
 								grupo.push(obj);
@@ -297,7 +288,7 @@ export class NivelesAprobacionComponent implements OnInit {
 				text: "Seleccione al menos un Nivel de Dirección.",
 				icon: "info",
 				confirmButtonColor: "rgb(227, 199, 22)",
-				confirmButtonText: "Ok"
+				confirmButtonText: "Ok",
 			});
 
 			return;
@@ -319,9 +310,9 @@ export class NivelesAprobacionComponent implements OnInit {
 
 				if (this.isRequisicionPersonal) {
 					this.dataTable = response.nivelAprobacionType
-						.filter(data => data.estado === "A")
+						.filter((data) => data.estado === "A")
 						.reduce((acc, obj) => {
-							const grupo = acc.find(g => g[0].idTipoSolicitud === obj.idTipoSolicitud && g[0].idTipoRuta === obj.idTipoRuta && g[0].idTipoMotivo === obj.idTipoMotivo && g[0].idAccion === obj.idAccion && g[0].nivelDireccion === obj.nivelDireccion);
+							const grupo = acc.find((g) => g[0].idTipoSolicitud === obj.idTipoSolicitud && g[0].idTipoRuta === obj.idTipoRuta && g[0].idTipoMotivo === obj.idTipoMotivo && g[0].idAccion === obj.idAccion && g[0].nivelDireccion === obj.nivelDireccion);
 
 							if (grupo) {
 								grupo.push(obj);
@@ -335,9 +326,9 @@ export class NivelesAprobacionComponent implements OnInit {
 					this.mostrarNiveles();
 				} else {
 					this.dataTable = response.nivelAprobacionType
-						.filter(data => data.estado === "A")
+						.filter((data) => data.estado === "A")
 						.reduce((acc, obj) => {
-							const grupo = acc.find(g => g[0].idTipoSolicitud === obj.idTipoSolicitud && g[0].idTipoRuta === obj.idTipoRuta && g[0].idTipoMotivo === obj.idTipoMotivo && g[0].idAccion === obj.idAccion && g[0].nivelDireccion === obj.nivelDireccion);
+							const grupo = acc.find((g) => g[0].idTipoSolicitud === obj.idTipoSolicitud && g[0].idTipoRuta === obj.idTipoRuta && g[0].idTipoMotivo === obj.idTipoMotivo && g[0].idAccion === obj.idAccion && g[0].nivelDireccion === obj.nivelDireccion);
 
 							if (grupo) {
 								grupo.push(obj);
@@ -364,15 +355,17 @@ export class NivelesAprobacionComponent implements OnInit {
 	}
 
 	public showData(data: any[], ruta: any) {
-		const found = data.find(d => d.ruta === ruta.descripcion);
+		const found = data.find((d) => d.ruta === ruta.descripcion);
 
-		return found !== undefined ? {
-			id: found.idNivelAprobacion,
-			nivelAprobacion: found.nivelAprobacionRuta === null || found.nivelAprobacionRuta === undefined || found.nivelAprobacionRuta === "" ? "-" : found.nivelAprobacionRuta
-		} : {
-			id: 0,
-			nivelAprobacion: "-"
-		};
+		return found !== undefined
+			? {
+					id: found.idNivelAprobacion,
+					nivelAprobacion: found.nivelAprobacionRuta === null || found.nivelAprobacionRuta === undefined || found.nivelAprobacionRuta === "" ? "-" : found.nivelAprobacionRuta,
+			  }
+			: {
+					id: 0,
+					nivelAprobacion: "-",
+			  };
 	}
 
 	//LLenar combo Tipo Solicitud
@@ -384,7 +377,7 @@ export class NivelesAprobacionComponent implements OnInit {
 					.map((r) => ({
 						id: r.id,
 						descripcion: r.tipoSolicitud,
-						codigoTipoSolicitud: r.codigoTipoSolicitud
+						codigoTipoSolicitud: r.codigoTipoSolicitud,
 					}))
 					.sort((a, b) => a.descripcion.toUpperCase().localeCompare(b.descripcion.toUpperCase()));
 			},
@@ -415,7 +408,7 @@ export class NivelesAprobacionComponent implements OnInit {
 						descripcion: r.tipoMotivo,
 					}))
 					.sort((a, b) => a.descripcion.toUpperCase().localeCompare(b.descripcion.toUpperCase()));
-				},
+			},
 			error: (error: HttpErrorResponse) => {
 				this.utilService.modalResponse(error.error, "error");
 			},
@@ -433,7 +426,7 @@ export class NivelesAprobacionComponent implements OnInit {
 						descripcion: r.tipoRuta,
 					}))
 					.sort((a, b) => a.descripcion.toUpperCase().localeCompare(b.descripcion.toUpperCase()));
-				},
+			},
 			error: (error: HttpErrorResponse) => {
 				this.utilService.modalResponse(error.error, "error");
 			},
@@ -450,7 +443,7 @@ export class NivelesAprobacionComponent implements OnInit {
 						descripcion: r.accion,
 					}))
 					.sort((a, b) => a.descripcion.toUpperCase().localeCompare(b.descripcion.toUpperCase()));
-				},
+			},
 			error: (error: HttpErrorResponse) => {
 				this.utilService.modalResponse(error.error, "error");
 			},
@@ -462,13 +455,13 @@ export class NivelesAprobacionComponent implements OnInit {
 			next: (response) => {
 				this.dataRuta = response
 					.filter(({ estado }) => estado === "A")
-					.map(data => ({
+					.map((data) => ({
 						id: data.id,
 						descripcion: data.ruta,
-						idTipoRuta: data.idTipoRuta
+						idTipoRuta: data.idTipoRuta,
 					}))
 					.reduce((acc, current) => {
-						const existe = acc.find(item => item.descripcion === current.descripcion);
+						const existe = acc.find((item) => item.descripcion === current.descripcion);
 
 						if (!existe) {
 							acc.push(current);
@@ -476,8 +469,6 @@ export class NivelesAprobacionComponent implements OnInit {
 
 						return acc;
 					}, []);
-
-				console.log(this.dataRuta);
 			},
 			error: (error: HttpErrorResponse) => {
 				this.utilService.modalResponse(error.error, "error");
@@ -490,7 +481,7 @@ export class NivelesAprobacionComponent implements OnInit {
 			return;
 		}
 
-		const tipoSolicitud = this.dataTipoSolicitudes.find(data => data.id.toString() === this.dataFilterNivelesAprobacion.tipoSolicitud.toString());
+		const tipoSolicitud = this.dataTipoSolicitudes.find((data) => data.id.toString() === this.dataFilterNivelesAprobacion.tipoSolicitud.toString());
 
 		if (tipoSolicitud === undefined) {
 			return;
@@ -515,48 +506,36 @@ export class NivelesAprobacionComponent implements OnInit {
 	}
 
 	onRowActionClicked(index: number) {
-		console.log(this.finalData[index].rutas);
 		const idParam = this.finalData[index].rutas
-			.filter(data => data.id !== 0)
-			.map(data => data.id)
+			.filter((data) => data.id !== 0)
+			.map((data) => data.id)
 			.join("_");
-		console.log(idParam);
 
 		this.router.navigate(["/mantenedores/editar-niveles-aprobacion"], {
 			queryParams: {
-				id_edit: idParam
-			}
+				id_edit: idParam,
+			},
 		});
 	}
 
 	mostrarTipoSolicitud() {
 		if (this.dataFilterNivelesAprobacion === null) {
-			return this.dataTipoSolicitudes.find(data => data.id.toString() === this.dataFilterNivelesAprobacion.tipoSolicitud.toString()).descripcion;
+			return this.dataTipoSolicitudes.find((data) => data.id.toString() === this.dataFilterNivelesAprobacion.tipoSolicitud.toString()).descripcion;
 		}
 
 		return "SOLICITUD";
 	}
 
 	mostrarTipoMotivo(idTipoMotivo: number) {
-		const tipoMotivo = this.dataTipoMotivo.find(data => data.id === idTipoMotivo);
+		const tipoMotivo = this.dataTipoMotivo.find((data) => data.id === idTipoMotivo);
 
 		return tipoMotivo === undefined ? "-" : tipoMotivo.descripcion;
 	}
 
 	private isAnyRowCheckedInTable(formato: FormatoUtilReporte) {
-		const headerTitles = [
-			...this.columnsTable.map(({ title }) => title),
-			...this.dataRuta.map(({ descripcion }) => descripcion)
-		];
+		const headerTitles = [...this.columnsTable.map(({ title }) => title), ...this.dataRuta.map(({ descripcion }) => descripcion)];
 
-		const bodyReport = this.finalData.map(data => ([
-			data.tipoSolicitud,
-			data.tipoRuta,
-			data.tipoMotivo,
-			data.accion,
-			data.nivelDireccion,
-			...data.rutas.map(ruta => ruta.nivelAprobacion)
-		]));
+		const bodyReport = this.finalData.map((data) => [data.tipoSolicitud, data.tipoRuta, data.tipoMotivo, data.accion, data.nivelDireccion, ...data.rutas.map((ruta) => ruta.nivelAprobacion)]);
 
 		this.utilService.generateReport(formato, reportCodeEnum.MANTENIMIENTO_NIVELES_APROBACION, "NIVELES DE APROBACIÓN", headerTitles, bodyReport);
 	}
@@ -569,7 +548,7 @@ export class NivelesAprobacionComponent implements OnInit {
 				tipoMotivo: this.mostrarTipoMotivo(data[0].idTipoMotivo),
 				accion: data[0].accion === null || data[0].accion === undefined || data[0].accion === "" ? "-" : data[0].accion,
 				nivelDireccion: data[0].nivelDireccion === null || data[0].nivelDireccion === undefined || data[0].nivelDireccion === "" ? "-" : data[0].nivelDireccion,
-				rutas: this.dataRuta.map(ruta => this.showData(data, ruta))
+				rutas: this.dataRuta.map((ruta) => this.showData(data, ruta)),
 			}))
 			.sort((a, b) => a.tipoSolicitud.toUpperCase().localeCompare(b.tipoSolicitud.toUpperCase()))
 			.reduce((acc, item) => {
@@ -582,11 +561,10 @@ export class NivelesAprobacionComponent implements OnInit {
 				return acc;
 			}, {});
 
-		Object.keys(newData).forEach(key => {
+		Object.keys(newData).forEach((key) => {
 			newData[key].sort((a, b) => a.tipoRuta.toUpperCase().localeCompare(b.tipoRuta.toUpperCase()));
 		});
 
 		this.finalData = Object.values(newData).flat();
-		console.log(this.finalData);
 	}
 }

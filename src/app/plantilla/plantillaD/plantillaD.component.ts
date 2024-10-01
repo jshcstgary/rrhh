@@ -1,32 +1,13 @@
-import {
-	AfterViewInit,
-	Component,
-	HostListener,
-	Input,
-	OnChanges,
-	OnInit,
-	SimpleChanges,
-} from "@angular/core";
+import { AfterViewInit, Component, HostListener, Input, OnChanges, OnInit, SimpleChanges } from "@angular/core";
 import { IDropdownOptions } from "src/app/component/dropdown/dropdown.interface";
-import {
-	IFormItems,
-	ISearchButtonForm,
-} from "src/app/component/form/form.interface";
+import { IFormItems, ISearchButtonForm } from "src/app/component/form/form.interface";
 import { FormService } from "src/app/component/form/form.service";
 import { IInputsComponent } from "src/app/component/input/input.interface";
 import { TableComponentData } from "src/app/component/table/table.data";
-import {
-	IColumnsTable,
-	IRowTableAttributes,
-	idActionType,
-	sortColOrderType,
-} from "src/app/component/table/table.interface";
+import { IColumnsTable, IRowTableAttributes, idActionType, sortColOrderType } from "src/app/component/table/table.interface";
 import { TableService } from "src/app/component/table/table.service";
 import { DataFilterNivelesAprobacion } from "src/app/eschemas/DataFilterNivelesAprobacion";
-import {
-	FormatoUtilReporte,
-	reportCodeEnum,
-} from "src/app/services/util/util.interface";
+import { FormatoUtilReporte, reportCodeEnum } from "src/app/services/util/util.interface";
 import { UtilService } from "src/app/services/util/util.service";
 import { environment } from "src/environments/environment";
 import Swal from "sweetalert2";
@@ -38,20 +19,20 @@ import { PlantillaDData } from "./plantillaD.data";
 })
 export class PlantillaDComponent implements AfterViewInit, OnInit, OnChanges {
 	@Input({
-		required: false
+		required: false,
 	})
 	public showFilterSolicitudTarea: boolean = true;
 	@Input({
-		required: false
+		required: false,
 	})
 	public showButtonExportar: boolean = true;
 	@Input({
-		required: false
+		required: false,
 	})
 	public showButtonInfo: boolean = true;
 
 	@Input({
-		required: false
+		required: false,
 	})
 	public validateInput: boolean = true;
 
@@ -109,17 +90,12 @@ export class PlantillaDComponent implements AfterViewInit, OnInit, OnChanges {
 	public rowsPerPageTable: number = TableComponentData.defaultRowPerPage;
 	public dataToTable: any[] = [];
 	public totalRowsInTable: number = 0;
-	public dropdownOptionsExport: IDropdownOptions =
-		PlantillaDData.dropdownOptionsExport;
+	public dropdownOptionsExport: IDropdownOptions = PlantillaDData.dropdownOptionsExport;
 
 	private textToFilter: string = "";
 	private colIndexSorted: number;
 
-	constructor(
-		private tableService: TableService,
-		private utilService: UtilService,
-		private formService: FormService
-	) { }
+	constructor(private tableService: TableService, private utilService: UtilService, private formService: FormService) {}
 
 	public ngAfterViewInit(): void {
 		this.utilService.focusOnHtmlElement("searchInputFilter");
@@ -131,9 +107,7 @@ export class PlantillaDComponent implements AfterViewInit, OnInit, OnChanges {
 	}
 	public ngOnChanges(changes: SimpleChanges): void {
 		this.filterSortFormatAndPaginateData();
-		this.originalDataTable = this.formatDataWithKeyNameTable(
-			this.originalDataTable
-		);
+		this.originalDataTable = this.formatDataWithKeyNameTable(this.originalDataTable);
 		if (typeof changes["IdRowToClone"]?.currentValue === "string") {
 			this.cloneOnTable(this.IdRowToClone);
 		}
@@ -142,9 +116,7 @@ export class PlantillaDComponent implements AfterViewInit, OnInit, OnChanges {
 	 * Función para añadir la columna de checkbox
 	 */
 	private setInitialColToTable() {
-		const tableCleaned = this.columnsTable.filter(
-			(row) => row.type !== "checkbox"
-		);
+		const tableCleaned = this.columnsTable.filter((row) => row.type !== "checkbox");
 		this.columnsTable = tableCleaned;
 		this.columnsTable.unshift(PlantillaDData.initialColumns);
 	}
@@ -152,9 +124,7 @@ export class PlantillaDComponent implements AfterViewInit, OnInit, OnChanges {
 	 * Función para validar si mi formulario mostrara el boton de buscar o no
 	 */
 	private validatefilterFormContainsSearchButton() {
-		this.filterFormContainsSearchButton =
-			this.filterFormSearchButtonProps !== null &&
-			this.filterFormSearchButtonProps !== undefined;
+		this.filterFormContainsSearchButton = this.filterFormSearchButtonProps !== null && this.filterFormSearchButtonProps !== undefined;
 	}
 	/**
 	 * Función para escuchar cada que presiono una tecla
@@ -164,17 +134,9 @@ export class PlantillaDComponent implements AfterViewInit, OnInit, OnChanges {
 	@HostListener("document:keydown", ["$event"])
 	public handleKeyboardEvent(event: KeyboardEvent) {
 		/* Nuevo */
-		if (
-			event.key.toString().toLowerCase() === "n" &&
-			event.altKey &&
-			!this.tableService.isAnyEditRowActive
-		) {
+		if (event.key.toString().toLowerCase() === "n" && event.altKey && !this.tableService.isAnyEditRowActive) {
 			this.onCreateRow();
-		} /* Guardo el registro */ else if (
-			event.key.toString().toLowerCase() === "a" &&
-			event.altKey &&
-			this.tableService.isAnyEditRowActive
-		) {
+		} /* Guardo el registro */ else if (event.key.toString().toLowerCase() === "a" && event.altKey && this.tableService.isAnyEditRowActive) {
 			this.tableService.changeStateIsAnyEditRowActive(false);
 			document.getElementById("iconSaveEditRowTable").click();
 		}
@@ -185,8 +147,7 @@ export class PlantillaDComponent implements AfterViewInit, OnInit, OnChanges {
 	 * @param id
 	 */
 	private isAnyRowCheckedInTable(formato: FormatoUtilReporte) {
-		let rowsCheckedInTable: any[] =
-			this.tableService.rowsCheckedByTable[this.mainTableName];
+		let rowsCheckedInTable: any[] = this.tableService.rowsCheckedByTable[this.mainTableName];
 		if (rowsCheckedInTable.length === 0) {
 			rowsCheckedInTable = this.originalDataTable.map((x) => {
 				return x.key;
@@ -207,51 +168,33 @@ export class PlantillaDComponent implements AfterViewInit, OnInit, OnChanges {
 		);
 
 		const bodyReport = this.originalDataTable
-			.filter((row) =>
-				rowsCheckedInTable.some((keyChecked) => keyChecked === row.key)
-			)
+			.filter((row) => rowsCheckedInTable.some((keyChecked) => keyChecked === row.key))
 			.map((row) =>
-				dataIndexTitles.map(
-					(colDataIndex: {
-						dataIndex: string;
-						dataIndexesToJoin: string[];
-					}) => {
-						let value: string;
+				dataIndexTitles.map((colDataIndex: { dataIndex: string; dataIndexesToJoin: string[] }) => {
+					let value: string;
 
-						if (
-							colDataIndex.dataIndex === "otrasCausales" ||
-							colDataIndex.dataIndex === "estado"
-						) {
-							// Procesar solo la columna "otrasCausales"
-							value = row[colDataIndex.dataIndex]?.toString() ?? "";
+					if (colDataIndex.dataIndex === "otrasCausales" || colDataIndex.dataIndex === "estado") {
+						// Procesar solo la columna "otrasCausales"
+						value = row[colDataIndex.dataIndex]?.toString() ?? "";
 
-							if (value === "true" || value === "1") {
-								value = "Activo";
-							} else if (value === "false" || value === "0") {
-								value = "Inactivo";
-							}
-						} else {
-							// Mantener los valores de otras columnas sin cambios
-							if (colDataIndex.dataIndexesToJoin) {
-								value = colDataIndex.dataIndexesToJoin
-									.map((index) => row[index])
-									.join(" - ");
-							} else {
-								value = row[colDataIndex.dataIndex]?.toString() ?? "";
-							}
+						if (value === "true" || value === "1") {
+							value = "Activo";
+						} else if (value === "false" || value === "0") {
+							value = "Inactivo";
 						}
-
-						return value;
+					} else {
+						// Mantener los valores de otras columnas sin cambios
+						if (colDataIndex.dataIndexesToJoin) {
+							value = colDataIndex.dataIndexesToJoin.map((index) => row[index]).join(" - ");
+						} else {
+							value = row[colDataIndex.dataIndex]?.toString() ?? "";
+						}
 					}
-				)
+
+					return value;
+				})
 			);
-		this.utilService.generateReport(
-			formato,
-			this.codigoReport,
-			this.titleReport,
-			headerTitles,
-			bodyReport
-		);
+		this.utilService.generateReport(formato, this.codigoReport, this.titleReport, headerTitles, bodyReport);
 	}
 	private filterStringInTable(textToFilter: string) {
 		this.filterSortFormatAndPaginateData(textToFilter);
@@ -262,7 +205,6 @@ export class PlantillaDComponent implements AfterViewInit, OnInit, OnChanges {
 	 * @param textToFilter texto a filtrar
 	 */
 	private filterSortFormatAndPaginateData(textToFilter: string = this.textToFilter, clickOnSort: boolean = false) {
-		console.log(textToFilter);
 		this.tableService.changeStateIsAnyEditRowActive(false);
 
 		this.textToFilter = textToFilter;
@@ -310,22 +252,13 @@ export class PlantillaDComponent implements AfterViewInit, OnInit, OnChanges {
 			this.columnsTable[rowIndexToSort].sortTypeOrder = sortTypeChanged;
 
 			if (sortTypeChanged !== undefined) {
-				data = this.tableService.filterBySortColType(
-					data,
-					colProps.dataIndex,
-					sortTypeChanged,
-					sortColType
-				);
+				data = this.tableService.filterBySortColType(data, colProps.dataIndex, sortTypeChanged, sortColType);
 			}
 		}
 		/* Formateo */
 		const dataFormatted = this.formatDataWithKeyNameTable(data);
 		/* Pagino */
-		const dataPaginated = this.tableService.paginateDataToTable(
-			dataFormatted,
-			this.pageNumberTable,
-			this.rowsPerPageTable
-		);
+		const dataPaginated = this.tableService.paginateDataToTable(dataFormatted, this.pageNumberTable, this.rowsPerPageTable);
 		this.totalRowsInTable = data.length;
 		this.dataToTable = dataPaginated;
 	}
@@ -373,20 +306,10 @@ export class PlantillaDComponent implements AfterViewInit, OnInit, OnChanges {
 	}
 	private disableIdCol(state: boolean) {
 		if (typeof this.colIdToDisable === "string") {
-			this.tableInputsEditRow = this.formService.changeValuePropFormById(
-				this.colIdToDisable,
-				this.tableInputsEditRow,
-				"disabled",
-				state
-			);
+			this.tableInputsEditRow = this.formService.changeValuePropFormById(this.colIdToDisable, this.tableInputsEditRow, "disabled", state);
 		} else {
 			this.colIdToDisable.map((x) => {
-				this.tableInputsEditRow = this.formService.changeValuePropFormById(
-					x,
-					this.tableInputsEditRow,
-					"disabled",
-					state
-				);
+				this.tableInputsEditRow = this.formService.changeValuePropFormById(x, this.tableInputsEditRow, "disabled", state);
 			});
 		}
 	}
@@ -395,12 +318,7 @@ export class PlantillaDComponent implements AfterViewInit, OnInit, OnChanges {
 		this.contexto[this.onSaveRowData](rowData, finishedClonningRow);
 	}
 
-	private onRowActionClicked(
-		id: string,
-		key: string,
-		tooltip: string,
-		id_edit
-	) {
+	private onRowActionClicked(id: string, key: string, tooltip: string, id_edit) {
 		this.IdRowToClone = null;
 		this.contexto[this.clickOnActionRow](id, key, tooltip, id_edit);
 	}
@@ -418,22 +336,14 @@ export class PlantillaDComponent implements AfterViewInit, OnInit, OnChanges {
 	private onCancelEditRowTable() {
 		this.filterSortFormatAndPaginateData();
 	}
-	private async clickOnActionTable(
-		idAction: idActionType,
-		key: string,
-		tooltip: string
-	) {
+	private async clickOnActionTable(idAction: idActionType, key: string, tooltip: string) {
 		switch (idAction) {
 			case "editOnTable":
 				if (!this.tableService.isAnyEditRowActive) {
 					this.tableService.changeStateIsAnyEditRowActive(true);
-					const rowToEdit: IRowTableAttributes = this.originalDataTable.find(
-						(x: IRowTableAttributes) => x.key === key
-					);
+					const rowToEdit: IRowTableAttributes = this.originalDataTable.find((x: IRowTableAttributes) => x.key === key);
 					rowToEdit.isEditingRow = true;
-					const newDataWithOutRowToEdit = this.dataToTable.filter(
-						(x: IRowTableAttributes) => x.key !== key
-					);
+					const newDataWithOutRowToEdit = this.dataToTable.filter((x: IRowTableAttributes) => x.key !== key);
 					newDataWithOutRowToEdit.unshift(rowToEdit);
 					this.dataToTable = newDataWithOutRowToEdit;
 					this.utilService.focusOnHtmlElement(this.columnsTable[2].dataIndex);
@@ -444,10 +354,7 @@ export class PlantillaDComponent implements AfterViewInit, OnInit, OnChanges {
 				this.cloneOnTable(key);
 				break;
 			case "delete":
-				if (
-					!environment.modalConfirmation ||
-					(await Swal.fire(PlantillaDData.swalDeleteOptions)).isConfirmed
-				) {
+				if (!environment.modalConfirmation || (await Swal.fire(PlantillaDData.swalDeleteOptions)).isConfirmed) {
 					this.contexto[this.onDeleteFunction](key);
 				}
 				break;
@@ -460,9 +367,7 @@ export class PlantillaDComponent implements AfterViewInit, OnInit, OnChanges {
 	private cloneOnTable(key: string) {
 		if (!this.tableService.isAnyEditRowActive) {
 			this.tableService.changeStateIsAnyEditRowActive(true);
-			const rowToEdit: IRowTableAttributes = this.originalDataTable.find(
-				(x: IRowTableAttributes) => x.key === key
-			);
+			const rowToEdit: IRowTableAttributes = this.originalDataTable.find((x: IRowTableAttributes) => x.key === key);
 			const tempDataTable = [...this.dataToTable];
 			tempDataTable.unshift({
 				...rowToEdit,

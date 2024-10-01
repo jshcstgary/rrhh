@@ -2,11 +2,7 @@ import { CommonModule } from "@angular/common";
 import { Component } from "@angular/core";
 import { MatMenuModule } from "@angular/material/menu";
 import { Router, RouterModule } from "@angular/router";
-import {
-	NgbAccordionModule,
-	NgbCarouselModule,
-	NgbDropdownModule,
-} from "@ng-bootstrap/ng-bootstrap";
+import { NgbAccordionModule, NgbCarouselModule, NgbDropdownModule } from "@ng-bootstrap/ng-bootstrap";
 import { TranslateModule } from "@ngx-translate/core";
 import { FeatherModule } from "angular-feather";
 import { NgScrollbarModule } from "ngx-scrollbar";
@@ -28,20 +24,7 @@ import { codigosPerfilReporte } from "src/environments/environment";
 @Component({
 	selector: "app-horizontal-sidebar",
 	standalone: true,
-	imports: [
-		TranslateModule,
-		CommonModule,
-		FeatherModule,
-		RouterModule,
-		ComponentsModule,
-		NgbDropdownModule,
-		NgScrollbarModule,
-		NgbAccordionModule,
-		NgbCarouselModule,
-		MatMenuModule,
-		MatIconModule,
-		ScrollingModule,
-	],
+	imports: [TranslateModule, CommonModule, FeatherModule, RouterModule, ComponentsModule, NgbDropdownModule, NgScrollbarModule, NgbAccordionModule, NgbCarouselModule, MatMenuModule, MatIconModule, ScrollingModule],
 	templateUrl: "./horizontal-sidebar.component.html",
 	styleUrls: ["./horizontal-sidebar.component.scss", "./component.scss"],
 })
@@ -51,7 +34,7 @@ export class HorizontalSidebarComponent {
 	public sidebarnavItems: RouteInfo[] = [];
 	path = "";
 	navbar_bg = {
-		"height": "100%"
+		height: "100%",
 	};
 
 	public permisos: Permiso[] = JSON.parse(sessionStorage.getItem(LocalStorageKeys.Permisos)) || [];
@@ -61,12 +44,12 @@ export class HorizontalSidebarComponent {
 	public profiles: IDropdownOptions = [
 		{
 			id: "administracion",
-			name: "Administracion"
+			name: "Administracion",
 		},
 		{
 			id: "agricola",
-			name: "Agricola"
-		}
+			name: "Agricola",
+		},
 	];
 	public showNotifications = false;
 
@@ -153,9 +136,7 @@ export class HorizontalSidebarComponent {
 	}
 
 	updateBackground = () => {
-		const sidebarNavUl = document.querySelector(
-			".sidebar-nav ul"
-		) as HTMLElement; // Type assertion
+		const sidebarNavUl = document.querySelector(".sidebar-nav ul") as HTMLElement; // Type assertion
 
 		if (window.innerWidth < 1024) {
 			sidebarNavUl.style.backgroundImage = "none";
@@ -170,20 +151,17 @@ export class HorizontalSidebarComponent {
 
 	constructor(private menuServise: HorizontalSidebarService, private router: Router, private loginService: LoginServices, private utilService: UtilService) {
 		this.menuServise.items.subscribe((menuItems) => {
-			this.sidebarnavItems = menuItems.filter(menuItem => this.permisos.some(permiso => menuItem.codigo === permiso.codigo));
+			this.sidebarnavItems = menuItems.filter((menuItem) => this.permisos.some((permiso) => menuItem.codigo === permiso.codigo));
 
-			this.sidebarnavItems = this.sidebarnavItems.map(menuItem => {
-				menuItem.submenu = menuItem.submenu.filter(sub => this.permisos.some(permiso => sub.codigo === permiso.codigo));
+			this.sidebarnavItems = this.sidebarnavItems.map((menuItem) => {
+				menuItem.submenu = menuItem.submenu.filter((sub) => this.permisos.some((permiso) => sub.codigo === permiso.codigo));
 
 				if (menuItem.codigo === PageCodes.Solicitudes) {
-					menuItem.submenu = menuItem.submenu
-						.map(sub => sub.path.includes("reportes") ? (codigosPerfilReporte.includes(sessionStorage.getItem(LocalStorageKeys.CodigoPefil)) ? sub : null) : sub)
-						.filter(sub => sub !== null);
+					menuItem.submenu = menuItem.submenu.map((sub) => (sub.path.includes("reportes") ? (codigosPerfilReporte.includes(sessionStorage.getItem(LocalStorageKeys.CodigoPefil)) ? sub : null) : sub)).filter((sub) => sub !== null);
 				}
 
 				return menuItem;
 			});
-			console.log(this.sidebarnavItems);
 
 			// Active menu
 			this.sidebarnavItems.filter((m) =>
@@ -224,7 +202,7 @@ export class HorizontalSidebarComponent {
 		this.loginService.signOut().subscribe({
 			next: () => {
 				this.router.navigate(["/login"]);
-			}
+			},
 		});
 
 		this.utilService.closeLoadingSpinner();

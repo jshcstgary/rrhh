@@ -388,6 +388,8 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
 	private verifyData(): void {
 		this.utilService.openLoadingSpinner("Cargando información, espere por favor...");
 
+		this.taskType_Activity = "";
+
 		try {
 			this.starterService.getUser(sessionStorage.getItem(LocalStorageKeys.IdUsuario)!).subscribe({
 				next: (res) => {
@@ -1827,6 +1829,8 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
 			this.detalleSolicitud.fechaSalida = this.selectedDate;
 			this.detalleSolicitud.valor = `Solicitud en Espera: ${this.textareaContent}`;
 
+			convertTimeZonedDate(this.detalleSolicitud.fechaSalida);
+
 			this.solicitudes.actualizarDetalleSolicitud(this.detalleSolicitud).subscribe({
 				next: () => {},
 			});
@@ -1835,16 +1839,20 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
 				this.detalleSolicitud.fechaSalida = new Date();
 				this.detalleSolicitud.valor = null;
 
+				convertTimeZonedDate(this.detalleSolicitud.fechaSalida);
+
 				this.solicitudes.actualizarDetalleSolicitud(this.detalleSolicitud).subscribe({
 					next: () => {},
 				});
 			}
 		}
 
-		if (this.taskType_Activity.toUpperCase().includes("REMUNERA")) {
+		if (this.taskType_Activity.toUpperCase().includes("REM")) {
 			this.detalleSolicitud.fechaSalida = this.fechaComite;
 			this.detalleSolicitud.valor = this.textareaContent;
 			this.detalleSolicitud.unidad = this.detalleSolicitud.unidadNegocio;
+
+			convertTimeZonedDate(this.detalleSolicitud.fechaSalida);
 
 			this.solicitudes.actualizarDetalleSolicitud(this.detalleSolicitud).subscribe({
 				next: () => {},

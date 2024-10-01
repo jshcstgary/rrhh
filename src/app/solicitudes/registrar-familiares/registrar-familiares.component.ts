@@ -966,6 +966,7 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
 				if (this.detalleSolicitud.codigoPosicion.length > 0) {
 					this.unidadNegocioEmp = this.detalleSolicitud.unidadNegocio;
 					if (this.unidadNegocioEmp.toUpperCase().includes("AREAS") || this.unidadNegocioEmp.toUpperCase().includes("ÁREAS")) {
+						console.log("AREAS");
 						this.mantenimientoService.getTipoRuta().subscribe({
 							next: (response) => {
 								this.dataTipoRutaEmp = response.tipoRutaType
@@ -1009,6 +1010,7 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
 							},
 						});
 					} else {
+						console.log("UNIDADES");
 						this.mantenimientoService.getTipoRuta().subscribe({
 							next: (response) => {
 								this.dataTipoRutaEmp = response.tipoRutaType
@@ -1082,33 +1084,6 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
 					this.model.fechaIngreso = this.detalleSolicitud.fechaIngreso;
 					this.justificacionCF = this.detalleSolicitud.justificacion;
 				}
-				/* this.detalleSolicitud.estado = response.estado;
-				this.detalleSolicitud.estado = response.estadoSolicitud;
-				this.detalleSolicitud.idSolicitud = response.idSolicitud;
-				this.detalleSolicitud.unidadNegocio = response.unidadNegocio;*/ //comentado mmunoz
-				//console.log("DATA DETALLE SOLICITUD BY ID: ", this.detalleSolicitud);
-
-
-				//console.log("aprobacion: ",aprobacion);
-				/* console.log(`Elemento en la posición Miguel1 ${this.keySelected}:`, this.dataAprobacionesPorPosicion[this.keySelected][0].nivelAprobacionType.idNivelAprobacion);
-
-				for (const key in this.dataAprobacionesPorPosicion[this.keySelected]) {
-				  if (this.dataAprobacionesPorPosicion.hasOwnProperty(key)) {
-					console.log(`Clave: ${key}`);
-					const aprobacionesObj = this.dataAprobacionesPorPosicion[this.keySelected][key];
-					for (const index in aprobacionesObj) {
-					  if (aprobacionesObj.hasOwnProperty(index)) {
-						const aprobacion = aprobacionesObj[index];
-						console.log(`Entro en elementos de aprobacion..`);
-						console.log(`Elemento ${index}:`, aprobacion);
-						// Aquí puedes acceder a las propiedades de cada objeto
-						console.log(aprobacion.nivelAprobacionType.idNivelAprobacion);
-						console.log(aprobacion.aprobador.usuario);
-					  }
-					}
-				  }
-				}*/
-
 			},
 			error: (error: HttpErrorResponse) => {
 				this.utilService.modalResponse(error.error, "error");
