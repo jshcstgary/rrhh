@@ -1153,7 +1153,7 @@
 									<div class="input-group mb-3 align-items-center">
 										<label for="input2" class="input-group-text label-estilo">Fin de proceso</label>
 
-										<span style="font-size: 14px" class="w-50">{{ fechas.reingreso === "" || fechas.reingreso === null || fechas.reingreso === undefined ? "" : fechas.finProceso }}</span>
+										<span style="font-size: 14px" class="w-50">{{ fechas.reingreso === "" || fechas.reingreso === undefined || fechas.reingreso === null ? "" : (fechas.finProceso === "" || fechas.finProceso === null || fechas.finProceso === undefined ? "" : fechas.finProceso) }}</span>
 									</div>
 								</div>
 							</div>
@@ -1175,7 +1175,7 @@
 									<div class="input-group mb-3 align-items-center">
 										<label for="input2" class="input-group-text label-estilo">Fin de proceso</label>
 
-										<span style="font-size: 14px" class="w-50">{{ fechas.contratacionFamiliares === "" || fechas.contratacionFamiliares === undefined || fechas.contratacionFamiliares === null ? "" : fechas.finProcesoFamiliares }}</span>
+										<span style="font-size: 14px" class="w-50">{{ fechas.contratacionFamiliares === "" || fechas.contratacionFamiliares === undefined || fechas.contratacionFamiliares === null ? "" : (fechas.finProcesoFamiliares === "" || fechas.finProcesoFamiliares === null || fechas.finProcesoFamiliares === undefined ? "" : fechas.finProcesoFamiliares) }}</span>
 									</div>
 								</div>
 							</div>

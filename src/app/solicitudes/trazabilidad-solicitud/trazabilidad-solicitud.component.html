@@ -86,13 +86,15 @@
 															: dataDetalleAprobadorSolicitud[indexToShow].estadoAprobacion.toUpperCase().includes("COMPLET")
 																? "Completado"
 																: dataDetalleAprobadorSolicitud[indexToShow].estadoAprobacion
-							: this.idSolicitudParam.includes("RP")
+							: idSolicitudParam.includes("RP") && dataDetalleAprobadorSolicitud.length === 1
 								? "Creado"
-								: this.idSolicitudParam.includes("RG")
-									? "Creado"
-									: this.idSolicitudParam.includes("CF")
+								: idSolicitudParam.includes("RP") && dataDetalleAprobadorSolicitud.length > 1
+									? "Selección de Candidato"
+									: idSolicitudParam.includes("RG")
 										? "Creado"
-										: "-"
+										: idSolicitudParam.includes("CF")
+											? "Creado"
+											: "-"
 					}}
 				</div>
 			</div>

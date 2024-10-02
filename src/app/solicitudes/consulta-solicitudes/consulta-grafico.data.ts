@@ -35,6 +35,11 @@ export const ConsultaGraficosData: IConsultaGraficosData = {
 			colType: "number",
 		},
 		{
+			title: "RECHAZADAS",
+			dataIndex: "canceladas",
+			colType: "number",
+		},
+		{
 			title: "ACCIONES",
 			type: "actions",
 			width: "100px",
@@ -54,7 +59,8 @@ export const ConsultaGraficosData: IConsultaGraficosData = {
 		enviadas: "",
 		reasignadas: "",
 		devueltas: "",
-		anuladas: ""
+		anuladas: "",
+		canceladas: ""
 	},
 	tableInputsEditRow: [
 		{

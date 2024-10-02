@@ -1417,6 +1417,8 @@ export class CompletaSolicitudComponent extends CompleteTaskComponent {
 		};
 
 		convertTimeZonedDate(request.fechaIngresoCandidato);
+		convertTimeZonedDate(request.fechaFinReingreso);
+		convertTimeZonedDate(request.fechaFinContratacionFamiliares);
 
 		this.seleccionCandidatoService.saveCandidato(request).subscribe({
 			next: () => {

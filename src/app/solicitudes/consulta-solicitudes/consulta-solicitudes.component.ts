@@ -563,6 +563,9 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 																			}
 																		});
 																	},
+																	error: (err) => {
+																		console.error(err);
+																	}
 																});
 
 																this.router.navigate([this.codigoTipoSolicitud === "AP" ? "/solicitudes/accion-personal/registrar-solicitud" : "/solicitudes/registrar-solicitud", this.solicitud.idInstancia, this.solicitud.idSolicitud]);
@@ -590,20 +593,14 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 						} else {
 							this.submitted = true;
 						}
-
-						this.showButtons = true;
 					},
 					error: (error) => {
 						console.error(error);
-
-						this.showButtons = true;
 					},
 				});
 			},
 			error: (error) => {
 				console.error(error);
-
-				this.showButtons = true;
 			},
 		});
 
@@ -632,9 +629,13 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 
 	getCreatedId(): string {
 		if (this.instanceCreated && this.instanceCreated.id != null && this.instanceCreated.id != "") {
+			this.showButtons = false;
+
 			//return this.instanceCreated.id;
 			return this.solicitud.idSolicitud;
 		}
+
+		this.showButtons = true;
 
 		return "No se ha creado Id de Proceso";
 	}
@@ -939,8 +940,8 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 					const detalles = solicitudes.detalleSolicitudType.find((detalle) => detalle.idSolicitud === solicitud.idSolicitud);
 
 					detalles.estado = solicitud.estado;
-					solicitud.fechaCreacion = new DatePipe("en-CO").transform(solicitud.fechaCreacion, "dd/MM/yyyy HH:mm:ss");
-					solicitud.fechaActualizacion = new DatePipe("en-CO").transform(solicitud.fechaActualizacion, "dd/MM/yyyy HH:mm:ss");
+					solicitud.fechaCreacion = new DatePipe("en-CO").transform(solicitud.fechaCreacion, "yyyy/MM/dd HH:mm:ss");
+					solicitud.fechaActualizacion = new DatePipe("en-CO").transform(solicitud.fechaActualizacion, "yyyy/MM/dd HH:mm:ss");
 
 					return {
 						...solicitud,
@@ -948,7 +949,7 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 					};
 				});
 
-				return data.sort((a, b) => new Date(b.fechaCreacion).getTime() - new Date(a.fechaCreacion).getTime());
+				return data.sort((a, b) => new Date(b.fechaActualizacion).getTime() - new Date(a.fechaActualizacion).getTime());
 			})
 		);
 
@@ -1014,15 +1015,15 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 							return solicitudes.solicitudType
 								.map((solicitud) => {
 									const detalles = detallesSolicitud.detalleSolicitudType.find((detalle) => detalle.idSolicitud === solicitud.idSolicitud);
-									solicitud.fechaCreacion = new DatePipe("en-CO").transform(solicitud.fechaCreacion, "dd/MM/yyyy HH:mm:ss");
-									solicitud.fechaActualizacion = new DatePipe("en-CO").transform(solicitud.fechaActualizacion, "dd/MM/yyyy HH:mm:ss");
+									solicitud.fechaCreacion = new DatePipe("en-CO").transform(solicitud.fechaCreacion, "yyyy/MM/dd HH:mm:ss");
+									solicitud.fechaActualizacion = new DatePipe("en-CO").transform(solicitud.fechaActualizacion, "yyyy/MM/dd HH:mm:ss");
 
 									return {
 										...solicitud,
 										...detalles,
 									};
 								})
-								.sort((a, b) => new Date(a.fechaCreacion).getTime() - new Date(b.fechaCreacion).getTime());
+								.sort((a, b) => new Date(b.fechaActualizacion).getTime() - new Date(a.fechaActualizacion).getTime());
 						})
 					)
 					.subscribe((data) => {
@@ -1766,7 +1767,7 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 			],
 			body: [
 				["Unidad:", this.modelPrint.unidadNegocio, "Motivo", this.solicitud.tipoMotivo],
-				["Ciudad/Localidad:", this.modelPrint.localidad, "Empleado a reemplazar", this.modelPrint.nombreCompleto],
+				["Ciudad/ Localidad:", this.modelPrint.localidad, "Empleado a reemplazar", this.modelPrint.nombreCompleto],
 				["Cargo solicitado:", this.modelPrint.nombreCargo, "Sueldo", `$ ${parseFloat(this.modelPrint.sueldo).toFixed(2)}`],
 				["Área/Dpto:", this.modelPrint.departamento, "Variable máxima:", `$ ${parseFloat(this.modelPrint.sueldoMensual).toFixed(2)}`],
 				["Centro de Costos", this.modelPrint.nomCCosto, "Total", `$ ${(parseFloat(this.modelPrint.sueldo) + parseFloat(this.modelPrint.sueldoMensual)).toFixed(2)}`],

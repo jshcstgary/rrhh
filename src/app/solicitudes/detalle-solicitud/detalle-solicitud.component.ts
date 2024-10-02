@@ -1434,7 +1434,7 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 			],
 			body: [
 				["Unidad:", this.model.unidadNegocio, "Motivo", this.solicitud.tipoMotivo],
-				["Ciudad/Localidad:", this.model.localidad, "Empleado a reemplazar", this.model.nombreCompleto],
+				["Ciudad/ Localidad:", this.model.localidad, "Empleado a reemplazar", this.model.nombreCompleto],
 				["Cargo solicitado:", this.model.nombreCargo, "Sueldo", `$ ${parseFloat(this.model.sueldo).toFixed(2)}`],
 				["Área/Dpto:", this.model.departamento, "Variable máxima:", `$ ${parseFloat(this.model.sueldoMensual).toFixed(2)}`],
 				["Centro de Costos", this.model.nomCCosto, "Total", `$ ${(parseFloat(this.model.sueldo) + parseFloat(this.model.sueldoMensual)).toFixed(2)}`],

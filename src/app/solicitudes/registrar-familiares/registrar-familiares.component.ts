@@ -1899,7 +1899,6 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
 
 	public openModal() {
 		this.modalService
-			// .open(dialogComponentList.dialogBuscarEmpleados, {
 			.open(BuscarEmpleadoComponent, {
 				ariaLabelledBy: "modal-title",
 			})
@@ -1945,6 +1944,59 @@ export class RegistrarFamiliaresComponent extends CompleteTaskComponent {
 								this.utilService.modalResponse(err.error, "error");
 							}
 						});
+					}
+				},
+				(reason) => {
+					console.log(`Dismissed with: ${reason}`);
+				}
+			);
+	}
+
+	public openModalRRHH() {
+		this.modalService
+			.open(BuscarEmpleadoComponent, {
+				ariaLabelledBy: "modal-title",
+			})
+			.result.then(
+				(result) => {
+					if (result?.action === "close") {
+						return;
+					}
+
+					if (result?.data) {
+						const { nombreCompleto }: IEmpleadoData = result.data;
+
+						this.solicitud.usuarioCreacion = nombreCompleto;
+						// const dtoFamiliares: FamiliaresCandidatos = {
+						// 	idSolicitud: this.id_solicitud_by_params,
+						// 	nombreEmpleado: data.nombreCompleto,
+						// 	fechaCreacion: new Date(data.fechaIngresogrupo) ?? new Date(),
+						// 	cargo: data.nombreCargo,
+						// 	unidad: data.unidadNegocio,
+						// 	departamento: data.departamento,
+						// 	localidad: data.localidad,
+						// 	parentesco: "",
+						// 	codigoPosicion: data.codigoPosicion,
+						// 	fechaModificacion: new Date(),
+						// 	descripcionPosicion: data.descrPosicion,
+						// 	subledger: data.subledger,
+						// 	estado: "A",
+						// 	usuarioCreacion: this.solicitud.usuarioCreacion,
+						// 	usuarioModificacion: this.solicitud.usuarioActualizacion
+						// };
+
+						// this.mantenimientoService.guardarFamiliaresCandidato(dtoFamiliares).subscribe({
+						// 	next: () => {
+						// 		this.addNewRow(dtoFamiliares);
+
+						// 		this.utilService.modalResponse("Familiar ingresado correctamente", "success");
+						// 	},
+						// 	error: (err) => {
+						// 		console.error(err);
+
+						// 		this.utilService.modalResponse(err.error, "error");
+						// 	}
+						// });
 					}
 				},
 				(reason) => {
