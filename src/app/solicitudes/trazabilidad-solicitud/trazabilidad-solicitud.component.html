@@ -90,11 +90,15 @@
 								? "Creado"
 								: idSolicitudParam.includes("RP") && dataDetalleAprobadorSolicitud.length > 1
 									? "Selección de Candidato"
-									: idSolicitudParam.includes("RG")
+									: idSolicitudParam.includes("RG") && dataDetalleAprobadorSolicitud.length === 1
 										? "Creado"
-										: idSolicitudParam.includes("CF")
-											? "Creado"
-											: "-"
+										: idSolicitudParam.includes("RG") && dataDetalleAprobadorSolicitud.length > 1
+											? "Finalizado"
+											: idSolicitudParam.includes("CF") && dataDetalleAprobadorSolicitud.length === 1
+												? "Creado"
+												: idSolicitudParam.includes("CF") && dataDetalleAprobadorSolicitud.length > 1
+													? "Finalizado"
+													: "-"
 					}}
 				</div>
 			</div>
