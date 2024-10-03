@@ -206,6 +206,7 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
 	public dataNivelesDeAprobacion: { [key: string]: any[] } = {};
 
 	public dataAprobacionesPorPosicion: { [key: string]: any[] } = {};
+	public dataAprobacionesPorPosicionNextTask: any = [];
 
 	// getDataNivelesAprobacionPorCodigoPosicion
 	public dataNivelesAprobacionPorCodigoPosicion: { [key: string]: any[] } = {};
@@ -1478,11 +1479,13 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
 				next: (aprobador) => {
 					aprobadoractual = aprobador.nivelAprobacion?.value;
 					if (this.id_solicitud_by_params.includes("RG-")) {
-						this.solicitudes.obtenerNivelesAprobacionRegistrados(this.id_solicitud_by_params).subscribe({
-							next: (responseAPS) => {
-								this.dataAprobacionesPorPosicionAPS = responseAPS.nivelAprobacionPosicionType;
+						// this.solicitudes.obtenerNivelesAprobacionRegistrados(this.id_solicitud_by_params).subscribe({
+
+							// next: (responseAPS) => {
+								// this.dataAprobacionesPorPosicionAPS = responseAPS.nivelAprobacionPosicionType;
+
 								if (aprobadoractual !== undefined) {
-									this.aprobacion = this.dataAprobacionesPorPosicionAPS.find((elemento) => elemento.nivelAprobacionType.nivelAprobacionRuta.toUpperCase().includes(aprobadoractual));
+									this.aprobacion = this.dataAprobacionesPorPosicionNextTask.find((elemento) => elemento.nivelAprobacionType.nivelAprobacionRuta.toUpperCase().includes(aprobadoractual));
 
 									if (this.aprobacion.aprobador.nivelDireccion.trim() !== null) {
 										this.solicitudes.modelDetalleAprobaciones.id_Solicitud = this.solicitudRG.idSolicitud;
@@ -1556,14 +1559,15 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
 										console.error(error);
 									},
 								});
-							},
-						});
+							// },
+						// });
 					} else {
-						this.solicitudes.obtenerNivelesAprobacionRegistrados(this.solicitud.idSolicitud).subscribe({
-							next: (responseAPS) => {
-								this.dataAprobacionesPorPosicionAPS = responseAPS.nivelAprobacionPosicionType;
+						// this.solicitudes.obtenerNivelesAprobacionRegistrados(this.solicitud.idSolicitud).subscribe({
+							// next: (responseAPS) => {
+								// this.dataAprobacionesPorPosicionAPS = responseAPS.nivelAprobacionPosicionType;
+
 								if (aprobadoractual !== undefined) {
-									this.aprobacion = this.dataAprobacionesPorPosicionAPS.find((elemento) => elemento.nivelAprobacionType.nivelAprobacionRuta.toUpperCase().includes(aprobadoractual));
+									this.aprobacion = this.dataAprobacionesPorPosicionNextTask.find((elemento) => elemento.nivelAprobacionType.nivelAprobacionRuta.toUpperCase().includes(aprobadoractual));
 
 									if (this.aprobacion.aprobador.nivelDireccion.trim() !== null) {
 										this.solicitudes.modelDetalleAprobaciones.id_Solicitud = this.solicitud.idSolicitud;
@@ -1615,7 +1619,7 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
 										aprobadoractual = "REGISTRARSOLICITUD";
 									}
 								}
-								this.aprobacion = this.dataAprobacionesPorPosicionAPS.find((elemento) => elemento.nivelAprobacionType.nivelAprobacionRuta.toUpperCase().includes(aprobadoractual));
+								this.aprobacion = this.dataAprobacionesPorPosicionNextTask.find((elemento) => elemento.nivelAprobacionType.nivelAprobacionRuta.toUpperCase().includes(aprobadoractual));
 
 								const htmlString = '<!DOCTYPE html>\r\n<html lang="es">\r\n\r\n<head>\r\n  <meta charset="UTF-8">\r\n  <meta name="viewport" content="width=device-width, initial-scale=1.0">\r\n  <title>Document</title>\r\n</head>\r\n\r\n<body>\r\n  <h2>Estimado(a)</h2>\r\n  <h3>{NOMBRE_APROBADOR}</h3>\r\n\r\n  <P>La Solicitud de {TIPO_SOLICITUD} {ID_SOLICITUD} para la posici\u00F3n de {DESCRIPCION_POSICION} est\u00E1 disponible para su\r\n    revisi\u00F3n y aprobaci\u00F3n.</P>\r\n\r\n  <p>\r\n    <b>\r\n      Favor ingresar al siguiente enlace: <a href="{URL_APROBACION}">{URL_APROBACION}</a>\r\n      <br>\r\n      <br>\r\n      Gracias por su atenci\u00F3n.\r\n    </b>\r\n  </p>\r\n</body>\r\n\r\n</html>\r\n';
 
@@ -1636,8 +1640,8 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
 										console.error(error);
 									},
 								});
-							},
-						});
+							// },
+						// });
 					}
 				},
 			});
@@ -1810,6 +1814,8 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
 					this.dataAprobacionesPorPosicion = {
 						[this.keySelected]: response.nivelAprobacionPosicionType,
 					};
+
+					this.dataAprobacionesPorPosicionNextTask = response.nivelAprobacionPosicionType;
 				},
 				error: (error: HttpErrorResponse) => {
 					this.utilService.modalResponse("No existen niveles de aprobación para este empleado", "error");

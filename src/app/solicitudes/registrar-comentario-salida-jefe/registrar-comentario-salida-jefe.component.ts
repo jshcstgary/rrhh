@@ -1329,7 +1329,6 @@ export class RegistrarComentarioSalidaJefeComponent extends CompleteTaskComponen
 			variables
 		};
 
-		console.log(variables2);
 		this.camundaRestService.postCompleteTask(this.uniqueTaskId, variables2).subscribe({
 			next: () => {
 				console.log(this.contadorComentarios);

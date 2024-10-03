@@ -57,7 +57,7 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
 	public existeMatenedores: boolean = false;
 	public existe: boolean = false;
 
-	public fechaSalida: Date = new Date();
+	public fechaSalida: Date = new Date("");
 
 	override model: RegistrarData = new RegistrarData("", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "");
 
@@ -1508,7 +1508,7 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
 
 						this.solicitud.unidadNegocio = this.model.unidadNegocio;
 						this.solicitud.idUnidadNegocio = this.model.unidadNegocio;
-						this.solicitud.estadoSolicitud = "2";
+						this.solicitud.estadoSolicitud = "3";
 						this.solicitud.idTipoMotivo = 0;
 						this.solicitud.idTipoAccion = 0;
 
@@ -1647,7 +1647,7 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
 					if (result?.data) {
 						const data: any = result.data;
 
-						this.fechaSalida = data.fechaSalida ?? new Date("");
+						this.fechaSalida = data.fechaSalida === null || data.fechaSalida === "" || data.fechaSalida === undefined ? new Date(data.descripContrato) : data.fechaSalida;
 						this.modelRG.nombreCompleto = data.nombreCompleto;
 						this.modelRG.subledger = data.subledger ?? "0";
 						this.causaSalida = data.nombreCompania === null ? data.supervisaA : data.descr_CausaSalida ?? "";

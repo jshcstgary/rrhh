@@ -28,9 +28,6 @@ export class DialogReasignarUsuarioComponent {
 		searchInput: ["", [Validators.required, Validators.minLength(1)]]
 	});
 
-	// public empleadoSeleccionado: any = null;
-
-	// search: string;
 	emailVariables = {
 		de: "",
 		password: "",
@@ -41,24 +38,8 @@ export class DialogReasignarUsuarioComponent {
 	};
 
 	textareaContent: string = "";
-	// route: ActivatedRoute
-	// router: Router
-
-	// fields = <IEmpleadoData>{
-	// 	nombreCompleto: "",
-	// 	compania: "",
-	// 	codigo: "",
-	// 	unidadNegocio: "",
-	// 	comentarios: "",
-	// 	fechaIngresogrupo: null,
-	// 	nombreCargo: "",
-	// 	departamento: "",
-	// 	localidad: "",
-	// };
 
 	public dataEmpleadoEvolution: any[] = [];
-
-	// public nombresEmpleados: string[] = [];
 
 	public modelo: { correo: string; } & EvType = {
 		codigo: "",
@@ -197,24 +178,24 @@ export class DialogReasignarUsuarioComponent {
 				} else if (this.taskId === environment.taskType_RGC_RRHH) {
 					this.mensaje = "Se reasignó la tarea de registrar comentario de gerente recursos humanos";
 					this.dataAprobador = this.dataDetalleAprobadorSolicitud.find(data => data.estadoAprobacion.toUpperCase().includes("REGISTRARCOMENTARIORRHH"));
-					this.dataAprobador.idNivelAprobacion = 600000;
-					this.dataAprobador.id_NivelAprobacion = this.dataAprobador.idNivelAprobacion;
-					this.dataAprobador.ruta = "Reasignación de Registro de Comentario de RRHH";
-					this.dataAprobador.nivelAprobacionRuta = "Registro de Comentario de RRHH";
+					// this.dataAprobador.idNivelAprobacion = 600000;
+					// this.dataAprobador.id_NivelAprobacion = this.dataAprobador.idNivelAprobacion;
+					// this.dataAprobador.ruta = "Reasignación de Registro de Comentario de RRHH";
+					// this.dataAprobador.nivelAprobacionRuta = "Registro de Comentario de RRHH";
 				} else if (this.taskId === environment.taskType_RGC_ULTIMO_JEFE) {
 					this.mensaje = "Se reasignó la tarea de registrar comentario de último jefe";
 					this.dataAprobador = this.dataDetalleAprobadorSolicitud.find(data => data.estadoAprobacion.toUpperCase().includes("REGISTRARCOMENTARIOJEFE"));
-					this.dataAprobador.idNivelAprobacion = 500000;
-					this.dataAprobador.id_NivelAprobacion = this.dataAprobador.idNivelAprobacion;
-					this.dataAprobador.ruta = "Reasignación de Registro de Comentario Ultimo Jefe";
-					this.dataAprobador.nivelAprobacionRuta = "Registro de Comentario Ultimo Jefe";
+					// this.dataAprobador.idNivelAprobacion = 500000;
+					// this.dataAprobador.id_NivelAprobacion = this.dataAprobador.idNivelAprobacion;
+					// this.dataAprobador.ruta = "Reasignación de Registro de Comentario Ultimo Jefe";
+					// this.dataAprobador.nivelAprobacionRuta = "Registro de Comentario Ultimo Jefe";
 				} else if (this.taskId === environment.taskType_RG_Jefe_Solicitante) {
 					this.mensaje = "Se reasignó la tarea de registrar comentario de Jefe Solicitante";
 					this.dataAprobador = this.dataDetalleAprobadorSolicitud.find(data => data.estadoAprobacion.toUpperCase().includes("REGISTRARCOMENTARIOSOLICITANTE"));
-					this.dataAprobador.idNivelAprobacion = 700000;
-					this.dataAprobador.id_NivelAprobacion = this.dataAprobador.idNivelAprobacion;
-					this.dataAprobador.ruta = "Reasignación de Registro de Comentario Solicitante";
-					this.dataAprobador.nivelAprobacionRuta = "Registro de Comentario Jefe Solicitante";
+					// this.dataAprobador.idNivelAprobacion = 700000;
+					// this.dataAprobador.id_NivelAprobacion = this.dataAprobador.idNivelAprobacion;
+					// this.dataAprobador.ruta = "Reasignación de Registro de Comentario Solicitante";
+					// this.dataAprobador.nivelAprobacionRuta = "Registro de Comentario Jefe Solicitante";
 				} else if (this.taskId === environment.taskType_AP_Registrar) {
 					this.mensaje = "Se reasignó la tarea de registrar solicitud de acción de personal";
 					this.dataAprobador = this.dataDetalleAprobadorSolicitud.find(data => data.estadoAprobacion.toUpperCase().includes("REASIGNADO"));

@@ -45,6 +45,7 @@
 				<div class="col-md-6">
 					<div class="input-group mb-3 align-items-center">
 						<label class="input-group-text text-start label-estilo" for="nombre-empleado">Nombre de Empleado</label>
+
 						<span *ngIf="existeMatenedores || taskType_Activity === 'AP_CompletarSolicitud'; else nombreEmpleadoEditable" style="color: black; font-size: 14px" class="text-start w-50">{{ model.nombreCompleto }}</span>
 
 						<ng-template #nombreEmpleadoEditable>
@@ -154,12 +155,10 @@
 							</div>
 
 							<div class="row">
-								<div class="col-md-12">
-									<div class="input-group mb-3 align-items-center">
-										<label class="input-group-text label-estilo text-center" for="tipoMotivo">Código de Posición</label>
+								<div class="col-md-12 input-group mb-3 align-items-center">
+									<label class="input-group-text label-estilo text-center" for="tipoMotivo">Código de Posición</label>
 
-										<span id="unidad" name="unidad" style="color: black; font-size: 14px" class="text-start w-50">{{ model.codigoPosicion }}</span>
-									</div>
+									<span id="unidad" name="unidad" style="color: black; font-size: 14px" class="text-start w-50">{{ model.codigoPosicion }}</span>
 								</div>
 							</div>
 

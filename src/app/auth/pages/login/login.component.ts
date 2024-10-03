@@ -77,8 +77,12 @@ export class LoginComponent {
 		this.unsubscribeService.complete();
 	}
 
-	public getPerfilesUsuario() {
-		if (this.user === "") {
+	public getPerfilesUsuario(event: any) {
+		console.log(event.target.value);
+
+		const user = event.target.value;
+
+		if (user === "") {
 			Swal.fire({
 				text: "Ingrese el Usuario",
 				icon: "info",
@@ -88,6 +92,15 @@ export class LoginComponent {
 
 			return;
 		}
+		
+		console.log(this.user);
+		console.log(user);
+		console.log(this.user === user);
+		if (this.user === user) {
+			return;
+		}
+
+		this.user = user;
 
 		this.isLoading = true;
 

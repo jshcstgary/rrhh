@@ -32,6 +32,8 @@
 					<th>Centro de Costo</th>
 
 					<th>Fecha de Ingreso</th>
+
+					<th>Fecha de Salida</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -59,6 +61,8 @@
 					<td>{{ empleado.nomCCosto ?? "-" }}</td>
 
 					<td>{{ empleado.fechaIngresogrupo === null || empleado.fechaIngresogrupo === "" || empleado.fechaIngresogrupo === undefined ? (empleado.fechaIngreso === "" || empleado.fechaIngreso === null || empleado.fechaIngreso === undefined ? "-" : (empleado.fechaIngreso | date : "dd-MM-yyyy")) : (empleado.fechaIngresogrupo | date : "dd-MM-yyyy") }}</td>
+
+					<td>{{ empleado.fechaSalida | date : "dd-MM-yyyy" }}</td>
 				</tr>
 			</tbody>
 		</table>

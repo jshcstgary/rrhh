@@ -66,7 +66,7 @@
 			<!-- ! Datos de contratación -->
 			<app-solicitud-seccion-desplegable titleSummary="Datos de contratación" [isOpen]="true">
 				<div>
-					<div class="d-flex justify-content-end">
+					<div class="d-flex justify-content-end" *ngIf="!existeMatenedores">
 						<button type="button" (click)="openModalBuscarExempleado()" class="btn btn-info"><i class="ti-search me-1"></i> Buscar ex-empleado</button>
 					</div>
 
@@ -167,7 +167,7 @@
 							<div class="input-group mb-3 align-items-center">
 								<label class="input-group-text text-start label-estilo" for="tipoMotivo">Puesto</label>
 
-								<span style="color: black; font-size: 14px" class="text-start w-50">{{ detalleSolicitudRG.supervisaA === "N/A" ? "" : modelRG.descrPosicion }}</span>
+								<span style="color: black; font-size: 14px" class="text-start w-50">{{ detalleSolicitudRG.supervisaA === "N/A" ? "" : modelRG.nombreCargo }}</span>
 							</div>
 						</div>
 
@@ -175,7 +175,7 @@
 							<div class="input-group mb-3 align-items-center">
 								<label class="input-group-text text-start label-estilo" for="tipoMotivo">Puesto</label>
 
-								<span style="color: black; font-size: 14px" class="text-start w-50">{{ model.descrPosicion }}</span>
+								<span style="color: black; font-size: 14px" class="text-start w-50">{{ model.nombreCargo }}</span>
 							</div>
 						</div>
 					</div>
@@ -185,11 +185,15 @@
 							<div class="input-group mb-3 align-items-center">
 								<label class="input-group-text text-start label-estilo" for="tipoMotivo">Jefe Inmediato Anterior o Referencia</label>
 
-								<input name="jefe-superior" type="text" class="form-control" id="searchInp" [(ngModel)]="jefeReferenciaQuery.nombreCompleto" readonly (click)="getDataEmpleadosEvolution('nombresJefeReferencia')" />
+								<span *ngIf="existeMatenedores; else editableJefeReferenciaNombre" style="color: black; font-size: 14px" class="text-start w-50">{{ jefeReferenciaQuery.nombreCompleto }}</span>
 
-								<button class="btn btn-light" type="button" (click)="getDataEmpleadosEvolution('nombresJefeReferencia')">
-									<i class="ti-search"></i>
-								</button>
+								<ng-template #editableJefeReferenciaNombre>
+									<input name="jefe-superior" type="text" class="form-control" id="searchInp" [(ngModel)]="jefeReferenciaQuery.nombreCompleto" readonly (click)="getDataEmpleadosEvolution('nombresJefeReferencia')" />
+
+									<button class="btn btn-light" type="button" (click)="getDataEmpleadosEvolution('nombresJefeReferencia')">
+										<i class="ti-search"></i>
+									</button>
+								</ng-template>
 							</div>
 						</div>
 
@@ -274,11 +278,15 @@
 							<div class="input-group mb-3 align-items-center">
 								<label class="input-group-text text-start label-estilo" for="tipoMotivo">Responsable RRHH</label>
 
-								<input name="responsable-rrhh" type="text" class="form-control" id="searchInp" [(ngModel)]="responsableRRHHQuery.nombreCompleto" readonly (click)="getDataEmpleadosEvolution('nombresResponsableRRHH')" />
+								<span *ngIf="existeMatenedores; else editableResponsableRRHH" style="color: black; font-size: 14px" class="text-start w-50">{{ fechaSalida | date : "dd/MM/yyyy" }}</span>
 
-								<button class="btn btn-light" type="button" (click)="getDataEmpleadosEvolution('nombresResponsableRRHH')">
-									<i class="ti-search"></i>
-								</button>
+								<ng-template #editableResponsableRRHH>
+									<input name="responsable-rrhh" type="text" class="form-control" id="searchInp" [(ngModel)]="responsableRRHHQuery.nombreCompleto" readonly (click)="getDataEmpleadosEvolution('nombresResponsableRRHH')" />
+
+									<button class="btn btn-light" type="button" (click)="getDataEmpleadosEvolution('nombresResponsableRRHH')">
+										<i class="ti-search"></i>
+									</button>
+								</ng-template>
 							</div>
 						</div>
 					</div>
@@ -303,7 +311,7 @@
 							<div class="input-group mb-3 align-items-center">
 								<label class="input-group-text text-start label-estilo" for="tipoMotivo">Sueldo</label>
 
-								<span style="color: black; font-size: 14px" class="text-start w-50">$ {{ detalleSolicitudRG.supervisaA === "N/A" ? "" : (modelRG.sueldo | number : "1.2-2") }}</span>
+								<span style="color: black; font-size: 14px" class="text-start w-50">$ {{ detalleSolicitudRG.supervisaA === "N/A" ? "0.00" : (modelRG.sueldo === "" || modelRG.sueldo === null || modelRG.sueldo === undefined ? "0.00" : modelRG.sueldo | number : "1.2-2") }}</span>
 							</div>
 						</div>
 
@@ -321,7 +329,7 @@
 							<div class="input-group mb-3 align-items-center">
 								<label class="input-group-text text-start label-estilo" for="tipoMotivo">Mensual</label>
 
-								<span style="color: black; font-size: 14px" class="text-start w-50">$ {{ detalleSolicitudRG.supervisaA === "N/A" ? "" : (modelRG.sueldoMensual | number : "1.2-2") }}</span>
+								<span style="color: black; font-size: 14px" class="text-start w-50">$ {{ detalleSolicitudRG.supervisaA === "N/A" ? "0.00" : (modelRG.sueldoMensual === "" || modelRG.sueldoMensual === null || modelRG.sueldoMensual === undefined ? "0.00" : modelRG.sueldoMensual | number : "1.2-2") }}</span>
 							</div>
 						</div>
 
@@ -339,7 +347,7 @@
 							<div class="input-group mb-3 align-items-center">
 								<label class="input-group-text text-start label-estilo" for="tipoMotivo">Trimestral</label>
 
-								<span style="color: black; font-size: 14px" class="text-start w-50">$ {{ detalleSolicitudRG.supervisaA === "N/A" ? "" : (modelRG.sueldoTrimestral | number : "1.2-2") }}</span>
+								<span style="color: black; font-size: 14px" class="text-start w-50">$ {{ detalleSolicitudRG.supervisaA === "N/A" ? "0.00" : (modelRG.sueldoTrimestral === "" || modelRG.sueldoTrimestral === null || modelRG.sueldoTrimestral === undefined ? "0.00" : modelRG.sueldoTrimestral | number : "1.2-2") }}</span>
 							</div>
 						</div>
 
@@ -357,7 +365,7 @@
 							<div class="input-group mb-3 align-items-center">
 								<label class="input-group-text text-start label-estilo" for="tipoMotivo">Semestral</label>
 
-								<span style="color: black; font-size: 14px" class="text-start w-50">$ {{ detalleSolicitudRG.supervisaA === "N/A" ? "" : (modelRG.sueldoSemestral | number : "1.2-2") }}</span>
+								<span style="color: black; font-size: 14px" class="text-start w-50">$ {{ detalleSolicitudRG.supervisaA === "N/A" ? "0.00" : (modelRG.sueldoSemestral === "" || modelRG.sueldoSemestral === null || modelRG.sueldoSemestral === undefined ? "0.00" : modelRG.sueldoSemestral | number : "1.2-2") }}</span>
 							</div>
 						</div>
 
@@ -375,7 +383,7 @@
 							<div class="input-group mb-3 align-items-center">
 								<label class="input-group-text text-start label-estilo" for="tipoMotivo">Anual</label>
 
-								<span style="color: black; font-size: 14px" class="text-start w-50">$ {{ detalleSolicitudRG.supervisaA === "N/A" ? "" : (modelRG.sueldoAnual | number : "1.2-2") }}</span>
+								<span style="color: black; font-size: 14px" class="text-start w-50">$ {{ detalleSolicitudRG.supervisaA === "N/A" ? "0.00" : (modelRG.sueldoAnual === "" || modelRG.sueldoAnual === null || modelRG.sueldoAnual === undefined ? "0.00" : modelRG.sueldoAnual | number : "1.2-2") }}</span>
 							</div>
 						</div>
 
@@ -393,7 +401,7 @@
 							<div class="input-group mb-3 align-items-center">
 								<label class="input-group-text text-start label-estilo" for="tipoMotivo">Remuneración mensual</label>
 
-								<span style="color: black; font-size: 14px" class="text-start w-50">$ {{ detalleSolicitudRG.supervisaA === "N/A" ? "" : (remuneracion | number : "1.2-2") }}</span>
+								<span style="color: black; font-size: 14px" class="text-start w-50">$ {{ detalleSolicitudRG.supervisaA === "N/A" ? "0.00" : (remuneracion === 0 || remuneracion === null || remuneracion === undefined ? "0.00" : remuneracion | number : "1.2-2") }}</span>
 							</div>
 						</div>
 

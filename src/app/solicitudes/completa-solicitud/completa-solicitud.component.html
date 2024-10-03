@@ -441,15 +441,15 @@
 						</div>
 					</div>
 
-					<!-- <div class="row">
+					<div class="row">
 						<div class="col-md-12">
 							<div class="input-group mb-3 align-items-center">
-								<label class="input-group-text text-start label-estilo2" for="nombre-candidato">Fecha de ingreso</label>
+								<label class="input-group-text text-start label-estilo2" for="nombre-candidato">Fecha de ingreso del candidato</label>
 
-								<span style="font-size: 14px" class="w-75">{{ fechas.finProcesoContratacion === "" || fechas.finProcesoContratacion === undefined || fechas.finProcesoContratacion === null ? "" : fechas.fechaIngresoCandidato }}</span>
+								<span style="font-size: 14px" class="w-75">{{ fechas.finProcesoContratacion === "" || fechas.finProcesoContratacion === undefined || fechas.finProcesoContratacion === null ? "" : fechas.fechaIngresoCandidato | date : "dd/MM/yyyy" }}</span>
 							</div>
 						</div>
-					</div> -->
+					</div>
 				</div>
 			</app-solicitud-seccion-desplegable>
 
@@ -540,7 +540,7 @@
 			</app-solicitud-seccion-desplegable>
 
 			<!-- ! Atención de solicitud -->
-			<app-solicitud-seccion-desplegable titleSummary="Atención de solicitud" [isOpen]="true">
+			<app-solicitud-seccion-desplegable titleSummary="Atención de solicitud" [isOpen]="true" *ngIf="!existeMatenedores">
 				<div>
 					<div class="row">
 						<div class="col-md-12">

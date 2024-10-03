@@ -455,9 +455,13 @@
 							<div class="input-group mb-3 align-items-center">
 								<label class="input-group-text label-estilo2" for="comments"> Comentarios (¿Cómo fue el desempeño en el Área?) </label>
 
-								<textarea *ngIf="taskKey !== taskKeySolicitante" name="descripcionposicion" style="color: black; font-size: 14px; resize: none" class="form-control" id="comments" rows="3" [(ngModel)]="comentarios" required></textarea>
+								<span *ngIf="existeMatenedores; else editableComentarioJefeAnterior">
+									<span *ngIf="taskKey === taskKeySolicitante" style="color: black; font-size: 14px" class="text-start w-75">{{ comentariosJefeInmediato.comentario }}</span>
+								</span>
 
-								<span *ngIf="taskKey === taskKeySolicitante" style="color: black; font-size: 14px" class="text-start w-75">{{ comentariosJefeInmediato.comentario }}</span>
+								<ng-template #editableComentarioJefeAnterior>
+									<textarea *ngIf="taskKey !== taskKeySolicitante" name="descripcionposicion" style="color: black; font-size: 14px; resize: none" class="form-control" id="comments" rows="3" [(ngModel)]="comentarios" required></textarea>
+								</ng-template>
 							</div>
 						</div>
 					</div>
@@ -482,9 +486,13 @@
 							<div class="input-group mb-3 align-items-center">
 								<label class="input-group-text label-estilo2" for="tipoSolicitud">Forma de Salida</label>
 
-								<textarea *ngIf="taskKey !== taskKeySolicitante" type="text" name="comentario" style="color: black; font-size: 14px; resize: none" class="form-control" id="comments" rows="3" [(ngModel)]="comentarios" required></textarea>
+								<span *ngIf="existeMatenedores; else editableCometarioRRHH">
+									<span *ngIf="taskKey === taskKeySolicitante" style="color: black; font-size: 14px" class="text-start">{{ comentariosRRHH.comentario }}</span>
+								</span>
 
-								<span *ngIf="taskKey === taskKeySolicitante" style="color: black; font-size: 14px" class="text-start">{{ comentariosRRHH.comentario }}</span>
+								<ng-template #editableCometarioRRHH>
+									<textarea *ngIf="taskKey !== taskKeySolicitante" type="text" name="comentario" style="color: black; font-size: 14px; resize: none" class="form-control" id="comments" rows="3" [(ngModel)]="comentarios" required></textarea>
+								</ng-template>
 							</div>
 						</div>
 					</div>
@@ -549,7 +557,11 @@
 							<div class="input-group mb-3 align-items-center">
 								<label class="input-group-text label-estilo2" for="justificacion">Comentarios (¿por qué considera el reingreso?)</label>
 
-								<textarea name="descripcionposicion" style="color: black; font-size: 14px; resize: none" class="form-control" id="comments2" rows="3" [(ngModel)]="comentarios" required></textarea>
+								<span *ngIf="existeMatenedores; else editableComentarioJefeSolicitante" style="color: black; font-size: 14px" class="text-start w-75">{{ comentarios }}</span>
+
+								<ng-template #editableComentarioJefeSolicitante>
+									<textarea name="descripcionposicion" style="color: black; font-size: 14px; resize: none" class="form-control" id="comments2" rows="3" [(ngModel)]="comentarios" required></textarea>
+								</ng-template>
 							</div>
 						</div>
 					</div>

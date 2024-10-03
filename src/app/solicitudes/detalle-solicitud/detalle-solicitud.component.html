@@ -1226,9 +1226,9 @@
 							<div class="row">
 								<div class="col-md-12">
 									<div class="input-group mb-3 align-items-center">
-										<label class="input-group-text text-start label-estilo2" for="nombre-candidato">Fecha de ingreso</label>
+										<label class="input-group-text text-start label-estilo2" for="nombre-candidato">Fecha de ingreso del candidato</label>
 
-										<span style="font-size: 14px" class="w-75">{{ fechas.finProcesoContratacion === "" || fechas.finProcesoContratacion === undefined || fechas.finProcesoContratacion === null ? "" : fechas.fechaIngresoCandidato }}</span>
+										<span style="font-size: 14px" class="w-75">{{ fechas.finProcesoContratacion === "" || fechas.finProcesoContratacion === undefined || fechas.finProcesoContratacion === null ? "" : fechas.fechaIngresoCandidato | date : "dd/MM/yyyy" }}</span>
 									</div>
 								</div>
 							</div>

@@ -435,7 +435,11 @@
 							<div class="input-group mb-3 aling-items-center">
 								<label class="input-group-text text-start label-estilo2" for="anulacion">Comentarios Anulación de Solicitud</label>
 
-								<textarea id="anulacion" name="anulacion" [(ngModel)]="model.comentariosAnulacion" style="color: black; font-size: 14px" class="flex-fill"></textarea>
+								<span *ngIf="existeMatenedores; else editableAnulacion" style="color: black; font-size: 14px" class="text-start w-50">{{ model.comentariosAnulacion }}</span>
+
+								<ng-template #editableAnulacion>
+									<textarea id="anulacion" name="anulacion" [(ngModel)]="model.comentariosAnulacion" style="color: black; font-size: 14px" class="flex-fill"></textarea>
+								</ng-template>
 							</div>
 						</div>
 					</div>

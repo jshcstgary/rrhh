@@ -13,7 +13,8 @@
 								<div class="form-group">
 									<label for="usuario" class="control-label col-form-label azul">Usuario</label>
 
-									<input required (blur)="getPerfilesUsuario()" type="text" [(ngModel)]="user" class="form-control" id="usuario" />
+									<!-- <input required (blur)="getPerfilesUsuario($event)" type="text" [(ngModel)]="user" class="form-control" id="usuario" /> -->
+									<input required (blur)="getPerfilesUsuario($event)" type="text" class="form-control" id="usuario" />
 								</div>
 							</div>
 						</div>

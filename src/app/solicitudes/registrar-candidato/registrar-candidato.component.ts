@@ -1598,6 +1598,8 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
 																detalle.fechaRegistro = new Date();
 																convertTimeZonedDate(detalle.fechaRegistro);
 
+																detalle.justificacion = "";
+
 																this.solicitudes.guardarDetalleSolicitud(detalle).subscribe({
 																	next: () => {
 																		this.starterService.getUser(sessionStorage.getItem(LocalStorageKeys.IdUsuario)!).subscribe({

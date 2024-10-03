@@ -2431,11 +2431,11 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 				["Variable Máxima:", `$ ${variableMaximaRG.toFixed(2)}`, `$ ${variableMaxima.toFixed(2)}`],
 				["Remuneración Total:", `$ ${(parseFloat(this.modelPrintRG.sueldo) + variableMaximaRG).toFixed(2)}`, `$ ${(parseFloat(this.modelPrint.sueldo) + variableMaxima).toFixed(2)}`],
 				["Cargo:", this.modelPrint.descrPosicion, this.modelPrintRG.descrPosicion],
-				["Departamento:", this.modelPrint.departamento, this.modelPrintRG.departamento],
+				["Departamento:", this.modelPrintRG.departamento, this.modelPrint.departamento],
 				["Fecha de Ingreso:", this.modelPrint.fechaIngreso === null || this.modelPrint.fechaIngreso === undefined || this.modelPrint.fechaIngreso === "" ? "-" : format(new Date(this.modelPrint.fechaIngreso), "dd/MM/yyyy"), this.modelPrintRG.fechaIngreso === null || this.modelPrintRG.fechaIngreso === undefined || this.modelPrintRG.fechaIngreso === "" ? "-" : format(new Date(this.modelPrintRG.fechaIngreso), "dd/MM/yyyy")],
 				["Fecha de Salida:", format(new Date(this.detalleSolicitudPrintRG.fechaSalida), "dd/MM/yyyy"), format(new Date(this.detalleSolicitud.fechaSalida), "dd/MM/yyyy")],
 				["Jefe Inmediato Superior:", this.detalleSolicitudPrintRG.jefeInmediatoSuperior, this.detalleSolicitud.jefeInmediatoSuperior],
-				["Cargo Jefe Inemdiato Superior:", this.detalleSolicitudPrintRG.puestoJefeInmediato, this.detalleSolicitud.puestoJefeInmediato],
+				["Cargo Jefe Inmediato Superior:", this.detalleSolicitudPrintRG.puestoJefeInmediato, this.detalleSolicitud.puestoJefeInmediato],
 				["Responsable de RR.HH.:", this.detalleSolicitudPrintRG.responsableRRHH, this.detalleSolicitud.responsableRRHH],
 			],
 			columnStyles: {

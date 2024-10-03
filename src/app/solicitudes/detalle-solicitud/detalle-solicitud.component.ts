@@ -2154,11 +2154,11 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 				["Variable Máxima:", `$ ${variableMaximaRG.toFixed(2)}`, `$ ${variableMaxima.toFixed(2)}`],
 				["Remuneración Total:", `$ ${(parseFloat(this.modelRG.sueldo) + variableMaximaRG).toFixed(2)}`, `$ ${(parseFloat(this.model.sueldo) + variableMaxima).toFixed(2)}`],
 				["Cargo:", this.model.descrPosicion, this.modelRG.descrPosicion],
-				["Departamento:", this.model.departamento, this.modelRG.departamento],
+				["Departamento:", this.modelRG.departamento, this.model.departamento],
 				["Fecha de Ingreso:", this.model.fechaIngreso === null || this.model.fechaIngreso === undefined || this.model.fechaIngreso === "" ? "-" : format(new Date(this.model.fechaIngreso), "dd/MM/yyyy"), this.modelRG.fechaIngreso === null || this.modelRG.fechaIngreso === undefined || this.modelRG.fechaIngreso === "" ? "-" : format(new Date(this.modelRG.fechaIngreso), "dd/MM/yyyy")],
 				["Fecha de Salida:", format(new Date(this.detalleSolicitudRG.fechaSalida), "dd/MM/yyyy"), format(new Date(this.detalleSolicitud.fechaSalida), "dd/MM/yyyy")],
 				["Jefe Inmediato Superior:", this.detalleSolicitudRG.jefeInmediatoSuperior, this.detalleSolicitud.jefeInmediatoSuperior],
-				["Cargo Jefe Inemdiato Superior:", this.detalleSolicitudRG.puestoJefeInmediato, this.detalleSolicitud.puestoJefeInmediato],
+				["Cargo Jefe Inmediato Superior:", this.detalleSolicitudRG.puestoJefeInmediato, this.detalleSolicitud.puestoJefeInmediato],
 				["Responsable de RR.HH.:", this.detalleSolicitudRG.responsableRRHH, this.detalleSolicitud.responsableRRHH],
 			],
 			columnStyles: {

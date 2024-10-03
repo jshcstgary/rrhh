@@ -40,7 +40,10 @@ export class BuscarExempleadoComponent {
 					return;
 				}
 
-				this.empleados = response.empleadosRBP;
+				this.empleados = response.empleadosRBP.map(empleado => ({
+					...empleado,
+					fechaSalida: empleado.fechaSalida === null || empleado.fechaSalida === "" || empleado.fechaSalida === undefined ? new Date(empleado.descripContrato) : empleado.fechaSalida
+				}));
 
 				this.utilService.closeLoadingSpinner();
 			},

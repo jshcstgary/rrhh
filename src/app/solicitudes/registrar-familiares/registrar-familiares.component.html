@@ -154,9 +154,15 @@
 						<button type="button" (click)="openModal()" class="btn btn-info me-2 mt-1"><i class="me-1 ti-search"></i> Buscar familiar</button>
 					</div>
 
-					<form>
-						<table-personalized [columns]="columnsDatosFamiliares" [data]="dataTableDatosFamiliares" [tableWidth]="'100%'" (changeSort)="handleChangeSort($event)" (saveRowData)="handleSaveRowData($event)" (actionClick)="handleActionClick($event)"></table-personalized>
-					</form>
+					<div *ngIf="existeMatenedores; else editableFamilyTable">
+						<table-personalized [columns]="columnsDatosFamiliares" [data]="dataTableDatosFamiliares" [tableWidth]="'100%'"></table-personalized>
+					</div>
+
+					<ng-template #editableFamilyTable>
+						<form>
+							<table-personalized [columns]="columnsDatosFamiliares" [data]="dataTableDatosFamiliares" [tableWidth]="'100%'" (changeSort)="handleChangeSort($event)" (saveRowData)="handleSaveRowData($event)" (actionClick)="handleActionClick($event)"></table-personalized>
+						</form>
+					</ng-template>
 				</div>
 			</app-solicitud-seccion-desplegable>
 
