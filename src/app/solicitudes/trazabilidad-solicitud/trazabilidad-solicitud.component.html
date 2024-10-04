@@ -87,15 +87,15 @@
 																? "Completado"
 																: dataDetalleAprobadorSolicitud[indexToShow].estadoAprobacion
 							: idSolicitudParam.includes("RP") && dataDetalleAprobadorSolicitud.length === 1
-								? "Creado"
+								? "Registrar Solicitud"
 								: idSolicitudParam.includes("RP") && dataDetalleAprobadorSolicitud.length > 1
 									? "Selección de Candidato"
 									: idSolicitudParam.includes("RG") && dataDetalleAprobadorSolicitud.length === 1
-										? "Creado"
+										? "Registrar Solicitud"
 										: idSolicitudParam.includes("RG") && dataDetalleAprobadorSolicitud.length > 1
 											? "Finalizado"
 											: idSolicitudParam.includes("CF") && dataDetalleAprobadorSolicitud.length === 1
-												? "Creado"
+												? "Registrar Solicitud"
 												: idSolicitudParam.includes("CF") && dataDetalleAprobadorSolicitud.length > 1
 													? "Finalizado"
 													: "-"

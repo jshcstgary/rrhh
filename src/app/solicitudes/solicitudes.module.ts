@@ -3,7 +3,7 @@ import { NgModule } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { MatButtonModule } from "@angular/material/button";
 import { MatButtonToggleModule } from "@angular/material/button-toggle";
-import { MAT_DATE_LOCALE, MatNativeDateModule } from "@angular/material/core";
+import { MAT_DATE_FORMATS, MAT_DATE_LOCALE, MatNativeDateModule } from "@angular/material/core";
 import { MatDatepickerModule } from "@angular/material/datepicker";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
@@ -50,6 +50,18 @@ import { DialogBuscarEmpleadosReingresoComponent } from "./reingreso-personal/di
 import { ReingresoPersonalComponent } from "./reingreso-personal/reingreso-personal.component";
 import { TrazabilidadSolicitudComponent } from "./trazabilidad-solicitud/trazabilidad-solicitud.component";
 import { ReporteSolicitudesComponent } from "./reporte-solicitudes/reporte-solicitudes.component";
+
+export const MY_DATE_FORMATS = {
+    parse: {
+        dateInput: 'DD/MM/YYYY',
+    },
+    display: {
+        dateInput: 'DD/MM/YYYY',
+        monthYearLabel: 'MMM YYYY',
+        dateA11yLabel: 'LL',
+        monthYearA11yLabel: 'MMMM YYYY',
+    },
+};
 
 @NgModule({
 	declarations: [
@@ -108,6 +120,17 @@ import { ReporteSolicitudesComponent } from "./reporte-solicitudes/reporte-solic
 		RevisarSolicitudComponent,
 		//Otros componentes que deseas exportar
 	],
-	providers: [TableService, provideNgxMask(), { provide: MAT_DATE_LOCALE, useValue: "fr" }],
+	providers: [
+		TableService,
+		provideNgxMask(),
+		{
+			provide: MAT_DATE_LOCALE,
+			useValue: "es-ES"
+		},
+		{
+			provide: MAT_DATE_FORMATS,
+			useValue: MY_DATE_FORMATS
+		}
+	],
 })
 export class SolicitudesModule { }

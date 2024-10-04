@@ -29,6 +29,7 @@ import { BuscarExempleadoComponent } from "./buscar-exempleado/buscar-exempleado
 import { DialogBuscarEmpleadosReingresoComponent } from "./dialog-buscar-empleados-reingreso/dialog-buscar-empleados-reingreso.component";
 import { columnsAprobadores, dataTableAprobadores } from "./reingreso-personal.data";
 import { format } from "date-fns";
+import { convertTimeZonedDate } from "src/app/services/util/dates.util";
 
 interface DialogComponents {
 	dialogBuscarEmpleados: Type<DialogBuscarEmpleadosReingresoComponent>;
@@ -58,12 +59,13 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
 	public existe: boolean = false;
 
 	public fechaSalida: Date = new Date("");
+	public fechaSalidaRG: Date = new Date("");
 
 	override model: RegistrarData = new RegistrarData("", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "");
 
 	modelRG: RegistrarData = new RegistrarData("", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "");
 
-	public jefeInmediatoSuperiorQuery: any = "";
+	public responsableRRHHRG: any | { nombreCompleto } = { nombreCompleto: "" };
 	public jefeSolicitanteQuery: any = "";
 	public detallesComentarioJefes: any[] = [];
 
@@ -452,15 +454,7 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
 		});
 	}
 
-	async ngOnInit() {
-		// this.utilService.openLoadingSpinner("Cargando información, espere por favor...");
-		// try {
-		//   await this.loadDataCamunda();
-		//   this.utilService.closeLoadingSpinner();
-		// } catch (error) {
-		//   this.utilService.modalResponse(error.error, "error");
-		// }
-	}
+	async ngOnInit() {}
 
 	ObtenerServicioTipoSolicitud() {
 		return this.mantenimientoService.getTipoSolicitud().subscribe({
@@ -595,10 +589,10 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
 
 					const datosEmpleado = result?.data;
 
-					if (arrayToFill === "nombresJefeInmediatoSuperior") {
+					if (arrayToFill === "nombresResponsableRRHHRG") {
 						// this.jefesInmediatoSuperior = [...new Set(this.dataEmpleadoEvolution.map((empleado) => empleado))];
 
-						this.jefeInmediatoSuperiorQuery = Object.assign(
+						this.responsableRRHHRG = Object.assign(
 							{},
 							{
 								...datosEmpleado,
@@ -623,6 +617,8 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
 								sueldoAnual: datosEmpleado.sueldoVariableAnual,
 							}
 						);
+
+						sessionStorage.setItem(LocalStorageKeys.JefeReferenciaQuery, JSON.stringify(this.jefeReferenciaQuery));
 					} else {
 						// this.responsablesRRHH = [...new Set(this.dataEmpleadoEvolution.map((empleado) => empleado))];
 
@@ -637,65 +633,12 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
 								sueldoAnual: datosEmpleado.sueldoVariableAnual,
 							}
 						);
+
+						sessionStorage.setItem(LocalStorageKeys.ResponsableRRHHQuery, JSON.stringify(this.responsableRRHHQuery));
 					}
 				},
 				(reason) => {}
 			);
-		// this.mantenimientoService.getDataEmpleadosEvolutionPorId(search).subscribe({
-		// 	next: (response) => {
-		// 		this.dataEmpleadoEvolution = response.evType;
-		// 		const datosEmpleado = this.dataEmpleadoEvolution.find((empleado) => {
-		// 			return empleado['codigoPosicion'] === this.dataEmpleadoEvolution[0].codigoPosicion;
-		// 		});
-
-		// 		if (arrayToFill === "nombresJefeInmediatoSuperior") {
-		// 			this.jefesInmediatoSuperior = [...new Set(this.dataEmpleadoEvolution.map((empleado) => empleado))];
-
-		// 			this.jefeInmediatoSuperiorQuery = Object.assign(
-		// 				{},
-		// 				{
-		// 					...datosEmpleado,
-		// 					sueldo: datosEmpleado.sueldo,
-		// 					sueldoMensual: datosEmpleado.sueldoVariableMensual,
-		// 					sueldoTrimestral: datosEmpleado.sueldoVariableTrimestral,
-		// 					sueldoSemestral: datosEmpleado.sueldoVariableSemestral,
-		// 					sueldoAnual: datosEmpleado.sueldoVariableAnual,
-		// 				}
-		// 			);
-		// 		} else if (arrayToFill === "nombresJefeReferencia") {
-		// 			this.jefesReferencia = [...new Set(this.dataEmpleadoEvolution.map((empleado) => empleado))];
-
-		// 			this.jefeReferenciaQuery = Object.assign(
-		// 				{},
-		// 				{
-		// 					...datosEmpleado,
-		// 					sueldo: datosEmpleado.sueldo,
-		// 					sueldoMensual: datosEmpleado.sueldoVariableMensual,
-		// 					sueldoTrimestral: datosEmpleado.sueldoVariableTrimestral,
-		// 					sueldoSemestral: datosEmpleado.sueldoVariableSemestral,
-		// 					sueldoAnual: datosEmpleado.sueldoVariableAnual,
-		// 				}
-		// 			);
-		// 		} else {
-		// 			this.responsablesRRHH = [...new Set(this.dataEmpleadoEvolution.map((empleado) => empleado))];
-
-		// 			this.responsableRRHHQuery = Object.assign(
-		// 				{},
-		// 				{
-		// 					...datosEmpleado,
-		// 					sueldo: datosEmpleado.sueldo,
-		// 					sueldoMensual: datosEmpleado.sueldoVariableMensual,
-		// 					sueldoTrimestral: datosEmpleado.sueldoVariableTrimestral,
-		// 					sueldoSemestral: datosEmpleado.sueldoVariableSemestral,
-		// 					sueldoAnual: datosEmpleado.sueldoVariableAnual,
-		// 				}
-		// 			);
-		// 		}
-		// 	},
-		// 	error: (error: HttpErrorResponse) => {
-		// 		this.utilService.modalResponse(error.error, "error");
-		// 	},
-		// });
 	}
 
 	loadDataCamunda() {
@@ -812,6 +755,8 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
 			next: (response: any) => {
 				if (id.toUpperCase().includes("RP")) {
 					this.detalleSolicitud = response.detalleSolicitudType[0];
+
+					this.responsableRRHHRG.nombreCompleto = this.detalleSolicitud.responsableRRHH;
 				} else if (id.toUpperCase().includes("RG")) {
 					this.detalleSolicitudRG = response.detalleSolicitudType[0];
 				}
@@ -1272,6 +1217,42 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
 
 		let variables = this.generateVariablesFromFormFields();
 
+		this.jefeReferenciaQuery = JSON.parse(sessionStorage.getItem(LocalStorageKeys.JefeReferenciaQuery));
+		this.responsableRRHHQuery = JSON.parse(sessionStorage.getItem(LocalStorageKeys.ResponsableRRHHQuery));
+		this.jefeSolicitanteQuery = JSON.parse(sessionStorage.getItem(LocalStorageKeys.JefeSolicitanteQuery));
+
+		let jefes = [];
+
+		if (this.jefeReferenciaQuery.codigo !== undefined) {
+			jefes.push({
+				...this.jefeReferenciaQuery,
+				tipoJefe: "jefeInmediato",
+			});
+		}
+
+		if (this.responsableRRHHQuery.codigo !== undefined) {
+			jefes.push({
+				...this.responsableRRHHQuery,
+				tipoJefe: "responsableRRHH",
+			});
+		}
+
+		jefes.push({
+			...this.jefeSolicitanteQuery,
+			tipoJefe: "jefeSolicitante",
+		});
+
+		const detallesJefes = jefes.map((jefe) => this.llenarModelDetalleAprobaciones(jefe));
+
+		detallesJefes.forEach(({ fechaCreacion, fechaModificacion}) => {
+			convertTimeZonedDate(fechaCreacion);
+			convertTimeZonedDate(fechaModificacion);
+		});
+
+		this.solicitudes.cargarDetalleAprobacionesArreglo(detallesJefes).subscribe({
+			next: () => {}
+		});
+
 		if (this.detalleNivelAprobacion.length > 0) {
 			this.solicitudes.cargarDetalleAprobacionesArreglo(this.detalleNivelAprobacion).subscribe({
 				next: (res) => {
@@ -1286,12 +1267,14 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
 
 							this.solicitudes.actualizarSolicitud(this.solicitudRG).subscribe({
 								next: (responseSolicitud) => {
-									// setTimeout(() => {
-									//   this.consultarNextTaskAprobador(this.solicitudRG.idSolicitud);
+									sessionStorage.removeItem(LocalStorageKeys.JefeReferenciaQuery);
+									sessionStorage.removeItem(LocalStorageKeys.JefeSolicitanteQuery);
+									sessionStorage.removeItem(LocalStorageKeys.ResponsableRRHHQuery);
+
 									this.solicitudes.getDetalleAprobadoresSolicitudesById(this.solicitudRG.idSolicitud).subscribe({
 										next: (resJefe) => {
 											resJefe.detalleAprobadorSolicitud.forEach((item) => {
-												if (item.estadoAprobacion.toUpperCase().includes("COMENTARIOJEFE") || item.estadoAprobacion.toUpperCase().includes("COMENTARIORRHH")) {
+												if (item.estadoAprobacion.toUpperCase().includes("COMENTARIOJEFE")) {
 													const htmlString = item.estadoAprobacion.toUpperCase().includes("COMENTARIORRHH") ? '<!DOCTYPE html>\r\n<html lang="es">\r\n\r\n<head>\r\n  <meta charset="UTF-8">\r\n  <meta name="viewport" content="width=device-width, initial-scale=1.0">\r\n  <title>Document</title>\r\n</head>\r\n\r\n<body>\r\n  <h2>Estimado(a)</h2>\r\n  <h3>{NOMBRE_APROBADOR}</h3>\r\n\r\n  <P>La Solicitud de {TIPO_SOLICITUD} {ID_SOLICITUD} para la posici\u00F3n de {DESCRIPCION_POSICION} est\u00E1 disponible para su\r\n    revisi\u00F3n y registro de Comentario de Salida del Empleado.</P>\r\n\r\n  <p>\r\n    <b>\r\n      Favor ingresar al siguiente enlace: <a href="{URL_APROBACION}">{URL_APROBACION}</a>\r\n      <br>\r\n      <br>\r\n      Gracias por su atenci\u00F3n.\r\n    </b>\r\n  </p>\r\n</body>\r\n\r\n</html>\r\n' : '<!DOCTYPE html>\r\n<html lang="es">\r\n\r\n<head>\r\n  <meta charset="UTF-8">\r\n  <meta name="viewport" content="width=device-width, initial-scale=1.0">\r\n  <title>Document</title>\r\n</head>\r\n\r\n<body>\r\n  <h2>Estimado(a)</h2>\r\n  <h3>{NOMBRE_APROBADOR}</h3>\r\n\r\n  <P>La Solicitud de {TIPO_SOLICITUD} {ID_SOLICITUD} para la posici\u00F3n de {DESCRIPCION_POSICION} est\u00E1 disponible para su\r\n    revisi\u00F3n y registro de Comentario de Desempeño del Empleado en el área.</P>\r\n\r\n  <p>\r\n    <b>\r\n      Favor ingresar al siguiente enlace: <a href="{URL_APROBACION}">{URL_APROBACION}</a>\r\n      <br>\r\n      <br>\r\n      Gracias por su atenci\u00F3n.\r\n    </b>\r\n  </p>\r\n</body>\r\n\r\n</html>\r\n';
 
 													const modifiedHtmlString = htmlString.replace("{NOMBRE_APROBADOR}", item.usuarioAprobador).replace("{TIPO_SOLICITUD}", this.solicitudRG.tipoSolicitud).replace("{ID_SOLICITUD}", this.solicitudRG.idSolicitud).replace("{DESCRIPCION_POSICION}", this.detalleSolicitudRG.descripcionPosicion).replace(new RegExp("{URL_APROBACION}", "g"), `${portalWorkFlow}tareas/consulta-tareas`);
@@ -1334,7 +1317,7 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
 
 							this.utilService.closeLoadingSpinner();
 
-							this.utilService.modalResponse(`Solicitud registrada correctamente [${this.solicitud.idSolicitud}]. Será redirigido en un momento...`, "success");
+							this.utilService.modalResponse(`Solicitud registrada correctamente [${this.solicitudRG.idSolicitud}]. Será redirigido en un momento...`, "success");
 
 							setTimeout(() => {
 								this.router.navigate(["/tareas/consulta-tareas"]);
@@ -1426,40 +1409,19 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
 			sudlegerAprobador: jefe.subledger,
 			nivelDireccionAprobador: jefe.nivelDir,
 			codigoPosicionReportaA: jefe.codigoPosicionReportaA,
-			estadoAprobacion: tipoJefe === "jefeInmediato" ? "RegistrarComentarioJefe" : tipoJefe === "responsableRRHH" ? "RegistrarComentarioRRHH" : "RegistrarComentarioSolicitante",
+			estadoAprobacion: tipoJefe === "jefeInmediato" ? "RegistrarComentarioJefe" : tipoJefe === "responsableRRHH" ? "RegistrarComentarioRRHHPendiente" : "RegistrarComentarioSolicitante",
 			estado: "A",
 			correo: jefe.correo,
 			usuarioCreacion: jefe.nombreCompleto,
 			usuarioModificacion: jefe.nombreCompleto,
-			fechaCreacion: new Date().toISOString(),
-			fechaModificacion: new Date().toISOString(),
+			fechaCreacion: new Date(),
+			fechaModificacion: new Date(),
 		};
 	}
 
 	save() {
 		this.utilService.openLoadingSpinner("Guardando información, espere por favor...");
 
-		let jefes = [];
-
-		// if (this.jefeInmediatoSuperiorQuery.codigo !== undefined) {
-		// 	jefes.push({
-		// 		...this.jefeInmediatoSuperiorQuery,
-		// 		tipoJefe: "jefeInmediato"
-		// 	});
-		// }
-		if (this.jefeReferenciaQuery.codigo !== undefined) {
-			jefes.push({
-				...this.jefeReferenciaQuery,
-				tipoJefe: "jefeInmediato",
-			});
-		}
-
-		if (this.responsableRRHHQuery.codigo !== undefined) {
-			jefes.push({
-				...this.responsableRRHHQuery,
-				tipoJefe: "responsableRRHH",
-			});
-		}
 		this.mantenimientoService.getDataEmpleadosEvolutionPorId(this.detalleSolicitudRG.jefeSolicitante).subscribe({
 			next: (responseSolicitante) => {
 				if (responseSolicitante.evType.length === 0) {
@@ -1483,103 +1445,105 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
 					}
 				);
 
-				jefes.push({
-					...this.jefeSolicitanteQuery,
-					tipoJefe: "jefeSolicitante",
+				sessionStorage.setItem(LocalStorageKeys.JefeSolicitanteQuery, JSON.stringify(this.jefeSolicitanteQuery));
+
+				this.submitted = true;
+				let idInstancia = this.solicitudDataInicial.idInstancia;
+
+				let extra = {
+					idEmpresa: this.model.compania,
+					empresa: this.model.compania,
+					estadoSolicitud: "Pendiente",
+					unidadNegocio: this.model.unidadNegocio,
+					idUnidadNegocio: this.model.unidadNegocio,
+				};
+
+				this.solicitud.idSolicitud = this.id_solicitud_by_params;
+				this.solicitud.empresa = this.model.compania;
+				this.solicitud.idEmpresa = this.model.compania;
+
+				this.solicitud.unidadNegocio = this.model.unidadNegocio;
+				this.solicitud.idUnidadNegocio = this.model.unidadNegocio;
+				this.solicitud.estadoSolicitud = "3";
+				this.solicitud.idTipoMotivo = 0;
+				this.solicitud.idTipoAccion = 0;
+
+				this.detalleSolicitud.responsableRRHH = this.responsableRRHHRG.nombreCompleto;
+
+				this.solicitudes.actualizarDetalleSolicitud(this.detalleSolicitud).subscribe({
+					next: (responseDetalle) => {
+						setTimeout(() => {
+							window.location.reload();
+						}, 1800);
+					},
 				});
 
-				const detallesJefes = jefes.map((jefe) => this.llenarModelDetalleAprobaciones(jefe));
-				this.solicitudes.cargarDetalleAprobacionesArreglo(detallesJefes).subscribe({
-					next: () => {
-						this.submitted = true;
-						let idInstancia = this.solicitudDataInicial.idInstancia;
+				this.solicitudes.getSolicitudById(this.id_solicitud_by_params).subscribe({
+					next: (response: any) => {
+						this.solicitudRG.idTipoSolicitud = response.idTipoSolicitud;
+						this.solicitudRG.tipoSolicitud = response.tipoSolicitud;
+						this.solicitudes.actualizarSolicitud(this.solicitudRG).subscribe({
+							next: (responseSolicitud) => {
+								this.detalleSolicitud.idSolicitud = this.id_solicitud_by_params;
 
-						let extra = {
-							idEmpresa: this.model.compania,
-							empresa: this.model.compania,
-							estadoSolicitud: "Pendiente",
-							unidadNegocio: this.model.unidadNegocio,
-							idUnidadNegocio: this.model.unidadNegocio,
-						};
+								this.detalleSolicitud.areaDepartamento = this.modelRG.departamento;
+								this.detalleSolicitud.justificacion = this.detalleSolicitudRG.justificacion;
+								this.detalleSolicitud.cargo = this.modelRG.nombreCargo;
+								this.detalleSolicitud.centroCosto = this.modelRG.nomCCosto;
+								this.detalleSolicitud.codigoPosicion = this.model.codigoPosicion;
+								this.detalleSolicitud.compania = this.modelRG.compania;
+								this.detalleSolicitud.departamento = this.modelRG.departamento;
+								this.detalleSolicitud.descripcionPosicion = this.model.descrPosicion;
 
-						this.solicitud.idSolicitud = this.id_solicitud_by_params;
-						this.solicitud.empresa = this.model.compania;
-						this.solicitud.idEmpresa = this.model.compania;
+								this.detalleSolicitud.localidad = this.modelRG.localidad;
+								this.detalleSolicitud.localidadZona = this.modelRG.localidad;
 
-						this.solicitud.unidadNegocio = this.model.unidadNegocio;
-						this.solicitud.idUnidadNegocio = this.model.unidadNegocio;
-						this.solicitud.estadoSolicitud = "3";
-						this.solicitud.idTipoMotivo = 0;
-						this.solicitud.idTipoAccion = 0;
+								this.detalleSolicitud.misionCargo = this.modelRG.misionCargo;
+								this.detalleSolicitud.nivelDireccion = this.modelRG.nivelDir;
+								this.detalleSolicitud.nivelReporteA = this.modelRG.nivelRepa;
 
-						this.solicitudes.getSolicitudById(this.id_solicitud_by_params).subscribe({
-							next: (response: any) => {
-								this.solicitud.idTipoSolicitud = response.idTipoSolicitud;
-								this.solicitud.tipoSolicitud = response.tipoSolicitud;
-								this.solicitudes.actualizarSolicitud(this.solicitud).subscribe({
-									next: (responseSolicitud) => {
-										this.detalleSolicitud.idSolicitud = this.id_solicitud_by_params;
+								this.detalleSolicitud.nombreEmpleado = this.modelRG.nombreCompleto;
 
-										this.detalleSolicitud.areaDepartamento = this.modelRG.departamento;
-										this.detalleSolicitud.justificacion = this.detalleSolicitudRG.justificacion;
-										this.detalleSolicitud.cargo = this.model.descrPosicion;
-										this.detalleSolicitud.centroCosto = this.modelRG.nomCCosto;
-										this.detalleSolicitud.codigoPosicion = this.model.codigoPosicion;
-										this.detalleSolicitud.compania = this.model.compania;
-										this.detalleSolicitud.departamento = this.modelRG.departamento;
-										this.detalleSolicitud.descripcionPosicion = this.model.descrPosicion;
+								this.detalleSolicitud.reportaA = this.modelRG.reportaA;
+								this.detalleSolicitud.supervisaA = "NA";
 
-										this.detalleSolicitud.localidad = this.modelRG.localidad;
-										this.detalleSolicitud.localidadZona = this.modelRG.localidad;
+								this.detalleSolicitud.subledger = this.modelRG.subledger;
 
-										this.detalleSolicitud.misionCargo = this.modelRG.misionCargo;
-										this.detalleSolicitud.nivelDireccion = this.modelRG.nivelDir;
-										this.detalleSolicitud.nivelReporteA = this.modelRG.nivelRepa;
+								this.detalleSolicitud.subledgerEmpleado = this.modelRG.subledger;
 
-										this.detalleSolicitud.nombreEmpleado = this.modelRG.nombreCompleto;
+								this.detalleSolicitud.sucursal = this.modelRG.sucursal;
 
-										this.detalleSolicitud.reportaA = this.modelRG.reportaA;
-										this.detalleSolicitud.supervisaA = "NA";
+								this.detalleSolicitud.misionCargo = this.modelRG.misionCargo == "" || this.modelRG.misionCargo == undefined || this.modelRG.misionCargo == null ? "" : this.modelRG.misionCargo;
 
-										this.detalleSolicitud.subledger = this.modelRG.subledger;
+								this.detalleSolicitud.sueldo = this.modelRG.sueldo;
+								this.detalleSolicitud.sueldoVariableMensual = this.modelRG.sueldoMensual;
+								this.detalleSolicitud.sueldoVariableTrimestral = this.modelRG.sueldoTrimestral;
+								this.detalleSolicitud.sueldoVariableSemestral = this.modelRG.sueldoSemestral;
+								this.detalleSolicitud.sueldoVariableAnual = this.modelRG.sueldoAnual;
+								this.detalleSolicitud.tipoContrato = this.modelRG.tipoContrato;
+								this.detalleSolicitud.unidadNegocio = this.model.unidadNegocio;
 
-										this.detalleSolicitud.subledgerEmpleado = this.modelRG.subledger;
+								this.detalleSolicitud.correo = this.modelRG.correo;
 
-										this.detalleSolicitud.sucursal = this.modelRG.sucursal;
+								this.detalleSolicitud.fechaIngreso = this.modelRG.fechaIngreso;
 
-										this.detalleSolicitud.misionCargo = this.modelRG.misionCargo == "" || this.modelRG.misionCargo == undefined || this.modelRG.misionCargo == null ? "" : this.modelRG.misionCargo;
+								this.detalleSolicitud.jefeInmediatoSuperior = this.modelRG.jefeInmediatoSuperior;
+								this.detalleSolicitud.puestoJefeInmediato = this.model.puestoJefeInmediato;
+								this.detalleSolicitud.jefeReferencia = this.jefeReferenciaQuery.nombreCompleto;
+								this.detalleSolicitud.puesto = this.jefeReferenciaQuery.descrPuesto;
+								this.detalleSolicitud.responsableRRHH = this.responsableRRHHQuery.nombreCompleto;
+								this.detalleSolicitud.jefeSolicitante = this.codigoReportaA;
+								this.detalleSolicitud.fechaSalida = this.fechaSalidaRG;
+								this.detalleSolicitud.causaSalida = this.causaSalida;
 
-										this.detalleSolicitud.sueldo = this.modelRG.sueldo;
-										this.detalleSolicitud.sueldoVariableMensual = this.modelRG.sueldoMensual;
-										this.detalleSolicitud.sueldoVariableTrimestral = this.modelRG.sueldoTrimestral;
-										this.detalleSolicitud.sueldoVariableSemestral = this.modelRG.sueldoSemestral;
-										this.detalleSolicitud.sueldoVariableAnual = this.modelRG.sueldoAnual;
-										this.detalleSolicitud.tipoContrato = this.modelRG.tipoContrato;
-										this.detalleSolicitud.unidadNegocio = this.model.unidadNegocio;
+								this.solicitudes.actualizarDetalleSolicitud(this.detalleSolicitud).subscribe({
+									next: (responseDetalle) => {
+										this.utilService.closeLoadingSpinner(); //comentado mmunoz
+										this.utilService.modalResponse("Datos ingresados correctamente", "success");
 
-										this.detalleSolicitud.correo = this.modelRG.correo;
-
-										this.detalleSolicitud.fechaIngreso = this.modelRG.fechaIngreso;
-
-										this.detalleSolicitud.jefeInmediatoSuperior = this.modelRG.jefeInmediatoSuperior;
-										this.detalleSolicitud.puestoJefeInmediato = this.model.puestoJefeInmediato;
-										this.detalleSolicitud.jefeReferencia = this.jefeReferenciaQuery.nombreCompleto;
-										this.detalleSolicitud.puesto = this.jefeReferenciaQuery.descrPuesto;
-										this.detalleSolicitud.responsableRRHH = this.responsableRRHHQuery.nombreCompleto;
-										this.detalleSolicitud.jefeSolicitante = this.codigoReportaA;
-										this.detalleSolicitud.fechaSalida = this.fechaSalida;
-										this.detalleSolicitud.causaSalida = this.causaSalida;
-
-										this.solicitudes.actualizarDetalleSolicitud(this.detalleSolicitud).subscribe({
-											next: (responseDetalle) => {
-												this.utilService.closeLoadingSpinner(); //comentado mmunoz
-												this.utilService.modalResponse("Datos ingresados correctamente", "success");
-
-												setTimeout(() => {
-													window.location.reload();
-												}, 1800);
-											},
-										});
+										setTimeout(() => {
+											window.location.reload();
+										}, 1800);
 									},
 								});
 							},
@@ -1647,7 +1611,7 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
 					if (result?.data) {
 						const data: any = result.data;
 
-						this.fechaSalida = data.fechaSalida === null || data.fechaSalida === "" || data.fechaSalida === undefined ? new Date(data.descripContrato) : data.fechaSalida;
+						this.fechaSalidaRG = data.fechaSalida === null || data.fechaSalida === "" || data.fechaSalida === undefined ? new Date(data.descripContrato) : data.fechaSalida;
 						this.modelRG.nombreCompleto = data.nombreCompleto;
 						this.modelRG.subledger = data.subledger ?? "0";
 						this.causaSalida = data.nombreCompania === null ? data.supervisaA : data.descr_CausaSalida ?? "";
@@ -1657,7 +1621,7 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
 						this.modelRG.sueldoAnual = data.sueldoVariableAnual;
 						this.modelRG.sueldoTrimestral = data.sueldoVariableTrimestral;
 						this.modelRG.sueldoSemestral = data.sueldoVariableSemestral;
-						this.modelRG.descrPuesto = data.descrPuesto ?? data.descrCargo;
+						this.modelRG.nombreCargo = data.nombreCargo ?? data.descrCargo;
 						this.modelRG.unidadNegocio = data.unidadNegocio;
 						this.modelRG.localidad = data.localidad;
 						this.modelRG.departamento = data.departamento;

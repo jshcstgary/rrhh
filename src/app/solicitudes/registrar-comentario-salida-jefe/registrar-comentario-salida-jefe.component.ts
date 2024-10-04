@@ -796,6 +796,7 @@ export class RegistrarComentarioSalidaJefeComponent extends CompleteTaskComponen
 
 	modelRemuneracion: number = 0;
 	modelRemuneracionRG: number = 0;
+	public responsableRRHHRG: string = "";
 	getDetalleSolicitudById(id: any) {
 		return this.solicitudes.getDetalleSolicitudById(id).subscribe({
 			next: (response: any) => {
@@ -836,7 +837,7 @@ export class RegistrarComentarioSalidaJefeComponent extends CompleteTaskComponen
 						this.observacionRemuneraciones = this.detalleSolicitud.valor;
 						this.modelRemuneracion = +this.model.sueldoAnual / 12 + +this.model.sueldoSemestral / 6 + +this.model.sueldoTrimestral / 3 + +this.model.sueldoMensual;
 
-						console.log(response.detalleSolicitudType[0]);
+						this.responsableRRHHRG = this.detalleSolicitud.responsableRRHH;
 					}
 				} else if (id.toUpperCase().includes("RG")) {
 					if (this.detalleSolicitudRG.codigoPosicion.length > 0) {
@@ -921,8 +922,6 @@ export class RegistrarComentarioSalidaJefeComponent extends CompleteTaskComponen
 						this.causaSalida = this.detalleSolicitudRG.causaSalida;
 						this.modelRG.fechaIngreso = (this.detalleSolicitudRG.fechaIngreso as string).split("T")[0];
 						this.remuneracion = Number(this.modelRG.sueldoAnual) / 12 + Number(this.modelRG.sueldoSemestral) / 6 + Number(this.modelRG.sueldoTrimestral) / 3 + Number(this.modelRG.sueldoMensual);
-
-
 					}
 				}
 
@@ -1313,10 +1312,51 @@ export class RegistrarComentarioSalidaJefeComponent extends CompleteTaskComponen
 				}
 			});
 		}
+
 		if (this.taskKey === this.taskKeyUltimoJefe) {
 			variables.usuario_logged_comentario_ult_jefe = {
 				value: `Usuario{IGUAL}${sessionStorage.getItem(LocalStorageKeys.NombreUsuario)}{SEPARA}Accion{IGUAL}Comentario de Jefe Anterior Registrado por ${sessionStorage.getItem(LocalStorageKeys.NivelDireccion)}{SEPARA}Fecha{IGUAL}${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
 			};
+
+			this.solicitudes.getDetalleAprobadoresSolicitudesById(this.solicitudRG.idSolicitud).subscribe({
+				next: (resJefe) => {
+					resJefe.detalleAprobadorSolicitud.forEach((item) => {
+						if (item.estadoAprobacion.toUpperCase().includes("COMENTARIORRHH")) {
+							item.estadoAprobacion = "RegistrarComentarioRRHH";
+							console.log(item);
+
+							this.solicitudes.guardarDetallesAprobacionesSolicitud(item).subscribe({
+								next: () => {
+									
+								},
+								error: (err) => {
+									console.error(err);
+								}
+							});
+
+							const htmlString = item.estadoAprobacion.toUpperCase().includes("COMENTARIORRHH") ? '<!DOCTYPE html>\r\n<html lang="es">\r\n\r\n<head>\r\n  <meta charset="UTF-8">\r\n  <meta name="viewport" content="width=device-width, initial-scale=1.0">\r\n  <title>Document</title>\r\n</head>\r\n\r\n<body>\r\n  <h2>Estimado(a)</h2>\r\n  <h3>{NOMBRE_APROBADOR}</h3>\r\n\r\n  <P>La Solicitud de {TIPO_SOLICITUD} {ID_SOLICITUD} para la posici\u00F3n de {DESCRIPCION_POSICION} est\u00E1 disponible para su\r\n    revisi\u00F3n y registro de Comentario de Salida del Empleado.</P>\r\n\r\n  <p>\r\n    <b>\r\n      Favor ingresar al siguiente enlace: <a href="{URL_APROBACION}">{URL_APROBACION}</a>\r\n      <br>\r\n      <br>\r\n      Gracias por su atenci\u00F3n.\r\n    </b>\r\n  </p>\r\n</body>\r\n\r\n</html>\r\n' : '<!DOCTYPE html>\r\n<html lang="es">\r\n\r\n<head>\r\n  <meta charset="UTF-8">\r\n  <meta name="viewport" content="width=device-width, initial-scale=1.0">\r\n  <title>Document</title>\r\n</head>\r\n\r\n<body>\r\n  <h2>Estimado(a)</h2>\r\n  <h3>{NOMBRE_APROBADOR}</h3>\r\n\r\n  <P>La Solicitud de {TIPO_SOLICITUD} {ID_SOLICITUD} para la posici\u00F3n de {DESCRIPCION_POSICION} est\u00E1 disponible para su\r\n    revisi\u00F3n y registro de Comentario de Desempeño del Empleado en el área.</P>\r\n\r\n  <p>\r\n    <b>\r\n      Favor ingresar al siguiente enlace: <a href="{URL_APROBACION}">{URL_APROBACION}</a>\r\n      <br>\r\n      <br>\r\n      Gracias por su atenci\u00F3n.\r\n    </b>\r\n  </p>\r\n</body>\r\n\r\n</html>\r\n';
+
+							const modifiedHtmlString = htmlString.replace("{NOMBRE_APROBADOR}", item.usuarioAprobador).replace("{TIPO_SOLICITUD}", this.solicitudRG.tipoSolicitud).replace("{ID_SOLICITUD}", this.solicitudRG.idSolicitud).replace("{DESCRIPCION_POSICION}", this.detalleSolicitudRG.descripcionPosicion).replace(new RegExp("{URL_APROBACION}", "g"), `${portalWorkFlow}tareas/consulta-tareas`);
+
+							this.emailVariables = {
+								de: "emisor",
+								para: item.correo,
+								// alias: this.solicitudes.modelDetalleAprobaciones.correo,
+								alias: "Notificación 1",
+								asunto: `Registro de Comentarios para la Solicitud de ${this.solicitudRG.tipoSolicitud} ${this.solicitudRG.idSolicitud}`,
+								cuerpo: modifiedHtmlString,
+								password: "password",
+							};
+							this.solicitudes.sendEmail(this.emailVariables).subscribe({
+								next: () => {},
+								error: (error) => {
+									console.error(error);
+								},
+							});
+						}
+					});
+				},
+			});
 		}
 
 		if (this.taskKey === this.taskKeyRRHH) {
@@ -1364,7 +1404,7 @@ export class RegistrarComentarioSalidaJefeComponent extends CompleteTaskComponen
 				}
 				this.utilService.closeLoadingSpinner();
 
-				this.utilService.modalResponse(`Solicitud registrada correctamente [${this.solicitud.idSolicitud}]. Será redirigido en un momento...`, "success");
+				this.utilService.modalResponse(`Solicitud registrada correctamente [${this.solicitudRG.idSolicitud}]. Será redirigido en un momento...`, "success");
 
 				setTimeout(() => {
 					this.router.navigate([`/tareas/consulta-tareas`]);

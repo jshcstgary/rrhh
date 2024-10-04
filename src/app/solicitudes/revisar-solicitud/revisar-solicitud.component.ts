@@ -617,10 +617,6 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
 			} else if (campo == "nombreCompleto") {
 				this.model.nombreCompleto = tempSearch;
 			}
-			/*this.utilService.modalResponse(
-			  "No existe un registro para este autocompletado",
-			  "error"
-			);*/
 		}
 	}
 	modelRemuneracion: number = 0;
@@ -1440,7 +1436,7 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
 
 				this.utilService.closeLoadingSpinner();
 				//fin actualizo la solicitud a enviada
-				this.utilService.modalResponse(`Solicitud guardada correctamente [${this.solicitud.idSolicitud}]. Será redirigido en un momento...`, "success");
+				this.utilService.modalResponse(`Solicitud guardada correctamente [${this.id_solicitud_by_params}]. Será redirigido en un momento...`, "success");
 				setTimeout(() => {
 					this.router.navigate(["/tareas/consulta-tareas"]);
 				}, 3000);
@@ -1769,7 +1765,7 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
 			}
 
 			variables.atencionRevisionRemuneraciones = { value: this.buttonValue };
-			variables.comentariosAtencionRemuneraciones = { value: sessionStorage.getItem(LocalStorageKeys.IdLogin) + " - " + this.datosAprobadores.nivelDireccion + " - " + this.textareaContent };
+			variables.comentariosAtencionRemuneraciones = { value: sessionStorage.getItem(LocalStorageKeys.IdLogin) + " - " + this.datosAprobadores.nivelDireccion + " - " + this.textareaContent + " - Fecha de comité: " +  format(this.fechaComite, "dd/MM/yyyy")};
 		}
 
 		return { variables };

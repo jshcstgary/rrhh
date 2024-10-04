@@ -7,5 +7,8 @@ export enum LocalStorageKeys {
 	Perfil = "perfil",
 	NombreUsuario = "nombreUsuario",
 	NivelDireccion = "nivelDireccion",
-	CodigoPefil = "codigoPerfil"
+	CodigoPefil = "codigoPerfil",
+	JefeSolicitanteQuery = "jefeSolicitanteQuery",
+	JefeReferenciaQuery = "jefeReferenciaQuery",
+	ResponsableRRHHQuery = "responsableRRHHQuery"
 }

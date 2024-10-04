@@ -264,6 +264,10 @@ export class ConsultaTareasComponent implements OnInit {
 						if (tarea.solicitudes[0].tipoSolicitud.toUpperCase().includes("ACCION") || tarea.solicitudes[0].tipoSolicitud.toUpperCase().includes("ACCIÓN")) {
 							// this.router.navigate(["/solicitudes/accion-personal/registrar-solicitud", ids[1], ids[0]]);
 							this.router.navigate(["/solicitudes/accion-personal/registrar-solicitud", solicitud.idInstance, solicitud.idSolicitud]);
+						} else if (tarea.solicitudes[0].tipoSolicitud.toUpperCase().includes("REINGRESO")) {
+							this.router.navigate(["/solicitudes/reingreso-personal", solicitud.idInstance, solicitud.idSolicitud]);
+						} else if (tarea.solicitudes[0].tipoSolicitud.toUpperCase().includes("FAMILIA")) {
+							this.router.navigate(["/solicitudes/registrar-familiares", solicitud.idInstance, solicitud.idSolicitud]);
 						} else {
 							// this.router.navigate(["/solicitudes/registrar-solicitud", ids[1], ids[0]]);
 							this.router.navigate(["/solicitudes/registrar-solicitud", solicitud.idInstance, solicitud.idSolicitud]);

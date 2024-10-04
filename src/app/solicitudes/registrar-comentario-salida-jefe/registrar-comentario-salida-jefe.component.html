@@ -24,7 +24,7 @@
 					</div>
 				</div>
 
-				<app-solicitud-header-data [usuarioCreacion]="solicitud.usuarioCreacion" [fechaCreacion]="solicitud.fechaCreacion" [idSolicitud]="solicitudRG.idSolicitud"></app-solicitud-header-data>
+				<app-solicitud-header-data [usuarioCreacion]="solicitud.usuarioCreacion" [fechaCreacion]="solicitudRG.fechaCreacion" [idSolicitud]="solicitudRG.idSolicitud"></app-solicitud-header-data>
 
 				<hr />
 			</div>
@@ -228,7 +228,7 @@
 							<div class="input-group mb-3 align-items-center">
 								<label class="input-group-text text-start label-estilo" for="tipoMotivo">Responsable RRHH</label>
 
-								<span style="color: black; font-size: 14px" class="text-start w-50">{{ solicitud.usuarioCreacion }}</span>
+								<span style="color: black; font-size: 14px" class="text-start w-50">{{ responsableRRHHRG }}</span>
 							</div>
 						</div>
 					</div>
@@ -428,7 +428,7 @@
 			</app-solicitud-seccion-desplegable>
 
 			<!-- ! Referencia de Último Jefe -->
-			<app-solicitud-seccion-desplegable *ngIf="taskKey === taskKeyUltimoJefe || taskKey === taskKeySolicitante" titleSummary="Referencia de Último Jefe" [isOpen]="taskKey === taskKeyUltimoJefe">
+			<app-solicitud-seccion-desplegable *ngIf="taskKey === taskKeyUltimoJefe || taskKey === taskKeySolicitante || taskKey === taskKeyRRHH" titleSummary="Referencia de Último Jefe" [isOpen]="taskKey === taskKeyUltimoJefe">
 				<div>
 					<div class="row">
 						<div class="col-md-12">
@@ -455,9 +455,8 @@
 							<div class="input-group mb-3 align-items-center">
 								<label class="input-group-text label-estilo2" for="comments"> Comentarios (¿Cómo fue el desempeño en el Área?) </label>
 
-								<span *ngIf="existeMatenedores; else editableComentarioJefeAnterior">
-									<span *ngIf="taskKey === taskKeySolicitante" style="color: black; font-size: 14px" class="text-start w-75">{{ comentariosJefeInmediato.comentario }}</span>
-								</span>
+								<!-- <span *ngIf="existeMatenedores || taskKey === taskKeyRRHH; else editableComentarioJefeAnterior" style="color: black; font-size: 14px" class="text-start w-75">{{ comentarios }}</span> -->
+								<span *ngIf="existeMatenedores || taskKey === taskKeyRRHH || taskKey === taskKeySolicitante; else editableComentarioJefeAnterior" style="color: black; font-size: 14px" class="text-start w-75">{{ comentariosJefeInmediato.comentario }}</span>
 
 								<ng-template #editableComentarioJefeAnterior>
 									<textarea *ngIf="taskKey !== taskKeySolicitante" name="descripcionposicion" style="color: black; font-size: 14px; resize: none" class="form-control" id="comments" rows="3" [(ngModel)]="comentarios" required></textarea>
@@ -486,7 +485,7 @@
 							<div class="input-group mb-3 align-items-center">
 								<label class="input-group-text label-estilo2" for="tipoSolicitud">Forma de Salida</label>
 
-								<span *ngIf="existeMatenedores; else editableCometarioRRHH">
+								<span *ngIf="existeMatenedores || taskKey === taskKeySolicitante; else editableCometarioRRHH">
 									<span *ngIf="taskKey === taskKeySolicitante" style="color: black; font-size: 14px" class="text-start">{{ comentariosRRHH.comentario }}</span>
 								</span>
 
