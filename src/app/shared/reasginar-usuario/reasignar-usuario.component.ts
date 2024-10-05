@@ -291,7 +291,7 @@ export class DialogReasignarUsuarioComponent {
 		this.dataAprobador.codigoPosicionReportaA = this.modelo.codigoPosicionReportaA;
 		this.dataAprobador.correo = this.modelo.correo;
 		this.dataAprobador.usuarioCreacion = sessionStorage.getItem(LocalStorageKeys.IdLogin);
-		this.dataAprobador.comentario = this.textareaContent;
+		this.dataAprobador.comentario = "Tarea Reasignada: " + this.textareaContent;
 		this.dataAprobador.usuarioModificacion = sessionStorage.getItem(LocalStorageKeys.IdLogin);
 		this.dataAprobador.fechaCreacion = new Date().toISOString();
 		this.dataAprobador.fechaModificacion = new Date().toISOString();

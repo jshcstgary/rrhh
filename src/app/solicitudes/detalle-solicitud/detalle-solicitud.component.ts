@@ -63,6 +63,8 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 	isChecked: boolean = false;
 	idSolicitudRP: string = "";
 	nombreCandidato: string = "";
+	responsableRRHHRG: string = "";
+
 
 	fechas: any = {
 		actualizacionPerfil: "",
@@ -702,10 +704,10 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 					this.muestraRemuneracion = true;
 				}
 
-				this.mostrarRequisicion = this.solicitud.idSolicitud.includes("RP-");
-				this.mostrarFormularioFamiliares = this.solicitud.idSolicitud.includes("CF-");
-				this.mostrarFormularioReingreso = this.solicitud.idSolicitud.includes("RG-");
-				this.mostrarAccionPersonal = this.solicitud.idSolicitud.includes("AP-");
+				this.mostrarRequisicion = this.id_solicitud_by_params.includes("RP-");
+				this.mostrarFormularioFamiliares = this.id_solicitud_by_params.includes("CF-");
+				this.mostrarFormularioReingreso = this.id_solicitud_by_params.includes("RG-");
+				this.mostrarAccionPersonal = this.id_solicitud_by_params.includes("AP-");
 				this.loadingComplete += 2;
 
 				this.getDetalleSolicitudById(id);
@@ -821,6 +823,7 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 						this.model.sueldoAnual = this.detalleSolicitud.sueldoVariableAnual;
 						this.model.correo = this.detalleSolicitud.correo;
 						this.model.fechaIngreso = this.detalleSolicitud.fechaIngreso;
+						this.responsableRRHHRG = this.detalleSolicitud.responsableRRHH;
 						this.modelRemuneracion = Number(this.model.sueldoAnual) / 12 + Number(this.model.sueldoSemestral) / 6 + Number(this.model.sueldoTrimestral) / 3 + Number(this.model.sueldoMensual);
 					} else if (id.toUpperCase().includes("RG")) {
 						if (this.detalleSolicitudRG.codigoPosicion.length > 0) {

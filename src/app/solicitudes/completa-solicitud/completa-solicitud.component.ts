@@ -1179,7 +1179,7 @@ export class CompletaSolicitudComponent extends CompleteTaskComponent {
 							this.dataAprobacionesPorPosicionAPS = responseAPS.nivelAprobacionPosicionType;
 							this.aprobacion = this.dataAprobacionesPorPosicionAPS.find((elemento) => elemento.nivelAprobacionType.nivelAprobacionRuta.toUpperCase().includes("REGISTRARSOLICITUD"));
 
-							const htmlString = '<!DOCTYPE html>\r\n<html lang="es">\r\n\r\n<head>\r\n  <meta charset="UTF-8">\r\n  <meta name="viewport" content="width=device-width, initial-scale=1.0">\r\n  <title>Document</title>\r\n</head>\r\n\r\n<body>\r\n  <h2>Estimados</h2>\r\n  <h3>APROBADORES</h3>\r\n\r\n  <P>Se le informa que ha sido rechazada la solucitud {ID_SOLICITUD} - {TIPO_SOLICITUD} </P>\r\n\r\n  <p>\r\n    <b>\r\n      Favor ingresar al siguiente enlace: <a href="{URL_APROBACION}">{URL_APROBACION}</a>\r\n      <br>\r\n      <br>\r\n      Gracias por su atenci\u00F3n.\r\n    </b>\r\n  </p>\r\n</body>\r\n\r\n</html>\r\n';
+							const htmlString = '<!DOCTYPE html>\r\n<html lang="es">\r\n\r\n<head>\r\n  <meta charset="UTF-8">\r\n  <meta name="viewport" content="width=device-width, initial-scale=1.0">\r\n  <title>Document</title>\r\n</head>\r\n\r\n<body>\r\n  <h2>Estimados</h2>\r\n  <h3>APROBADORES</h3>\r\n\r\n  <P>Se le informa que ha sido rechazada la solicitud {ID_SOLICITUD} - {TIPO_SOLICITUD} </P>\r\n\r\n  <p>\r\n    <b>\r\n      Favor ingresar al siguiente enlace: <a href="{URL_APROBACION}">{URL_APROBACION}</a>\r\n      <br>\r\n      <br>\r\n      Gracias por su atenci\u00F3n.\r\n    </b>\r\n  </p>\r\n</body>\r\n\r\n</html>\r\n';
 
 							const modifiedHtmlString = htmlString.replace("{NOMBRE_APROBADOR}", this.aprobacion.aprobador.usuario).replace("{TIPO_SOLICITUD}", this.solicitud.tipoSolicitud).replace("{ID_SOLICITUD}", this.solicitud.idSolicitud).replace("{DESCRIPCION_POSICION}", this.detalleSolicitud.descripcionPosicion).replace(new RegExp("{URL_APROBACION}", "g"), `${portalWorkFlow}tareas/consulta-tareas`);
 
@@ -1351,7 +1351,7 @@ export class CompletaSolicitudComponent extends CompleteTaskComponent {
 		}
 	}
 
-	crearRegistradorSolicitud() {
+	saveDetalleAprobaciones() {
 		this.starterService.getUser(sessionStorage.getItem(LocalStorageKeys.IdUsuario)!).subscribe({
 			next: (res) => {
 				this.solicitudes.modelDetalleAprobaciones.id_Solicitud = this.solicitud.idSolicitud;
@@ -1379,56 +1379,50 @@ export class CompletaSolicitudComponent extends CompleteTaskComponent {
 				this.solicitudes.modelDetalleAprobaciones.correo = res.evType[0].correo;
 				this.solicitudes.modelDetalleAprobaciones.usuarioCreacion = res.evType[0].nombreCompleto;
 				this.solicitudes.modelDetalleAprobaciones.usuarioModificacion = res.evType[0].nombreCompleto;
-				this.solicitudes.modelDetalleAprobaciones.fechaCreacion = new Date().toISOString();
-				this.solicitudes.modelDetalleAprobaciones.fechaModificacion = new Date().toISOString();
-			},
-		});
-	}
-
-	saveDetalleAprobaciones() {
-		this.crearRegistradorSolicitud();
-		this.solicitudes.modelDetalleAprobaciones.estadoAprobacion = this.buttonValue;
-		this.solicitudes.modelDetalleAprobaciones.comentario = this.textareaContent;
-
-		const request = {
-			iD_SOLICITUD: this.solicitud.idSolicitud,
-			iD_SOLICITUD_PROCESO: null,
-			tipoFuente: null,
-			fuenteExterna: null,
-			tipoProceso: null,
-			candidato: null,
-			actualizacionDelPerfil: null,
-			busquedaDeCandidatos: null,
-			entrevista: null,
-			pruebas: null,
-			referencias: null,
-			elaboracionDeInforme: null,
-			entregaAlJefeSol: null,
-			entrevistaPorJefatura: null,
-			tomaDeDesiciones: null,
-			candidatoSeleccionado: null,
-			procesoDeContratacion: null,
-			finProcesoContratacion: null,
-			fechaInicioReingreso: null,
-			fechaFinReingreso: new Date(),
-			fechaInicioContratacionFamiliares: null,
-			fechaFinContratacionFamiliares: new Date(),
-			fechaIngresoCandidato: this.selectedDateIn,
-		};
-
-		convertTimeZonedDate(request.fechaIngresoCandidato);
-		convertTimeZonedDate(request.fechaFinReingreso);
-		convertTimeZonedDate(request.fechaFinContratacionFamiliares);
-
-		this.seleccionCandidatoService.saveCandidato(request).subscribe({
-			next: () => {
-				this.solicitudes.guardarDetallesAprobacionesSolicitud(this.solicitudes.modelDetalleAprobaciones).subscribe({
+				this.solicitudes.modelDetalleAprobaciones.fechaCreacion = new Date();
+				this.solicitudes.modelDetalleAprobaciones.fechaModificacion = new Date();
+				this.solicitudes.modelDetalleAprobaciones.estadoAprobacion = this.buttonValue;
+				this.solicitudes.modelDetalleAprobaciones.comentario = this.textareaContent;
+				convertTimeZonedDate(this.solicitudes.modelDetalleAprobaciones.fechaCreacion);
+				convertTimeZonedDate(this.solicitudes.modelDetalleAprobaciones.fechaModificacion);
+				const request = {
+					iD_SOLICITUD: this.solicitud.idSolicitud,
+					iD_SOLICITUD_PROCESO: null,
+					tipoFuente: null,
+					fuenteExterna: null,
+					tipoProceso: null,
+					candidato: null,
+					actualizacionDelPerfil: null,
+					busquedaDeCandidatos: null,
+					entrevista: null,
+					pruebas: null,
+					referencias: null,
+					elaboracionDeInforme: null,
+					entregaAlJefeSol: null,
+					entrevistaPorJefatura: null,
+					tomaDeDesiciones: null,
+					candidatoSeleccionado: null,
+					procesoDeContratacion: null,
+					finProcesoContratacion: null,
+					fechaInicioReingreso: null,
+					fechaFinReingreso: null,
+					fechaInicioContratacionFamiliares: null,
+					fechaFinContratacionFamiliares: null,
+					fechaIngresoCandidato: this.selectedDateIn,
+				};
+		
+				this.seleccionCandidatoService.saveCandidato(request).subscribe({
 					next: () => {
-						this.onCompletar();
+						this.solicitudes.guardarDetallesAprobacionesSolicitud(this.solicitudes.modelDetalleAprobaciones).subscribe({
+							next: () => {
+								this.onCompletar();
+							},
+						});
 					},
 				});
 			},
 		});
+		
 	}
 
 	obtenerComentariosAtencionPorInstanciaRaiz() {

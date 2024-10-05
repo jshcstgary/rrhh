@@ -1607,6 +1607,27 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
 																				this.llenarModelDetalleAprobacionesCF_RG(user, resSolicitud.idSolicitud, idTipoSolicitud, descripcionTipoSolicitud);
 																				this.solicitudes.modelDetalleAprobaciones.comentario = "Candidato Seleccionado";
 																				this.solicitudes.guardarDetallesAprobacionesSolicitud(this.solicitudes.modelDetalleAprobaciones).subscribe((res) => {
+																				this.solicitudes.modelDetalleAprobaciones.id_Solicitud = this.solicitud.idSolicitud;
+																				this.solicitudes.modelDetalleAprobaciones.id_NivelAprobacion = 910001;
+																				this.solicitudes.modelDetalleAprobaciones.id_TipoSolicitud = solicitud.idTipoSolicitud.toString();
+																				this.solicitudes.modelDetalleAprobaciones.id_Accion = 910001;
+																				this.solicitudes.modelDetalleAprobaciones.id_TipoMotivo = solicitud.idTipoMotivo;
+																				this.solicitudes.modelDetalleAprobaciones.id_TipoRuta = 910001;
+																				this.solicitudes.modelDetalleAprobaciones.id_Ruta = 910001;
+																				this.solicitudes.modelDetalleAprobaciones.tipoSolicitud = solicitud.tipoSolicitud;
+																				this.solicitudes.modelDetalleAprobaciones.motivo = solicitud.tipoMotivo;
+																				this.solicitudes.modelDetalleAprobaciones.tipoRuta = "Subproceso  de Requisición";
+																				this.solicitudes.modelDetalleAprobaciones.ruta = "Subproceso  de Requisición";
+																				this.solicitudes.modelDetalleAprobaciones.accion = "Subproceso  de Requisición";
+																				this.solicitudes.modelDetalleAprobaciones.nivelAprobacionRuta = "Subproceso  de Requisición";
+																				this.solicitudes.modelDetalleAprobaciones.estadoAprobacion = "Pendiente de Subproceso de Requisición";
+																				this.solicitudes.modelDetalleAprobaciones.estado = "A";
+																				this.solicitudes.modelDetalleAprobaciones.fechaCreacion = new Date();
+																				this.solicitudes.modelDetalleAprobaciones.fechaModificacion = new Date();
+																				this.solicitudes.modelDetalleAprobaciones.comentario = "Completar Subproceso de Requisición";	
+																				convertTimeZonedDate(this.solicitudes.modelDetalleAprobaciones.fechaCreacion);
+																				convertTimeZonedDate(this.solicitudes.modelDetalleAprobaciones.fechaModificacion);
+																				this.solicitudes.guardarDetallesAprobacionesSolicitud(this.solicitudes.modelDetalleAprobaciones).subscribe((res) => {
 																					this.solicitudes.getDetalleAprobadoresSolicitudesById(resSolicitud.idSolicitud).subscribe({
 																						next: (resJefe) => {
 																							resJefe.detalleAprobadorSolicitud.forEach((item) => {
@@ -1635,7 +1656,7 @@ export class RegistrarCandidatoComponent extends CompleteTaskComponent {
 																							});
 																						}
 																					});
-
+																				});
 																				});
 																			}
 																		});

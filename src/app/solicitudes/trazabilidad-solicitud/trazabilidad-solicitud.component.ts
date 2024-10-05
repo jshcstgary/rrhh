@@ -39,6 +39,8 @@ export class TrazabilidadSolicitudComponent {
 
 				if (nivelesAprobacionResponse.detalleAprobadorSolicitud.some(({ estadoAprobacion }) => estadoAprobacion.toUpperCase().includes("ANULADO"))) {
 					this.indexToShow = nivelesAprobacionResponse.detalleAprobadorSolicitud.findIndex(({ estadoAprobacion }) => estadoAprobacion.toUpperCase().includes("ANULADO"));
+				} else if (nivelesAprobacionResponse.detalleAprobadorSolicitud.some(({ nivelAprobacionRuta }) => nivelAprobacionRuta.toUpperCase().includes("COMPLETA"))) {
+					this.indexToShow = nivelesAprobacionResponse.detalleAprobadorSolicitud.findIndex(({ nivelAprobacionRuta }) => nivelAprobacionRuta.toUpperCase().includes("COMPLETA"));
 				} else {
 					this.indexToShow = nivelesAprobacionResponse.detalleAprobadorSolicitud.findIndex(({ estadoAprobacion, codigoPosicionAprobador, comentario }) => (
 						!estadoAprobacion.toUpperCase().includes("APROBA")
@@ -49,7 +51,8 @@ export class TrazabilidadSolicitudComponent {
 						&& !estadoAprobacion.toUpperCase().includes("CANDIDATO"))
 						|| (estadoAprobacion.toUpperCase().includes("COMENTARIO") && (comentario === null || comentario === ""))
 						|| (estadoAprobacion.toUpperCase().includes("CANDIDATO") && (comentario === null || comentario === ""))
-						|| estadoAprobacion.toUpperCase().includes("COMPLET"));
+						|| estadoAprobacion.toUpperCase().includes("COMPLET")
+						|| (estadoAprobacion.toUpperCase().includes("SUBPROCESO") && this.solicitud.estadoSolicitud!=="1"));
 				}
 
 				this.dataDetalleAprobadorSolicitud = nivelesAprobacionResponse.detalleAprobadorSolicitud;

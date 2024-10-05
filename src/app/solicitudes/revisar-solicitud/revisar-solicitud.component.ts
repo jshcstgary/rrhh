@@ -62,6 +62,7 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
 	isFechaMaximaVisible: boolean = false;
 	viewInputs: boolean = false;
 	campoObligatorio: string = "";
+	responsableRRHHRG: string = "";
 	observaciontexto: string = "Observación";
 	selectedDate: Date = new Date();
 	fechaComite: Date = new Date();
@@ -890,6 +891,7 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
 						this.model.sueldoAnual = this.detalleSolicitud.sueldoVariableAnual;
 						this.model.correo = this.detalleSolicitud.correo;
 						this.model.fechaIngreso = this.detalleSolicitud.fechaIngreso;
+						this.responsableRRHHRG = this.detalleSolicitud.responsableRRHH;
 
 						if (this.detalleSolicitud.valor.includes("Solicitud en Espera")) {
 							this.isFechaMaximaVisible = true;
@@ -1322,7 +1324,7 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
 										this.aprobacion = this.dataAprobacionesPorPosicionAPS.find((elemento) => elemento.nivelAprobacionType.nivelAprobacionRuta.toUpperCase().includes("REGISTRARSOLICITUD"));
 										if (this.id_solicitud_by_params.includes("RG")) {
 											// const htmlString = "<!DOCTYPE html>\r\n<html lang=\"es\">\r\n\r\n<head>\r\n  <meta charset=\"UTF-8\">\r\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n  <title>Document<\/title>\r\n<\/head>\r\n\r\n<body>\r\n  <h2>Estimado(a)<\/h2>\r\n  <h3>{NOMBRE_APROBADOR}<\/h3>\r\n\r\n  <P>Se le informa que ha sido devuelta la solucitud {ID_SOLICITUD} - {TIPO_SOLICITUD} <\/P>\r\n\r\n  <p>\r\n    <b>\r\n      Favor ingresar al siguiente enlace: <a href=\"{URL_APROBACION}\">{URL_APROBACION}<\/a>\r\n      <br>\r\n      <br>\r\n      Gracias por su atenci\u00F3n.\r\n    <\/b>\r\n  <\/p>\r\n<\/body>\r\n\r\n<\/html>\r\n";
-											const htmlString = '<!DOCTYPE html>\r\n<html lang="es">\r\n\r\n<head>\r\n  <meta charset="UTF-8">\r\n  <meta name="viewport" content="width=device-width, initial-scale=1.0">\r\n  <title>Document</title>\r\n</head>\r\n\r\n<body>\r\n  <h2>Estimado(a)</h2>\r\n  <h3>{NOMBRE_APROBADOR}</h3>\r\n\r\n  <p>Se le informa que ha sido devuelta la solucitud {ID_SOLICITUD} - {TIPO_SOLICITUD} </p>\r\n\r\n  <p><strong>Motivo:</strong> {COMENTARIO}</p>\r\n\r\n  <p>\r\n    <b>\r\n      Favor ingresar al siguiente enlace: <a href="{URL_APROBACION}">{URL_APROBACION}</a>\r\n      <br>\r\n      <br>\r\n      Gracias por su atenci\u00F3n.\r\n    </b>\r\n  </p>\r\n</body>\r\n\r\n</html>\r\n';
+											const htmlString = '<!DOCTYPE html>\r\n<html lang="es">\r\n\r\n<head>\r\n  <meta charset="UTF-8">\r\n  <meta name="viewport" content="width=device-width, initial-scale=1.0">\r\n  <title>Document</title>\r\n</head>\r\n\r\n<body>\r\n  <h2>Estimado(a)</h2>\r\n  <h3>{NOMBRE_APROBADOR}</h3>\r\n\r\n  <p>Se le informa que ha sido devuelta la solicitud {ID_SOLICITUD} - {TIPO_SOLICITUD} </p>\r\n\r\n  <p><strong>Motivo:</strong> {COMENTARIO}</p>\r\n\r\n  <p>\r\n    <b>\r\n      Favor ingresar al siguiente enlace: <a href="{URL_APROBACION}">{URL_APROBACION}</a>\r\n      <br>\r\n      <br>\r\n      Gracias por su atenci\u00F3n.\r\n    </b>\r\n  </p>\r\n</body>\r\n\r\n</html>\r\n';
 
 											const modifiedHtmlString = htmlString.replace("{NOMBRE_APROBADOR}", this.aprobacion.aprobador.usuario).replace("{TIPO_SOLICITUD}", this.solicitudRG.tipoSolicitud).replace("{ID_SOLICITUD}", this.solicitudRG.idSolicitud).replace("{DESCRIPCION_POSICION}", this.detalleSolicitudRG.descripcionPosicion).replace(new RegExp("{URL_APROBACION}", "g"), `${portalWorkFlow}tareas/consulta-tareas`).replace("{COMENTARIO}", this.textareaContent);
 
@@ -1342,7 +1344,7 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
 												},
 											});
 										} else {
-											const htmlString = '<!DOCTYPE html>\r\n<html lang="es">\r\n\r\n<head>\r\n  <meta charset="UTF-8">\r\n  <meta name="viewport" content="width=device-width, initial-scale=1.0">\r\n  <title>Document</title>\r\n</head>\r\n\r\n<body>\r\n  <h2>Estimado(a)</h2>\r\n  <h3>{NOMBRE_APROBADOR}</h3>\r\n\r\n  <p>Se le informa que ha sido devuelta la solucitud {ID_SOLICITUD} - {TIPO_SOLICITUD} </p>\r\n\r\n  <p><strong>Motivo:</strong> {COMENTARIO}</p>\r\n\r\n  <p>\r\n    <b>\r\n      Favor ingresar al siguiente enlace: <a href="{URL_APROBACION}">{URL_APROBACION}</a>\r\n      <br>\r\n      <br>\r\n      Gracias por su atenci\u00F3n.\r\n    </b>\r\n  </p>\r\n</body>\r\n\r\n</html>\r\n';
+											const htmlString = '<!DOCTYPE html>\r\n<html lang="es">\r\n\r\n<head>\r\n  <meta charset="UTF-8">\r\n  <meta name="viewport" content="width=device-width, initial-scale=1.0">\r\n  <title>Document</title>\r\n</head>\r\n\r\n<body>\r\n  <h2>Estimado(a)</h2>\r\n  <h3>{NOMBRE_APROBADOR}</h3>\r\n\r\n  <p>Se le informa que ha sido devuelta la solicitud {ID_SOLICITUD} - {TIPO_SOLICITUD} </p>\r\n\r\n  <p><strong>Motivo:</strong> {COMENTARIO}</p>\r\n\r\n  <p>\r\n    <b>\r\n      Favor ingresar al siguiente enlace: <a href="{URL_APROBACION}">{URL_APROBACION}</a>\r\n      <br>\r\n      <br>\r\n      Gracias por su atenci\u00F3n.\r\n    </b>\r\n  </p>\r\n</body>\r\n\r\n</html>\r\n';
 
 											const modifiedHtmlString = htmlString.replace("{NOMBRE_APROBADOR}", this.aprobacion.aprobador.usuario).replace("{TIPO_SOLICITUD}", this.solicitud.tipoSolicitud).replace("{ID_SOLICITUD}", this.solicitud.idSolicitud).replace("{DESCRIPCION_POSICION}", this.detalleSolicitud.descripcionPosicion).replace(new RegExp("{URL_APROBACION}", "g"), `${portalWorkFlow}tareas/consulta-tareas`).replace("{COMENTARIO}", this.textareaContent);
 
@@ -1381,7 +1383,7 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
 										this.aprobacion = this.dataAprobacionesPorPosicionAPS.find((elemento) => elemento.nivelAprobacionType.nivelAprobacionRuta.toUpperCase().includes("REGISTRARSOLICITUD"));
 										if (this.id_solicitud_by_params.includes("RG")) {
 											// const htmlString = "<!DOCTYPE html>\r\n<html lang=\"es\">\r\n\r\n<head>\r\n  <meta charset=\"UTF-8\">\r\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n  <title>Document<\/title>\r\n<\/head>\r\n\r\n<body>\r\n  <h2>Estimado(a)<\/h2>\r\n  <h3>{NOMBRE_APROBADOR}<\/h3>\r\n\r\n  <P>Se le informa que ha sido rechazada la solucitud {ID_SOLICITUD} - {TIPO_SOLICITUD} <\/P>\r\n\r\n  <p>\r\n    <b>\r\n      Favor ingresar al siguiente enlace: <a href=\"{URL_APROBACION}\">{URL_APROBACION}<\/a>\r\n      <br>\r\n      <br>\r\n      Gracias por su atenci\u00F3n.\r\n    <\/b>\r\n  <\/p>\r\n<\/body>\r\n\r\n<\/html>\r\n";
-											const htmlString = '<!DOCTYPE html>\r\n<html lang="es">\r\n\r\n<head>\r\n  <meta charset="UTF-8">\r\n  <meta name="viewport" content="width=device-width, initial-scale=1.0">\r\n  <title>Document</title>\r\n</head>\r\n\r\n<body>\r\n  <h2>Estimado(a)</h2>\r\n  <h3>{NOMBRE_APROBADOR}</h3>\r\n\r\n  <P>Se le informa que ha sido cancelada la solucitud {ID_SOLICITUD} - {TIPO_SOLICITUD} </P>\r\n\r\n  <p>\r\n    <b>\r\n      Favor ingresar al siguiente enlace: <a href="{URL_APROBACION}">{URL_APROBACION}</a>\r\n      <br>\r\n      <br>\r\n      Gracias por su atenci\u00F3n.\r\n    </b>\r\n  </p>\r\n</body>\r\n\r\n</html>\r\n';
+											const htmlString = '<!DOCTYPE html>\r\n<html lang="es">\r\n\r\n<head>\r\n  <meta charset="UTF-8">\r\n  <meta name="viewport" content="width=device-width, initial-scale=1.0">\r\n  <title>Document</title>\r\n</head>\r\n\r\n<body>\r\n  <h2>Estimado(a)</h2>\r\n  <h3>{NOMBRE_APROBADOR}</h3>\r\n\r\n  <P>Se le informa que ha sido cancelada la solicitud {ID_SOLICITUD} - {TIPO_SOLICITUD} </P>\r\n\r\n  <p>\r\n    <b>\r\n      Favor ingresar al siguiente enlace: <a href="{URL_APROBACION}">{URL_APROBACION}</a>\r\n      <br>\r\n      <br>\r\n      Gracias por su atenci\u00F3n.\r\n    </b>\r\n  </p>\r\n</body>\r\n\r\n</html>\r\n';
 
 											const modifiedHtmlString = htmlString.replace("{NOMBRE_APROBADOR}", this.aprobacion.aprobador.usuario).replace("{TIPO_SOLICITUD}", this.solicitudRG.tipoSolicitud).replace("{ID_SOLICITUD}", this.solicitudRG.idSolicitud).replace("{DESCRIPCION_POSICION}", this.detalleSolicitudRG.descripcionPosicion).replace(new RegExp("{URL_APROBACION}", "g"), `${portalWorkFlow}tareas/consulta-tareas`);
 
@@ -1403,7 +1405,7 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
 											});
 										} else {
 											// const htmlString = "<!DOCTYPE html>\r\n<html lang=\"es\">\r\n\r\n<head>\r\n  <meta charset=\"UTF-8\">\r\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n  <title>Document<\/title>\r\n<\/head>\r\n\r\n<body>\r\n  <h2>Estimado(a)<\/h2>\r\n  <h3>{NOMBRE_APROBADOR}<\/h3>\r\n\r\n  <P>Se le informa que ha sido rechazada la solucitud {ID_SOLICITUD} - {TIPO_SOLICITUD} <\/P>\r\n\r\n  <p>\r\n    <b>\r\n      Favor ingresar al siguiente enlace: <a href=\"{URL_APROBACION}\">{URL_APROBACION}<\/a>\r\n      <br>\r\n      <br>\r\n      Gracias por su atenci\u00F3n.\r\n    <\/b>\r\n  <\/p>\r\n<\/body>\r\n\r\n<\/html>\r\n";
-											const htmlString = '<!DOCTYPE html>\r\n<html lang="es">\r\n\r\n<head>\r\n  <meta charset="UTF-8">\r\n  <meta name="viewport" content="width=device-width, initial-scale=1.0">\r\n  <title>Document</title>\r\n</head>\r\n\r\n<body>\r\n  <h2>Estimado(a)</h2>\r\n  <h3>{NOMBRE_APROBADOR}</h3>\r\n\r\n  <P>Se le informa que ha sido cancelada la solucitud {ID_SOLICITUD} - {TIPO_SOLICITUD} </P>\r\n\r\n  <p>\r\n    <b>\r\n      Favor ingresar al siguiente enlace: <a href="{URL_APROBACION}">{URL_APROBACION}</a>\r\n      <br>\r\n      <br>\r\n      Gracias por su atenci\u00F3n.\r\n    </b>\r\n  </p>\r\n</body>\r\n\r\n</html>\r\n';
+											const htmlString = '<!DOCTYPE html>\r\n<html lang="es">\r\n\r\n<head>\r\n  <meta charset="UTF-8">\r\n  <meta name="viewport" content="width=device-width, initial-scale=1.0">\r\n  <title>Document</title>\r\n</head>\r\n\r\n<body>\r\n  <h2>Estimado(a)</h2>\r\n  <h3>{NOMBRE_APROBADOR}</h3>\r\n\r\n  <P>Se le informa que ha sido cancelada la solicitud {ID_SOLICITUD} - {TIPO_SOLICITUD} </P>\r\n\r\n  <p>\r\n    <b>\r\n      Favor ingresar al siguiente enlace: <a href="{URL_APROBACION}">{URL_APROBACION}</a>\r\n      <br>\r\n      <br>\r\n      Gracias por su atenci\u00F3n.\r\n    </b>\r\n  </p>\r\n</body>\r\n\r\n</html>\r\n';
 
 											const modifiedHtmlString = htmlString.replace("{NOMBRE_APROBADOR}", this.aprobacion.aprobador.usuario).replace("{TIPO_SOLICITUD}", this.solicitud.tipoSolicitud).replace("{ID_SOLICITUD}", this.solicitud.idSolicitud).replace("{DESCRIPCION_POSICION}", this.detalleSolicitud.descripcionPosicion).replace(new RegExp("{URL_APROBACION}", "g"), `${portalWorkFlow}tareas/consulta-tareas`);
 
@@ -1466,6 +1468,127 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
 				}
 				if (this.taskType_Activity === environment.taskType_CompletarRequisicion) {
 					this.RegistrarsolicitudCompletada = false;
+					if(this.id_solicitud_by_params.toUpperCase().includes("RG-")){
+						this.solicitudRG.estadoSolicitud="1";
+						this.solicitudes.actualizarSolicitud(this.solicitudRG).subscribe({
+							next: () => {
+								const request = {
+									iD_SOLICITUD: this.idSolicitudRP,
+									iD_SOLICITUD_PROCESO: null,
+									tipoFuente: null,
+									fuenteExterna: null,
+									tipoProceso: null,
+									candidato: null,
+									actualizacionDelPerfil: null,
+									busquedaDeCandidatos: null,
+									entrevista: null,
+									pruebas: null,
+									referencias: null,
+									elaboracionDeInforme: null,
+									entregaAlJefeSol: null,
+									entrevistaPorJefatura: null,
+									tomaDeDesiciones: null,
+									candidatoSeleccionado: null,
+									procesoDeContratacion: null,
+									finProcesoContratacion: null,
+									fechaInicioReingreso: null,
+									fechaFinReingreso: new Date(),
+									fechaInicioContratacionFamiliares: null,
+									fechaFinContratacionFamiliares: null,
+									fechaIngresoCandidato: null,
+								};
+						
+								convertTimeZonedDate(request.fechaFinReingreso);
+						
+								this.seleccionCandidatoService.saveCandidato(request).subscribe({
+									next: () => {
+										
+									},
+								});
+								this.aprobacion = this.dataAprobacionesPorPosicionNextTask.find((elemento) => elemento.nivelAprobacionType.nivelAprobacionRuta.toUpperCase().includes("REGISTRARSOLICITUD"));
+
+								const htmlString = '<!DOCTYPE html>\r\n<html lang="es">\r\n\r\n<head>\r\n  <meta charset="UTF-8">\r\n  <meta name="viewport" content="width=device-width, initial-scale=1.0">\r\n  <title>Document</title>\r\n</head>\r\n\r\n<body>\r\n  <h2>Estimado(a)</h2>\r\n  <h3>{NOMBRE_APROBADOR}</h3>\r\n\r\n  <P>La Solicitud de {TIPO_SOLICITUD} {ID_SOLICITUD} para la posici\u00F3n de {DESCRIPCION_POSICION} est\u00E1 disponible para su\r\n    revisi\u00F3n y aprobaci\u00F3n.</P>\r\n\r\n  <p>\r\n    <b>\r\n      Favor ingresar al siguiente enlace: <a href="{URL_APROBACION}">{URL_APROBACION}</a>\r\n      <br>\r\n      <br>\r\n      Gracias por su atenci\u00F3n.\r\n    </b>\r\n  </p>\r\n</body>\r\n\r\n</html>\r\n';
+
+								const modifiedHtmlString = htmlString.replace("{NOMBRE_APROBADOR}", this.aprobacion.aprobador.usuario).replace("{TIPO_SOLICITUD}", this.solicitud.tipoSolicitud).replace("{ID_SOLICITUD}", this.solicitud.idSolicitud).replace("{DESCRIPCION_POSICION}", this.detalleSolicitud.descripcionPosicion).replace(new RegExp("{URL_APROBACION}", "g"), `${portalWorkFlow}tareas/consulta-tareas`);
+
+								this.emailVariables = {
+									de: "emisor",
+									para: this.aprobacion.aprobador.correo,
+									// alias: this.solicitudes.modelDetalleAprobaciones.correo,
+									alias: "Notificación 1",
+									asunto: `Completar Solicitud de ${this.solicitud.tipoSolicitud} ${this.solicitud.idSolicitud}`,
+									cuerpo: modifiedHtmlString,
+									password: "password",
+								};
+								this.solicitudes.sendEmail(this.emailVariables).subscribe({
+									next: () => {},
+									error: (error) => {
+										console.error(error);
+									},
+								});
+							}});	
+					}else if(this.id_solicitud_by_params.toUpperCase().includes("CF-")){
+						this.solicitud.estadoSolicitud="1";
+						this.solicitudes.actualizarSolicitud(this.solicitud).subscribe({
+							next: () => {
+								const request = {
+									iD_SOLICITUD: this.idSolicitudRP,
+									iD_SOLICITUD_PROCESO: null,
+									tipoFuente: null,
+									fuenteExterna: null,
+									tipoProceso: null,
+									candidato: null,
+									actualizacionDelPerfil: null,
+									busquedaDeCandidatos: null,
+									entrevista: null,
+									pruebas: null,
+									referencias: null,
+									elaboracionDeInforme: null,
+									entregaAlJefeSol: null,
+									entrevistaPorJefatura: null,
+									tomaDeDesiciones: null,
+									candidatoSeleccionado: null,
+									procesoDeContratacion: null,
+									finProcesoContratacion: null,
+									fechaInicioReingreso: null,
+									fechaFinReingreso: null,
+									fechaInicioContratacionFamiliares: null,
+									fechaFinContratacionFamiliares: new Date(),
+									fechaIngresoCandidato: null,
+								};
+						
+								convertTimeZonedDate(request.fechaFinContratacionFamiliares);
+						
+								this.seleccionCandidatoService.saveCandidato(request).subscribe({
+									next: () => {
+										
+									},
+								});
+								this.aprobacion = this.dataAprobacionesPorPosicionNextTask.find((elemento) => elemento.nivelAprobacionType.nivelAprobacionRuta.toUpperCase().includes("REGISTRARSOLICITUD"));
+
+								const htmlString = '<!DOCTYPE html>\r\n<html lang="es">\r\n\r\n<head>\r\n  <meta charset="UTF-8">\r\n  <meta name="viewport" content="width=device-width, initial-scale=1.0">\r\n  <title>Document</title>\r\n</head>\r\n\r\n<body>\r\n  <h2>Estimado(a)</h2>\r\n  <h3>{NOMBRE_APROBADOR}</h3>\r\n\r\n  <P>La Solicitud de {TIPO_SOLICITUD} {ID_SOLICITUD} para la posici\u00F3n de {DESCRIPCION_POSICION} est\u00E1 disponible para su\r\n    revisi\u00F3n y aprobaci\u00F3n.</P>\r\n\r\n  <p>\r\n    <b>\r\n      Favor ingresar al siguiente enlace: <a href="{URL_APROBACION}">{URL_APROBACION}</a>\r\n      <br>\r\n      <br>\r\n      Gracias por su atenci\u00F3n.\r\n    </b>\r\n  </p>\r\n</body>\r\n\r\n</html>\r\n';
+
+								const modifiedHtmlString = htmlString.replace("{NOMBRE_APROBADOR}", this.aprobacion.aprobador.usuario).replace("{TIPO_SOLICITUD}", this.solicitud.tipoSolicitud).replace("{ID_SOLICITUD}", this.solicitud.idSolicitud).replace("{DESCRIPCION_POSICION}", this.detalleSolicitud.descripcionPosicion).replace(new RegExp("{URL_APROBACION}", "g"), `${portalWorkFlow}tareas/consulta-tareas`);
+
+								this.emailVariables = {
+									de: "emisor",
+									para: this.aprobacion.aprobador.correo,
+									// alias: this.solicitudes.modelDetalleAprobaciones.correo,
+									alias: "Notificación 1",
+									asunto: `Completar Solicitud de ${this.solicitud.tipoSolicitud} ${this.solicitud.idSolicitud}`,
+									cuerpo: modifiedHtmlString,
+									password: "password",
+								};
+								this.solicitudes.sendEmail(this.emailVariables).subscribe({
+									next: () => {},
+									error: (error) => {
+										console.error(error);
+									},
+								});
+
+							}});
+					}
+					return;
 				}
 			}
 
@@ -1534,7 +1657,7 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
 									}
 								}
 
-								this.aprobacion = this.dataAprobacionesPorPosicionAPS.find((elemento) => elemento.nivelAprobacionType.nivelAprobacionRuta.toUpperCase().includes(aprobadoractual));
+								this.aprobacion = this.dataAprobacionesPorPosicionNextTask.find((elemento) => elemento.nivelAprobacionType.nivelAprobacionRuta.toUpperCase().includes(aprobadoractual));
 
 								const htmlString = '<!DOCTYPE html>\r\n<html lang="es">\r\n\r\n<head>\r\n  <meta charset="UTF-8">\r\n  <meta name="viewport" content="width=device-width, initial-scale=1.0">\r\n  <title>Document</title>\r\n</head>\r\n\r\n<body>\r\n  <h2>Estimado(a)</h2>\r\n  <h3>{NOMBRE_APROBADOR}</h3>\r\n\r\n  <P>La Solicitud de {TIPO_SOLICITUD} {ID_SOLICITUD} para la posici\u00F3n de {DESCRIPCION_POSICION} est\u00E1 disponible para su\r\n    revisi\u00F3n y aprobaci\u00F3n.</P>\r\n\r\n  <p>\r\n    <b>\r\n      Favor ingresar al siguiente enlace: <a href="{URL_APROBACION}">{URL_APROBACION}</a>\r\n      <br>\r\n      <br>\r\n      Gracias por su atenci\u00F3n.\r\n    </b>\r\n  </p>\r\n</body>\r\n\r\n</html>\r\n';
 

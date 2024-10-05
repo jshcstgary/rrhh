@@ -67,7 +67,9 @@
 				<div class="col-8">
 					{{
 						dataDetalleAprobadorSolicitud.length !== -1 && indexToShow !== -1
-							? dataDetalleAprobadorSolicitud[indexToShow].estadoAprobacion.toUpperCase() === "APROBAR"
+							? dataDetalleAprobadorSolicitud[indexToShow].nivelAprobacionRuta.toUpperCase().includes("COMPLET")
+							 ? "Completado"
+							:dataDetalleAprobadorSolicitud[indexToShow].estadoAprobacion.toUpperCase() === "APROBAR"
 								? "Aprobado"
 								: dataDetalleAprobadorSolicitud[indexToShow].estadoAprobacion.toUpperCase().includes("PORREVISAR")
 									? "Por Revisar"
@@ -81,14 +83,15 @@
 													? "Cancelado"
 													: dataDetalleAprobadorSolicitud[indexToShow].estadoAprobacion.toUpperCase().includes("COMENTARIO")
 														? "Registrar Comentario"
-														: dataDetalleAprobadorSolicitud[indexToShow].estadoAprobacion.toUpperCase().includes("CANDIDATO")
-															? "Selección de candidato"
-															: dataDetalleAprobadorSolicitud[indexToShow].estadoAprobacion.toUpperCase().includes("COMPLET")
-																? "Completado"
+														: dataDetalleAprobadorSolicitud[indexToShow].estadoAprobacion.toUpperCase().includes("SUBPROCESO")
+															? "Pendiente de Subproceso de Requisición"
+
 																: dataDetalleAprobadorSolicitud[indexToShow].estadoAprobacion
 							: idSolicitudParam.includes("RP") && dataDetalleAprobadorSolicitud.length === 1
 								? "Registrar Solicitud"
-								: idSolicitudParam.includes("RP") && dataDetalleAprobadorSolicitud.length > 1
+								: idSolicitudParam.includes("RP") && dataDetalleAprobadorSolicitud.length > 1 && solicitud.estadoSolicitud==="1"
+									? "Completado"
+									: idSolicitudParam.includes("RP") && dataDetalleAprobadorSolicitud.length > 1 && solicitud.estadoSolicitud!=="1"
 									? "Selección de Candidato"
 									: idSolicitudParam.includes("RG") && dataDetalleAprobadorSolicitud.length === 1
 										? "Registrar Solicitud"
@@ -125,7 +128,7 @@
 				<button class="accordion-button" type="button" data-bs-toggle="collapse" [attr.data-bs-target]="'#collapse' + i" aria-expanded="true" [attr.aria-controls]="'collapse' + i" style="display: block">
 					<div class="row" style="align-items: center; justify-content: space-around">
 						<div class="col">
-							{{ nivelItem.ruta.toUpperCase().includes("REGISTRARSOLICITUD") ? "Registrar Solicitud" : nivelItem.ruta.toUpperCase().includes("CANDIDATO") ? "Selección de Candidato" : nivelItem.ruta.toUpperCase().includes("COMENTARIOJEFE") ? "Registrar Comentario Jefe Anterior o Referencia" : nivelItem.ruta.toUpperCase().includes("COMENTARIORRHH") ? "Registrar Comentario RR.HH." : nivelItem.ruta.toUpperCase().includes("COMENTARIOSOLICITANTE") ? "Registrar Comentario Jefe Solicitante" : nivelItem.ruta }}
+							{{ nivelItem.ruta.toUpperCase().includes("REGISTRARSOLICITUD") ? "Registrar Solicitud" : nivelItem.ruta.toUpperCase().includes("CANDIDATO") ? "Selección de Candidato" : nivelItem.ruta.toUpperCase().includes("COMENTARIOJEFE") ? "Registrar Comentario Jefe Anterior o Referencia" : nivelItem.ruta.toUpperCase().includes("COMENTARIORRHH") ? "Registrar Comentario RR.HH." : nivelItem.ruta.toUpperCase().includes("COMENTARIOSOLICITANTE") ?  "Registrar Comentario Jefe Solicitante" : nivelItem.ruta }}
 						</div>
 
 						<div class="col">
