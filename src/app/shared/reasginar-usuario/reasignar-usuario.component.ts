@@ -326,7 +326,7 @@ export class DialogReasignarUsuarioComponent {
 						processInstanceIds: [this.solicitud.idInstancia],
 						variables: {
 							[key]: {
-								value: `Usuario{IGUAL}${sessionStorage.getItem(LocalStorageKeys.NombreUsuario)}{SEPARA}Accion{IGUAL}Solicitud Reasiganda por ${sessionStorage.getItem(LocalStorageKeys.NivelDireccion)}{SEPARA}Fecha{IGUAL}${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
+								value: `Usuario{IGUAL}${sessionStorage.getItem(LocalStorageKeys.NombreUsuario)}{SEPARA}Accion{IGUAL}Solicitud Reasiganda por ${sessionStorage.getItem(LocalStorageKeys.NivelDireccion)}. Usuario Asignado: ${this.usuarioAprobador} - Usuario Reasignado: ${this.modelo.nombreCompleto}{SEPARA}Fecha{IGUAL}${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
 							}
 						}
 					};
