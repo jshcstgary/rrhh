@@ -10,5 +10,7 @@ export enum LocalStorageKeys {
 	CodigoPefil = "codigoPerfil",
 	JefeSolicitanteQuery = "jefeSolicitanteQuery",
 	JefeReferenciaQuery = "jefeReferenciaQuery",
-	ResponsableRRHHQuery = "responsableRRHHQuery"
+	ResponsableRRHHQuery = "responsableRRHHQuery",
+	IdsEmpresas = "idsEmpresas",
+	CodigoSucursales = "codigoSucursales"
 }

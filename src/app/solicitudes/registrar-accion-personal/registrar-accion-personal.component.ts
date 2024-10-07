@@ -21,6 +21,7 @@ import { CompleteTaskComponent } from "../general/complete-task.component";
 import { SolicitudesService } from "../registrar-solicitud/solicitudes.service";
 
 import { endOfMonth, format, startOfMonth } from "date-fns";
+import { LoginServices } from "src/app/auth/services/login.services";
 import { PageCodes } from "src/app/enums/codes.enum";
 import { LocalStorageKeys } from "src/app/enums/local-storage-keys.enum";
 import {
@@ -246,27 +247,6 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
 	public loadingComplete = 0;
 	public viewInputs: boolean = false;
 
-
-	/*
-	nombresEmpleados: string[] = [
-	  ...new Set(
-		this.dataEmpleadoEvolution.map((empleado) => empleado.nombreCompleto)
-	  ),
-	];
-
-	subledgers: string[] = [
-	  ...new Set(
-		this.dataEmpleadoEvolution.map((empleado) => empleado.subledger)
-	  ),
-	];
-
-	codigosPosicion: string[] = [
-	  ...new Set(
-		this.dataEmpleadoEvolution.map((empleado) => empleado.codigoPosicion)
-	  ),
-	];
-	*/
-
 	nombres: string[] = [];
 
 	subledgers: string[] = [];
@@ -292,7 +272,7 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
 		cuerpo: ""
 	};
 
-	constructor(route: ActivatedRoute, router: Router, camundaRestService: CamundaRestService, private mantenimientoService: MantenimientoService, private solicitudes: SolicitudesService, private utilService: UtilService, private consultaTareasService: ConsultaTareasService, private modalService: NgbModal, private starterService: StarterService) {
+	constructor(route: ActivatedRoute, router: Router, camundaRestService: CamundaRestService, private mantenimientoService: MantenimientoService, private solicitudes: SolicitudesService, private utilService: UtilService, private consultaTareasService: ConsultaTareasService, private modalService: NgbModal, private starterService: StarterService, private loginService: LoginServices) {
 		super(route, router, camundaRestService);
 
 		this.searchSubject.pipe(debounceTime(0)).subscribe(({ campo, valor }) => {
@@ -2077,8 +2057,52 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
 
 		if (this.solicitud.estadoSolicitud !== "AN") {
 			if (this.detalleSolicitud.codigo === "1" && !this.taskType_Activity.toUpperCase().includes("AP_COMPLETARSOLICITUD")) {
+				// const request = {
+				// 	codigoPerfil: codigoPerfilDelegado,
+				// 	codigoAplicacion: appCode,
+				// 	codigoRecurso: resourceCode,
+				// 	usuario: sessionStorage.getItem(LocalStorageKeys.IdLogin),
+				// 	correo: sessionStorage.getItem(LocalStorageKeys.IdUsuario)
+				// };
+
+				// this.loginService.obtenerUsuariosPerfil(request).subscribe({
+				// 	next: res => {
+				// 		if (res.length === 0) {
+				// 			Swal.fire({
+				// 				text: "No existen usuario.",
+				// 				icon: "error",
+				// 				showCancelButton: false,
+				// 				confirmButtonColor: "rgb(227, 199, 22)",
+				// 				cancelButtonColor: "#77797a",
+				// 				confirmButtonText: "OK"
+				// 			});
+
+				// 			return;
+				// 		}
+
+				// 		const emails = res.map(({ email }) => email).join(",");
+				// 	}
+				// });
+
 				this.starterService.getUser(sessionStorage.getItem(LocalStorageKeys.IdUsuario)).subscribe({
 					next: (res) => {
+						// const usuarios = res.evType.filter(r => r.compania === this.modelPropuestos.compania && r.unidadNegocio === this.modelPropuestos.unidadNegocio);
+
+						// if (usuarios.length === 0) {
+						// 	Swal.fire({
+						// 		text: "No existen usuarios registrados para esta Compañía y Unidad de Negocio.",
+						// 		icon: "error",
+						// 		showCancelButton: false,
+						// 		confirmButtonColor: "rgb(227, 199, 22)",
+						// 		cancelButtonColor: "#77797a",
+						// 		confirmButtonText: "OK"
+						// 	});
+
+						// 	return;
+						// }
+
+						// TODO: Reemplazar el res.evType por ususarios
+
 						this.solicitudes.modelDetalleAprobaciones.id_Solicitud = this.solicitud.idSolicitud;
 						this.solicitudes.modelDetalleAprobaciones.id_NivelAprobacion = 1300000;
 						this.solicitudes.modelDetalleAprobaciones.id_TipoSolicitud = this.solicitud.idTipoSolicitud.toString();
@@ -2113,16 +2137,16 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
 						this.solicitudes.guardarDetallesAprobacionesSolicitud(this.solicitudes.modelDetalleAprobaciones).subscribe({
 							next: () => {
 								this.camundaRestService.postCompleteTask(this.uniqueTaskId, variables).subscribe({
-									next: (responsecamunda) => {
+									next: responsecamunda => {
 										this.solicitud.empresa = this.model.compania;
 										this.solicitud.idEmpresa = this.model.compania;
 										this.solicitud.unidadNegocio = this.model.unidadNegocio;
 										this.solicitud.idUnidadNegocio = this.model.unidadNegocio;
 
 										this.solicitudes.actualizarSolicitud(this.solicitud).subscribe({
-											next: (responseSolicitud) => {
+											next: responseSolicitud => {
 												setTimeout(() => {
-													const htmlString = "<!DOCTYPE html>\r\n<html lang=\"es\">\r\n\r\n<head>\r\n  <meta charset=\"UTF-8\">\r\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n  <title>Document<\/title>\r\n<\/head>\r\n\r\n<body>\r\n  <h2>Estimado(a)<\/h2>\r\n  <h3>{NOMBRE_APROBADOR}<\/h3>\r\n\r\n  <P>La Solicitud de {TIPO_SOLICITUD} {ID_SOLICITUD} por Transferencia de Compa\u00F1\u00EDa para la posici\u00F3n de {DESCRIPCION_POSICION} est\u00E1 disponible para completar la tarea.<\/P>\r\n\r\n  <p>\r\n    <b>\r\n      Favor ingresar al siguiente enlace: <a href=\"{URL_APROBACION}\">{URL_APROBACION}<\/a>\r\n      <br>\r\n      <br>\r\n      Gracias por su atenci\u00F3n.\r\n    <\/b>\r\n  <\/p>\r\n<\/body>\r\n\r\n<\/html>\r\n";
+													const htmlString = '<!DOCTYPE html>\r\n<html lang="es">\r\n\r\n<head>\r\n  <meta charset="UTF-8">\r\n  <meta name="viewport" content="width=device-width, initial-scale=1.0">\r\n  <title>Document</title>\r\n</head>\r\n\r\n<body>\r\n  <h2>Estimado(a)</h2>\r\n  <h3>{NOMBRE_APROBADOR}</h3>\r\n\r\n  <P>La Solicitud de {TIPO_SOLICITUD} {ID_SOLICITUD} por Transferencia de Compa\u00F1\u00EDa para la posici\u00F3n de {DESCRIPCION_POSICION} est\u00E1 disponible para completar la tarea.</P>\r\n\r\n  <p>\r\n    <b>\r\n      Favor ingresar al siguiente enlace: <a href="{URL_APROBACION}">{URL_APROBACION}</a>\r\n      <br>\r\n      <br>\r\n      Gracias por su atenci\u00F3n.\r\n    </b>\r\n  </p>\r\n</body>\r\n\r\n</html>\r\n';
 
 													const modifiedHtmlString = htmlString.replace("{NOMBRE_APROBADOR}", res.evType[0].nombreCompleto).replace("{TIPO_SOLICITUD}", this.solicitud.tipoSolicitud).replace("{ID_SOLICITUD}", this.solicitud.idSolicitud).replace("{DESCRIPCION_POSICION}", this.detalleSolicitud.descripcionPosicion).replace(new RegExp("{URL_APROBACION}", "g"), `${portalWorkFlow}tareas/consulta-tareas`);
 
@@ -2137,9 +2161,8 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
 													};
 
 													this.solicitudes.sendEmail(this.emailVariables).subscribe({
-														next: () => {
-														},
-														error: (error) => {
+														next: () => {},
+														error: error => {
 															console.error(error);
 														}
 													});
@@ -2149,23 +2172,18 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
 													this.utilService.modalResponse(`Solicitud registrada correctamente [${this.solicitud.idSolicitud}]. Será redirigido en un momento...`, "success");
 
 													setTimeout(() => {
-														this.router.navigate([
-															"/tareas/consulta-tareas",
-														]);
+														this.router.navigate(["/tareas/consulta-tareas"]);
 													}, 1800);
 												}, 3000);
 											},
-											error: (error) => {
+											error: error => {
 												console.error(error);
 											}
 										});
 									},
 									error: (error: HttpErrorResponse) => {
-										this.utilService.modalResponse(
-											error.error,
-											"error"
-										);
-									},
+										this.utilService.modalResponse(error.error, "error");
+									}
 								});
 							}
 						});
@@ -2290,6 +2308,8 @@ export class RegistrarAccionPersonalComponent extends CompleteTaskComponent {
 
 	save() {
 		this.utilService.openLoadingSpinner("Guardando información, espere por favor...");
+
+
 
 		if (this.viewInputs && !this.taskType_Activity.toUpperCase().includes("AP_COMPLETARSOLICITUD")) {
 			this.modelPropuestos.codigoPosicion = "";

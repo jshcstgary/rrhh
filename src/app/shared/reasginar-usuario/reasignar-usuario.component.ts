@@ -11,9 +11,10 @@ import { LocalStorageKeys } from "src/app/enums/local-storage-keys.enum";
 import { Solicitud } from "src/app/eschemas/Solicitud";
 import { EvType } from "src/app/services/mantenimiento/empleado.interface";
 import { MantenimientoService } from "src/app/services/mantenimiento/mantenimiento.service";
+import { convertTimeZonedDate } from "src/app/services/util/dates.util";
 import { UtilService } from "src/app/services/util/util.service";
 import { SolicitudesService } from "src/app/solicitudes/registrar-solicitud/solicitudes.service";
-import { environment, portalWorkFlow } from "src/environments/environment";
+import { appCode, environment, portalWorkFlow, resourceCode } from "src/environments/environment";
 import Swal from "sweetalert2";
 
 @Component({
@@ -21,7 +22,7 @@ import Swal from "sweetalert2";
 	templateUrl: "./reasignar-usuario.component.html",
 	styleUrls: ["./reasignar-usuario.component.scss"],
 	standalone: true,
-	imports: [CommonModule, FormsModule, ReactiveFormsModule, NgbTypeaheadModule],
+	imports: [CommonModule, FormsModule, ReactiveFormsModule, NgbTypeaheadModule]
 })
 export class DialogReasignarUsuarioComponent {
 	public myForm: FormGroup = this.formBuilder.group({
@@ -41,7 +42,7 @@ export class DialogReasignarUsuarioComponent {
 
 	public dataEmpleadoEvolution: any[] = [];
 
-	public modelo: { correo: string; } & EvType = {
+	public modelo: { correo: string } & EvType = {
 		codigo: "",
 		idEmpresa: "",
 		compania: "",
@@ -94,23 +95,40 @@ export class DialogReasignarUsuarioComponent {
 	@Input("taskId")
 	public taskId: string = "";
 
-	constructor(private activeModal: NgbActiveModal, private mantenimientoService: MantenimientoService, private utilService: UtilService, private solicitudes: SolicitudesService, private formBuilder: FormBuilder, private camundaRestService: CamundaRestService) {
+	public unidadesNegocio: any[] = [];
+	public empresas: any[] = [];
+
+	constructor(private activeModal: NgbActiveModal, private mantenimientoService: MantenimientoService, private utilService: UtilService, private solicitudes: SolicitudesService, private formBuilder: FormBuilder, private camundaRestService: CamundaRestService, private loginService: LoginServices) {
 		this.utilService.openLoadingSpinner("Cargando información, espere por favor...");
 	}
 
 	ngOnInit() {
 		this.getNivelesAprobacion();
+		this.obtenerEmpresaYUnidadNegocio();
+	}
+
+	obtenerEmpresaYUnidadNegocio() {
+		this.mantenimientoService.getNivelesPorTipo(`GSA-CPA=${sessionStorage.getItem(LocalStorageKeys.IdsEmpresas)}-UNG=${sessionStorage.getItem(LocalStorageKeys.CodigoSucursales)}-`).subscribe({
+			next: response => {
+				this.unidadesNegocio = [...new Set(response.evType.map(({ unidadNegocio }) => unidadNegocio))];
+
+				this.empresas = [...new Set(response.evType.map(({ compania }) => compania))];
+			},
+			error: (error: HttpErrorResponse) => {
+				this.utilService.modalResponse(error.error, "error");
+			}
+		});
 	}
 
 	private getNivelesAprobacion(): void {
 		this.solicitudes.getSolicitudById(this.idParam).subscribe({
 			next: (response: any) => {
 				this.solicitud = response;
-			},
+			}
 		});
 
 		this.solicitudes.getDetalleAprobadoresSolicitudesById(this.idParam).subscribe({
-			next: (response) => {
+			next: response => {
 				this.dataDetalleAprobadorSolicitud = response.detalleAprobadorSolicitud;
 				if (this.taskId === environment.taskType_Revisar) {
 					this.mensaje = "Se reasignó la tarea de revisión por aprobadores dinámicos";
@@ -260,88 +278,158 @@ export class DialogReasignarUsuarioComponent {
 			},
 			error: (error: HttpErrorResponse) => {
 				this.utilService.modalResponse("No existen niveles de aprobación para este empleado", "error");
-			},
+			}
 		});
 	}
 
 	onClose() {
 		this.activeModal.close({
-			action: "cerrar",
+			action: "cerrar"
 		});
 	}
 
 	onSave() {
-		if (this.taskId === environment.taskType_Revisar && this.dataAprobador.nivelDireccionAprobador !== this.modelo.nivelDir) {
+		this.utilService.openLoadingSpinner("Reasignando, por favor espere...");
+
+		const request = {
+			codigoPerfil: this.dataAprobador.accion.split("T")[0],
+			codigoAplicacion: appCode,
+			codigoRecurso: resourceCode,
+			usuario: sessionStorage.getItem(LocalStorageKeys.IdLogin),
+			correo: sessionStorage.getItem(LocalStorageKeys.IdUsuario)
+		};
+
+		if (!this.empresas.includes(this.modelo.compania)) {
 			Swal.fire({
-				text: "Empleado a Reasignar no tiene el mismo nivel de Dirección: " + this.dataAprobador.nivelDireccionAprobador,
+				text: "Empleado no pertenece a la Compañía de la solicitud actual",
 				icon: "error",
-				showCancelButton: false,
 				confirmButtonColor: "rgb(227, 199, 22)",
-				cancelButtonColor: "#77797a",
-				confirmButtonText: "OK"
+				confirmButtonText: "Ok"
 			});
 
 			return;
 		}
 
-		this.dataAprobador.usuarioAprobador = this.modelo.nombreCompleto;
-		this.dataAprobador.codigoPosicionAprobador = this.modelo.codigoPosicion;
-		this.dataAprobador.descripcionPosicionAprobador = this.modelo.descrPosicion;
-		this.dataAprobador.sudlegerAprobador = this.modelo.subledger;
-		this.dataAprobador.codigoPosicionReportaA = this.modelo.codigoPosicionReportaA;
-		this.dataAprobador.correo = this.modelo.correo;
-		this.dataAprobador.usuarioCreacion = sessionStorage.getItem(LocalStorageKeys.IdLogin);
-		this.dataAprobador.comentario = "Tarea Reasignada: " + this.textareaContent;
-		this.dataAprobador.usuarioModificacion = sessionStorage.getItem(LocalStorageKeys.IdLogin);
-		this.dataAprobador.fechaCreacion = new Date().toISOString();
-		this.dataAprobador.fechaModificacion = new Date().toISOString();
-		const htmlString = "<!DOCTYPE html>\r\n<html lang=\"es\">\r\n\r\n<head>\r\n  <meta charset=\"UTF-8\">\r\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n  <title>Document<\/title>\r\n<\/head>\r\n\r\n<body>\r\n  <h2>Estimado(a)<\/h2>\r\n  <h3>{NOMBRE_APROBADOR}<\/h3>\r\n\r\n  <P>La Solicitud de {TIPO_SOLICITUD} {ID_SOLICITUD} le ha sido reasignada para su\r\n    revisi\u00F3n y aprobaci\u00F3n.<\/P>\r\n\r\n  <p>\r\n    <b>\r\n      Favor ingresar al siguiente enlace: <a href=\"{URL_APROBACION}\">{URL_APROBACION}<\/a>\r\n      <br>\r\n      <br>\r\n      Gracias por su atenci\u00F3n.\r\n    <\/b>\r\n  <\/p>\r\n<\/body>\r\n\r\n<\/html>\r\n";
+		if (!this.unidadesNegocio.includes(this.modelo.unidadNegocio)) {
+			Swal.fire({
+				text: "Empleado no pertenece a la unidad de Negocio de la solicitud actual",
+				icon: "error",
+				confirmButtonColor: "rgb(227, 199, 22)",
+				confirmButtonText: "Ok"
+			});
 
-		const modifiedHtmlString = htmlString.replace("{NOMBRE_APROBADOR}", this.modelo.nombreCompleto).replace("{TIPO_SOLICITUD}", this.solicitud.tipoSolicitud).replace("{ID_SOLICITUD}", this.solicitud.idSolicitud).replace(new RegExp("{URL_APROBACION}", "g"), `${portalWorkFlow}tareas/consulta-tareas`);
+			return;
+		}
 
+		this.loginService.filtrarCorreo(request).subscribe({
+			next: res => {
+				if (res.email === "") {
+					Swal.fire({
+						text: "Empleado a Reasignar no tiene perfil para poder reasignar.",
+						icon: "error",
+						showCancelButton: false,
+						confirmButtonColor: "rgb(227, 199, 22)",
+						cancelButtonColor: "#77797a",
+						confirmButtonText: "OK"
+					});
 
-		this.emailVariables = {
-			de: "prueba",
-			para: this.modelo.correo,
-			// alias: this.solicitudes.modelDetalleAprobaciones.correo,
-			alias: "Notificación 1",
-			asunto: `Reasignación de Autorización de Solicitud de ${this.solicitud.tipoSolicitud} ${this.solicitud.idSolicitud}`,
-			cuerpo: modifiedHtmlString,
-			password: "p"
-		};
+					return;
+				}
 
-		this.solicitudes.guardarDetallesAprobacionesSolicitud(this.dataAprobador).subscribe({
-			next: () => {
-				this.solicitud.estadoSolicitud = "RA";
-				this.solicitud.fechaActualizacion = new Date();
+				if ((this.taskId === environment.taskType_Revisar || this.taskId === environment.taskType_AP_RV) && this.dataAprobador.nivelDireccionAprobador !== this.modelo.nivelDir) {
+					this.utilService.closeLoadingSpinner();
 
-				this.activeModal.close({
-					data: `${this.mensaje} a ${this.modelo.nombreCompleto}`
+					Swal.fire({
+						text: "Empleado a Reasignar no tiene el mismo nivel de Dirección: " + this.dataAprobador.nivelDireccionAprobador,
+						icon: "error",
+						showCancelButton: false,
+						confirmButtonColor: "rgb(227, 199, 22)",
+						cancelButtonColor: "#77797a",
+						confirmButtonText: "OK"
+					});
+
+					return;
+				}
+
+				this.dataAprobador.usuarioAprobador = this.modelo.nombreCompleto;
+				this.dataAprobador.codigoPosicionAprobador = this.modelo.codigoPosicion;
+				this.dataAprobador.descripcionPosicionAprobador = this.modelo.descrPosicion;
+				this.dataAprobador.sudlegerAprobador = this.modelo.subledger;
+				this.dataAprobador.codigoPosicionReportaA = this.modelo.codigoPosicionReportaA;
+				this.dataAprobador.correo = this.modelo.correo;
+				this.dataAprobador.usuarioCreacion = sessionStorage.getItem(LocalStorageKeys.IdLogin);
+				this.dataAprobador.comentario = "Tarea Reasignada: " + this.textareaContent;
+				this.dataAprobador.usuarioModificacion = sessionStorage.getItem(LocalStorageKeys.IdLogin);
+				this.dataAprobador.fechaCreacion = new Date();
+				this.dataAprobador.fechaModificacion = new Date();
+
+				convertTimeZonedDate(this.dataAprobador.fechaCreacion);
+				convertTimeZonedDate(this.dataAprobador.fechaModificacion);
+
+				const htmlString = '<!DOCTYPE html>\r\n<html lang="es">\r\n\r\n<head>\r\n  <meta charset="UTF-8">\r\n  <meta name="viewport" content="width=device-width, initial-scale=1.0">\r\n  <title>Document</title>\r\n</head>\r\n\r\n<body>\r\n  <h2>Estimado(a)</h2>\r\n  <h3>{NOMBRE_APROBADOR}</h3>\r\n\r\n  <P>La Solicitud de {TIPO_SOLICITUD} {ID_SOLICITUD} le ha sido reasignada para su\r\n    revisi\u00F3n y aprobaci\u00F3n.</P>\r\n\r\n  <p>\r\n    <b>\r\n      Favor ingresar al siguiente enlace: <a href="{URL_APROBACION}">{URL_APROBACION}</a>\r\n      <br>\r\n      <br>\r\n      Gracias por su atenci\u00F3n.\r\n    </b>\r\n  </p>\r\n</body>\r\n\r\n</html>\r\n';
+
+				const modifiedHtmlString = htmlString.replace("{NOMBRE_APROBADOR}", this.modelo.nombreCompleto).replace("{TIPO_SOLICITUD}", this.solicitud.tipoSolicitud).replace("{ID_SOLICITUD}", this.solicitud.idSolicitud).replace(new RegExp("{URL_APROBACION}", "g"), `${portalWorkFlow}tareas/consulta-tareas`);
+
+				this.emailVariables = {
+					de: "prueba",
+					para: this.modelo.correo,
+					// alias: this.solicitudes.modelDetalleAprobaciones.correo,
+					alias: "Notificación 1",
+					asunto: `Reasignación de Autorización de Solicitud de ${this.solicitud.tipoSolicitud} ${this.solicitud.idSolicitud}`,
+					cuerpo: modifiedHtmlString,
+					password: "p"
+				};
+
+				this.solicitudes.guardarDetallesAprobacionesSolicitud(this.dataAprobador).subscribe({
+					next: () => {
+						this.solicitud.estadoSolicitud = "RA";
+						this.solicitud.fechaActualizacion = new Date();
+
+						convertTimeZonedDate(this.solicitud.fechaActualizacion);
+
+						this.activeModal.close({
+							data: `${this.mensaje} a ${this.modelo.nombreCompleto}`
+						});
+
+						this.solicitudes.actualizarSolicitud(this.solicitud).subscribe(responseSolicitud => {
+							const key: string = `usuario_logged_reasignado-${this.dataAprobador.nivelAprobacionRuta}`;
+
+							const request = {
+								processInstanceIds: [this.solicitud.idInstancia],
+
+								variables: {
+									[key]: {
+										value: `Usuario{IGUAL}${sessionStorage.getItem(LocalStorageKeys.NombreUsuario)}{SEPARA}Accion{IGUAL}Solicitud Reasiganda por ${sessionStorage.getItem(LocalStorageKeys.NivelDireccion)}. Usuario Asignado: ${this.usuarioAprobador} - Usuario Reasignado: ${this.modelo.nombreCompleto} - Comentario: ${this.textareaContent}{SEPARA}Fecha{IGUAL}${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
+									}
+								}
+							};
+
+							this.camundaRestService.registrarVariable(request).subscribe({
+								next: () => {}
+							});
+
+							this.solicitudes.sendEmail(this.emailVariables).subscribe({
+								next: () => {},
+								error: error => {
+									console.error(error);
+								}
+							});
+						});
+					}
 				});
+			},
+			error: err => {
+				console.error(err);
 
-				this.solicitudes.actualizarSolicitud(this.solicitud).subscribe((responseSolicitud) => {
-					const key: string = `usuario_logged_reasignado-${this.dataAprobador.nivelAprobacionRuta}`;
+				this.utilService.closeLoadingSpinner();
 
-					const request = {
-						processInstanceIds: [this.solicitud.idInstancia],
-						variables: {
-							[key]: {
-								value: `Usuario{IGUAL}${sessionStorage.getItem(LocalStorageKeys.NombreUsuario)}{SEPARA}Accion{IGUAL}Solicitud Reasiganda por ${sessionStorage.getItem(LocalStorageKeys.NivelDireccion)}. Usuario Asignado: ${this.usuarioAprobador} - Usuario Reasignado: ${this.modelo.nombreCompleto}{SEPARA}Fecha{IGUAL}${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
-							}
-						}
-					};
-
-					this.camundaRestService.registrarVariable(request).subscribe({
-						next: () => { }
-					});
-					
-					this.solicitudes.sendEmail(this.emailVariables).subscribe({
-						next: () => {
-						},
-						error: (error) => {
-							console.error(error);
-						}
-					});
+				Swal.fire({
+					text: "Empleado a Reasignar no tiene perfil para poder reasignar.",
+					icon: "error",
+					showCancelButton: false,
+					confirmButtonColor: "rgb(227, 199, 22)",
+					cancelButtonColor: "#77797a",
+					confirmButtonText: "OK"
 				});
 			}
 		});
@@ -370,13 +458,13 @@ export class DialogReasignarUsuarioComponent {
 		this.utilService.openLoadingSpinner("Obteniendo información, espere por favor...");
 
 		return this.mantenimientoService.getDataEmpleadosEvolutionPorId(this.myForm.value.searchInput).subscribe({
-			next: (response) => {
+			next: response => {
 				if (response.evType.length === 0) {
 					Swal.fire({
 						text: "No se encontró registro",
 						icon: "info",
 						confirmButtonColor: "rgb(227, 199, 22)",
-						confirmButtonText: "Sí",
+						confirmButtonText: "Sí"
 					});
 
 					this.dataEmpleadoEvolution = [];
@@ -392,7 +480,7 @@ export class DialogReasignarUsuarioComponent {
 				this.dataEmpleadoEvolution = [];
 
 				this.utilService.modalResponse(error.error, "error");
-			},
+			}
 		});
 	}
 

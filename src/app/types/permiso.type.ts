@@ -5,7 +5,6 @@ export type LoginRequest = {
 	usuario: string;
 	password: string;
 	isAutenticacionLocal: boolean;
-
 };
 
 export type Perfil = {
@@ -35,11 +34,11 @@ export type Permiso = {
 	procesar: boolean;
 	consulta: boolean;
 	controles: Control[];
-}
+};
 
 export type Control = {
 	codigo_Control: string;
 	habilitar: boolean;
 	modificar: boolean;
 	visualizar: boolean;
-}
+};

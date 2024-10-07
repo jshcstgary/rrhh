@@ -3,23 +3,35 @@ import { Injectable } from "@angular/core";
 import { Observable, of } from "rxjs";
 import { LocalStorageKeys } from "src/app/enums/local-storage-keys.enum";
 import { LoginRequest, Perfil, PerfilUsuarioResponse } from "src/app/types/permiso.type";
-import { environment } from "src/environments/environment";
+import { environment, pruebasLocales } from "src/environments/environment";
 
 @Injectable({
-	providedIn: "root",
+	providedIn: "root"
 })
 export class LoginServices {
 	private loginUrl: string = environment.loginES;
-	private perfilUrl: string = environment.perfilUsuarioES;
+	// private perfilUrl: string = environment.perfilUsuarioES;
 
 	constructor(private http: HttpClient) {}
 
 	public getPerfilesUsuario(PerfilBody: LoginRequest): Observable<PerfilUsuarioResponse> {
-		return this.http.post<PerfilUsuarioResponse>(`${this.perfilUrl}`, PerfilBody);
+		return this.http.post<PerfilUsuarioResponse>(`${this.loginUrl}/perfil-usuario`, PerfilBody);
 	}
 
 	public login(loginBody: LoginRequest): Observable<Perfil> {
-		return this.http.post<Perfil>(`${this.loginUrl}`, loginBody);
+		return this.http.post<Perfil>(pruebasLocales ? `${this.loginUrl}/iguana/obtenercredenciales` : `${this.loginUrl}/obtenercredenciales`, loginBody);
+	}
+
+	public filtrarCorreo(filtro: any): Observable<Perfil> {
+		return this.http.post<Perfil>(`${this.loginUrl}/filtrarcorreo`, filtro);
+	}
+
+	public obtenerUsuariosPerfil(filtro: any): Observable<Perfil[]> {
+		return this.http.post<Perfil[]>(`${this.loginUrl}/obtenerusuarioperfil`, filtro);
+	}
+
+	public empresasSucursales(request: any): Observable<any[]> {
+		return this.http.post<any[]>(`${this.loginUrl}/usuariosempresassucursalespuntos`, request);
 	}
 
 	public signOut(): Observable<boolean> {
@@ -68,7 +80,7 @@ export class LoginServices {
 			const headers = new HttpHeaders({
 				"Content-Type": "application/json",
 				Sesion: currentUser,
-				Authorization: `Bearer ${token}`,
+				Authorization: `Bearer ${token}`
 			});
 
 			return headers;

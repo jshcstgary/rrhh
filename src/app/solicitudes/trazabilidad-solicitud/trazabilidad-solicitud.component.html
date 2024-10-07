@@ -68,40 +68,43 @@
 					{{
 						dataDetalleAprobadorSolicitud.length !== -1 && indexToShow !== -1
 							? dataDetalleAprobadorSolicitud[indexToShow].nivelAprobacionRuta.toUpperCase().includes("COMPLET")
-							 ? "Completado"
-							:dataDetalleAprobadorSolicitud[indexToShow].estadoAprobacion.toUpperCase() === "APROBAR"
-								? "Aprobado"
-								: dataDetalleAprobadorSolicitud[indexToShow].estadoAprobacion.toUpperCase().includes("PORREVISAR")
-									? "Por Revisar"
-									: dataDetalleAprobadorSolicitud[indexToShow].estadoAprobacion.toUpperCase().includes("ESPERA")
-										? "En Espera"
-										: dataDetalleAprobadorSolicitud[indexToShow].estadoAprobacion.toUpperCase() === "DEVOLVER"
-											? "Devuelto"
-											: dataDetalleAprobadorSolicitud[indexToShow].estadoAprobacion.toUpperCase().includes("PENDIENTE")
-												? "Por Revisar"
-												: dataDetalleAprobadorSolicitud[indexToShow].estadoAprobacion.toUpperCase().includes("RECHAZA")
-													? "Cancelado"
-													: dataDetalleAprobadorSolicitud[indexToShow].estadoAprobacion.toUpperCase().includes("COMENTARIO")
-														? "Registrar Comentario"
-														: dataDetalleAprobadorSolicitud[indexToShow].estadoAprobacion.toUpperCase().includes("SUBPROCESO")
-															? "Pendiente de Subproceso de Requisición"
-
+								? "Completado"
+								:dataDetalleAprobadorSolicitud[indexToShow].estadoAprobacion.toUpperCase() === "APROBAR"
+									? "Aprobado"
+									: dataDetalleAprobadorSolicitud[indexToShow].estadoAprobacion.toUpperCase().includes("PORREVISAR")
+										? "Por Revisar"
+										: dataDetalleAprobadorSolicitud[indexToShow].estadoAprobacion.toUpperCase().includes("ESPERA")
+											? "En Espera"
+											: dataDetalleAprobadorSolicitud[indexToShow].estadoAprobacion.toUpperCase() === "DEVOLVER"
+												? "Devuelto"
+												: dataDetalleAprobadorSolicitud[indexToShow].estadoAprobacion.toUpperCase().includes("PENDIENTE")
+													? "Por Revisar"
+													: dataDetalleAprobadorSolicitud[indexToShow].estadoAprobacion.toUpperCase().includes("RECHAZA")
+														? "Cancelado"
+														: dataDetalleAprobadorSolicitud[indexToShow].estadoAprobacion.toUpperCase().includes("COMENTARIO")
+															? "Registrar Comentario"
+															: dataDetalleAprobadorSolicitud[indexToShow].estadoAprobacion.toUpperCase().includes("SUBPROCESO")
+																? "Pendiente de Subproceso de Requisición"
 																: dataDetalleAprobadorSolicitud[indexToShow].estadoAprobacion
 							: idSolicitudParam.includes("RP") && dataDetalleAprobadorSolicitud.length === 1
 								? "Registrar Solicitud"
 								: idSolicitudParam.includes("RP") && dataDetalleAprobadorSolicitud.length > 1 && solicitud.estadoSolicitud==="1"
-									? "Completado"
+									? "Completado, en espera de generar encuesta"
 									: idSolicitudParam.includes("RP") && dataDetalleAprobadorSolicitud.length > 1 && solicitud.estadoSolicitud!=="1"
-									? "Selección de Candidato"
-									: idSolicitudParam.includes("RG") && dataDetalleAprobadorSolicitud.length === 1
-										? "Registrar Solicitud"
-										: idSolicitudParam.includes("RG") && dataDetalleAprobadorSolicitud.length > 1
-											? "Finalizado"
-											: idSolicitudParam.includes("CF") && dataDetalleAprobadorSolicitud.length === 1
-												? "Registrar Solicitud"
-												: idSolicitudParam.includes("CF") && dataDetalleAprobadorSolicitud.length > 1
-													? "Finalizado"
-													: "-"
+										? "Selección de Candidato"
+										: idSolicitudParam.includes("RG") && dataDetalleAprobadorSolicitud.length === 1
+											? "Registrar Solicitud"
+											: idSolicitudParam.includes("RG") && dataDetalleAprobadorSolicitud.length > 1
+												? "Finalizado"
+												: idSolicitudParam.includes("CF") && dataDetalleAprobadorSolicitud.length === 1
+													? "Registrar Solicitud"
+													: idSolicitudParam.includes("CF") && dataDetalleAprobadorSolicitud.length > 1
+														? "Finalizado"
+														: idSolicitudParam.includes("AP") && dataDetalleAprobadorSolicitud.length === 1
+															? "Registrar Solicitud"
+															: idSolicitudParam.includes("AP") && dataDetalleAprobadorSolicitud.length > 1
+																? "Finalizado"
+																: "-"
 					}}
 				</div>
 			</div>

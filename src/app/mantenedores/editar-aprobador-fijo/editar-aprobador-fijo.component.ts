@@ -4,9 +4,11 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { NgSelectConfig } from "@ng-select/ng-select";
 import { format } from "date-fns";
+import { LoginServices } from "src/app/auth/services/login.services";
 import { LocalStorageKeys } from "src/app/enums/local-storage-keys.enum";
 import { AprobadorFijo } from "src/app/eschemas/AprobadorFijo";
 import { UtilService } from "src/app/services/util/util.service";
+import { appCode, codigoPerfilAprobadorFijo, resourceCode } from "src/environments/environment";
 import Swal from "sweetalert2";
 import { BuscarAprobadorFijoComponent } from "../buscar-aprobador-fijo/buscar-aprobador-fijo.component";
 import { EditarAprobadorFijoService } from "./editar-aprobador-fijo.service";
@@ -14,19 +16,19 @@ import { EditarAprobadorFijoService } from "./editar-aprobador-fijo.service";
 @Component({
 	selector: "app-editar-aprobador-fijo",
 	templateUrl: "./editar-aprobador-fijo.component.html",
-	styleUrls: ["./editar-aprobador-fijo.component.scss"],
+	styleUrls: ["./editar-aprobador-fijo.component.scss"]
 })
 export class EditarAprobadorFijoComponent implements OnInit {
 	modelo: AprobadorFijo = new AprobadorFijo();
 
 	public id_edit: undefined | string;
 
-	constructor(private config: NgSelectConfig, private router: Router, private route: ActivatedRoute, private utilService: UtilService, private editarAprobadorFijoService: EditarAprobadorFijoService, private modalService: NgbModal) {
+	constructor(private config: NgSelectConfig, private router: Router, private route: ActivatedRoute, private utilService: UtilService, private editarAprobadorFijoService: EditarAprobadorFijoService, private modalService: NgbModal, private loginService: LoginServices) {
 		this.config.notFoundText = "Custom not found";
 		this.config.appendTo = "body";
 		this.config.bindValue = "value";
 
-		this.route.paramMap.subscribe((params) => {
+		this.route.paramMap.subscribe(params => {
 			this.id_edit = params.get("id");
 		});
 
@@ -48,7 +50,7 @@ export class EditarAprobadorFijoComponent implements OnInit {
 		this.utilService.openLoadingSpinner("Obteniendo datos...");
 
 		return this.editarAprobadorFijoService.obtenerAprobadorFijoById(this.id_edit).subscribe({
-			next: (response) => {
+			next: response => {
 				let fechaActual = new Date();
 				let fechaEnFormatoISO = fechaActual.toISOString();
 				// this.modelo.ID_APROBACION = ;
@@ -74,7 +76,7 @@ export class EditarAprobadorFijoComponent implements OnInit {
 			},
 			error: (error: HttpErrorResponse) => {
 				this.utilService.modalResponse(error.error, "error");
-			},
+			}
 		});
 	}
 
@@ -82,10 +84,10 @@ export class EditarAprobadorFijoComponent implements OnInit {
 		this.modalService
 			.open(BuscarAprobadorFijoComponent, {
 				backdrop: "static",
-				keyboard: false,
+				keyboard: false
 			})
 			.result.then(
-				(result) => {
+				result => {
 					if (result?.action === "close") {
 						return;
 					}
@@ -114,7 +116,7 @@ export class EditarAprobadorFijoComponent implements OnInit {
 					this.modelo.niveL_REPORTE = epelado.nivelReporte;
 					this.modelo.correo = epelado.correo;
 				},
-				(reason) => {
+				reason => {
 					console.log(`Dismissed with: ${reason}`);
 				}
 			);
@@ -126,7 +128,7 @@ export class EditarAprobadorFijoComponent implements OnInit {
 				text: "Seleccione un nivel de aprobación",
 				icon: "warning",
 				confirmButtonColor: "rgb(227, 199, 22)",
-				confirmButtonText: "Ok",
+				confirmButtonText: "Ok"
 			});
 
 			return;
@@ -134,34 +136,75 @@ export class EditarAprobadorFijoComponent implements OnInit {
 
 		this.utilService.openLoadingSpinner("Actualizando información, espere por favor...");
 
-		this.route.params.subscribe((params) => {
-			let fechaActual = new Date();
-			let fechaEnFormatoISO = fechaActual.toISOString();
+		const request = {
+			codigoPerfil: codigoPerfilAprobadorFijo,
+			codigoAplicacion: appCode,
+			codigoRecurso: resourceCode,
+			usuario: sessionStorage.getItem(LocalStorageKeys.IdLogin),
+			correo: sessionStorage.getItem(LocalStorageKeys.IdUsuario)
+		};
 
-			this.modelo.iD_APROBADOR = this.id_edit;
-
-			const model = {
-				...this.modelo,
-				fechA_CREACION: fechaEnFormatoISO,
-				fechA_MODIFICACION: fechaEnFormatoISO,
-				usuariO_MODIFICACION: sessionStorage.getItem(LocalStorageKeys.IdLogin),
-				estado: this.modelo.estado ? "A" : "I",
-			};
-
-			this.editarAprobadorFijoService.actualizarAprobadorFijo(model).subscribe({
-				next: () => {
+		this.loginService.filtrarCorreo(request).subscribe({
+			next: res => {
+				if (res.email === "") {
 					this.utilService.closeLoadingSpinner();
 
-					this.utilService.modalResponse("Datos actualizados correctamente", "success");
+					Swal.fire({
+						text: "Empleado no tiene perfil de Aprobador Fijo.",
+						icon: "error",
+						showCancelButton: false,
+						confirmButtonColor: "rgb(227, 199, 22)",
+						cancelButtonColor: "#77797a",
+						confirmButtonText: "OK"
+					});
 
-					setTimeout(() => {
-						this.router.navigate(["/mantenedores/aprobadores-fijos"]);
-					}, 1600);
-				},
-				error: (error: HttpErrorResponse) => {
-					this.utilService.modalResponse(`Ya existe un registro para el Nivel de Aprobación: ${model.niveL_DIRECCION}.`, "error");
-				},
-			});
+					return;
+				}
+
+				this.route.params.subscribe(params => {
+					let fechaActual = new Date();
+					let fechaEnFormatoISO = fechaActual.toISOString();
+
+					this.modelo.iD_APROBADOR = this.id_edit;
+
+					const model = {
+						...this.modelo,
+						fechA_CREACION: fechaEnFormatoISO,
+						fechA_MODIFICACION: fechaEnFormatoISO,
+						usuariO_MODIFICACION: sessionStorage.getItem(LocalStorageKeys.IdLogin),
+						estado: this.modelo.estado ? "A" : "I"
+					};
+
+					this.editarAprobadorFijoService.actualizarAprobadorFijo(model).subscribe({
+						next: () => {
+							this.utilService.closeLoadingSpinner();
+
+							this.utilService.modalResponse("Datos actualizados correctamente", "success");
+
+							setTimeout(() => {
+								this.router.navigate(["/mantenedores/aprobadores-fijos"]);
+							}, 1600);
+						},
+						error: (error: HttpErrorResponse) => {
+							this.utilService.modalResponse(`Ya existe un registro para el Nivel de Aprobación: ${model.niveL_DIRECCION}.`, "error");
+						}
+					});
+				});
+			},
+			error: err => {
+				console.error(err);
+
+				this.utilService.closeLoadingSpinner();
+
+				Swal.fire({
+					text: "Error al asignar Aprobador Fijo.",
+					icon: "error",
+					showCancelButton: false,
+					confirmButtonColor: "rgb(227, 199, 22)",
+					cancelButtonColor: "#77797a",
+					confirmButtonText: "OK"
+				});
+			}
 		});
 	}
 }

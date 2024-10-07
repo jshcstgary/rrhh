@@ -6,16 +6,19 @@ const base = "http://10.35.3.162"; //base de servicios local
 const baseRBP = "http://192.168.44.180"; //base de servicios RBP http://10.35.3.162
 const baseG = "http://181.188.224.250:18043"; //base de servicios api gateway
 
-const pruebas_locales: boolean = false; //Varialbe boleana para las pruebas locales y pruebas en el ambiente del cliente, true para locales, false para RBP
+export const pruebasLocales: boolean = false; //Varialbe boleana para las pruebas locales y pruebas en el ambiente del cliente, true para locales, false para RBP
 
 // export const portalWorkFlow: string = "http://10.35.3.162:4200/";
 
-export const portalWorkFlow: string = pruebas_locales ? "http://10.35.3.162:4200/" : "http://192.168.44.180:4200/";
+export const codigoPerfilAprobadorFijo: string = "0004";
+
+export const portalWorkFlow: string = pruebasLocales ? "http://10.35.3.162:4200/" : "http://192.168.44.180:4200/";
 // export const portalWorkFlow: string = pruebas_locales ? "http://172.20.91.148:4200/" : "http://192.168.44.180:4200/"; // CAMBIOS DE LUIS
 
 export const appCode: string = "46";
 export const resourceCode: string = "PWFCAMUMET";
 export const codigosPerfilReporte: string[] = ["0001", "0002"];
+export const codigoPerfilDelegado: string = "0002";
 
 export const codigosSolicitudReporte = {
 	requisicionPersonal: "RRH PR 01 01",
@@ -28,7 +31,7 @@ export const environment = {
 	port: "4200",
 	production: false,
 	modalConfirmation: false,
-	reporteUS: pruebas_locales ? `${base}:8091/v1/us/reporte` : `${baseRBP}:8291/v1/us/reporte`,
+	reporteUS: pruebasLocales ? `${base}:8091/v1/us/reporte` : `${baseRBP}:8291/v1/us/reporte`,
 
 	// Angular UI app is associated with below BPMN process key
 	procesName: "process_modelo",
@@ -81,84 +84,84 @@ export const environment = {
 
 	taskType_AP_Completar: "AP_CompletarSolicitud",
 
-
 	//Servicios de workflow
-	camundaUrl: pruebas_locales ? `${baseC}/` : `${baseRBP}:8290/`,
+	camundaUrl: pruebasLocales ? `${baseC}/` : `${baseRBP}:8290/`,
 	// camundaUrl: `${baseG}/`,
 	//camundaUrl: `${baseRBP}:8290/`,
 	// camundaUrl: `localhost:8080/`,
 
-	exempleadoServiceEsJaff: pruebas_locales ? `${base}:8076/v1/us/exempleadojaff` : `${baseRBP}:8279/v1/us/exempleadosp`,
+	exempleadoServiceEsJaff: pruebasLocales ? `${base}:8076/v1/us/exempleadojaff` : `${baseRBP}:8279/v1/us/exempleadosp`,
 	// exempleadoServiceEsJaff: `${baseG}/v1/us/exempleadojaff`,
 
 	exempleadoServiceEsSpyral: `${base}:8079/v1/us/exempleadosp`,
 	// exempleadoServiceEsSpyral: `${baseG}/v1/us/exempleadosp`,
 
-	exempleadoService: pruebas_locales ? `${base}:8089/v1/us/exempleados_rbp` : `${baseRBP}:8289/v1/us/exempleados_rbp`,
+	exempleadoService: pruebasLocales ? `${base}:8089/v1/us/exempleados_rbp` : `${baseRBP}:8289/v1/us/exempleados_rbp`,
 	// exempleadoService: `${baseG}/v1/us/exempleados_rbp`,
 
-	tipoSolicitudServiceES: pruebas_locales ? `${base}:8068/v1/es/tiposolicitud` : `${baseRBP}:8268/v1/es/tiposolicitud`,
+	tipoSolicitudServiceES: pruebasLocales ? `${base}:8068/v1/es/tiposolicitud` : `${baseRBP}:8268/v1/es/tiposolicitud`,
 	// tipoSolicitudServiceES: `${baseG}/v1/es/tiposolicitud`,
 	//tipoSolicitudServiceES: `${baseRBP}:8268/v1/es/tiposolicitud`,
 
-	seleccionCandidatoServiceES: pruebas_locales ? `${base}:8086/v1/es/seleccion_candidato` : `${baseRBP}:8286/v1/es/seleccion_candidato`,
+	seleccionCandidatoServiceES: pruebasLocales ? `${base}:8086/v1/es/seleccion_candidato` : `${baseRBP}:8286/v1/es/seleccion_candidato`,
 	// seleccionCandidatoServiceES: `${baseG}/v1/es/seleccion_candidato`,
 
-	tipoRutaServiceES: pruebas_locales ? `${base}:8069/v1/es/tiporuta` : `${baseRBP}:8269/v1/es/tiporuta`,
+	tipoRutaServiceES: pruebasLocales ? `${base}:8069/v1/es/tiporuta` : `${baseRBP}:8269/v1/es/tiporuta`,
 	// tipoRutaServiceES: `${baseG}/v1/es/tiporuta`,
 
-	tipoProcesoServiceES: pruebas_locales ? `${base}:8070/v1/es/tipoproceso` : `${baseRBP}:8270/v1/es/tipoproceso`,
+	tipoProcesoServiceES: pruebasLocales ? `${base}:8070/v1/es/tipoproceso` : `${baseRBP}:8270/v1/es/tipoproceso`,
 	// tipoProcesoServiceES: `${baseG}/v1/es/tipoproceso`,
 
-	rutaServiceES: pruebas_locales ? `${base}:8071/v1/es/ruta` : `${baseRBP}:8271/v1/es/ruta`, //10.35.3.162:8071/v1/es/ruta
+	rutaServiceES: pruebasLocales ? `${base}:8071/v1/es/ruta` : `${baseRBP}:8271/v1/es/ruta`, //10.35.3.162:8071/v1/es/ruta
 	// rutaServiceES: `${baseG}/v1/es/ruta`, //10.35.3.162:8071/v1/es/ruta
 
-	tipoMotivoServiceES: pruebas_locales ? `${base}:8072/v1/es/tipomotivo` : `${baseRBP}:8272/v1/es/tipomotivo`, //10.35.3.162:8072/v1/es/tipomotivo
+	tipoMotivoServiceES: pruebasLocales ? `${base}:8072/v1/es/tipomotivo` : `${baseRBP}:8272/v1/es/tipomotivo`, //10.35.3.162:8072/v1/es/tipomotivo
 	// tipoMotivoServiceES: `${baseG}/v1/es/tipomotivo`,
 
-	accionServiceES: pruebas_locales ? `${base}:8073/v1/es/accion` : `${baseRBP}:8273/v1/es/accion`,
+	accionServiceES: pruebasLocales ? `${base}:8073/v1/es/accion` : `${baseRBP}:8273/v1/es/accion`,
 	// accionServiceES: `${baseG}/v1/es/accion`,
 
-	tipoAccionServiceES: pruebas_locales ? `${base}:8074/v1/es/tipoaccion` : `${baseRBP}:8274/v1/es/tipoaccion`, //10.35.3.162:8074/v1/es/tipoaccion
+	tipoAccionServiceES: pruebasLocales ? `${base}:8074/v1/es/tipoaccion` : `${baseRBP}:8274/v1/es/tipoaccion`, //10.35.3.162:8074/v1/es/tipoaccion
 	// tipoAccionServiceES: `${baseG}/v1/es/tipoaccion`,
 
-	CatalogoServiceES: pruebas_locales ? `${base}:8065/v1/es/item-catalogo` : `${baseRBP}:8265/v1/es/item-catalogo`,
+	CatalogoServiceES: pruebasLocales ? `${base}:8065/v1/es/item-catalogo` : `${baseRBP}:8265/v1/es/item-catalogo`,
 	// CatalogoServiceES: `${baseG}/v1/es/item-catalogo`,
 
-	nivelAprobacionServiceES: pruebas_locales ? `${base}:8067/v1/es/nivelesaprobacion` : `${baseRBP}:8267/v1/es/nivelesaprobacion`, //http://10.35.3.162:8000/v1/es/nivelesaprobacion
+	nivelAprobacionServiceES: pruebasLocales ? `${base}:8067/v1/es/nivelesaprobacion` : `${baseRBP}:8267/v1/es/nivelesaprobacion`, //http://10.35.3.162:8000/v1/es/nivelesaprobacion
 	// nivelAprobacionServiceES: `${baseG}/v1/es/nivelesaprobacion`,
 
-	empleadoServiceEs: pruebas_locales ? `${base}:8078/v1/us/empleadoev` : `${baseRBP}:8278/v1/us/empleadoev`,
+	empleadoServiceEs: pruebasLocales ? `${base}:8078/v1/us/empleadoev` : `${baseRBP}:8278/v1/us/empleadoev`,
 	// empleadoServiceEs: `${baseG}/v1/us/empleadoev`,
 
-	nivelAprobacionRefreshServiceES: pruebas_locales ? `${base}:8075/v1/es/refresh_nivelesAprobacion` : `${baseRBP}:8275/v1/es/refresh_nivelesAprobacion`,
+	nivelAprobacionRefreshServiceES: pruebasLocales ? `${base}:8075/v1/es/refresh_nivelesAprobacion` : `${baseRBP}:8275/v1/es/refresh_nivelesAprobacion`,
 	// nivelAprobacionRefreshServiceES: `${baseG}/v1/es/refresh_nivelesAprobacion`,
 
-	solicitudesServiceES: pruebas_locales ? `${base}:8066/v1/es/solicitud` : `${baseRBP}:8266/v1/es/solicitud`, // http://10.35.3.162:8066/v1/es/solicitud
+	solicitudesServiceES: pruebasLocales ? `${base}:8066/v1/es/solicitud` : `${baseRBP}:8266/v1/es/solicitud`, // http://10.35.3.162:8066/v1/es/solicitud
 	// solicitudesServiceES: `${baseG}/v1/es/solicitud`,
 
-	tareasServiceES: pruebas_locales ? `${base}:8080/v1/es/solicitudcamunda` : `${baseRBP}:8280/v1/es/solicitudcamunda`,
+	tareasServiceES: pruebasLocales ? `${base}:8080/v1/es/solicitudcamunda` : `${baseRBP}:8280/v1/es/solicitudcamunda`,
 	// tareasServiceES: `${baseG}/v1/es/solicitudcamunda`,
 
-	aprobadoresFijosServiceES: pruebas_locales ? `${base}:8082/v1/es/aprobadores_fijos` : `${baseRBP}:8282/v1/es/aprobadores_fijos`,
+	aprobadoresFijosServiceES: pruebasLocales ? `${base}:8082/v1/es/aprobadores_fijos` : `${baseRBP}:8282/v1/es/aprobadores_fijos`,
 	// aprobadoresFijosServiceES: `${baseG}/v1/es/aprobadores_fijos`,
 
-	historicaCamundaServiceEs: pruebas_locales ? `${base}:8077/v1/es/historicacamunda` : `${baseRBP}:8277/v1/es/historicacamunda`,
+	historicaCamundaServiceEs: pruebasLocales ? `${base}:8077/v1/es/historicacamunda` : `${baseRBP}:8277/v1/es/historicacamunda`,
 	// historicaCamundaServiceEs: `${baseG}/v1/es/historicacamunda`,
 
-	detalleAprobacionesServiceES: pruebas_locales ? `${base}:8083/v1/es/detalles_aprobaciones_solicitudes` : `${baseRBP}:8283/v1/es/detalles_aprobaciones_solicitudes`,
+	detalleAprobacionesServiceES: pruebasLocales ? `${base}:8083/v1/es/detalles_aprobaciones_solicitudes` : `${baseRBP}:8283/v1/es/detalles_aprobaciones_solicitudes`,
 	// detalleAprobacionesServiceES: `${baseG}/v1/es/detalles_aprobaciones_solicitudes`,
 
-	familiaresCandidatoServiceES: pruebas_locales ? `${base}:8087/v1/es/familiarescandidato` : `${baseRBP}:8287/v1/es/familiarescandidato`,
+	familiaresCandidatoServiceES: pruebasLocales ? `${base}:8087/v1/es/familiarescandidato` : `${baseRBP}:8287/v1/es/familiarescandidato`,
 	// familiaresCandidatoServiceES: `${baseG}/v1/es/familiarescandidato`,
 
-	senEmailService: pruebas_locales ? `${base}:8084/v1/es/mail` : `${baseRBP}:8285/v1/es/mail`,
+	senEmailService: pruebasLocales ? `${base}:8084/v1/es/mail` : `${baseRBP}:8285/v1/es/mail`,
 	// senEmailService: `${baseG}/v1/es/mail`,
 
-	comentarioServiceES: pruebas_locales ? `${base}:8088/v1/es/comentarios` : `${baseRBP}:8288/v1/es/comentarios`,
+	comentarioServiceES: pruebasLocales ? `${base}:8088/v1/es/comentarios` : `${baseRBP}:8288/v1/es/comentarios`,
 	// comentarioServiceES: `${baseG}/v1/es/comentarios`,
 
-	loginES: pruebas_locales ? `${base}:8308/api/us/integracion-seguridad/iguana/obtenercredenciales` : `${baseRBP}:8308/api/us/integracion-seguridad/obtenercredenciales`,
+	// loginES: pruebas_locales ? `${base}:8308/api/us/integracion-seguridad/iguana/obtenercredenciales` : `${baseRBP}:8308/api/us/integracion-seguridad/obtenercredenciales`,
+	loginES: pruebasLocales ? `${base}:8308/api/us/integracion-seguridad` : `${baseRBP}:8308/api/us/integracion-seguridad`
 
-	perfilUsuarioES: pruebas_locales ? `${base}:8308/api/us/integracion-seguridad/perfil-usuario` : `${baseRBP}:8308/api/us/integracion-seguridad/perfil-usuario`,
+	// perfilUsuarioES: pruebasLocales ? `${base}:8308/api/us/integracion-seguridad/perfil-usuario` : `${baseRBP}:8308/api/us/integracion-seguridad/perfil-usuario`
 };

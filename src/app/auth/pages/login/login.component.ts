@@ -11,7 +11,7 @@ import { LocalStorageKeys } from "src/app/enums/local-storage-keys.enum";
 import { UtilService } from "src/app/services/util/util.service";
 import { StarterService } from "src/app/starter/starter.service";
 import { LoginRequest, Perfil, PerfilUsuario, PerfilUsuarioResponse } from "src/app/types/permiso.type";
-import { appCode, environment } from "src/environments/environment";
+import { appCode, environment, resourceCode } from "src/environments/environment";
 import Swal from "sweetalert2";
 import { LoginServices } from "../../services/login.services";
 @Component({
@@ -19,7 +19,7 @@ import { LoginServices } from "../../services/login.services";
 	standalone: true,
 	imports: [CommonModule, NgSelectModule, FormsModule],
 	templateUrl: "./login.component.html",
-	styleUrls: ["./login.component.scss"],
+	styleUrls: ["./login.component.scss"]
 })
 export class LoginComponent {
 	public user: string = "";
@@ -35,23 +35,23 @@ export class LoginComponent {
 		{
 			scg_per_codigo: "",
 			scg_per_descripcion: "",
-			message: "",
+			message: ""
 		},
 		{
 			scg_per_codigo: "",
 			scg_per_descripcion: "",
-			message: "",
+			message: ""
 		},
 		{
 			scg_per_codigo: "",
 			scg_per_descripcion: "",
-			message: "",
+			message: ""
 		},
 		{
 			scg_per_codigo: "",
 			scg_per_descripcion: "",
-			message: "",
-		},
+			message: ""
+		}
 	];
 	private perfilUrl: string = environment.loginES;
 
@@ -68,7 +68,7 @@ export class LoginComponent {
 			Token: "",
 			Usuario: "",
 			Perfiles: [],
-			Perfile: [],
+			Perfile: []
 		};
 	}
 
@@ -87,15 +87,12 @@ export class LoginComponent {
 				text: "Ingrese el Usuario",
 				icon: "info",
 				confirmButtonColor: "rgb(227, 199, 22)",
-				confirmButtonText: "Ok",
+				confirmButtonText: "Ok"
 			});
 
 			return;
 		}
-		
-		console.log(this.user);
-		console.log(user);
-		console.log(this.user === user);
+
 		if (this.user === user) {
 			return;
 		}
@@ -107,21 +104,21 @@ export class LoginComponent {
 		const getPerfileRequest: LoginRequest = {
 			codigoAplicacion: appCode,
 			codigoPerfil: "",
-			codigoRecurso: "PWFCAMUMET",
+			codigoRecurso: resourceCode,
 			usuario: this.user,
 			password: btoa(this.password),
-			isAutenticacionLocal: false,
+			isAutenticacionLocal: false
 		};
 
 		this.loginService.getPerfilesUsuario(getPerfileRequest).subscribe({
-			next: (response) => {
+			next: response => {
 				this.perfilUsuario = response;
 				if (this.perfilUsuario.length === 0) {
 					Swal.fire({
 						text: "Usuario no encontrado",
 						icon: "error",
 						confirmButtonColor: "rgb(227, 199, 22)",
-						confirmButtonText: "Ok",
+						confirmButtonText: "Ok"
 					});
 
 					sessionStorage.removeItem(LocalStorageKeys.IdLogin);
@@ -144,7 +141,7 @@ export class LoginComponent {
 				this.isLoading = false;
 				this.isLoadingPerfil = true;
 			},
-			error: (err) => {
+			error: err => {
 				if (this.perfilUrl.toUpperCase().includes("IGUANA")) {
 					this.perfilUsuarioError[0].scg_per_codigo = "0001";
 					this.perfilUsuarioError[0].scg_per_descripcion = "Admin";
@@ -172,7 +169,7 @@ export class LoginComponent {
 						text: "Usuario no es válido",
 						icon: "error",
 						confirmButtonColor: "rgb(227, 199, 22)",
-						confirmButtonText: "Ok",
+						confirmButtonText: "Ok"
 					});
 
 					sessionStorage.removeItem(LocalStorageKeys.Perfiles);
@@ -190,7 +187,7 @@ export class LoginComponent {
 				sessionStorage.removeItem(LocalStorageKeys.CodigoPefil);
 
 				this.isLoading = false;
-			},
+			}
 		});
 	}
 
@@ -200,7 +197,7 @@ export class LoginComponent {
 				text: "Ingrese las credenciales",
 				icon: "info",
 				confirmButtonColor: "rgb(227, 199, 22)",
-				confirmButtonText: "Ok",
+				confirmButtonText: "Ok"
 			});
 
 			return;
@@ -211,7 +208,7 @@ export class LoginComponent {
 				text: "Seleccione un Perfil de Usuario",
 				icon: "info",
 				confirmButtonColor: "rgb(227, 199, 22)",
-				confirmButtonText: "Ok",
+				confirmButtonText: "Ok"
 			});
 
 			this.isLoading = false;
@@ -224,13 +221,13 @@ export class LoginComponent {
 		const loginRequest: LoginRequest = {
 			codigoAplicacion: appCode,
 			codigoPerfil: this.perfilCodigo,
-			codigoRecurso: "PWFCAMUMET",
+			codigoRecurso: resourceCode,
 			usuario: this.user,
 			password: btoa(this.password),
-			isAutenticacionLocal: true,
+			isAutenticacionLocal: true
 		};
 
-		this.perfilCodigoSeleccionado = JSON.parse(sessionStorage.getItem(LocalStorageKeys.Perfiles)).find((data) => data.scg_per_codigo === this.perfilCodigo);
+		this.perfilCodigoSeleccionado = JSON.parse(sessionStorage.getItem(LocalStorageKeys.Perfiles)).find(data => data.scg_per_codigo === this.perfilCodigo);
 		sessionStorage.setItem(LocalStorageKeys.Perfil, this.perfilCodigoSeleccionado.scg_per_descripcion);
 
 		this.loginService.login(loginRequest).subscribe({
@@ -240,7 +237,7 @@ export class LoginComponent {
 						text: "Usuario o Contraseña Inválida",
 						icon: "error",
 						confirmButtonColor: "rgb(227, 199, 22)",
-						confirmButtonText: "Ok",
+						confirmButtonText: "Ok"
 					});
 
 					sessionStorage.removeItem(LocalStorageKeys.IdLogin);
@@ -262,18 +259,52 @@ export class LoginComponent {
 				sessionStorage.setItem(LocalStorageKeys.CodigoPefil, this.perfilCodigo);
 				sessionStorage.setItem(LocalStorageKeys.Permisos, JSON.stringify(vistas));
 
-				this.starterService.getUser(sessionStorage.getItem(LocalStorageKeys.IdUsuario)).subscribe({
-					next: ({ evType }) => {
-						sessionStorage.setItem(LocalStorageKeys.NombreUsuario, evType[0].nombreCompleto);
-						sessionStorage.setItem(LocalStorageKeys.NivelDireccion, evType[0].nivelDir);
+				const request = {
+					codigoAplicacion: appCode,
+					codigoRecurso: resourceCode,
+					codigoUsuario: sessionStorage.getItem(LocalStorageKeys.IdLogin)
+				};
 
-						this.isLoading = false;
+				this.loginService.empresasSucursales(request).subscribe({
+					next: res => {
+						if (res.length === 0) {
+							Swal.fire({
+								text: "No se pudo obtener el usuario",
+								icon: "error",
+								confirmButtonColor: "rgb(227, 199, 22)",
+								confirmButtonText: "Ok"
+							});
 
-						this.router.navigate(["/solicitudes/consulta-solicitudes"]);
+							return;
+						}
+
+						sessionStorage.setItem(LocalStorageKeys.IdsEmpresas, res.map(({ scg_epr_txt_personalizado3 }) => scg_epr_txt_personalizado3).join(","));
+						sessionStorage.setItem(LocalStorageKeys.CodigoSucursales, res.map(({ scg_suc_codigo }) => scg_suc_codigo).join(","));
+
+						this.starterService.getUser(sessionStorage.getItem(LocalStorageKeys.IdUsuario)).subscribe({
+							next: ({ evType }) => {
+								sessionStorage.setItem(LocalStorageKeys.NombreUsuario, evType[0].nombreCompleto);
+								sessionStorage.setItem(LocalStorageKeys.NivelDireccion, evType[0].nivelDir);
+
+								this.isLoading = false;
+
+								this.router.navigate(["/solicitudes/consulta-solicitudes"]);
+							}
+						});
 					},
+					error: err => {
+						console.error(err);
+
+						Swal.fire({
+							text: "No se pudo obtener el usuario",
+							icon: "error",
+							confirmButtonColor: "rgb(227, 199, 22)",
+							confirmButtonText: "Ok"
+						});
+					}
 				});
 			},
-			error: (err) => {
+			error: err => {
 				console.error(err);
 
 				sessionStorage.removeItem(LocalStorageKeys.IdLogin);
@@ -291,9 +322,9 @@ export class LoginComponent {
 					text: "No se pudo obtener el usuario",
 					icon: "error",
 					confirmButtonColor: "rgb(227, 199, 22)",
-					confirmButtonText: "Ok",
+					confirmButtonText: "Ok"
 				});
-			},
+			}
 		});
 	}
 }
