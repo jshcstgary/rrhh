@@ -87,7 +87,7 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 	};
 
 	// private
-	private id_solicitud_by_params: any;
+	public id_solicitud_by_params: any;
 	public solicitudDataInicial = new Solicitud();
 	public tipo_solicitud_descripcion: string;
 	public tipo_motivo_descripcion: string;

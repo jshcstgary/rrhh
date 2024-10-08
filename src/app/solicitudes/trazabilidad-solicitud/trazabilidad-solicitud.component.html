@@ -77,15 +77,17 @@
 											? "En Espera"
 											: dataDetalleAprobadorSolicitud[indexToShow].estadoAprobacion.toUpperCase() === "DEVOLVER"
 												? "Devuelto"
-												: dataDetalleAprobadorSolicitud[indexToShow].estadoAprobacion.toUpperCase().includes("PENDIENTE")
-													? "Por Revisar"
-													: dataDetalleAprobadorSolicitud[indexToShow].estadoAprobacion.toUpperCase().includes("RECHAZA")
-														? "Cancelado"
-														: dataDetalleAprobadorSolicitud[indexToShow].estadoAprobacion.toUpperCase().includes("COMENTARIO")
-															? "Registrar Comentario"
-															: dataDetalleAprobadorSolicitud[indexToShow].estadoAprobacion.toUpperCase().includes("SUBPROCESO")
-																? "Pendiente de Subproceso de Requisición"
-																: dataDetalleAprobadorSolicitud[indexToShow].estadoAprobacion
+												: dataDetalleAprobadorSolicitud[indexToShow].estadoAprobacion.toUpperCase().includes("SUBPROCESO")
+													? "Pendiente de Completar Requisición"
+													: dataDetalleAprobadorSolicitud[indexToShow].estadoAprobacion.toUpperCase().includes("PENDIENTE")
+														? "Por Revisar"
+														: dataDetalleAprobadorSolicitud[indexToShow].estadoAprobacion.toUpperCase().includes("RECHAZA")
+															? "Cancelado"
+															: dataDetalleAprobadorSolicitud[indexToShow].estadoAprobacion.toUpperCase().includes("COMENTARIO")
+																? "Registrar Comentario"
+																: dataDetalleAprobadorSolicitud[indexToShow].estadoAprobacion.toUpperCase().includes("SUBPROCESO")
+																	? "Pendiente de Subproceso de Requisición"
+																	: dataDetalleAprobadorSolicitud[indexToShow].estadoAprobacion
 							: idSolicitudParam.includes("RP") && dataDetalleAprobadorSolicitud.length === 1
 								? "Registrar Solicitud"
 								: idSolicitudParam.includes("RP") && dataDetalleAprobadorSolicitud.length > 1 && solicitud.estadoSolicitud==="1"
@@ -139,7 +141,19 @@
 						</div>
 
 						<div class="col">
-							{{ nivelItem.nivelAprobacionRuta.toUpperCase().includes("REGISTRARSOLICITUD") ? "Registrar Solicitud" : nivelItem.nivelAprobacionRuta.toUpperCase().includes("CANDIDATO") ? "Selección de Candidato" : nivelItem.nivelAprobacionRuta.toUpperCase().includes("COMENTARIOJEFE") ? "Registrar Jefe Anterior o Referencia" : nivelItem.nivelAprobacionRuta.toUpperCase().includes("COMENTARIORRHH") ? "Registrar RR.HH." : nivelItem.nivelAprobacionRuta.toUpperCase().includes("COMENTARIOSOLICITANTE") ? "Registrar Jefe Solicitante" : nivelItem.nivelAprobacionRuta }}
+							{{
+								nivelItem.nivelAprobacionRuta.toUpperCase().includes("REGISTRARSOLICITUD")
+									? "Registrar Solicitud"
+									: nivelItem.nivelAprobacionRuta.toUpperCase().includes("CANDIDATO")
+										? "Selección de Candidato"
+										: nivelItem.nivelAprobacionRuta.toUpperCase().includes("COMENTARIOJEFE")
+											? "Registrar Jefe Anterior o Referencia"
+											: nivelItem.nivelAprobacionRuta.toUpperCase().includes("COMENTARIORRHH")
+												? "Registrar RR.HH."
+												: nivelItem.nivelAprobacionRuta.toUpperCase().includes("COMENTARIOSOLICITANTE")
+													? "Registrar Jefe Solicitante"
+													: nivelItem.nivelAprobacionRuta
+							}}
 						</div>
 
 						<div class="col">{{ nivelItem.fechaModificacion | date : "dd/MM/YYYY HH:mm:ss" }}</div>
@@ -153,7 +167,31 @@
 						<div class="input-group">
 							<label>Estado: </label>
 
-							<span id="lvl1descripcion" name="" style="color: black; font-size: 14px">{{ nivelItem.usuarioAprobador !== "" && nivelItem.usuarioAprobador !== undefined && nivelItem.usuarioAprobador !== null ? (nivelItem.estadoAprobacion.toUpperCase() === "APROBAR" ? "Aprobado" : nivelItem.estadoAprobacion.toUpperCase().includes("PORREVISAR") ? "Por Revisar" : nivelItem.estadoAprobacion.toUpperCase().includes("ESPERA") ? "En Espera" : nivelItem.estadoAprobacion.toUpperCase() === "DEVOLVER" ? "Devuelto" : nivelItem.estadoAprobacion.toUpperCase().includes("PENDIENTE") ? "Por Revisar" : nivelItem.estadoAprobacion.toUpperCase().includes("RECHAZA") ? "Cancelado" : nivelItem.estadoAprobacion.toUpperCase().includes("COMENTARIO") ? "Registrar Comentario" : nivelItem.estadoAprobacion.toUpperCase().includes("CANDIDATO") ? "Selección Candidato" : nivelItem.estadoAprobacion) : "No aplica" }}</span>
+							<span id="lvl1descripcion" name="" style="color: black; font-size: 14px">
+								{{
+									nivelItem.usuarioAprobador !== "" && nivelItem.usuarioAprobador !== undefined && nivelItem.usuarioAprobador !== null
+										? (nivelItem.estadoAprobacion.toUpperCase() === "APROBAR"
+											? "Aprobado"
+											: nivelItem.estadoAprobacion.toUpperCase().includes("PORREVISAR")
+												? "Por Revisar"
+												: nivelItem.estadoAprobacion.toUpperCase().includes("ESPERA")
+													? "En Espera"
+													: nivelItem.estadoAprobacion.toUpperCase() === "DEVOLVER"
+														? "Devuelto"
+														: nivelItem.estadoAprobacion.toUpperCase().includes("SUNPROCESO")
+															? "Pendiente de Completar Requisición"
+															: nivelItem.estadoAprobacion.toUpperCase().includes("PENDIENTE")
+																? "Por Revisar"
+																: nivelItem.estadoAprobacion.toUpperCase().includes("RECHAZA")
+																	? "Cancelado"
+																	: nivelItem.estadoAprobacion.toUpperCase().includes("COMENTARIO")
+																		? "Registrar Comentario"
+																		: nivelItem.estadoAprobacion.toUpperCase().includes("CANDIDATO")
+																			? "Selección Candidato"
+																			: nivelItem.estadoAprobacion)
+										: "No aplica"
+								}}
+							</span>
 						</div>
 					</div>
 

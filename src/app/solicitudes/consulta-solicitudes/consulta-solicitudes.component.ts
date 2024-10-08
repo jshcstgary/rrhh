@@ -296,6 +296,7 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 
 	dataUnidadesNegocio: string[] = [];
 	dataEmpresa: string[] = [];
+	grupoLocalidad: string[] = [];
 
 	data_tipo_solicitud = [
 		{ id: 1, name: "Requisición de personal" },
@@ -638,11 +639,13 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 	}
 
 	obtenerEmpresaYUnidadNegocio() {
-		return this.mantenimientoService.getNivelesPorTipo(`GSA-CPA=${sessionStorage.getItem(LocalStorageKeys.IdsEmpresas)}-UNG=${sessionStorage.getItem(LocalStorageKeys.CodigoSucursales)}-`).subscribe({
+		return this.mantenimientoService.getNivelesPorTipo(`GSA-CPA=${sessionStorage.getItem(LocalStorageKeys.IdsEmpresas)}-GLO=${sessionStorage.getItem(LocalStorageKeys.GrupoLocalidad)}-UNG=${sessionStorage.getItem(LocalStorageKeys.CodigoSucursales)}-`).subscribe({
 			next: response => {
 				this.dataUnidadesNegocio = [...new Set(response.evType.map(({ unidadNegocio }) => unidadNegocio))];
 
 				this.dataEmpresa = [...new Set(response.evType.map(({ compania }) => compania))];
+
+				this.grupoLocalidad = [...new Set(response.evType.map(({ nivelDir }) => nivelDir))];
 
 				this.getDataToTable();
 			},
@@ -1000,7 +1003,8 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 
 							// Combinar las solicitudes y los detalles de la solicitud
 							return solicitudes.solicitudType
-								.filter(solicitud => this.dataEmpresa.includes(solicitud.empresa) && this.dataUnidadesNegocio.includes(solicitud.unidadNegocio))
+								// .filter(solicitud => this.dataEmpresa.includes(solicitud.empresa) && this.dataUnidadesNegocio.includes(solicitud.unidadNegocio))
+								.filter(solicitud => this.dataEmpresa.includes(solicitud.empresa))
 								.map(solicitud => {
 									const detalles = detallesSolicitud.detalleSolicitudType.find(detalle => detalle.idSolicitud === solicitud.idSolicitud);
 									solicitud.fechaCreacion = new DatePipe("en-CO").transform(solicitud.fechaCreacion, "yyyy/MM/dd HH:mm:ss");

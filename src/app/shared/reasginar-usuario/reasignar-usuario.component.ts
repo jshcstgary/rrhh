@@ -104,21 +104,21 @@ export class DialogReasignarUsuarioComponent {
 
 	ngOnInit() {
 		this.getNivelesAprobacion();
-		this.obtenerEmpresaYUnidadNegocio();
+		// this.obtenerEmpresaYUnidadNegocio();
 	}
 
-	obtenerEmpresaYUnidadNegocio() {
-		this.mantenimientoService.getNivelesPorTipo(`GSA-CPA=${sessionStorage.getItem(LocalStorageKeys.IdsEmpresas)}-UNG=${sessionStorage.getItem(LocalStorageKeys.CodigoSucursales)}-`).subscribe({
-			next: response => {
-				this.unidadesNegocio = [...new Set(response.evType.map(({ unidadNegocio }) => unidadNegocio))];
+	// obtenerEmpresaYUnidadNegocio() {
+	// 	this.mantenimientoService.getNivelesPorTipo(`GSA-CPA=${sessionStorage.getItem(LocalStorageKeys.IdsEmpresas)}-UNG=${sessionStorage.getItem(LocalStorageKeys.CodigoSucursales)}-`).subscribe({
+	// 		next: response => {
+	// 			this.unidadesNegocio = [...new Set(response.evType.map(({ unidadNegocio }) => unidadNegocio))];
 
-				this.empresas = [...new Set(response.evType.map(({ compania }) => compania))];
-			},
-			error: (error: HttpErrorResponse) => {
-				this.utilService.modalResponse(error.error, "error");
-			}
-		});
-	}
+	// 			this.empresas = [...new Set(response.evType.map(({ compania }) => compania))];
+	// 		},
+	// 		error: (error: HttpErrorResponse) => {
+	// 			this.utilService.modalResponse(error.error, "error");
+	// 		}
+	// 	});
+	// }
 
 	private getNivelesAprobacion(): void {
 		this.solicitudes.getSolicitudById(this.idParam).subscribe({
@@ -299,27 +299,27 @@ export class DialogReasignarUsuarioComponent {
 			correo: sessionStorage.getItem(LocalStorageKeys.IdUsuario)
 		};
 
-		if (!this.empresas.includes(this.modelo.compania)) {
-			Swal.fire({
-				text: "Empleado no pertenece a la Compañía de la solicitud actual",
-				icon: "error",
-				confirmButtonColor: "rgb(227, 199, 22)",
-				confirmButtonText: "Ok"
-			});
+		// if (!this.empresas.includes(this.modelo.compania)) {
+		// 	Swal.fire({
+		// 		text: "Empleado no pertenece a la Compañía de la solicitud actual",
+		// 		icon: "error",
+		// 		confirmButtonColor: "rgb(227, 199, 22)",
+		// 		confirmButtonText: "Ok"
+		// 	});
 
-			return;
-		}
+		// 	return;
+		// }
 
-		if (!this.unidadesNegocio.includes(this.modelo.unidadNegocio)) {
-			Swal.fire({
-				text: "Empleado no pertenece a la unidad de Negocio de la solicitud actual",
-				icon: "error",
-				confirmButtonColor: "rgb(227, 199, 22)",
-				confirmButtonText: "Ok"
-			});
+		// if (!this.unidadesNegocio.includes(this.modelo.unidadNegocio)) {
+		// 	Swal.fire({
+		// 		text: "Empleado no pertenece a la unidad de Negocio de la solicitud actual",
+		// 		icon: "error",
+		// 		confirmButtonColor: "rgb(227, 199, 22)",
+		// 		confirmButtonText: "Ok"
+		// 	});
 
-			return;
-		}
+		// 	return;
+		// }
 
 		this.loginService.filtrarCorreo(request).subscribe({
 			next: res => {

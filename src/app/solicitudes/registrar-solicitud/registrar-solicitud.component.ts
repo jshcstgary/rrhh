@@ -1053,16 +1053,16 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
 			return;
 		}
 
-		if (parseFloat(this.sueldoEmpleado.sueldo) < parseFloat(this.model.sueldo) || parseFloat(this.sueldoEmpleado.variableMensual) < parseFloat(this.model.sueldoMensual) || parseFloat(this.sueldoEmpleado.variableTrimestral) < parseFloat(this.model.sueldoTrimestral) || parseFloat(this.sueldoEmpleado.variableSemestral) < parseFloat(this.model.sueldoSemestral) || parseFloat(this.sueldoEmpleado.variableAnual) < parseFloat(this.model.sueldoAnual)) {
-			Swal.fire({
-				text: "No se puede registrar valores variables mayores a los obtenidos del sistema",
-				icon: "info",
-				confirmButtonColor: "rgb(227, 199, 22)",
-				confirmButtonText: "OK",
-			});
+		// if (parseFloat(this.sueldoEmpleado.sueldo) < parseFloat(this.model.sueldo) || parseFloat(this.sueldoEmpleado.variableMensual) < parseFloat(this.model.sueldoMensual) || parseFloat(this.sueldoEmpleado.variableTrimestral) < parseFloat(this.model.sueldoTrimestral) || parseFloat(this.sueldoEmpleado.variableSemestral) < parseFloat(this.model.sueldoSemestral) || parseFloat(this.sueldoEmpleado.variableAnual) < parseFloat(this.model.sueldoAnual)) {
+		// 	Swal.fire({
+		// 		text: "No se puede registrar valores variables mayores a los obtenidos del sistema",
+		// 		icon: "info",
+		// 		confirmButtonColor: "rgb(227, 199, 22)",
+		// 		confirmButtonText: "OK",
+		// 	});
 
-			return;
-		}
+		// 	return;
+		// }
 
 		Swal.fire({
 			text: "¿Desea guardar los cambios?",
@@ -1121,7 +1121,7 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
 			this.detalleSolicitud.descripcionPosicion = this.model.descrPosicion;
 
 			this.detalleSolicitud.localidad = this.model.localidad;
-			this.detalleSolicitud.localidadZona = this.model.localidad;
+			this.detalleSolicitud.localidadZona = this.model.codigoPuesto;
 
 			this.detalleSolicitud.misionCargo = this.model.misionCargo;
 			this.detalleSolicitud.nivelDireccion = this.model.nivelDir;
@@ -1269,16 +1269,16 @@ export class RegistrarSolicitudComponent extends CompleteTaskComponent {
 				return;
 			}
 
-			if (parseFloat(this.sueldoEmpleado.sueldo) < parseFloat(this.model.sueldo) || parseFloat(this.sueldoEmpleado.variableMensual) < parseFloat(this.model.sueldoMensual) || parseFloat(this.sueldoEmpleado.variableTrimestral) < parseFloat(this.model.sueldoTrimestral) || parseFloat(this.sueldoEmpleado.variableSemestral) < parseFloat(this.model.sueldoSemestral) || parseFloat(this.sueldoEmpleado.variableAnual) < parseFloat(this.model.sueldoAnual)) {
-				Swal.fire({
-					text: "No se puede Enviar Solicitud: Valores variables mayores a los obtenidos del sistema",
-					icon: "info",
-					confirmButtonColor: "rgb(227, 199, 22)",
-					confirmButtonText: "OK",
-				});
+			// if (parseFloat(this.sueldoEmpleado.sueldo) < parseFloat(this.model.sueldo) || parseFloat(this.sueldoEmpleado.variableMensual) < parseFloat(this.model.sueldoMensual) || parseFloat(this.sueldoEmpleado.variableTrimestral) < parseFloat(this.model.sueldoTrimestral) || parseFloat(this.sueldoEmpleado.variableSemestral) < parseFloat(this.model.sueldoSemestral) || parseFloat(this.sueldoEmpleado.variableAnual) < parseFloat(this.model.sueldoAnual)) {
+			// 	Swal.fire({
+			// 		text: "No se puede Enviar Solicitud: Valores variables mayores a los obtenidos del sistema",
+			// 		icon: "info",
+			// 		confirmButtonColor: "rgb(227, 199, 22)",
+			// 		confirmButtonText: "OK",
+			// 	});
 
-				return;
-			}
+			// 	return;
+			// }
 		}
 
 		if (this.uniqueTaskId === null) {

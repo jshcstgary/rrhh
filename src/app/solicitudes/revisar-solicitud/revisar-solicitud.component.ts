@@ -1297,7 +1297,12 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
 										this.dataAprobacionesPorPosicionAPS = responseAPS.nivelAprobacionPosicionType;
 										this.aprobacion = this.dataAprobacionesPorPosicionAPS.find(elemento => elemento.nivelAprobacionType.nivelAprobacionRuta.toUpperCase().includes("REGISTRARSOLICITUD"));
 										if (this.id_solicitud_by_params.includes("RG")) {
-											// const htmlString = "<!DOCTYPE html>\r\n<html lang=\"es\">\r\n\r\n<head>\r\n  <meta charset=\"UTF-8\">\r\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n  <title>Document<\/title>\r\n<\/head>\r\n\r\n<body>\r\n  <h2>Estimado(a)<\/h2>\r\n  <h3>{NOMBRE_APROBADOR}<\/h3>\r\n\r\n  <P>Se le informa que ha sido devuelta la solucitud {ID_SOLICITUD} - {TIPO_SOLICITUD} <\/P>\r\n\r\n  <p>\r\n    <b>\r\n      Favor ingresar al siguiente enlace: <a href=\"{URL_APROBACION}\">{URL_APROBACION}<\/a>\r\n      <br>\r\n      <br>\r\n      Gracias por su atenci\u00F3n.\r\n    <\/b>\r\n  <\/p>\r\n<\/body>\r\n\r\n<\/html>\r\n";
+											this.detalleSolicitudRG.estado = "A";
+
+											this.solicitudes.actualizarDetalleSolicitud(this.detalleSolicitudRG).subscribe({
+												next: () => {}
+											});
+											
 											const htmlString = '<!DOCTYPE html>\r\n<html lang="es">\r\n\r\n<head>\r\n  <meta charset="UTF-8">\r\n  <meta name="viewport" content="width=device-width, initial-scale=1.0">\r\n  <title>Document</title>\r\n</head>\r\n\r\n<body>\r\n  <h2>Estimado(a)</h2>\r\n  <h3>{NOMBRE_APROBADOR}</h3>\r\n\r\n  <p>Se le informa que ha sido devuelta la solicitud {ID_SOLICITUD} - {TIPO_SOLICITUD} </p>\r\n\r\n  <p><strong>Motivo:</strong> {COMENTARIO}</p>\r\n\r\n  <p>\r\n    <b>\r\n      Favor ingresar al siguiente enlace: <a href="{URL_APROBACION}">{URL_APROBACION}</a>\r\n      <br>\r\n      <br>\r\n      Gracias por su atenci\u00F3n.\r\n    </b>\r\n  </p>\r\n</body>\r\n\r\n</html>\r\n';
 
 											const modifiedHtmlString = htmlString.replace("{NOMBRE_APROBADOR}", this.aprobacion.aprobador.usuario).replace("{TIPO_SOLICITUD}", this.solicitudRG.tipoSolicitud).replace("{ID_SOLICITUD}", this.solicitudRG.idSolicitud).replace("{DESCRIPCION_POSICION}", this.detalleSolicitudRG.descripcionPosicion).replace(new RegExp("{URL_APROBACION}", "g"), `${portalWorkFlow}tareas/consulta-tareas`).replace("{COMENTARIO}", this.textareaContent);
@@ -1318,6 +1323,12 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
 												}
 											});
 										} else {
+											this.detalleSolicitud.estado = "A";
+
+											this.solicitudes.actualizarDetalleSolicitud(this.detalleSolicitud).subscribe({
+												next: () => {}
+											});
+
 											const htmlString = '<!DOCTYPE html>\r\n<html lang="es">\r\n\r\n<head>\r\n  <meta charset="UTF-8">\r\n  <meta name="viewport" content="width=device-width, initial-scale=1.0">\r\n  <title>Document</title>\r\n</head>\r\n\r\n<body>\r\n  <h2>Estimado(a)</h2>\r\n  <h3>{NOMBRE_APROBADOR}</h3>\r\n\r\n  <p>Se le informa que ha sido devuelta la solicitud {ID_SOLICITUD} - {TIPO_SOLICITUD} </p>\r\n\r\n  <p><strong>Motivo:</strong> {COMENTARIO}</p>\r\n\r\n  <p>\r\n    <b>\r\n      Favor ingresar al siguiente enlace: <a href="{URL_APROBACION}">{URL_APROBACION}</a>\r\n      <br>\r\n      <br>\r\n      Gracias por su atenci\u00F3n.\r\n    </b>\r\n  </p>\r\n</body>\r\n\r\n</html>\r\n';
 
 											const modifiedHtmlString = htmlString.replace("{NOMBRE_APROBADOR}", this.aprobacion.aprobador.usuario).replace("{TIPO_SOLICITUD}", this.solicitud.tipoSolicitud).replace("{ID_SOLICITUD}", this.solicitud.idSolicitud).replace("{DESCRIPCION_POSICION}", this.detalleSolicitud.descripcionPosicion).replace(new RegExp("{URL_APROBACION}", "g"), `${portalWorkFlow}tareas/consulta-tareas`).replace("{COMENTARIO}", this.textareaContent);
@@ -1835,7 +1846,10 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
 				value: `${portalWorkFlow}solicitudes/revisar-solicitud/${this.idDeInstancia}/${this.id_solicitud_by_params}`
 			};
 			variables.atencionRevisionGerente = { value: this.buttonValue };
-			variables.comentariosAtencionGerenteRRHH = { value: sessionStorage.getItem(LocalStorageKeys.IdLogin) + " - " + this.datosAprobadores.nivelDireccion + " - " + this.textareaContent };
+
+			const key: string = `comentariosAtencionGerenteRRHH-${format(new Date(), "dd-MM-yyyy-HH-mm-ss")}`;
+
+			variables[key] = { value: sessionStorage.getItem(LocalStorageKeys.IdLogin) + " - " + this.datosAprobadores.nivelDireccion + " - " + this.textareaContent };
 		} else if (this.taskType_Activity == environment.taskType_CREM || this.taskType_Activity == environment.taskType_AP_Remuneraciones || this.taskType_Activity == environment.taskType_RG_Remuneraciones || this.taskType_Activity == environment.taskType_CF_Remuneraciones) {
 			// COMITE DE REMUNERACION
 			let accion = "Revisar Solicitud: Solicitud";
@@ -1859,7 +1873,12 @@ export class RevisarSolicitudComponent extends CompleteTaskComponent {
 			}
 
 			variables.atencionRevisionRemuneraciones = { value: this.buttonValue };
-			variables.comentariosAtencionRemuneraciones = { value: sessionStorage.getItem(LocalStorageKeys.IdLogin) + " - " + this.datosAprobadores.nivelDireccion + " - " + this.textareaContent + " - Fecha de comité: " + format(this.fechaComite, "dd/MM/yyyy") };
+
+			const key: string = `comentariosAtencionRemuneraciones-${format(new Date(), "dd-MM-yyyy-HH-mm-ss")}`;
+			
+			variables[key] = {
+				value: `${sessionStorage.getItem(LocalStorageKeys.IdLogin)} - ${this.datosAprobadores.nivelDireccion} - ${this.textareaContent}${this.buttonValue === "aprobar" || this.buttonValue === "rechazar" ? ` - Fecha de comité: ${format(this.fechaComite, "dd/MM/yyyy")}` : ""}`
+			};
 		}
 
 		return { variables };

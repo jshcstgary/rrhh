@@ -11,7 +11,7 @@ import { LocalStorageKeys } from "src/app/enums/local-storage-keys.enum";
 import { UtilService } from "src/app/services/util/util.service";
 import { StarterService } from "src/app/starter/starter.service";
 import { LoginRequest, Perfil, PerfilUsuario, PerfilUsuarioResponse } from "src/app/types/permiso.type";
-import { appCode, environment, resourceCode } from "src/environments/environment";
+import { appCode, environment, pruebasLocales, resourceCode } from "src/environments/environment";
 import Swal from "sweetalert2";
 import { LoginServices } from "../../services/login.services";
 @Component({
@@ -53,6 +53,11 @@ export class LoginComponent {
 			message: ""
 		}
 	];
+	public sucursalesEmpresas: {
+		scg_epr_txt_personalizado3: string;
+		scg_suc_codigo: string;
+		scg_pvt_codigo: string;
+	}[] = [];
 	private perfilUrl: string = environment.loginES;
 
 	// private searchSubject: Subject<string> = new Subject();
@@ -142,7 +147,9 @@ export class LoginComponent {
 				this.isLoadingPerfil = true;
 			},
 			error: err => {
-				if (this.perfilUrl.toUpperCase().includes("IGUANA")) {
+				console.log("ENTRA EN ERROR");
+				// if (this.perfilUrl.toUpperCase().includes("IGUANA")) {
+				if (pruebasLocales) {
 					this.perfilUsuarioError[0].scg_per_codigo = "0001";
 					this.perfilUsuarioError[0].scg_per_descripcion = "Admin";
 					this.perfilUsuarioError[0].message = "Exito";
@@ -280,6 +287,7 @@ export class LoginComponent {
 
 						sessionStorage.setItem(LocalStorageKeys.IdsEmpresas, res.map(({ scg_epr_txt_personalizado3 }) => scg_epr_txt_personalizado3).join(","));
 						sessionStorage.setItem(LocalStorageKeys.CodigoSucursales, res.map(({ scg_suc_codigo }) => scg_suc_codigo).join(","));
+						sessionStorage.setItem(LocalStorageKeys.GrupoLocalidad, res.map(({ scg_pvt_codigo }) => scg_pvt_codigo).join(","));
 
 						this.starterService.getUser(sessionStorage.getItem(LocalStorageKeys.IdUsuario)).subscribe({
 							next: ({ evType }) => {
@@ -295,12 +303,42 @@ export class LoginComponent {
 					error: err => {
 						console.error(err);
 
-						Swal.fire({
-							text: "No se pudo obtener el usuario",
-							icon: "error",
-							confirmButtonColor: "rgb(227, 199, 22)",
-							confirmButtonText: "Ok"
-						});
+						if (pruebasLocales) {
+							this.sucursalesEmpresas = [
+								{
+									scg_epr_txt_personalizado3: "10",
+									scg_pvt_codigo: "00001",
+									scg_suc_codigo: "00001"
+								},
+								{
+									scg_epr_txt_personalizado3: "11",
+									scg_pvt_codigo: "00002",
+									scg_suc_codigo: "00002"
+								}
+							];
+
+							sessionStorage.setItem(LocalStorageKeys.IdsEmpresas, this.sucursalesEmpresas.map(({ scg_epr_txt_personalizado3 }) => scg_epr_txt_personalizado3).join(","));
+							sessionStorage.setItem(LocalStorageKeys.CodigoSucursales, this.sucursalesEmpresas.map(({ scg_suc_codigo }) => scg_suc_codigo).join(","));
+							sessionStorage.setItem(LocalStorageKeys.GrupoLocalidad, this.sucursalesEmpresas.map(({ scg_pvt_codigo }) => scg_pvt_codigo).join(","));
+
+							this.starterService.getUser(sessionStorage.getItem(LocalStorageKeys.IdUsuario)).subscribe({
+								next: ({ evType }) => {
+									sessionStorage.setItem(LocalStorageKeys.NombreUsuario, evType[0].nombreCompleto);
+									sessionStorage.setItem(LocalStorageKeys.NivelDireccion, evType[0].nivelDir);
+	
+									this.isLoading = false;
+	
+									this.router.navigate(["/solicitudes/consulta-solicitudes"]);
+								}
+							});
+						} else {
+							Swal.fire({
+								text: "No se pudo obtener el usuario",
+								icon: "error",
+								confirmButtonColor: "rgb(227, 199, 22)",
+								confirmButtonText: "Ok"
+							});
+						}
 					}
 				});
 			},
