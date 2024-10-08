@@ -6,7 +6,7 @@ const base = "http://10.35.3.162"; //base de servicios local
 const baseRBP = "http://192.168.44.180"; //base de servicios RBP http://10.35.3.162
 const baseG = "http://181.188.224.250:18043"; //base de servicios api gateway
 
-export const pruebasLocales: boolean = true; //Varialbe boleana para las pruebas locales y pruebas en el ambiente del cliente, true para locales, false para RBP
+export const pruebasLocales: boolean = false; //Varialbe boleana para las pruebas locales y pruebas en el ambiente del cliente, true para locales, false para RBP
 
 // export const portalWorkFlow: string = "http://10.35.3.162:4200/";
 
@@ -24,7 +24,7 @@ export const codigosSolicitudReporte = {
 	requisicionPersonal: "RRH PR 01 01",
 	accionPersonal: "RRH PR 05 03",
 	contratacionFamiliares: "RRH PR 01 04",
-	reingresoPersonal: "RRH PR 01 03"
+	reingresoPersonal: "RRH PR 01 03",
 } as const;
 
 export const environment = {
@@ -161,7 +161,7 @@ export const environment = {
 	// comentarioServiceES: `${baseG}/v1/es/comentarios`,
 
 	// loginES: pruebas_locales ? `${base}:8308/api/us/integracion-seguridad/iguana/obtenercredenciales` : `${baseRBP}:8308/api/us/integracion-seguridad/obtenercredenciales`,
-	loginES: pruebasLocales ? `${base}:8308/api/us/integracion-seguridad` : `${baseRBP}:8308/api/us/integracion-seguridad`
+	loginES: pruebasLocales ? `${base}:8308/api/us/integracion-seguridad` : `${baseRBP}:8308/api/us/integracion-seguridad`,
 
 	// perfilUsuarioES: pruebasLocales ? `${base}:8308/api/us/integracion-seguridad/perfil-usuario` : `${baseRBP}:8308/api/us/integracion-seguridad/perfil-usuario`
 };
