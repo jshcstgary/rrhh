@@ -24,6 +24,7 @@ import { ComentarioSalidaJefeService } from "./comentario-salida-jefe.service";
 import { format } from "date-fns";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
+import { StarterService } from "src/app/starter/starter.service";
 
 @Component({
 	selector: "app-detalle-solicitud",
@@ -65,7 +66,6 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 	nombreCandidato: string = "";
 	responsableRRHHRG: string = "";
 
-
 	fechas: any = {
 		actualizacionPerfil: "",
 		busquedaCandidatos: "",
@@ -83,7 +83,7 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 		finProceso: "",
 		contratacionFamiliares: "",
 		finProcesoFamiliares: "",
-		fechaIngresoCandidato: ""
+		fechaIngresoCandidato: "",
 	};
 
 	// private
@@ -182,138 +182,10 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 	public dataComentariosAprobacionesRRHH: any[] = [];
 	public dataComentariosAprobacionesCREM: any[] = [];
 
-	public dataEmpleadoEvolution: any[] = [
-		{
-			codigo: "CODIGO_1", //?
-			idEmpresa: "ID_EMPRESA", //?
-			compania: "Reybanpac", // Ok
-			departamento: "Inventarios", //ok
-			nombreCargo: "Jefatura", // ok
-			nomCCosto: "Zona camarones", // ok
-			codigoPosicion: "0425", //
-			descrPosicion: "Analista de recursos humanos", //ok
-			codigoPuesto: "CODIGO_PUESTO", //
-			descrPuesto: "Gerencia media", //
-			fechaIngresogrupo: "2024-04-15T12:08:34.473", //
-			grupoPago: "GRUPO_PAGO", //
-			reportaA: "Gerente RRHH", // ok
-			localidad: "Hacienda", // ok
-			nivelDir: "Tecnico/Asistencia", // ok
-			descrNivelDir: "Tecnico descripcion", //
-			nivelRepa: "Gerencia Medios", // Es esto nivel de reporte?
-			nombreCompleto: "MOROCHO VARGAS CAL ESTUARIO", //
-			subledger: "60067579", // Ok
-			sucursal: "SUSURSAL 1", //
-			unidadNegocio: "UNIDAD NEGOCIO 1", //ok
-			tipoContrato: "Eventual", // ok
-			descripContrato: "Eventual con remuneracion mixta", //
-			status: "A",
-		},
-		{
-			codigo: "CODIGO_2",
-			idEmpresa: "ID_EMPRESA",
-			compania: "Reybanpac",
-			departamento: "Inventarios",
-			nombreCargo: "Jefatura",
-			nomCCosto: "Zona camarones",
-			codigoPosicion: "0425",
-			descrPosicion: "Analista de recursos humanos",
-			codigoPuesto: "CODIGO_PUESTO",
-			descrPuesto: "Gerencia media",
-			fechaIngresogrupo: "2024-04-15T12:08:34.473",
-			grupoPago: "GRUPO_PAGO",
-			reportaA: "Gerente RRHH",
-			localidad: "Hacienda",
-			nivelDir: "Tecnico/Asistencia",
-			descrNivelDir: "Tecnico descripcion",
-			nivelRepa: "Gerencia Medios",
-			nombreCompleto: "MOROCHO VARGAS CAL ESTUARIO",
-			subledger: "60067579",
-			sucursal: "SUSURSAL 1",
-			unidadNegocio: "UNIDAD NEGOCIO 1",
-			tipoContrato: "Eventual",
-			descripContrato: "Eventual con remuneracion mixta",
-			status: "A",
-		},
-		{
-			codigo: "CODIGO_3",
-			idEmpresa: "ID_EMPRESA",
-			compania: "Reybanpac",
-			departamento: "Inventarios",
-			nombreCargo: "Jefatura",
-			nomCCosto: "Zona camarones",
-			codigoPosicion: "0425",
-			descrPosicion: "Analista de recursos humanos",
-			codigoPuesto: "CODIGO_PUESTO",
-			descrPuesto: "Gerencia media",
-			fechaIngresogrupo: "2024-04-15T12:08:34.473",
-			grupoPago: "GRUPO_PAGO",
-			reportaA: "Gerente RRHH",
-			localidad: "Hacienda",
-			nivelDir: "Tecnico/Asistencia",
-			descrNivelDir: "Tecnico descripcion",
-			nivelRepa: "Gerencia Medios",
-			nombreCompleto: "MOROCHO VARGAS CAL ESTUARIO",
-			subledger: "60067579",
-			sucursal: "SUSURSAL 1",
-			unidadNegocio: "UNIDAD NEGOCIO 1",
-			tipoContrato: "Eventual",
-			descripContrato: "Eventual con remuneracion mixta",
-			status: "A",
-		},
-		{
-			codigo: "CODIGO_4",
-			idEmpresa: "ID_EMPRESA",
-			compania: "Reybanpac",
-			departamento: "Inventarios",
-			nombreCargo: "Jefatura",
-			nomCCosto: "Zona camarones",
-			codigoPosicion: "0425",
-			descrPosicion: "Analista de recursos humanos",
-			codigoPuesto: "CODIGO_PUESTO",
-			descrPuesto: "Gerencia media",
-			fechaIngresogrupo: "2024-04-15T12:08:34.473",
-			grupoPago: "GRUPO_PAGO",
-			reportaA: "Gerente RRHH",
-			localidad: "Hacienda",
-			nivelDir: "Tecnico/Asistencia",
-			descrNivelDir: "Tecnico descripcion",
-			nivelRepa: "Gerencia Medios",
-			nombreCompleto: "MOROCHO VARGAS CAL ESTUARIO",
-			subledger: "60067579",
-			sucursal: "SUSURSAL 1",
-			unidadNegocio: "UNIDAD NEGOCIO 1",
-			tipoContrato: "Eventual",
-			descripContrato: "Eventual con remuneracion mixta",
-			status: "A",
-		},
-		{
-			codigo: "CODIGO_2",
-			idEmpresa: "ID_EMPRESA",
-			compania: "Reybanpac",
-			departamento: "Inventarios",
-			nombreCargo: "Gerencia de Proyectos",
-			nomCCosto: "Zona camarones",
-			codigoPosicion: "0426",
-			descrPosicion: "Gerencia de Proyectos",
-			codigoPuesto: "CODIGO_PUESTO",
-			descrPuesto: "Gerencia media",
-			fechaIngresogrupo: "2024-04-15T12:08:34.473",
-			grupoPago: "GRUPO_PAGO",
-			reportaA: "0427",
-			localidad: "Hacienda",
-			nivelDir: "Gerencia Media",
-			descrNivelDir: "Gerencia Media",
-			nivelRepa: "Gerencia Medios",
-			nombreCompleto: "MOROCHO VARGAS CAL ESTUARIO",
-			subledger: "60067579",
-			sucursal: "SUSURSAL 1",
-			unidadNegocio: "UNIDAD NEGOCIO 1",
-			tipoContrato: "Eventual",
-			descripContrato: "Eventual con remuneracion mixta",
-			status: "A",
-		},
-	];
+	public dataEmpleadoEvolution: any[] = [];
+
+	public puestoJefeInmediatoSuperior: string = "";
+	public nombreJefeSolicitante: string = "";
 
 	public success: false;
 	public params: any;
@@ -343,7 +215,7 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 	public Comentario_Jefe_Solicitante: any = {};
 	modelRG: RegistrarData = new RegistrarData("", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "");
 
-	constructor(route: ActivatedRoute, router: Router, camundaRestService: CamundaRestService, private mantenimientoService: MantenimientoService, private solicitudesService: SolicitudesService, private utilService: UtilService, private seleccionCandidatoService: RegistrarCandidatoService, private comentarioSalidaJefeService: ComentarioSalidaJefeService) {
+	constructor(route: ActivatedRoute, router: Router, camundaRestService: CamundaRestService, private mantenimientoService: MantenimientoService, private solicitudesService: SolicitudesService, private utilService: UtilService, private seleccionCandidatoService: RegistrarCandidatoService, private comentarioSalidaJefeService: ComentarioSalidaJefeService, private starterService: StarterService) {
 		super(route, router, camundaRestService);
 
 		this.searchSubject.pipe(debounceTime(0)).subscribe(({ campo, valor }) => {
@@ -798,6 +670,21 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 					this.detalleSolicitudRG = response.detalleSolicitudType[0];
 
 					if (!id.toUpperCase().includes("RG") && this.detalleSolicitud.codigoPosicion.length > 0) {
+						if (this.id_solicitud_by_params.includes("RG")) {
+							this.starterService.getUser(this.detalleSolicitud.jefeSolicitante).subscribe({
+								next: (res) => {
+									this.puestoJefeInmediatoSuperior = res.evType[0].nombreCargo;
+									this.nombreJefeSolicitante = res.evType[0].nombreCompleto;
+								},
+								error: (err) => {
+									console.error(err);
+
+									this.puestoJefeInmediatoSuperior = "";
+									this.nombreJefeSolicitante = "";
+								},
+							});
+						}
+
 						this.model.codigoPosicion = this.detalleSolicitud.codigoPosicion;
 						this.model.descrPosicion = this.detalleSolicitud.descripcionPosicion;
 						this.model.subledger = this.detalleSolicitud.subledger;
@@ -851,6 +738,7 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 							this.modelRG.sueldoTrimestral = this.detalleSolicitudRG.sueldoVariableTrimestral;
 							this.modelRG.sueldoSemestral = this.detalleSolicitudRG.sueldoVariableSemestral;
 							this.modelRG.sueldoAnual = this.detalleSolicitudRG.sueldoVariableAnual;
+							this.modelRG.grupoPago = this.detalleSolicitudRG.grupoDePago;
 							this.modelRG.correo = this.detalleSolicitudRG.correo;
 							// this.modelRG.correo = this.detalleSolicitudRG.correo;
 							this.causaSalida = this.detalleSolicitudRG.causaSalida;
@@ -1259,9 +1147,14 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 			next: (response) => {
 				this.dataComentariosAprobaciones.length = 0;
 				this.dataComentariosAprobacionesPorPosicion = response.variableType;
-				this.dataComentariosAprobaciones = this.filterDataComentarios(this.solicitud.idInstancia, "RevisionSolicitud", "comentariosAtencion");
-				this.dataComentariosAprobacionesRRHH = this.filterDataComentarios(this.solicitud.idInstancia, "RequisicionPersonal", "comentariosAtencionGerenteRRHH");
-				this.dataComentariosAprobacionesCREM = this.filterDataComentarios(this.solicitud.idInstancia, "RequisicionPersonal", "comentariosAtencionRemuneraciones");
+
+				this.dataComentariosAprobaciones = this.dataComentariosAprobacionesPorPosicion.filter((comentario) => comentario.name === "comentariosAtencion" && comentario.procDefKey === "RevisionSolicitud");
+				this.dataComentariosAprobacionesRRHH = this.dataComentariosAprobacionesPorPosicion.filter((comentario) => comentario.name.includes("comentariosAtencionGerenteRRHH") && comentario.procDefKey === "RequisicionPersonal");
+				this.dataComentariosAprobacionesCREM = this.dataComentariosAprobacionesPorPosicion.filter((comentario) => comentario.name.includes("comentariosAtencionRemuneraciones") && comentario.procDefKey === "RequisicionPersonal");
+
+				// this.dataComentariosAprobaciones = this.filterDataComentarios(this.solicitud.idInstancia, "RevisionSolicitud", "comentariosAtencion");
+				// this.dataComentariosAprobacionesRRHH = this.filterDataComentarios(this.solicitud.idInstancia, "RequisicionPersonal", "comentariosAtencionGerenteRRHH");
+				// this.dataComentariosAprobacionesCREM = this.filterDataComentarios(this.solicitud.idInstancia, "RequisicionPersonal", "comentariosAtencionRemuneraciones");
 			},
 			error: (error: HttpErrorResponse) => {
 				this.utilService.modalResponse("No existe comentarios de aprobadores", "error");
@@ -1269,14 +1162,20 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 		});
 	}
 
-	filterDataComentarios(idInstancia: string, taskKey: string, name: string) {
-		return this.dataComentariosAprobacionesPorPosicion.filter(
-			(item) =>
-				(idInstancia ? item.rootProcInstId === idInstancia : true) && //Id de instancia
-				(taskKey ? item.procDefKey === taskKey : true) &&
-				(name ? item.name === name : true)
-		);
-	}
+	// filterDataComentarios(idInstancia: string, taskKey: string, name: string) {
+	// 	return this.dataComentariosAprobacionesPorPosicion.filter(
+	// 		(item) =>
+	// 			(idInstancia ? item.rootProcInstId === idInstancia : true) && //Id de instancia
+	// 			(taskKey ? item.procDefKey === taskKey : true) &&
+	// 			(name
+	// 				? item.name.includes("comentariosAtencionGerenteRRHH")
+	// 					? true
+	// 					: item.name.includes("comentariosAtencionRemuneraciones")
+	// 						? true
+	// 						: item.name === name
+	// 				: true)
+	// 	);
+	// }
 
 	public exportar(): void {
 		this.utilService.openLoadingSpinner("Generando reporte...");
@@ -1319,26 +1218,27 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 			],
 		};
 
+		// this.solicitudesService.obtenerTareasPorInstanciaRaiz(this.solicitud.idInstancia).subscribe({
 		this.solicitudesService.obtenerTareasPorInstanciaRaiz(this.solicitud.idInstancia).subscribe({
 			next: ({ tareaType }) => {
 				const logs = tareaType.map(({ parentTaskId }) => parentTaskId);
 
-				if (this.solicitud.idSolicitud.toUpperCase().includes("RP")) {
+				if (this.id_solicitud_by_params.toUpperCase().includes("RP")) {
 					esquinaDeHoja.body[0][0].content = codigosSolicitudReporte.requisicionPersonal;
 					tituloDeHoja.body[0][0].content = "REQUERIMIENTO DE PERSONAL";
 
 					this.exportarRequisicionPersonal(doc, esquinaDeHoja, tituloDeHoja, backgroundCellColor, textColor, lineColor, logs);
-				} else if (this.solicitud.idSolicitud.toUpperCase().includes("CF")) {
+				} else if (this.id_solicitud_by_params.toUpperCase().includes("CF")) {
 					esquinaDeHoja.body[0][0].content = codigosSolicitudReporte.contratacionFamiliares;
 					tituloDeHoja.body[0][0].content = "CONTRATACIÓN DE FAMILIAR";
 
 					this.exportarContratacionFamiliar(doc, esquinaDeHoja, tituloDeHoja, backgroundCellColor, textColor, lineColor, logs);
-				} else if (this.solicitud.idSolicitud.toUpperCase().includes("RG")) {
+				} else if (this.id_solicitud_by_params.toUpperCase().includes("RG")) {
 					esquinaDeHoja.body[0][0].content = codigosSolicitudReporte.reingresoPersonal;
 					tituloDeHoja.body[0][0].content = "REINGRESO DE PERSONAL";
 
 					this.exportarReingresoPersonal(doc, esquinaDeHoja, tituloDeHoja, backgroundCellColor, textColor, lineColor, logs);
-				} else if (this.solicitud.idSolicitud.toUpperCase().includes("AP")) {
+				} else if (this.id_solicitud_by_params.toUpperCase().includes("AP")) {
 					esquinaDeHoja.body[0][0].content = codigosSolicitudReporte.accionPersonal;
 					tituloDeHoja.body[0][0].content = "ACCIÓN DE PERSONAL";
 
@@ -2152,17 +2052,17 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 						},
 					},
 				],
-				["Compañía:", this.model.compania, this.modelRG.compania],
-				["Sueldo:", `$ ${parseFloat(this.modelRG.sueldo).toFixed(2)}`, `$ ${parseFloat(this.model.sueldo).toFixed(2)}`],
-				["Variable Máxima:", `$ ${variableMaximaRG.toFixed(2)}`, `$ ${variableMaxima.toFixed(2)}`],
-				["Remuneración Total:", `$ ${(parseFloat(this.modelRG.sueldo) + variableMaximaRG).toFixed(2)}`, `$ ${(parseFloat(this.model.sueldo) + variableMaxima).toFixed(2)}`],
-				["Cargo:", this.model.descrPosicion, this.modelRG.descrPosicion],
-				["Departamento:", this.modelRG.departamento, this.model.departamento],
-				["Fecha de Ingreso:", this.model.fechaIngreso === null || this.model.fechaIngreso === undefined || this.model.fechaIngreso === "" ? "-" : format(new Date(this.model.fechaIngreso), "dd/MM/yyyy"), this.modelRG.fechaIngreso === null || this.modelRG.fechaIngreso === undefined || this.modelRG.fechaIngreso === "" ? "-" : format(new Date(this.modelRG.fechaIngreso), "dd/MM/yyyy")],
-				["Fecha de Salida:", format(new Date(this.detalleSolicitudRG.fechaSalida), "dd/MM/yyyy"), format(new Date(this.detalleSolicitud.fechaSalida), "dd/MM/yyyy")],
-				["Jefe Inmediato Superior:", this.detalleSolicitudRG.jefeInmediatoSuperior, this.detalleSolicitud.jefeInmediatoSuperior],
-				["Cargo Jefe Inmediato Superior:", this.detalleSolicitudRG.puestoJefeInmediato, this.detalleSolicitud.puestoJefeInmediato],
-				["Responsable de RR.HH.:", this.detalleSolicitudRG.responsableRRHH, this.detalleSolicitud.responsableRRHH],
+				["Compañía:", this.model.subledger === this.modelRG.subledger ? "" : this.modelRG.compania, this.model.compania],
+				["Sueldo:", this.model.subledger === this.modelRG.subledger ? "" : `$ ${parseFloat(this.modelRG.sueldo).toFixed(2)}`, `$ ${parseFloat(this.model.sueldo).toFixed(2)}`],
+				["Variable Máxima:", this.model.subledger === this.modelRG.subledger ? "" : `$ ${variableMaximaRG.toFixed(2)}`, `$ ${variableMaxima.toFixed(2)}`],
+				["Remuneración Total:", this.model.subledger === this.modelRG.subledger ? "" : `$ ${(parseFloat(this.modelRG.sueldo) + variableMaximaRG).toFixed(2)}`, `$ ${(parseFloat(this.model.sueldo) + variableMaxima).toFixed(2)}`],
+				["Cargo:", this.model.subledger === this.modelRG.subledger ? "" : this.modelRG.nombreCargo, this.model.nombreCargo],
+				["Departamento:", this.model.subledger === this.modelRG.subledger ? "" : this.modelRG.departamento, this.model.departamento],
+				["Fecha de Ingreso:", this.model.subledger === this.modelRG.subledger ? "" : this.modelRG.fechaIngreso === null || this.modelRG.fechaIngreso === undefined || this.modelRG.fechaIngreso === "" ? "" : format(new Date(this.modelRG.fechaIngreso), "dd/MM/yyyy"), this.model.fechaIngreso === null || this.model.fechaIngreso === undefined || this.model.fechaIngreso === "" ? "" : format(new Date(this.model.fechaIngreso), "dd/MM/yyyy")],
+				["Fecha de Salida:", this.model.subledger === this.modelRG.subledger ? "" : format(new Date(this.detalleSolicitudRG.fechaSalida), "dd/MM/yyyy"), ""],
+				["Jefe Inmediato Superior:", this.model.subledger === this.modelRG.subledger ? "" : this.detalleSolicitudRG.jefeInmediatoSuperior, this.nombreJefeSolicitante],
+				["Cargo Jefe Inmediato Superior:", this.model.subledger === this.modelRG.subledger ? "" : this.detalleSolicitudRG.puestoJefeInmediato, this.puestoJefeInmediatoSuperior],
+				["Responsable de RR.HH.:", this.model.subledger === this.modelRG.subledger ? "" : this.detalleSolicitudRG.responsableRRHH, this.responsableRRHHRG],
 			],
 			columnStyles: {
 				0: {
@@ -2202,7 +2102,7 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 				[
 					"Forma de salida:",
 					{
-						content: this.comentariosRRHH.comentario,
+						content: this.comentariosRRHH.comentario === undefined ? "" : this.comentariosRRHH.comentario,
 						colSpan: 3,
 					},
 				],
@@ -2213,7 +2113,7 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 						colSpan: 3,
 					},
 				],
-				["Justificación", "", "Fecha:", format(this.currentDate, "dd/MM/yyyy")],
+				["Justificación", this.detalleSolicitudRG.grupoDePago, "Fecha:", this.comentariosRRHH.fecha_Creacion === undefined ? "" : format(new Date(this.comentariosRRHH.fecha_Creacion), "dd/MM/yyyy")],
 			],
 			columnStyles: {
 				0: {
@@ -2252,7 +2152,7 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 			],
 			body: [
 				["¿Cómo fue el desempeño en el área?:", this.comentariosJefeInmediato.comentario],
-				["Fecha:", format(this.currentDate, "dd/MM/yyyy")],
+				["Fecha:", this.comentariosJefeInmediato.fecha_Creacion === undefined ? "" : format(new Date(this.comentariosJefeInmediato.fecha_Creacion), "dd/MM/yyyy")],
 			],
 			columnStyles: {
 				0: {
@@ -2284,7 +2184,7 @@ export class DetalleSolicitudComponent extends CompleteTaskComponent {
 			],
 			body: [
 				["Nombre del jefe solicitante:", this.detalleSolicitudRG.nombreJefeSolicitante, "Cargo:", this.detalleSolicitudRG.puesto],
-				["Justificación:", this.Comentario_Jefe_Solicitante.comentario, "Fecha:", format(this.currentDate, "dd/MM/yyyy")],
+				["Justificación:", this.Comentario_Jefe_Solicitante.comentario, "Fecha:", this.Comentario_Jefe_Solicitante.fecha_Creacion === undefined ? "" : format(new Date(this.Comentario_Jefe_Solicitante.fecha_Creacion), "dd/MM/yyyy")],
 			],
 			columnStyles: {
 				0: {

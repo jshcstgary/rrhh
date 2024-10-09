@@ -112,7 +112,7 @@
 							<div class="input-group mb-3 align-items-center">
 								<label class="input-group-text text-start label-estilo" for="tipoMotivo">Puesto</label>
 
-								<span style="color: black; font-size: 14px" class="text-start w-50">{{ modelRG.descrPosicion }}</span>
+								<span style="color: black; font-size: 14px" class="text-start w-50">{{ modelRG.nombreCargo }}</span>
 							</div>
 						</div>
 
@@ -120,7 +120,7 @@
 							<div class="input-group mb-3 align-items-center">
 								<label class="input-group-text text-start label-estilo" for="tipoMotivo">Puesto</label>
 
-								<span style="color: black; font-size: 14px" class="text-start w-50">{{ model.descrPosicion }}</span>
+								<span style="color: black; font-size: 14px" class="text-start w-50">{{ model.nombreCargo }}</span>
 							</div>
 						</div>
 					</div>
@@ -490,7 +490,7 @@
 								</span>
 
 								<ng-template #editableCometarioRRHH>
-									<textarea *ngIf="taskKey !== taskKeySolicitante" type="text" name="comentario" style="color: black; font-size: 14px; resize: none" class="form-control" id="comments" rows="3" [(ngModel)]="comentarios" required></textarea>
+									<textarea *ngIf="taskKey !== taskKeySolicitante" name="comentario" style="color: black; font-size: 14px; resize: none" class="form-control" id="comments" rows="3" [(ngModel)]="comentarios" required></textarea>
 								</ng-template>
 							</div>
 						</div>
@@ -511,7 +511,16 @@
 							<div class="input-group mb-3 align-items-center">
 								<label class="input-group-text label-estilo2" for="justificacion">Justificación</label>
 
-								<span style="color: black; font-size: 14px" class="text-start">{{ model.justificacionCargo }}</span>
+								<span *ngIf="existeMatenedores || taskKey === taskKeySolicitante; else editableJustificacion">
+									<span *ngIf="taskKey === taskKeySolicitante" style="color: black; font-size: 14px" class="text-start">{{ modelRG.grupoPago }}</span>
+								</span>
+
+								<ng-template #editableJustificacion>
+									<!-- <textarea *ngIf="taskKey !== taskKeySolicitante" name="comentario" style="color: black; font-size: 14px; resize: none" class="form-control" id="comments" rows="3" [(ngModel)]="comentarios" required></textarea> -->
+									<textarea name="justificacion" style="color: black; font-size: 14px; resize: none" class="form-control" id="justificacion" rows="3" [(ngModel)]="modelRG.grupoPago" required></textarea>
+								</ng-template>
+
+								<!-- <textarea name="justificacion" style="color: black; font-size: 14px; resize: none" class="form-control" id="justificacion" rows="3" [(ngModel)]="model.grupoPago" required></textarea> -->
 							</div>
 						</div>
 					</div>

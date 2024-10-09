@@ -48,7 +48,7 @@ const data: any = require("./company.json");
 @Component({
 	selector: "app-data-table",
 	templateUrl: "./consulta-solicitudes.component.html",
-	styleUrls: ["./consulta-solicitudes.component.scss"]
+	styleUrls: ["./consulta-solicitudes.component.scss"],
 })
 export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 	private pageCode: string = PageCodes.ConsultaSolicitudes;
@@ -60,62 +60,62 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 			codigo_Control: "",
 			habilitar: false,
 			modificar: false,
-			visualizar: false
+			visualizar: false,
 		},
 		[ConsultaSolicitudPageControlPermission.FiltroUnidadNegocio]: {
 			codigo_Control: "",
 			habilitar: false,
 			modificar: false,
-			visualizar: false
+			visualizar: false,
 		},
 		[ConsultaSolicitudPageControlPermission.FiltroFechaDesde]: {
 			codigo_Control: "",
 			habilitar: false,
 			modificar: false,
-			visualizar: false
+			visualizar: false,
 		},
 		[ConsultaSolicitudPageControlPermission.FiltroFechaHasta]: {
 			codigo_Control: "",
 			habilitar: false,
 			modificar: false,
-			visualizar: false
+			visualizar: false,
 		},
 		[ConsultaSolicitudPageControlPermission.FiltroTipoSolicitud]: {
 			codigo_Control: "",
 			habilitar: false,
 			modificar: false,
-			visualizar: false
+			visualizar: false,
 		},
 		[ConsultaSolicitudPageControlPermission.FiltroEstado]: {
 			codigo_Control: "",
 			habilitar: false,
 			modificar: false,
-			visualizar: false
+			visualizar: false,
 		},
 		[ConsultaSolicitudPageControlPermission.ButtonBuscar]: {
 			codigo_Control: "",
 			habilitar: false,
 			modificar: false,
-			visualizar: false
+			visualizar: false,
 		},
 		[ConsultaSolicitudPageControlPermission.ButtonAgregar]: {
 			codigo_Control: "",
 			habilitar: false,
 			modificar: false,
-			visualizar: false
+			visualizar: false,
 		},
 		[ConsultaSolicitudPageControlPermission.ButtonReasignar]: {
 			codigo_Control: "",
 			habilitar: false,
 			modificar: false,
-			visualizar: false
+			visualizar: false,
 		},
 		[ConsultaSolicitudPageControlPermission.ButtonExportar]: {
 			codigo_Control: "",
 			habilitar: false,
 			modificar: false,
-			visualizar: false
-		}
+			visualizar: false,
+		},
 	};
 
 	public dataTable: IConsultaSolicitudesTable = [];
@@ -127,6 +127,11 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 	public tipoSolicitudSeleccionada: any;
 	public codigoTipoSolicitud: string;
 	public processDefinitionKey: string;
+
+	private idPrint: string = "";
+
+	private puestoJefeInmediatoSuperior: string = "";
+	private nombreJefeSolicitante: string = "";
 
 	public columnsTableGraphic: IColumnsTable = ConsultaGraficosData.columns;
 
@@ -224,7 +229,7 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 	private selectedOptionPrint: string = "";
 	private optionPrint: { codigo: string; valor: string } = {
 		codigo: "",
-		valor: ""
+		valor: "",
 	};
 	private comentariosJefeInmediatoPrint: any = {};
 	private comentariosPrint: string = "";
@@ -254,7 +259,7 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 		reingreso: "",
 		finProceso: "",
 		contratacionFamiliares: "",
-		finProcesoFamiliares: ""
+		finProcesoFamiliares: "",
 	};
 	private dataTableDatosFamiliaresPrint: FamiliaresCandidatos[] = [];
 	private currentDatePrint: Date = new Date();
@@ -263,18 +268,18 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 		{
 			id: "PDF",
 			name: "PDF",
-			icon: "fas fa-file-pdf"
+			icon: "fas fa-file-pdf",
 		},
 		{
 			id: "EXCEL",
 			name: "EXCEL",
-			icon: "fas fa-file-excel"
+			icon: "fas fa-file-excel",
 		},
 		{
 			id: "CSV",
 			name: "CSV",
-			icon: "fas fa-file-alt"
-		}
+			icon: "fas fa-file-alt",
+		},
 	];
 
 	selected_empresa: number;
@@ -290,7 +295,7 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 		alias: "",
 		asunto: "",
 		cuerpo: "",
-		password: ""
+		password: "",
 	};
 	data_empresas = [{ idEmpresa: "01", name: "Reybanpac" }];
 
@@ -302,11 +307,11 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 		{ id: 1, name: "Requisición de personal" },
 		{ id: 2, name: "Contratación de familiares" },
 		{ id: 3, name: "Reingreso de personal" },
-		{ id: 4, name: "Acción de personal" }
+		{ id: 4, name: "Acción de personal" },
 	];
 
 	colorScheme6: any = {
-		domain: ["#2962ff", "#3699ff", "#ee9d01", "#dee2e6"]
+		domain: ["#2962ff", "#3699ff", "#ee9d01", "#dee2e6"],
 	};
 
 	solicitudesCompletadas: any[] = [];
@@ -346,7 +351,7 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 	private getPermissions(): void {
 		const controlsPermission: Control[] = this.permissionService.getPagePermission(this.pageCode);
 
-		controlsPermission.forEach(controlPermission => {
+		controlsPermission.forEach((controlPermission) => {
 			if (controlPermission.codigo_Control === "02") {
 				this.controlsPermissions[ConsultaSolicitudPageControlPermission.FiltroEmpresa] = controlPermission;
 			} else if (controlPermission.codigo_Control === "03") {
@@ -391,7 +396,7 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 	}
 
 	ngDoCheck(): void {
-		this.typeSolicitudSelected = this.dataTipoSolicitudes.filter(data => data.descripcion == "Acción de Personal")[0]?.id;
+		this.typeSolicitudSelected = this.dataTipoSolicitudes.filter((data) => data.descripcion == "Acción de Personal")[0]?.id;
 	}
 
 	ngOnInit() {
@@ -451,7 +456,7 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 			confirmButtonColor: "rgb(227, 199, 22)",
 			cancelButtonColor: "#77797a",
 			confirmButtonText: "Sí",
-			cancelButtonText: "No"
+			cancelButtonText: "No",
 		});
 
 		if (!isConfirmed) {
@@ -460,13 +465,13 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 
 		this.showButtons = false;
 
-		this.codigoTipoSolicitud = this.dataTipoSolicitudes.filter(data => data.id == this.solicitud.idTipoSolicitud)[0]?.codigoTipoSolicitud;
+		this.codigoTipoSolicitud = this.dataTipoSolicitudes.filter((data) => data.id == this.solicitud.idTipoSolicitud)[0]?.codigoTipoSolicitud;
 
-		this.solicitud.tipoSolicitud = this.dataTipoSolicitudes.filter(data => data.id == this.solicitud.idTipoSolicitud)[0]?.descripcion;
+		this.solicitud.tipoSolicitud = this.dataTipoSolicitudes.filter((data) => data.id == this.solicitud.idTipoSolicitud)[0]?.descripcion;
 
-		this.solicitud.tipoMotivo = this.dataTiposMotivosPorTipoSolicitud[this.solicitud.idTipoSolicitud].filter(data => data.id == this.solicitud.idTipoMotivo)[0]?.tipoMotivo;
+		this.solicitud.tipoMotivo = this.dataTiposMotivosPorTipoSolicitud[this.solicitud.idTipoSolicitud].filter((data) => data.id == this.solicitud.idTipoMotivo)[0]?.tipoMotivo;
 
-		this.solicitud.tipoAccion = this.dataTiposAccionesPorTipoSolicitud[this.solicitud.idTipoSolicitud].filter(data => data.id == this.solicitud.idTipoAccion)[0]?.tipoAccion;
+		this.solicitud.tipoAccion = this.dataTiposAccionesPorTipoSolicitud[this.solicitud.idTipoSolicitud].filter((data) => data.id == this.solicitud.idTipoAccion)[0]?.tipoAccion;
 
 		this.utilService.openLoadingSpinner("Creando solicitud, espere por favor.");
 
@@ -481,20 +486,20 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 				const variables = this.generatedVariablesFromFormFields();
 
 				this.camundaRestService.postProcessInstance(this.processDefinitionKey, variables).subscribe({
-					next: instanceOutput => {
+					next: (instanceOutput) => {
 						const key: string = `usuario_logged_creado-${this.codigoTipoSolicitud}`;
 
 						const request = {
 							processInstanceIds: [instanceOutput.id],
 							variables: {
 								[key]: {
-									value: `Usuario{IGUAL}${sessionStorage.getItem(LocalStorageKeys.NombreUsuario)}{SEPARA}Accion{IGUAL}Solicitud Creada por ${sessionStorage.getItem(LocalStorageKeys.NivelDireccion)}{SEPARA}Fecha{IGUAL}${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`
-								}
-							}
+									value: `Usuario{IGUAL}${sessionStorage.getItem(LocalStorageKeys.NombreUsuario)}{SEPARA}Accion{IGUAL}Solicitud Creada por ${sessionStorage.getItem(LocalStorageKeys.NivelDireccion)}{SEPARA}Fecha{IGUAL}${format(new Date(), "dd/MM/yyyy HH:mm:ss")}`,
+								},
+							},
 						};
 
 						this.camundaRestService.registrarVariable(request).subscribe({
-							next: () => {}
+							next: () => {},
 						});
 
 						this.instanceCreated = new DatosInstanciaProceso(instanceOutput.businessKey, instanceOutput.definitionId, instanceOutput.id, instanceOutput.tenantId);
@@ -508,7 +513,7 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 
 						if (this.solicitud.idInstancia !== undefined) {
 							this.starterService.getUser(sessionStorage.getItem(LocalStorageKeys.IdUsuario)!).subscribe({
-								next: res => {
+								next: (res) => {
 									this.solicitud.usuarioCreacion = res.evType[0].nombreCompleto;
 									this.solicitud.usuarioActualizacion = res.evType[0].nombreCompleto;
 									this.solicitud.fechaActualizacion = new Date();
@@ -519,7 +524,7 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 
 									console.log(this.solicitud);
 									this.solicitudes.guardarSolicitud(this.solicitud).subscribe({
-										next: responseSolicitud => {
+										next: (responseSolicitud) => {
 											this.solicitud.idSolicitud = responseSolicitud.idSolicitud;
 											this.solicitud.fechaActualizacion = responseSolicitud.fechaActualizacion;
 											this.solicitud.fechaCreacion = responseSolicitud.fechaCreacion;
@@ -535,10 +540,10 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 														next: () => {
 															setTimeout(() => {
 																this.solicitudes.getDetalleAprobadoresSolicitudesById(this.solicitud.idSolicitud).subscribe({
-																	next: resJefe => {
-																		resJefe.detalleAprobadorSolicitud.forEach(item => {
+																	next: (resJefe) => {
+																		resJefe.detalleAprobadorSolicitud.forEach((item) => {
 																			if (item.nivelAprobacionRuta.toUpperCase().includes("REGISTRARSOLICITUD")) {
-																				const htmlString = '<!DOCTYPE html>\r\n<html lang="es">\r\n\r\n<head>\r\n  <meta charset="UTF-8">\r\n  <meta name="viewport" content="width=device-width, initial-scale=1.0">\r\n  <title>Document</title>\r\n</head>\r\n\r\n<body>\r\n  <h2>Estimado(a)</h2>\r\n  <h3>{NOMBRE_APROBADOR}</h3>\r\n\r\n  <P>La Solicitud de {TIPO_SOLICITUD} {ID_SOLICITUD} para la posici\u00F3n de {DESCRIPCION_POSICION} est\u00E1 disponible para su\r\n    revisi\u00F3n.</P>\r\n\r\n  <p>\r\n    <b>\r\n      Favor ingresar al siguiente enlace: <a href="{URL_APROBACION}">{URL_APROBACION}</a>\r\n      <br>\r\n      <br>\r\n      Gracias por su atenci\u00F3n.\r\n    </b>\r\n  </p>\r\n</body>\r\n\r\n</html>\r\n';
+																				const htmlString = '<!DOCTYPE html>\r\n<html lang="es">\r\n\r\n<head>\r\n  <meta charset="UTF-8">\r\n  <meta name="viewport" content="width=device-width, initial-scale=1.0">\r\n  <title>Document</title>\r\n</head>\r\n\r\n<body>\r\n  <h2>Estimado(a)</h2>\r\n  <h3>{NOMBRE_APROBADOR}</h3>\r\n\r\n  <P>La Solicitud de {TIPO_SOLICITUD} {ID_SOLICITUD} est\u00E1 disponible para su\r\n    revisi\u00F3n.</P>\r\n\r\n  <p>\r\n    <b>\r\n      Favor ingresar al siguiente enlace: <a href="{URL_APROBACION}">{URL_APROBACION}</a>\r\n      <br>\r\n      <br>\r\n      Gracias por su atenci\u00F3n.\r\n    </b>\r\n  </p>\r\n</body>\r\n\r\n</html>\r\n';
 
 																				const modifiedHtmlString = htmlString.replace("{NOMBRE_APROBADOR}", item.usuarioAprobador).replace("{TIPO_SOLICITUD}", this.solicitud.tipoSolicitud).replace("{ID_SOLICITUD}", this.solicitud.idSolicitud).replace("{DESCRIPCION_POSICION}", this.detalleSolicitud.descripcionPosicion).replace(new RegExp("{URL_APROBACION}", "g"), `${portalWorkFlow}tareas/consulta-tareas`);
 
@@ -549,57 +554,57 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 																					alias: "Notificación 1",
 																					asunto: `Creación de Solicitud de ${this.solicitud.tipoSolicitud} ${this.solicitud.idSolicitud}`,
 																					cuerpo: modifiedHtmlString,
-																					password: "password"
+																					password: "password",
 																				};
 
 																				this.solicitudes.sendEmail(this.emailVariables).subscribe({
 																					next: () => {},
-																					error: error => {
+																					error: (error) => {
 																						console.error(error);
-																					}
+																					},
 																				});
 																			}
 																		});
 																	},
-																	error: err => {
+																	error: (err) => {
 																		console.error(err);
-																	}
+																	},
 																});
 
 																this.router.navigate([this.codigoTipoSolicitud === "AP" ? "/solicitudes/accion-personal/registrar-solicitud" : "/solicitudes/registrar-solicitud", this.solicitud.idInstancia, this.solicitud.idSolicitud]);
 															}, 1800); //comentado mmunoz
 														},
-														error: err => {
+														error: (err) => {
 															console.error(err);
-														}
+														},
 													});
 												},
-												error: error => {
+												error: (error) => {
 													console.error(error);
-												}
+												},
 											});
 										},
-										error: error => {
+										error: (error) => {
 											console.error(error);
-										}
+										},
 									});
 								},
-								error: error => {
+								error: (error) => {
 									console.error(error);
-								}
+								},
 							});
 						} else {
 							this.submitted = true;
 						}
 					},
-					error: error => {
+					error: (error) => {
 						console.error(error);
-					}
+					},
 				});
 			},
-			error: error => {
+			error: (error) => {
 				console.error(error);
-			}
+			},
 		});
 
 		if (this.submitted) {
@@ -609,12 +614,12 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 	rutaPorIdTipoSolicitudIndexada = {
 		1: {
 			path: "/solicitudes/registrar-solicitud",
-			key: "RequisicionPersonal"
+			key: "RequisicionPersonal",
 		},
 		3: {
 			path: "/solicitudes/accion-personal/registrar-solicitud",
-			key: "AccionPersonal"
-		}
+			key: "AccionPersonal",
+		},
 		// 5: {
 		//   path: "/solicitudes/registrar-solicitud",
 		//   key: "ReingresoPersonal",
@@ -640,7 +645,7 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 
 	obtenerEmpresaYUnidadNegocio() {
 		return this.mantenimientoService.getNivelesPorTipo(`GSA-CPA=${sessionStorage.getItem(LocalStorageKeys.IdsEmpresas)}-GLO=${sessionStorage.getItem(LocalStorageKeys.GrupoLocalidad)}-UNG=${sessionStorage.getItem(LocalStorageKeys.CodigoSucursales)}-`).subscribe({
-			next: response => {
+			next: (response) => {
 				this.dataUnidadesNegocio = [...new Set(response.evType.map(({ unidadNegocio }) => unidadNegocio))];
 
 				this.dataEmpresa = [...new Set(response.evType.map(({ compania }) => compania))];
@@ -651,7 +656,7 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 			},
 			error: (error: HttpErrorResponse) => {
 				this.utilService.modalResponse(error.error, "error");
-			}
+			},
 		});
 	}
 
@@ -674,7 +679,7 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 		requestData = {
 			businessKey: "",
 			variables,
-			withVariablesInReturn: true
+			withVariablesInReturn: true,
 		};
 
 		//return { variables };
@@ -683,7 +688,7 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 
 	// tipoSolicitud
 	onChangeTipo(id: number, type: string, data: any[]) {
-		let descripcion = data.filter(item => item.id == id)[0]?.descripcion;
+		let descripcion = data.filter((item) => item.id == id)[0]?.descripcion;
 		switch (type) {
 			case "tipoSolicitud":
 				this.solicitud.tipoSolicitud = descripcion;
@@ -698,7 +703,7 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 	}
 
 	onChangeTipoSolicitud(idTipoSolicitud: number) {
-		this.codigoTipoSolicitud = this.dataTipoSolicitudes.filter(data => data.id == this.solicitud.idTipoSolicitud)[0]?.codigoTipoSolicitud;
+		this.codigoTipoSolicitud = this.dataTipoSolicitudes.filter((data) => data.id == this.solicitud.idTipoSolicitud)[0]?.codigoTipoSolicitud;
 
 		this.tipoSolicitudSeleccionada = idTipoSolicitud;
 		this.desactivarTipoMotivo = !this.idsOcultarTipoMotivo.includes(this.codigoTipoSolicitud);
@@ -707,39 +712,39 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 
 		if (!this.dataTiposMotivosPorTipoSolicitud[idTipoSolicitud]) {
 			this.mantenimientoService.getTiposMotivosPorTipoSolicitud(idTipoSolicitud).subscribe({
-				next: response => {
+				next: (response) => {
 					this.dataTiposMotivosPorTipoSolicitud[idTipoSolicitud] = response.sort((a, b) => a.tipoMotivo.toUpperCase().localeCompare(b.tipoMotivo.toUpperCase()));
 				},
 				error: (error: HttpErrorResponse) => {
 					this.dataTiposMotivosPorTipoSolicitud[idTipoSolicitud] = [];
 
 					this.utilService.modalResponse(error.error, "error");
-				}
+				},
 			});
 		}
 
 		if (!this.dataTiposAccionesPorTipoSolicitud[idTipoSolicitud]) {
 			this.mantenimientoService.getTiposAccionesPorTipoSolicitud(idTipoSolicitud).subscribe({
-				next: response => {
+				next: (response) => {
 					this.dataTiposAccionesPorTipoSolicitud[idTipoSolicitud] = response.sort((a, b) => a.tipoAccion.toUpperCase().localeCompare(b.tipoAccion.toUpperCase()));
 				},
 				error: (error: HttpErrorResponse) => {
 					this.dataTiposAccionesPorTipoSolicitud[idTipoSolicitud] = [];
 
 					this.utilService.modalResponse(error.error, "error");
-				}
+				},
 			});
 		}
 
-		this.solicitud.tipoSolicitud = this.dataTipoSolicitudes.filter(data => data.id == idTipoSolicitud)[0]?.descripcion;
+		this.solicitud.tipoSolicitud = this.dataTipoSolicitudes.filter((data) => data.id == idTipoSolicitud)[0]?.descripcion;
 	}
 
 	onChangeTipoMotivo(idTipoMotivo: number) {
-		this.solicitud.tipoMotivo = this.dataTipoMotivo.filter(data => data.id == idTipoMotivo)[0]?.descripcion;
+		this.solicitud.tipoMotivo = this.dataTipoMotivo.filter((data) => data.id == idTipoMotivo)[0]?.descripcion;
 	}
 
 	onChangeTipoAccion(idTipoAccion: number) {
-		this.solicitud.tipoAccion = this.dataTipoAccion.filter(data => data.id == idTipoAccion)[0]?.descripcion;
+		this.solicitud.tipoAccion = this.dataTipoAccion.filter((data) => data.id == idTipoAccion)[0]?.descripcion;
 	}
 
 	//LLenar combo Tipo Solicitud
@@ -747,28 +752,28 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 		return this.mantenimientoService.getTipoSolicitud().subscribe({
 			next: (response: any) => {
 				this.dataTipoSolicitudes = response.tipoSolicitudType
-					.filter(r => r.estado === "A" && (r.codigoTipoSolicitud === "RP" || r.codigoTipoSolicitud === "AP" || r.codigoTipoSolicitud === "RG" || r.codigoTipoSolicitud === "CF" || r.codigoTipoSolicitud === "DP"))
-					.map(r => ({
+					.filter((r) => r.estado === "A" && (r.codigoTipoSolicitud === "RP" || r.codigoTipoSolicitud === "AP" || r.codigoTipoSolicitud === "RG" || r.codigoTipoSolicitud === "CF" || r.codigoTipoSolicitud === "DP"))
+					.map((r) => ({
 						id: r.id,
 						descripcion: r.tipoSolicitud,
 						codigoTipoSolicitud: r.codigoTipoSolicitud,
-						estado: r.estado
+						estado: r.estado,
 					}))
 					.sort((a, b) => a.descripcion.toUpperCase().localeCompare(b.descripcion.toUpperCase()));
 
 				this.dataTipoSolicitudesModal = response.tipoSolicitudType
-					.filter(r => r.estado === "A" && (r.codigoTipoSolicitud === "RP" || r.codigoTipoSolicitud === "AP" || r.codigoTipoSolicitud === "DP"))
-					.map(r => ({
+					.filter((r) => r.estado === "A" && (r.codigoTipoSolicitud === "RP" || r.codigoTipoSolicitud === "AP" || r.codigoTipoSolicitud === "DP"))
+					.map((r) => ({
 						id: r.id,
 						descripcion: r.tipoSolicitud,
 						codigoTipoSolicitud: r.codigoTipoSolicitud,
-						estado: r.estado
+						estado: r.estado,
 					}))
 					.sort((a, b) => a.descripcion.toUpperCase().localeCompare(b.descripcion.toUpperCase()));
 			},
 			error: (error: HttpErrorResponse) => {
 				this.utilService.modalResponse(error.error, "error");
-			}
+			},
 		});
 	}
 
@@ -789,7 +794,7 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 			scrollable: true,
 			beforeDismiss: () => {
 				return true;
-			}
+			},
 		});
 		this.isLoading = false;
 	}
@@ -816,7 +821,7 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 				text: "Mínimo debe seleccionar un Tipo de Solicitud o Ingresar el Nº de Solicitud",
 				icon: "warning",
 				confirmButtonColor: "#0056B3",
-				confirmButtonText: "Sí"
+				confirmButtonText: "Sí",
 			});
 
 			return;
@@ -873,7 +878,7 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 	active5: any;
 
 	close(event: MouseEvent, toRemove: number) {
-		this.tabs = this.tabs.filter(id => id !== toRemove);
+		this.tabs = this.tabs.filter((id) => id !== toRemove);
 		event.preventDefault();
 		event.stopImmediatePropagation();
 	}
@@ -922,13 +927,13 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 		this.utilService.openLoadingSpinner("Cargando información, espere por favor...");
 
 		const combinedData$ = forkJoin([
-			this.consultaSolicitudesService.filterSolicitudes(data.empresa === null || data.empresa === undefined ? null : data.empresa, this.searchInputFilter !== null && this.searchInputFilter !== "" ? this.searchInputFilter : data.unidadNegocio === null || data.unidadNegocio === undefined ? null : data.unidadNegocio, this.searchInputFilter !== null && this.searchInputFilter !== "" ? 900000 : data.idTipoSolicitud === null || data.idTipoSolicitud === undefined ? null : data.idTipoSolicitud, data.estado === null || data.estado === undefined ? null : data.estado, data.fechaDesde === null || data.fechaDesde === undefined ? currentDate : data.fechaDesde, data.fechaHasta === null || data.fechaHasta === undefined ? currentDate : data.fechaHasta)
+			this.consultaSolicitudesService.filterSolicitudes(data.empresa === null || data.empresa === undefined ? null : data.empresa, this.searchInputFilter !== null && this.searchInputFilter !== "" ? this.searchInputFilter : data.unidadNegocio === null || data.unidadNegocio === undefined ? null : data.unidadNegocio, this.searchInputFilter !== null && this.searchInputFilter !== "" ? 900000 : data.idTipoSolicitud === null || data.idTipoSolicitud === undefined ? null : data.idTipoSolicitud, data.estado === null || data.estado === undefined ? null : data.estado, data.fechaDesde === null || data.fechaDesde === undefined ? currentDate : data.fechaDesde, data.fechaHasta === null || data.fechaHasta === undefined ? currentDate : data.fechaHasta),
 			//this.solicitudes.getDetalleSolicitud()
 		]).pipe(
 			map(([solicitudes]) => {
 				// Combinar las solicitudes y los detalles de la solicitud
-				const data = solicitudes.solicitudType.map(solicitud => {
-					const detalles = solicitudes.detalleSolicitudType.find(detalle => detalle.idSolicitud === solicitud.idSolicitud);
+				const data = solicitudes.solicitudType.map((solicitud) => {
+					const detalles = solicitudes.detalleSolicitudType.find((detalle) => detalle.idSolicitud === solicitud.idSolicitud);
 
 					detalles.estado = solicitud.estado;
 					solicitud.fechaCreacion = new DatePipe("en-CO").transform(solicitud.fechaCreacion, "yyyy/MM/dd HH:mm:ss");
@@ -936,7 +941,7 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 
 					return {
 						...solicitud,
-						...detalles
+						...detalles,
 					};
 				});
 
@@ -945,7 +950,7 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 		);
 
 		combinedData$.subscribe({
-			next: response => {
+			next: (response) => {
 				this.dataTable = response;
 
 				this.utilService.closeLoadingSpinner();
@@ -954,24 +959,24 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 				this.dataTable = [];
 
 				this.utilService.modalResponse("No existen registros para esta búsqueda", "error");
-			}
+			},
 		});
 	}
 
 	ObtenerServicioEstado() {
 		return this.mantenimientoService.getCatalogo("RBPEST").subscribe({
-			next: response => {
+			next: (response) => {
 				this.data_estado = response.itemCatalogoTypes
-					.map(r => ({
+					.map((r) => ({
 						id: r.id,
 						codigo: r.codigo,
-						descripcion: r.valor
+						descripcion: r.valor,
 					}))
 					.sort((a, b) => a.descripcion.toUpperCase().localeCompare(b.descripcion.toUpperCase()));
 			},
 			error: (error: HttpErrorResponse) => {
 				this.utilService.modalResponse(error.error, "error");
-			}
+			},
 		});
 	}
 
@@ -981,12 +986,12 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 		this.utilService.openLoadingSpinner("Cargando información, espere por favor...");
 
 		this.mantenimientoService.getCatalogo("RBPEST").subscribe({
-			next: response => {
+			next: (response) => {
 				this.data_estado = response.itemCatalogoTypes
-					.map(r => ({
+					.map((r) => ({
 						id: r.id,
 						codigo: r.codigo,
-						descripcion: r.valor
+						descripcion: r.valor,
 					}))
 					.sort((a, b) => a.descripcion.toUpperCase().localeCompare(b.descripcion.toUpperCase()));
 
@@ -996,35 +1001,37 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 							this.solicitudesCompletadas = conteo.totalesCompletadasType;
 							this.solicitudesPendientes = conteo.totalesPendientesType;
 
-							this.solicitudesTipo = conteo.listadoSolicitudes.map(data => ({
+							this.solicitudesTipo = conteo.listadoSolicitudes.map((data) => ({
 								...data,
-								idSolicitud: data.id_solicitud
+								idSolicitud: data.id_solicitud,
 							}));
 
 							// Combinar las solicitudes y los detalles de la solicitud
-							return solicitudes.solicitudType
-								// .filter(solicitud => this.dataEmpresa.includes(solicitud.empresa) && this.dataUnidadesNegocio.includes(solicitud.unidadNegocio))
-								.filter(solicitud => this.dataEmpresa.includes(solicitud.empresa))
-								.map(solicitud => {
-									const detalles = detallesSolicitud.detalleSolicitudType.find(detalle => detalle.idSolicitud === solicitud.idSolicitud);
-									solicitud.fechaCreacion = new DatePipe("en-CO").transform(solicitud.fechaCreacion, "yyyy/MM/dd HH:mm:ss");
-									solicitud.fechaActualizacion = new DatePipe("en-CO").transform(solicitud.fechaActualizacion, "yyyy/MM/dd HH:mm:ss");
+							return (
+								solicitudes.solicitudType
+									// .filter(solicitud => this.dataEmpresa.includes(solicitud.empresa) && this.dataUnidadesNegocio.includes(solicitud.unidadNegocio))
+									.filter((solicitud) => this.dataEmpresa.includes(solicitud.empresa))
+									.map((solicitud) => {
+										const detalles = detallesSolicitud.detalleSolicitudType.find((detalle) => detalle.idSolicitud === solicitud.idSolicitud);
+										solicitud.fechaCreacion = new DatePipe("en-CO").transform(solicitud.fechaCreacion, "yyyy/MM/dd HH:mm:ss");
+										solicitud.fechaActualizacion = new DatePipe("en-CO").transform(solicitud.fechaActualizacion, "yyyy/MM/dd HH:mm:ss");
 
-									return {
-										...solicitud,
-										...detalles
-									};
-								})
-								.sort((a, b) => new Date(b.fechaActualizacion).getTime() - new Date(a.fechaActualizacion).getTime());
+										return {
+											...solicitud,
+											...detalles,
+										};
+									})
+									.sort((a, b) => new Date(b.fechaActualizacion).getTime() - new Date(a.fechaActualizacion).getTime())
+							);
 						})
 					)
-					.subscribe(data => {
-						this.dataTable = data.map(itemSolicitud => {
-							const descripcionEstado = this.data_estado.find(itemEstado => itemEstado.codigo == itemSolicitud.estadoSolicitud);
+					.subscribe((data) => {
+						this.dataTable = data.map((itemSolicitud) => {
+							const descripcionEstado = this.data_estado.find((itemEstado) => itemEstado.codigo == itemSolicitud.estadoSolicitud);
 
 							return {
 								...itemSolicitud,
-								estado: descripcionEstado !== undefined ? descripcionEstado.descripcion : "N/A"
+								estado: descripcionEstado !== undefined ? descripcionEstado.descripcion : "N/A",
 							};
 						});
 						console.log(this.dataTable);
@@ -1034,7 +1041,7 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 			},
 			error: (error: HttpErrorResponse) => {
 				this.utilService.modalResponse(error.error, "error");
-			}
+			},
 		});
 	}
 
@@ -1048,6 +1055,7 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 
 	onRowActionClicked(id: string, key: string, tooltip: string, id_edit) {
 		if (tooltip === "Formulario") {
+			this.idPrint = id_edit;
 			this.printForm(id_edit);
 		} else if (tooltip === "Info") {
 			this.router.navigate(["/solicitudes/detalle-solicitud", id_edit]);
@@ -1058,6 +1066,7 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 
 	private printForm(idPrint: string) {
 		this.utilService.openLoadingSpinner("Generando reporte...");
+		console.log(idPrint);
 
 		if (!idPrint.toUpperCase().includes("AP") && !idPrint.toUpperCase().includes("DP")) {
 			this.getCandidatoValues(idPrint);
@@ -1075,27 +1084,22 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 					this.muestraRemuneracion = true;
 				}
 
-				// this.mostrarRequisicion = this.solicitud.idSolicitud.includes("RP-");
-				// this.mostrarFormularioFamiliares = this.solicitud.idSolicitud.includes("CF-");
-				// this.mostrarFormularioReingreso = this.solicitud.idSolicitud.includes("RG-");
-				// this.mostrarAccionPersonal = this.solicitud.idSolicitud.includes("AP-");
-				// this.loadingComplete += 2;
-
 				this.getDetalleSolicitudById(idPrint);
 			},
 			error: (error: HttpErrorResponse) => {
 				this.utilService.modalResponse(error.error, "error");
-			}
+			},
 		});
 	}
 
+	private responsableRRHHRG: string = "";
 	private getDetalleSolicitudById(idPrint: any) {
 		return this.solicitudes.getDetalleSolicitudById(idPrint).subscribe({
 			next: (response: any) => {
 				if (idPrint.toUpperCase().includes("AP")) {
 					this.viewInputs = !(response.detalleSolicitudType[0].codigo === "100");
 
-					const detalleActual = response.detalleSolicitudType.find(detalle => detalle.idDetalleSolicitud === 1);
+					const detalleActual = response.detalleSolicitudType.find((detalle) => detalle.idDetalleSolicitud === 1);
 
 					this.modelPrint.codigoPosicion = detalleActual.codigoPosicion;
 					this.modelPrint.descrPosicion = detalleActual.descripcionPosicion;
@@ -1127,7 +1131,7 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 					this.modelPrint.descrPuesto = detalleActual.descripcionPosicion;
 
 					if (response.totalRegistros === 2) {
-						const detallePropuestos = response.detalleSolicitudType.find(detalle => detalle.idDetalleSolicitud === 2);
+						const detallePropuestos = response.detalleSolicitudType.find((detalle) => detalle.idDetalleSolicitud === 2);
 
 						this.modelPrintPropuestos.codigoPosicion = detallePropuestos.codigoPosicion;
 						this.modelPrintPropuestos.descrPosicion = detallePropuestos.descripcionPosicion;
@@ -1165,6 +1169,21 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 					this.detalleSolicitudPrintRG = response.detalleSolicitudType[0];
 
 					if (!idPrint.toUpperCase().includes("RG") && this.detalleSolicitudPrint.codigoPosicion.length > 0) {
+						if (this.idPrint.includes("RG")) {
+							this.starterService.getUser(this.detalleSolicitudPrint.jefeSolicitante).subscribe({
+								next: (res) => {
+									this.puestoJefeInmediatoSuperior = res.evType[0].nombreCargo;
+									this.nombreJefeSolicitante = res.evType[0].nombreCompleto;
+								},
+								error: (err) => {
+									console.error(err);
+
+									this.puestoJefeInmediatoSuperior = "";
+									this.nombreJefeSolicitante = "";
+								},
+							});
+						}
+
 						this.modelPrint.codigoPosicion = this.detalleSolicitudPrint.codigoPosicion;
 						this.modelPrint.descrPosicion = this.detalleSolicitudPrint.descripcionPosicion;
 						this.modelPrint.subledger = this.detalleSolicitudPrint.subledger;
@@ -1190,6 +1209,8 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 						this.modelPrint.sueldoAnual = this.detalleSolicitudPrint.sueldoVariableAnual;
 						this.modelPrint.correo = this.detalleSolicitudPrint.correo;
 						this.modelPrint.fechaIngreso = this.detalleSolicitudPrint.fechaIngreso;
+						this.modelPrint.responsableRRHH = this.detalleSolicitudPrint.responsableRRHH;
+						this.responsableRRHHRG = this.detalleSolicitudPrint.responsableRRHH;
 						this.modelPrintRemuneracion = Number(this.modelPrint.sueldoAnual) / 12 + Number(this.modelPrint.sueldoSemestral) / 6 + Number(this.modelPrint.sueldoTrimestral) / 3 + Number(this.modelPrint.sueldoMensual);
 					} else if (idPrint.toUpperCase().includes("RG")) {
 						if (this.detalleSolicitudPrintRG.codigoPosicion.length > 0) {
@@ -1218,6 +1239,7 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 							this.modelPrintRG.sueldoSemestral = this.detalleSolicitudPrintRG.sueldoVariableSemestral;
 							this.modelPrintRG.sueldoAnual = this.detalleSolicitudPrintRG.sueldoVariableAnual;
 							this.modelPrintRG.correo = this.detalleSolicitudPrintRG.correo;
+							this.modelPrintRG.responsableRRHH = this.detalleSolicitudPrintRG.responsableRRHH;
 							// this.modelPrintRG.correo = this.detalleSolicitudPrintRG.correo;
 							this.causaSalidaPrint = this.detalleSolicitudPrintRG.causaSalida;
 							this.modelPrintRG.fechaIngreso = (this.detalleSolicitudPrintRG.fechaIngreso as string).split("T")[0];
@@ -1252,23 +1274,23 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 			},
 			error: (error: HttpErrorResponse) => {
 				this.utilService.modalResponse(error.error, "error");
-			}
+			},
 		});
 	}
 
 	private getNivelesAprobacion(idPrint: string) {
 		if (this.solicitud !== null) {
 			this.solicitudes.obtenerNivelesAprobacionRegistrados(idPrint).subscribe({
-				next: response => {
+				next: (response) => {
 					this.dataAprobacionesPorPosicionPrint = {
-						[this.keySelectedPrint]: response.nivelAprobacionPosicionType
+						[this.keySelectedPrint]: response.nivelAprobacionPosicionType,
 					};
 
 					this.obtenerComentariosAtencionPorInstanciaRaiz(idPrint);
 				},
 				error: (error: HttpErrorResponse) => {
 					this.utilService.modalResponse("No existen niveles de aprobación para este empleado", "error");
-				}
+				},
 			});
 		}
 	}
@@ -1276,7 +1298,7 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 	private getComentarios() {
 		this.comentarioSalidaJefeService.obtenerComentarios(this.detalleSolicitudPrintRG.idSolicitud).subscribe({
 			next: ({ comentarios }) => {
-				comentarios.forEach(comentario => {
+				comentarios.forEach((comentario) => {
 					if (comentario.tipo_Solicitud === "Comentario_Salida_Jefe") {
 						this.comentariosJefeInmediatoPrint = comentario;
 					}
@@ -1287,45 +1309,54 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 						this.comentariosRRHHPrint = comentario;
 					}
 				});
-			}
+			},
 		});
 	}
 
 	private obtenerComentariosAtencionPorInstanciaRaiz(idPrint) {
 		return this.solicitudes.obtenerComentariosAtencionPorInstanciaRaiz(`${this.solicitud.idInstancia}COMENT`).subscribe({
-			next: response => {
+			next: (response) => {
 				this.dataComentariosAprobacionesPrint.length = 0;
 				this.dataComentariosAprobacionesPrintPorPosicion = response.variableType;
-				this.dataComentariosAprobacionesPrint = this.filterDataComentarios(this.solicitud.idInstancia, "RevisionSolicitud", "comentariosAtencion");
-				this.dataComentariosAprobacionesPrintRRHH = this.filterDataComentarios(this.solicitud.idInstancia, "RequisicionPersonal", "comentariosAtencionGerenteRRHH");
-				this.dataComentariosAprobacionesPrintCREM = this.filterDataComentarios(this.solicitud.idInstancia, "RequisicionPersonal", "comentariosAtencionRemuneraciones");
+
+				this.dataComentariosAprobacionesPrint = this.dataComentariosAprobacionesPrintPorPosicion.filter((comentario) => comentario.name === "comentariosAtencion" && comentario.procDefKey === "RevisionSolicitud");
+				this.dataComentariosAprobacionesPrintRRHH = this.dataComentariosAprobacionesPrintPorPosicion.filter((comentario) => comentario.name.includes("comentariosAtencionGerenteRRHH") && comentario.procDefKey === "RequisicionPersonal");
+				this.dataComentariosAprobacionesPrintCREM = this.dataComentariosAprobacionesPrintPorPosicion.filter((comentario) => comentario.name.includes("comentariosAtencionRemuneraciones") && comentario.procDefKey === "RequisicionPersonal");
+
+				// this.dataComentariosAprobacionesPrint = this.filterDataComentarios(this.solicitud.idInstancia, "RevisionSolicitud", "comentariosAtencion");
+				// this.dataComentariosAprobacionesPrintRRHH = this.filterDataComentarios(this.solicitud.idInstancia, "RequisicionPersonal", "comentariosAtencionGerenteRRHH");
+				// this.dataComentariosAprobacionesPrintCREM = this.filterDataComentarios(this.solicitud.idInstancia, "RequisicionPersonal", "comentariosAtencionRemuneraciones");
 
 				this.mantenimientoService.getCatalogo("RBPTF").subscribe({
-					next: response => {
+					next: (response) => {
 						this.optionPrint = response.itemCatalogoTypes.find(({ codigo }) => codigo === this.selectedOptionPrint);
 
-						this.obtenerServicioFamiliaresCandidatos(idPrint);
-					}
+						if (idPrint.includes("CF")) {
+							this.obtenerServicioFamiliaresCandidatos(idPrint);
+						} else {
+							this.exportar(idPrint);
+						}
+					},
 				});
 			},
 			error: (error: HttpErrorResponse) => {
 				this.utilService.modalResponse("No existe comentarios de aprobadores", "error");
-			}
+			},
 		});
 	}
 
-	private filterDataComentarios(idInstancia: string, taskKey: string, name: string) {
-		return this.dataComentariosAprobacionesPrintPorPosicion.filter(
-			item =>
-				(idInstancia ? item.rootProcInstId === idInstancia : true) && //Id de instancia
-				(taskKey ? item.procDefKey === taskKey : true) &&
-				(name ? item.name === name : true)
-		);
-	}
+	// private filterDataComentarios(idInstancia: string, taskKey: string, name: string) {
+	// 	return this.dataComentariosAprobacionesPrintPorPosicion.filter(
+	// 		item =>
+	// 			(idInstancia ? item.rootProcInstId === idInstancia : true) && //Id de instancia
+	// 			(taskKey ? item.procDefKey === taskKey : true) &&
+	// 			(name ? item.name === name : true)
+	// 	);
+	// }
 
 	getCandidatoValues(idPrint: string) {
 		this.seleccionCandidatoService.getCandidatoById(idPrint).subscribe({
-			next: res => {
+			next: (res) => {
 				const candidatoValues = res.seleccionCandidatoType[0];
 				this.nombreCompletoCandidatoPrint = res.seleccionCandidatoType[0].candidato;
 
@@ -1360,33 +1391,33 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 					this.getSolicitudById(idPrint);
 				}
 			},
-			error: err => {
+			error: (err) => {
 				this.getSolicitudById(idPrint);
-			}
+			},
 		});
 	}
 
 	obtenerServicioFamiliaresCandidatos(idPrint: string) {
 		return this.mantenimientoService.getFamiliaresCandidatoBySolicitud(idPrint).subscribe({
-			next: response => {
+			next: (response) => {
 				const data = response?.familiaresCandidato || [];
 
-				this.dataTableDatosFamiliaresPrint = data.filter(d => d.idSolicitud === idPrint);
+				this.dataTableDatosFamiliaresPrint = data.filter((d) => d.idSolicitud === idPrint);
 
-				this.dataTableDatosFamiliaresPrint = this.dataTableDatosFamiliaresPrint.map(dataFamiliar => {
+				this.dataTableDatosFamiliaresPrint = this.dataTableDatosFamiliaresPrint.map((dataFamiliar) => {
 					console.log(dataFamiliar.fechaCreacion);
 
 					return {
 						...dataFamiliar,
-						fechaCreacion: format(new Date(dataFamiliar.fechaCreacion), "dd/MM/yyyy")
+						fechaCreacion: format(new Date(dataFamiliar.fechaCreacion), "dd/MM/yyyy"),
 					};
 				});
 
-				this.exportar();
+				this.exportar(idPrint);
 			},
 			error: (error: HttpErrorResponse) => {
 				this.utilService.modalResponse(error.error, "error");
-			}
+			},
 		});
 	}
 
@@ -1399,38 +1430,38 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 			scrollable: true,
 			beforeDismiss: () => {
 				return true;
-			}
+			},
 		});
 		this.isLoading = false;
 	}
 
 	ObtenerServicioTipoAccion() {
 		return this.mantenimientoService.getTipoAccion().subscribe({
-			next: response => {
-				this.dataTipoAccion = response.map(r => ({
+			next: (response) => {
+				this.dataTipoAccion = response.map((r) => ({
 					id: r.id,
-					descripcion: r.tipoAccion
+					descripcion: r.tipoAccion,
 				}));
 			},
 			error: (error: HttpErrorResponse) => {
 				this.utilService.modalResponse(error.error, "error");
-			}
+			},
 		});
 	}
 
 	ObtenerServicioNivelDireccion() {
 		return this.mantenimientoService.getCatalogo("RBPND").subscribe({
-			next: response => {
-				this.dataNivelDireccion = response.itemCatalogoTypes.map(r => ({
+			next: (response) => {
+				this.dataNivelDireccion = response.itemCatalogoTypes.map((r) => ({
 					...r,
 					id: r.id,
-					descripcion: r.valor
+					descripcion: r.valor,
 				})); //verificar la estructura mmunoz
 			},
 
 			error: (error: HttpErrorResponse) => {
 				this.utilService.modalResponse(error.error, "error");
-			}
+			},
 		});
 	}
 	//dataTipoMotivo
@@ -1451,15 +1482,15 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 
 	ObtenerServicioTipoMotivo() {
 		return this.mantenimientoService.getTipoMotivo().subscribe({
-			next: response => {
-				this.dataTipoMotivo = response.map(r => ({
+			next: (response) => {
+				this.dataTipoMotivo = response.map((r) => ({
 					id: r.id,
-					descripcion: r.tipoMotivo
+					descripcion: r.tipoMotivo,
 				})); //verificar la estructura mmunoz
 			},
 			error: (error: HttpErrorResponse) => {
 				this.utilService.modalResponse(error.error, "error");
-			}
+			},
 		});
 	}
 
@@ -1471,13 +1502,13 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 			confirmButtonColor: "#0056B3",
 			cancelButtonColor: "#77797a",
 			confirmButtonText: "Sí",
-			cancelButtonText: "No"
-		}).then(result => {
+			cancelButtonText: "No",
+		}).then((result) => {
 			if (result.isConfirmed) {
 				Swal.fire({
 					text: "Registro Eliminado.",
 					icon: "success",
-					confirmButtonColor: "#0056B3"
+					confirmButtonColor: "#0056B3",
 				});
 			}
 		});
@@ -1539,7 +1570,7 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 		const solicitudesData: any = structuredClone(this.dataTable);
 
 		this.seleccionCandidatoService.getCandidato().subscribe({
-			next: response => {
+			next: (response) => {
 				const detalleSolicitudes = response.seleccionCandidatoType;
 
 				const lookup = detalleSolicitudes.reduce((acc, item) => {
@@ -1549,34 +1580,15 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 				}, {});
 
 				// Combinar usando el objeto de referencia
-				const combined = solicitudesData.map(item => ({
+				const combined = solicitudesData.map((item) => ({
 					solicitud: item,
-					detalle: lookup[item.idSolicitud]
+					detalle: lookup[item.idSolicitud],
 				}));
 
-				const bodyReport = combined.map(({ solicitud, detalle }) => [
-					solicitud.compania === null || solicitud.compania === undefined || solicitud.compania === "" ? "-" : solicitud.compania,
-					solicitud.unidadNegocio === null || solicitud.unidadNegocio === undefined || solicitud.unidadNegocio === "" ? "-" : solicitud.unidadNegocio,
-					solicitud.localidad === null || solicitud.localidad === undefined || solicitud.localidad === "" ? "-" : solicitud.localidad,
-					solicitud.nombreJefeSolicitante === null || solicitud.nombreJefeSolicitante === undefined || solicitud.nombreJefeSolicitante === "" ? "-" : solicitud.nombreJefeSolicitante,
-					solicitud.areaDepartamento === null || solicitud.areaDepartamento === undefined || solicitud.areaDepartamento === "" ? "-" : solicitud.areaDepartamento,
-					solicitud.descripcionPosicion === null || solicitud.descripcionPosicion === undefined || solicitud.descripcionPosicion === "" ? "-" : solicitud.descripcionPosicion,
-					solicitud.nivelDireccion === null || solicitud.nivelDireccion === undefined || solicitud.nivelDireccion === "" ? "-" : solicitud.nivelDireccion,
-					solicitud.tipoMotivo === null || solicitud.tipoMotivo === undefined || solicitud.tipoMotivo === "" ? "-" : solicitud.tipoMotivo,
-					solicitud.estado === null || solicitud.estado === undefined || solicitud.estado === "" ? "-" : solicitud.estado,
-					detalle !== undefined ? (detalle.fuenteExterna === null || detalle.fuenteExterna === undefined || detalle.fuenteExterna === "" ? "-" : detalle.fuenteExterna) : "-",
-					solicitud.idSolicitud,
-					solicitud.fechaActualizacion === null || solicitud.fechaActualizacion === undefined || solicitud.fechaActualizacion === "" ? "-" : solicitud.fechaActualizacion,
-					solicitud.fechaSalida === null || solicitud.fechaSalida === undefined || solicitud.fechaSalida === "" ? "-" : solicitud.fechaSalida,
-					solicitud.fechaIngreso === null || solicitud.fechaIngreso === undefined || solicitud.fechaIngreso === "" ? "-" : solicitud.fechaIngreso,
-					"No sé",
-					"No sé",
-					"No sé",
-					"No sé"
-				]);
+				const bodyReport = combined.map(({ solicitud, detalle }) => [solicitud.compania === null || solicitud.compania === undefined || solicitud.compania === "" ? "-" : solicitud.compania, solicitud.unidadNegocio === null || solicitud.unidadNegocio === undefined || solicitud.unidadNegocio === "" ? "-" : solicitud.unidadNegocio, solicitud.localidad === null || solicitud.localidad === undefined || solicitud.localidad === "" ? "-" : solicitud.localidad, solicitud.nombreJefeSolicitante === null || solicitud.nombreJefeSolicitante === undefined || solicitud.nombreJefeSolicitante === "" ? "-" : solicitud.nombreJefeSolicitante, solicitud.areaDepartamento === null || solicitud.areaDepartamento === undefined || solicitud.areaDepartamento === "" ? "-" : solicitud.areaDepartamento, solicitud.descripcionPosicion === null || solicitud.descripcionPosicion === undefined || solicitud.descripcionPosicion === "" ? "-" : solicitud.descripcionPosicion, solicitud.nivelDireccion === null || solicitud.nivelDireccion === undefined || solicitud.nivelDireccion === "" ? "-" : solicitud.nivelDireccion, solicitud.tipoMotivo === null || solicitud.tipoMotivo === undefined || solicitud.tipoMotivo === "" ? "-" : solicitud.tipoMotivo, solicitud.estado === null || solicitud.estado === undefined || solicitud.estado === "" ? "-" : solicitud.estado, detalle !== undefined ? (detalle.fuenteExterna === null || detalle.fuenteExterna === undefined || detalle.fuenteExterna === "" ? "-" : detalle.fuenteExterna) : "-", solicitud.idSolicitud, solicitud.fechaActualizacion === null || solicitud.fechaActualizacion === undefined || solicitud.fechaActualizacion === "" ? "-" : solicitud.fechaActualizacion, solicitud.fechaSalida === null || solicitud.fechaSalida === undefined || solicitud.fechaSalida === "" ? "-" : solicitud.fechaSalida, solicitud.fechaIngreso === null || solicitud.fechaIngreso === undefined || solicitud.fechaIngreso === "" ? "-" : solicitud.fechaIngreso, "No sé", "No sé", "No sé", "No sé"]);
 
 				this.utilService.generateReport(formato, "RPTWF-TM", "RP", headerTitles, bodyReport);
-			}
+			},
 		});
 	}
 
@@ -1588,7 +1600,7 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 
 		this.seleccionCandidatoService.getCandidato().subscribe({
 			// forkJoin(solicitudesData.map(({ idSolicitud }) => this.seleccionCandidatoService.getCandidatoById(idSolicitud))).subscribe({
-			next: response => {
+			next: (response) => {
 				// console.log(response);
 				const detalleSolicitudes = response.map(({ seleccionCandidatoType }) => seleccionCandidatoType);
 				// const detalleSolicitudes = response ?? [];
@@ -1600,45 +1612,23 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 				}, {});
 
 				// Combinar usando el objeto de referencia
-				const combined = solicitudesData.map(item => ({
+				const combined = solicitudesData.map((item) => ({
 					solicitud: item,
-					detalle: lookup[item.idSolicitud]
+					detalle: lookup[item.idSolicitud],
 				}));
 
 				const bodyReport = [];
 
 				combined.forEach(({ solicitud, detalle }) => {
 					if (solicitud.idSolicitud.toUpperCase().includes("RP")) {
-						bodyReport.push([
-							solicitud.idSolicitud,
-							solicitud.compania === null || solicitud.compania === undefined || solicitud.compania === "" ? "-" : solicitud.compania,
-							solicitud.unidadNegocio === null || solicitud.unidadNegocio === undefined || solicitud.unidadNegocio === "" ? "-" : solicitud.unidadNegocio,
-							solicitud.tipoMotivo === null || solicitud.tipoMotivo === undefined || solicitud.tipoMotivo === "" ? "-" : solicitud.tipoMotivo,
-							"No sé",
-							detalle !== undefined ? (detalle.actualizacionDelPerfil === null || detalle.actualizacionDelPerfil === undefined || detalle.actualizacionDelPerfil === "" ? "-" : format(new Date(detalle.actualizacionDelPerfil), "dd/MM/yyyy HH:mm:ss")) : "-",
-							detalle !== undefined ? (detalle.busquedaDeCandidatos === null || detalle.busquedaDeCandidatos === undefined || detalle.busquedaDeCandidatos === "" ? "-" : format(new Date(detalle.busquedaDeCandidatos), "dd/MM/yyyy HH:mm:ss")) : "-",
-							detalle !== undefined ? (detalle.entrevista === null || detalle.entrevista === undefined || detalle.entrevista === "" ? "-" : format(new Date(detalle.entrevista), "dd/MM/yyyy HH:mm:ss")) : "-",
-							detalle !== undefined ? (detalle.pruebas === null || detalle.pruebas === undefined || detalle.pruebas === "" ? "-" : format(new Date(detalle.pruebas), "dd/MM/yyyy HH:mm:ss")) : "-",
-							detalle !== undefined ? (detalle.referencias === null || detalle.referencias === undefined || detalle.referencias === "" ? "-" : format(new Date(detalle.referencias), "dd/MM/yyyy HH:mm:ss")) : "-",
-							detalle !== undefined ? (detalle.elaboracionDeInforme === null || detalle.elaboracionDeInforme === undefined || detalle.elaboracionDeInforme === "" ? "-" : format(new Date(detalle.elaboracionDeInforme), "dd/MM/yyyy HH:mm:ss")) : "-",
-							detalle !== undefined ? (detalle.entregaAlJefeSol === null || detalle.entregaAlJefeSol === undefined || detalle.entregaAlJefeSol === "" ? "-" : format(new Date(detalle.entregaAlJefeSol), "dd/MM/yyyy HH:mm:ss")) : "-",
-							detalle !== undefined ? (detalle.entrevistaPorJefatura === null || detalle.entrevistaPorJefatura === undefined || detalle.entrevistaPorJefatura === "" ? "-" : format(new Date(detalle.entrevistaPorJefatura), "dd/MM/yyyy HH:mm:ss")) : "-",
-							detalle !== undefined ? (detalle.tomaDeDesiciones === null || detalle.tomaDeDesiciones === undefined || detalle.tomaDeDesiciones === "" ? "-" : format(new Date(detalle.tomaDeDesiciones), "dd/MM/yyyy HH:mm:ss")) : "-",
-							detalle !== undefined ? (detalle.candidato === null || detalle.candidato === undefined || detalle.candidato === "" ? "-" : detalle.candidato) : "-",
-							detalle !== undefined ? (detalle.procesoDeContratacion === null || detalle.procesoDeContratacion === undefined || detalle.procesoDeContratacion === "" ? "-" : format(new Date(detalle.procesoDeContratacion), "dd/MM/yyyy HH:mm:ss")) : "-",
-							detalle !== undefined ? (detalle.finProcesoContratacion === null || detalle.finProcesoContratacion === undefined || detalle.finProcesoContratacion === "" ? "-" : format(new Date(detalle.finProcesoContratacion), "dd/MM/yyyy HH:mm:ss")) : "-",
-							detalle !== undefined ? (detalle.fechaInicioReingreso === null || detalle.fechaInicioReingreso === undefined || detalle.fechaInicioReingreso === "" ? "-" : format(new Date(detalle.fechaInicioReingreso), "dd/MM/yyyy HH:mm:ss")) : "-",
-							detalle !== undefined ? (detalle.fechaFinReingreso === null || detalle.fechaFinReingreso === undefined || detalle.fechaFinReingreso === "" ? "-" : format(new Date(detalle.fechaFinReingreso), "dd/MM/yyyy HH:mm:ss")) : "-",
-							detalle !== undefined ? (detalle.fechaInicioContratacionFamiliares === null || detalle.fechaInicioContratacionFamiliares === undefined || detalle.fechaInicioContratacionFamiliares === "" ? "-" : format(new Date(detalle.fechaInicioContratacionFamiliares), "dd/MM/yyyy HH:mm:ss")) : "-",
-							detalle !== undefined ? (detalle.fechaFinContratacionFamiliares === null || detalle.fechaFinContratacionFamiliares === undefined || detalle.fechaFinContratacionFamiliares === "" ? "-" : format(new Date(detalle.fechaFinContratacionFamiliares), "dd/MM/yyyy HH:mm:ss")) : "-"
-						]);
+						bodyReport.push([solicitud.idSolicitud, solicitud.compania === null || solicitud.compania === undefined || solicitud.compania === "" ? "-" : solicitud.compania, solicitud.unidadNegocio === null || solicitud.unidadNegocio === undefined || solicitud.unidadNegocio === "" ? "-" : solicitud.unidadNegocio, solicitud.tipoMotivo === null || solicitud.tipoMotivo === undefined || solicitud.tipoMotivo === "" ? "-" : solicitud.tipoMotivo, "No sé", detalle !== undefined ? (detalle.actualizacionDelPerfil === null || detalle.actualizacionDelPerfil === undefined || detalle.actualizacionDelPerfil === "" ? "-" : format(new Date(detalle.actualizacionDelPerfil), "dd/MM/yyyy HH:mm:ss")) : "-", detalle !== undefined ? (detalle.busquedaDeCandidatos === null || detalle.busquedaDeCandidatos === undefined || detalle.busquedaDeCandidatos === "" ? "-" : format(new Date(detalle.busquedaDeCandidatos), "dd/MM/yyyy HH:mm:ss")) : "-", detalle !== undefined ? (detalle.entrevista === null || detalle.entrevista === undefined || detalle.entrevista === "" ? "-" : format(new Date(detalle.entrevista), "dd/MM/yyyy HH:mm:ss")) : "-", detalle !== undefined ? (detalle.pruebas === null || detalle.pruebas === undefined || detalle.pruebas === "" ? "-" : format(new Date(detalle.pruebas), "dd/MM/yyyy HH:mm:ss")) : "-", detalle !== undefined ? (detalle.referencias === null || detalle.referencias === undefined || detalle.referencias === "" ? "-" : format(new Date(detalle.referencias), "dd/MM/yyyy HH:mm:ss")) : "-", detalle !== undefined ? (detalle.elaboracionDeInforme === null || detalle.elaboracionDeInforme === undefined || detalle.elaboracionDeInforme === "" ? "-" : format(new Date(detalle.elaboracionDeInforme), "dd/MM/yyyy HH:mm:ss")) : "-", detalle !== undefined ? (detalle.entregaAlJefeSol === null || detalle.entregaAlJefeSol === undefined || detalle.entregaAlJefeSol === "" ? "-" : format(new Date(detalle.entregaAlJefeSol), "dd/MM/yyyy HH:mm:ss")) : "-", detalle !== undefined ? (detalle.entrevistaPorJefatura === null || detalle.entrevistaPorJefatura === undefined || detalle.entrevistaPorJefatura === "" ? "-" : format(new Date(detalle.entrevistaPorJefatura), "dd/MM/yyyy HH:mm:ss")) : "-", detalle !== undefined ? (detalle.tomaDeDesiciones === null || detalle.tomaDeDesiciones === undefined || detalle.tomaDeDesiciones === "" ? "-" : format(new Date(detalle.tomaDeDesiciones), "dd/MM/yyyy HH:mm:ss")) : "-", detalle !== undefined ? (detalle.candidato === null || detalle.candidato === undefined || detalle.candidato === "" ? "-" : detalle.candidato) : "-", detalle !== undefined ? (detalle.procesoDeContratacion === null || detalle.procesoDeContratacion === undefined || detalle.procesoDeContratacion === "" ? "-" : format(new Date(detalle.procesoDeContratacion), "dd/MM/yyyy HH:mm:ss")) : "-", detalle !== undefined ? (detalle.finProcesoContratacion === null || detalle.finProcesoContratacion === undefined || detalle.finProcesoContratacion === "" ? "-" : format(new Date(detalle.finProcesoContratacion), "dd/MM/yyyy HH:mm:ss")) : "-", detalle !== undefined ? (detalle.fechaInicioReingreso === null || detalle.fechaInicioReingreso === undefined || detalle.fechaInicioReingreso === "" ? "-" : format(new Date(detalle.fechaInicioReingreso), "dd/MM/yyyy HH:mm:ss")) : "-", detalle !== undefined ? (detalle.fechaFinReingreso === null || detalle.fechaFinReingreso === undefined || detalle.fechaFinReingreso === "" ? "-" : format(new Date(detalle.fechaFinReingreso), "dd/MM/yyyy HH:mm:ss")) : "-", detalle !== undefined ? (detalle.fechaInicioContratacionFamiliares === null || detalle.fechaInicioContratacionFamiliares === undefined || detalle.fechaInicioContratacionFamiliares === "" ? "-" : format(new Date(detalle.fechaInicioContratacionFamiliares), "dd/MM/yyyy HH:mm:ss")) : "-", detalle !== undefined ? (detalle.fechaFinContratacionFamiliares === null || detalle.fechaFinContratacionFamiliares === undefined || detalle.fechaFinContratacionFamiliares === "" ? "-" : format(new Date(detalle.fechaFinContratacionFamiliares), "dd/MM/yyyy HH:mm:ss")) : "-"]);
 					}
 				});
 
 				if (bodyReport.length !== 0) {
 					this.utilService.generateReport(formato, "RPTWF-TM", "RP", headerTitles, bodyReport);
 				}
-			}
+			},
 		});
 	}
 
@@ -1652,7 +1642,7 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 			next: (response: any[]) => {
 				const detalleSolicitudes = response.map(({ detalleAprobadorSolicitud }) => ({
 					iD_SOLICITUD: detalleAprobadorSolicitud[0].id_Solicitud,
-					detalleAprobadorSolicitud: detalleAprobadorSolicitud.filter(({ ruta }) => ruta.toUpperCase().includes("PRIMER") || ruta.toUpperCase().includes("SEGUND") || ruta.toUpperCase().includes("TERCER") || ruta.toUpperCase().includes("CUART") || ruta.toUpperCase().includes("RRHH") || ruta.toUpperCase().includes("RR.HH.") || ruta.toUpperCase().includes("REMUNERA"))
+					detalleAprobadorSolicitud: detalleAprobadorSolicitud.filter(({ ruta }) => ruta.toUpperCase().includes("PRIMER") || ruta.toUpperCase().includes("SEGUND") || ruta.toUpperCase().includes("TERCER") || ruta.toUpperCase().includes("CUART") || ruta.toUpperCase().includes("RRHH") || ruta.toUpperCase().includes("RR.HH.") || ruta.toUpperCase().includes("REMUNERA")),
 				}));
 
 				const lookup = detalleSolicitudes.reduce((acc, item) => {
@@ -1662,38 +1652,20 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 				}, {});
 
 				// Combinar usando el objeto de referencia
-				const combined = solicitudesData.map(item => ({
+				const combined = solicitudesData.map((item) => ({
 					solicitud: item,
-					detalle: lookup[item.idSolicitud]
+					detalle: lookup[item.idSolicitud],
 				}));
 				console.log(combined);
 
-				const bodyReport = combined.map(({ solicitud, detalle }) => [
-					solicitud.idSolicitud,
-					solicitud.compania === null || solicitud.compania === undefined || solicitud.compania === "" ? "-" : solicitud.compania,
-					solicitud.tipoSolicitud,
-					solicitud.tipoMotivo === null || solicitud.tipoMotivo === undefined || solicitud.tipoMotivo === "" ? "-" : solicitud.tipoMotivo,
-					solicitud.fechaCreacion === null || solicitud.fechaCreacion === undefined || solicitud.fechaCreacion === "" ? "-" : solicitud.fechaCreacion,
-					detalle.detalleAprobadorSolicitud.some(({ ruta, usuarioAprobador }) => ruta.toUpperCase().includes("PRIMER") && usuarioAprobador !== "") ? detalle.detalleAprobadorSolicitud[0].usuarioAprobador : "-",
-					detalle.detalleAprobadorSolicitud.some(({ ruta, usuarioAprobador }) => ruta.toUpperCase().includes("PRIMER") && usuarioAprobador !== "") ? detalle.detalleAprobadorSolicitud[0].fechaCreacion : "-",
-					detalle.detalleAprobadorSolicitud.some(({ ruta, usuarioAprobador }) => ruta.toUpperCase().includes("SEGUND") && usuarioAprobador !== "") ? detalle.detalleAprobadorSolicitud[1].usuarioAprobador : "-",
-					detalle.detalleAprobadorSolicitud.some(({ ruta, usuarioAprobador }) => ruta.toUpperCase().includes("SEGUND") && usuarioAprobador !== "") ? detalle.detalleAprobadorSolicitud[1].fechaCreacion : "-",
-					detalle.detalleAprobadorSolicitud.some(({ ruta, usuarioAprobador }) => ruta.toUpperCase().includes("TERCER") && usuarioAprobador !== "") ? detalle.detalleAprobadorSolicitud[2].usuarioAprobador : "-",
-					detalle.detalleAprobadorSolicitud.some(({ ruta, usuarioAprobador }) => ruta.toUpperCase().includes("TERCER") && usuarioAprobador !== "") ? detalle.detalleAprobadorSolicitud[2].fechaCreacion : "-",
-					detalle.detalleAprobadorSolicitud.some(({ ruta, usuarioAprobador }) => ruta.toUpperCase().includes("CUART") && usuarioAprobador !== "") ? detalle.detalleAprobadorSolicitud[3].usuarioAprobador : "-",
-					detalle.detalleAprobadorSolicitud.some(({ ruta, usuarioAprobador }) => ruta.toUpperCase().includes("CUART") && usuarioAprobador !== "") ? detalle.detalleAprobadorSolicitud[3].fechaCreacion : "-",
-					detalle.detalleAprobadorSolicitud.some(({ ruta, usuarioAprobador }) => (ruta.toUpperCase().includes("RRHH") || ruta.toUpperCase().includes("RR.HH.")) && usuarioAprobador !== "") ? detalle.detalleAprobadorSolicitud[4].usuarioAprobador : "-",
-					detalle.detalleAprobadorSolicitud.some(({ ruta, usuarioAprobador }) => (ruta.toUpperCase().includes("RRHH") || ruta.toUpperCase().includes("RR.HH.")) && usuarioAprobador !== "") ? detalle.detalleAprobadorSolicitud[4].fechaCreacion : "-",
-					detalle.detalleAprobadorSolicitud.some(({ ruta, usuarioAprobador }) => ruta.toUpperCase().includes("REMUNERA") && usuarioAprobador !== "") ? detalle.detalleAprobadorSolicitud[5].usuarioAprobador : "-",
-					detalle.detalleAprobadorSolicitud.some(({ ruta, usuarioAprobador }) => ruta.toUpperCase().includes("REMUNERA") && usuarioAprobador !== "") ? detalle.detalleAprobadorSolicitud[5].fechaCreacion : "-"
-				]);
+				const bodyReport = combined.map(({ solicitud, detalle }) => [solicitud.idSolicitud, solicitud.compania === null || solicitud.compania === undefined || solicitud.compania === "" ? "-" : solicitud.compania, solicitud.tipoSolicitud, solicitud.tipoMotivo === null || solicitud.tipoMotivo === undefined || solicitud.tipoMotivo === "" ? "-" : solicitud.tipoMotivo, solicitud.fechaCreacion === null || solicitud.fechaCreacion === undefined || solicitud.fechaCreacion === "" ? "-" : solicitud.fechaCreacion, detalle.detalleAprobadorSolicitud.some(({ ruta, usuarioAprobador }) => ruta.toUpperCase().includes("PRIMER") && usuarioAprobador !== "") ? detalle.detalleAprobadorSolicitud[0].usuarioAprobador : "-", detalle.detalleAprobadorSolicitud.some(({ ruta, usuarioAprobador }) => ruta.toUpperCase().includes("PRIMER") && usuarioAprobador !== "") ? detalle.detalleAprobadorSolicitud[0].fechaCreacion : "-", detalle.detalleAprobadorSolicitud.some(({ ruta, usuarioAprobador }) => ruta.toUpperCase().includes("SEGUND") && usuarioAprobador !== "") ? detalle.detalleAprobadorSolicitud[1].usuarioAprobador : "-", detalle.detalleAprobadorSolicitud.some(({ ruta, usuarioAprobador }) => ruta.toUpperCase().includes("SEGUND") && usuarioAprobador !== "") ? detalle.detalleAprobadorSolicitud[1].fechaCreacion : "-", detalle.detalleAprobadorSolicitud.some(({ ruta, usuarioAprobador }) => ruta.toUpperCase().includes("TERCER") && usuarioAprobador !== "") ? detalle.detalleAprobadorSolicitud[2].usuarioAprobador : "-", detalle.detalleAprobadorSolicitud.some(({ ruta, usuarioAprobador }) => ruta.toUpperCase().includes("TERCER") && usuarioAprobador !== "") ? detalle.detalleAprobadorSolicitud[2].fechaCreacion : "-", detalle.detalleAprobadorSolicitud.some(({ ruta, usuarioAprobador }) => ruta.toUpperCase().includes("CUART") && usuarioAprobador !== "") ? detalle.detalleAprobadorSolicitud[3].usuarioAprobador : "-", detalle.detalleAprobadorSolicitud.some(({ ruta, usuarioAprobador }) => ruta.toUpperCase().includes("CUART") && usuarioAprobador !== "") ? detalle.detalleAprobadorSolicitud[3].fechaCreacion : "-", detalle.detalleAprobadorSolicitud.some(({ ruta, usuarioAprobador }) => (ruta.toUpperCase().includes("RRHH") || ruta.toUpperCase().includes("RR.HH.")) && usuarioAprobador !== "") ? detalle.detalleAprobadorSolicitud[4].usuarioAprobador : "-", detalle.detalleAprobadorSolicitud.some(({ ruta, usuarioAprobador }) => (ruta.toUpperCase().includes("RRHH") || ruta.toUpperCase().includes("RR.HH.")) && usuarioAprobador !== "") ? detalle.detalleAprobadorSolicitud[4].fechaCreacion : "-", detalle.detalleAprobadorSolicitud.some(({ ruta, usuarioAprobador }) => ruta.toUpperCase().includes("REMUNERA") && usuarioAprobador !== "") ? detalle.detalleAprobadorSolicitud[5].usuarioAprobador : "-", detalle.detalleAprobadorSolicitud.some(({ ruta, usuarioAprobador }) => ruta.toUpperCase().includes("REMUNERA") && usuarioAprobador !== "") ? detalle.detalleAprobadorSolicitud[5].fechaCreacion : "-"]);
 
 				this.utilService.generateReport(formato, "RPTWF-TM", "RP", headerTitles, bodyReport);
-			}
+			},
 		});
 	}
 
-	public exportar(): void {
+	public exportar(idPrint: string): void {
 		const backgroundCellColor: [number, number, number] = [218, 238, 243];
 		const textColor: [number, number, number] = [56, 95, 147];
 		const lineColor: [number, number, number] = [149, 179, 215];
@@ -1708,11 +1680,11 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 						content: "",
 						styles: {
 							halign: "right",
-							fontStyle: "bold"
-						}
-					}
-				]
-			]
+							fontStyle: "bold",
+						},
+					},
+				],
+			],
 		};
 
 		const tituloDeHoja = {
@@ -1725,33 +1697,33 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 							halign: "center",
 							fontSize: 20,
 							fontStyle: "bold",
-							textColor
-						}
-					}
-				]
-			]
+							textColor,
+						},
+					},
+				],
+			],
 		};
 
 		this.solicitudesService.obtenerTareasPorInstanciaRaiz(this.solicitud.idInstancia).subscribe({
 			next: ({ tareaType }) => {
 				const logs = tareaType.map(({ parentTaskId }) => parentTaskId);
 
-				if (this.solicitud.idSolicitud.toUpperCase().includes("RP")) {
+				if (idPrint.toUpperCase().includes("RP")) {
 					esquinaDeHoja.body[0][0].content = codigosSolicitudReporte.requisicionPersonal;
 					tituloDeHoja.body[0][0].content = "REQUERIMIENTO DE PERSONAL";
 
 					this.exportarRequisicionPersonal(doc, esquinaDeHoja, tituloDeHoja, backgroundCellColor, textColor, lineColor, logs);
-				} else if (this.solicitud.idSolicitud.toUpperCase().includes("CF")) {
+				} else if (idPrint.toUpperCase().includes("CF")) {
 					esquinaDeHoja.body[0][0].content = codigosSolicitudReporte.contratacionFamiliares;
 					tituloDeHoja.body[0][0].content = "CONTRATACIÓN DE FAMILIAR";
 
 					this.exportarContratacionFamiliar(doc, esquinaDeHoja, tituloDeHoja, backgroundCellColor, textColor, lineColor, logs);
-				} else if (this.solicitud.idSolicitud.toUpperCase().includes("RG")) {
+				} else if (idPrint.toUpperCase().includes("RG")) {
 					esquinaDeHoja.body[0][0].content = codigosSolicitudReporte.reingresoPersonal;
 					tituloDeHoja.body[0][0].content = "REINGRESO DE PERSONAL";
 
 					this.exportarReingresoPersonal(doc, esquinaDeHoja, tituloDeHoja, backgroundCellColor, textColor, lineColor, logs);
-				} else if (this.solicitud.idSolicitud.toUpperCase().includes("AP")) {
+				} else if (idPrint.toUpperCase().includes("AP")) {
 					esquinaDeHoja.body[0][0].content = codigosSolicitudReporte.accionPersonal;
 					tituloDeHoja.body[0][0].content = "ACCIÓN DE PERSONAL";
 
@@ -1760,9 +1732,9 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 
 				this.utilService.closeLoadingSpinner();
 			},
-			error: err => {
+			error: (err) => {
 				console.error(err);
-			}
+			},
 		});
 	}
 
@@ -1777,23 +1749,23 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 		autoTable(doc, {
 			theme: "grid",
 			bodyStyles: {
-				lineColor
+				lineColor,
 			},
 			body: [["Creado por:", this.solicitud.usuarioCreacion, "Fecha:", format(new Date(this.solicitud.fechaCreacion), "dd/MM/yyyy"), "Solicitud No:", this.solicitud.idSolicitud]],
 			columnStyles: {
 				0: {
 					fontStyle: "bold",
-					halign: "right"
+					halign: "right",
 				},
 				2: {
 					fontStyle: "bold",
-					halign: "right"
+					halign: "right",
 				},
 				4: {
 					fontStyle: "bold",
-					halign: "right"
-				}
-			}
+					halign: "right",
+				},
+			},
 		});
 
 		// Información de la posición
@@ -1803,18 +1775,18 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 				fillColor: backgroundCellColor,
 				textColor,
 				halign: "center",
-				lineColor
+				lineColor,
 			},
 			bodyStyles: {
-				lineColor
+				lineColor,
 			},
 			head: [
 				[
 					{
 						content: "INFORMACIÓN DE LA POSICIÓN",
-						colSpan: 4
-					}
-				]
+						colSpan: 4,
+					},
+				],
 			],
 			body: [
 				["Unidad:", this.modelPrint.unidadNegocio, "Motivo", this.solicitud.tipoMotivo],
@@ -1828,27 +1800,27 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 						content: this.modelPrint.justificacionCargo,
 						colSpan: 3,
 						styles: {
-							halign: "justify"
-						}
-					}
-				]
+							halign: "justify",
+						},
+					},
+				],
 			],
 			columnStyles: {
 				0: {
 					fontStyle: "bold",
-					cellWidth: 30
+					cellWidth: 30,
 				},
 				1: {
-					cellWidth: 60
+					cellWidth: 60,
 				},
 				2: {
 					fontStyle: "bold",
-					cellWidth: 30
+					cellWidth: 30,
 				},
 				3: {
-					cellWidth: 60
-				}
-			}
+					cellWidth: 60,
+				},
+			},
 		});
 
 		// Funciones y responsabilidades
@@ -1858,18 +1830,18 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 				fillColor: backgroundCellColor,
 				textColor,
 				halign: "center",
-				lineColor
+				lineColor,
 			},
 			bodyStyles: {
-				lineColor
+				lineColor,
 			},
 			head: [
 				[
 					{
 						content: "FUNCIONES Y RESPONSABILIDADES",
-						colSpan: 4
-					}
-				]
+						colSpan: 4,
+					},
+				],
 			],
 			body: [
 				["Reporta a:", this.modelPrint.reportaA, "Supervisa a:", this.modelPrint.supervisaA],
@@ -1879,27 +1851,27 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 						content: this.modelPrint.misionCargo,
 						colSpan: 3,
 						styles: {
-							halign: "justify"
-						}
-					}
-				]
+							halign: "justify",
+						},
+					},
+				],
 			],
 			columnStyles: {
 				0: {
 					fontStyle: "bold",
-					cellWidth: 30
+					cellWidth: 30,
 				},
 				1: {
-					cellWidth: 60
+					cellWidth: 60,
 				},
 				2: {
 					fontStyle: "bold",
-					cellWidth: 30
+					cellWidth: 30,
 				},
 				3: {
-					cellWidth: 60
-				}
-			}
+					cellWidth: 60,
+				},
+			},
 		});
 
 		// Sección de candidato
@@ -1909,18 +1881,18 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 				fillColor: backgroundCellColor,
 				textColor,
 				halign: "center",
-				lineColor
+				lineColor,
 			},
 			bodyStyles: {
-				lineColor
+				lineColor,
 			},
 			head: [
 				[
 					{
 						content: "SELECCIÓN DE CANDIDATO",
-						colSpan: 2
-					}
-				]
+						colSpan: 2,
+					},
+				],
 			],
 			body: [
 				[
@@ -1929,17 +1901,17 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 						styles: {
 							halign: "center",
 							textColor,
-							fontStyle: "bold"
-						}
+							fontStyle: "bold",
+						},
 					},
 					{
 						content: "FECHA:",
 						styles: {
 							halign: "center",
 							textColor,
-							fontStyle: "bold"
-						}
-					}
+							fontStyle: "bold",
+						},
+					},
 				],
 				["Actualización del perfil:", this.fechasPrint.actualizacionPerfil],
 				["Búsqueda del candidato:", this.fechasPrint.busquedaCandidatos],
@@ -1959,45 +1931,45 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 						colSpan: 2,
 						styles: {
 							fillColor: backgroundCellColor,
-							cellPadding: "2px"
-						}
-					}
+							cellPadding: "2px",
+						},
+					},
 				],
 				["Nombre del candidato escogido:", this.nombreCandidatoPrint],
-				["Fecha de ingreso:", this.fechasPrint.reingreso === "" ? this.fechasPrint.contratacionFamiliares : this.fechasPrint.reingreso]
+				["Fecha de ingreso:", this.fechasPrint.reingreso === "" ? this.fechasPrint.contratacionFamiliares : this.fechasPrint.reingreso],
 			],
 			columnStyles: {
 				0: {
 					fontStyle: "bold",
-					cellWidth: 110
+					cellWidth: 110,
 				},
 				1: {
 					cellWidth: 70,
-					halign: "center"
-				}
-			}
+					halign: "center",
+				},
+			},
 		});
 
 		// Log del flujo
-		const logData = logs.map(log => log.split("{SEPARA}"));
+		const logData = logs.map((log) => log.split("{SEPARA}"));
 
 		autoTable(doc, {
 			theme: "grid",
 			headStyles: {
 				fillColor: backgroundCellColor,
 				textColor,
-				lineColor
+				lineColor,
 			},
 			bodyStyles: {
-				lineColor
+				lineColor,
 			},
 			head: [
 				[
 					{
 						content: "Log del flujo",
-						colSpan: 3
-					}
-				]
+						colSpan: 3,
+					},
+				],
 			],
 			body: [
 				[
@@ -2006,41 +1978,41 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 						styles: {
 							halign: "center",
 							textColor,
-							fontStyle: "bold"
-						}
+							fontStyle: "bold",
+						},
 					},
 					{
 						content: "Acción",
 						styles: {
 							halign: "center",
 							textColor,
-							fontStyle: "bold"
-						}
+							fontStyle: "bold",
+						},
 					},
 					{
 						content: "Responsable",
 						styles: {
 							halign: "center",
 							textColor,
-							fontStyle: "bold"
-						}
-					}
+							fontStyle: "bold",
+						},
+					},
 				],
 				// ...this.dataAprobacionesPorPosicionPrint[this.keySelectedPrint].map(dataAprobador => ([format(new Date(dataAprobador.nivelAprobacionType.fechaCreacion), "dd/MM/yyyy"), dataAprobador.nivelAprobacionType.ruta, dataAprobador.aprobador.usuario === "" ? "No aplica" : dataAprobador.aprobador.usuario]))
-				...logData.map(data => [data[2].split("{IGUAL}")[1], data[1].split("{IGUAL}")[1], data[0].split("{IGUAL}")[1]])
+				...logData.map((data) => [data[2].split("{IGUAL}")[1], data[1].split("{IGUAL}")[1], data[0].split("{IGUAL}")[1]]),
 			],
 			columnStyles: {
 				0: {
 					cellWidth: 30,
-					halign: "center"
+					halign: "center",
 				},
 				1: {
-					cellWidth: 75
+					cellWidth: 75,
 				},
 				2: {
-					cellWidth: 75
-				}
-			}
+					cellWidth: 75,
+				},
+			},
 		});
 
 		doc.save(`${this.solicitud.idSolicitud}-${format(new Date(), "dd-MM-yyyy")}.pdf`);
@@ -2057,7 +2029,7 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 		autoTable(doc, {
 			theme: "grid",
 			bodyStyles: {
-				lineColor
+				lineColor,
 			},
 			body: [
 				[
@@ -2065,49 +2037,49 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 						content: "Creado por:",
 						rowSpan: 2,
 						styles: {
-							valign: "middle"
-						}
+							valign: "middle",
+						},
 					},
 					{
 						content: this.solicitud.usuarioCreacion,
 						rowSpan: 2,
 						styles: {
-							valign: "middle"
-						}
+							valign: "middle",
+						},
 					},
 					{
 						content: "Fecha:",
 						rowSpan: 2,
 						styles: {
-							valign: "middle"
-						}
+							valign: "middle",
+						},
 					},
 					{
 						content: format(new Date(this.solicitud.fechaCreacion), "dd/MM/yyyy"),
 						rowSpan: 2,
 						styles: {
-							valign: "middle"
-						}
+							valign: "middle",
+						},
 					},
 					"Solicitud No:",
-					this.solicitud.idSolicitud
+					this.solicitud.idSolicitud,
 				],
-				["Requisición de Personal No:", this.idSolicitudRPPrint]
+				["Requisición de Personal No:", this.idSolicitudRPPrint],
 			],
 			columnStyles: {
 				0: {
 					fontStyle: "bold",
-					halign: "right"
+					halign: "right",
 				},
 				2: {
 					fontStyle: "bold",
-					halign: "right"
+					halign: "right",
 				},
 				4: {
 					fontStyle: "bold",
-					halign: "right"
-				}
-			}
+					halign: "right",
+				},
+			},
 		});
 
 		// Información de la persona a contratar
@@ -2117,18 +2089,18 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 				fillColor: backgroundCellColor,
 				textColor,
 				halign: "center",
-				lineColor
+				lineColor,
 			},
 			bodyStyles: {
-				lineColor
+				lineColor,
 			},
 			head: [
 				[
 					{
 						content: "INFORMACIÓN DE LA PERSONA A CONTRATAR",
-						colSpan: 2
-					}
-				]
+						colSpan: 2,
+					},
+				],
 			],
 			body: [
 				["Apellidos y nombres:", this.nombreCompletoCandidatoPrint],
@@ -2143,20 +2115,20 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 					{
 						content: this.modelPrint.justificacionCargo,
 						styles: {
-							halign: "justify"
-						}
-					}
-				]
+							halign: "justify",
+						},
+					},
+				],
 			],
 			columnStyles: {
 				0: {
 					fontStyle: "bold",
-					cellWidth: 50
+					cellWidth: 50,
 				},
 				1: {
-					cellWidth: 130
-				}
-			}
+					cellWidth: 130,
+				},
+			},
 		});
 
 		// Datos de familiares que ya laboran en la empresa
@@ -2166,18 +2138,18 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 				fillColor: backgroundCellColor,
 				textColor,
 				halign: "center",
-				lineColor
+				lineColor,
 			},
 			bodyStyles: {
-				lineColor
+				lineColor,
 			},
 			head: [
 				[
 					{
 						content: "DATOS DE FAMILIARES QUE YA LABORAN EN LA EMPRESA",
-						colSpan: 7
-					}
-				]
+						colSpan: 7,
+					},
+				],
 			],
 			body: [
 				[
@@ -2185,99 +2157,99 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 						content: "Nombre",
 						styles: {
 							fontStyle: "bold",
-							halign: "center"
-						}
+							halign: "center",
+						},
 					},
 					{
 						content: "Fecha de ingreso",
 						styles: {
 							fontStyle: "bold",
-							halign: "center"
-						}
+							halign: "center",
+						},
 					},
 					{
 						content: "Cargo",
 						styles: {
 							fontStyle: "bold",
-							halign: "center"
-						}
+							halign: "center",
+						},
 					},
 					{
 						content: "Unidad",
 						styles: {
 							fontStyle: "bold",
-							halign: "center"
-						}
+							halign: "center",
+						},
 					},
 					{
 						content: "Departamento",
 						styles: {
 							fontStyle: "bold",
-							halign: "center"
-						}
+							halign: "center",
+						},
 					},
 					{
 						content: "Localidad",
 						styles: {
 							fontStyle: "bold",
-							halign: "center"
-						}
+							halign: "center",
+						},
 					},
 					{
 						content: "Parentezco",
 						styles: {
 							fontStyle: "bold",
-							halign: "center"
-						}
-					}
+							halign: "center",
+						},
+					},
 				],
-				...this.dataTableDatosFamiliaresPrint.map(datoFamiliar => [datoFamiliar.nombreEmpleado, datoFamiliar.fechaCreacion as string, datoFamiliar.cargo, datoFamiliar.unidad, datoFamiliar.departamento, datoFamiliar.localidad, datoFamiliar.parentesco])
+				...this.dataTableDatosFamiliaresPrint.map((datoFamiliar) => [datoFamiliar.nombreEmpleado, datoFamiliar.fechaCreacion as string, datoFamiliar.cargo, datoFamiliar.unidad, datoFamiliar.departamento, datoFamiliar.localidad, datoFamiliar.parentesco]),
 			],
 			columnStyles: {
 				0: {
-					cellWidth: 25
+					cellWidth: 25,
 				},
 				1: {
-					cellWidth: 25
+					cellWidth: 25,
 				},
 				2: {
-					cellWidth: 25
+					cellWidth: 25,
 				},
 				3: {
-					cellWidth: 25
+					cellWidth: 25,
 				},
 				4: {
-					cellWidth: 30
+					cellWidth: 30,
 				},
 				5: {
-					cellWidth: 25
+					cellWidth: 25,
 				},
 				6: {
-					cellWidth: 25
-				}
-			}
+					cellWidth: 25,
+				},
+			},
 		});
 
 		// Log del flujo
-		const logData = logs.map(log => log.split("{SEPARA}"));
+		const logData = logs.map((log) => log.split("{SEPARA}"));
 
 		autoTable(doc, {
 			theme: "grid",
 			headStyles: {
 				fillColor: backgroundCellColor,
 				textColor,
-				lineColor
+				lineColor,
 			},
 			bodyStyles: {
-				lineColor
+				lineColor,
 			},
 			head: [
 				[
 					{
 						content: "Log del flujo",
-						colSpan: 3
-					}
-				]
+						colSpan: 3,
+					},
+				],
 			],
 			body: [
 				[
@@ -2286,41 +2258,41 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 						styles: {
 							halign: "center",
 							textColor,
-							fontStyle: "bold"
-						}
+							fontStyle: "bold",
+						},
 					},
 					{
 						content: "Acción",
 						styles: {
 							halign: "center",
 							textColor,
-							fontStyle: "bold"
-						}
+							fontStyle: "bold",
+						},
 					},
 					{
 						content: "Responsable",
 						styles: {
 							halign: "center",
 							textColor,
-							fontStyle: "bold"
-						}
-					}
+							fontStyle: "bold",
+						},
+					},
 				],
 				// ...this.dataAprobacionesPorPosicionPrint[this.keySelectedPrint].map(dataAprobador => ([format(new Date(dataAprobador.nivelAprobacionType.fechaCreacion), "dd/MM/yyyy"), dataAprobador.nivelAprobacionType.ruta, dataAprobador.aprobador.usuario === "" ? "No aplica" : dataAprobador.aprobador.usuario]))
-				...logData.map(data => [data[2].split("{IGUAL}")[1], data[1].split("{IGUAL}")[1], data[0].split("{IGUAL}")[1]])
+				...logData.map((data) => [data[2].split("{IGUAL}")[1], data[1].split("{IGUAL}")[1], data[0].split("{IGUAL}")[1]]),
 			],
 			columnStyles: {
 				0: {
 					cellWidth: 30,
-					halign: "center"
+					halign: "center",
 				},
 				1: {
-					cellWidth: 75
+					cellWidth: 75,
 				},
 				2: {
-					cellWidth: 75
-				}
-			}
+					cellWidth: 75,
+				},
+			},
 		});
 
 		doc.save(`${this.solicitud.idSolicitud}-${format(new Date(), "dd-MM-yyyy")}.pdf`);
@@ -2346,49 +2318,49 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 						content: "Creado por:",
 						rowSpan: 2,
 						styles: {
-							valign: "middle"
-						}
+							valign: "middle",
+						},
 					},
 					{
 						content: this.solicitud.usuarioCreacion,
 						rowSpan: 2,
 						styles: {
-							valign: "middle"
-						}
+							valign: "middle",
+						},
 					},
 					{
 						content: "Fecha:",
 						rowSpan: 2,
 						styles: {
-							valign: "middle"
-						}
+							valign: "middle",
+						},
 					},
 					{
 						content: format(new Date(this.solicitud.fechaCreacion), "dd/MM/yyyy"),
 						rowSpan: 2,
 						styles: {
-							valign: "middle"
-						}
+							valign: "middle",
+						},
 					},
 					"Solicitud No:",
-					this.solicitud.idSolicitud
+					this.solicitud.idSolicitud,
 				],
-				["Requisición de Personal No:", this.idSolicitudRPPrint]
+				["Requisición de Personal No:", this.idSolicitudRPPrint],
 			],
 			columnStyles: {
 				0: {
 					fontStyle: "bold",
-					halign: "right"
+					halign: "right",
 				},
 				2: {
 					fontStyle: "bold",
-					halign: "right"
+					halign: "right",
 				},
 				4: {
 					fontStyle: "bold",
-					halign: "right"
-				}
-			}
+					halign: "right",
+				},
+			},
 		});
 
 		// Información de la persona a contratar
@@ -2398,36 +2370,36 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 				fillColor: backgroundCellColor,
 				textColor,
 				halign: "center",
-				lineColor
+				lineColor,
 			},
 			bodyStyles: {
-				lineColor
+				lineColor,
 			},
 			head: [
 				[
 					{
 						content: "INFORMACIÓN DE LA PERSONA A CONTRATAR",
-						colSpan: 4
-					}
-				]
+						colSpan: 4,
+					},
+				],
 			],
 			body: [["Apellidos y nombres:", this.nombreCompletoCandidatoPrint, "Fecha de ingreso:", format(new Date(this.modelPrintRG.fechaIngreso), "dd/MM/yyyy")]],
 			columnStyles: {
 				0: {
 					fontStyle: "bold",
-					cellWidth: 40
+					cellWidth: 40,
 				},
 				1: {
-					cellWidth: 75
+					cellWidth: 75,
 				},
 				2: {
 					fontStyle: "bold",
-					cellWidth: 35
+					cellWidth: 35,
 				},
 				3: {
-					cellWidth: 30
-				}
-			}
+					cellWidth: 30,
+				},
+			},
 		});
 
 		// Datos de contratación
@@ -2437,18 +2409,18 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 				fillColor: backgroundCellColor,
 				textColor,
 				halign: "center",
-				lineColor
+				lineColor,
 			},
 			bodyStyles: {
-				lineColor
+				lineColor,
 			},
 			head: [
 				[
 					{
 						content: "DATOS DE CONTRTACIÓN",
-						colSpan: 3
-					}
-				]
+						colSpan: 3,
+					},
+				],
 			],
 			body: [
 				[
@@ -2457,50 +2429,50 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 						styles: {
 							halign: "center",
 							textColor,
-							fontStyle: "bold"
-						}
+							fontStyle: "bold",
+						},
 					},
 					{
 						content: "Contratación anterior",
 						styles: {
 							halign: "center",
 							textColor,
-							fontStyle: "bold"
-						}
+							fontStyle: "bold",
+						},
 					},
 					{
 						content: "Contratación actual",
 						styles: {
 							halign: "center",
 							textColor,
-							fontStyle: "bold"
-						}
-					}
+							fontStyle: "bold",
+						},
+					},
 				],
-				["Compañía:", this.modelPrint.compania, this.modelPrintRG.compania],
-				["Sueldo:", `$ ${parseFloat(this.modelPrintRG.sueldo).toFixed(2)}`, `$ ${parseFloat(this.modelPrint.sueldo).toFixed(2)}`],
-				["Variable Máxima:", `$ ${variableMaximaRG.toFixed(2)}`, `$ ${variableMaxima.toFixed(2)}`],
-				["Remuneración Total:", `$ ${(parseFloat(this.modelPrintRG.sueldo) + variableMaximaRG).toFixed(2)}`, `$ ${(parseFloat(this.modelPrint.sueldo) + variableMaxima).toFixed(2)}`],
-				["Cargo:", this.modelPrint.descrPosicion, this.modelPrintRG.descrPosicion],
-				["Departamento:", this.modelPrintRG.departamento, this.modelPrint.departamento],
-				["Fecha de Ingreso:", this.modelPrint.fechaIngreso === null || this.modelPrint.fechaIngreso === undefined || this.modelPrint.fechaIngreso === "" ? "-" : format(new Date(this.modelPrint.fechaIngreso), "dd/MM/yyyy"), this.modelPrintRG.fechaIngreso === null || this.modelPrintRG.fechaIngreso === undefined || this.modelPrintRG.fechaIngreso === "" ? "-" : format(new Date(this.modelPrintRG.fechaIngreso), "dd/MM/yyyy")],
-				["Fecha de Salida:", format(new Date(this.detalleSolicitudPrintRG.fechaSalida), "dd/MM/yyyy"), format(new Date(this.detalleSolicitud.fechaSalida), "dd/MM/yyyy")],
-				["Jefe Inmediato Superior:", this.detalleSolicitudPrintRG.jefeInmediatoSuperior, this.detalleSolicitud.jefeInmediatoSuperior],
-				["Cargo Jefe Inmediato Superior:", this.detalleSolicitudPrintRG.puestoJefeInmediato, this.detalleSolicitud.puestoJefeInmediato],
-				["Responsable de RR.HH.:", this.detalleSolicitudPrintRG.responsableRRHH, this.detalleSolicitud.responsableRRHH]
+				["Compañía:", this.modelPrint.subledger === this.modelPrintRG.subledger ? "" : this.modelPrintRG.compania, this.modelPrint.compania],
+				["Sueldo:", this.modelPrint.subledger === this.modelPrintRG.subledger ? "" : `$ ${parseFloat(this.modelPrintRG.sueldo).toFixed(2)}`, `$ ${parseFloat(this.modelPrint.sueldo).toFixed(2)}`],
+				["Variable Máxima:", this.modelPrint.subledger === this.modelPrintRG.subledger ? "" : `$ ${variableMaximaRG.toFixed(2)}`, `$ ${variableMaxima.toFixed(2)}`],
+				["Remuneración Total:", this.modelPrint.subledger === this.modelPrintRG.subledger ? "" : `$ ${(parseFloat(this.modelPrintRG.sueldo) + variableMaximaRG).toFixed(2)}`, `$ ${(parseFloat(this.modelPrint.sueldo) + variableMaxima).toFixed(2)}`],
+				["Cargo:", this.modelPrint.subledger === this.modelPrintRG.subledger ? "" : this.modelPrintRG.nombreCargo, this.modelPrint.nombreCargo],
+				["Departamento:", this.modelPrint.subledger === this.modelPrintRG.subledger ? "" : this.modelPrintRG.departamento, this.modelPrint.departamento],
+				["Fecha de Ingreso:", this.modelPrint.subledger === this.modelPrintRG.subledger ? "" : this.modelPrintRG.fechaIngreso === null || this.modelPrintRG.fechaIngreso === undefined || this.modelPrintRG.fechaIngreso === "" ? "" : format(new Date(this.modelPrintRG.fechaIngreso), "dd/MM/yyyy"), this.modelPrint.fechaIngreso === null || this.modelPrint.fechaIngreso === undefined || this.modelPrint.fechaIngreso === "" ? "" : format(new Date(this.modelPrint.fechaIngreso), "dd/MM/yyyy")],
+				["Fecha de Salida:", this.modelPrint.subledger === this.modelPrintRG.subledger ? "" : format(new Date(this.detalleSolicitudPrintRG.fechaSalida), "dd/MM/yyyy"), ""],
+				["Jefe Inmediato Superior:", this.modelPrint.subledger === this.modelPrintRG.subledger ? "" : this.detalleSolicitudPrintRG.jefeInmediatoSuperior, this.nombreJefeSolicitante],
+				["Cargo Jefe Inmediato Superior:", this.modelPrint.subledger === this.modelPrintRG.subledger ? "" : this.detalleSolicitudPrintRG.puestoJefeInmediato, this.puestoJefeInmediatoSuperior],
+				["Responsable de RR.HH.:", this.modelPrint.subledger === this.modelPrintRG.subledger ? "" : this.modelPrintRG.responsableRRHH, this.responsableRRHHRG],
 			],
 			columnStyles: {
 				0: {
 					fontStyle: "bold",
-					cellWidth: 60
+					cellWidth: 60,
 				},
 				1: {
-					cellWidth: 60
+					cellWidth: 60,
 				},
 				2: {
-					cellWidth: 60
-				}
-			}
+					cellWidth: 60,
+				},
+			},
 		});
 
 		// Referencia de recursos humanos
@@ -2510,49 +2482,50 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 				fillColor: backgroundCellColor,
 				textColor,
 				halign: "center",
-				lineColor
+				lineColor,
 			},
 			bodyStyles: {
-				lineColor
+				lineColor,
 			},
 			head: [
 				[
 					{
 						content: "REFERENCIA DE RECURSOS HUMANOS",
-						colSpan: 4
-					}
-				]
+						colSpan: 4,
+					},
+				],
 			],
 			body: [
 				[
 					"Forma de salida:",
 					{
-						content: this.comentariosRRHHPrint.comentario,
-						colSpan: 3
-					}
+						content: this.comentariosRRHHPrint.comentario === undefined ? "" : this.comentariosRRHHPrint.comentario,
+						colSpan: 3,
+					},
 				],
 				[
 					"Causa real de salida:",
 					{
 						content: this.causaSalidaPrint,
-						colSpan: 3
-					}
+						colSpan: 3,
+					},
 				],
-				["Justificación", "", "Fecha:", format(this.currentDatePrint, "dd/MM/yyyy")]
+				// ["Justificación", "", "Fecha:", format(this.currentDatePrint, "dd/MM/yyyy")],
+				["Justificación", this.detalleSolicitudPrintRG.grupoDePago, "Fecha:", this.comentariosRRHHPrint.fecha_Creacion === undefined ? "" : format(new Date(this.comentariosRRHHPrint.fecha_Creacion), "dd/MM/yyyy")],
 			],
 			columnStyles: {
 				0: {
 					fontStyle: "bold",
-					cellWidth: 40
+					cellWidth: 40,
 				},
 				2: {
 					fontStyle: "bold",
-					cellWidth: 25
+					cellWidth: 25,
 				},
 				3: {
-					cellWidth: 35
-				}
-			}
+					cellWidth: 35,
+				},
+			},
 		});
 
 		// Referencia del último jefe
@@ -2562,29 +2535,30 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 				fillColor: backgroundCellColor,
 				textColor,
 				halign: "center",
-				lineColor
+				lineColor,
 			},
 			bodyStyles: {
-				lineColor
+				lineColor,
 			},
 			head: [
 				[
 					{
 						content: "REFERENCIA DEL ÚLTIMO JEFE",
-						colSpan: 2
-					}
-				]
+						colSpan: 2,
+					},
+				],
 			],
 			body: [
 				["¿Cómo fue el desempeño en el área?:", this.comentariosJefeInmediatoPrint.comentario],
-				["Fecha:", format(this.currentDatePrint, "dd/MM/yyyy")]
+				// ["Fecha:", format(this.currentDatePrint, "dd/MM/yyyy")],
+				["Fecha:", this.comentariosJefeInmediatoPrint.fecha_Creacion === undefined ? "" : format(new Date(this.comentariosJefeInmediatoPrint.fecha_Creacion), "dd/MM/yyyy")],
 			],
 			columnStyles: {
 				0: {
 					fontStyle: "bold",
-					cellWidth: 70
-				}
-			}
+					cellWidth: 70,
+				},
+			},
 		});
 
 		// Jefe solicitante
@@ -2594,68 +2568,68 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 				fillColor: backgroundCellColor,
 				textColor: textColor,
 				halign: "center",
-				lineColor
+				lineColor,
 			},
 			bodyStyles: {
-				lineColor
+				lineColor,
 			},
 			head: [
 				[
 					{
 						content: "JEFE SOLICITANTE",
-						colSpan: 4
-					}
-				]
+						colSpan: 4,
+					},
+				],
 			],
 			body: [
 				["Nombre del jefe solicitante:", this.detalleSolicitudPrintRG.nombreJefeSolicitante, "Cargo:", this.detalleSolicitudPrintRG.puesto],
 				[
 					"Justificación:",
 					{
-						content: this.Comentario_Jefe_SolicitantePrint.comentario,
+						content: this.Comentario_Jefe_SolicitantePrint.comentario === undefined ? "" : this.Comentario_Jefe_SolicitantePrint.comentario,
 						styles: {
-							halign: "justify"
-						}
+							halign: "justify",
+						},
 					},
 					"Fecha:",
-					format(this.currentDatePrint, "dd/MM/yyyy")
-				]
+					this.Comentario_Jefe_SolicitantePrint.fecha_Creacion === undefined ? "" : format(new Date(this.Comentario_Jefe_SolicitantePrint.fecha_Creacion), "dd/MM/yyyy"),
+				],
 			],
 			columnStyles: {
 				0: {
 					fontStyle: "bold",
-					cellWidth: 60
+					cellWidth: 60,
 				},
 				2: {
 					fontStyle: "bold",
-					cellWidth: 25
+					cellWidth: 25,
 				},
 				3: {
-					cellWidth: 25
-				}
-			}
+					cellWidth: 25,
+				},
+			},
 		});
 
 		// Log del flujo
-		const logData = logs.map(log => log.split("{SEPARA}"));
+		const logData = logs.map((log) => log.split("{SEPARA}"));
 
 		autoTable(doc, {
 			theme: "grid",
 			headStyles: {
 				fillColor: backgroundCellColor,
 				textColor,
-				lineColor
+				lineColor,
 			},
 			bodyStyles: {
-				lineColor
+				lineColor,
 			},
 			head: [
 				[
 					{
 						content: "Log del flujo",
-						colSpan: 3
-					}
-				]
+						colSpan: 3,
+					},
+				],
 			],
 			body: [
 				[
@@ -2664,41 +2638,41 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 						styles: {
 							halign: "center",
 							textColor,
-							fontStyle: "bold"
-						}
+							fontStyle: "bold",
+						},
 					},
 					{
 						content: "Acción",
 						styles: {
 							halign: "center",
 							textColor,
-							fontStyle: "bold"
-						}
+							fontStyle: "bold",
+						},
 					},
 					{
 						content: "Responsable",
 						styles: {
 							halign: "center",
 							textColor,
-							fontStyle: "bold"
-						}
-					}
+							fontStyle: "bold",
+						},
+					},
 				],
 				// ...this.dataAprobacionesPorPosicionPrint[this.keySelectedPrint].map(dataAprobador => ([format(new Date(dataAprobador.nivelAprobacionType.fechaCreacion), "dd/MM/yyyy"), dataAprobador.nivelAprobacionType.ruta, dataAprobador.aprobador.usuario === "" ? "No aplica" : dataAprobador.aprobador.usuario]))
-				...logData.map(data => [data[2].split("{IGUAL}")[1], data[1].split("{IGUAL}")[1], data[0].split("{IGUAL}")[1]])
+				...logData.map((data) => [data[2].split("{IGUAL}")[1], data[1].split("{IGUAL}")[1], data[0].split("{IGUAL}")[1]]),
 			],
 			columnStyles: {
 				0: {
 					cellWidth: 30,
-					halign: "center"
+					halign: "center",
 				},
 				1: {
-					cellWidth: 75
+					cellWidth: 75,
 				},
 				2: {
-					cellWidth: 75
-				}
-			}
+					cellWidth: 75,
+				},
+			},
 		});
 
 		doc.save(`${this.solicitud.idSolicitud}-${format(new Date(), "dd-MM-yyyy")}.pdf`);
@@ -2720,23 +2694,23 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 		autoTable(doc, {
 			theme: "grid",
 			bodyStyles: {
-				lineColor
+				lineColor,
 			},
 			body: [["Creado por:", this.solicitud.usuarioCreacion, "Fecha:", format(new Date(this.solicitud.fechaCreacion), "dd/MM/yyyy"), "Solicitud No:", this.solicitud.idSolicitud]],
 			columnStyles: {
 				0: {
 					fontStyle: "bold",
-					halign: "right"
+					halign: "right",
 				},
 				2: {
 					fontStyle: "bold",
-					halign: "right"
+					halign: "right",
 				},
 				4: {
 					fontStyle: "bold",
-					halign: "right"
-				}
-			}
+					halign: "right",
+				},
+			},
 		});
 		console.log(this.modelPrint.sueldo);
 
@@ -2747,28 +2721,28 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 				fillColor: backgroundCellColor,
 				textColor,
 				halign: "center",
-				lineColor
+				lineColor,
 			},
 			bodyStyles: {
-				lineColor
+				lineColor,
 			},
 			head: [
 				[
 					{
 						content: "INFORMACIÓN",
-						colSpan: 4
-					}
-				]
+						colSpan: 4,
+					},
+				],
 			],
 			body: [
 				[
 					{
-						content: "Nombre empleado"
+						content: "Nombre empleado",
 					},
 					{
 						content: this.modelPrint.nombreCompleto,
-						colSpan: 3
-					}
+						colSpan: 3,
+					},
 				],
 				[
 					{
@@ -2776,17 +2750,17 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 						colSpan: 2,
 						styles: {
 							textColor,
-							halign: "center"
-						}
+							halign: "center",
+						},
 					},
 					{
 						content: "DESTINO",
 						colSpan: 2,
 						styles: {
 							textColor,
-							halign: "center"
-						}
-					}
+							halign: "center",
+						},
+					},
 				],
 				["Fecha de ingreso:", format(new Date(this.modelPrint.fechaIngreso), "dd/MM/yyyy"), "Fecha de cambio:", this.modelPrintPropuestos.fechaIngreso === "" || this.modelPrintPropuestos.fechaIngreso === undefined || this.modelPrintPropuestos.fechaIngreso === null ? "" : format(new Date(this.modelPrintPropuestos.fechaIngreso), "dd/MM/yyyy")],
 				["Cargo:", this.modelPrint.descrPuesto, "Cargo:", this.modelPrintPropuestos.descrPuesto],
@@ -2800,24 +2774,24 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 				["Centro de Costos:", this.modelPrint.nomCCosto, "Centro de Costos:", this.modelPrintPropuestos.nomCCosto],
 				["Grupo de pago:", this.modelPrint.grupoPago, "Grupo de pago:", this.modelPrintPropuestos.grupoPago],
 				["Sucursal (Nómina):", this.modelPrint.sucursal, "Scursal (Nómina):", this.modelPrintPropuestos.sucursal],
-				["Distribución contable:", this.modelPrint.nomCCosto.split(";")[1], "Distribución Contable:", this.modelPrintPropuestos.nomCCosto.split(";")[1]]
+				["Distribución contable:", this.modelPrint.nomCCosto.split(";")[1], "Distribución Contable:", this.modelPrintPropuestos.nomCCosto.split(";")[1]],
 			],
 			columnStyles: {
 				0: {
 					fontStyle: "bold",
-					cellWidth: 40
+					cellWidth: 40,
 				},
 				1: {
-					cellWidth: 50
+					cellWidth: 50,
 				},
 				2: {
 					fontStyle: "bold",
-					cellWidth: 40
+					cellWidth: 40,
 				},
 				3: {
-					cellWidth: 50
-				}
-			}
+					cellWidth: 50,
+				},
+			},
 		});
 
 		// Descripción
@@ -2827,18 +2801,18 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 				fillColor: backgroundCellColor,
 				textColor,
 				halign: "center",
-				lineColor
+				lineColor,
 			},
 			bodyStyles: {
-				lineColor
+				lineColor,
 			},
 			head: [
 				[
 					{
 						content: "DESCRIPCIÓN",
-						colSpan: 2
-					}
-				]
+						colSpan: 2,
+					},
+				],
 			],
 			body: [
 				["Tipo de Acción:", this.solicitud.tipoAccion],
@@ -2847,17 +2821,17 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 					{
 						content: this.modelPrint.justificacionCargo,
 						styles: {
-							halign: "justify"
-						}
-					}
-				]
+							halign: "justify",
+						},
+					},
+				],
 			],
 			columnStyles: {
 				0: {
 					fontStyle: "bold",
-					cellWidth: 30
-				}
-			}
+					cellWidth: 30,
+				},
+			},
 		});
 
 		// Sección para recursos humanos
@@ -2867,18 +2841,18 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 				fillColor: backgroundCellColor,
 				textColor,
 				halign: "center",
-				lineColor
+				lineColor,
 			},
 			bodyStyles: {
-				lineColor
+				lineColor,
 			},
 			head: [
 				[
 					{
 						content: "SECCIÓN PARA RECURSOS HUMANOS",
-						colSpan: 2
-					}
-				]
+						colSpan: 2,
+					},
+				],
 			],
 			body: [
 				["Observaciones:", ""],
@@ -2887,48 +2861,48 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 						content: "",
 						colSpan: 2,
 						styles: {
-							minCellHeight: 20
-						}
-					}
+							minCellHeight: 20,
+						},
+					},
 				],
 				[
 					{
 						content: "ACEPTACIÓN DEL EMPLEADO",
 						colSpan: 2,
 						styles: {
-							halign: "center"
-						}
-					}
-				]
+							halign: "center",
+						},
+					},
+				],
 			],
 			columnStyles: {
 				0: {
 					fontStyle: "bold",
-					cellWidth: 30
-				}
-			}
+					cellWidth: 30,
+				},
+			},
 		});
 
 		// Log del flujo
-		const logData = logs.map(log => log.split("{SEPARA}"));
+		const logData = logs.map((log) => log.split("{SEPARA}"));
 
 		autoTable(doc, {
 			theme: "grid",
 			headStyles: {
 				fillColor: backgroundCellColor,
 				textColor,
-				lineColor
+				lineColor,
 			},
 			bodyStyles: {
-				lineColor
+				lineColor,
 			},
 			head: [
 				[
 					{
 						content: "Log del flujo",
-						colSpan: 3
-					}
-				]
+						colSpan: 3,
+					},
+				],
 			],
 			body: [
 				[
@@ -2937,41 +2911,41 @@ export class ConsultaSolicitudesComponent implements AfterViewInit, OnInit {
 						styles: {
 							halign: "center",
 							textColor,
-							fontStyle: "bold"
-						}
+							fontStyle: "bold",
+						},
 					},
 					{
 						content: "Acción",
 						styles: {
 							halign: "center",
 							textColor,
-							fontStyle: "bold"
-						}
+							fontStyle: "bold",
+						},
 					},
 					{
 						content: "Responsable",
 						styles: {
 							halign: "center",
 							textColor,
-							fontStyle: "bold"
-						}
-					}
+							fontStyle: "bold",
+						},
+					},
 				],
 				// ...this.dataAprobacionesPorPosicionPrint[this.keySelectedPrint].map(dataAprobador => ([format(new Date(dataAprobador.nivelAprobacionType.fechaCreacion), "dd/MM/yyyy"), dataAprobador.nivelAprobacionType.ruta, dataAprobador.aprobador.usuario === "" ? "No aplica" : dataAprobador.aprobador.usuario]))
-				...logData.map(data => [data[2].split("{IGUAL}")[1], data[1].split("{IGUAL}")[1], data[0].split("{IGUAL}")[1]])
+				...logData.map((data) => [data[2].split("{IGUAL}")[1], data[1].split("{IGUAL}")[1], data[0].split("{IGUAL}")[1]]),
 			],
 			columnStyles: {
 				0: {
 					cellWidth: 30,
-					halign: "center"
+					halign: "center",
 				},
 				1: {
-					cellWidth: 75
+					cellWidth: 75,
 				},
 				2: {
-					cellWidth: 75
-				}
-			}
+					cellWidth: 75,
+				},
+			},
 		});
 
 		doc.save(`${this.solicitud.idSolicitud}-${format(new Date(), "dd-MM-yyyy")}.pdf`);

@@ -763,7 +763,7 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
 				} else if (id.toUpperCase().includes("RG")) {
 					this.detalleSolicitudRG = response.detalleSolicitudType[0];
 					this.fechaSalidaRG = new Date(this.detalleSolicitudRG.fechaSalida);
-					this.observacionReingreso = this.detalleSolicitudRG.justificacion;
+					// this.observacionReingreso = this.detalleSolicitudRG.justificacion;
 				}
 
 				// this.jefeInmediatoSuperiorQuery = this.detalleSolicitudRG.supervisaA === "NA" ? {
@@ -788,16 +788,16 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
 				if (id.toUpperCase().includes("RP")) {
 					if (this.detalleSolicitud.codigoPosicion.length > 0) {
 						this.starterService.getUser(this.detalleSolicitud.jefeSolicitante).subscribe({
-							next: res => {
-								this.puestoJefeInmediatoSuperior = res.evype[0].nombreCargo;
-								this.nombreJefeSolicitante = res.evype[0].nombreCompleto;
+							next: (res) => {
+								this.puestoJefeInmediatoSuperior = res.evType[0].nombreCargo;
+								this.nombreJefeSolicitante = res.evType[0].nombreCompleto;
 							},
-							error: err => {
+							error: (err) => {
 								console.error(err);
 
 								this.puestoJefeInmediatoSuperior = "";
 								this.nombreJefeSolicitante = "";
-							}
+							},
 						});
 
 						this.model.codigoPosicion = this.detalleSolicitud.codigoPosicion;
@@ -1224,7 +1224,7 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
 				this.detalleNivelAprobacion.forEach(({ fechaCreacion, fechaModificacion }) => {
 					convertTimeZonedDate(fechaCreacion);
 					convertTimeZonedDate(fechaModificacion);
-				})
+				});
 			},
 		});
 	}
@@ -1568,7 +1568,7 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
 							this.detalleSolicitud.descripcionPosicion = this.model.descrPosicion;
 
 							this.detalleSolicitud.localidad = this.modelRG.localidad;
-							this.detalleSolicitud.localidadZona = this.modelRG.localidad;
+							this.detalleSolicitud.localidadZona = this.modelRG.codigoPuesto;
 
 							this.detalleSolicitud.misionCargo = this.modelRG.misionCargo;
 							this.detalleSolicitud.nivelDireccion = this.modelRG.nivelDir;
@@ -1607,7 +1607,7 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
 							this.detalleSolicitud.jefeSolicitante = this.codigoReportaA;
 							this.detalleSolicitud.fechaSalida = this.fechaSalidaRG;
 							this.detalleSolicitud.causaSalida = this.causaSalida;
-							this.detalleSolicitud.justificacion = this.observacionReingreso;
+							this.detalleSolicitud.justificacion = this.detalleSolicitudRG.justificacion;
 
 							this.solicitudes.actualizarDetalleSolicitud(this.detalleSolicitud).subscribe({
 								next: (responseDetalle) => {
@@ -1674,9 +1674,9 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
 
 					this.solicitudes.actualizarDetalleSolicitud(this.detalleSolicitud).subscribe({
 						next: (responseDetalle) => {
-							setTimeout(() => {
-								window.location.reload();
-							}, 1800);
+							// setTimeout(() => {
+							// 	window.location.reload();
+							// }, 1800);
 						},
 					});
 
@@ -1698,7 +1698,7 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
 									this.detalleSolicitud.descripcionPosicion = this.model.descrPosicion;
 
 									this.detalleSolicitud.localidad = this.modelRG.localidad;
-									this.detalleSolicitud.localidadZona = this.modelRG.localidad;
+									this.detalleSolicitud.localidadZona = this.modelRG.codigoPuesto;
 
 									this.detalleSolicitud.misionCargo = this.modelRG.misionCargo;
 									this.detalleSolicitud.nivelDireccion = this.modelRG.nivelDir;
@@ -1727,7 +1727,8 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
 
 									this.detalleSolicitud.correo = this.modelRG.correo;
 
-									this.detalleSolicitud.fechaIngreso = this.modelRG.fechaIngreso;
+									this.detalleSolicitud.fechaIngreso = new Date(this.modelRG.fechaIngreso as Date);
+									convertTimeZonedDate(this.detalleSolicitud.fechaIngreso);
 
 									this.detalleSolicitud.jefeInmediatoSuperior = this.modelRG.jefeInmediatoSuperior;
 									this.detalleSolicitud.puestoJefeInmediato = this.model.puestoJefeInmediato;
@@ -1737,7 +1738,8 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
 									this.detalleSolicitud.jefeSolicitante = this.codigoReportaA;
 									this.detalleSolicitud.fechaSalida = this.fechaSalidaRG;
 									this.detalleSolicitud.causaSalida = this.causaSalida;
-									this.detalleSolicitud.justificacion = this.observacionReingreso;
+									// this.detalleSolicitud.justificacion = this.observacionReingreso;
+									this.detalleSolicitud.justificacion = this.detalleSolicitudRG.justificacion;
 
 									this.solicitudes.actualizarDetalleSolicitud(this.detalleSolicitud).subscribe({
 										next: (responseDetalle) => {
@@ -1815,7 +1817,7 @@ export class ReingresoPersonalComponent extends CompleteTaskComponent {
 					if (result?.data) {
 						const data: any = result.data;
 
-						this.fechaSalidaRG = data.fechaSalida === null || data.fechaSalida === "" || data.fechaSalida === undefined ? new Date(data.descripContrato) : data.fechaSalida;
+						this.fechaSalidaRG = data.fechaSalida === null || data.fechaSalida === "" || data.fechaSalida === undefined ? new Date(data.descripContrato.split(" ")[0]) : data.fechaSalida;
 						this.modelRG.nombreCompleto = data.nombreCompleto;
 						this.modelRG.subledger = data.subledger ?? "0";
 						this.causaSalida = data.nombreCompania === null ? data.supervisaA : data.descr_CausaSalida ?? "";

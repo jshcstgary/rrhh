@@ -68,7 +68,7 @@ export class CompletaSolicitudComponent extends CompleteTaskComponent {
 		finProceso: "",
 		contratacionFamiliares: "",
 		finProcesoFamiliares: "",
-		fechaIngresoCandidato: ""
+		fechaIngresoCandidato: "",
 	};
 
 	public nombreCompletoCandidato: string = "";
@@ -1133,7 +1133,7 @@ export class CompletaSolicitudComponent extends CompleteTaskComponent {
 								next: () => {},
 								error: (err) => {
 									console.error(err);
-								}
+								},
 							});
 
 							this.solicitudes.sendEmail(this.emailVariables).subscribe({
@@ -1410,7 +1410,7 @@ export class CompletaSolicitudComponent extends CompleteTaskComponent {
 					fechaFinContratacionFamiliares: null,
 					fechaIngresoCandidato: this.selectedDateIn,
 				};
-		
+
 				this.seleccionCandidatoService.saveCandidato(request).subscribe({
 					next: () => {
 						this.solicitudes.guardarDetallesAprobacionesSolicitud(this.solicitudes.modelDetalleAprobaciones).subscribe({
@@ -1422,7 +1422,6 @@ export class CompletaSolicitudComponent extends CompleteTaskComponent {
 				});
 			},
 		});
-		
 	}
 
 	obtenerComentariosAtencionPorInstanciaRaiz() {
@@ -1430,9 +1429,14 @@ export class CompletaSolicitudComponent extends CompleteTaskComponent {
 			next: (response) => {
 				this.dataComentariosAprobaciones.length = 0;
 				this.dataComentariosAprobacionesPorPosicion = response.variableType;
-				this.dataComentariosAprobaciones = this.filterDataComentarios(this.solicitud.idInstancia, "RevisionSolicitud", "comentariosAtencion");
-				this.dataComentariosAprobacionesRRHH = this.filterDataComentarios(this.solicitud.idInstancia, "RequisicionPersonal", "comentariosAtencionGerenteRRHH");
-				this.dataComentariosAprobacionesCREM = this.filterDataComentarios(this.solicitud.idInstancia, "RequisicionPersonal", "comentariosAtencionRemuneraciones");
+
+				this.dataComentariosAprobaciones = this.dataComentariosAprobacionesPorPosicion.filter((comentario) => comentario.name === "comentariosAtencion" && comentario.procDefKey === "RevisionSolicitud");
+				this.dataComentariosAprobacionesRRHH = this.dataComentariosAprobacionesPorPosicion.filter((comentario) => comentario.name.includes("comentariosAtencionGerenteRRHH") && comentario.procDefKey === "RequisicionPersonal");
+				this.dataComentariosAprobacionesCREM = this.dataComentariosAprobacionesPorPosicion.filter((comentario) => comentario.name.includes("comentariosAtencionRemuneraciones") && comentario.procDefKey === "RequisicionPersonal");
+
+				// this.dataComentariosAprobaciones = this.filterDataComentarios(this.solicitud.idInstancia, "RevisionSolicitud", "comentariosAtencion");
+				// this.dataComentariosAprobacionesRRHH = this.filterDataComentarios(this.solicitud.idInstancia, "RequisicionPersonal", "comentariosAtencionGerenteRRHH");
+				// this.dataComentariosAprobacionesCREM = this.filterDataComentarios(this.solicitud.idInstancia, "RequisicionPersonal", "comentariosAtencionRemuneraciones");
 			},
 			error: (error: HttpErrorResponse) => {
 				this.utilService.modalResponse("No existe comentarios de aprobadores", "error");
@@ -1440,12 +1444,12 @@ export class CompletaSolicitudComponent extends CompleteTaskComponent {
 		});
 	}
 
-	filterDataComentarios(idInstancia: string, taskKey: string, name: string) {
-		return this.dataComentariosAprobacionesPorPosicion.filter(
-			(item) =>
-				(idInstancia ? item.rootProcInstId === idInstancia : true) && //Id de instancia
-				(taskKey ? item.procDefKey === taskKey : true) &&
-				(name ? item.name === name : true)
-		);
-	}
+	// filterDataComentarios(idInstancia: string, taskKey: string, name: string) {
+	// 	return this.dataComentariosAprobacionesPorPosicion.filter(
+	// 		(item) =>
+	// 			(idInstancia ? item.rootProcInstId === idInstancia : true) && //Id de instancia
+	// 			(taskKey ? item.procDefKey === taskKey : true) &&
+	// 			(name ? item.name === name : true)
+	// 	);
+	// }
 }

@@ -231,7 +231,7 @@
 								<div class="input-group mb-3 align-items-center">
 									<label class="input-group-text text-start label-estilo2" for="tipoMotivo">Empleado</label>
 
-									<span id="empleado" name="empleado" style="color: black; font-size: 14px" class="text-start w-75">{{ detalleSolicitud.nombreEmpleado }}</span>
+									<span id="empleado" name="empleado" style="color: black; font-size: 14px" class="text-start w-75">{{ model.subledger === modelRG.subledger ? "" : detalleSolicitudRG.nombreEmpleado }}</span>
 								</div>
 							</div>
 						</div>
@@ -251,7 +251,7 @@
 								<div class="input-group mb-3 align-items-center">
 									<label class="input-group-text text-start label-estilo" for="tipoMotivo">Compañía</label>
 
-									<span style="color: black; font-size: 14px" class="text-start w-50">{{ modelRG.compania }}</span>
+									<span style="color: black; font-size: 14px" class="text-start w-50">{{ model.subledger === modelRG.subledger ? "" : modelRG.compania }}</span>
 								</div>
 							</div>
 
@@ -269,7 +269,7 @@
 								<div class="input-group mb-3 align-items-center">
 									<label class="input-group-text text-start label-estilo" for="tipoMotivo">Unidad de Negocio</label>
 
-									<span style="color: black; font-size: 14px" class="text-start w-50">{{ modelRG.unidadNegocio }}</span>
+									<span style="color: black; font-size: 14px" class="text-start w-50">{{ model.subledger === modelRG.subledger ? "" : modelRG.unidadNegocio }}</span>
 								</div>
 							</div>
 
@@ -287,7 +287,7 @@
 								<div class="input-group mb-3 align-items-center">
 									<label class="input-group-text text-start label-estilo" for="tipoMotivo">Área/Departamento</label>
 
-									<span style="color: black; font-size: 14px" class="text-start w-50">{{ modelRG.departamento }}</span>
+									<span style="color: black; font-size: 14px" class="text-start w-50">{{ model.subledger === modelRG.subledger ? "" : modelRG.departamento }}</span>
 								</div>
 							</div>
 
@@ -305,7 +305,7 @@
 								<div class="input-group mb-3 align-items-center">
 									<label class="input-group-text text-start label-estilo" for="tipoMotivo">Localidad/Zona</label>
 
-									<span style="color: black; font-size: 14px" class="text-start w-50">{{ modelRG.localidad }}</span>
+									<span style="color: black; font-size: 14px" class="text-start w-50">{{ model.subledger === modelRG.subledger ? "" : modelRG.localidad }}</span>
 								</div>
 							</div>
 
@@ -323,7 +323,7 @@
 								<div class="input-group mb-3 align-items-center">
 									<label class="input-group-text text-start label-estilo" for="tipoMotivo">Puesto</label>
 
-									<span style="color: black; font-size: 14px" class="text-start w-50">{{ modelRG.nombreCargo }}</span>
+									<span style="color: black; font-size: 14px" class="text-start w-50">{{ model.subledger === modelRG.subledger ? "" : modelRG.nombreCargo }}</span>
 								</div>
 							</div>
 
@@ -349,7 +349,7 @@
 								<div class="input-group mb-3 align-items-center">
 									<label class="input-group-text text-start label-estilo" for="tipoMotivo">Jefe Inmediato Superior</label>
 
-									<span style="color: black; font-size: 14px" class="text-start w-50">{{ detalleSolicitudRG.jefeInmediatoSuperior }}</span>
+									<span style="color: black; font-size: 14px" class="text-start w-50">{{ nombreJefeSolicitante }}</span>
 								</div>
 							</div>
 						</div>
@@ -359,7 +359,7 @@
 								<div class="input-group mb-3 align-items-center">
 									<label class="input-group-text text-start label-estilo" for="tipoMotivo">Puesto Jefe Inmediato Anterior o Referencia</label>
 
-									<span style="color: black; font-size: 14px" class="text-start w-50">{{ detalleSolicitud.jefeInmediatoSuperior === "" ? "No aplica" : detalleSolicitudRG.puesto }}</span>
+									<span style="color: black; font-size: 14px" class="text-start w-50">{{ model.subledger === modelRG.subledger ? "" : detalleSolicitudRG.puesto }}</span>
 								</div>
 							</div>
 
@@ -367,7 +367,7 @@
 								<div class="input-group mb-3 align-items-center">
 									<label class="input-group-text text-start label-estilo" for="tipoMotivo">Puesto Jefe Inmediato</label>
 
-									<span style="color: black; font-size: 14px" class="text-start w-50">{{ detalleSolicitudRG.puestoJefeInmediato }}</span>
+									<span style="color: black; font-size: 14px" class="text-start w-50">{{ puestoJefeInmediatoSuperior }}</span>
 								</div>
 							</div>
 						</div>
@@ -377,7 +377,7 @@
 								<div class="input-group mb-3 align-items-center">
 									<label class="input-group-text text-start label-estilo" for="tipoMotivo">Fecha de Ingreso</label>
 
-									<span style="color: black; font-size: 14px" class="text-start w-50">{{ modelRG.fechaIngreso | date : "dd/MM/yyyy" }}</span>
+									<span style="color: black; font-size: 14px" class="text-start w-50">{{ model.subledger === modelRG.subledger ? "" : (modelRG.fechaIngreso | date : "dd/MM/yyyy") }}</span>
 								</div>
 							</div>
 
@@ -395,7 +395,7 @@
 								<div class="input-group mb-3 align-items-center">
 									<label class="input-group-text text-start label-estilo" for="tipoMotivo">Fecha de Salida</label>
 
-									<span style="color: black; font-size: 14px" class="text-start w-50">{{ detalleSolicitudRG.fechaSalida | date : "dd/MM/yyyy" }}</span>
+									<span style="color: black; font-size: 14px" class="text-start w-50">{{ model.subledger === modelRG.subledger ? "" : (detalleSolicitudRG.fechaSalida | date : "dd/MM/yyyy") }}</span>
 								</div>
 							</div>
 
@@ -413,7 +413,7 @@
 								<div class="input-group mb-3 align-items-center">
 									<label class="input-group-text text-start label-estilo" for="tipoMotivo">Responsable RRHH</label>
 
-									<span style="color: black; font-size: 14px" class="text-start w-50">{{ this.detalleSolicitudRG.responsableRRHH }}</span>
+									<span style="color: black; font-size: 14px" class="text-start w-50">{{ model.subledger === modelRG.subledger ? "" : detalleSolicitudRG.responsableRRHH }}</span>
 								</div>
 							</div>
 						</div>
@@ -438,7 +438,7 @@
 								<div class="input-group mb-3 align-items-center">
 									<label class="input-group-text text-start label-estilo" for="tipoMotivo">Sueldo</label>
 
-									<span style="color: black; font-size: 14px" class="text-start w-50">$ {{ modelRG.sueldo | number : "1.2-2" }}</span>
+									<span style="color: black; font-size: 14px" class="text-start w-50">$ {{ model.subledger === modelRG.subledger ? "" : (modelRG.sueldo | number : "1.2-2") }}</span>
 								</div>
 							</div>
 
@@ -456,7 +456,7 @@
 								<div class="input-group mb-3 align-items-center">
 									<label class="input-group-text text-start label-estilo" for="tipoMotivo">Mensual</label>
 
-									<span style="color: black; font-size: 14px" class="text-start w-50">$ {{ modelRG.sueldoMensual | number : "1.2-2" }}</span>
+									<span style="color: black; font-size: 14px" class="text-start w-50">$ {{ model.subledger === modelRG.subledger ? "" : (modelRG.sueldoMensual | number : "1.2-2") }}</span>
 								</div>
 							</div>
 
@@ -474,7 +474,7 @@
 								<div class="input-group mb-3 align-items-center">
 									<label class="input-group-text text-start label-estilo" for="tipoMotivo">Trimestral</label>
 
-									<span style="color: black; font-size: 14px" class="text-start w-50">$ {{ modelRG.sueldoTrimestral | number : "1.2-2" }}</span>
+									<span style="color: black; font-size: 14px" class="text-start w-50">$ {{ model.subledger === modelRG.subledger ? "" : (modelRG.sueldoTrimestral | number : "1.2-2") }}</span>
 								</div>
 							</div>
 
@@ -492,7 +492,7 @@
 								<div class="input-group mb-3 align-items-center">
 									<label class="input-group-text text-start label-estilo" for="tipoMotivo">Semestral</label>
 
-									<span style="color: black; font-size: 14px" class="text-start w-50">$ {{ modelRG.sueldoSemestral | number : "1.2-2" }}</span>
+									<span style="color: black; font-size: 14px" class="text-start w-50">$ {{ model.subledger === modelRG.subledger ? "" : (modelRG.sueldoSemestral | number : "1.2-2") }}</span>
 								</div>
 							</div>
 
@@ -510,7 +510,7 @@
 								<div class="input-group mb-3 align-items-center">
 									<label class="input-group-text text-start label-estilo" for="tipoMotivo">Anual</label>
 
-									<span style="color: black; font-size: 14px" class="text-start w-50">$ {{ modelRG.sueldoAnual | number : "1.2-2" }}</span>
+									<span style="color: black; font-size: 14px" class="text-start w-50">$ {{ model.subledger === modelRG.subledger ? "" : (modelRG.sueldoAnual | number : "1.2-2") }}</span>
 								</div>
 							</div>
 
@@ -657,7 +657,7 @@
 								<div class="input-group mb-3 align-items-center">
 									<label class="input-group-text label-estilo2" for="justificacion">Justificación</label>
 
-									<span style="color: black; font-size: 14px" class="text-start w-75">{{ model.justificacionCargo }}</span>
+									<span style="color: black; font-size: 14px" class="text-start w-75">{{ modelRG.grupoPago }}</span>
 								</div>
 							</div>
 						</div>
@@ -1154,7 +1154,7 @@
 									<div class="input-group mb-3 align-items-center">
 										<label for="input2" class="input-group-text label-estilo">Fin de proceso</label>
 
-										<span style="font-size: 14px" class="w-50">{{ fechas.reingreso === "" || fechas.reingreso === undefined || fechas.reingreso === null ? "" : (fechas.finProceso === "" || fechas.finProceso === null || fechas.finProceso === undefined ? "" : fechas.finProceso) }}</span>
+										<span style="font-size: 14px" class="w-50">{{ fechas.reingreso === "" || fechas.reingreso === undefined || fechas.reingreso === null ? "" : fechas.finProceso === "" || fechas.finProceso === null || fechas.finProceso === undefined ? "" : fechas.finProceso }}</span>
 									</div>
 								</div>
 							</div>
@@ -1176,7 +1176,7 @@
 									<div class="input-group mb-3 align-items-center">
 										<label for="input2" class="input-group-text label-estilo">Fin de proceso</label>
 
-										<span style="font-size: 14px" class="w-50">{{ fechas.contratacionFamiliares === "" || fechas.contratacionFamiliares === undefined || fechas.contratacionFamiliares === null ? "" : (fechas.finProcesoFamiliares === "" || fechas.finProcesoFamiliares === null || fechas.finProcesoFamiliares === undefined ? "" : fechas.finProcesoFamiliares) }}</span>
+										<span style="font-size: 14px" class="w-50">{{ fechas.contratacionFamiliares === "" || fechas.contratacionFamiliares === undefined || fechas.contratacionFamiliares === null ? "" : fechas.finProcesoFamiliares === "" || fechas.finProcesoFamiliares === null || fechas.finProcesoFamiliares === undefined ? "" : fechas.finProcesoFamiliares }}</span>
 									</div>
 								</div>
 							</div>
@@ -1229,7 +1229,7 @@
 									<div class="input-group mb-3 align-items-center">
 										<label class="input-group-text text-start label-estilo2" for="nombre-candidato">Fecha de ingreso del candidato</label>
 
-										<span style="font-size: 14px" class="w-75">{{ fechas.finProcesoContratacion === "" || fechas.finProcesoContratacion === undefined || fechas.finProcesoContratacion === null ? "" : fechas.fechaIngresoCandidato | date : "dd/MM/yyyy" }}</span>
+										<span style="font-size: 14px" class="w-75">{{ fechas.finProcesoContratacion === "" || fechas.finProcesoContratacion === undefined || fechas.finProcesoContratacion === null ? "" : (fechas.fechaIngresoCandidato | date : "dd/MM/yyyy") }}</span>
 									</div>
 								</div>
 							</div>

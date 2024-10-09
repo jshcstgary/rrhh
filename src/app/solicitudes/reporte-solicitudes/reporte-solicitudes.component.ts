@@ -1090,13 +1090,13 @@ export class ReporteSolicitudesComponent implements AfterViewInit, OnInit {
 		});
 	}
 
-	private filterDataComentarios(idInstancia: string, taskKey: string, name: string) {
-		return this.dataComentariosAprobacionesPrintPorPosicion.filter(item =>
-			(idInstancia ? item.rootProcInstId === idInstancia : true) && //Id de instancia
-			(taskKey ? item.procDefKey === taskKey : true) &&
-			(name ? item.name === name : true)
-		);
-	}
+	// private filterDataComentarios(idInstancia: string, taskKey: string, name: string) {
+	// 	return this.dataComentariosAprobacionesPrintPorPosicion.filter(item =>
+	// 		(idInstancia ? item.rootProcInstId === idInstancia : true) && //Id de instancia
+	// 		(taskKey ? item.procDefKey === taskKey : true) &&
+	// 		(name ? item.name === name : true)
+	// 	);
+	// }
 
 	mostrarModalCrearInstanciaSolicitud() {
 		this.submitted = false;
